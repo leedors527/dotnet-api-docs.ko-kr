@@ -1,0 +1,130 @@
+<Type Name="TailPinnedEventArgs" FullName="System.IO.Log.TailPinnedEventArgs">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="9750884c6234a16b6fa5c72b4216d4bd400eba75" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class TailPinnedEventArgs : EventArgs" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit TailPinnedEventArgs extends System.EventArgs" />
+  <TypeSignature Language="DocId" Value="T:System.IO.Log.TailPinnedEventArgs" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class TailPinnedEventArgs&#xA;Inherits EventArgs" />
+  <TypeSignature Language="C++ CLI" Value="public ref class TailPinnedEventArgs sealed : EventArgs" />
+  <AssemblyInfo>
+    <AssemblyName>System.IO.Log</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.EventArgs</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="90df9-101">
+        <see cref="E:System.IO.Log.IRecordSequence.TailPinned" /> 이벤트에 대한 데이터를 제공합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="90df9-101">Provides data for the <see cref="E:System.IO.Log.IRecordSequence.TailPinned" /> event.</span>
+      </span>
+      <span data-ttu-id="90df9-102">이 클래스는 상속될 수 없습니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="90df9-102">This class cannot be inherited.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="90df9-103">레코드 시퀀스의 공간이 부족하면 <xref:System.IO.Log.IRecordSequence.TailPinned> 이벤트가 발생할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="90df9-103">The <xref:System.IO.Log.IRecordSequence.TailPinned> event can be fired when the record sequence has run out of space.</span></span> <span data-ttu-id="90df9-104">이 이벤트가 발생하면 공간을 확보하기 위해 시퀀스의 테일(즉, 기준 시퀀스 번호)이 앞으로 이동합니다.</span><span class="sxs-lookup"><span data-stu-id="90df9-104">When this event is fired, the tail of the sequence (that is, the base sequence number) is moved forward to free up space.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="90df9-105">이 예제에서는 <xref:System.IO.Log.LogRecordSequence.TailPinned> 이벤트를 사용하여 로그 시퀀스에서 공간을 확보하는 방법을 보여 줍니다.</span><span class="sxs-lookup"><span data-stu-id="90df9-105">This example shows how to use the <xref:System.IO.Log.LogRecordSequence.TailPinned> event to free up space in a log sequence.</span></span>  
+  
+```  
+recordSequence.RetryAppend = true;  
+recordSequence.TailPinned += new EventHandler<TailPinnedEventArgs>(HandleTailPinned);  
+  
+void HandleTailPinned(object sender, TailPinnedEventArgs tailPinnedEventArgs)  
+{  
+   // tailPinnedEventArgs.TargetSequenceNumber is the target   
+   // sequence number to free up space to.    
+   // However, this sequence number is not necessarily valid.  We have  
+   // to use this sequence number as a starting point for finding a  
+   // valid point within the log to advance toward. You need to  
+   // identify a record with a sequence number equal to, or greater  
+   // than TargetSequenceNumber; let's call this   
+   // realTargetSequenceNumber. Once found, move the base  
+  
+   recordSequence.AdvanceBaseSequenceNumber(realTargetSequenceNumber);  
+  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TailPinnedEventArgs (System.IO.Log.SequenceNumber sequenceNumber);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.IO.Log.SequenceNumber sequenceNumber) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Log.TailPinnedEventArgs.#ctor(System.IO.Log.SequenceNumber)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TailPinnedEventArgs(System::IO::Log::SequenceNumber sequenceNumber);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Log</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="sequenceNumber" Type="System.IO.Log.SequenceNumber" />
+      </Parameters>
+      <Docs>
+        <param name="sequenceNumber">
+          <span data-ttu-id="90df9-106">대상 시퀀스 번호입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="90df9-106">The target sequence number.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="90df9-107">
+            <see cref="T:System.IO.Log.TailPinnedEventArgs" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="90df9-107">Initializes a new instance of the <see cref="T:System.IO.Log.TailPinnedEventArgs" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TargetSequenceNumber">
+      <MemberSignature Language="C#" Value="public System.IO.Log.SequenceNumber TargetSequenceNumber { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.IO.Log.SequenceNumber TargetSequenceNumber" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Log.TailPinnedEventArgs.TargetSequenceNumber" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property TargetSequenceNumber As SequenceNumber" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IO::Log::SequenceNumber TargetSequenceNumber { System::IO::Log::SequenceNumber get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Log</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Log.SequenceNumber</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="90df9-108">테일이 지나가야 하는 시퀀스 번호를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="90df9-108">Gets the sequence number that the tail should be moved past.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="90df9-109">테일이 지나가야 하는 시퀀스 번호입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="90df9-109">The sequence number that the tail should be moved past.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,1683 @@
+<Type Name="DeflateStream" FullName="System.IO.Compression.DeflateStream">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="ee85e8760afca78c5281f748656703fd7bf7c83a" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class DeflateStream : System.IO.Stream" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DeflateStream extends System.IO.Stream" />
+  <TypeSignature Language="DocId" Value="T:System.IO.Compression.DeflateStream" />
+  <TypeSignature Language="VB.NET" Value="Public Class DeflateStream&#xA;Inherits Stream" />
+  <TypeSignature Language="C++ CLI" Value="public ref class DeflateStream : System::IO::Stream" />
+  <AssemblyInfo>
+    <AssemblyName>System.IO.Compression</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.IO.Stream</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="39bd5-101">Deflate 알고리즘을 사용하여 스트림을 압축하고 압축을 풀기 위한 메서드와 속성을 제공합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="39bd5-101">Provides methods and properties for compressing and decompressing streams by using the Deflate algorithm.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-102">이 클래스는 비손실 파일 압축 및 압축 해제 하기 위한 산업 표준 알고리즘 Deflate 알고리즘을 나타냅니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-102">This class represents the Deflate algorithm, which is an industry-standard algorithm for lossless file compression and decompression.</span></span> <span data-ttu-id="39bd5-103">부터는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)], <xref:System.IO.Compression.DeflateStream> zlib 라이브러리를 사용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-103">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], the <xref:System.IO.Compression.DeflateStream> class uses the zlib library.</span></span> <span data-ttu-id="39bd5-104">결과적으로, 더 나은 압축 알고리즘을 제공 고 대부분의 경우에서 더 작은 압축된 파일 보다 이전 버전의.NET Framework에서 제공 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-104">As a result, it provides a better compression algorithm and, in most cases, a smaller compressed file than it provides in earlier versions of the .NET Framework.</span></span>  
+  
+ <span data-ttu-id="39bd5-105">이 클래스에 파일을 추가 또는 zip 보관 파일의 압축 풀기 파일에 대 한 기능을 기본적으로 제공 하지는 않습니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-105">This class does not inherently provide functionality for adding files to or extracting files from zip archives.</span></span> <span data-ttu-id="39bd5-106">Zip 보관 파일을 사용 하려면 사용 하 여는 <xref:System.IO.Compression.ZipArchive> 및 <xref:System.IO.Compression.ZipArchiveEntry> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-106">To work with zip archives, use the <xref:System.IO.Compression.ZipArchive> and the <xref:System.IO.Compression.ZipArchiveEntry> classes.</span></span>  
+  
+ <span data-ttu-id="39bd5-107"><xref:System.IO.Compression.DeflateStream> 클래스가 동일한 압축 알고리즘을 사용 하 여 사용 되는 gzip 데이터 형식으로는 <xref:System.IO.Compression.GZipStream> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-107">The <xref:System.IO.Compression.DeflateStream> class uses the same compression algorithm as the gzip data format used by the <xref:System.IO.Compression.GZipStream> class.</span></span>  
+  
+ <span data-ttu-id="39bd5-108">압축 기능은 <xref:System.IO.Compression.DeflateStream> 및 <xref:System.IO.Compression.GZipStream> 스트림으로 노출 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-108">The compression functionality in <xref:System.IO.Compression.DeflateStream> and <xref:System.IO.Compression.GZipStream> is exposed as a stream.</span></span> <span data-ttu-id="39bd5-109">데이터는 이므로 여러 패스에 전체 파일이 나 큰 데이터 블록을 압축 하는 데 가장 좋은 방법을 수행할 수를 바이트 단위로 별로 읽습니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-109">Data is read on a byte-by-byte basis, so it is not possible to perform multiple passes to determine the best method for compressing entire files or large blocks of data.</span></span> <span data-ttu-id="39bd5-110"><xref:System.IO.Compression.DeflateStream> 및 <xref:System.IO.Compression.GZipStream> 클래스는 데이터의 압축 되지 않은 원본에 가장 적합 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-110">The <xref:System.IO.Compression.DeflateStream> and <xref:System.IO.Compression.GZipStream> classes are best used on uncompressed sources of data.</span></span> <span data-ttu-id="39bd5-111">원본 데이터가 이미 압축 된 경우 이러한 클래스를 사용 하 여 실제로 증가할 수 있습니다 스트림의 크기입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-111">If the source data is already compressed, using these classes may actually increase the size of the stream.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="39bd5-112">사용 하는 방법을 보여 주는 다음 예제는 <xref:System.IO.Compression.DeflateStream> 클래스를 압축 하 고 파일의 디렉터리를 압축 해제 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-112">The following example shows how to use the <xref:System.IO.Compression.DeflateStream> class to compress and decompress a directory of files.</span></span>  
+  
+ [!code-csharp[IO.Compression.Deflate1#1](~/samples/snippets/csharp/VS_Snippets_CLR/IO.Compression.Deflate1/CS/deflatetest.cs#1)]
+ [!code-vb[IO.Compression.Deflate1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/IO.Compression.Deflate1/VB/deflatetest.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="39bd5-113">
+            <see cref="T:System.IO.Compression.DeflateStream" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-113">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-114">사용 하 여 <xref:System.IO.Compression.DeflateStream> 4GB 하면 예외가 발생 하는 보다 큰 파일을 압축 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-114">Using the <xref:System.IO.Compression.DeflateStream> class to compress a file larger than 4 GB will cause an exception.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DeflateStream (System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, valuetype System.IO.Compression.CompressionLevel compressionLevel) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DeflateStream(System::IO::Stream ^ stream, System::IO::Compression::CompressionLevel compressionLevel);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="compressionLevel" Type="System.IO.Compression.CompressionLevel" />
+      </Parameters>
+      <Docs>
+        <param name="stream">
+          <span data-ttu-id="39bd5-115">압축할 스트림입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-115">The stream to compress.</span>
+          </span>
+        </param>
+        <param name="compressionLevel">
+          <span data-ttu-id="39bd5-116">스트림을 압축할 때 속도 또는 압축 효율을 강조할지 여부를 나타내는 열거형 값 중 하나입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-116">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-117">지정된 스트림과 압축 수준을 사용하여 <see cref="T:System.IO.Compression.DeflateStream" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-117">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression level.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-118">속도 또는 압축 효율이 더 중요 한 인스턴스에 있는지 여부를 지정 하려면이 생성자를 사용 하 여 <xref:System.IO.Compression.DeflateStream> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-118">You use this constructor when you want to specify whether compression efficiency or speed is more important for an instance of the <xref:System.IO.Compression.DeflateStream> class.</span></span>  
+  
+ <span data-ttu-id="39bd5-119">이 생성자 오버 로드는 압축 모드를 사용 하 여 <xref:System.IO.Compression.CompressionMode.Compress>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-119">This constructor overload uses the compression mode <xref:System.IO.Compression.CompressionMode.Compress>.</span></span> <span data-ttu-id="39bd5-120">다른 값으로 압축 모드를 설정 하려면는 <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%29> 또는 <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%2CSystem.Boolean%29> 오버 로드 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-120">To set the compression mode to another value, use the <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%29> or <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%2CSystem.Boolean%29> overload.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="39bd5-121">만들 때 압축 수준을 설정 하려면 다음 예제에서는 한 <xref:System.IO.Compression.DeflateStream> 개체입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-121">The following example shows how to set the compression level when creating a <xref:System.IO.Compression.DeflateStream> object.</span></span>  
+  
+ [!code-csharp[System.IO.Compression.DeflateStream#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.io.compression.deflatestream/cs/program1.cs#1)]
+ [!code-vb[System.IO.Compression.DeflateStream#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.io.compression.deflatestream/vb/program1.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="39bd5-122">
+            <paramref name="stream" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-122">
+              <paramref name="stream" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="39bd5-123">스트림이 압축 등의 쓰기 작업을 지원하지 않습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-123">The stream does not support write operations such as compression.</span>
+          </span>
+          <span data-ttu-id="39bd5-124">(스트림 개체의 <see cref="P:System.IO.Stream.CanWrite" /> 속성이 <see langword="false" />입니다.)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-124">(The <see cref="P:System.IO.Stream.CanWrite" /> property on the stream object is <see langword="false" />.)</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DeflateStream (System.IO.Stream stream, System.IO.Compression.CompressionMode mode);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, valuetype System.IO.Compression.CompressionMode mode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DeflateStream(System::IO::Stream ^ stream, System::IO::Compression::CompressionMode mode);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="mode" Type="System.IO.Compression.CompressionMode" />
+      </Parameters>
+      <Docs>
+        <param name="stream">
+          <span data-ttu-id="39bd5-125">압축하거나 압축을 풀 스트림입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-125">The stream to compress or decompress.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="39bd5-126">스트림을 압축할 것인지 또는 압축 해제할 것인지를 나타내는 열거형 값 중 하나입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-126">One of the enumeration values that indicates whether to compress or decompress the stream.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-127">지정된 스트림과 압축 모드를 사용하여 <see cref="T:System.IO.Compression.DeflateStream" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-127">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression mode.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-128">기본적으로 <xref:System.IO.Compression.DeflateStream> 내부 스트림을 닫고도 스트림을 닫는 하므로 내부 스트림을 소유 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-128">By default, <xref:System.IO.Compression.DeflateStream> owns the underlying stream, so closing the stream also closes the underlying stream.</span></span> <span data-ttu-id="39bd5-129">참고는 내부 스트림의 상태 스트림의 유용성에 영향을 줄 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-129">Note that the state of the underlying stream can affect the usability of the stream.</span></span> <span data-ttu-id="39bd5-130">또한 아무 명시적 검사도 수행, 하므로 새 인스턴스를 만들 때 추가 예외가 throw 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-130">Also, no explicit checks are performed, so no additional exceptions are thrown when the new instance is created.</span></span>  
+  
+ <span data-ttu-id="39bd5-131">인스턴스는 <xref:System.IO.Compression.DeflateStream> 클래스 만들어집니다는 `mode` 매개 변수를 `Compress`, 헤더 정보가 즉시 삽입 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-131">If an instance of the <xref:System.IO.Compression.DeflateStream> class is created with the `mode` parameter equal to `Compress`, header information is inserted immediately.</span></span> <span data-ttu-id="39bd5-132">추가 작업이 없으므로 발생 유효한 빈 압축 된 파일 스트림을 표시 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-132">If no further action occurs, the stream appears as a valid, empty, compressed file.</span></span>  
+  
+ <span data-ttu-id="39bd5-133">사용 하는 <xref:System.IO.Compression.DeflateStream> 4GB 예외가 발생 하는 보다 큰 파일을 압축 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-133">Using the <xref:System.IO.Compression.DeflateStream> class to compress a file larger than 4 GB raises an exception.</span></span>  
+  
+ <span data-ttu-id="39bd5-134">기본적으로 압축 수준 설정은 <xref:System.IO.Compression.CompressionLevel.Optimal> 압축 모드가 인 경우 <xref:System.IO.Compression.CompressionMode.Compress>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-134">By default, the compression level is set to <xref:System.IO.Compression.CompressionLevel.Optimal> when the compression mode is <xref:System.IO.Compression.CompressionMode.Compress>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="39bd5-135">사용 하는 방법을 보여 주는 다음 예제는 <xref:System.IO.Compression.DeflateStream> 클래스를 압축 하 고 파일 압축을 해제 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-135">The following example shows how to use the <xref:System.IO.Compression.DeflateStream> class to compress and decompress a file.</span></span>  
+  
+ [!code-csharp[IO.Compression.Deflate1#1](~/samples/snippets/csharp/VS_Snippets_CLR/IO.Compression.Deflate1/CS/deflatetest.cs#1)]
+ [!code-vb[IO.Compression.Deflate1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/IO.Compression.Deflate1/VB/deflatetest.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="39bd5-136">
+            <paramref name="stream" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-136">
+              <paramref name="stream" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="39bd5-137">
+            <paramref name="mode" />은 유효한 <see cref="T:System.IO.Compression.CompressionMode" /> 값이 아닙니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-137">
+              <paramref name="mode" /> is not a valid <see cref="T:System.IO.Compression.CompressionMode" /> value.</span>
+          </span>
+          <span data-ttu-id="39bd5-138">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-138">-or-</span>
+          </span>
+          <span data-ttu-id="39bd5-139">
+            <see cref="T:System.IO.Compression.CompressionMode" />가 <see cref="F:System.IO.Compression.CompressionMode.Compress" />이고 <see cref="P:System.IO.Stream.CanWrite" />이 <see langword="false" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-139">
+              <see cref="T:System.IO.Compression.CompressionMode" /> is <see cref="F:System.IO.Compression.CompressionMode.Compress" /> and <see cref="P:System.IO.Stream.CanWrite" /> is <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="39bd5-140">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-140">-or-</span>
+          </span>
+          <span data-ttu-id="39bd5-141">
+            <see cref="T:System.IO.Compression.CompressionMode" />가 <see cref="F:System.IO.Compression.CompressionMode.Decompress" />이고 <see cref="P:System.IO.Stream.CanRead" />이 <see langword="false" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-141">
+              <see cref="T:System.IO.Compression.CompressionMode" /> is <see cref="F:System.IO.Compression.CompressionMode.Decompress" /> and <see cref="P:System.IO.Stream.CanRead" /> is <see langword="false" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DeflateStream (System.IO.Stream stream, System.IO.Compression.CompressionLevel compressionLevel, bool leaveOpen);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, valuetype System.IO.Compression.CompressionLevel compressionLevel, bool leaveOpen) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionLevel,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DeflateStream(System::IO::Stream ^ stream, System::IO::Compression::CompressionLevel compressionLevel, bool leaveOpen);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="compressionLevel" Type="System.IO.Compression.CompressionLevel" />
+        <Parameter Name="leaveOpen" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="stream">
+          <span data-ttu-id="39bd5-142">압축할 스트림입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-142">The stream to compress.</span>
+          </span>
+        </param>
+        <param name="compressionLevel">
+          <span data-ttu-id="39bd5-143">스트림을 압축할 때 속도 또는 압축 효율을 강조할지 여부를 나타내는 열거형 값 중 하나입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-143">One of the enumeration values that indicates whether to emphasize speed or compression efficiency when compressing the stream.</span>
+          </span>
+        </param>
+        <param name="leaveOpen">
+          <span data-ttu-id="39bd5-144">
+            <see cref="T:System.IO.Compression.DeflateStream" /> 개체를 삭제한 후 스트림 개체를 열어 두려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-144">
+              <see langword="true" /> to leave the stream object open after disposing the <see cref="T:System.IO.Compression.DeflateStream" /> object; otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-145">지정된 스트림과 압축 수준을 사용하여 <see cref="T:System.IO.Compression.DeflateStream" /> 클래스의 새 인스턴스를 초기화하고 스트림을 선택적으로 연 상태로 둘 수 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-145">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression level, and optionally leaves the stream open.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-146">속도 또는 압축 효율이 더 중요 한 인스턴스에 있는지 여부를 지정 하려면이 생성자를 사용 하는 <xref:System.IO.Compression.DeflateStream> 삭제 한 후 스트림 개체를 열어 두려면 여부와 클래스는 <xref:System.IO.Compression.DeflateStream> 개체입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-146">You use this constructor when you want to specify whether compression efficiency or speed is more important for an instance of the <xref:System.IO.Compression.DeflateStream> class, and whether to leave the stream object open after disposing the <xref:System.IO.Compression.DeflateStream> object.</span></span>  
+  
+ <span data-ttu-id="39bd5-147">이 생성자 오버 로드는 압축 모드를 사용 하 여 <xref:System.IO.Compression.CompressionMode.Compress>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-147">This constructor overload uses the compression mode <xref:System.IO.Compression.CompressionMode.Compress>.</span></span> <span data-ttu-id="39bd5-148">다른 값으로 압축 모드를 설정 하려면는 <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%29> 또는 <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%2CSystem.Boolean%29> 오버 로드 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-148">To set the compression mode to another value, use the <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%29> or <xref:System.IO.Compression.DeflateStream.%23ctor%28System.IO.Stream%2CSystem.IO.Compression.CompressionMode%2CSystem.Boolean%29> overload.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="39bd5-149">만들 때 압축 수준을 설정 하려면 다음 예제에서는 한 <xref:System.IO.Compression.DeflateStream> 개체 및 스트림을 열어 두려면 하는 방법입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-149">The following example shows how to set the compression level when creating a <xref:System.IO.Compression.DeflateStream> object and how to leave the stream open.</span></span>  
+  
+ [!code-csharp[System.IO.Compression.DeflateStream#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.io.compression.deflatestream/cs/program2.cs#2)]
+ [!code-vb[System.IO.Compression.DeflateStream#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.io.compression.deflatestream/vb/program2.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="39bd5-150">
+            <paramref name="stream" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-150">
+              <paramref name="stream" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="39bd5-151">스트림이 압축 등의 쓰기 작업을 지원하지 않습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-151">The stream does not support write operations such as compression.</span>
+          </span>
+          <span data-ttu-id="39bd5-152">(스트림 개체의 <see cref="P:System.IO.Stream.CanWrite" /> 속성이 <see langword="false" />입니다.)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-152">(The <see cref="P:System.IO.Stream.CanWrite" /> property on the stream object is <see langword="false" />.)</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DeflateStream (System.IO.Stream stream, System.IO.Compression.CompressionMode mode, bool leaveOpen);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream stream, valuetype System.IO.Compression.CompressionMode mode, bool leaveOpen) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.#ctor(System.IO.Stream,System.IO.Compression.CompressionMode,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DeflateStream(System::IO::Stream ^ stream, System::IO::Compression::CompressionMode mode, bool leaveOpen);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+        <Parameter Name="mode" Type="System.IO.Compression.CompressionMode" />
+        <Parameter Name="leaveOpen" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="stream">
+          <span data-ttu-id="39bd5-153">압축하거나 압축을 풀 스트림입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-153">The stream to compress or decompress.</span>
+          </span>
+        </param>
+        <param name="mode">
+          <span data-ttu-id="39bd5-154">스트림을 압축할 것인지 또는 압축 해제할 것인지를 나타내는 열거형 값 중 하나입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-154">One of the enumeration values that indicates whether to compress or decompress the stream.</span>
+          </span>
+        </param>
+        <param name="leaveOpen">
+          <span data-ttu-id="39bd5-155">
+            <see cref="T:System.IO.Compression.DeflateStream" /> 개체를 삭제한 후 스트림을 열어 두려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-155">
+              <see langword="true" /> to leave the stream open after disposing the <see cref="T:System.IO.Compression.DeflateStream" /> object; otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-156">지정된 스트림과 압축 모드를 사용하여 <see cref="T:System.IO.Compression.DeflateStream" /> 클래스의 새 인스턴스를 초기화하고 스트림을 선택적으로 연 상태로 둘 수 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-156">Initializes a new instance of the <see cref="T:System.IO.Compression.DeflateStream" /> class by using the specified stream and compression mode, and optionally leaves the stream open.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-157">기본적으로 <xref:System.IO.Compression.DeflateStream> 내부 스트림을 닫고도 스트림을 닫는 하므로 내부 스트림을 소유 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-157">By default, <xref:System.IO.Compression.DeflateStream> owns the underlying stream, so closing the stream also closes the underlying stream.</span></span> <span data-ttu-id="39bd5-158">참고는 내부 스트림의 상태 스트림의 유용성에 영향을 줄 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-158">Note that the state of the underlying stream can affect the usability of the stream.</span></span> <span data-ttu-id="39bd5-159">또한 아무 명시적 검사도 수행, 하므로 새 인스턴스를 만들 때 추가 예외가 throw 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-159">Also, no explicit checks are performed, so no additional exceptions are thrown when the new instance is created.</span></span>  
+  
+ <span data-ttu-id="39bd5-160">인스턴스는 <xref:System.IO.Compression.DeflateStream> 클래스 만들어집니다는 `mode` 매개 변수를 `Compress`, 헤더 정보가 즉시 삽입 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-160">If an instance of the <xref:System.IO.Compression.DeflateStream> class is created with the `mode` parameter equal to `Compress`, header information is inserted immediately.</span></span> <span data-ttu-id="39bd5-161">추가 작업이 없으므로 발생 유효한 빈 압축 된 파일 스트림을 표시 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-161">If no further action occurs, the stream appears as a valid, empty, compressed file.</span></span>  
+  
+ <span data-ttu-id="39bd5-162">사용 하는 <xref:System.IO.Compression.DeflateStream> 4GB 예외가 발생 하는 보다 큰 파일을 압축 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-162">Using the <xref:System.IO.Compression.DeflateStream> class to compress a file larger than 4 GB raises an exception.</span></span>  
+  
+ <span data-ttu-id="39bd5-163">기본적으로 압축 수준 설정은 <xref:System.IO.Compression.CompressionLevel.Optimal> 압축 모드가 인 경우 <xref:System.IO.Compression.CompressionMode.Compress>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-163">By default, the compression level is set to <xref:System.IO.Compression.CompressionLevel.Optimal> when the compression mode is <xref:System.IO.Compression.CompressionMode.Compress>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="39bd5-164">다음 코드 예제를 사용 하는 방법을 보여 줍니다는 <xref:System.IO.Compression.DeflateStream> 클래스를 압축 하 고 파일 압축을 해제 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-164">The following code example shows how to use the <xref:System.IO.Compression.DeflateStream> class to compress and decompress a file.</span></span>  
+  
+ [!code-csharp[IO.Compression.Deflate1#1](~/samples/snippets/csharp/VS_Snippets_CLR/IO.Compression.Deflate1/CS/deflatetest.cs#1)]
+ [!code-vb[IO.Compression.Deflate1#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/IO.Compression.Deflate1/VB/deflatetest.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="39bd5-165">
+            <paramref name="stream" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-165">
+              <paramref name="stream" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="39bd5-166">
+            <paramref name="mode" />은 유효한 <see cref="T:System.IO.Compression.CompressionMode" /> 값이 아닙니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-166">
+              <paramref name="mode" /> is not a valid <see cref="T:System.IO.Compression.CompressionMode" /> value.</span>
+          </span>
+          <span data-ttu-id="39bd5-167">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-167">-or-</span>
+          </span>
+          <span data-ttu-id="39bd5-168">
+            <see cref="T:System.IO.Compression.CompressionMode" />가 <see cref="F:System.IO.Compression.CompressionMode.Compress" />이고 <see cref="P:System.IO.Stream.CanWrite" />이 <see langword="false" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-168">
+              <see cref="T:System.IO.Compression.CompressionMode" /> is <see cref="F:System.IO.Compression.CompressionMode.Compress" /> and <see cref="P:System.IO.Stream.CanWrite" /> is <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="39bd5-169">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-169">-or-</span>
+          </span>
+          <span data-ttu-id="39bd5-170">
+            <see cref="T:System.IO.Compression.CompressionMode" />가 <see cref="F:System.IO.Compression.CompressionMode.Decompress" />이고 <see cref="P:System.IO.Stream.CanRead" />이 <see langword="false" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-170">
+              <see cref="T:System.IO.Compression.CompressionMode" /> is <see cref="F:System.IO.Compression.CompressionMode.Decompress" /> and <see cref="P:System.IO.Stream.CanRead" /> is <see langword="false" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BaseStream">
+      <MemberSignature Language="C#" Value="public System.IO.Stream BaseStream { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IO.Stream BaseStream" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.BaseStream" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property BaseStream As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IO::Stream ^ BaseStream { System::IO::Stream ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="39bd5-171">내부 스트림에 대한 참조를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-171">Gets a reference to the underlying stream.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="39bd5-172">내부 스트림을 나타내는 스트림 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-172">A stream object that represents the underlying stream.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="39bd5-173">내부 스트림이 닫혀 있는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-173">The underlying stream is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginRead">
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginRead (byte[] buffer, int offset, int count, AsyncCallback cback, object state);" FrameworkAlternate="netcore-1.0;netcore-1.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginRead(unsigned int8[] buffer, int32 offset, int32 count, class System.AsyncCallback cback, object state) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0" />
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginRead (byte[] buffer, int offset, int count, AsyncCallback asyncCallback, object asyncState);" FrameworkAlternate="netcore-2.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginRead(unsigned int8[] buffer, int32 offset, int32 count, class System.AsyncCallback asyncCallback, object asyncState) cil managed" FrameworkAlternate="netcore-2.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override IAsyncResult ^ BeginRead(cli::array &lt;System::Byte&gt; ^ buffer, int offset, int count, AsyncCallback ^ asyncCallback, System::Object ^ asyncState);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1" />
+        <Parameter Name="buffer" Type="System.Byte[]" Index="0" FrameworkAlternate="netcore-2.0" />
+        <Parameter Name="offset" Type="System.Int32" Index="1" />
+        <Parameter Name="count" Type="System.Int32" Index="2" />
+        <Parameter Name="asyncCallback" Type="System.AsyncCallback" Index="3" />
+        <Parameter Name="asyncState" Type="System.Object" Index="4" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">To be added.</param>
+        <param name="offset">
+          <span data-ttu-id="39bd5-174">스트림에서 데이터를 읽기 시작할 <c>배열</c>의 바이트 오프셋입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-174">The byte offset in <c>array</c> at which to begin reading data from the stream.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="39bd5-175">읽을 최대 바이트 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-175">The maximum number of bytes to read.</span>
+          </span>
+        </param>
+        <param name="asyncCallback">To be added.</param>
+        <param name="asyncState">To be added.</param>
+        <summary>
+          <span data-ttu-id="39bd5-176">비동기 읽기 작업을 시작합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-176">Begins an asynchronous read operation.</span>
+          </span>
+          <span data-ttu-id="39bd5-177">(대신 <see cref="M:System.IO.Stream.ReadAsync(System.Byte[],System.Int32,System.Int32)" /> 메서드를 사용하는 것이 좋습니다.)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-177">(Consider using the <see cref="M:System.IO.Stream.ReadAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="39bd5-178">보류 중인 비동기 읽기 작업을 나타내는 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-178">An  object that represents the asynchronous read operation, which could still be pending.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-179">부터는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)]를 사용 하 여 비동기 읽기 작업을 수행할 수 있습니다는 <xref:System.IO.Stream.ReadAsync%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="39bd5-179">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can perform asynchronous read operations by using the <xref:System.IO.Stream.ReadAsync%2A> method.</span></span> <span data-ttu-id="39bd5-180">그러나 <xref:System.IO.Compression.DeflateStream.BeginRead%2A> 메서드를 여전히 사용할 수는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)] 레거시 코드를 지원 하기 위해 구현할 수 있습니다 비동기 I/O 작업 보다 쉽게 새로운 비동기 메서드를 사용 하 여 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-180">The <xref:System.IO.Compression.DeflateStream.BeginRead%2A> method is still available in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] to support legacy code; however, you can implement asynchronous I/O operations more easily by using the new async methods.</span></span> <span data-ttu-id="39bd5-181">자세한 내용은 다음을 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="39bd5-181">For more information, see .</span></span>  
+  
+ <span data-ttu-id="39bd5-182">전달 된 <xref:System.IAsyncResult> 반환 값을는 <xref:System.IO.Compression.DeflateStream.EndRead%2A> 읽은 바이트 수를 확인 하 고 읽는 데 사용 된 운영 체제 리소스를 해제 하는 스트림의 메서드가 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-182">Pass the <xref:System.IAsyncResult> return value to the <xref:System.IO.Compression.DeflateStream.EndRead%2A> method of the stream to determine how many bytes were read and to release operating system resources used for reading.</span></span> <span data-ttu-id="39bd5-183">이렇게 하려면 호출 하는 동일한 코드를 사용 하 여 <xref:System.IO.Compression.DeflateStream.BeginRead%2A> 에 전달 된 콜백에서 <xref:System.IO.Compression.DeflateStream.BeginRead%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-183">You can do this either by using the same code that called <xref:System.IO.Compression.DeflateStream.BeginRead%2A> or in a callback passed to <xref:System.IO.Compression.DeflateStream.BeginRead%2A>.</span></span>  
+  
+ <span data-ttu-id="39bd5-184">비동기 읽기 또는 I/O 작업이 완료 될 때가 아니라 쓰기 작업을 실행할 때 스트림 내의 현재 위치 업데이트 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-184">The current position in the stream is updated when the asynchronous read or write operation is issued, not when the I/O operation completes.</span></span>  
+  
+ <span data-ttu-id="39bd5-185">여러 개의 비동기 요청 렌더링 요청 완료 순서 불확실 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-185">Multiple simultaneous asynchronous requests render the request completion order uncertain.</span></span>  
+  
+ <span data-ttu-id="39bd5-186">사용 하 여는 <xref:System.IO.Compression.DeflateStream.CanRead%2A> 속성을 확인 하는지 여부를 현재 <xref:System.IO.Compression.DeflateStream> 개체가 읽기를 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-186">Use the <xref:System.IO.Compression.DeflateStream.CanRead%2A> property to determine whether the current <xref:System.IO.Compression.DeflateStream> object supports reading.</span></span>  
+  
+ <span data-ttu-id="39bd5-187">예외가 즉시 throw 되는 스트림이 닫혀 있거나를 잘못 된 인수를 전달 하는 경우 <xref:System.IO.Compression.DeflateStream.BeginRead%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-187">If a stream is closed or you pass an invalid argument, exceptions are thrown immediately from <xref:System.IO.Compression.DeflateStream.BeginRead%2A>.</span></span> <span data-ttu-id="39bd5-188">I/O 요청 중의 디스크 오류와 같은 비동기 읽기 요청 하는 동안 발생 하는 오류는 스레드 풀 스레드에서 발생 하 고 호출 시 예외를 throw <xref:System.IO.Compression.DeflateStream.EndRead%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-188">Errors that occur during an asynchronous read request, such as a disk failure during the I/O request, occur on the thread pool thread and throw exceptions when calling <xref:System.IO.Compression.DeflateStream.EndRead%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="39bd5-189">메서드가 스트림의 끝을 지나 비동기 읽기를 시도했거나 디스크 오류가 발생했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-189">The method tried to read asynchronously past the end of the stream, or a disk error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="39bd5-190">하나 이상의 인수가 잘못된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-190">One or more of the arguments is invalid.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="39bd5-191">스트림이 닫힌 후에 메서드가 호출되었습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-191">Methods were called after the stream was closed.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="39bd5-192">현재 <see cref="T:System.IO.Compression.DeflateStream" /> 구현이 읽기 작업을 지원하지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-192">The current <see cref="T:System.IO.Compression.DeflateStream" /> implementation does not support the read operation.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="39bd5-193">이 호출을 완료할 수 없는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-193">This call cannot be completed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginWrite">
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginWrite (byte[] array, int offset, int count, AsyncCallback asyncCallback, object asyncState);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginWrite(unsigned int8[] array, int32 offset, int32 count, class System.AsyncCallback asyncCallback, object asyncState) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" FrameworkAlternate="netcore-1.0;netcore-1.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netcore-2.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override IAsyncResult ^ BeginWrite(cli::array &lt;System::Byte&gt; ^ array, int offset, int count, AsyncCallback ^ asyncCallback, System::Object ^ asyncState);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginWrite (byte[] buffer, int offset, int count, AsyncCallback cback, object state);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginWrite(unsigned int8[] buffer, int32 offset, int32 count, class System.AsyncCallback cback, object state) cil managed" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function BeginWrite (buffer As Byte(), offset As Integer, count As Integer, cback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override IAsyncResult ^ BeginWrite(cli::array &lt;System::Byte&gt; ^ buffer, int offset, int count, AsyncCallback ^ cback, System::Object ^ state);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="buffer" Type="System.Byte[]" Index="0" FrameworkAlternate="xamarinandroid-7.1" />
+        <Parameter Name="offset" Type="System.Int32" Index="1" />
+        <Parameter Name="count" Type="System.Int32" Index="2" />
+        <Parameter Name="asyncCallback" Type="System.AsyncCallback" Index="3" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="cback" Type="System.AsyncCallback" Index="3" FrameworkAlternate="xamarinandroid-7.1" />
+        <Parameter Name="asyncState" Type="System.Object" Index="4" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="state" Type="System.Object" Index="4" FrameworkAlternate="xamarinandroid-7.1" />
+      </Parameters>
+      <Docs>
+        <param name="array">To be added.</param>
+        <param name="buffer">To be added.</param>
+        <param name="offset">
+          <span data-ttu-id="39bd5-194">쓰기를 시작할 <c>버퍼</c>의 바이트 오프셋입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-194">The byte offset in <c>buffer</c> to begin writing from.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="39bd5-195">쓸 최대 바이트 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-195">The maximum number of bytes to write.</span>
+          </span>
+        </param>
+        <param name="asyncCallback">To be added.</param>
+        <param name="cback">To be added.</param>
+        <param name="asyncState">To be added.</param>
+        <param name="state">To be added.</param>
+        <summary>
+          <span data-ttu-id="39bd5-196">비동기 쓰기 작업을 시작합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-196">Begins an asynchronous write operation.</span>
+          </span>
+          <span data-ttu-id="39bd5-197">(대신 <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> 메서드를 사용하는 것이 좋습니다.)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-197">(Consider using the <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="39bd5-198">보류 중인 비동기 쓰기 작업을 나타내는 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-198">An  object that represents the asynchronous write operation, which could still be pending.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-199">부터는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)]를 사용 하 여 비동기 쓰기 작업을 수행할 수 있습니다는 <xref:System.IO.Stream.WriteAsync%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="39bd5-199">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can perform asynchronous write operations by using the <xref:System.IO.Stream.WriteAsync%2A> method.</span></span> <span data-ttu-id="39bd5-200">그러나 <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> 메서드를 여전히 사용할 수는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)] 레거시 코드를 지원 하기 위해 구현할 수 있습니다 비동기 I/O 작업 보다 쉽게 새로운 비동기 메서드를 사용 하 여 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-200">The <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> method is still available in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] to support legacy code; however, you can implement asynchronous I/O operations more easily by using the new async methods.</span></span> <span data-ttu-id="39bd5-201">자세한 내용은 다음을 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="39bd5-201">For more information, see .</span></span>  
+  
+ <span data-ttu-id="39bd5-202">전달 된 <xref:System.IAsyncResult> 를 현재 메서드에서 반환 된 개체 <xref:System.IO.Compression.DeflateStream.EndWrite%2A> 쓰기 완료 하 고 적절 하 게 리소스를 해제 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-202">Pass the <xref:System.IAsyncResult> object returned by the current method to <xref:System.IO.Compression.DeflateStream.EndWrite%2A> to ensure that the write completes and frees resources appropriately.</span></span> <span data-ttu-id="39bd5-203">이렇게 하려면 호출 하는 동일한 코드를 사용 하 여 <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> 에 전달 된 콜백에서 <xref:System.IO.Compression.DeflateStream.BeginWrite%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-203">You can do this either by using the same code that called <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> or in a callback passed to <xref:System.IO.Compression.DeflateStream.BeginWrite%2A>.</span></span> <span data-ttu-id="39bd5-204">비동기 쓰기 작업 중 오류가 발생 하기 전에 예외가 throw 되지 됩니다 <xref:System.IO.Compression.DeflateStream.EndWrite%2A> 로 호출 되는 <xref:System.IAsyncResult> 이 메서드에서 반환 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-204">If an error occurs during an asynchronous write operation, an exception will not be thrown until <xref:System.IO.Compression.DeflateStream.EndWrite%2A> is called with the <xref:System.IAsyncResult> returned by this method.</span></span>  
+  
+ <span data-ttu-id="39bd5-205">한 스트림이 쓰기 가능한 경우 스트림의 끝에 쓰기 스트림을 확장 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-205">If a stream is writable, writing at the end of the stream expands the stream.</span></span>  
+  
+ <span data-ttu-id="39bd5-206">비동기 읽기를 발급 하거나 쓰기 I/O 작업이 완료 될 때가 아니라 작업을 하는 경우 스트림의 현재 위치 업데이트 됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-206">The current position in the stream is updated when you issue the asynchronous read or write operation, not when the I/O operation completes.</span></span> <span data-ttu-id="39bd5-207">여러 개의 비동기 요청 렌더링 요청 완료 순서 불확실 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-207">Multiple simultaneous asynchronous requests render the request completion order uncertain.</span></span>  
+  
+ <span data-ttu-id="39bd5-208">사용 하 여는 <xref:System.IO.Compression.DeflateStream.CanWrite%2A> 속성을 확인 하는지 여부를 현재 <xref:System.IO.Compression.DeflateStream> 개체가 쓰기를 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-208">Use the <xref:System.IO.Compression.DeflateStream.CanWrite%2A> property to determine whether the current <xref:System.IO.Compression.DeflateStream> object supports writing.</span></span>  
+  
+ <span data-ttu-id="39bd5-209">예외가 즉시 throw 되는 스트림이 닫혀 있거나를 잘못 된 인수를 전달 하는 경우 <xref:System.IO.Compression.DeflateStream.BeginWrite%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-209">If a stream is closed or you pass an invalid argument, exceptions are thrown immediately from <xref:System.IO.Compression.DeflateStream.BeginWrite%2A>.</span></span> <span data-ttu-id="39bd5-210">I/O 요청 중의 디스크 오류와 같은 비동기 쓰기 요청을 하는 동안 발생 하는 오류는 스레드 풀 스레드에서 발생 하 고 호출 시 예외를 throw <xref:System.IO.Compression.DeflateStream.EndWrite%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-210">Errors that occur during an asynchronous write request, such as a disk failure during the I/O request, occur on the thread pool thread and throw exceptions when calling <xref:System.IO.Compression.DeflateStream.EndWrite%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="39bd5-211">메서드가 스트림의 끝을 넘어 비동기 쓰기를 시도했거나 디스크 오류가 발생했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-211">The method tried to write asynchronously past the end of the stream, or a disk error occurred.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="39bd5-212">하나 이상의 인수가 잘못된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-212">One or more of the arguments is invalid.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="39bd5-213">스트림이 닫힌 후에 메서드가 호출되었습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-213">Methods were called after the stream was closed.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="39bd5-214">현재 <see cref="T:System.IO.Compression.DeflateStream" /> 구현이 쓰기 작업을 지원하지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-214">The current <see cref="T:System.IO.Compression.DeflateStream" /> implementation does not support the write operation.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="39bd5-215">스트림이 닫혀 있어서 쓰기 작업을 수행할 수 없는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-215">The write operation cannot be performed because the stream is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CanRead">
+      <MemberSignature Language="C#" Value="public override bool CanRead { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanRead" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.CanRead" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property CanRead As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanRead { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="39bd5-216">파일의 압축을 푸는 동안 스트림을 읽을 수 있는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-216">Gets a value indicating whether the stream supports reading while decompressing a file.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="39bd5-217">
+            <see cref="T:System.IO.Compression.CompressionMode" /> 값이 <see langword="Decompress" />이고 내부 스트림이 열려 있으며 읽기를 지원하면 <see langword="true" />이고, 이외의 경우는 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-217">
+              <see langword="true" /> if the <see cref="T:System.IO.Compression.CompressionMode" /> value is <see langword="Decompress" />, and the underlying stream is opened and supports reading; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanSeek">
+      <MemberSignature Language="C#" Value="public override bool CanSeek { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanSeek" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.CanSeek" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property CanSeek As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanSeek { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="39bd5-218">스트림이 검색을 지원하는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-218">Gets a value indicating whether the stream supports seeking.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="39bd5-219">모든 경우에 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-219">
+              <see langword="false" /> in all cases.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanWrite">
+      <MemberSignature Language="C#" Value="public override bool CanWrite { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanWrite" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.CanWrite" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property CanWrite As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanWrite { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="39bd5-220">스트림이 쓰기를 지원하는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-220">Gets a value indicating whether the stream supports writing.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="39bd5-221">
+            <see cref="T:System.IO.Compression.CompressionMode" /> 값이 <see langword="Compress" />이고 내부 스트림이 쓰기를 지원하며 닫혀 있지 않으면 <see langword="true" />이고, 이외의 경우는 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-221">
+              <see langword="true" /> if the <see cref="T:System.IO.Compression.CompressionMode" /> value is <see langword="Compress" />, and the underlying stream supports writing and is not closed; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <span data-ttu-id="39bd5-222">관리되는 리소스와 관리되지 않는 리소스를 모두 해제하려면 <see langword="true" />로 설정하고, 관리되지 않는 리소스만 해제하려면 <see langword="false" />로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-222">
+              <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-223">
+            <see cref="T:System.IO.Compression.DeflateStream" />에서 사용하는 관리되지 않는 리소스를 해제하고, 관리되는 리소스를 선택적으로 해제할 수 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-223">Releases the unmanaged resources used by the <see cref="T:System.IO.Compression.DeflateStream" /> and optionally releases the managed resources.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-224">이 메서드는 public <xref:System.ComponentModel.Component.Dispose%2A> 메서드 및 <xref:System.Object.Finalize%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="39bd5-224">This method is called by the public <xref:System.ComponentModel.Component.Dispose%2A> method and the <xref:System.Object.Finalize%2A> method.</span></span> <span data-ttu-id="39bd5-225"><xref:System.ComponentModel.Component.Dispose%2A> 보호 된 호출 <xref:System.IO.Compression.DeflateStream.Dispose%2A> 메서드는 `disposing` 매개 변수 설정 `true`합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-225"><xref:System.ComponentModel.Component.Dispose%2A> invokes the protected <xref:System.IO.Compression.DeflateStream.Dispose%2A> method with the `disposing` parameter set to `true`.</span></span> <span data-ttu-id="39bd5-226"><xref:System.Object.Finalize%2A> 호출 <xref:System.IO.Compression.DeflateStream.Dispose%2A> 와 `disposing` 로 설정 `false`합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-226"><xref:System.Object.Finalize%2A> invokes <xref:System.IO.Compression.DeflateStream.Dispose%2A> with `disposing` set to `false`.</span></span>  
+  
+ <span data-ttu-id="39bd5-227">`disposing` 매개 변수가 `true`인 경우 이 메서드는 이 <xref:System.IO.Compression.DeflateStream>에서 참조하는 관리 개체가 보유하고 있는 리소스를 모두 해제합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-227">When the `disposing` parameter is `true`, this method releases all resources held by any managed objects that this <xref:System.IO.Compression.DeflateStream> references.</span></span> <span data-ttu-id="39bd5-228">이 메서드는 참조되는 각 개체의 <xref:System.ComponentModel.Component.Dispose%2A> 메서드를 호출합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-228">This method invokes the <xref:System.ComponentModel.Component.Dispose%2A> method of each referenced object.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="39bd5-229">
+              <see cref="M:System.ComponentModel.Component.Dispose" />는 다른 개체에서 여러 번 호출할 수 있습니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="39bd5-229">
+                <see cref="M:System.ComponentModel.Component.Dispose" /> can be called multiple times by other objects.</span>
+            </span>
+            <span data-ttu-id="39bd5-230">재정의 하는 경우 <see cref="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" /> 이전 호출에서 삭제 된 개체를 참조 하지 않도록 주의 <see cref="M:System.ComponentModel.Component.Dispose" />합니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="39bd5-230">When overriding <see cref="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" /> be careful not to reference objects that have been previously disposed of in an earlier call to <see cref="M:System.ComponentModel.Component.Dispose" />.</span>
+            </span>
+            <span data-ttu-id="39bd5-231">구현 하는 방법에 대 한 자세한 내용은 <see cref="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" />, 참조 [Dispose 메서드를 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="39bd5-231">For more information about how to implement <see cref="M:System.IO.Compression.DeflateStream.Dispose(System.Boolean)" />, see [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).</span>
+            </span>
+            <span data-ttu-id="39bd5-232">에 대 한 자세한 내용은 <see cref="M:System.ComponentModel.Component.Dispose" /> 및 <see cref="M:System.Object.Finalize" />, 참조 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md)합니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="39bd5-232">For more information about <see cref="M:System.ComponentModel.Component.Dispose" /> and <see cref="M:System.Object.Finalize" />, see [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md).</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <Member MemberName="EndRead">
+      <MemberSignature Language="C#" Value="public override int EndRead (IAsyncResult asyncResult);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 EndRead(class System.IAsyncResult asyncResult) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.EndRead(System.IAsyncResult)" FrameworkAlternate="netcore-1.0;netcore-1.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netcore-2.0" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function EndRead (asyncResult As IAsyncResult) As Integer" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int EndRead(IAsyncResult ^ asyncResult);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C#" Value="public override int EndRead (IAsyncResult async_result);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 EndRead(class System.IAsyncResult async_result) cil managed" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.EndRead(System.IAsyncResult)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function EndRead (async_result As IAsyncResult) As Integer" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int EndRead(IAsyncResult ^ async_result);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="asyncResult" Type="System.IAsyncResult" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="async_result" Type="System.IAsyncResult" Index="0" FrameworkAlternate="xamarinandroid-7.1" />
+      </Parameters>
+      <Docs>
+        <param name="asyncResult">To be added.</param>
+        <summary>
+          <span data-ttu-id="39bd5-233">보류 중인 비동기 읽기가 완료되기를 기다립니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-233">Waits for the pending asynchronous read to complete.</span>
+          </span>
+          <span data-ttu-id="39bd5-234">(대신 <see cref="M:System.IO.Stream.ReadAsync(System.Byte[],System.Int32,System.Int32)" /> 메서드를 사용하는 것이 좋습니다.)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-234">(Consider using the <see cref="M:System.IO.Stream.ReadAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="39bd5-235">0과 요청한 바이트 수 사이의 스트림에서 읽은 바이트 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-235">The number of bytes read from the stream, between 0 (zero) and the number of bytes you requested.</span>
+          </span>
+          <span data-ttu-id="39bd5-236">
+            <see cref="T:System.IO.Compression.DeflateStream" />은 스트림의 끝에서만 0을 반환하며, 그러지 않으면 1바이트 이상을 사용할 수 있을 때까지 차단됩니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-236">
+              <see cref="T:System.IO.Compression.DeflateStream" /> returns 0 only at the end of the stream; otherwise, it blocks until at least one byte is available.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-237">부터는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)]를 사용 하 여 비동기 읽기 작업을 수행할 수 있습니다는 <xref:System.IO.Stream.ReadAsync%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="39bd5-237">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can perform asynchronous read operations by using the <xref:System.IO.Stream.ReadAsync%2A> method.</span></span> <span data-ttu-id="39bd5-238">그러나 <xref:System.IO.Compression.DeflateStream.EndRead%2A> 메서드를 여전히 사용할 수는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)] 레거시 코드를 지원 하기 위해 구현할 수 있습니다 비동기 I/O 작업 보다 쉽게 새로운 비동기 메서드를 사용 하 여 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-238">The <xref:System.IO.Compression.DeflateStream.EndRead%2A> method is still available in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] to support legacy code; however, you can implement asynchronous I/O operations more easily by using the new async methods.</span></span> <span data-ttu-id="39bd5-239">자세한 내용은 다음을 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="39bd5-239">For more information, see .</span></span>  
+  
+ <span data-ttu-id="39bd5-240">스트림에서 읽을 바이트 수를 확인 하려면이 메서드를 호출 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-240">Call this method to determine how many bytes were read from the stream.</span></span> <span data-ttu-id="39bd5-241">호출 하는 사이 읽은 바이트 수를 반환 해야이 메서드를 한 번 호출 <xref:System.IO.Compression.DeflateStream.BeginRead%2A> 및 <xref:System.IO.Compression.DeflateStream.EndRead%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-241">This method can be called once to return the amount of bytes read between calls to <xref:System.IO.Compression.DeflateStream.BeginRead%2A> and <xref:System.IO.Compression.DeflateStream.EndRead%2A>.</span></span>  
+  
+ <span data-ttu-id="39bd5-242">이 메서드는 I/O 작업이 완료될 때까지 차단됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-242">This method blocks until the I/O operation has completed.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="39bd5-243">
+            <paramref name="asyncResult" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-243">
+              <paramref name="asyncResult" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="39bd5-244">
+            <paramref name="asyncResult" />가 현재 스트림의 <see cref="M:System.IO.Compression.DeflateStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> 메서드에서 시작되지 않았습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-244">
+              <paramref name="asyncResult" /> did not originate from a <see cref="M:System.IO.Compression.DeflateStream.BeginRead(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> method on the current stream.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.SystemException">
+          <span data-ttu-id="39bd5-245">
+            <see cref="M:System.Threading.WaitHandle.WaitOne" />을 호출하는 동안 예외가 throw된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-245">An exception was thrown during a call to <see cref="M:System.Threading.WaitHandle.WaitOne" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="39bd5-246">스트림이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-246">The stream is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EndWrite">
+      <MemberSignature Language="C#" Value="public override void EndWrite (IAsyncResult asyncResult);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void EndWrite(class System.IAsyncResult asyncResult) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.EndWrite(System.IAsyncResult)" FrameworkAlternate="netcore-1.0;netcore-1.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netcore-2.0" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub EndWrite (asyncResult As IAsyncResult)" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void EndWrite(IAsyncResult ^ asyncResult);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+      <MemberSignature Language="C#" Value="public override void EndWrite (IAsyncResult async_result);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void EndWrite(class System.IAsyncResult async_result) cil managed" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.EndWrite(System.IAsyncResult)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub EndWrite (async_result As IAsyncResult)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void EndWrite(IAsyncResult ^ async_result);" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="asyncResult" Type="System.IAsyncResult" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0" />
+        <Parameter Name="async_result" Type="System.IAsyncResult" Index="0" FrameworkAlternate="xamarinandroid-7.1" />
+      </Parameters>
+      <Docs>
+        <param name="asyncResult">To be added.</param>
+        <summary>
+          <span data-ttu-id="39bd5-247">비동기 쓰기 작업을 끝냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-247">Ends an asynchronous write operation.</span>
+          </span>
+          <span data-ttu-id="39bd5-248">(대신 <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> 메서드를 사용하는 것이 좋습니다.)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-248">(Consider using the <see cref="M:System.IO.Stream.WriteAsync(System.Byte[],System.Int32,System.Int32)" /> method instead.)</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-249">부터는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)]를 사용 하 여 비동기 쓰기 작업을 수행할 수 있습니다는 <xref:System.IO.Stream.WriteAsync%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="39bd5-249">Starting with the [!INCLUDE[net_v45](~/includes/net-v45-md.md)], you can perform asynchronous write operations by using the <xref:System.IO.Stream.WriteAsync%2A> method.</span></span> <span data-ttu-id="39bd5-250">그러나 <xref:System.IO.Compression.DeflateStream.EndWrite%2A> 메서드를 여전히 사용할 수는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)] 레거시 코드를 지원 하기 위해 구현할 수 있습니다 비동기 I/O 작업 보다 쉽게 새로운 비동기 메서드를 사용 하 여 합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-250">The <xref:System.IO.Compression.DeflateStream.EndWrite%2A> method is still available in the [!INCLUDE[net_v45](~/includes/net-v45-md.md)] to support legacy code; however, you can implement asynchronous I/O operations more easily by using the new async methods.</span></span> <span data-ttu-id="39bd5-251">자세한 내용은 다음을 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="39bd5-251">For more information, see .</span></span>  
+  
+ <span data-ttu-id="39bd5-252"><xref:System.IO.Compression.DeflateStream.EndWrite%2A> 호출할 때마다 한 번만 호출 해야 합니다는 <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="39bd5-252"><xref:System.IO.Compression.DeflateStream.EndWrite%2A> must be called only once for every call to the <xref:System.IO.Compression.DeflateStream.BeginWrite%2A> method.</span></span>  
+  
+ <span data-ttu-id="39bd5-253">이 메서드는 I/O 작업이 완료될 때까지 차단됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-253">This method blocks until the I/O operation has completed.</span></span> <span data-ttu-id="39bd5-254">I/O 요청 중의 디스크 오류와 같은 비동기 쓰기 요청을 하는 동안 발생 하는 오류는 스레드 풀 스레드에서 발생 하 고 호출 시 표시 될 <xref:System.IO.Compression.DeflateStream.EndWrite%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-254">Errors that occur during an asynchronous write request, such as a disk failure during the I/O request, occur on the thread pool thread and become visible upon a call to <xref:System.IO.Compression.DeflateStream.EndWrite%2A>.</span></span> <span data-ttu-id="39bd5-255">호출할 때 스레드 풀 스레드에서 throw 된 예외 표시 되지 것입니다 <xref:System.IO.Compression.DeflateStream.EndWrite%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-255">Exceptions thrown by the thread pool thread will not be visible when calling <xref:System.IO.Compression.DeflateStream.EndWrite%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="39bd5-256">
+            <paramref name="asyncResult" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-256">
+              <paramref name="asyncResult" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="39bd5-257">
+            <paramref name="asyncResult" />가 현재 스트림의 <see cref="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> 메서드에서 시작되지 않았습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-257">
+              <paramref name="asyncResult" /> did not originate from a <see cref="M:System.IO.Compression.DeflateStream.BeginWrite(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object)" /> method on the current stream.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Exception">
+          <span data-ttu-id="39bd5-258">
+            <see cref="M:System.Threading.WaitHandle.WaitOne" />을 호출하는 동안 예외가 throw된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-258">An exception was thrown during a call to <see cref="M:System.Threading.WaitHandle.WaitOne" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="39bd5-259">최종 쓰기 호출이 잘못된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-259">The end write call is invalid.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Flush">
+      <MemberSignature Language="C#" Value="public override void Flush ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Flush() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Flush" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Flush ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Flush();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="39bd5-260">이 메서드의 현재 클래스에는 기능이 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-260">The current implementation of this method has no functionality.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="39bd5-261">이 메서드는 현재 구현에서 내부 버퍼를 플러시하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-261">The current implementation of this method does not flush the internal buffer.</span></span> <span data-ttu-id="39bd5-262">내부 버퍼는 개체가 삭제 되 면 플러시됩니다.</span><span class="sxs-lookup"><span data-stu-id="39bd5-262">The internal buffer is flushed when the object is disposed.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="39bd5-263">스트림이 닫혔습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-263">The stream is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Length">
+      <MemberSignature Language="C#" Value="public override long Length { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 Length" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.Length" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property Length As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property long Length { long get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="39bd5-264">이 속성은 지원되지 않으며 항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-264">This property is not supported and always throws a <see cref="T:System.NotSupportedException" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="39bd5-265">long 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-265">A long value.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="39bd5-266">이 스트림에 이 속성이 지원되지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-266">This property is not supported on this stream.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Position">
+      <MemberSignature Language="C#" Value="public override long Position { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 Position" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Compression.DeflateStream.Position" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Position As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property long Position { long get(); void set(long value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="39bd5-267">이 속성은 지원되지 않으며 항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-267">This property is not supported and always throws a <see cref="T:System.NotSupportedException" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="39bd5-268">long 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-268">A long value.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="39bd5-269">이 스트림에 이 속성이 지원되지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-269">This property is not supported on this stream.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Read">
+      <MemberSignature Language="C#" Value="public override int Read (byte[] array, int offset, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 Read(unsigned int8[] array, int32 offset, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Read(System.Byte[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function Read (array As Byte(), offset As Integer, count As Integer) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int Read(cli::array &lt;System::Byte&gt; ^ array, int offset, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="array">
+          <span data-ttu-id="39bd5-270">압축이 풀린 바이트를 저장할 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-270">The array to store decompressed bytes.</span>
+          </span>
+        </param>
+        <param name="offset">
+          <span data-ttu-id="39bd5-271">읽기 바이트를 넣을 <c>배열</c>의 바이트 오프셋입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-271">The byte offset in <c>array</c> at which the read bytes will be placed.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="39bd5-272">읽을 최대 압축 풀린 바이트 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-272">The maximum number of decompressed bytes to read.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-273">압축이 풀린 바이트 수를 지정된 바이트 배열로 읽어 들입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-273">Reads a number of decompressed bytes into the specified byte array.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="39bd5-274">바이트 배열에 읽어 들인 바이트 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-274">The number of bytes that were read into the byte array.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="39bd5-275">다음 예제에서는 압축 하거나 압축을 사용 하 여 바이트 압축을 해제 하는 방법을 보여 줍니다는 <xref:System.IO.Compression.DeflateStream.Read%2A> 및 <xref:System.IO.Compression.DeflateStream.Write%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="39bd5-275">The following example shows how to compress and decompress bytes by using the <xref:System.IO.Compression.DeflateStream.Read%2A> and <xref:System.IO.Compression.DeflateStream.Write%2A> methods.</span></span>  
+  
+ [!code-csharp[System.IO.Compression.DeflateStream#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.io.compression.deflatestream/cs/program3.cs#3)]
+ [!code-vb[System.IO.Compression.DeflateStream#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.io.compression.deflatestream/vb/program3.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="39bd5-276">
+            <paramref name="array" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-276">
+              <paramref name="array" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="39bd5-277">개체를 만들 때 <see cref="T:System.IO.Compression.CompressionMode" /> 값이 <see langword="Compress" />였던 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-277">The <see cref="T:System.IO.Compression.CompressionMode" /> value was <see langword="Compress" /> when the object was created.</span>
+          </span>
+          <span data-ttu-id="39bd5-278">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-278">\- or -</span>
+          </span>
+          <span data-ttu-id="39bd5-279">내부 스트림이 읽기를 지원하지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-279">The underlying stream does not support reading.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="39bd5-280">
+            <paramref name="offset" /> 또는 <paramref name="count" />가 0보다 작습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-280">
+              <paramref name="offset" /> or <paramref name="count" /> is less than zero.</span>
+          </span>
+          <span data-ttu-id="39bd5-281">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-281">-or-</span>
+          </span>
+          <span data-ttu-id="39bd5-282">
+            <paramref name="array" /> 길이에서 인덱스 시작 위치를 뺀 값이 <paramref name="count" />보다 작은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-282">
+              <paramref name="array" /> length minus the index starting point is less than <paramref name="count" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.InvalidDataException">
+          <span data-ttu-id="39bd5-283">데이터의 형식이 잘못된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-283">The data is in an invalid format.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="39bd5-284">스트림이 닫혔습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-284">The stream is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ReadAsync">
+      <MemberSignature Language="C#" Value="public override System.Threading.Tasks.Task&lt;int&gt; ReadAsync (byte[] array, int offset, int count, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Threading.Tasks.Task`1&lt;int32&gt; ReadAsync(unsigned int8[] array, int32 offset, int32 count, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Threading::Tasks::Task&lt;int&gt; ^ ReadAsync(cli::array &lt;System::Byte&gt; ^ array, int offset, int count, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Int32&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="array">To be added.</param>
+        <param name="offset">To be added.</param>
+        <param name="count">To be added.</param>
+        <param name="cancellationToken">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Seek">
+      <MemberSignature Language="C#" Value="public override long Seek (long offset, System.IO.SeekOrigin origin);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int64 Seek(int64 offset, valuetype System.IO.SeekOrigin origin) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Seek(System.Int64,System.IO.SeekOrigin)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function Seek (offset As Long, origin As SeekOrigin) As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override long Seek(long offset, System::IO::SeekOrigin origin);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int64" />
+        <Parameter Name="origin" Type="System.IO.SeekOrigin" />
+      </Parameters>
+      <Docs>
+        <param name="offset">
+          <span data-ttu-id="39bd5-285">스트림 내의 위치입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-285">The location in the stream.</span>
+          </span>
+        </param>
+        <param name="origin">
+          <span data-ttu-id="39bd5-286">
+            <see cref="T:System.IO.SeekOrigin" /> 값 중 하나입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-286">One of the <see cref="T:System.IO.SeekOrigin" /> values.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-287">이 작업은 지원되지 않으며 항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-287">This operation is not supported and always throws a <see cref="T:System.NotSupportedException" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="39bd5-288">long 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-288">A long value.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="39bd5-289">이 스트림에 이 속성이 지원되지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-289">This property is not supported on this stream.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SetLength">
+      <MemberSignature Language="C#" Value="public override void SetLength (long value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void SetLength(int64 value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.SetLength(System.Int64)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub SetLength (value As Long)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void SetLength(long value);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Int64" />
+      </Parameters>
+      <Docs>
+        <param name="value">
+          <span data-ttu-id="39bd5-290">스트림의 길이입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-290">The length of the stream.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-291">이 작업은 지원되지 않으며 항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-291">This operation is not supported and always throws a <see cref="T:System.NotSupportedException" />.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="39bd5-292">이 스트림에 이 속성이 지원되지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-292">This property is not supported on this stream.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Write">
+      <MemberSignature Language="C#" Value="public override void Write (byte[] array, int offset, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Write(unsigned int8[] array, int32 offset, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.Write(System.Byte[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Write (array As Byte(), offset As Integer, count As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Write(cli::array &lt;System::Byte&gt; ^ array, int offset, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="array">
+          <span data-ttu-id="39bd5-293">압축할 데이터가 들어 있는 버퍼입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-293">The buffer that contains the data to compress.</span>
+          </span>
+        </param>
+        <param name="offset">
+          <span data-ttu-id="39bd5-294">바이트를 읽어올 <c>배열</c>의 바이트 오프셋입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-294">The byte offset in <c>array</c> from which the bytes will be read.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="39bd5-295">쓸 최대 바이트 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-295">The maximum number of bytes to write.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="39bd5-296">지정된 바이트 배열에서 압축된 바이트를 내부 스트림에 씁니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="39bd5-296">Writes compressed bytes to the underlying stream from the specified byte array.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="39bd5-297">다음 예제에서는 압축 하거나 압축을 사용 하 여 바이트 압축을 해제 하는 방법을 보여 줍니다는 <xref:System.IO.Compression.DeflateStream.Read%2A> 및 <xref:System.IO.Compression.DeflateStream.Write%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="39bd5-297">The following example shows how to compress and decompress bytes by using the <xref:System.IO.Compression.DeflateStream.Read%2A> and <xref:System.IO.Compression.DeflateStream.Write%2A> methods.</span></span>  
+  
+ [!code-csharp[System.IO.Compression.DeflateStream#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.io.compression.deflatestream/cs/program3.cs#3)]
+ [!code-vb[System.IO.Compression.DeflateStream#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.io.compression.deflatestream/vb/program3.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteAsync">
+      <MemberSignature Language="C#" Value="public override System.Threading.Tasks.Task WriteAsync (byte[] array, int offset, int count, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Threading.Tasks.Task WriteAsync(unsigned int8[] array, int32 offset, int32 count, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Compression.DeflateStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Threading::Tasks::Task ^ WriteAsync(cli::array &lt;System::Byte&gt; ^ array, int offset, int count, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Compression</AssemblyName>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="array" Type="System.Byte[]" />
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="array">To be added.</param>
+        <param name="offset">To be added.</param>
+        <param name="count">To be added.</param>
+        <param name="cancellationToken">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

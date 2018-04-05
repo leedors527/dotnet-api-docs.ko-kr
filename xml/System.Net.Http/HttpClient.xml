@@ -1,0 +1,3176 @@
+<Type Name="HttpClient" FullName="System.Net.Http.HttpClient">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="65f3ff05350afbb9dccda0dc1b2898fea192237e" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class HttpClient : System.Net.Http.HttpMessageInvoker" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit HttpClient extends System.Net.Http.HttpMessageInvoker" />
+  <TypeSignature Language="DocId" Value="T:System.Net.Http.HttpClient" />
+  <TypeSignature Language="VB.NET" Value="Public Class HttpClient&#xA;Inherits HttpMessageInvoker" />
+  <TypeSignature Language="C++ CLI" Value="public ref class HttpClient : System::Net::Http::HttpMessageInvoker" />
+  <AssemblyInfo>
+    <AssemblyName>System.Net.Http</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Net.Http.HttpMessageInvoker</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="cfd5d-101">URI로 식별되는 리소스에서 HTTP 요청을 보내고 HTTP 응답을 받기 위한 기본 클래스를 제공합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="cfd5d-101">Provides a base class for sending HTTP requests and receiving HTTP responses from a resource identified by a URI.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-102"><xref:System.Net.Http.HttpClient> 클래스 인스턴스 역할 HTTP 요청을 보내는 세션을 수행 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-102">The <xref:System.Net.Http.HttpClient> class instance acts as a session to send HTTP requests.</span></span> <span data-ttu-id="cfd5d-103"><xref:System.Net.Http.HttpClient> 인스턴스는 해당 인스턴스가 실행 되는 모든 요청에 적용 된 설정의 컬렉션입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-103">An <xref:System.Net.Http.HttpClient> instance is a collection of settings applied to all requests executed by that instance.</span></span> <span data-ttu-id="cfd5d-104">또한 모든 <xref:System.Net.Http.HttpClient> 인스턴스 요청을 다른 실행에서 해당 요청을 격리 자체 연결 풀을 사용 하 여 <xref:System.Net.Http.HttpClient> 인스턴스.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-104">In addition, every <xref:System.Net.Http.HttpClient> instance uses its own connection pool, isolating its requests from requests executed by other <xref:System.Net.Http.HttpClient> instances.</span></span>  
+  
+ <span data-ttu-id="cfd5d-105"><xref:System.Net.Http.HttpClient> 도 보다 구체적인 HTTP 클라이언트에 대 한 기본 클래스 역할을 수행 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-105">The <xref:System.Net.Http.HttpClient> also acts as a base class for more specific HTTP clients.</span></span> <span data-ttu-id="cfd5d-106">예를 들어 수 Facebook 웹 서비스와 관련 된 추가 메서드를 제공 하는 FacebookHttpClient (GetFriends 메서드 예를 들어).</span><span class="sxs-lookup"><span data-stu-id="cfd5d-106">An example would be a FacebookHttpClient providing additional methods specific to a Facebook web service (a GetFriends method, for instance).</span></span> <span data-ttu-id="cfd5d-107">파생된 클래스는 클래스에는 가상 메서드를 재정의 해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-107">Derived classes should not override the virtual methods on the class.</span></span> <span data-ttu-id="cfd5d-108">를 대신 허용 하는 생성자 오버 로드를 사용 하 여 <xref:System.Net.Http.HttpMessageHandler> 모든 전처리 또는 후 요청을 처리 대신 구성할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-108">Instead, use a constructor overload that accepts <xref:System.Net.Http.HttpMessageHandler> to configure any pre- or post-request processing instead.</span></span>
+  
+ <span data-ttu-id="cfd5d-109">기본적으로 <xref:System.Net.HttpWebRequest> 요청을 보낼 서버를 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-109">By default, <xref:System.Net.HttpWebRequest> will be used to send requests to the server.</span></span> <span data-ttu-id="cfd5d-110">생성자 오버 로드가 중 하나에서 서로 다른 채널을 지정 하 여이 문제를 수정할 수는 <xref:System.Net.Http.HttpMessageHandler> 인스턴스 매개 변수로 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-110">This behavior can be modified by specifying a different channel in one of the constructor overloads taking a <xref:System.Net.Http.HttpMessageHandler> instance as parameter.</span></span> <span data-ttu-id="cfd5d-111">인증 또는 캐싱 같은 기능이 필요한 경우 <xref:System.Net.Http.WebRequestHandler> 설정을 구성 하는 데 사용 될 수 있습니다 및 생성자에 전달 된 인스턴스 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-111">If features like authentication or caching are required, <xref:System.Net.Http.WebRequestHandler> can be used to configure settings and the instance can be passed to the constructor.</span></span> <span data-ttu-id="cfd5d-112">반환 된 처리기 생성자 오버 로드가 중 하나에 전달할 수는 <xref:System.Net.Http.HttpMessageHandler> 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-112">The returned handler can be passed to one of the constructor overloads taking a <xref:System.Net.Http.HttpMessageHandler> parameter.</span></span>  
+  
+ <span data-ttu-id="cfd5d-113">사용 하 여 앱 경우 <xref:System.Net.Http.HttpClient> 및 관련 클래스에는 <xref:System.Net.Http> 네임 스페이스에서 많은 양의 데이터 (50mb 이상)을 다운로드 하려는 다음 앱이 다운로드 스트림를 기본 버퍼링을 사용 하지 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-113">If an app using <xref:System.Net.Http.HttpClient> and related classes in the  <xref:System.Net.Http> namespace intends to download large amounts of data (50 megabytes or more), then the app should stream those downloads and not use the default buffering.</span></span> <span data-ttu-id="cfd5d-114">기본 버퍼링을 사용 하는 경우 클라이언트 메모리 사용량은 매우 큰 받아볼, 성능 저하를 발생할 대체로 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-114">If the default buffering is used the client memory usage will get very large, potentially resulting in substantially reduced performance.</span></span>  
+  
+ <span data-ttu-id="cfd5d-115">다음 메서드는 스레드로부터 안전 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-115">The following methods are thread safe:</span></span>  
+  
+1.  <xref:System.Net.Http.HttpClient.CancelPendingRequests%2A>  
+  
+2.  <xref:System.Net.Http.HttpClient.DeleteAsync%2A>  
+  
+3.  <xref:System.Net.Http.HttpClient.GetAsync%2A>  
+  
+4.  <xref:System.Net.Http.HttpClient.GetByteArrayAsync%2A>  
+  
+5.  <xref:System.Net.Http.HttpClient.GetStreamAsync%2A>  
+  
+6.  <xref:System.Net.Http.HttpClient.GetStringAsync%2A>  
+  
+7.  <xref:System.Net.Http.HttpClient.PostAsync%2A>  
+  
+8.  <xref:System.Net.Http.HttpClient.PutAsync%2A>  
+  
+9. <xref:System.Net.Http.HttpClient.SendAsync%2A>  
+  
+ <span data-ttu-id="cfd5d-116"><xref:System.Net.Http.HttpClient> 한 번 시작 하 고 응용 프로그램의 수명 내내 다시 사용 하는 데 사용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-116"><xref:System.Net.Http.HttpClient> is intended to be instantiated once and re-used throughout the life of an application.</span></span> <span data-ttu-id="cfd5d-117">모든 요청에 대 한 HttpClient 클래스 인스턴스화 소켓 높은 부하에서 사용할 수 있는 빠른 속도로 소모 될 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-117">Instantiating an HttpClient class for every request will exhaust the number of sockets available under heavy loads.</span></span> <span data-ttu-id="cfd5d-118">이 인해 SocketException 오류가 발생 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-118">This will result in SocketException errors.</span></span> <span data-ttu-id="cfd5d-119">다음은 HttpClient를 올바르게 사용 하는 예제입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-119">Below is an example using HttpClient correctly.</span></span>  
+  
+```csharp  
+public class GoodController : ApiController  
+{  
+    // OK  
+    private static readonly HttpClient HttpClient;  
+  
+    static GoodController()  
+    {  
+        HttpClient = new HttpClient();  
+    }  
+}  
+  
+```  
+  
+<span data-ttu-id="cfd5d-120"><xref:System.Net.Http.HttpClient> 실행 되는 각 플랫폼에서 사용할 수 있는 하위 수준 기능을 래핑하는 높은 수준의 API입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-120">The <xref:System.Net.Http.HttpClient> is a high-level API that wraps the lower-level functionality available on each platform where it runs.</span></span>
+
+<span data-ttu-id="cfd5d-121">각 플랫폼에서 <xref:System.Net.Http.HttpClient> 사용할 수 있는 가장 전송 사용 하려고 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-121">On each platform, <xref:System.Net.Http.HttpClient> tries to use the best available transport:</span></span>
+
+| <span data-ttu-id="cfd5d-122">**Host/Runtime**</span><span class="sxs-lookup"><span data-stu-id="cfd5d-122">**Host/Runtime**</span></span>            | <span data-ttu-id="cfd5d-123">**Backend**</span><span class="sxs-lookup"><span data-stu-id="cfd5d-123">**Backend**</span></span>                                                                               |
+| --------------------------- | ----------------------------------------------------------------------------------------- |
+| <span data-ttu-id="cfd5d-124">Windows/.NET Framework</span><span class="sxs-lookup"><span data-stu-id="cfd5d-124">Windows/.NET Framework</span></span>      | <xref:System.Net.HttpWebRequest>                                                          |
+| <span data-ttu-id="cfd5d-125">Windows/Mono</span><span class="sxs-lookup"><span data-stu-id="cfd5d-125">Windows/Mono</span></span>                | <xref:System.Net.HttpWebRequest>                                                          |
+| <span data-ttu-id="cfd5d-126">Windows/UWP</span><span class="sxs-lookup"><span data-stu-id="cfd5d-126">Windows/UWP</span></span>                 | <span data-ttu-id="cfd5d-127">Windows 네이티브 <xref:System.Net.Http.WinHttpHandler> (HTTP 2.0 가능)</span><span class="sxs-lookup"><span data-stu-id="cfd5d-127">Windows native <xref:System.Net.Http.WinHttpHandler> (HTTP 2.0 capable)</span></span>                   |
+| <span data-ttu-id="cfd5d-128">Windows/.NET Core</span><span class="sxs-lookup"><span data-stu-id="cfd5d-128">Windows/.NET Core</span></span>           | <span data-ttu-id="cfd5d-129">Windows 네이티브 <xref:System.Net.Http.WinHttpHandler> (HTTP 2.0 가능)</span><span class="sxs-lookup"><span data-stu-id="cfd5d-129">Windows native <xref:System.Net.Http.WinHttpHandler> (HTTP 2.0 capable)</span></span>                   |
+| <span data-ttu-id="cfd5d-130">Android/Xamarin</span><span class="sxs-lookup"><span data-stu-id="cfd5d-130">Android/Xamarin</span></span>             | <span data-ttu-id="cfd5d-131">빌드 타임에 선택 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-131">Selected at build-time.</span></span> <span data-ttu-id="cfd5d-132">사용 하거나 <xref:System.Net.HttpWebRequest> Android의 네이티브를 사용 하도록 구성 하거나 [`HttpURLConnection`](https://developer.xamarin.com/api/type/Java.Net.HttpURLConnection/)</span><span class="sxs-lookup"><span data-stu-id="cfd5d-132">Can either use <xref:System.Net.HttpWebRequest> or be configured to use Android's native [`HttpURLConnection`](https://developer.xamarin.com/api/type/Java.Net.HttpURLConnection/)</span></span> |
+| <span data-ttu-id="cfd5d-133">iOS, tvOS, watchOS/Xamarin</span><span class="sxs-lookup"><span data-stu-id="cfd5d-133">iOS, tvOS, watchOS/Xamarin</span></span>  | <span data-ttu-id="cfd5d-134">빌드 타임에 선택 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-134">Selected at build-time.</span></span> <span data-ttu-id="cfd5d-135">사용 하거나 <xref:System.Net.HttpWebRequest> Apple의 사용 하도록 구성 하거나 [ `NSUrlSession` ](https://developer.xamarin.com/api/type/MonoTouch.Foundation.NSUrlSession/) (HTTP 2.0 가능)</span><span class="sxs-lookup"><span data-stu-id="cfd5d-135">Can either use <xref:System.Net.HttpWebRequest> or be configured to use Apple's [`NSUrlSession`](https://developer.xamarin.com/api/type/MonoTouch.Foundation.NSUrlSession/) (HTTP 2.0 capable)</span></span> |
+| <span data-ttu-id="cfd5d-136">macOS/Xamarin</span><span class="sxs-lookup"><span data-stu-id="cfd5d-136">macOS/Xamarin</span></span>               | <span data-ttu-id="cfd5d-137">빌드 타임에 선택 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-137">Selected at build-time.</span></span> <span data-ttu-id="cfd5d-138">사용 하거나 <xref:System.Net.HttpWebRequest> Apple의 사용 하도록 구성 하거나 [ `NSUrlSession` ](https://developer.xamarin.com/api/type/MonoTouch.Foundation.NSUrlSession/) (HTTP 2.0 가능)</span><span class="sxs-lookup"><span data-stu-id="cfd5d-138">Can either use <xref:System.Net.HttpWebRequest> or be configured to use Apple's [`NSUrlSession`](https://developer.xamarin.com/api/type/MonoTouch.Foundation.NSUrlSession/) (HTTP 2.0 capable)</span></span> |
+| <span data-ttu-id="cfd5d-139">macOS/모노</span><span class="sxs-lookup"><span data-stu-id="cfd5d-139">macOS/Mono</span></span>                  | <xref:System.Net.HttpWebRequest>                                                                          |
+| <span data-ttu-id="cfd5d-140">macOS/.NET Core</span><span class="sxs-lookup"><span data-stu-id="cfd5d-140">macOS/.NET Core</span></span>             | <span data-ttu-id="cfd5d-141">`libcurl`-HTTP 전송 (HTTP 2.0 가능)를 기반 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-141">`libcurl`-based HTTP transport (HTTP 2.0 capable)</span></span>                                         |
+| <span data-ttu-id="cfd5d-142">Linux/모노</span><span class="sxs-lookup"><span data-stu-id="cfd5d-142">Linux/Mono</span></span>                  | <xref:System.Net.HttpWebRequest>                                                          |
+| <span data-ttu-id="cfd5d-143">Linux/.NET Core</span><span class="sxs-lookup"><span data-stu-id="cfd5d-143">Linux/.NET Core</span></span>             | <span data-ttu-id="cfd5d-144">`libcurl`-HTTP 전송 (HTTP 2.0 가능)를 기반 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-144">`libcurl`-based HTTP transport (HTTP 2.0 capable)</span></span>                                         |
+
+<span data-ttu-id="cfd5d-145">사용자에 대 한 특정 전송을 구성할 수도 <xref:System.Net.Http.HttpClient> 호출 하 여는 <xref:System.Net.Http.HttpClient.%23ctor*> 사용 하는 생성자는 <xref:System.Net.Http.HttpMessageHandler>합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-145">Users can also configure a specific transport for <xref:System.Net.Http.HttpClient> by invoking the <xref:System.Net.Http.HttpClient.%23ctor*> constructor that takes an <xref:System.Net.Http.HttpMessageHandler>.</span></span>
+  
+## Examples  
+ [!code-csharp[System.Net.Http.HttpClient#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.net.http.httpclient/cs/source.cs#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-146">
+            <see cref="T:System.Net.Http.HttpClient" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-146">Initializes a new instance of the <see cref="T:System.Net.Http.HttpClient" /> class.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-147"><xref:System.Net.Http.HttpClient> 한 번 시작 하 고 응용 프로그램의 수명 내내 다시 사용 하는 데 사용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-147"><xref:System.Net.Http.HttpClient> is intended to be instantiated once and re-used throughout the life of an application.</span></span> <span data-ttu-id="cfd5d-148">모든 요청에 대 한 HttpClient 클래스 인스턴스화 소켓 높은 부하에서 사용할 수 있는 빠른 속도로 소모 될 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-148">Instantiating an HttpClient class for every request will exhaust the number of sockets available under heavy loads.</span></span> <span data-ttu-id="cfd5d-149">이 인해 SocketException 오류가 발생 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-149">This will result in SocketException errors.</span></span> <span data-ttu-id="cfd5d-150">다음은 HttpClient를 올바르게 사용 하는 예제입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-150">Below is an example using HttpClient correctly.</span></span>  
+  
+```csharp  
+public class GoodController : ApiController  
+{  
+    // OK  
+    private static readonly HttpClient HttpClient;  
+  
+    static GoodController()  
+    {  
+        HttpClient = new HttpClient();  
+    }  
+}  
+  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HttpClient ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; HttpClient();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-151">
+            <see cref="T:System.Net.Http.HttpClient" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-151">Initializes a new instance of the <see cref="T:System.Net.Http.HttpClient" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HttpClient (System.Net.Http.HttpMessageHandler handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Net.Http.HttpMessageHandler handler) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.#ctor(System.Net.Http.HttpMessageHandler)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (handler As HttpMessageHandler)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; HttpClient(System::Net::Http::HttpMessageHandler ^ handler);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handler" Type="System.Net.Http.HttpMessageHandler" />
+      </Parameters>
+      <Docs>
+        <param name="handler">
+          <span data-ttu-id="cfd5d-152">요청을 보내는 데 사용할 HTTP 처리기 스택입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-152">The HTTP handler stack to use for sending requests.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-153">특정 처리기를 사용하여 <see cref="T:System.Net.Http.HttpClient" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-153">Initializes a new instance of the <see cref="T:System.Net.Http.HttpClient" /> class with a specific handler.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-154">`handler` 호출 하 여 제거 [HttpClient.Dispose](xref:System.Net.Http.HttpMessageInvoker.Dispose)합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-154">`handler` will be disposed of by calling [HttpClient.Dispose](xref:System.Net.Http.HttpMessageInvoker.Dispose).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-155">
+            <paramref name="handler" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-155">The <paramref name="handler" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HttpClient (System.Net.Http.HttpMessageHandler handler, bool disposeHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Net.Http.HttpMessageHandler handler, bool disposeHandler) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.#ctor(System.Net.Http.HttpMessageHandler,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (handler As HttpMessageHandler, disposeHandler As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; HttpClient(System::Net::Http::HttpMessageHandler ^ handler, bool disposeHandler);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handler" Type="System.Net.Http.HttpMessageHandler" />
+        <Parameter Name="disposeHandler" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="handler">
+          <span data-ttu-id="cfd5d-156">
+            <see cref="T:System.Net.Http.HttpMessageHandler" />는 HTTP 응답 메시지 처리를 담당합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-156">The <see cref="T:System.Net.Http.HttpMessageHandler" /> responsible for processing the HTTP response messages.</span>
+          </span>
+        </param>
+        <param name="disposeHandler">
+          <span data-ttu-id="cfd5d-157">[HttpClient.Dispose](xref:System.Net.Http.HttpMessageInvoker.Dispose)에 의해 내부 처리기를 삭제해야 하는 경우 <see langword="true" />이고, 내부 처리기를 다시 사용하려고 하는 경우 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-157">
+              <see langword="true" /> if the inner handler should be disposed of by [HttpClient.Dispose](xref:System.Net.Http.HttpMessageInvoker.Dispose), <see langword="false" /> if you intend to reuse the inner handler.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-158">특정 처리기를 사용하여 <see cref="T:System.Net.Http.HttpClient" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-158">Initializes a new instance of the <see cref="T:System.Net.Http.HttpClient" /> class with a specific handler.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-159">
+            <paramref name="handler" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-159">The <paramref name="handler" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BaseAddress">
+      <MemberSignature Language="C#" Value="public Uri BaseAddress { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Uri BaseAddress" />
+      <MemberSignature Language="DocId" Value="P:System.Net.Http.HttpClient.BaseAddress" />
+      <MemberSignature Language="VB.NET" Value="Public Property BaseAddress As Uri" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Uri ^ BaseAddress { Uri ^ get(); void set(Uri ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Uri</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-160">요청을 보낼 때 사용된 인터넷 리소스의 URI(Uniform Resource Identifier)의 기준 주소를 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-160">Gets or sets the base address of Uniform Resource Identifier (URI) of the Internet resource used when sending requests.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd5d-161">요청을 보낼 때 사용된 인터넷 리소스의 URI(Uniform Resource Identifier)의 기준 주소입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-161">The base address of Uniform Resource Identifier (URI) of the Internet resource used when sending requests.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-162">보낼 때는 <xref:System.Net.Http.HttpRequestMessage> 상대 Uri로 Uri 메시지에 추가 됩니다는 <xref:System.Net.Http.HttpClient.BaseAddress%2A> 속성을 절대 Uri를 만듭니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-162">When sending a <xref:System.Net.Http.HttpRequestMessage> with a relative Uri, the message Uri will be added to the <xref:System.Net.Http.HttpClient.BaseAddress%2A> property to create an absolute Uri.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CancelPendingRequests">
+      <MemberSignature Language="C#" Value="public void CancelPendingRequests ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void CancelPendingRequests() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.CancelPendingRequests" />
+      <MemberSignature Language="VB.NET" Value="Public Sub CancelPendingRequests ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void CancelPendingRequests();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-163">이 인스턴스에서 보류 중인 모든 요청을 취소합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-163">Cancel all pending requests on this instance.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-164">이 메서드를 호출한 후의 <xref:System.Net.Http.HttpClient> 추가 요청을 실행 하는 인스턴스 현재 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-164">After calling this method, the <xref:System.Net.Http.HttpClient> instance can still be used to execute additional requests.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultRequestHeaders">
+      <MemberSignature Language="C#" Value="public System.Net.Http.Headers.HttpRequestHeaders DefaultRequestHeaders { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.Http.Headers.HttpRequestHeaders DefaultRequestHeaders" />
+      <MemberSignature Language="DocId" Value="P:System.Net.Http.HttpClient.DefaultRequestHeaders" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DefaultRequestHeaders As HttpRequestHeaders" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::Http::Headers::HttpRequestHeaders ^ DefaultRequestHeaders { System::Net::Http::Headers::HttpRequestHeaders ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.Http.Headers.HttpRequestHeaders</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-165">각 요청과 함께 보내야 하는 헤더를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-165">Gets the headers which should be sent with each request.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd5d-166">각 요청과 함께 보내야 하는 헤더입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-166">The headers which should be sent with each request.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-167">이 속성에 설정 된 헤더는 요청 메시지에 다시 설정 될 필요가 없습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-167">Headers set on this property don't need to be set on request messages again.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="DeleteAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-168">DELETE 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-168">Send a DELETE request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="DeleteAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; DeleteAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; DeleteAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.DeleteAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeleteAsync (requestUri As String) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ DeleteAsync(System::String ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-169">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-169">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-170">DELETE 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-170">Send a DELETE request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-171">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-171">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-172">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-172">This operation will not block.</span></span> <span data-ttu-id="cfd5d-173">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-173">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-174">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-174">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-175">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-175">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-176">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-176">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; DeleteAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; DeleteAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.DeleteAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeleteAsync (requestUri As Uri) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ DeleteAsync(Uri ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-177">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-177">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-178">DELETE 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-178">Send a DELETE request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-179">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-179">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-180">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-180">This operation will not block.</span></span> <span data-ttu-id="cfd5d-181">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-181">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-182">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-182">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-183">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-183">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-184">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-184">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; DeleteAsync (string requestUri, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; DeleteAsync(string requestUri, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.DeleteAsync(System.String,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ DeleteAsync(System::String ^ requestUri, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-185">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-185">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-186">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-186">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-187">취소 토큰이 포함된 지정한 URI에 DELETE 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-187">Send a DELETE request to the specified Uri with a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-188">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-188">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-189">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-189">This operation will not block.</span></span> <span data-ttu-id="cfd5d-190">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-190">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-191">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-191">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-192">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-192">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-193">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-193">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; DeleteAsync (Uri requestUri, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; DeleteAsync(class System.Uri requestUri, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.DeleteAsync(System.Uri,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ DeleteAsync(Uri ^ requestUri, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-194">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-194">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-195">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-195">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-196">취소 토큰이 포함된 지정한 URI에 DELETE 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-196">Send a DELETE request to the specified Uri with a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-197">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-197">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-198">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-198">This operation will not block.</span></span> <span data-ttu-id="cfd5d-199">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-199">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-200">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-200">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-201">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-201">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-202">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-202">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">
+          <span data-ttu-id="cfd5d-203">관리되는 리소스와 관리되지 않는 리소스를 모두 해제하려면 <see langword="true" />, 관리되지 않는 리소스만 해제하려면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-203">
+              <see langword="true" /> to release both managed and unmanaged resources; <see langword="false" /> to releases only unmanaged resources.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-204">
+            <see cref="T:System.Net.Http.HttpClient" />에서 사용하는 관리되지 않는 리소스를 해제하고 관리되는 리소스를 선택적으로 삭제할 수 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-204">Releases the unmanaged resources used by the <see cref="T:System.Net.Http.HttpClient" /> and optionally disposes of the managed resources.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-205">이 메서드는 public `Dispose()` 메서드 및 <xref:System.Object.Finalize%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-205">This method is called by the public `Dispose()` method and the <xref:System.Object.Finalize%2A> method.</span></span> <span data-ttu-id="cfd5d-206">`Dispose()` 보호 된 호출 `Dispose(Boolean)` 메서드는 `disposing` 매개 변수 설정 `true`합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-206">`Dispose()` invokes the protected `Dispose(Boolean)` method with the `disposing` parameter set to `true`.</span></span> <span data-ttu-id="cfd5d-207"><xref:System.Object.Finalize%2A> 호출 `Dispose` 와 `disposing` 로 설정 `false`합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-207"><xref:System.Object.Finalize%2A> invokes `Dispose` with `disposing` set to `false`.</span></span>  
+  
+ <span data-ttu-id="cfd5d-208">`disposing` 매개 변수가 `true`인 경우 이 메서드는 이 <xref:System.Net.Http.HttpClient>에서 참조하는 관리 개체가 보유하고 있는 리소스를 모두 해제합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-208">When the `disposing` parameter is `true`, this method releases all resources held by any managed objects that this <xref:System.Net.Http.HttpClient> references.</span></span> <span data-ttu-id="cfd5d-209">이 메서드는 참조되는 각 개체의 `Dispose()` 메서드를 호출합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-209">This method invokes the `Dispose()` method of each referenced object.</span></span>  
+  
+ <span data-ttu-id="cfd5d-210">이 메서드를 호출할 때는 <xref:System.Net.Http.HttpClient.CancelPendingRequests%2A> 메서드는 보류 중인 모든 요청을 중단 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-210">When this method is called, the <xref:System.Net.Http.HttpClient.CancelPendingRequests%2A> method is called to abort all pending requests.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-211">GET 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-211">Send a GET request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-212">작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-212">The operation will not block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAsync (requestUri As String) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(System::String ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-213">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-213">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-214">GET 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-214">Send a GET request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-215">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-215">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-216">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-216">This operation will not block.</span></span> <span data-ttu-id="cfd5d-217">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-217">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-218">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-218">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-219">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-219">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAsync (requestUri As Uri) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(Uri ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-220">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-220">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-221">GET 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-221">Send a GET request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-222">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-222">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-223">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-223">This operation will not block.</span></span> <span data-ttu-id="cfd5d-224">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-224">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-225">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-225">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-226">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-226">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (string requestUri, System.Net.Http.HttpCompletionOption completionOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(string requestUri, valuetype System.Net.Http.HttpCompletionOption completionOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Net.Http.HttpCompletionOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAsync (requestUri As String, completionOption As HttpCompletionOption) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(System::String ^ requestUri, System::Net::Http::HttpCompletionOption completionOption);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-227">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-227">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="completionOption">
+          <span data-ttu-id="cfd5d-228">작업이 완료된 것으로 간주해야 할 때를 나타내는 HTTP 완료 옵션 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-228">An HTTP completion option value that indicates when the operation should be considered completed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-229">HTTP 완료 옵션이 포함된 지정한 URI에 GET 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-229">Send a GET request to the specified Uri with an HTTP completion option as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-230">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-230">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-231">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-231">This operation will not block.</span></span> <span data-ttu-id="cfd5d-232">반환 된 <xref:System.Threading.Tasks.Task%601> 개체가 완료에 따라는 `completionOption` 일부 또는 전체 응답 (콘텐츠 포함)를 읽은 다음 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-232">The returned <xref:System.Threading.Tasks.Task%601> object will complete based on the `completionOption` parameter after the part or all of the response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-233">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-233">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-234">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-234">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (string requestUri, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(string requestUri, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(System::String ^ requestUri, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-235">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-235">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-236">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-236">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-237">취소 토큰이 포함된 지정한 URI에 GET 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-237">Send a GET request to the specified Uri with a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-238">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-238">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-239">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-239">This operation will not block.</span></span> <span data-ttu-id="cfd5d-240">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-240">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-241">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-241">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-242">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-242">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (Uri requestUri, System.Net.Http.HttpCompletionOption completionOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(class System.Uri requestUri, valuetype System.Net.Http.HttpCompletionOption completionOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Net.Http.HttpCompletionOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAsync (requestUri As Uri, completionOption As HttpCompletionOption) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(Uri ^ requestUri, System::Net::Http::HttpCompletionOption completionOption);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-243">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-243">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="completionOption">
+          <span data-ttu-id="cfd5d-244">작업이 완료된 것으로 간주해야 할 때를 나타내는 HTTP 완료 옵션 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-244">An HTTP completion option value that indicates when the operation should be considered completed.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-245">HTTP 완료 옵션이 포함된 지정한 URI에 GET 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-245">Send a GET request to the specified Uri with an HTTP completion option as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-246">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-246">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-247">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-247">This operation will not block.</span></span> <span data-ttu-id="cfd5d-248">반환 된 <xref:System.Threading.Tasks.Task%601> 개체가 완료에 따라는 `completionOption` 일부 또는 전체 응답 (콘텐츠 포함)를 읽은 다음 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-248">The returned <xref:System.Threading.Tasks.Task%601> object will complete based on the `completionOption` parameter after the part or all of the response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-249">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-249">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-250">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-250">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (Uri requestUri, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(class System.Uri requestUri, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(Uri ^ requestUri, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-251">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-251">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-252">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-252">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-253">취소 토큰이 포함된 지정한 URI에 GET 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-253">Send a GET request to the specified Uri with a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-254">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-254">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-255">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-255">This operation will not block.</span></span> <span data-ttu-id="cfd5d-256">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-256">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-257">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-257">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-258">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-258">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (string requestUri, System.Net.Http.HttpCompletionOption completionOption, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(string requestUri, valuetype System.Net.Http.HttpCompletionOption completionOption, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(System::String ^ requestUri, System::Net::Http::HttpCompletionOption completionOption, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-259">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-259">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="completionOption">
+          <span data-ttu-id="cfd5d-260">작업이 완료된 것으로 간주해야 할 때를 나타내는 HTTP 완료 옵션 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-260">An HTTP  completion option value that indicates when the operation should be considered completed.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-261">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-261">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-262">HTTP 완료 옵션 및 취소 토큰을 사용하여 지정한 URL에 비동기 작업으로 GET 요청을 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-262">Send a GET request to the specified Uri with an HTTP completion option and a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-263">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-263">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-264">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-264">This operation will not block.</span></span> <span data-ttu-id="cfd5d-265">반환 된 <xref:System.Threading.Tasks.Task%601> 개체가 완료에 따라는 `completionOption` 일부 또는 전체 응답 (콘텐츠 포함)를 읽은 다음 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-265">The returned <xref:System.Threading.Tasks.Task%601> object will complete based on the `completionOption` parameter after the part or all of the response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-266">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-266">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-267">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-267">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (Uri requestUri, System.Net.Http.HttpCompletionOption completionOption, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(class System.Uri requestUri, valuetype System.Net.Http.HttpCompletionOption completionOption, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(Uri ^ requestUri, System::Net::Http::HttpCompletionOption completionOption, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-268">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-268">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="completionOption">
+          <span data-ttu-id="cfd5d-269">작업이 완료된 것으로 간주해야 할 때를 나타내는 HTTP 완료 옵션 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-269">An HTTP  completion option value that indicates when the operation should be considered completed.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-270">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-270">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-271">HTTP 완료 옵션 및 취소 토큰을 사용하여 지정한 URL에 비동기 작업으로 GET 요청을 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-271">Send a GET request to the specified Uri with an HTTP completion option and a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-272">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-272">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-273">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-273">This operation will not block.</span></span> <span data-ttu-id="cfd5d-274">반환 된 <xref:System.Threading.Tasks.Task%601> 개체가 완료에 따라는 `completionOption` 일부 또는 전체 응답 (콘텐츠 포함)를 읽은 다음 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-274">The returned <xref:System.Threading.Tasks.Task%601> object will complete based on the `completionOption` parameter after the part or all of the response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-275">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-275">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-276">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-276">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetByteArrayAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-277">GET 요청을 지정된 URI에 보내고 비동기 작업에서 바이트 배열로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-277">Send a GET request to the specified Uri and return the response body as a byte array in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-278">작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-278">The operation will not block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetByteArrayAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;byte[]&gt; GetByteArrayAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;unsigned int8[]&gt; GetByteArrayAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetByteArrayAsync (requestUri As String) As Task(Of Byte())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;cli::array &lt;System::Byte&gt; ^&gt; ^ GetByteArrayAsync(System::String ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.AsyncStateMachine(typeof(System.Net.Http.HttpClient/&lt;GetByteArrayAsync&gt;c__async1))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Byte[]&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-279">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-279">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-280">GET 요청을 지정된 URI에 보내고 비동기 작업에서 바이트 배열로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-280">Send a GET request to the specified Uri and return the response body as a byte array in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-281">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-281">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-282">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-282">This operation will not block.</span></span> <span data-ttu-id="cfd5d-283">반환 된 <xref:System.Threading.Tasks.Task%601> 전체 응답 본문을 읽을 개체 완성 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-283">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response body is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-284">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-284">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-285">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-285">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetByteArrayAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;byte[]&gt; GetByteArrayAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;unsigned int8[]&gt; GetByteArrayAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetByteArrayAsync (requestUri As Uri) As Task(Of Byte())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;cli::array &lt;System::Byte&gt; ^&gt; ^ GetByteArrayAsync(Uri ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.AsyncStateMachine(typeof(System.Net.Http.HttpClient/&lt;GetByteArrayAsync&gt;c__async2))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Byte[]&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-286">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-286">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-287">GET 요청을 지정된 URI에 보내고 비동기 작업에서 바이트 배열로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-287">Send a GET request to the specified Uri and return the response body as a byte array in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-288">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-288">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-289">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-289">This operation will not block.</span></span> <span data-ttu-id="cfd5d-290">반환 된 <xref:System.Threading.Tasks.Task%601> 전체 응답 본문을 읽을 개체 완성 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-290">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response body is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-291">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-291">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-292">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-292">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetStreamAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-293">GET 요청을 지정된 URI에 보내고 비동기 작업에서 스트림으로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-293">Send a GET request to the specified Uri and return the response body as a stream in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-294">작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-294">The operation will not block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetStreamAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.IO.Stream&gt; GetStreamAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.IO.Stream&gt; GetStreamAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetStreamAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStreamAsync (requestUri As String) As Task(Of Stream)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::IO::Stream ^&gt; ^ GetStreamAsync(System::String ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.AsyncStateMachine(typeof(System.Net.Http.HttpClient/&lt;GetStreamAsync&gt;c__async3))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.IO.Stream&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-295">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-295">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-296">GET 요청을 지정된 URI에 보내고 비동기 작업에서 스트림으로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-296">Send a GET request to the specified Uri and return the response body as a stream in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-297">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-297">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-298">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-298">This operation will not block.</span></span> <span data-ttu-id="cfd5d-299">반환 된 <xref:System.Threading.Tasks.Task%601> 전체 응답 본문을 읽을 개체 완성 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-299">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response body is read.</span></span> <span data-ttu-id="cfd5d-300">이 메서드는 스트림을 버퍼링 하지 않는다는 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-300">This method does not buffer the stream.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-301">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-301">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-302">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-302">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetStreamAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.IO.Stream&gt; GetStreamAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.IO.Stream&gt; GetStreamAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetStreamAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStreamAsync (requestUri As Uri) As Task(Of Stream)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::IO::Stream ^&gt; ^ GetStreamAsync(Uri ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.AsyncStateMachine(typeof(System.Net.Http.HttpClient/&lt;GetStreamAsync&gt;c__async4))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.IO.Stream&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-303">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-303">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-304">GET 요청을 지정된 URI에 보내고 비동기 작업에서 스트림으로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-304">Send a GET request to the specified Uri and return the response body as a stream in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-305">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-305">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-306">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-306">This operation will not block.</span></span> <span data-ttu-id="cfd5d-307">반환 된 <xref:System.Threading.Tasks.Task%601> 전체 응답 본문을 읽을 개체 완성 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-307">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response body is read.</span></span> <span data-ttu-id="cfd5d-308">이 메서드는 스트림을 버퍼링 하지 않는다는 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-308">This method does not buffer the stream.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-309">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-309">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-310">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-310">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetStringAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-311">GET 요청을 지정된 URI에 보내고 비동기 작업에서 문자열로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-311">Send a GET request to the specified Uri and return the response body as a string in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-312">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-312">This operation will not block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetStringAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;string&gt; GetStringAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;string&gt; GetStringAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetStringAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStringAsync (requestUri As String) As Task(Of String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::String ^&gt; ^ GetStringAsync(System::String ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.AsyncStateMachine(typeof(System.Net.Http.HttpClient/&lt;GetStringAsync&gt;c__async5))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-313">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-313">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-314">GET 요청을 지정된 URI에 보내고 비동기 작업에서 문자열로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-314">Send a GET request to the specified Uri and return the response body as a string in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-315">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-315">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-316">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-316">This operation will not block.</span></span> <span data-ttu-id="cfd5d-317">반환 된 <xref:System.Threading.Tasks.Task%601> 전체 응답 본문을 읽을 개체 완성 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-317">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response body is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-318">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-318">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-319">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-319">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetStringAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;string&gt; GetStringAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;string&gt; GetStringAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetStringAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStringAsync (requestUri As Uri) As Task(Of String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::String ^&gt; ^ GetStringAsync(Uri ^ requestUri);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Runtime.CompilerServices.AsyncStateMachine(typeof(System.Net.Http.HttpClient/&lt;GetStringAsync&gt;c__async6))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-320">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-320">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-321">GET 요청을 지정된 URI에 보내고 비동기 작업에서 문자열로 응답 본문을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-321">Send a GET request to the specified Uri and return the response body as a string in an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-322">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-322">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-323">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-323">This operation will not block.</span></span> <span data-ttu-id="cfd5d-324">반환 된 <xref:System.Threading.Tasks.Task%601> 전체 응답 본문을 읽을 개체 완성 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-324">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response body is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-325">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-325">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-326">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-326">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="MaxResponseContentBufferSize">
+      <MemberSignature Language="C#" Value="public long MaxResponseContentBufferSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 MaxResponseContentBufferSize" />
+      <MemberSignature Language="DocId" Value="P:System.Net.Http.HttpClient.MaxResponseContentBufferSize" />
+      <MemberSignature Language="VB.NET" Value="Public Property MaxResponseContentBufferSize As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property long MaxResponseContentBufferSize { long get(); void set(long value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-327">응답 콘텐츠를 읽을 경우 버퍼링할 최대 바이트 수를 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-327">Gets or sets the maximum number of bytes to buffer when reading the response content.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd5d-328">응답 콘텐츠를 읽을 경우 버퍼링할 최대 바이트 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-328">The maximum number of bytes to buffer when reading the response content.</span>
+          </span>
+          <span data-ttu-id="cfd5d-329">이 속성의 기본값은 2GB입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-329">The default value for this property is 2 gigabytes.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-330">응용 프로그램을 설정할 수는 <xref:System.Net.Http.HttpClient.MaxResponseContentBufferSize%2A> 속성을 낮은 값으로 응답을 읽을 때 버퍼에 대 한 응답의 크기를 제한 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-330">An app can set the <xref:System.Net.Http.HttpClient.MaxResponseContentBufferSize%2A> property to a lower value to limit the size of the response to buffer when reading the response.</span></span> <span data-ttu-id="cfd5d-331">응답 콘텐츠 크기 보다 크면는 <xref:System.Net.Http.HttpClient.MaxResponseContentBufferSize%2A> 속성, 예외가 throw 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-331">If the size of the response content is greater than the  <xref:System.Net.Http.HttpClient.MaxResponseContentBufferSize%2A> property, an exception is thrown.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="cfd5d-332">지정된 크기가 0보다 작거나 같은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-332">The size specified is less than or equal to zero.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-333">작업이 이미 현재 인스턴스에서 시작된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-333">An operation has already been started on the current instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="cfd5d-334">현재 인스턴스가 삭제된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-334">The current instance has been disposed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PatchAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PatchAsync (string requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PatchAsync(string requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PatchAsync(System.String,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PatchAsync (requestUri As String, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PatchAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">To be added.</param>
+        <param name="content">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PatchAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PatchAsync (Uri requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PatchAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PatchAsync (requestUri As Uri, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PatchAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">To be added.</param>
+        <param name="content">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PatchAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PatchAsync (string requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PatchAsync(string requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PatchAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PatchAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">To be added.</param>
+        <param name="content">To be added.</param>
+        <param name="cancellationToken">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PatchAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PatchAsync (Uri requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PatchAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PatchAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">To be added.</param>
+        <param name="content">To be added.</param>
+        <param name="cancellationToken">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="PostAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-335">POST 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-335">Send a POST request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-336">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-336">This operation will not block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="PostAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PostAsync (string requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PostAsync(string requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PostAsync (requestUri As String, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PostAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-337">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-337">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="content">
+          <span data-ttu-id="cfd5d-338">서버로 전송된 HTTP 요청 콘텐츠입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-338">The HTTP request content sent to the server.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-339">POST 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-339">Send a POST request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-340">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-340">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-341">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-341">This operation will not block.</span></span> <span data-ttu-id="cfd5d-342">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-342">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-343">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-343">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-344">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-344">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PostAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PostAsync (Uri requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PostAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PostAsync (requestUri As Uri, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PostAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-345">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-345">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="content">
+          <span data-ttu-id="cfd5d-346">서버로 전송된 HTTP 요청 콘텐츠입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-346">The HTTP request content sent to the server.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-347">POST 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-347">Send a POST request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-348">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-348">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-349">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-349">This operation will not block.</span></span> <span data-ttu-id="cfd5d-350">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-350">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-351">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-351">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-352">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-352">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PostAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PostAsync (string requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PostAsync(string requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PostAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-353">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-353">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="content">
+          <span data-ttu-id="cfd5d-354">서버로 전송된 HTTP 요청 콘텐츠입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-354">The HTTP request content sent to the server.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-355">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-355">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-356">취소 토큰이 포함된 POST 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-356">Send a POST request with a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-357">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-357">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-358">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-358">This operation will not block.</span></span> <span data-ttu-id="cfd5d-359">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-359">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-360">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-360">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-361">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-361">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PostAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PostAsync (Uri requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PostAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PostAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-362">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-362">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="content">
+          <span data-ttu-id="cfd5d-363">서버로 전송된 HTTP 요청 콘텐츠입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-363">The HTTP request content sent to the server.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-364">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-364">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-365">취소 토큰이 포함된 POST 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-365">Send a POST request with a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-366">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-366">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-367">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-367">This operation will not block.</span></span> <span data-ttu-id="cfd5d-368">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-368">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-369">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-369">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-370">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-370">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="PutAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-371">PUT 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-371">Send a PUT request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-372">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-372">This operation will not block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="PutAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PutAsync (string requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PutAsync(string requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PutAsync (requestUri As String, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PutAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-373">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-373">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="content">
+          <span data-ttu-id="cfd5d-374">서버로 전송된 HTTP 요청 콘텐츠입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-374">The HTTP request content sent to the server.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-375">PUT 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-375">Send a PUT request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-376">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-376">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-377">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-377">This operation will not block.</span></span> <span data-ttu-id="cfd5d-378">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-378">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-379">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-379">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-380">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-380">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PutAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PutAsync (Uri requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PutAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PutAsync (requestUri As Uri, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PutAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-381">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-381">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="content">
+          <span data-ttu-id="cfd5d-382">서버로 전송된 HTTP 요청 콘텐츠입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-382">The HTTP request content sent to the server.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-383">PUT 요청을 지정된 URI에 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-383">Send a PUT request to the specified Uri as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-384">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-384">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-385">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-385">This operation will not block.</span></span> <span data-ttu-id="cfd5d-386">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-386">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-387">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-387">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-388">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-388">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PutAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PutAsync (string requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PutAsync(string requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PutAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-389">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-389">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="content">
+          <span data-ttu-id="cfd5d-390">서버로 전송된 HTTP 요청 콘텐츠입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-390">The HTTP request content sent to the server.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-391">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-391">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-392">취소 토큰이 포함된 PUT 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-392">Send a PUT request with a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-393">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-393">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-394">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-394">This operation will not block.</span></span> <span data-ttu-id="cfd5d-395">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-395">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-396">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-396">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-397">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-397">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PutAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PutAsync (Uri requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PutAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PutAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">
+          <span data-ttu-id="cfd5d-398">요청이 전송되는 URI입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-398">The Uri the request is sent to.</span>
+          </span>
+        </param>
+        <param name="content">
+          <span data-ttu-id="cfd5d-399">서버로 전송된 HTTP 요청 콘텐츠입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-399">The HTTP request content sent to the server.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-400">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-400">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-401">취소 토큰이 포함된 PUT 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-401">Send a PUT request with a cancellation token as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-402">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-402">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-403">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-403">This operation will not block.</span></span> <span data-ttu-id="cfd5d-404">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)에서 전체 응답을 읽은 후 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-404">The returned <xref:System.Threading.Tasks.Task%601> object will complete after the whole response (including content) is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-405">
+            <paramref name="requestUri" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-405">The <paramref name="requestUri" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-406">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-406">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="SendAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-407">HTTP 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-407">Send an HTTP request as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-408">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-408">This operation will not block.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="SendAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; SendAsync (System.Net.Http.HttpRequestMessage request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; SendAsync(class System.Net.Http.HttpRequestMessage request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage)" />
+      <MemberSignature Language="VB.NET" Value="Public Function SendAsync (request As HttpRequestMessage) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ SendAsync(System::Net::Http::HttpRequestMessage ^ request);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Net.Http.HttpRequestMessage" />
+      </Parameters>
+      <Docs>
+        <param name="request">
+          <span data-ttu-id="cfd5d-409">보낼 HTTP 요청 메시지입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-409">The HTTP request message to send.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-410">HTTP 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-410">Send an HTTP request as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-411">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-411">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-412">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-412">This operation will not block.</span></span> <span data-ttu-id="cfd5d-413">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 콘텐츠를 비롯 한 전체 응답 내용을 읽은 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-413">The returned <xref:System.Threading.Tasks.Task%601> object will complete once the entire response including content is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-414">
+            <paramref name="request" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-414">The <paramref name="request" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-415">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-415">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-416">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-416">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SendAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; SendAsync (System.Net.Http.HttpRequestMessage request, System.Net.Http.HttpCompletionOption completionOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; SendAsync(class System.Net.Http.HttpRequestMessage request, valuetype System.Net.Http.HttpCompletionOption completionOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpCompletionOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Function SendAsync (request As HttpRequestMessage, completionOption As HttpCompletionOption) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ SendAsync(System::Net::Http::HttpRequestMessage ^ request, System::Net::Http::HttpCompletionOption completionOption);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Net.Http.HttpRequestMessage" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+      </Parameters>
+      <Docs>
+        <param name="request">
+          <span data-ttu-id="cfd5d-417">보낼 HTTP 요청 메시지입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-417">The HTTP request message to send.</span>
+          </span>
+        </param>
+        <param name="completionOption">
+          <span data-ttu-id="cfd5d-418">작업을 완료해야 할 경우(응답을 사용할 수 있게 된 즉시 또는 전체 응답 내용을 읽은 후).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-418">When the operation should complete (as soon as a response is available or after reading the whole response content).</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-419">HTTP 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-419">Send an HTTP request as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-420">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-420">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-421">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-421">This operation will not block.</span></span> <span data-ttu-id="cfd5d-422">값에 따라는 `completionOption` 매개 변수, 반환 된 <xref:System.Threading.Tasks.Task%601> 개체가 즉시 응답을 사용할 수 있는 콘텐츠를 비롯 한 전체 응답은 읽기를 완료 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-422">Depending on the value of the `completionOption` parameter, the returned <xref:System.Threading.Tasks.Task%601> object will complete as soon as a response is available or the entire response including content is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-423">
+            <paramref name="request" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-423">The <paramref name="request" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-424">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-424">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-425">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-425">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SendAsync">
+      <MemberSignature Language="C#" Value="public override System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; SendAsync (System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; SendAsync(class System.Net.Http.HttpRequestMessage request, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ SendAsync(System::Net::Http::HttpRequestMessage ^ request, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Net.Http.HttpRequestMessage" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="request">
+          <span data-ttu-id="cfd5d-426">보낼 HTTP 요청 메시지입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-426">The HTTP request message to send.</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-427">작업을 취소할 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-427">The cancellation token to cancel operation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-428">HTTP 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-428">Send an HTTP request as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-429">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-429">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-430">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-430">This operation will not block.</span></span> <span data-ttu-id="cfd5d-431">반환 된 <xref:System.Threading.Tasks.Task%601> 개체 콘텐츠를 비롯 한 전체 응답 내용을 읽은 완료 됩니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-431">The returned <xref:System.Threading.Tasks.Task%601> object will complete once the entire response including content is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-432">
+            <paramref name="request" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-432">The <paramref name="request" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-433">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-433">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-434">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-434">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SendAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; SendAsync (System.Net.Http.HttpRequestMessage request, System.Net.Http.HttpCompletionOption completionOption, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; SendAsync(class System.Net.Http.HttpRequestMessage request, valuetype System.Net.Http.HttpCompletionOption completionOption, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ SendAsync(System::Net::Http::HttpRequestMessage ^ request, System::Net::Http::HttpCompletionOption completionOption, System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Net.Http.HttpRequestMessage" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="request">
+          <span data-ttu-id="cfd5d-435">보낼 HTTP 요청 메시지입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-435">The HTTP request message to send.</span>
+          </span>
+        </param>
+        <param name="completionOption">
+          <span data-ttu-id="cfd5d-436">작업을 완료해야 할 경우(응답을 사용할 수 있게 된 즉시 또는 전체 응답 내용을 읽은 후).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-436">When the operation should complete (as soon as a response is available or after reading the whole response content).</span>
+          </span>
+        </param>
+        <param name="cancellationToken">
+          <span data-ttu-id="cfd5d-437">작업을 취소할 취소 토큰입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-437">The cancellation token to cancel operation.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="cfd5d-438">HTTP 요청을 비동기 작업으로 보냅니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-438">Send an HTTP request as an asynchronous operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="cfd5d-439">비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-439">The task object representing the asynchronous operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-440">이 작업을 차단 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-440">This operation will not block.</span></span> <span data-ttu-id="cfd5d-441">값에 따라는 `completionOption` 매개 변수, 반환 된 <xref:System.Threading.Tasks.Task%601> 개체가 즉시 응답을 사용할 수 있는 콘텐츠를 비롯 한 전체 응답은 읽기를 완료 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-441">Depending on the value of the `completionOption` parameter, the returned <xref:System.Threading.Tasks.Task%601> object will complete as soon as a response is available or the entire response including content is read.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="cfd5d-442">
+            <paramref name="request" />이 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-442">The <paramref name="request" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-443">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-443">The request message was already sent by the <see cref="T:System.Net.Http.HttpClient" /> instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">
+          <span data-ttu-id="cfd5d-444">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-444">The request failed due to an underlying issue such as network connectivity, DNS failure, server certificate validation or timeout.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Timeout">
+      <MemberSignature Language="C#" Value="public TimeSpan Timeout { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan Timeout" />
+      <MemberSignature Language="DocId" Value="P:System.Net.Http.HttpClient.Timeout" />
+      <MemberSignature Language="VB.NET" Value="Public Property Timeout As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan Timeout { TimeSpan get(); void set(TimeSpan value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd5d-445">요청 시간 제한 범위 내에서 대기할 기간을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-445">Gets or sets the timespan to wait before the request times out.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd5d-446">요청 시간 제한 범위 내에서 대기할 기간입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-446">The timespan to wait before the request times out.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd5d-447">기본값은 100,000밀리초(100초)입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-447">The default value is 100,000 milliseconds (100 seconds).</span></span>  
+  
+ <span data-ttu-id="cfd5d-448">무한 시간 제한을 설정 하려면 속성 값을 설정 <xref:System.Threading.Timeout.InfiniteTimeSpan>합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-448">To set an infinite timeout, set the property value to <xref:System.Threading.Timeout.InfiniteTimeSpan>.</span></span>  
+  
+ <span data-ttu-id="cfd5d-449">DNS 도메인 이름 () 쿼리는 최대 15 초 반환할 또는 제한 시간 걸릴 수 있습니다. 요청이 포함 해상도 필요로 하는 호스트 이름을 설정한 경우 <xref:System.Net.Http.HttpClient.Timeout%2A> 값 보다 작거나 15 초 걸릴 수 있습니다 하기 전에 15 초 이상는 <xref:System.Net.WebException> 요청에 대 한 시간을 나타내기 위해 throw 되 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-449">A Domain Name System (DNS) query may take up to 15 seconds to return or time out. If your request contains a host name that requires resolution and you set <xref:System.Net.Http.HttpClient.Timeout%2A> to a value less than 15 seconds, it may take 15 seconds or more before a <xref:System.Net.WebException> is thrown to indicate a timeout on your request.</span></span>  
+  
+ <span data-ttu-id="cfd5d-450">이 사용 하 여 모든 요청에 대해 동일한 제한 시간이 적용 됩니다 <xref:System.Net.Http.HttpClient> 인스턴스.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-450">The same timeout will apply for all requests using this <xref:System.Net.Http.HttpClient> instance.</span></span>  <span data-ttu-id="cfd5d-451">사용 하 여 개별 요청에 대 한 다른 제한 시간을 설정할 수도 있습니다는 <xref:System.Threading.CancellationTokenSource> 작업 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-451">You may also set different timeouts for individual requests using a <xref:System.Threading.CancellationTokenSource> on a task.</span></span> <span data-ttu-id="cfd5d-452">만 중 짧은 두 가지 시간 제한을 적용할 참고 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd5d-452">Note that only the shorter of the two timeouts will apply.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="cfd5d-453">지정한 제한 시간이 0보다 작거나 같고 <see cref="F:System.Threading.Timeout.InfiniteTimeSpan" />이 아닌 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-453">The timeout specified is less than or equal to zero and is not <see cref="F:System.Threading.Timeout.InfiniteTimeSpan" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="cfd5d-454">작업이 이미 현재 인스턴스에서 시작된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-454">An operation has already been started on the current instance.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="cfd5d-455">현재 인스턴스가 삭제된 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd5d-455">The current instance has been disposed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

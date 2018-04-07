@@ -1,0 +1,236 @@
+<Type Name="XPathQueryGenerator" FullName="System.Runtime.Serialization.XPathQueryGenerator">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="d9514a5d91568b6a1a37448c18b6b101016e669d" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public static class XPathQueryGenerator" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit XPathQueryGenerator extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Runtime.Serialization.XPathQueryGenerator" />
+  <TypeSignature Language="VB.NET" Value="Public Class XPathQueryGenerator" />
+  <TypeSignature Language="C++ CLI" Value="public ref class XPathQueryGenerator abstract sealed" />
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime.Serialization</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime.Serialization.Xml</AssemblyName>
+    <AssemblyVersion>4.1.3.0</AssemblyVersion>
+    <AssemblyVersion>4.1.4.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="a7b3e-101">데이터 계약을 나타내는 클래스와 계약의 멤버를 나타내는 메타데이터가 지정되면 멤버에 대한 XPath 쿼리를 생성합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="a7b3e-101">When given a class representing a data contract, and metadata representing a member of the contract, produces an XPath query for the member.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="a7b3e-102">데이터 계약에 대 한 자세한 내용은 참조 [를 사용 하 여 데이터 계약](~/docs/framework/wcf/feature-details/using-data-contracts.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-102">For more information about data contracts, see [Using Data Contracts](~/docs/framework/wcf/feature-details/using-data-contracts.md).</span></span>  
+  
+ <span data-ttu-id="a7b3e-103">클래스를 사용하려면 네 가지 단계를 거쳐야 합니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-103">To use the class, there are four steps:</span></span>  
+  
+1.  <span data-ttu-id="a7b3e-104">형식 및 해당 필드 또는 속성에 적절한 <xref:System.Runtime.Serialization.DataContractAttribute> 및 <xref:System.Runtime.Serialization.DataMemberAttribute>를 적용하여 데이터 계약 형식을 만듭니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-104">Create the data contract type by applying the <xref:System.Runtime.Serialization.DataContractAttribute> and <xref:System.Runtime.Serialization.DataMemberAttribute> as appropriate to the type and its fields or properties.</span></span>  
+  
+2.  <span data-ttu-id="a7b3e-105"><xref:System.Type.GetMember%2A> 클래스의 <xref:System.Type> 메서드를 사용하여 MemberInfo 배열을 생성합니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-105">Use the <xref:System.Type.GetMember%2A> method of the <xref:System.Type> class to generate the MemberInfo array.</span></span>  
+  
+3.  <span data-ttu-id="a7b3e-106">형식과 배열을 메서드에 전달합니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-106">Pass the type and the array to the method.</span></span>  
+  
+4.  <span data-ttu-id="a7b3e-107">필요한 경우 <xref:System.Xml.XmlNamespaceManager> 매개 변수에서 반환하는 `namespaces`를 사용하여 XPath 쿼리의 네임스페이스 접두사에 의해 참조되는 XML 네임스페이스를 검사합니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-107">If needed, use the <xref:System.Xml.XmlNamespaceManager> returned by the `namespaces` parameter to examine the XML namespaces referenced by the namespaces prefixes in the XPath query.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="a7b3e-108">네임스페이스 접두사 "xg"(XPath Generator를 의미)가 XPath의 기본값으로 사용됩니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-108">The namespace prefix "xg" (for "XPath Generator") is used as the default in the XPath.</span></span> <span data-ttu-id="a7b3e-109">이 값은 변경할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-109">This cannot be changed.</span></span> <span data-ttu-id="a7b3e-110">대신 NameTable 컬렉션을 참조하여 접두사가 연결된 네임스페이스를 볼 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-110">Instead, refer to the NameTable collection to see what namespace the prefix is associated with.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="a7b3e-111">다음 예제에서는 <xref:System.Runtime.Serialization.DataContractAttribute> 및 <xref:System.Runtime.Serialization.DataMemberAttribute> 특성이 적용된 두 개의 클래스에서 XPath 쿼리를 만듭니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-111">The following example creates XPath queries from two classes to which the <xref:System.Runtime.Serialization.DataContractAttribute> and <xref:System.Runtime.Serialization.DataMemberAttribute> attributes have been applied.</span></span>  
+  
+ [!code-csharp[XPathQueryGenerator#0](~/samples/snippets/csharp/VS_Snippets_CFX/xpathquerygenerator/cs/source.cs#0)]
+ [!code-vb[XPathQueryGenerator#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/xpathquerygenerator/vb/source.vb#0)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName="CreateFromDataContractSerializer">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="a7b3e-112">데이터 계약에서 XPath를 만듭니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-112">Creates an XPath from a data contract.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CreateFromDataContractSerializer">
+      <MemberSignature Language="C#" Value="public static string CreateFromDataContractSerializer (Type type, System.Reflection.MemberInfo[] pathToMember, out System.Xml.XmlNamespaceManager namespaces);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string CreateFromDataContractSerializer(class System.Type type, class System.Reflection.MemberInfo[] pathToMember, [out] class System.Xml.XmlNamespaceManager&amp; namespaces) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.XPathQueryGenerator.CreateFromDataContractSerializer(System.Type,System.Reflection.MemberInfo[],System.Xml.XmlNamespaceManager@)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::String ^ CreateFromDataContractSerializer(Type ^ type, cli::array &lt;System::Reflection::MemberInfo ^&gt; ^ pathToMember, [Runtime::InteropServices::Out] System::Xml::XmlNamespaceManager ^ % namespaces);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Xml</AssemblyName>
+        <AssemblyVersion>4.1.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.Type" />
+        <Parameter Name="pathToMember" Type="System.Reflection.MemberInfo[]" />
+        <Parameter Name="namespaces" Type="System.Xml.XmlNamespaceManager&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="type">
+          <span data-ttu-id="a7b3e-113">데이터 계약을 나타내는 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-113">The type that represents a data contract.</span>
+          </span>
+        </param>
+        <param name="pathToMember">
+          <span data-ttu-id="a7b3e-114">
+            <see cref="Overload:System.Type.GetMember" /> 클래스의 <see cref="T:System.Type" /> 메서드를 사용하여 생성되는 메타데이터로, 쿼리를 생성하는 데 사용된 특정 데이터 멤버를 가리킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-114">The metadata, generated using the <see cref="Overload:System.Type.GetMember" /> method of the <see cref="T:System.Type" /> class, that points to the specific data member used to generate the query.</span>
+          </span>
+        </param>
+        <param name="namespaces">
+          <span data-ttu-id="a7b3e-115">데이터 계약에서 발견된 XML 네임스페이스 및 해당 접두사입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-115">The XML namespaces and their prefixes found in the data contract.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="a7b3e-116">지정된 데이터 계약 형식, 메타데이터 요소 배열 및 네임스페이스를 사용하여 데이터 계약에서 XPath를 만듭니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-116">Creates an XPath from a data contract using the specified data contract type, array of metadata elements, and namespaces..</span>
+          </span>
+        </summary>
+        <returns>
+          <see cref="T:System.String" />
+          <span data-ttu-id="a7b3e-117">형식 및 멤버 데이터에서 생성된 XPath입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-117">The XPath generated from the type and member data.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="a7b3e-118">데이터 계약에 대 한 자세한 내용은 참조 [를 사용 하 여 데이터 계약](~/docs/framework/wcf/feature-details/using-data-contracts.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-118">For more information about data contracts, see [Using Data Contracts](~/docs/framework/wcf/feature-details/using-data-contracts.md).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="a7b3e-119">다음 예제에서는 <xref:System.Runtime.Serialization.DataContractAttribute> 및 <xref:System.Runtime.Serialization.DataMemberAttribute> 특성이 적용된 두 개의 클래스에서 XPath 쿼리를 만듭니다.</span><span class="sxs-lookup"><span data-stu-id="a7b3e-119">The following example creates XPath queries from two classes to which the <xref:System.Runtime.Serialization.DataContractAttribute> and <xref:System.Runtime.Serialization.DataMemberAttribute> attributes have been applied.</span></span>  
+  
+ [!code-csharp[XPathQueryGenerator#0](~/samples/snippets/csharp/VS_Snippets_CFX/xpathquerygenerator/cs/source.cs#0)]
+ [!code-vb[XPathQueryGenerator#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/xpathquerygenerator/vb/source.vb#0)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateFromDataContractSerializer">
+      <MemberSignature Language="C#" Value="public static string CreateFromDataContractSerializer (Type type, System.Reflection.MemberInfo[] pathToMember, System.Text.StringBuilder rootElementXpath, out System.Xml.XmlNamespaceManager namespaces);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string CreateFromDataContractSerializer(class System.Type type, class System.Reflection.MemberInfo[] pathToMember, class System.Text.StringBuilder rootElementXpath, [out] class System.Xml.XmlNamespaceManager&amp; namespaces) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Serialization.XPathQueryGenerator.CreateFromDataContractSerializer(System.Type,System.Reflection.MemberInfo[],System.Text.StringBuilder,System.Xml.XmlNamespaceManager@)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::String ^ CreateFromDataContractSerializer(Type ^ type, cli::array &lt;System::Reflection::MemberInfo ^&gt; ^ pathToMember, System::Text::StringBuilder ^ rootElementXpath, [Runtime::InteropServices::Out] System::Xml::XmlNamespaceManager ^ % namespaces);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Xml</AssemblyName>
+        <AssemblyVersion>4.1.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.Type" />
+        <Parameter Name="pathToMember" Type="System.Reflection.MemberInfo[]" />
+        <Parameter Name="rootElementXpath" Type="System.Text.StringBuilder" />
+        <Parameter Name="namespaces" Type="System.Xml.XmlNamespaceManager&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="type">
+          <span data-ttu-id="a7b3e-120">데이터 계약을 나타내는 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-120">The type that represents a data contract.</span>
+          </span>
+        </param>
+        <param name="pathToMember">
+          <span data-ttu-id="a7b3e-121">
+            <see cref="Overload:System.Type.GetMember" /> 클래스의 <see cref="T:System.Type" /> 메서드를 사용하여 생성되는 메타데이터로, 쿼리를 생성하는 데 사용된 특정 데이터 멤버를 가리킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-121">The metadata, generated using the <see cref="Overload:System.Type.GetMember" /> method of the <see cref="T:System.Type" /> class, that points to the specific data member used to generate the query.</span>
+          </span>
+        </param>
+        <param name="rootElementXpath">
+          <span data-ttu-id="a7b3e-122">xpath의 최상위 요소입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-122">The top level element in the xpath.</span>
+          </span>
+        </param>
+        <param name="namespaces">
+          <span data-ttu-id="a7b3e-123">데이터 계약에서 발견된 XML 네임스페이스 및 해당 접두사입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-123">The XML namespaces and their prefixes found in the data contract.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="a7b3e-124">지정된 계약 데이터 형식, 메타데이터 요소 배열, 최상위 요소 및 네임스페이스를 사용하여 데이터 계약에서 XPath를 만듭니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-124">Creates an XPath from a data contract using the specified contract data type, array of metadata elements, the top level element, and namespaces.</span>
+          </span>
+        </summary>
+        <returns>
+          <see cref="T:System.String" />
+          <span data-ttu-id="a7b3e-125">형식 및 멤버 데이터에서 생성된 XPath입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="a7b3e-125">The XPath generated from the type and member data.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

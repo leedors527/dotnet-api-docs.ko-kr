@@ -1,0 +1,1832 @@
+<Type Name="Binding" FullName="System.ServiceModel.Channels.Binding">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="630007e527e101ae8481dd494854a9504be92cfb" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public abstract class Binding : System.ServiceModel.IDefaultCommunicationTimeouts" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit Binding extends System.Object implements class System.ServiceModel.IDefaultCommunicationTimeouts" />
+  <TypeSignature Language="DocId" Value="T:System.ServiceModel.Channels.Binding" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class Binding&#xA;Implements IDefaultCommunicationTimeouts" />
+  <TypeSignature Language="C++ CLI" Value="public ref class Binding abstract : System::ServiceModel::IDefaultCommunicationTimeouts" />
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.ServiceModel.IDefaultCommunicationTimeouts</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>
+      <span data-ttu-id="bba97-101">클라이언트와 서비스 간의 통신에 사용되는 프로토콜, 전송 및 메시지 인코더를 지정하는 바인딩 요소를 포함합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="bba97-101">Contains the binding elements that specify the protocols, transports, and message encoders used for communication between clients and services.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-102">바인딩 요소의 컬렉션을 나타냅니다. 각 바인딩 요소는 한 끝점이 다른 끝점과 통신하는 방법을 설명하며 이는 클라이언트의 채널 팩터리와 서비스의 채널 수신기에 일관성 있게 구현됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-102">Represents a collection of binding elements, each of which describes an aspect of how an endpoint communicates with other endpoints and that are built, consistently, into a channel factory on the client and into a channel listener on the service.</span></span> <span data-ttu-id="bba97-103">바인딩은 프로토콜 채널, 전송 채널 및 메시지 인코더에 해당되는 바인딩 요소의 컬렉션을 포함합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-103">A binding contains a collection of binding elements that correspond to protocol channels, transport channels, and message encoders.</span></span> <span data-ttu-id="bba97-104">프로토콜 채널에 대한 바인딩 요소 수는 무제한이지만 각 전송 채널 및 메시지 인코더에 대한 바인딩 요소는 하나씩만 있을 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-104">There can be any number of binding elements for protocol channels but one and only one binding element for each the transport and message encoder.</span></span> <span data-ttu-id="bba97-105">일반적으로 바인딩에는 여섯 개의 바인딩 요소 계층이 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-105">There are commonly six layers of binding elements in a binding.</span></span> <span data-ttu-id="bba97-106">스택의 맨 아래에는 전송 및 인코딩 바인딩 요소만 필요합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-106">Only the transport and encoding binding elements at the bottom of the stack are required.</span></span> <span data-ttu-id="bba97-107">인코딩은 각 바인딩의 필수적 요소이므로 인코딩을 지정하지 않으면 [!INCLUDE[indigo1](~/includes/indigo1-md.md)]에서 기본 인코딩을 자동으로 추가합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-107">Because an encoding is required for each binding, if an encoding is not specified, [!INCLUDE[indigo1](~/includes/indigo1-md.md)] adds a default encoding for you.</span></span> <span data-ttu-id="bba97-108">기본값은 HTTP 및 HTTPS 전송의 경우 텍스트/XML이고 기타 전송의 경우 이진입니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-108">The default is Text/XML for the HTTP and HTTPS transports, and Binary for other transports.</span></span>  
+  
+ <span data-ttu-id="bba97-109">다음 표에서는 각 계층의 옵션을 요약합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-109">The following table summarizes the options for each layer.</span></span>  
+  
+|<span data-ttu-id="bba97-110">계층</span><span class="sxs-lookup"><span data-stu-id="bba97-110">Layer</span></span>|<span data-ttu-id="bba97-111">옵션</span><span class="sxs-lookup"><span data-stu-id="bba97-111">Options</span></span>|<span data-ttu-id="bba97-112">필수</span><span class="sxs-lookup"><span data-stu-id="bba97-112">Required</span></span>|  
+|-----------|-------------|--------------|  
+|<span data-ttu-id="bba97-113">트랜잭션 흐름</span><span class="sxs-lookup"><span data-stu-id="bba97-113">Transaction Flow</span></span>|<xref:System.ServiceModel.Channels.TransactionFlowBindingElement>|<span data-ttu-id="bba97-114">아니요</span><span class="sxs-lookup"><span data-stu-id="bba97-114">No</span></span>|  
+|<span data-ttu-id="bba97-115">안정성</span><span class="sxs-lookup"><span data-stu-id="bba97-115">Reliability</span></span>|<xref:System.ServiceModel.Channels.ReliableSessionBindingElement>|<span data-ttu-id="bba97-116">아니요</span><span class="sxs-lookup"><span data-stu-id="bba97-116">No</span></span>|  
+|<span data-ttu-id="bba97-117">보안</span><span class="sxs-lookup"><span data-stu-id="bba97-117">Security</span></span>|<span data-ttu-id="bba97-118">대칭, 비대칭, 전송 수준</span><span class="sxs-lookup"><span data-stu-id="bba97-118">Symmetric, Asymmetric, Transport-Level</span></span>|<span data-ttu-id="bba97-119">아니요</span><span class="sxs-lookup"><span data-stu-id="bba97-119">No</span></span>|  
+|<span data-ttu-id="bba97-120">Shape Change</span><span class="sxs-lookup"><span data-stu-id="bba97-120">Shape Change</span></span>|<xref:System.ServiceModel.Channels.CompositeDuplexBindingElement>|<span data-ttu-id="bba97-121">아니요</span><span class="sxs-lookup"><span data-stu-id="bba97-121">No</span></span>|  
+|<span data-ttu-id="bba97-122">Transport Upgrades</span><span class="sxs-lookup"><span data-stu-id="bba97-122">Transport Upgrades</span></span>|<span data-ttu-id="bba97-123">SSL 스트림, Windows 스트림, 피어 확인자</span><span class="sxs-lookup"><span data-stu-id="bba97-123">SSL stream, Windows stream, Peer Resolver</span></span>|<span data-ttu-id="bba97-124">아니요</span><span class="sxs-lookup"><span data-stu-id="bba97-124">No</span></span>|  
+|<span data-ttu-id="bba97-125">인코딩</span><span class="sxs-lookup"><span data-stu-id="bba97-125">Encoding</span></span>|<span data-ttu-id="bba97-126">텍스트, 이진, MTOM, 사용자 지정</span><span class="sxs-lookup"><span data-stu-id="bba97-126">Text, Binary, MTOM, Custom</span></span>|<span data-ttu-id="bba97-127">예</span><span class="sxs-lookup"><span data-stu-id="bba97-127">Yes</span></span>|  
+|<span data-ttu-id="bba97-128">전송</span><span class="sxs-lookup"><span data-stu-id="bba97-128">Transport</span></span>|<span data-ttu-id="bba97-129">TCP, 명명된 파이프, HTTP, HTTPS, MSMQ, 사용자 지정</span><span class="sxs-lookup"><span data-stu-id="bba97-129">TCP, Named Pipes, HTTP, HTTPS, MSMQ, Custom</span></span>|<span data-ttu-id="bba97-130">예</span><span class="sxs-lookup"><span data-stu-id="bba97-130">Yes</span></span>|  
+  
+ <span data-ttu-id="bba97-131">각 바인딩 요소는 클라이언트의 채널 팩터리 및 서비스의 채널 수신기를 빌드하기 위한 사양을 제공합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-131">Each binding element provides the specification for building a channel factory on the client and a channel listener on the service.</span></span> <span data-ttu-id="bba97-132">예를 들어, 채널 팩터리 스택을 구성하면 바인딩 내의 바인딩 요소별로 하나씩 채널 팩터리가 스택에 생성됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-132">When the channel factory stack is constructed, for example, there is one channel factory in the stack for each binding element in the binding.</span></span> <span data-ttu-id="bba97-133">서비스에 스택으로 구성된 채널 수신기에도 동일한 종류의 매핑이 적용됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-133">The same sort of mapping applies to the channel listeners in the stack on the service.</span></span> <span data-ttu-id="bba97-134">이러한 끝점 간에 채널 기반 연결을 설정하려면 클라이언트와 서비스의 일관성이 유지되어야 합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-134">Consistency on the client and service is critical for establishing the channel-based connection between these endpoints.</span></span> <span data-ttu-id="bba97-135">각 팩터리와 수신기는 연결 채널 스택에서 해당 채널의 전송과 수신을 교대로 처리하며, 그런 다음 이 채널은 통신하는 데 사용되는 메시지를 전송하고 받을 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-135">Each factory and listener, in turn, processes the sending and accepting of the corresponding channels in the channel stack that connects them, and these channels can then send and receive the messages used to communicate.</span></span>  
+  
+ <span data-ttu-id="bba97-136"><xref:System.ServiceModel.Channels.Binding>의 각 인스턴스에는 서비스의 메타데이터에서 인스턴스를 고유하게 식별하는 <xref:System.ServiceModel.Channels.Binding.Name%2A> 및 <xref:System.ServiceModel.Channels.Binding.Namespace%2A>가 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-136">Each instance of a <xref:System.ServiceModel.Channels.Binding> has a <xref:System.ServiceModel.Channels.Binding.Name%2A> and <xref:System.ServiceModel.Channels.Binding.Namespace%2A> that together uniquely identify it in the metadata of the service.</span></span> <span data-ttu-id="bba97-137">이름 또는 네임스페이스를 지정하지 않으면 [!INCLUDE[indigo2](~/includes/indigo2-md.md)]에서 기본값을 자동으로 추가합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-137">If no name or namespace is specified, [!INCLUDE[indigo2](~/includes/indigo2-md.md)] adds a default values for you.</span></span> <span data-ttu-id="bba97-138">기본 이름은 `null` 의 기본 네임 스페이스 및 http://tempuri.org/합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-138">The default name is `null` and the default namespace is http://tempuri.org/.</span></span> <span data-ttu-id="bba97-139">바인딩에 대한 이 사용자 이름은 <xref:System.ServiceModel.Channels.Binding.Scheme%2A> 속성에 의해 지정되는 프로토콜 이름 사양과는 구분됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-139">This user name for the binding is distinct from the specification of the protocol name, which is specified by the <xref:System.ServiceModel.Channels.Binding.Scheme%2A> property.</span></span> <span data-ttu-id="bba97-140">예를 들어, HTTP 바인딩을 추가하려면 바인딩의 이름을 원하는 대로 지정하고 모든 체계를 "http"로 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-140">If you want to add more HTTP bindings, for example, you can name them whatever you want and set all of their schemes to "http".</span></span> <span data-ttu-id="bba97-141"><xref:System.ServiceModel.Channels.Binding.Scheme%2A>를 기반으로 하는 고유한 응용 프로그램이나 컴퓨터 디스패치가 없으므로,</span><span class="sxs-lookup"><span data-stu-id="bba97-141">There is no inherent application or machine dispatch based on the <xref:System.ServiceModel.Channels.Binding.Scheme%2A>.</span></span> <span data-ttu-id="bba97-142">잘 알려진 프로토콜에 대하여 추가 처리기를 등록할 수 없는 일반적인 문제를 피할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-142">So you avoid the common problem of being unable to register additional handlers for well-known protocols.</span></span> <span data-ttu-id="bba97-143">또한 각 버전에 서로 다른 이름을 지정하여 여러 버전의 바인딩을 함께 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-143">You can also easily work with multiple versions of a binding side-by-side by giving each version a different name.</span></span>  
+  
+ <span data-ttu-id="bba97-144"><xref:System.ServiceModel.Channels.Binding> 클래스는 장기간 동안 리소스를 묶어 두는 방법을 사용하는 DOS(서비스 거부) 공격을 줄일 수 있는 <xref:System.ServiceModel.IDefaultCommunicationTimeouts> 인터페이스를 구현합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-144">The <xref:System.ServiceModel.Channels.Binding> class implements the <xref:System.ServiceModel.IDefaultCommunicationTimeouts> interface to mitigate Denial of Service (DOS) attacks that rely on tying up resources for extended intervals of time.</span></span> <span data-ttu-id="bba97-145">이 구현에서는 연결 설정과 끊기 및 메시지 송수신 관련 작업 읽기와 쓰기에 대한 통신 제한 시간 값을 지정합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-145">The implementation specifies the communication timeouts values for opening and closing connections and for the reading and writing operations associated with receiving and sending messages.</span></span> <span data-ttu-id="bba97-146">이러한 제한 시간을 가져오고 설정하는 데 사용되는 속성 및 이러한 속성의 기본값이 다음 표에 요약되어 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-146">The properties used to get and set these timeouts and their default values operations are summarized in the following table.</span></span>  
+  
+|<span data-ttu-id="bba97-147">제한 시간 속성</span><span class="sxs-lookup"><span data-stu-id="bba97-147">Timeout Property</span></span>|<span data-ttu-id="bba97-148">기본값</span><span class="sxs-lookup"><span data-stu-id="bba97-148">Default Value</span></span>|  
+|----------------------|-------------------|  
+|<xref:System.ServiceModel.Channels.Binding.OpenTimeout%2A>|<span data-ttu-id="bba97-149">1분</span><span class="sxs-lookup"><span data-stu-id="bba97-149">1 minute</span></span>|  
+|<xref:System.ServiceModel.Channels.Binding.CloseTimeout%2A>|<span data-ttu-id="bba97-150">1분</span><span class="sxs-lookup"><span data-stu-id="bba97-150">1 minute</span></span>|  
+|<xref:System.ServiceModel.Channels.Binding.SendTimeout%2A>|<span data-ttu-id="bba97-151">1분</span><span class="sxs-lookup"><span data-stu-id="bba97-151">1 minute</span></span>|  
+|<xref:System.ServiceModel.Channels.Binding.ReceiveTimeout%2A>|<span data-ttu-id="bba97-152">10분</span><span class="sxs-lookup"><span data-stu-id="bba97-152">10 minutes</span></span>|  
+  
+ <span data-ttu-id="bba97-153"><xref:System.ServiceModel.Channels.Binding>에서 상속하여 바인딩을 만들 경우 <xref:System.ServiceModel.Channels.Binding.CreateBindingElements%2A>를 재정의해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-153">When you create a binding by inheriting from <xref:System.ServiceModel.Channels.Binding>, you must override <xref:System.ServiceModel.Channels.Binding.CreateBindingElements%2A>.</span></span>  
+  
+ <span data-ttu-id="bba97-154">또한 고유의 바인딩 요소를 정의하여 이전 테이블의 정의된 계층 사이에 삽입할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-154">In addition, you can define your own binding elements and insert them between any of the defined layers in the preceding table.</span></span> <span data-ttu-id="bba97-155">자세한 내용은 <xref:System.ServiceModel.Channels.CustomBinding> 클래스를 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="bba97-155">For more information, see the <xref:System.ServiceModel.Channels.CustomBinding> class.</span></span>  
+  
+   
+  
+## Examples  
+ [!code-csharp[S_UEBinding#11](~/samples/snippets/csharp/VS_Snippets_CFX/s_uebinding/cs/service.cs#11)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-156">
+            <see cref="T:System.ServiceModel.Channels.Binding" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-156">Initializes a new instance of the <see cref="T:System.ServiceModel.Channels.Binding" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Binding ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; Binding();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-157">기본 이름과 네임스페이스를 사용하여 <see cref="T:System.ServiceModel.Channels.Binding" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-157">Initializes a new instance of the <see cref="T:System.ServiceModel.Channels.Binding" /> class with a default name and namespace.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-158">기본 이름은 `null` 의 기본 네임 스페이스 및 http://tempuri.org/합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-158">The default name is `null` and the default namespace is http://tempuri.org/.</span></span>  
+  
+   
+  
+## Examples  
+ [!code-csharp[S_UEBinding#2](~/samples/snippets/csharp/VS_Snippets_CFX/s_uebinding/cs/service.cs#2)]
+ [!code-vb[S_UEBinding#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/s_uebinding/vb/service.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Binding (string name, string ns);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(string name, string ns) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.#ctor(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New (name As String, ns As String)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; Binding(System::String ^ name, System::String ^ ns);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="ns" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="bba97-159">바인딩의 <see cref="P:System.ServiceModel.Channels.Binding.Name" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-159">The <see cref="P:System.ServiceModel.Channels.Binding.Name" /> of the binding.</span>
+          </span>
+        </param>
+        <param name="ns">
+          <span data-ttu-id="bba97-160">바인딩의 <see cref="P:System.ServiceModel.Channels.Binding.Namespace" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-160">The <see cref="P:System.ServiceModel.Channels.Binding.Namespace" /> of the binding.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-161">서비스의 지정된 바인딩에서 <see cref="T:System.ServiceModel.Channels.Binding" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-161">Initializes a new instance of the <see cref="T:System.ServiceModel.Channels.Binding" /> class from a specified binding of the service.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-162"><xref:System.ServiceModel.Channels.Binding.Name%2A> 및 <xref:System.ServiceModel.Channels.Binding.Namespace%2A>는 서비스의 메타데이터에서 <xref:System.ServiceModel.Channels.Binding>의 인스턴스를 고유하게 식별합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-162">The <xref:System.ServiceModel.Channels.Binding.Name%2A> and <xref:System.ServiceModel.Channels.Binding.Namespace%2A> together uniquely identify an instance of a <xref:System.ServiceModel.Channels.Binding> in the metadata of the service.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="bba97-163">
+            <paramref name="name" />이 <see langword="null" /> 또는 빈 문자열인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-163">
+              <paramref name="name" /> is <see langword="null" /> or an empty string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="bba97-164">
+            <paramref name="ns" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-164">
+              <paramref name="ns" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="BuildChannelFactory&lt;TChannel&gt;">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-165">바인딩에서 지정된 채널 팩터리 스택을 클라이언트에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-165">Builds the channel factory stack on the client specified by the binding.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="BuildChannelFactory&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Channels.IChannelFactory&lt;TChannel&gt; BuildChannelFactory&lt;TChannel&gt; (params object[] parameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.ServiceModel.Channels.IChannelFactory`1&lt;!!TChannel&gt; BuildChannelFactory&lt;TChannel&gt;(object[] parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelFactory``1(System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Function BuildChannelFactory(Of TChannel) (ParamArray parameters As Object()) As IChannelFactory(Of TChannel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; System::ServiceModel::Channels::IChannelFactory&lt;TChannel&gt; ^ BuildChannelFactory(... cli::array &lt;System::Object ^&gt; ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelFactory&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-166">채널 팩터리에서 생성하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-166">The type of channel the channel factory produces.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-167">생성되는 채널 수신기에 대한 요구 사항을 지정하는 개체 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-167">The object array that specifies requirements for the channel factory that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-168">지정된 유형의 채널을 만들고 개체 배열에서 지정된 기능을 충족하는 채널 팩터리 스택을 클라이언트에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-168">Builds the channel factory stack on the client that creates a specified type of channel and that satisfies the features specified by an object array.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-169">컬렉션에서 지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelFactory`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-169">An <see cref="T:System.ServiceModel.Channels.IChannelFactory`1" /> of type <paramref name="TChannel" /> that satisfies the features specified by the collection.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-170">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-170">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BuildChannelFactory&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelFactory&lt;TChannel&gt; BuildChannelFactory&lt;TChannel&gt; (System.ServiceModel.Channels.BindingParameterCollection parameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelFactory`1&lt;!!TChannel&gt; BuildChannelFactory&lt;TChannel&gt;(class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelFactory``1(System.ServiceModel.Channels.BindingParameterCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelFactory(Of TChannel) (parameters As BindingParameterCollection) As IChannelFactory(Of TChannel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; virtual System::ServiceModel::Channels::IChannelFactory&lt;TChannel&gt; ^ BuildChannelFactory(System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelFactory&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-171">채널 팩터리에서 생성하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-171">The type of channel the channel factory produces.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-172">생성되는 채널 팩터리에 대한 요구 사항을 지정하는 <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-172">The <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" /> that specifies requirements for the channel factory built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-173">지정된 유형의 채널을 만들고 바인딩 매개 변수 컬렉션에서 지정된 기능을 충족하는 채널 팩터리 스택을 클라이언트에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-173">Builds the channel factory stack on the client that creates a specified type of channel and that satisfies the features specified by a collection of binding parameters.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-174">컬렉션에서 지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelFactory`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-174">An <see cref="T:System.ServiceModel.Channels.IChannelFactory`1" /> of type <paramref name="TChannel" /> that satisfies the features specified by the collection.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-175">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-175">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-176">지정된 유형의 채널을 허용하고 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-176">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (params object[] parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(object[] parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelListener``1(System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelListener(Of TChannel As {Class, IChannel}) (ParamArray parameters As Object()) As IChannelListener(Of TChannel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(... cli::array &lt;System::Object ^&gt; ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-177">채널 수신기가 수락하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-177">The type of channel the channel listener accepts.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-178">생성되는 채널 수신기에 대한 요구 사항을 지정하는 개체 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-178">The object array that specifies requirements for the channel factory built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-179">지정된 유형의 채널을 허용하고 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-179">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-180">지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-180">An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> that satisfies the features specified.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-181">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-181">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (System.ServiceModel.Channels.BindingParameterCollection parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelListener``1(System.ServiceModel.Channels.BindingParameterCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelListener(Of TChannel As {Class, IChannel}) (parameters As BindingParameterCollection) As IChannelListener(Of TChannel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-182">채널 수신기가 수락하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-182">The type of channel the channel listener accepts.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-183">생성되는 채널 수신기에 대한 요구 사항을 지정하는 <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-183">The <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" /> that specifies requirements for the channel listener that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-184">지정된 유형의 채널을 허용하고 바인딩 매개 변수 컬렉션에서 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-184">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified by a collection of binding parameters.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-185">지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-185">An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> that satisfies the features specified.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-186">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-186">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (Uri listenUriBaseAddress, string listenUriRelativeAddress, params object[] parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.Uri listenUriBaseAddress, string listenUriRelativeAddress, object[] parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelListener``1(System.Uri,System.String,System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelListener(Of TChannel As {Class, IChannel}) (listenUriBaseAddress As Uri, listenUriRelativeAddress As String, ParamArray parameters As Object()) As IChannelListener(Of TChannel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(Uri ^ listenUriBaseAddress, System::String ^ listenUriRelativeAddress, ... cli::array &lt;System::Object ^&gt; ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="listenUriBaseAddress" Type="System.Uri" />
+        <Parameter Name="listenUriRelativeAddress" Type="System.String" />
+        <Parameter Name="parameters" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-187">채널 수신기가 수락하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-187">The type of channel the channel listener accepts.</span>
+          </span>
+        </typeparam>
+        <param name="listenUriBaseAddress">
+          <span data-ttu-id="bba97-188">서비스가 수신 대기하는 기본 주소를 제공하는 <see cref="T:System.Uri" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-188">The <see cref="T:System.Uri" /> that provides the base address on which the service listens.</span>
+          </span>
+        </param>
+        <param name="listenUriRelativeAddress">
+          <span data-ttu-id="bba97-189">기준 주소에 대해 상대적이며 서비스가 수신 대기하는 주소입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-189">The address, relative to the base address, on which the service listens.</span>
+          </span>
+        </param>
+        <param name="parameters">
+          <span data-ttu-id="bba97-190">생성되는 채널 수신기에 대한 요구 사항을 지정하는 개체 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-190">The object array that specifies requirements for the channel factory that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-191">지정된 유형의 채널을 허용하고 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-191">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-192">지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-192">An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> that satisfies the features specified.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-193">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-193">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (Uri listenUriBaseAddress, string listenUriRelativeAddress, System.ServiceModel.Channels.BindingParameterCollection parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.Uri listenUriBaseAddress, string listenUriRelativeAddress, class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelListener``1(System.Uri,System.String,System.ServiceModel.Channels.BindingParameterCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelListener(Of TChannel As {Class, IChannel}) (listenUriBaseAddress As Uri, listenUriRelativeAddress As String, parameters As BindingParameterCollection) As IChannelListener(Of TChannel)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(Uri ^ listenUriBaseAddress, System::String ^ listenUriRelativeAddress, System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="listenUriBaseAddress" Type="System.Uri" />
+        <Parameter Name="listenUriRelativeAddress" Type="System.String" />
+        <Parameter Name="parameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-194">채널 수신기가 수락하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-194">The type of channel the channel listener accepts.</span>
+          </span>
+        </typeparam>
+        <param name="listenUriBaseAddress">
+          <span data-ttu-id="bba97-195">서비스가 수신 대기하는 기본 주소를 제공하는 <see cref="T:System.Uri" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-195">The <see cref="T:System.Uri" /> that provides the base address on which the service listens.</span>
+          </span>
+        </param>
+        <param name="listenUriRelativeAddress">
+          <span data-ttu-id="bba97-196">기준 주소에 대해 상대적이며 서비스가 수신 대기하는 주소입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-196">The address, relative to the base address, on which the service listens.</span>
+          </span>
+        </param>
+        <param name="parameters">
+          <span data-ttu-id="bba97-197">생성되는 채널 수신기에 대한 요구 사항을 지정하는 <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-197">The <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" /> that specifies requirements for the channel listener that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-198">지정된 유형의 채널을 허용하고 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-198">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-199">지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-199">An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> that satisfies the features specified.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-200">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-200">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (Uri listenUriBaseAddress, params object[] parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.Uri listenUriBaseAddress, object[] parameters) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelListener``1(System.Uri,System.Object[])" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelListener(Of TChannel As {Class, IChannel}) (listenUriBaseAddress As Uri, ParamArray parameters As Object()) As IChannelListener(Of TChannel)" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(Uri ^ listenUriBaseAddress, ... cli::array &lt;System::Object ^&gt; ^ parameters);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (Uri listenUri, params object[] parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.Uri listenUri, object[] parameters) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelListener(Of TChannel As {Class, IChannel}) (listenUri As Uri, ParamArray parameters As Object()) As IChannelListener(Of TChannel)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(Uri ^ listenUri, ... cli::array &lt;System::Object ^&gt; ^ parameters);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="listenUriBaseAddress" Type="System.Uri" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+        <Parameter Name="listenUri" Type="System.Uri" Index="0" FrameworkAlternate="xamarinmac-3.0" />
+        <Parameter Name="parameters" Type="System.Object[]" Index="1">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-201">채널 수신기가 수락하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-201">The type of channel the channel listener accepts.</span>
+          </span>
+        </typeparam>
+        <param name="listenUriBaseAddress">To be added.</param>
+        <param name="listenUri">To be added.</param>
+        <param name="parameters">
+          <span data-ttu-id="bba97-202">생성되는 채널 수신기에 대한 요구 사항을 지정하는 개체 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-202">The object array that specifies requirements for the channel factory that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-203">지정된 유형의 채널을 허용하고 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-203">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-204">지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-204">An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> that satisfies the features specified.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-205">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-205">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (Uri listenUriBaseAddress, System.ServiceModel.Channels.BindingParameterCollection parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.Uri listenUriBaseAddress, class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelListener``1(System.Uri,System.ServiceModel.Channels.BindingParameterCollection)" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelListener(Of TChannel As {Class, IChannel}) (listenUriBaseAddress As Uri, parameters As BindingParameterCollection) As IChannelListener(Of TChannel)" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(Uri ^ listenUriBaseAddress, System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (Uri listenUri, System.ServiceModel.Channels.BindingParameterCollection parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.Uri listenUri, class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BuildChannelListener(Of TChannel As {Class, IChannel}) (listenUri As Uri, parameters As BindingParameterCollection) As IChannelListener(Of TChannel)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(Uri ^ listenUri, System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="listenUriBaseAddress" Type="System.Uri" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;xamarinandroid-7.1;xamarinios-10.8" />
+        <Parameter Name="listenUri" Type="System.Uri" Index="0" FrameworkAlternate="xamarinmac-3.0" />
+        <Parameter Name="parameters" Type="System.ServiceModel.Channels.BindingParameterCollection" Index="1" />
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-206">채널 수신기가 수락하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-206">The type of channel the channel listener accepts.</span>
+          </span>
+        </typeparam>
+        <param name="listenUriBaseAddress">To be added.</param>
+        <param name="listenUri">To be added.</param>
+        <param name="parameters">
+          <span data-ttu-id="bba97-207">생성되는 채널 수신기에 대한 요구 사항을 지정하는 <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-207">The <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" /> that specifies requirements for the channel listener that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-208">지정된 유형의 채널을 허용하고 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-208">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-209">지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-209">An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> that satisfies the features specified.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-210">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-210">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (Uri listenUriBaseAddress, string listenUriRelativeAddress, System.ServiceModel.Description.ListenUriMode listenUriMode, params object[] parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.Uri listenUriBaseAddress, string listenUriRelativeAddress, valuetype System.ServiceModel.Description.ListenUriMode listenUriMode, object[] parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelListener``1(System.Uri,System.String,System.ServiceModel.Description.ListenUriMode,System.Object[])" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(Uri ^ listenUriBaseAddress, System::String ^ listenUriRelativeAddress, System::ServiceModel::Description::ListenUriMode listenUriMode, ... cli::array &lt;System::Object ^&gt; ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="listenUriBaseAddress" Type="System.Uri" />
+        <Parameter Name="listenUriRelativeAddress" Type="System.String" />
+        <Parameter Name="listenUriMode" Type="System.ServiceModel.Description.ListenUriMode" />
+        <Parameter Name="parameters" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-211">채널 수신기가 수락하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-211">The type of channel the channel listener accepts.</span>
+          </span>
+        </typeparam>
+        <param name="listenUriBaseAddress">
+          <span data-ttu-id="bba97-212">서비스가 수신 대기하는 기본 주소를 제공하는 <see cref="T:System.Uri" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-212">The <see cref="T:System.Uri" /> that provides the base address on which the service listens.</span>
+          </span>
+        </param>
+        <param name="listenUriRelativeAddress">
+          <span data-ttu-id="bba97-213">기준 주소에 대해 상대적이며 서비스가 수신 대기하는 주소입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-213">The address, relative to the base address, on which the service listens.</span>
+          </span>
+        </param>
+        <param name="listenUriMode">
+          <span data-ttu-id="bba97-214">전송 시 서비스에서 수신하도록 제공된 URI의 고유성을 확인할지 아니면 제공된 그대로 사용할지를 나타내는 <see cref="T:System.ServiceModel.Description.ListenUriMode" />의 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-214">A value of the <see cref="T:System.ServiceModel.Description.ListenUriMode" /> that indicates whether the transport must ensure that the URI provided for the service to listen on is unique or can be used exactly as provided.</span>
+          </span>
+        </param>
+        <param name="parameters">
+          <span data-ttu-id="bba97-215">생성되는 채널 수신기에 대한 요구 사항을 지정하는 개체 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-215">The object array that specifies requirements for the channel factory that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-216">지정된 유형의 채널을 허용하고 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-216">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-217">지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-217">An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> that satisfies the features specified.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-218">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-218">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt; BuildChannelListener&lt;TChannel&gt; (Uri listenUriBaseAddress, string listenUriRelativeAddress, System.ServiceModel.Description.ListenUriMode listenUriMode, System.ServiceModel.Channels.BindingParameterCollection parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelListener`1&lt;!!TChannel&gt; BuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.Uri listenUriBaseAddress, string listenUriRelativeAddress, valuetype System.ServiceModel.Description.ListenUriMode listenUriMode, class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.BuildChannelListener``1(System.Uri,System.String,System.ServiceModel.Description.ListenUriMode,System.ServiceModel.Channels.BindingParameterCollection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual System::ServiceModel::Channels::IChannelListener&lt;TChannel&gt; ^ BuildChannelListener(Uri ^ listenUriBaseAddress, System::String ^ listenUriRelativeAddress, System::ServiceModel::Description::ListenUriMode listenUriMode, System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelListener&lt;TChannel&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="listenUriBaseAddress" Type="System.Uri" />
+        <Parameter Name="listenUriRelativeAddress" Type="System.String" />
+        <Parameter Name="listenUriMode" Type="System.ServiceModel.Description.ListenUriMode" />
+        <Parameter Name="parameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-219">채널 수신기가 수락하는 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-219">The type of channel the channel listener accepts.</span>
+          </span>
+        </typeparam>
+        <param name="listenUriBaseAddress">
+          <span data-ttu-id="bba97-220">서비스가 수신 대기하는 기본 주소를 제공하는 <see cref="T:System.Uri" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-220">The <see cref="T:System.Uri" /> that provides the base address on which the service listens.</span>
+          </span>
+        </param>
+        <param name="listenUriRelativeAddress">
+          <span data-ttu-id="bba97-221">기준 주소에 대해 상대적이며 서비스가 수신 대기하는 주소입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-221">The address, relative to the base address, on which the service listens.</span>
+          </span>
+        </param>
+        <param name="listenUriMode">
+          <span data-ttu-id="bba97-222">전송 시 서비스에서 수신하도록 제공된 URI의 고유성을 확인할지 아니면 제공된 그대로 사용할지를 나타내는 <see cref="T:System.ServiceModel.Description.ListenUriMode" />의 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-222">A value of the <see cref="T:System.ServiceModel.Description.ListenUriMode" /> that indicates whether the transport must ensure that the URI provided for the service to listen on is unique or can be used exactly as provided.</span>
+          </span>
+        </param>
+        <param name="parameters">
+          <span data-ttu-id="bba97-223">생성되는 채널 수신기에 대한 요구 사항을 지정하는 <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-223">The <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" /> that specifies requirements for the channel listener that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-224">지정된 유형의 채널을 허용하고 지정된 기능을 충족하는 채널 수신기를 서비스에 생성합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-224">Builds the channel listener on the service that accepts a specified type of channel and that satisfies the features specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-225">지정된 기능을 충족하는 <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> 형식의 <paramref name="TChannel" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-225">An <see cref="T:System.ServiceModel.Channels.IChannelListener`1" /> of type <paramref name="TChannel" /> that satisfies the features specified.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="bba97-226">전송 요소가 없거나 순서가 잘못되었거나, 체계가 잘못되었거나, 메시지 버전이 지정되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-226">Transport element is missing or out of order or scheme is invalid or the message version is not specified.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="CanBuildChannelFactory&lt;TChannel&gt;">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-227">현재 바인딩이 특정 기준을 충족하는 채널 팩터리 스택을 클라이언트에 생성할 수 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-227">Returns a value that indicates whether the current binding can build a channel factory stack on the client that satisfies some specific criteria.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-228">팩터리를 실제로 생성하기 전에 제공된 `TChannel`를 사용하여 `context` 형식의 채널에 대한 채널 팩터리를 만들 수 있는지 여부를 확인하려면 이 메서드를 사용합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-228">Use this method if you want to check that the channel factory for channels of type `TChannel` can be build for the `context` provided before attempting to actually build the factory.</span></span> <span data-ttu-id="bba97-229">또는 <xref:System.ServiceModel.Channels.BindingElement.BuildChannelFactory%2A>를 호출하여 채널 팩터리를 만들어 보고 만들 수 없는 경우 생성되는 예외를 catch할 수도 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-229">Alternatively, try to build the channel factory by calling <xref:System.ServiceModel.Channels.BindingElement.BuildChannelFactory%2A> and catch the exception generated if it cannot be built.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CanBuildChannelFactory&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public bool CanBuildChannelFactory&lt;TChannel&gt; (params object[] parameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CanBuildChannelFactory&lt;TChannel&gt;(object[] parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.CanBuildChannelFactory``1(System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Function CanBuildChannelFactory(Of TChannel) (ParamArray parameters As Object()) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; bool CanBuildChannelFactory(... cli::array &lt;System::Object ^&gt; ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-230">팩터리를 테스트할 대상 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-230">The type of channel for which the factory is being tested.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-231">생성되는 채널 수신기에 대한 요구 사항을 지정하는 개체 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-231">The object array that specifies requirements for the channel factory that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-232">현재 바인딩이 개체 배열에서 지정된 요구 사항을 충족하는 채널 팩터리 스택을 클라이언트에 생성할 수 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-232">Returns a value that indicates whether the current binding can build a channel factory stack on the client that satisfies the requirements specified by an object array.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-233">지정된 채널 팩터리 스택을 클라이언트에 생성할 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-233">
+              <see langword="true" /> if the specified channel factory stack can be build on the client; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-234">팩터리를 실제로 생성하기 전에 지정된 바인딩 `TChannel`를 사용하여 `parameters` 형식의 채널에 대한 채널 팩터리를 만들 수 있는지 여부를 확인하려면 이 메서드를 사용합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-234">Use this method if you want to check that the channel factory for channels of type `TChannel` can be build for the binding `parameters` specified before attempting to actually build the factory.</span></span> <span data-ttu-id="bba97-235">또는 <xref:System.ServiceModel.Channels.Binding.BuildChannelFactory%60%601%28System.Object%5B%5D%29>를 호출하여 채널 팩터리를 만들어 보고 만들 수 없는 경우 생성되는 예외를 catch할 수도 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-235">Alternatively, try to build the channel factory by calling <xref:System.ServiceModel.Channels.Binding.BuildChannelFactory%60%601%28System.Object%5B%5D%29> and catch the exception generated if it cannot be built.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanBuildChannelFactory&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual bool CanBuildChannelFactory&lt;TChannel&gt; (System.ServiceModel.Channels.BindingParameterCollection parameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanBuildChannelFactory&lt;TChannel&gt;(class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.CanBuildChannelFactory``1(System.ServiceModel.Channels.BindingParameterCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function CanBuildChannelFactory(Of TChannel) (parameters As BindingParameterCollection) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; virtual bool CanBuildChannelFactory(System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-236">팩터리를 테스트할 대상 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-236">The type of channel for which the factory is being tested.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-237">생성되는 채널 팩터리에 대한 요구 사항을 지정하는 <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-237">The <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" /> that specifies requirements for the channel factory that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-238">현재 바인딩이 지정된 바인딩 매개 변수 컬렉션을 충족하는 채널 팩터리 스택을 클라이언트에 생성할 수 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-238">Returns a value that indicates whether the current binding can build a channel factory stack on the client that satisfies the collection of binding parameters specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-239">지정된 채널 팩터리 스택을 클라이언트에 생성할 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-239">
+              <see langword="true" /> if the specified channel factory stack can be build on the client; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-240">팩터리를 실제로 생성하기 전에 지정된 바인딩 `TChannel`를 사용하여 `parameters` 형식의 채널에 대한 채널 팩터리를 만들 수 있는지 여부를 확인하려면 이 메서드를 사용합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-240">Use this method if you want to check that the channel factory for channels of type `TChannel` can be build for the binding `parameters` specified before attempting to actually build the factory.</span></span> <span data-ttu-id="bba97-241">또는 <xref:System.ServiceModel.Channels.Binding.BuildChannelFactory%60%601%28System.ServiceModel.Channels.BindingParameterCollection%29>를 호출하여 채널 팩터리를 만들어 보고 만들 수 없는 경우 생성되는 예외를 catch할 수도 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-241">Alternatively, try to build the channel factory by calling <xref:System.ServiceModel.Channels.Binding.BuildChannelFactory%60%601%28System.ServiceModel.Channels.BindingParameterCollection%29> and catch the exception generated if it cannot be built.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="CanBuildChannelListener&lt;TChannel&gt;">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-242">현재 바인딩이 지정된 기준을 충족하는 채널 수신기를 서비스에 생성할 수 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-242">Returns a value that indicates whether the current binding can build a channel listener stack on the service that satisfies some specified criteria.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CanBuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public bool CanBuildChannelListener&lt;TChannel&gt; (params object[] parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CanBuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(object[] parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.CanBuildChannelListener``1(System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Function CanBuildChannelListener(Of TChannel As {Class, IChannel}) (ParamArray parameters As Object()) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel bool CanBuildChannelListener(... cli::array &lt;System::Object ^&gt; ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.Object[]">
+          <Attributes>
+            <Attribute>
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-243">수신기를 테스트할 대상 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-243">The type of channel for which the listener is being tested.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-244">생성되는 채널 수신기에 대한 요구 사항을 지정하는 개체 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-244">The object array that specifies requirements for the channel factory that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-245">현재 바인딩이 개체 배열에 지정된 기준을 충족하는 채널 수신기 스택을 서비스에 생성할 수 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-245">Returns a value that indicates whether the current binding can build a channel listener stack on the service that satisfies the criteria specified in an array of objects.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-246">지정된 채널 수신기 스택을 서비스에 생성할 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-246">
+              <see langword="true" /> if the specified channel listener stack can be build on the service; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-247">수신기를 실제로 생성하기 전에 지정된 바인딩 `TChannel`를 사용하여 `parameters` 형식의 채널에 대한 채널 수신기를 만들 수 있는지 여부를 확인하려면 이 메서드를 사용합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-247">Use this method if you want to check that the channel listener for channels of type `TChannel` can be build for the binding `parameters` specified before attempting to actually build the listener.</span></span> <span data-ttu-id="bba97-248">또는 <xref:System.ServiceModel.Channels.Binding.BuildChannelListener%60%601%28System.Object%5B%5D%29>를 호출하여 채널 수신기를 만들어 보고 만들 수 없는 경우 생성되는 예외를 catch할 수도 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-248">Alternatively, try to build the channel listener by calling <xref:System.ServiceModel.Channels.Binding.BuildChannelListener%60%601%28System.Object%5B%5D%29> and catch the exception generated if it cannot be built.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanBuildChannelListener&lt;TChannel&gt;">
+      <MemberSignature Language="C#" Value="public virtual bool CanBuildChannelListener&lt;TChannel&gt; (System.ServiceModel.Channels.BindingParameterCollection parameters) where TChannel : class, System.ServiceModel.Channels.IChannel;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanBuildChannelListener&lt;class (class System.ServiceModel.Channels.IChannel) TChannel&gt;(class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.CanBuildChannelListener``1(System.ServiceModel.Channels.BindingParameterCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function CanBuildChannelListener(Of TChannel As {Class, IChannel}) (parameters As BindingParameterCollection) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename TChannel&gt;&#xA; where TChannel : class, System::ServiceModel::Channels::IChannel virtual bool CanBuildChannelListener(System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="TChannel">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+            <InterfaceName>System.ServiceModel.Channels.IChannel</InterfaceName>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="TChannel">
+          <span data-ttu-id="bba97-249">수신기를 테스트할 대상 채널 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-249">The type of channel for which the listener is being tested.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-250">생성되는 채널 수신기에 대한 요구 사항을 지정하는 <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-250">The <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" /> that specifies requirements for the channel listener that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-251">현재 바인딩이 지정된 바인딩 매개 변수 컬렉션을 충족하는 채널 수신기 스택을 서비스에 생성할 수 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-251">Returns a value that indicates whether the current binding can build a channel listener stack on the service that satisfies the collection of binding parameters specified.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-252">지정된 채널 수신기 스택을 서비스에 생성할 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-252">
+              <see langword="true" /> if the specified channel listener stack can be build on the service; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-253">수신기를 실제로 생성하기 전에 지정된 바인딩 `TChannel`를 사용하여 `parameters` 형식의 채널에 대한 채널 수신기를 만들 수 있는지 여부를 확인하려면 이 메서드를 사용합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-253">Use this method if you want to check that the channel listener for channels of type `TChannel` can be build for the binding `parameters` specified before attempting to actually build the listener.</span></span> <span data-ttu-id="bba97-254">또는 <xref:System.ServiceModel.Channels.Binding.BuildChannelListener%60%601%28System.ServiceModel.Channels.BindingParameterCollection%29>를 호출하여 채널 수신기를 만들어 보고 만들 수 없는 경우 생성되는 예외를 catch할 수도 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-254">Alternatively, try to build the channel listener by calling <xref:System.ServiceModel.Channels.Binding.BuildChannelListener%60%601%28System.ServiceModel.Channels.BindingParameterCollection%29> and catch the exception generated if it cannot be built.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CloseTimeout">
+      <MemberSignature Language="C#" Value="public TimeSpan CloseTimeout { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan CloseTimeout" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.Binding.CloseTimeout" />
+      <MemberSignature Language="VB.NET" Value="Public Property CloseTimeout As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan CloseTimeout { TimeSpan get(); void set(TimeSpan value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-255">전송 중 예외가 발생하기 전에 연결을 끊기 위해 제공되는 시간 간격을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-255">Gets or sets the interval of time provided for a connection to close before the transport raises an exception.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="bba97-256">제한 시간이 초과되기 전에 닫기 작업이 완료되어야 하는 기간을 지정하는 <see cref="T:System.TimeSpan" />입니다. 기본값은 1분입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-256">The <see cref="T:System.TimeSpan" /> that specifies how long the close operation has to complete before timing out. The default value is 1 minute.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-257">이 속성 값은 바인딩 팩터리에서 생성되는 채널 및 수신기에서 사용됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-257">The value of this property is used by the channels and listeners produced by the factories of the binding.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="bba97-258">값이 0보다 작거나 너무 큰 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-258">The value is less than zero or too large.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateBindingElements">
+      <MemberSignature Language="C#" Value="public abstract System.ServiceModel.Channels.BindingElementCollection CreateBindingElements ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.ServiceModel.Channels.BindingElementCollection CreateBindingElements() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.CreateBindingElements" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function CreateBindingElements () As BindingElementCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::ServiceModel::Channels::BindingElementCollection ^ CreateBindingElements();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.BindingElementCollection</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-259">파생 클래스에서 재정의되는 경우 현재 바인딩의 일부인 바인딩 요소를 포함하는 컬렉션을 만듭니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-259">When overridden in a derived class, creates a collection that contains the binding elements that are part of the current binding.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-260">현재 바인딩 개체의 바인딩 요소를 올바른 순서로 포함하는 <see cref="T:System.Collections.Generic.ICollection`1" /> 형식의 <see cref="T:System.ServiceModel.Channels.BindingElement" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-260">A <see cref="T:System.Collections.Generic.ICollection`1" /> object of type <see cref="T:System.ServiceModel.Channels.BindingElement" /> that contains the binding elements from the current binding object in the correct order.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-261">요소는 <xref:System.ServiceModel.Channels.Binding> 개체에서 사용하는 내부 요소를 참조할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-261">The elements should not reference any internal elements that the <xref:System.ServiceModel.Channels.Binding> object uses.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetProperty&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T GetProperty&lt;T&gt; (System.ServiceModel.Channels.BindingParameterCollection parameters) where T : class;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance !!T GetProperty&lt;class T&gt;(class System.ServiceModel.Channels.BindingParameterCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.GetProperty``1(System.ServiceModel.Channels.BindingParameterCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetProperty(Of T As Class) (parameters As BindingParameterCollection) As T" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T&gt;&#xA; where T : class T GetProperty(System::ServiceModel::Channels::BindingParameterCollection ^ parameters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>T</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">
+          <span data-ttu-id="bba97-262">메서드에서 쿼리하고 있는 형식화된 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-262">The typed object for which the method is querying.</span>
+          </span>
+        </typeparam>
+        <param name="parameters">
+          <span data-ttu-id="bba97-263">생성되는 채널 수신기에 대한 요구 사항을 지정하는 <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-263">The <see cref="T:System.ServiceModel.Channels.BindingParameterCollection" /> that specifies requirements for the channel listener that is built.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="bba97-264">요청한 형식화된 개체가 있으면 바인딩 스택의 해당 계층에서 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-264">Returns a typed object requested, if present, from the appropriate layer in the binding stack.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-265">요청한 형식의 개체가 있으면 해당 형식의 개체 <paramref name="T" />이고, 없으면 <see langword="null" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-265">The typed object <paramref name="T" /> requested if it is present or <see langword="null" /> if it is not.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-266">요청된 개체의 반환을 지원하는 계층이 있으면 해당 개체가 반환됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-266">If a layer supports returning the requested object, it returns it.</span></span> <span data-ttu-id="bba97-267">그렇지 않으면 스택의 다음 계층에 호출을 위임합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-267">If not, it delegates the call down to the next layer in the stack.</span></span> <span data-ttu-id="bba97-268">스택의 맨 아래에 도달할 때까지 요청된 개체를 지원하는 계층이 없으면 메서드는 `null`을 반환합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-268">If it gets to the bottom of the stack and no layer supported the requested object, then the method returns `null`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MessageVersion">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Channels.MessageVersion MessageVersion { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Channels.MessageVersion MessageVersion" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.Binding.MessageVersion" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property MessageVersion As MessageVersion" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Channels::MessageVersion ^ MessageVersion { System::ServiceModel::Channels::MessageVersion ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.MessageVersion</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-269">바인딩을 사용하여 구성된 클라이언트 및 서비스에서 사용하는 메시지 버전을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-269">Gets the message version used by clients and services configured with the binding.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="bba97-270">바인딩을 사용하여 구성된 클라이언트 및 서비스에서 사용하는 <see cref="T:System.ServiceModel.Channels.MessageVersion" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-270">The <see cref="T:System.ServiceModel.Channels.MessageVersion" /> used by clients and services configured with the binding.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.Binding.Name" />
+      <MemberSignature Language="VB.NET" Value="Public Property Name As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Name { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-271">바인딩의 이름을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-271">Gets or sets the name of the binding.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="bba97-272">바인딩 이름입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-272">The name of the binding.</span>
+          </span>
+          <span data-ttu-id="bba97-273">기본 이름은 <see langword="null" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-273">The default name is <see langword="null" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-274"><xref:System.ServiceModel.Channels.Binding>의 각 인스턴스에는 서비스의 메타데이터에서 바인딩 사용자 이름을 고유하게 식별하는 <xref:System.ServiceModel.Channels.Binding.Name%2A> 및 <xref:System.ServiceModel.Channels.Binding.Namespace%2A>가 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-274">Each instance of a <xref:System.ServiceModel.Channels.Binding> has a <xref:System.ServiceModel.Channels.Binding.Name%2A> and <xref:System.ServiceModel.Channels.Binding.Namespace%2A> that together uniquely identify the user name for the binding in the metadata of the service.</span></span>  
+  
+ <span data-ttu-id="bba97-275">바인딩에 대한 이 사용자 이름은 <xref:System.ServiceModel.Channels.Binding.Scheme%2A> 속성에 의해 지정되는 프로토콜 이름 사양과는 구분됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-275">This user name for the binding is distinct from the specification of the protocol name, which is specified by the <xref:System.ServiceModel.Channels.Binding.Scheme%2A> property.</span></span> <span data-ttu-id="bba97-276">예를 들어, HTTP 바인딩을 추가하려면 바인딩의 이름을 원하는 대로 지정하고 모든 체계를 "http"로 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-276">If you want to add more HTTP bindings, for example, you can name them whatever you want and set all of their schemes to "http".</span></span> <span data-ttu-id="bba97-277"><xref:System.ServiceModel.Channels.Binding.Scheme%2A>를 기반으로 하는 고유한 응용 프로그램이나 컴퓨터 디스패치가 없으므로,</span><span class="sxs-lookup"><span data-stu-id="bba97-277">There is no inherent application or machine dispatch based on the <xref:System.ServiceModel.Channels.Binding.Scheme%2A>.</span></span> <span data-ttu-id="bba97-278">잘 알려진 프로토콜에 대하여 추가 처리기를 등록할 수 없는 일반적인 문제를 피할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-278">So you avoid the common problem of being unable to register additional handlers for well-known protocols.</span></span> <span data-ttu-id="bba97-279">또한 각 버전에 서로 다른 이름을 지정하여 여러 버전의 바인딩을 함께 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-279">You can also easily work with multiple versions of a binding side-by-side by giving each version a different name.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="bba97-280">값 세트가 <see langword="null" /> 또는 빈 문자열일 수 없는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-280">The value set cannot be <see langword="null" /> or an empty string.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Namespace">
+      <MemberSignature Language="C#" Value="public string Namespace { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Namespace" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.Binding.Namespace" />
+      <MemberSignature Language="VB.NET" Value="Public Property Namespace As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Namespace { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-281">바인딩의 XML 네임스페이스를 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-281">Gets or sets the XML namespace of the binding.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="bba97-282">바인딩의 XML 네임스페이스입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-282">The XML namespace of the binding.</span>
+          </span>
+          <span data-ttu-id="bba97-283">기본값은 "http://tempuri.org/"입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-283">The default value is "http://tempuri.org/".</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-284"><xref:System.ServiceModel.Channels.Binding>의 각 인스턴스에는 서비스의 메타데이터에서 바인딩 사용자 이름을 고유하게 식별하는 <xref:System.ServiceModel.Channels.Binding.Name%2A> 및 <xref:System.ServiceModel.Channels.Binding.Namespace%2A>가 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-284">Each instance of a <xref:System.ServiceModel.Channels.Binding> has a <xref:System.ServiceModel.Channels.Binding.Name%2A> and <xref:System.ServiceModel.Channels.Binding.Namespace%2A> that together uniquely identify the user name for the binding in the metadata of the service.</span></span>  
+  
+ <span data-ttu-id="bba97-285">바인딩에 대한 이 사용자 이름은 <xref:System.ServiceModel.Channels.Binding.Scheme%2A> 속성에 의해 지정되는 프로토콜 이름 사양과는 구분됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-285">This user name for the binding is distinct from the specification of the protocol name, which is specified by the <xref:System.ServiceModel.Channels.Binding.Scheme%2A> property.</span></span> <span data-ttu-id="bba97-286">예를 들어, HTTP 바인딩을 추가하려면 바인딩의 이름을 원하는 대로 지정하고 모든 체계를 "http"로 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-286">If you want to add more HTTP bindings, for example, you can name them whatever you want and set all of their schemes to "http".</span></span> <span data-ttu-id="bba97-287"><xref:System.ServiceModel.Channels.Binding.Scheme%2A>를 기반으로 하는 고유한 응용 프로그램이나 컴퓨터 디스패치가 없으므로,</span><span class="sxs-lookup"><span data-stu-id="bba97-287">There is no inherent application or machine dispatch based on the <xref:System.ServiceModel.Channels.Binding.Scheme%2A>.</span></span> <span data-ttu-id="bba97-288">잘 알려진 프로토콜에 대하여 추가 처리기를 등록할 수 없는 일반적인 문제를 피할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-288">So you avoid the common problem of being unable to register additional handlers for well-known protocols.</span></span> <span data-ttu-id="bba97-289">또한 각 버전에 서로 다른 이름을 지정하여 여러 버전의 바인딩을 함께 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-289">You can also easily work with multiple versions of a binding side-by-side by giving each version a different name.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="bba97-290">값 집합이 <see langword="null" />일 수 없는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-290">The value set cannot be <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="OpenTimeout">
+      <MemberSignature Language="C#" Value="public TimeSpan OpenTimeout { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan OpenTimeout" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.Binding.OpenTimeout" />
+      <MemberSignature Language="VB.NET" Value="Public Property OpenTimeout As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan OpenTimeout { TimeSpan get(); void set(TimeSpan value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-291">전송 중에 예외가 발생하기 전에 연결을 설정하기 위해 제공되는 시간 간격을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-291">Gets or sets the interval of time provided for a connection to open before the transport raises an exception.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="bba97-292">제한 시간이 초과되기 전에 열기 작업이 완료되어야 하는 기간을 지정하는 <see cref="T:System.TimeSpan" />입니다. 기본값은 1분입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-292">The <see cref="T:System.TimeSpan" /> that specifies how long the open operation has to complete before timing out. The default value is 1 minute.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-293">이 속성 값은 바인딩 팩터리에서 생성되는 채널 및 수신기에서 사용됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-293">The value of this property is used by the channels and listeners produced by the factories of the binding.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="bba97-294">값이 0보다 작거나 너무 큰 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-294">The value is less than zero or too large.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ReceiveTimeout">
+      <MemberSignature Language="C#" Value="public TimeSpan ReceiveTimeout { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan ReceiveTimeout" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.Binding.ReceiveTimeout" />
+      <MemberSignature Language="VB.NET" Value="Public Property ReceiveTimeout As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan ReceiveTimeout { TimeSpan get(); void set(TimeSpan value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-295">연결이 끊어지기 전에 응용 프로그램 메시지가 수신되지 않는 비활성 상태로 유지될 수 있는 시간 간격을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-295">Gets or sets the interval of time that a connection can remain inactive, during which no application messages are received, before it is dropped.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="bba97-296">제한 시간이 초과되기 전에 응용 프로그램에서 메시지를 수신해야 하는 시간을 지정하는 <see cref="T:System.TimeSpan" />입니다. 기본값은 10 분입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-296">The <see cref="T:System.TimeSpan" /> that specifies how long the application has to receive a message before timing out. The default value is 10 minute.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-297">신뢰할 수 있는 세션을 사용할 경우에는 두 가지 비활성 타이머를 충족해야 연결을 유지할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-297">When using a reliable session, there are two different inactivity timers that must be satisfied to keep the connection alive.</span></span> <span data-ttu-id="bba97-298">이러한 두 비활성 타이머 중 하나라도 충족되지 않으면 연결이 삭제됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-298">If either of these inactivity timers goes off, then the connection is dropped.</span></span>  
+  
+-   <span data-ttu-id="bba97-299">첫 번째 비활성 타이머는 <xref:System.ServiceModel.ReliableSession.InactivityTimeout%2A>이며, 신뢰할 수 있는 세션에서 작동합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-299">The first inactivity timer is on the reliable session and is called the <xref:System.ServiceModel.ReliableSession.InactivityTimeout%2A>.</span></span> <span data-ttu-id="bba97-300">이 비활성 타이머는 시간 제한 동안 응용 프로그램 또는 인프라 메시지가 수신되지 않으면 발생합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-300">This inactivity timer fires if no messages, either application or infrastructure, are received within the timeout period.</span></span> <span data-ttu-id="bba97-301">인프라 메시지는 응용 프로그램 데이터를 포함하는 메시지가 아니라 상태 유지 또는 승인과 같이 채널 스택의 프로토콜 중 하나에서 사용하도록 생성되는 메시지입니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-301">An infrastructure message is a message that is generated for the purpose of one of the protocols in the channel stack, such as a keep alive or an acknowledgment, rather than containing application data.</span></span>  
+  
+-   <span data-ttu-id="bba97-302">두 번째 비활성 타이머는 서비스에 사용되며 바인딩의 <xref:System.ServiceModel.Channels.Binding.ReceiveTimeout%2A> 설정을 사용합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-302">The second inactivity timer is on the service and uses the <xref:System.ServiceModel.Channels.Binding.ReceiveTimeout%2A> setting of the binding.</span></span> <span data-ttu-id="bba97-303">이 비활성 타이머는 시간 제한 동안 응용 프로그램 메시지가 수신되지 않으면 발생합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-303">This inactivity timer fires if no application messages are received within the timeout period.</span></span> <span data-ttu-id="bba97-304">예를 들어 이 타이머는 세션에 사용되는 채널을 서버에서 닫기 전까지 클라이언트에서 적어도 하나의 메시지를 서버로 보내는 데 소비할 수 있는 최대 시간을 지정합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-304">This specifies, for example, the maximum time a client may take to send at least one message to the server before the server will close the channel used by a session.</span></span> <span data-ttu-id="bba97-305">이 동작은 클라이언트에서 임의의 시간 동안 서버 리소스를 유지하지 못하게 합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-305">This behavior ensures that clients cannot hold on to server resources for arbitrary long periods.</span></span>  
+  
+ <span data-ttu-id="bba97-306">두 가지 비활성 타이머 중 하나라도 발생하면 연결이 끊어지기 때문에 <xref:System.ServiceModel.ReliableSession.InactivityTimeout%2A>을 초과한 이후에 <xref:System.ServiceModel.Channels.Binding.ReceiveTimeout%2A>을 더 높게 설정하는 것은 아무 소용 없습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-306">Since the connection is dropped if either inactivity timer fires, increasing <xref:System.ServiceModel.ReliableSession.InactivityTimeout%2A> once it is greater than <xref:System.ServiceModel.Channels.Binding.ReceiveTimeout%2A> has no effect.</span></span> <span data-ttu-id="bba97-307">이 두 가지 시간 제한의 기본값은 10분이므로 신뢰할 수 있는 세션을 사용한 때 적용되는 시간을 변경하려면 항상 두 값을 함께 늘려야 합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-307">The default for both of these timeouts is 10 minutes, so you always have to increase both of them to make a difference when using a reliable session.</span></span>  
+  
+ <span data-ttu-id="bba97-308">바인딩이나 채널에서 트랜잭션 흐름이 활성화된 경우 작업을 실행하는 데 지정된 제한 시간보다 더 오랜 시간이 걸릴 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-308">If transaction flow is enabled on the binding or the channel, the operation may take longer to execute than the specified timeout.</span></span> <span data-ttu-id="bba97-309">이 경우 제한 시간 만료로 인해 작업에 오류가 발생하고 트랜잭션이 중단됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-309">In these circumstances the operation fails due to the expired timeout and the transaction aborts appropriately.</span></span>  
+  
+ <span data-ttu-id="bba97-310">보안 세션을 함께 사용할 때의 <xref:System.ServiceModel.Channels.Binding.ReceiveTimeout%2A> 바인딩에 대해 설정 하는 값은 세션 제한 시간으로도 사용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-310">When security is used with sessions, the <xref:System.ServiceModel.Channels.Binding.ReceiveTimeout%2A> value set on the binding is also used as the session timeout.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="bba97-311">값이 0보다 작거나 너무 큰 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-311">The value is less than zero or too large.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Scheme">
+      <MemberSignature Language="C#" Value="public abstract string Scheme { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Scheme" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.Binding.Scheme" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Scheme As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::String ^ Scheme { System::String ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-312">파생 클래스에서 구현될 경우 바인딩에서 작성된 채널 및 수신기 팩터리에 사용되는 전송을 지정하는 URI 체계를 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-312">When implemented in a derived class, sets the URI scheme that specifies the transport used by the channel and listener factories that are built by the bindings.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="bba97-313">현재 바인딩에서 작성된 팩터리에 의해 만들어진 채널 또는 수신기에 사용되는 URI 체계입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-313">The URI scheme that is used by the channels or listeners that are created by the factories built by the current binding.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-314">바인딩에 대한 이 사용자 이름은 <xref:System.ServiceModel.Channels.Binding.Scheme%2A> 속성에 의해 지정되는 프로토콜 이름 사양과는 구분됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-314">This user name for the binding is distinct from the specification of the protocol name, which is specified by the <xref:System.ServiceModel.Channels.Binding.Scheme%2A> property.</span></span> <span data-ttu-id="bba97-315"><xref:System.ServiceModel.Channels.Binding>의 각 인스턴스에는 서비스의 메타데이터에서 바인딩 사용자 이름을 고유하게 식별하는 <xref:System.ServiceModel.Channels.Binding.Name%2A> 및 <xref:System.ServiceModel.Channels.Binding.Namespace%2A>가 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-315">Each instance of a <xref:System.ServiceModel.Channels.Binding> has a <xref:System.ServiceModel.Channels.Binding.Name%2A> and <xref:System.ServiceModel.Channels.Binding.Namespace%2A> that together uniquely identify the user name for the binding in the metadata of the service.</span></span> <span data-ttu-id="bba97-316">예를 들어, HTTP 바인딩을 추가하려면 바인딩의 이름을 원하는 대로 지정하고 모든 체계를 "http"로 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-316">If you want to add more HTTP bindings, for example, you can name them whatever you want and set all of their schemes to "http".</span></span> <span data-ttu-id="bba97-317"><xref:System.ServiceModel.Channels.Binding.Scheme%2A>를 기반으로 하는 고유한 응용 프로그램이나 컴퓨터 디스패치가 없으므로,</span><span class="sxs-lookup"><span data-stu-id="bba97-317">There is no inherent application or machine dispatch based on the <xref:System.ServiceModel.Channels.Binding.Scheme%2A>.</span></span> <span data-ttu-id="bba97-318">잘 알려진 프로토콜에 대하여 추가 처리기를 등록할 수 없는 일반적인 문제를 피할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-318">So you avoid the common problem of being unable to register additional handlers for well-known protocols.</span></span> <span data-ttu-id="bba97-319">또한 각 버전에 서로 다른 이름을 지정하여 여러 버전의 바인딩을 함께 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-319">You can also easily work with multiple versions of a binding side-by-side by giving each version a different name.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SendTimeout">
+      <MemberSignature Language="C#" Value="public TimeSpan SendTimeout { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan SendTimeout" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.Binding.SendTimeout" />
+      <MemberSignature Language="VB.NET" Value="Public Property SendTimeout As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan SendTimeout { TimeSpan get(); void set(TimeSpan value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-320">전송 중 예외가 발생하기 전에 쓰기 작업을 완료하기 위해 제공되는 시간 간격을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-320">Gets or sets the interval of time provided for a write operation to complete before the transport raises an exception.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="bba97-321">제한 시간이 초과되기 전에 쓰기 작업이 완료되어야 하는 기간을 지정하는 <see cref="T:System.TimeSpan" />입니다. 기본값은 1분입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-321">The <see cref="T:System.TimeSpan" /> that specifies how long the write operation has to complete before timing out. The default value is 1 minute.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="bba97-322">바인딩이나 채널에서 트랜잭션 흐름이 활성화된 경우 작업을 실행하는 데 지정된 제한 시간보다 더 오랜 시간이 걸릴 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-322">If transaction flow is enabled on the binding or the channel, the operation may take longer to execute than the specified timeout.</span></span> <span data-ttu-id="bba97-323">이 경우 제한 시간 만료로 인해 작업에 오류가 발생하고 트랜잭션이 중단됩니다.</span><span class="sxs-lookup"><span data-stu-id="bba97-323">In these circumstances the operation fails due to the expired timeout and the transaction aborts appropriately.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="bba97-324">값이 0보다 작거나 너무 큰 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-324">The value is less than zero or too large.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldSerializeName">
+      <MemberSignature Language="C#" Value="public bool ShouldSerializeName ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ShouldSerializeName() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.ShouldSerializeName" />
+      <MemberSignature Language="VB.NET" Value="Public Function ShouldSerializeName () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool ShouldSerializeName();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-325">바인딩 이름을 serialize해야 하는지 여부를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-325">Returns whether the name of the binding should be serialized.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-326">바인딩 이름을 serialize해야 하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-326">
+              <see langword="true" /> if the binding name should be serialized; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldSerializeNamespace">
+      <MemberSignature Language="C#" Value="public bool ShouldSerializeNamespace ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ShouldSerializeNamespace() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.Binding.ShouldSerializeNamespace" />
+      <MemberSignature Language="VB.NET" Value="Public Function ShouldSerializeNamespace () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool ShouldSerializeNamespace();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="bba97-327">바인딩 네임스페이스를 serialize해야 하는지 여부를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-327">Returns whether the namespace of the binding should be serialized.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="bba97-328">바인딩 네임스페이스를 serialize해야 하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="bba97-328">
+              <see langword="true" /> if the binding namespace should be serialized; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

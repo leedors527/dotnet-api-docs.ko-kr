@@ -1,0 +1,258 @@
+<Type Name="PhonemeReachedEventArgs" FullName="System.Speech.Synthesis.PhonemeReachedEventArgs">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="480b4cea7cb30fc0b3ef666d94e0857c1ad7f46e" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class PhonemeReachedEventArgs : System.Speech.Synthesis.PromptEventArgs" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit PhonemeReachedEventArgs extends System.Speech.Synthesis.PromptEventArgs" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Synthesis.PhonemeReachedEventArgs" />
+  <TypeSignature Language="VB.NET" Value="Public Class PhonemeReachedEventArgs&#xA;Inherits PromptEventArgs" />
+  <TypeSignature Language="C++ CLI" Value="public ref class PhonemeReachedEventArgs : System::Speech::Synthesis::PromptEventArgs" />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Speech.Synthesis.PromptEventArgs</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="cfd98-101">
+        <see cref="E:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached" /> 이벤트에서 데이터를 반환합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="cfd98-101">Returns data from the <see cref="E:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached" /> event.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="cfd98-102">음소는 작성 된 언어의 기본적인 구성 요소입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd98-102">A phoneme is a basic component of written language.</span></span> <span data-ttu-id="cfd98-103">음소에 대 한 자세한 내용은 참조 하십시오. <xref:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached>합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd98-103">For more information about phonemes, see <xref:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="cfd98-104">다음 예제는에서 반환 된 정보를 기록 하는 Windows Forms 응용 프로그램의 일부는 <xref:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached> 텍스트 상자에는 이벤트입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd98-104">The following example is part of a Windows Forms application that writes the information returned by the <xref:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached> event to a text box.</span></span> <span data-ttu-id="cfd98-105">음소의 문자는는 [International Phonetic Alphabet (IPA)](http://go.microsoft.com/fwlink/?LinkID=207686)합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd98-105">The phonemes are characters from the [International Phonetic Alphabet (IPA)](http://go.microsoft.com/fwlink/?LinkID=207686).</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="cfd98-106">반환 된 첫 번째 문자와 마지막 문자 <xref:System.Speech.Synthesis.PhonemeReachedEventArgs> 는 중괄호와 닫는 묶습니다 있는 단어 또는 구를 구성 하는 음소를 나타내지 않는 문자입니다.</span><span class="sxs-lookup"><span data-stu-id="cfd98-106">The first and last characters returned by <xref:System.Speech.Synthesis.PhonemeReachedEventArgs> are opening and closing characters that enclose but do not represent phonemes that constitute a word or phrase.</span></span> <span data-ttu-id="cfd98-107">이 예제에서는 5 개 문자를 반환 하지만 중간 세 문자는 "테마" 이라는 단어를 나타내는 음소: "th" 사운드, "e" 소리 및 "m" 소리의 하나에 대 한 합니다.</span><span class="sxs-lookup"><span data-stu-id="cfd98-107">This example returns five characters, but only the middle three characters are phonemes that represent the word "theme": one for the "th" sound, one for the "e" sound, and one for the "m" sound .</span></span>  
+  
+```csharp  
+using System;  
+using System.Collections.Generic;  
+using System.ComponentModel;  
+using System.Data;  
+using System.Drawing;  
+using System.Linq;  
+using System.Text;  
+using System.Windows.Forms;  
+using System.Speech.Synthesis;  
+  
+namespace PhonemeReached  
+{  
+  public partial class Form1 : Form  
+  {  
+  
+    public Form1()  
+    {  
+      InitializeComponent();  
+      textBox1.Text = "";  
+    }  
+  
+    public void button1_Click(object sender, EventArgs e)  
+    {  
+      // Initialize a new instance of the SpeechSynthesizer.  
+      SpeechSynthesizer synth = new SpeechSynthesizer();  
+  
+      // Configure the audio output.   
+      synth.SetOutputToDefaultAudioDevice();  
+  
+      // Register for the PhonemeReached event.  
+      synth.PhonemeReached += new EventHandler<PhonemeReachedEventArgs>(synth_PhonemeReached);  
+  
+      // Speak the contents of a string.  
+      synth.Speak("Theme");  
+    }  
+  
+    // Write information about each phoneme as it is reached.  
+    private void synth_PhonemeReached(object sender, PhonemeReachedEventArgs e)  
+    {textBox1.AppendText(string.Format(  
+  
+        "  Phoneme reached summary:" + Environment.NewLine +  
+        "    Phoneme:                 {0}" + Environment.NewLine +    
+        "    Audio Position:         {1} mSec" + Environment.NewLine +  
+        "    Duration:                  {2} mSec" + Environment.NewLine +  
+        "    Emphasis:                {3}" + Environment.NewLine +  
+        "    Next Phoneme:         {4}" + Environment.NewLine + Environment.NewLine,   
+        e.Phoneme,  
+        e.AudioPosition,  
+        e.Duration,  
+        e.Emphasis,  
+        e.NextPhoneme));  
+    }  
+  }  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="AudioPosition">
+      <MemberSignature Language="C#" Value="public TimeSpan AudioPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan AudioPosition" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.PhonemeReachedEventArgs.AudioPosition" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property AudioPosition As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan AudioPosition { TimeSpan get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd98-108">음소의 오디오 위치를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-108">Gets the audio position of the phoneme.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd98-109">오디오 위치를 나타내는 <see langword="TimeSpan" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-109">A <see langword="TimeSpan" /> object indicating the audio position.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Duration">
+      <MemberSignature Language="C#" Value="public TimeSpan Duration { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan Duration" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.PhonemeReachedEventArgs.Duration" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Duration As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan Duration { TimeSpan get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd98-110">음소의 지속 시간을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-110">Gets the duration of the phoneme.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd98-111">지속 시간을 나타내는 <see langword="TimeSpan" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-111">A <see langword="TimeSpan" /> object indicating the duration.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Emphasis">
+      <MemberSignature Language="C#" Value="public System.Speech.Synthesis.SynthesizerEmphasis Emphasis { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Speech.Synthesis.SynthesizerEmphasis Emphasis" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.PhonemeReachedEventArgs.Emphasis" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Emphasis As SynthesizerEmphasis" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Speech::Synthesis::SynthesizerEmphasis Emphasis { System::Speech::Synthesis::SynthesizerEmphasis get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.SynthesizerEmphasis</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd98-112">음소의 강조를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-112">Gets the emphasis of the phoneme.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd98-113">강조의 수준을 나타내는 <see langword="SynthesizerEmphasis" /> 멤버입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-113">A <see langword="SynthesizerEmphasis" /> member indicating the level of emphasis.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NextPhoneme">
+      <MemberSignature Language="C#" Value="public string NextPhoneme { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string NextPhoneme" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.PhonemeReachedEventArgs.NextPhoneme" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property NextPhoneme As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ NextPhoneme { System::String ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd98-114">
+            <see cref="E:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached" /> 이벤트와 연결된 음소 뒤에 오는 음소를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-114">Gets the phoneme following the phoneme associated with the <see cref="E:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached" /> event.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd98-115">다음 음소를 포함하는 문자열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-115">A string containing the next phoneme.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Phoneme">
+      <MemberSignature Language="C#" Value="public string Phoneme { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Phoneme" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.PhonemeReachedEventArgs.Phoneme" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Phoneme As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Phoneme { System::String ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="cfd98-116">
+            <see cref="E:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached" /> 이벤트와 연결된 음소입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-116">The phoneme associated with the <see cref="E:System.Speech.Synthesis.SpeechSynthesizer.PhonemeReached" /> event.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="cfd98-117">음소를 포함하는 문자열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="cfd98-117">A string containing the phoneme.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

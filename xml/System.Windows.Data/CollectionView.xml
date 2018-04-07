@@ -1,0 +1,2414 @@
+<Type Name="CollectionView" FullName="System.Windows.Data.CollectionView">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="8d3b9900ff3ea9a80c58df84188864118f024334" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class CollectionView : System.Windows.Threading.DispatcherObject, System.Collections.IEnumerable, System.Collections.Specialized.INotifyCollectionChanged, System.ComponentModel.ICollectionView, System.ComponentModel.INotifyPropertyChanged" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CollectionView extends System.Windows.Threading.DispatcherObject implements class System.Collections.IEnumerable, class System.Collections.Specialized.INotifyCollectionChanged, class System.ComponentModel.ICollectionView, class System.ComponentModel.INotifyPropertyChanged" />
+  <TypeSignature Language="DocId" Value="T:System.Windows.Data.CollectionView" />
+  <TypeSignature Language="VB.NET" Value="Public Class CollectionView&#xA;Inherits DispatcherObject&#xA;Implements ICollectionView, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged" />
+  <TypeSignature Language="C++ CLI" Value="public ref class CollectionView : System::Windows::Threading::DispatcherObject, System::Collections::IEnumerable, System::Collections::Specialized::INotifyCollectionChanged, System::ComponentModel::ICollectionView, System::ComponentModel::INotifyPropertyChanged" />
+  <AssemblyInfo>
+    <AssemblyName>PresentationFramework</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Windows.Threading.DispatcherObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Collections.IEnumerable</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.Collections.Specialized.INotifyCollectionChanged</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.ComponentModel.ICollectionView</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.ComponentModel.INotifyPropertyChanged</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>
+      <span data-ttu-id="3eca5-101">데이터 컬렉션 그룹화, 정렬, 필터링 및 탐색에 사용할 뷰를 나타냅니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="3eca5-101">Represents a view for grouping, sorting, filtering, and navigating a data collection.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-102">코드에서이 클래스의 개체 만들지 마십시오.</span><span class="sxs-lookup"><span data-stu-id="3eca5-102">You should not create objects of this class in your code.</span></span> <span data-ttu-id="3eca5-103">만 구현 하는 컬렉션에 대 한 컬렉션 뷰를 만들려면 <xref:System.Collections.IEnumerable>, 만들는 <xref:System.Windows.Data.CollectionViewSource> 개체를 컬렉션에 추가 <xref:System.Windows.Data.CollectionViewSource.Source%2A> 속성과 컬렉션에서 뷰를 가져옵니다는 <xref:System.Windows.Data.CollectionViewSource.View%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-103">To create a collection view for a collection that only implements <xref:System.Collections.IEnumerable>, create a <xref:System.Windows.Data.CollectionViewSource> object, add your collection to the <xref:System.Windows.Data.CollectionViewSource.Source%2A> property, and get the collection view from the <xref:System.Windows.Data.CollectionViewSource.View%2A> property.</span></span>  
+  
+ <span data-ttu-id="3eca5-104">컬렉션 뷰에서의 탐색 하 고 정렬, 필터 및 기본 소스 컬렉션 자체를 조작 하지 않고 모든 그룹화 쿼리를 기반으로 컬렉션을 표시 하면 허용 하는 바인딩 소스 컬렉션 위에서 계층으로 생각할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-104">You can think of a collection view as a layer on top of a binding source collection that allows you to navigate and display the collection based on sort, filter, and group queries, all without having to manipulate the underlying source collection itself.</span></span> <span data-ttu-id="3eca5-105">소스 컬렉션에서 구현 하는 경우는 <xref:System.Collections.Specialized.INotifyCollectionChanged> 인터페이스를 발생 시키는 변경 내용은 <xref:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged> 이벤트 보기에 전파 됩니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-105">If the source collection implements the <xref:System.Collections.Specialized.INotifyCollectionChanged> interface, the changes that raise the <xref:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged> event are propagated to the views.</span></span>  
+  
+ <span data-ttu-id="3eca5-106">뷰는 기본 소스 컬렉션을 변경 되지 않으므로, 소스 컬렉션에 연결 된 여러 뷰가 있을 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-106">Because a view does not change the underlying source collection, a source collection can have multiple views associated with it.</span></span> <span data-ttu-id="3eca5-107">뷰를 사용 하 여 다양 한 방식에서에서 동일한 데이터를 표시할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-107">By using views, you can display the same data in different ways.</span></span> <span data-ttu-id="3eca5-108">컬렉션에 대해 두 가지 보기를 사용할 수는 예를 들어 `Task` 개체 작업을 표시 하려면 페이지의 한 부분에는 우선 순위별로 정렬 하 고 페이지의 다른 부분에 영역별로 그룹화 됨.</span><span class="sxs-lookup"><span data-stu-id="3eca5-108">For example, you can use two views on a collection of `Task` objects to show tasks sorted by priority on one part of the page and grouped by area on another part of the page.</span></span>  
+  
+ <span data-ttu-id="3eca5-109">[!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 응용 프로그램의 경우 모든 컬렉션에 있는지 확인 하는 연결 된 기본 컬렉션입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-109">In [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] applications, all collections have an associated default collection view.</span></span> <span data-ttu-id="3eca5-110">컬렉션을 직접 사용 하지 않고 바인딩 엔진에 항상 컬렉션 관련된 보기를 통해 액세스 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-110">Rather than working with the collection directly, the binding engine always accesses the collection through the associated view.</span></span> <span data-ttu-id="3eca5-111">기본 보기를 가져오려면는 <xref:System.Windows.Data.CollectionViewSource.GetDefaultView%2A?displayProperty=nameWithType> 메서드.</span><span class="sxs-lookup"><span data-stu-id="3eca5-111">To get the default view, use the <xref:System.Windows.Data.CollectionViewSource.GetDefaultView%2A?displayProperty=nameWithType> method.</span></span> <span data-ttu-id="3eca5-112">내부 클래스에 따라 <xref:System.Windows.Data.CollectionView> 만 구현 하는 컬렉션의 기본 뷰인 <xref:System.Collections.IEnumerable>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-112">An internal class based on <xref:System.Windows.Data.CollectionView> is the default view for collections that implement only <xref:System.Collections.IEnumerable>.</span></span> <span data-ttu-id="3eca5-113"><xref:System.Windows.Data.ListCollectionView> 구현 하는 컬렉션의 기본 뷰인 <xref:System.Collections.IList>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-113"><xref:System.Windows.Data.ListCollectionView> is the default view for collections that implement <xref:System.Collections.IList>.</span></span> <span data-ttu-id="3eca5-114"><xref:System.Windows.Data.BindingListCollectionView> 구현 하는 컬렉션의 기본 뷰인 <xref:System.ComponentModel.IBindingListView> 또는 <xref:System.ComponentModel.IBindingList>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-114"><xref:System.Windows.Data.BindingListCollectionView> is the default view for collections that implement <xref:System.ComponentModel.IBindingListView> or <xref:System.ComponentModel.IBindingList>.</span></span>  
+  
+ <span data-ttu-id="3eca5-115">컬렉션의 보기를 만들 수 또는 [!INCLUDE[TLA#tla_xaml](~/includes/tlasharptla-xaml-md.md)] 를 사용 하 여는 <xref:System.Windows.Data.CollectionViewSource> 클래스 및 해당 보기에 컨트롤을 바인딩할 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-115">Alternatively, you can create a view of your collection in [!INCLUDE[TLA#tla_xaml](~/includes/tlasharptla-xaml-md.md)] by using the <xref:System.Windows.Data.CollectionViewSource> class and then bind your control to that view.</span></span> <span data-ttu-id="3eca5-116"><xref:System.Windows.Data.CollectionViewSource> 클래스는는 [!INCLUDE[TLA2#tla_xaml](~/includes/tla2sharptla-xaml-md.md)] 의 표현을 <xref:System.Windows.Data.CollectionView> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-116">The <xref:System.Windows.Data.CollectionViewSource> class is the [!INCLUDE[TLA2#tla_xaml](~/includes/tla2sharptla-xaml-md.md)] representation of the <xref:System.Windows.Data.CollectionView> class.</span></span> <span data-ttu-id="3eca5-117">예를 들어 참조 [하는 방법: 정렬 및 그룹 사용 하 여 데이터를 보려면](~/docs/framework/wpf/data/how-to-sort-and-group-data-using-a-view-in-xaml.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-117">For an example, see [How to: Sort and Group Data Using a View in XAML](~/docs/framework/wpf/data/how-to-sort-and-group-data-using-a-view-in-xaml.md).</span></span>  
+  
+ <span data-ttu-id="3eca5-118">자세한 내용은 "컬렉션에 바인딩"의 참조 [데이터 바인딩 개요](~/docs/framework/wpf/data/data-binding-overview.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-118">For more information, see "Binding to Collections" in [Data Binding Overview](~/docs/framework/wpf/data/data-binding-overview.md).</span></span>  
+  
+ <span data-ttu-id="3eca5-119">보기를 설정 하려면 [!INCLUDE[TLA2#tla_xaml](~/includes/tla2sharptla-xaml-md.md)]를 사용 하 여는 <xref:System.Windows.Data.CollectionViewSource> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-119">To set a view in [!INCLUDE[TLA2#tla_xaml](~/includes/tla2sharptla-xaml-md.md)], use the <xref:System.Windows.Data.CollectionViewSource> class.</span></span> <span data-ttu-id="3eca5-120"><xref:System.Windows.Data.CollectionViewSource> 이 [!INCLUDE[TLA2#tla_xaml](~/includes/tla2sharptla-xaml-md.md)] 의 표현을 <xref:System.Windows.Data.CollectionView> 클래스의 가장 일반적으로 사용 되는 멤버를 노출는 <xref:System.Windows.Data.CollectionView> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-120"><xref:System.Windows.Data.CollectionViewSource> is the [!INCLUDE[TLA2#tla_xaml](~/includes/tla2sharptla-xaml-md.md)] representation of the <xref:System.Windows.Data.CollectionView> class, and it exposes the most commonly used members of the <xref:System.Windows.Data.CollectionView> class.</span></span>  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public CollectionView (System.Collections.IEnumerable collection);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Collections.IEnumerable collection) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.#ctor(System.Collections.IEnumerable)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (collection As IEnumerable)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; CollectionView(System::Collections::IEnumerable ^ collection);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="collection" Type="System.Collections.IEnumerable" />
+      </Parameters>
+      <Docs>
+        <param name="collection">
+          <span data-ttu-id="3eca5-121">기본 컬렉션입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-121">The underlying collection.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-122">지정한 컬렉션의 뷰를 나타내는 <see cref="T:System.Windows.Data.CollectionView" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-122">Initializes a new instance of the <see cref="T:System.Windows.Data.CollectionView" /> class that represents a view of the specified collection.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-123">인스턴스 <xref:System.Windows.Data.CollectionView> 바인딩되는 [!INCLUDE[TLA#tla_ui](~/includes/tlasharptla-ui-md.md)] 이 생성자의 호출자의 발송자 스레드입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-123">The instance of <xref:System.Windows.Data.CollectionView> is bound to the [!INCLUDE[TLA#tla_ui](~/includes/tlasharptla-ui-md.md)] thread dispatcher of the caller of this constructor.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AllowsCrossThreadChanges">
+      <MemberSignature Language="C#" Value="protected bool AllowsCrossThreadChanges { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AllowsCrossThreadChanges" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.AllowsCrossThreadChanges" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property AllowsCrossThreadChanges As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property bool AllowsCrossThreadChanges { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-124">
+            <see cref="T:System.Windows.Data.CollectionView" />를 만든 스레드 이외의 스레드가 <see cref="P:System.Windows.Data.CollectionView.SourceCollection" />을 변경할 수 있는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-124">Gets a value that indicates whether a thread other than the one that created the <see cref="T:System.Windows.Data.CollectionView" /> can change the <see cref="P:System.Windows.Data.CollectionView.SourceCollection" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-125">
+            <see cref="T:System.Windows.Data.CollectionView" />를 만든 스레드가 아닌 다른 스레드가 <see cref="P:System.Windows.Data.CollectionView.SourceCollection" />을 변경할 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-125">
+              <see langword="true" /> if a thread other than the one that created the <see cref="T:System.Windows.Data.CollectionView" /> can change the <see cref="P:System.Windows.Data.CollectionView.SourceCollection" />; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanFilter">
+      <MemberSignature Language="C#" Value="public virtual bool CanFilter { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanFilter" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.CanFilter" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property CanFilter As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanFilter { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-126">뷰에서 필터링이 지원되는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-126">Gets a value that indicates whether the view supports filtering.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-127">뷰에서 필터링이 지원되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-127">
+              <see langword="true" /> if the view supports filtering; otherwise, <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="3eca5-128">기본값은 <see langword="true" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-128">The default is <see langword="true" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-129">이 속성을 반환 하는 경우 `false`설정는 <xref:System.Windows.Data.CollectionView.Filter%2A> 속성 예외를 throw 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-129">If this property returns `false`, setting the <xref:System.Windows.Data.CollectionView.Filter%2A> property throws an exception.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanGroup">
+      <MemberSignature Language="C#" Value="public virtual bool CanGroup { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanGroup" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.CanGroup" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property CanGroup As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanGroup { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-130">뷰에서 그룹화가 지원되는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-130">Gets a value that indicates whether the view supports grouping.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-131">모든 경우에 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-131">
+              <see langword="false" /> in all cases.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-132">이 속성을 사용 하 여 뷰를 추가 하기 전에 정렬을 지원 하는지 여부를 테스트 하려면 <xref:System.Windows.Data.CollectionView.GroupDescriptions%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-132">Use this property to test whether the view supports sorting before adding <xref:System.Windows.Data.CollectionView.GroupDescriptions%2A>.</span></span> <span data-ttu-id="3eca5-133">파생된 클래스에는 그룹화가 지원 되는지 여부를 나타내도록이 속성을 재정의 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-133">Derived classes override this property to indicate whether they support grouping.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanSort">
+      <MemberSignature Language="C#" Value="public virtual bool CanSort { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanSort" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.CanSort" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property CanSort As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool CanSort { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-134">뷰에서 정렬이 지원되는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-134">Gets a value that indicates whether the view supports sorting.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-135">모든 경우에 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-135">
+              <see langword="false" /> in all cases.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-136">이 속성을 사용 하 여 뷰를 추가 하기 전에 정렬을 지원 하는지 여부를 테스트 하려면 <xref:System.Windows.Data.CollectionView.SortDescriptions%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-136">Use this property to test whether the view supports sorting before adding <xref:System.Windows.Data.CollectionView.SortDescriptions%2A>.</span></span> <span data-ttu-id="3eca5-137">파생된 클래스에는 정렬이 지원 되는지 여부를 나타내도록이 속성을 재정의 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-137">Derived classes override this property to indicate whether they support sorting.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ClearChangeLog">
+      <MemberSignature Language="C#" Value="protected void ClearChangeLog ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void ClearChangeLog() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.ClearChangeLog" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub ClearChangeLog ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void ClearChangeLog();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by ClearPendingChanges")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-138">변경 로그에서 보류 중인 변경 내용을 모두 지웁니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-138">Clears any pending changes from the change log.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Data.CollectionView.OnBeginChangeLogging(System.Collections.Specialized.NotifyCollectionChangedEventArgs)" />
+      </Docs>
+    </Member>
+    <Member MemberName="ClearPendingChanges">
+      <MemberSignature Language="C#" Value="protected void ClearPendingChanges ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void ClearPendingChanges() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.ClearPendingChanges" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub ClearPendingChanges ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void ClearPendingChanges();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-139">컬렉션에 대한 처리되지 않은 변경 내용을 지웁니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-139">Clears unprocessed changed to the collection.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CollectionChanged">
+      <MemberSignature Language="C#" Value="protected virtual event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Windows.Data.CollectionView.CollectionChanged" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Event CollectionChanged As NotifyCollectionChangedEventHandler " />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual event System::Collections::Specialized::NotifyCollectionChangedEventHandler ^ CollectionChanged;" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Specialized.NotifyCollectionChangedEventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-140">뷰가 변경되면 발생합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-140">Occurs when the view has changed.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="E:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged" />
+      </Docs>
+    </Member>
+    <Member MemberName="Comparer">
+      <MemberSignature Language="C#" Value="public virtual System.Collections.IComparer Comparer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.IComparer Comparer" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.Comparer" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Comparer As IComparer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Collections::IComparer ^ Comparer { System::Collections::IComparer ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.IComparer</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-141">뷰의 항목을 비교하는 데 사용할 수 있는 개체를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-141">Returns an object that you can use to compare items in the view.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-142">뷰의 항목을 비교하는 데 사용할 수 있는 <see cref="T:System.Collections.IComparer" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-142">An <see cref="T:System.Collections.IComparer" /> object that you can use to compare items in the view.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Contains">
+      <MemberSignature Language="C#" Value="public virtual bool Contains (object item);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Contains(object item) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.Contains(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function Contains (item As Object) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool Contains(System::Object ^ item);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="item">
+          <span data-ttu-id="3eca5-143">검사할 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-143">The object to check.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-144">지정한 항목이 뷰에 속해 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-144">Returns a value that indicates whether the specified item belongs to the view.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-145">항목이 뷰에 속해 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-145">
+              <see langword="true" /> if the item belongs to the view; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-146">이 메서드는 어떠한가 정도 항목 기본 컬렉션에 속해 있는지 여부에 대 한 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-146">This method does not make any assumptions about whether the item belongs to the underlying collection.</span></span> <span data-ttu-id="3eca5-147">호출자에 게 해당 항목을 기본 컬렉션에 속해 있는지 알고, 것이 더 효율적 호출 하 여 <xref:System.Windows.Data.CollectionView.PassesFilter%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="3eca5-147">If the caller knows that the item belongs to the underlying collection, it is more efficient to call the <xref:System.Windows.Data.CollectionView.PassesFilter%2A> method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Count">
+      <MemberSignature Language="C#" Value="public virtual int Count { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Count" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.Count" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Count As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int Count { int get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-148">뷰의 레코드 수를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-148">Gets the number of records in the view.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-149">뷰의 레코드 수 또는 -1(레코드 수를 알 수 없는 경우)입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-149">The number of records in the view, or –1 if the number of records is unknown.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-150">필터가 설정 되어 있으면이 속성 값에만 필터를 통과 하는 항목이 포함 됩니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-150">If a filter is set, this property value only includes items that pass the filter.</span></span> <span data-ttu-id="3eca5-151">기본 컬렉션 형식인 경우 <xref:System.Collections.IEnumerable>,이 작업은 o (n) 작업입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-151">If the underlying collection is of type <xref:System.Collections.IEnumerable>, this is an O(N) operation.</span></span> <span data-ttu-id="3eca5-152">이 값은 컬렉션 변경 될 때까지 캐시 됩니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-152">This value is cached until the collection changes.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-153">파생 된 경우 <see cref="T:System.Windows.Data.CollectionView" />, 더 효율적인 구현을 제공 하려면이 속성을 재정의 합니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-153">When deriving from <see cref="T:System.Windows.Data.CollectionView" />, override this property to provide a more efficient implementation.</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <Member MemberName="Culture">
+      <MemberSignature Language="C#" Value="public virtual System.Globalization.CultureInfo Culture { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Globalization.CultureInfo Culture" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.Culture" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property Culture As CultureInfo" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Globalization::CultureInfo ^ Culture { System::Globalization::CultureInfo ^ get(); void set(System::Globalization::CultureInfo ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.TypeConverter(typeof(System.Windows.CultureInfoIetfLanguageTagConverter))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Globalization.CultureInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-154">정렬하는 동안 사용할 문화권 정보를 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-154">Gets or sets the culture information to use during sorting.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-155">정렬하는 동안 사용할 문화권 정보입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-155">The culture information to use during sorting.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentChanged">
+      <MemberSignature Language="C#" Value="public virtual event EventHandler CurrentChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler CurrentChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Windows.Data.CollectionView.CurrentChanged" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Event CurrentChanged As EventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual event EventHandler ^ CurrentChanged;" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-156">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 변경된 후에 발생합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-156">Occurs after the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> has changed.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-157">변경한 후이 이벤트를 발생는 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />합니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-157">Raise this event after changing the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+            </span>
+          </para>
+        </block>
+        <altmember cref="E:System.ComponentModel.ICollectionView.CurrentChanged" />
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentChanging">
+      <MemberSignature Language="C#" Value="public virtual event System.ComponentModel.CurrentChangingEventHandler CurrentChanging;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.ComponentModel.CurrentChangingEventHandler CurrentChanging" />
+      <MemberSignature Language="DocId" Value="E:System.Windows.Data.CollectionView.CurrentChanging" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Event CurrentChanging As CurrentChangingEventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual event System::ComponentModel::CurrentChangingEventHandler ^ CurrentChanging;" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.CurrentChangingEventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-158">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />가 변경될 때 발생합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-158">Occurs when the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is changing.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-159">이 이벤트를 변경 하기 전에 발생는 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />합니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-159">Raise this event before changing the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+            </span>
+          </para>
+        </block>
+        <altmember cref="E:System.ComponentModel.ICollectionView.CurrentChanging" />
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentItem">
+      <MemberSignature Language="C#" Value="public virtual object CurrentItem { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object CurrentItem" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.CurrentItem" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property CurrentItem As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Object ^ CurrentItem { System::Object ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-160">뷰의 현재 항목을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-160">Gets the current item in the view.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-161">뷰의 현재 항목입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-161">The current item of the view.</span>
+          </span>
+          <span data-ttu-id="3eca5-162">기본적으로 컬렉션의 첫 번째 항목은 현재 항목으로 시작합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-162">By default, the first item of the collection starts as the current item.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-163">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-163">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-164">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-164">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span>  
+  
+ <span data-ttu-id="3eca5-165">현재 레코드 포인터를 이동 정렬 또는 필터링 된 일부 상호 작용에 컬렉션에 적용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-165">Note that moving the current record pointer has some interactions with any sorting or filtering that is applied to the collection.</span></span> <span data-ttu-id="3eca5-166">정렬이 유지 마지막 레코드를 선택 하면 현재 레코드 포인터 되지만 컬렉션 뷰 주위 재구성 됩니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-166">Sorting preserves the current record pointer on the last record selected, but the collection view is restructured around it.</span></span> <span data-ttu-id="3eca5-167">(선택된 된 레코드 이전에 목록의 맨 앞에 있었지만 이제 선택한 레코드 중간에 어딘가에 있을 수 있습니다.) 필터링 해당 선택을 필터링 후 보기에 유지 되는 경우 선택된 된 레코드를 유지 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-167">(Perhaps the selected record was at the beginning of the list before, but now the selected record might be somewhere in the middle.) Filtering preserves the selected record if that selection remains in view after the filtering.</span></span> <span data-ttu-id="3eca5-168">그렇지 않으면 현재 레코드 포인터는 필터링 된 컬렉션 보기의 첫 번째 레코드에 설정 됩니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-168">Otherwise, the current record pointer is set to the first record of the filtered collection view.</span></span>  
+  
+ <span data-ttu-id="3eca5-169">에 컬렉션의 현재 항목 자동으로 바인딩된 바인딩의 대상 단일 값 이면 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-169">The current item of the collection is bound to automatically if the target of a binding is a singleton value.</span></span> <span data-ttu-id="3eca5-170">대상이 인 경우는 <xref:System.Windows.Controls.ItemsControl>, 현재 항목이 선택한 항목과 동기화 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-170">If the target is an <xref:System.Windows.Controls.ItemsControl>, the current item is synchronized with the selected item.</span></span> <span data-ttu-id="3eca5-171">예를 들어, 목록 상자를 컬렉션에 바인딩되는 <xref:System.Windows.Data.CollectionView.CurrentItem%2A> 현재 선택 된 항목과 동기화 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-171">For example, if a list box is bound to a collection, the <xref:System.Windows.Data.CollectionView.CurrentItem%2A> is synchronized with the currently selected item.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-172">다른 내부에 대 한 호출을 처리 하는 통화를 전달 하는 클래스만 <see cref="T:System.Windows.Data.CollectionView" /> 개체는이 속성을 재정의 합니다; 다른 모든 파생된 클래스를 사용 해야는 <see cref="M:System.Windows.Data.CollectionView.SetCurrent(System.Object,System.Int32)" /> 기본 클래스에 저장 된 현재 값을 업데이트 하는 메서드.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-172">Only classes that pass currency handling calls to another internal <see cref="T:System.Windows.Data.CollectionView" /> object should override this property; all other derived classes should use the <see cref="M:System.Windows.Data.CollectionView.SetCurrent(System.Object,System.Int32)" /> method to update the current values stored in the base class.</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentPosition">
+      <MemberSignature Language="C#" Value="public virtual int CurrentPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CurrentPosition" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.CurrentPosition" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property CurrentPosition As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int CurrentPosition { int get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-173">선택적으로 정렬되거나 필터링된 뷰 내에 있는 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />의 위치를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-173">Gets the ordinal position of the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> within the (optionally sorted and filtered) view.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-174">선택적으로 정렬되거나 필터링된 뷰 내에 있는 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />의 위치입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-174">The ordinal position of the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> within the (optionally sorted and filtered) view.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-175">다른 내부에 대 한 호출을 처리 하는 통화를 전달 하는 클래스만 <see cref="T:System.Windows.Data.CollectionView" /> 개체는이 속성을 재정의 합니다; 다른 모든 파생된 클래스를 사용 해야는 <see cref="M:System.Windows.Data.CollectionView.SetCurrent(System.Object,System.Int32)" /> 기본 클래스에 저장 된 현재 값을 업데이트 하는 메서드.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-175">Only classes that pass currency handling calls to another internal <see cref="T:System.Windows.Data.CollectionView" /> object should override this property; all other derived classes should use the <see cref="M:System.Windows.Data.CollectionView.SetCurrent(System.Object,System.Int32)" /> method to update the current values stored in the base class.</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <Member MemberName="DeferRefresh">
+      <MemberSignature Language="C#" Value="public virtual IDisposable DeferRefresh ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IDisposable DeferRefresh() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.DeferRefresh" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function DeferRefresh () As IDisposable" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual IDisposable ^ DeferRefresh();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IDisposable</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-176">변경 내용을 뷰에 병합하고 자동 새로 고침을 지연하는 데 사용할 수 있는 지연 주기를 입력합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-176">Enters a defer cycle that you can use to merge changes to the view and delay automatic refresh.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-177">호출하는 개체를 삭제하는 데 사용할 수 있는 <see cref="T:System.IDisposable" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-177">An <see cref="T:System.IDisposable" /> object that you can use to dispose of the calling object.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-178">일반적인 사용법은 만들려는 `using` 이 방법으로 범위가 지정 되 고 다음 범위 내에서 여러 보기 변경 호출을 배치 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-178">The typical usage is to create a `using` scope with this method and then place multiple view-changing calls within the scope.</span></span> <span data-ttu-id="3eca5-179">이 지연 주기가 종료 될 때까지 자동 새로 고침을 지연 됩니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-179">This delays automatic refresh until the defer cycle is exited.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DetachFromSourceCollection">
+      <MemberSignature Language="C#" Value="public virtual void DetachFromSourceCollection ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DetachFromSourceCollection() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.DetachFromSourceCollection" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub DetachFromSourceCollection ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void DetachFromSourceCollection();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-180">
+            <see cref="T:System.Windows.Data.CollectionView" />에서 기본 컬렉션에 대한 참조를 제거합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-180">Removes the reference to the underlying collection from the <see cref="T:System.Windows.Data.CollectionView" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-181">이 메서드를 사용 하 여 기본 컬렉션에 대 한 이벤트에 구독을 취소 하는 <xref:System.Windows.Data.CollectionView> 가비지 수집 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-181">Use this method to unsubscribe to events on the underlying collection and allow the <xref:System.Windows.Data.CollectionView> to be garbage collected.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Filter">
+      <MemberSignature Language="C#" Value="public virtual Predicate&lt;object&gt; Filter { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Predicate`1&lt;object&gt; Filter" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.Filter" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property Filter As Predicate(Of Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property Predicate&lt;System::Object ^&gt; ^ Filter { Predicate&lt;System::Object ^&gt; ^ get(); void set(Predicate&lt;System::Object ^&gt; ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Predicate&lt;System.Object&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-182">항목이 뷰에 포함되기에 적합한지 여부를 확인하는 데 사용할 메서드를 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-182">Gets or sets a method used to determine if an item is suitable for inclusion in the view.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-183">항목이 뷰에 포함되기에 적합한지 여부를 확인하는 데 사용할 메서드를 나타내는 대리자입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-183">A delegate that represents the method used to determine if an item is suitable for inclusion in the view.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-184">간단한 구현에서는 필터링을 지원 하지 않으며 throw 한 <xref:System.NotSupportedException>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-184">Simpler implementations do not support filtering and throw a <xref:System.NotSupportedException>.</span></span> <span data-ttu-id="3eca5-185">사용 하 여는 <xref:System.Windows.Data.CollectionView.CanFilter%2A> null이 아닌 값으로이 속성을 할당 하기 전에 필터링이 지원 여부를 테스트 하는 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-185">Use the <xref:System.Windows.Data.CollectionView.CanFilter%2A> property to test if filtering is supported before assigning this property with a non-null value.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="3eca5-186">현재 구현에서 필터링을 지원하지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-186">The current implementation does not support filtering.</span>
+          </span>
+        </exception>
+        <altmember cref="E:System.Windows.Data.CollectionViewSource.Filter" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetEnumerator">
+      <MemberSignature Language="C#" Value="protected virtual System.Collections.IEnumerator GetEnumerator ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Collections.IEnumerator GetEnumerator() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.GetEnumerator" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetEnumerator () As IEnumerator" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Collections::IEnumerator ^ GetEnumerator();" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Collections.IEnumerable.GetEnumerator</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerator</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-187">뷰의 항목을 열거하는 데 사용할 수 있는 개체를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-187">Returns an object that you can use to enumerate the items in the view.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-188">뷰의 항목을 열거하는 데 사용할 수 있는 <see cref="T:System.Collections.IEnumerator" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-188">An <see cref="T:System.Collections.IEnumerator" /> object that you can use to enumerate the items in the view.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetItemAt">
+      <MemberSignature Language="C#" Value="public virtual object GetItemAt (int index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object GetItemAt(int32 index) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.GetItemAt(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetItemAt (index As Integer) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ GetItemAt(int index);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="index">
+          <span data-ttu-id="3eca5-189">검색할 항목의 인덱스(0부터 시작)입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-189">The zero-based index of the item to retrieve.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-190">뷰의 지정한 인덱스(0부터 시작)에 있는 항목을 검색합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-190">Retrieves the item at the specified zero-based index in the view.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-191">뷰의 지정한 인덱스(0부터 시작)에 있는 항목입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-191">The item at the specified zero-based index in the view.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-192">이 메서드에서 함께 <xref:System.Windows.Data.CollectionView.SortDescriptions%2A> 또는 <xref:System.Windows.Data.CollectionView.Filter%2A> 보기에 설정 된 속성 값입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-192">This method evaluates the index with any <xref:System.Windows.Data.CollectionView.SortDescriptions%2A> or <xref:System.Windows.Data.CollectionView.Filter%2A> property values that are set on the view.</span></span>  
+  
+ <span data-ttu-id="3eca5-193">기본 컬렉션 형식인 경우 <xref:System.Collections.IEnumerable>,이 작업은 o (n) 작업입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-193">If the underlying collection is of type <xref:System.Collections.IEnumerable>, this is an O(N) operation.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="3eca5-194">
+            <paramref name="index" />가 0보다 작습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-194">
+              <paramref name="index" /> is less than 0.</span>
+          </span>
+        </exception>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-195">파생 된 경우 <see cref="T:System.Windows.Data.CollectionView" />, 더 효율적인 구현을 제공 하려면이 메서드를 재정의 합니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-195">When deriving from <see cref="T:System.Windows.Data.CollectionView" />, override this method to provide a more efficient implementation.</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <Member MemberName="GroupDescriptions">
+      <MemberSignature Language="C#" Value="public virtual System.Collections.ObjectModel.ObservableCollection&lt;System.ComponentModel.GroupDescription&gt; GroupDescriptions { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ObjectModel.ObservableCollection`1&lt;class System.ComponentModel.GroupDescription&gt; GroupDescriptions" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.GroupDescriptions" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property GroupDescriptions As ObservableCollection(Of GroupDescription)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Collections::ObjectModel::ObservableCollection&lt;System::ComponentModel::GroupDescription ^&gt; ^ GroupDescriptions { System::Collections::ObjectModel::ObservableCollection&lt;System::ComponentModel::GroupDescription ^&gt; ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ObjectModel.ObservableCollection&lt;System.ComponentModel.GroupDescription&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-196">컬렉션의 항목이 뷰에서 그룹화되는 방법을 설명하는 <see cref="T:System.ComponentModel.GroupDescription" /> 개체의 컬렉션을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-196">Gets a collection of <see cref="T:System.ComponentModel.GroupDescription" /> objects that describes how the items in the collection are grouped in the view.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-197">모든 경우에 <see langword="null" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-197">
+              <see langword="null" /> in all cases.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-198">이 속성의 값은 항상 `null` 때문에 <xref:System.Windows.Data.CollectionView> 클래스의 내부 컬렉션에 대해 그룹화를 지원 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-198">The value of this property is always `null` because the <xref:System.Windows.Data.CollectionView> class does not support grouping over its underlying collection.</span></span> <span data-ttu-id="3eca5-199">파생된 클래스 <xref:System.Windows.Data.ListCollectionView> 및 <xref:System.Windows.Data.BindingListCollectionView> 그룹화를 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-199">The derived classes <xref:System.Windows.Data.ListCollectionView> and <xref:System.Windows.Data.BindingListCollectionView> do support grouping.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.ListCollectionView.GroupDescriptions" />
+      </Docs>
+    </Member>
+    <Member MemberName="Groups">
+      <MemberSignature Language="C#" Value="public virtual System.Collections.ObjectModel.ReadOnlyObservableCollection&lt;object&gt; Groups { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ObjectModel.ReadOnlyObservableCollection`1&lt;object&gt; Groups" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.Groups" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Groups As ReadOnlyObservableCollection(Of Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Collections::ObjectModel::ReadOnlyObservableCollection&lt;System::Object ^&gt; ^ Groups { System::Collections::ObjectModel::ReadOnlyObservableCollection&lt;System::Object ^&gt; ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ObjectModel.ReadOnlyObservableCollection&lt;System.Object&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-200">
+            <see cref="P:System.Windows.Data.CollectionView.GroupDescriptions" /> 속성을 기반으로 생성되는 최상위 그룹의 컬렉션을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-200">Gets a collection of the top-level groups that is constructed based on the <see cref="P:System.Windows.Data.CollectionView.GroupDescriptions" /> property.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-201">모든 경우에 <see langword="null" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-201">
+              <see langword="null" /> in all cases.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-202">이 속성의 값은 항상 `null` 때문에 <xref:System.Windows.Data.CollectionView> 클래스의 내부 컬렉션에 대해 그룹화를 지원 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-202">The value of this property is always `null` because the <xref:System.Windows.Data.CollectionView> class does not support grouping over its underlying collection.</span></span> <span data-ttu-id="3eca5-203">파생된 클래스 <xref:System.Windows.Data.ListCollectionView> 및 <xref:System.Windows.Data.BindingListCollectionView> 그룹화를 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-203">The derived classes <xref:System.Windows.Data.ListCollectionView> and <xref:System.Windows.Data.BindingListCollectionView> do support grouping.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IndexOf">
+      <MemberSignature Language="C#" Value="public virtual int IndexOf (object item);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance int32 IndexOf(object item) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.IndexOf(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function IndexOf (item As Object) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual int IndexOf(System::Object ^ item);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="item">
+          <span data-ttu-id="3eca5-204">찾을 항목입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-204">The item to locate.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-205">지정한 항목이 있는 인덱스를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-205">Returns the index at which the specified item is located.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-206">지정한 항목이 있는 인덱스 또는 –1(항목을 알 수 없는 경우)입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-206">The index at which the specified item is located, or –1 if the item is unknown.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-207">항상 존재 해야이 메서드가-1이 아닌 인덱스를 반환 하는 경우 해당 보기 [인덱스-1] true < 항목 < =는 비교가 수행 됩니다 뷰 [index]를 사용 하 여는 <xref:System.Collections.IComparer.Compare%2A?displayProperty=nameWithType> 있을 경우 뷰의 메서드.</span><span class="sxs-lookup"><span data-stu-id="3eca5-207">If this method returns an index other than -1, it must always be true that view[index-1] < item <= view[index], where the comparisons are done using the <xref:System.Collections.IComparer.Compare%2A?displayProperty=nameWithType> method of the view, if one exists.</span></span>  
+  
+ <span data-ttu-id="3eca5-208">이 특정 동작은 메서드의 일부는 <xref:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged> 삽입 및 삭제에 대 한 응답 속도 향상을 위한 이벤트 처리기입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-208">This particular behavior of the method is used by some <xref:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged> event handlers to speed up reaction to insertion and deletion.</span></span> <span data-ttu-id="3eca5-209">파생된 클래스가이 메서드를 재정의 하지 않으면 수신기를 사용 하 여 이진 검색을는 <xref:System.Collections.IComparer.Compare%2A?displayProperty=nameWithType> 메서드.</span><span class="sxs-lookup"><span data-stu-id="3eca5-209">If the derived class does not override this method, a listener does a binary search using the <xref:System.Collections.IComparer.Compare%2A?displayProperty=nameWithType> method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsCurrentAfterLast">
+      <MemberSignature Language="C#" Value="public virtual bool IsCurrentAfterLast { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsCurrentAfterLast" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.IsCurrentAfterLast" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property IsCurrentAfterLast As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool IsCurrentAfterLast { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-210">뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 컬렉션의 끝 부분을 벗어나는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-210">Gets a value that indicates whether the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> of the view is beyond the end of the collection.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-211">뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 컬렉션 끝을 벗어나면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-211">
+              <see langword="true" /> if the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> of the view is beyond the end of the collection; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-212">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-212">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-213">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-213">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.CollectionView.IsCurrentAfterLast" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsCurrentBeforeFirst">
+      <MemberSignature Language="C#" Value="public virtual bool IsCurrentBeforeFirst { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsCurrentBeforeFirst" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.IsCurrentBeforeFirst" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property IsCurrentBeforeFirst As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool IsCurrentBeforeFirst { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-214">뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 컬렉션 시작 부분 앞에 있는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-214">Gets a value that indicates whether the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> of the view is before the beginning of the collection.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-215">뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 컬렉션 시작 부분 앞에 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-215">
+              <see langword="true" /> if the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> of the view is before the beginning of the collection; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-216">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-216">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-217">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-217">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.CollectionView.IsCurrentAfterLast" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsCurrentInSync">
+      <MemberSignature Language="C#" Value="protected bool IsCurrentInSync { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsCurrentInSync" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.IsCurrentInSync" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property IsCurrentInSync As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property bool IsCurrentInSync { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-218">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" />에 있는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-218">Gets a value that indicates whether the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is at the <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-219">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" />에 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-219">
+              <see langword="true" /> if the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is in the view and at the <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" />; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsDynamic">
+      <MemberSignature Language="C#" Value="protected bool IsDynamic { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsDynamic" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.IsDynamic" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property IsDynamic As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property bool IsDynamic { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-220">기본 컬렉션에서 변경 알림을 제공하는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-220">Gets a value that indicates whether the underlying collection provides change notifications.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-221">기본 컬렉션에서 변경 알림을 제공하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-221">
+              <see langword="true" /> if the underlying collection provides change notifications; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsEmpty">
+      <MemberSignature Language="C#" Value="public virtual bool IsEmpty { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsEmpty" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.IsEmpty" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property IsEmpty As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool IsEmpty { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-222">필터링된 결과 뷰가 비어 있는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-222">Gets a value that indicates whether the resulting (filtered) view is empty.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-223">결과 뷰가 비어 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-223">
+              <see langword="true" /> if the resulting view is empty; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsInUse">
+      <MemberSignature Language="C#" Value="public virtual bool IsInUse { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsInUse" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.IsInUse" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property IsInUse As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool IsInUse { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-224">이 <see cref="T:System.Windows.Data.CollectionView" />의 이벤트를 구독하는 개체가 있는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-224">Gets a value that indicates whether any object is subscribing to the events of this <see cref="T:System.Windows.Data.CollectionView" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-225">이 <see cref="T:System.Windows.Data.CollectionView" /> 이벤트를 구독하는 개체가 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-225">
+              <see langword="true" /> if any object is subscribing to the events of this <see cref="T:System.Windows.Data.CollectionView" />; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsRefreshDeferred">
+      <MemberSignature Language="C#" Value="protected bool IsRefreshDeferred { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsRefreshDeferred" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.IsRefreshDeferred" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property IsRefreshDeferred As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property bool IsRefreshDeferred { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-226">사용하고 있는 처리 중인 <see cref="M:System.Windows.Data.CollectionView.DeferRefresh" />가 있는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-226">Gets a value that indicates whether there is an outstanding <see cref="M:System.Windows.Data.CollectionView.DeferRefresh" /> in use.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-227">사용하고 있는 처리 중인 <see cref="M:System.Windows.Data.CollectionView.DeferRefresh" />가 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-227">
+              <see langword="true" /> if there is an outstanding <see cref="M:System.Windows.Data.CollectionView.DeferRefresh" /> in use; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-228">파생된 클래스에는 호출 하지 않아야 <see cref="M:System.Windows.Data.CollectionView.Refresh" /> 경우 <see cref="P:System.Windows.Data.CollectionView.IsRefreshDeferred" /> 반환 <see langword="true" />합니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-228">Derived classes should avoid calling <see cref="M:System.Windows.Data.CollectionView.Refresh" /> if <see cref="P:System.Windows.Data.CollectionView.IsRefreshDeferred" /> returns <see langword="true" />.</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCurrentTo">
+      <MemberSignature Language="C#" Value="public virtual bool MoveCurrentTo (object item);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool MoveCurrentTo(object item) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.MoveCurrentTo(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function MoveCurrentTo (item As Object) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool MoveCurrentTo(System::Object ^ item);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="item">
+          <span data-ttu-id="3eca5-229">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정할 항목입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-229">The item to set as the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-230">지정된 항목을 뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-230">Sets the specified item to be the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> in the view.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-231">결과 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 뷰에 속해 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-231">
+              <see langword="true" /> if the resulting <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is within the view; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-232">지정된 된 항목이 없으면 메서드가 반환 `false` 및 <xref:System.Windows.Data.CollectionView.CurrentItem%2A> 보기에서 컬렉션의 시작 부분 앞에 배치 됩니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-232">If the specified item is not found, the method returns `false` and the <xref:System.Windows.Data.CollectionView.CurrentItem%2A> is positioned before the beginning of the collection in the view.</span></span>  
+  
+ <span data-ttu-id="3eca5-233">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-233">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-234">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-234">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span> <span data-ttu-id="3eca5-235">자세한 내용은 "컬렉션에 바인딩"의 참조 [데이터 바인딩 개요](~/docs/framework/wpf/data/data-binding-overview.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-235">For more information, see "Binding to Collections" in [Data Binding Overview](~/docs/framework/wpf/data/data-binding-overview.md).</span></span>  
+  
+ <span data-ttu-id="3eca5-236">뷰의 현재 항목에 대 한 자세한 내용은 참조 하십시오. <xref:System.Windows.Data.CollectionView.CurrentItem%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-236">For more information about the current item of a view, see <xref:System.Windows.Data.CollectionView.CurrentItem%2A>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="3eca5-237">다음 예제에서는이 방법 사용 하는 방법을 보여 줍니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-237">The following example demonstrates the use of this method.</span></span>  
+  
+ [!code-csharp[Colors#NewColor](~/samples/snippets/csharp/VS_Snippets_Wpf/Colors/CSharp/Colors.xaml.cs#newcolor)]
+ [!code-vb[Colors#NewColor](~/samples/snippets/visualbasic/VS_Snippets_Wpf/Colors/visualbasic/colors.xaml.vb#newcolor)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.CollectionView.CurrentItem" />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCurrentToFirst">
+      <MemberSignature Language="C#" Value="public virtual bool MoveCurrentToFirst ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool MoveCurrentToFirst() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.MoveCurrentToFirst" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function MoveCurrentToFirst () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool MoveCurrentToFirst();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-238">뷰의 첫 번째 항목을 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-238">Sets the first item in the view as the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-239">결과 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 뷰 내에 있는 항목이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-239">
+              <see langword="true" /> if the resulting <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is an item within the view; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-240">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-240">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-241">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-241">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span> <span data-ttu-id="3eca5-242">자세한 내용은 "컬렉션에 바인딩"의 참조 [데이터 바인딩 개요](~/docs/framework/wpf/data/data-binding-overview.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-242">For more information, see "Binding to Collections" in [Data Binding Overview](~/docs/framework/wpf/data/data-binding-overview.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.CollectionView.IsCurrentBeforeFirst" />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCurrentToLast">
+      <MemberSignature Language="C#" Value="public virtual bool MoveCurrentToLast ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool MoveCurrentToLast() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.MoveCurrentToLast" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function MoveCurrentToLast () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool MoveCurrentToLast();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-243">뷰의 마지막 항목을 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-243">Sets the last item in the view as the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-244">결과 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 뷰 내에 있는 항목이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-244">
+              <see langword="true" /> if the resulting <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is an item within the view; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-245">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-245">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-246">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-246">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span> <span data-ttu-id="3eca5-247">자세한 내용은 "컬렉션에 바인딩"의 참조 [데이터 바인딩 개요](~/docs/framework/wpf/data/data-binding-overview.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-247">For more information, see "Binding to Collections" in [Data Binding Overview](~/docs/framework/wpf/data/data-binding-overview.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.CollectionView.IsCurrentAfterLast" />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCurrentToNext">
+      <MemberSignature Language="C#" Value="public virtual bool MoveCurrentToNext ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool MoveCurrentToNext() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.MoveCurrentToNext" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function MoveCurrentToNext () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool MoveCurrentToNext();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-248">뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> 다음에 나오는 항목을 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-248">Sets the item after the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> in the view as the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-249">결과 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 뷰 내에 있는 항목이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-249">
+              <see langword="true" /> if the resulting <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is an item within the view; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-250">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-250">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-251">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-251">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span> <span data-ttu-id="3eca5-252">자세한 내용은 "컬렉션에 바인딩"의 참조 [데이터 바인딩 개요](~/docs/framework/wpf/data/data-binding-overview.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-252">For more information, see "Binding to Collections" in [Data Binding Overview](~/docs/framework/wpf/data/data-binding-overview.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.CollectionView.IsCurrentAfterLast" />
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCurrentToPosition">
+      <MemberSignature Language="C#" Value="public virtual bool MoveCurrentToPosition (int position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool MoveCurrentToPosition(int32 position) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.MoveCurrentToPosition(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function MoveCurrentToPosition (position As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool MoveCurrentToPosition(int position);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="position" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="position">
+          <span data-ttu-id="3eca5-253">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />을 설정할 인덱스입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-253">The index to set the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-254">지정된 인덱스에 있는 항목을 뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-254">Sets the item at the specified index to be the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> in the view.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-255">결과 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 뷰 내에 있는 항목이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-255">
+              <see langword="true" /> if the resulting <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is an item within the view; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-256">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-256">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-257">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-257">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span> <span data-ttu-id="3eca5-258">자세한 내용은 "컬렉션에 바인딩"의 참조 [데이터 바인딩 개요](~/docs/framework/wpf/data/data-binding-overview.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-258">For more information, see "Binding to Collections" in [Data Binding Overview](~/docs/framework/wpf/data/data-binding-overview.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MoveCurrentToPrevious">
+      <MemberSignature Language="C#" Value="public virtual bool MoveCurrentToPrevious ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool MoveCurrentToPrevious() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.MoveCurrentToPrevious" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function MoveCurrentToPrevious () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool MoveCurrentToPrevious();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-259">뷰의 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> 앞에 나오는 항목을 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-259">Sets the item before the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> in the view as the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-260">결과 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />이 뷰 내에 있는 항목이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-260">
+              <see langword="true" /> if the resulting <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> is an item within the view; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-261">컬렉션 뷰는 현재 레코드 포인터의 개념을 지원 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-261">Collection views support the concept of a current record pointer.</span></span> <span data-ttu-id="3eca5-262">컬렉션 뷰에서의 개체를 통해 탐색 하는 동안에 특정 위치에 있는 컬렉션에 있는 개체를 검색할 수 있는 레코드 포인터를 이동 하 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-262">As you navigate through the objects in a collection view, you are moving a record pointer that allows you to retrieve the object that exists at that particular location in the collection.</span></span> <span data-ttu-id="3eca5-263">자세한 내용은 "컬렉션에 바인딩"의 참조 [데이터 바인딩 개요](~/docs/framework/wpf/data/data-binding-overview.md)합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-263">For more information, see "Binding to Collections" in [Data Binding Overview](~/docs/framework/wpf/data/data-binding-overview.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.CollectionView.IsCurrentBeforeFirst" />
+      </Docs>
+    </Member>
+    <Member MemberName="NeedsRefresh">
+      <MemberSignature Language="C#" Value="public virtual bool NeedsRefresh { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool NeedsRefresh" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.NeedsRefresh" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property NeedsRefresh As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool NeedsRefresh { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-264">뷰를 새로 고쳐야 하는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-264">Gets a value that indicates whether the view needs to be refreshed.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-265">뷰를 새로 고쳐야 하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-265">
+              <see langword="true" /> if the view needs to be refreshed; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-266">이 속성은 보기의 내부 상태가 변경 되 고 필요 나타냅니다는 <xref:System.Windows.Data.CollectionView.Refresh%2A> 메서드를 호출 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-266">This property indicates if the internal state of the view has changed and requires a <xref:System.Windows.Data.CollectionView.Refresh%2A> method call.</span></span> <span data-ttu-id="3eca5-267">일반적인 시나리오는 경우는 <xref:System.ComponentModel.SortDescription> 유사한에 추가 된 보기는 보기는의 지연 된 새로 고침 주기 동안 또는 (참조 <xref:System.Windows.Data.CollectionView.DeferRefresh%2A>).</span><span class="sxs-lookup"><span data-stu-id="3eca5-267">The typical scenario is if a <xref:System.ComponentModel.SortDescription> or similar has been added to the view while the view is in a deferred refresh cycle (see <xref:System.Windows.Data.CollectionView.DeferRefresh%2A>).</span></span> <span data-ttu-id="3eca5-268">이 시나리오에 대 한 명시적 호출이 <xref:System.Windows.Data.CollectionView.Refresh%2A> 지연 된 새로 고침 주기 끝, 보기 새로 고침 자동으로 호출 되는 즉시 필요 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-268">In this scenario, no explicit call to <xref:System.Windows.Data.CollectionView.Refresh%2A> is needed; as soon as the deferred refresh cycle ends, the view calls refresh automatically.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Data.CollectionView.Refresh" />
+        <altmember cref="M:System.Windows.Data.CollectionView.DeferRefresh" />
+      </Docs>
+    </Member>
+    <Member MemberName="NewItemPlaceholder">
+      <MemberSignature Language="C#" Value="public static object NewItemPlaceholder { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property object NewItemPlaceholder" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.NewItemPlaceholder" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property NewItemPlaceholder As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::Object ^ NewItemPlaceholder { System::Object ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-269">컬렉션에서 새 항목을 나타내는 개체를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-269">Gets the object that is in the collection to represent a new item.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-270">컬렉션에서 새 항목을 나타내는 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-270">The object that is in the collection to represent a new item.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-271">경우는 <xref:System.Windows.Data.CollectionView> 를 구현 하는 <xref:System.ComponentModel.IEditableCollectionView> 가 <xref:System.ComponentModel.IEditableCollectionView.NewItemPlaceholderPosition%2A> 로 설정 <xref:System.ComponentModel.NewItemPlaceholderPosition.AtBeginning> 또는 <xref:System.ComponentModel.NewItemPlaceholderPosition.AtEnd>, <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A> 컬렉션에 추가 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-271">When a <xref:System.Windows.Data.CollectionView> that implements <xref:System.ComponentModel.IEditableCollectionView> has <xref:System.ComponentModel.IEditableCollectionView.NewItemPlaceholderPosition%2A> set to <xref:System.ComponentModel.NewItemPlaceholderPosition.AtBeginning> or <xref:System.ComponentModel.NewItemPlaceholderPosition.AtEnd>, the <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A> is added to the collection.</span></span>  <span data-ttu-id="3eca5-272"><xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A> 컬렉션에 항상 표시 그룹화, 정렬 또는 필터링에 참여 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-272">The <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A> always appears in the collection; it does not participate in grouping, sorting, or filtering.</span></span>  
+  
+ <span data-ttu-id="3eca5-273"><xref:System.Windows.Data.CollectionView.CurrentItem%2A> 일 수 없습니다는 <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-273">The <xref:System.Windows.Data.CollectionView.CurrentItem%2A> cannot be the <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A>.</span></span> <span data-ttu-id="3eca5-274">와 같은 상대 탐색을 수행 하는 메서드는 <xref:System.Windows.Data.CollectionView.MoveCurrentToNext%2A>, 건너뜁니다 고 <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-274">Methods that perform relative navigation, such as the <xref:System.Windows.Data.CollectionView.MoveCurrentToNext%2A>, skip the <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A>.</span></span>  <span data-ttu-id="3eca5-275"><xref:System.Windows.Data.CollectionView.MoveCurrentToFirst%2A> 및 <xref:System.Windows.Data.CollectionView.MoveCurrentToLast%2A> 건너뛸는 <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A> 경우 <xref:System.ComponentModel.IEditableCollectionView.NewItemPlaceholderPosition%2A> 로 설정 된 <xref:System.ComponentModel.NewItemPlaceholderPosition.AtBeginning> 또는 <xref:System.ComponentModel.NewItemPlaceholderPosition.AtEnd>각각.</span><span class="sxs-lookup"><span data-stu-id="3eca5-275"><xref:System.Windows.Data.CollectionView.MoveCurrentToFirst%2A> and <xref:System.Windows.Data.CollectionView.MoveCurrentToLast%2A> skip the <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A> if <xref:System.ComponentModel.IEditableCollectionView.NewItemPlaceholderPosition%2A> is set to <xref:System.ComponentModel.NewItemPlaceholderPosition.AtBeginning> or <xref:System.ComponentModel.NewItemPlaceholderPosition.AtEnd>, respectively.</span></span> <span data-ttu-id="3eca5-276">와 같은 절대 탐색을 수행 하는 방법 <xref:System.Windows.Data.CollectionView.MoveCurrentToPosition%2A>, 아무 작업도 수행 하는 경우는 <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A> 것는 <xref:System.Windows.Data.CollectionView.CurrentItem%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-276">Methods that perform absolute navigation, such as <xref:System.Windows.Data.CollectionView.MoveCurrentToPosition%2A>, do nothing if the <xref:System.Windows.Data.CollectionView.NewItemPlaceholder%2A> would be the <xref:System.Windows.Data.CollectionView.CurrentItem%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OKToChangeCurrent">
+      <MemberSignature Language="C#" Value="protected bool OKToChangeCurrent ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance bool OKToChangeCurrent() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OKToChangeCurrent" />
+      <MemberSignature Language="VB.NET" Value="Protected Function OKToChangeCurrent () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; bool OKToChangeCurrent();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-277">뷰에서 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />인 항목을 변경할 수 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-277">Returns a value that indicates whether the view can change which item is the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-278">수신기가 변경을 취소하면 <see langword="false" />이고, 그렇지 않으면 <see langword="true" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-278">
+              <see langword="false" /> if a listener cancels the change; otherwise, <see langword="true" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAllowsCrossThreadChangesChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnAllowsCrossThreadChangesChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAllowsCrossThreadChangesChanged() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OnAllowsCrossThreadChangesChanged" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAllowsCrossThreadChangesChanged ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAllowsCrossThreadChangesChanged();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-279">
+            <see cref="P:System.Windows.Data.CollectionView.AllowsCrossThreadChanges" /> 속성이 변경되면 발생합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-279">Occurs when the <see cref="P:System.Windows.Data.CollectionView.AllowsCrossThreadChanges" /> property changes.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginChangeLogging">
+      <MemberSignature Language="C#" Value="protected virtual void OnBeginChangeLogging (System.Collections.Specialized.NotifyCollectionChangedEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnBeginChangeLogging(class System.Collections.Specialized.NotifyCollectionChangedEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OnBeginChangeLogging(System.Collections.Specialized.NotifyCollectionChangedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnBeginChangeLogging (args As NotifyCollectionChangedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnBeginChangeLogging(System::Collections::Specialized::NotifyCollectionChangedEventArgs ^ args);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Obsolete("Replaced by OnAllowsCrossThreadChangesChanged")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.Collections.Specialized.NotifyCollectionChangedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">
+          <span data-ttu-id="3eca5-280">변경 로그에 추가되는 <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-280">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> object that is added to the change log.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-281">기본 클래스에서 호출되어 <see cref="E:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged" /> 이벤트가 메시지 큐에 게시되었음을 파생 클래스에 알립니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-281">Called by the base class to notify the derived class that an <see cref="E:System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged" /> event has been posted to the message queue.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="3eca5-282">
+            <paramref name="args" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-282">
+              <paramref name="args" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="OnCollectionChanged">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-283">
+            <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> 이벤트를 발생시킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-283">Raises the <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> event.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="OnCollectionChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnCollectionChanged (System.Collections.Specialized.NotifyCollectionChangedEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCollectionChanged(class System.Collections.Specialized.NotifyCollectionChangedEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnCollectionChanged (args As NotifyCollectionChangedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnCollectionChanged(System::Collections::Specialized::NotifyCollectionChangedEventArgs ^ args);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.Collections.Specialized.NotifyCollectionChangedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">
+          <span data-ttu-id="3eca5-284">이벤트 처리기에 전달할 <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-284">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> object to pass to the event handler.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-285">
+            <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> 이벤트를 발생시킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-285">Raises the <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> event.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-286">정렬, 필터링 또는 그룹화 조건을 고려해이 메서드를 호출 하기 전에 수행 된 <xref:System.Windows.Data.CollectionView.CollectionChanged> 이벤트입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-286">Take any sorting, filtering, or grouping criteria into consideration before calling this method to raise the <xref:System.Windows.Data.CollectionView.CollectionChanged> event.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCollectionChanged">
+      <MemberSignature Language="C#" Value="protected void OnCollectionChanged (object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void OnCollectionChanged(object sender, class System.Collections.Specialized.NotifyCollectionChangedEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OnCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub OnCollectionChanged (sender As Object, args As NotifyCollectionChangedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void OnCollectionChanged(System::Object ^ sender, System::Collections::Specialized::NotifyCollectionChangedEventArgs ^ args);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sender" Type="System.Object" />
+        <Parameter Name="args" Type="System.Collections.Specialized.NotifyCollectionChangedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="sender">
+          <span data-ttu-id="3eca5-287">이벤트의 송신자입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-287">The sender of the event.</span>
+          </span>
+        </param>
+        <param name="args">
+          <span data-ttu-id="3eca5-288">이벤트 처리기에 전달할 <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-288">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> object to pass to the event handler.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-289">
+            <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> 이벤트를 발생시킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-289">Raises the <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> event.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-290">이 메서드를 호출 <xref:System.Windows.Data.CollectionView.ProcessCollectionChanged%2A> 올바른에 있으면 [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] 발송자 스레드 및 다른 스레드에서 업데이트 되지 않은 또는 올바른 스레드에서 처리 디스패처에서 요청에 변경 내용을 게시 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-290">This method calls <xref:System.Windows.Data.CollectionView.ProcessCollectionChanged%2A> if it is on the correct [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] thread dispatcher and has never been updated from a different thread, or posts the change to the dispatcher to process it on the correct thread.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCurrentChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnCurrentChanged ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCurrentChanged() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OnCurrentChanged" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnCurrentChanged ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnCurrentChanged();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-291">
+            <see cref="E:System.Windows.Data.CollectionView.CurrentChanged" /> 이벤트를 발생시킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-291">Raises the <see cref="E:System.Windows.Data.CollectionView.CurrentChanged" /> event.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="OnCurrentChanging">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-292">
+            <see cref="E:System.Windows.Data.CollectionView.CurrentChanging" /> 이벤트를 발생시킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-292">Raises the <see cref="E:System.Windows.Data.CollectionView.CurrentChanging" /> event.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="OnCurrentChanging">
+      <MemberSignature Language="C#" Value="protected void OnCurrentChanging ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void OnCurrentChanging() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OnCurrentChanging" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub OnCurrentChanging ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void OnCurrentChanging();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-293">취소할 수 없는 <see cref="E:System.Windows.Data.CollectionView.CurrentChanging" /> 이벤트를 발생시킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-293">Raises a <see cref="E:System.Windows.Data.CollectionView.CurrentChanging" /> event that is not cancelable.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-294">이 메서드는 설정 <xref:System.Windows.Data.CollectionView.CurrentPosition%2A> 를-1입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-294">This method sets <xref:System.Windows.Data.CollectionView.CurrentPosition%2A> to –1.</span></span> <span data-ttu-id="3eca5-295">이 메서드는 컬렉션 변경에 영향을 주는 <xref:System.Windows.Data.CollectionView.CurrentItem%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-295">This method is called by collection changes that affect the <xref:System.Windows.Data.CollectionView.CurrentItem%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCurrentChanging">
+      <MemberSignature Language="C#" Value="protected virtual void OnCurrentChanging (System.ComponentModel.CurrentChangingEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCurrentChanging(class System.ComponentModel.CurrentChangingEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OnCurrentChanging(System.ComponentModel.CurrentChangingEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnCurrentChanging (args As CurrentChangingEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnCurrentChanging(System::ComponentModel::CurrentChangingEventArgs ^ args);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.ComponentModel.CurrentChangingEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">
+          <span data-ttu-id="3eca5-296">이벤트 정보입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-296">Information about the event.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-297">지정한 인수로 <see cref="E:System.Windows.Data.CollectionView.CurrentChanging" /> 이벤트를 발생시킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-297">Raises the <see cref="E:System.Windows.Data.CollectionView.CurrentChanging" /> event with the specified arguments.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPropertyChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnPropertyChanged (System.ComponentModel.PropertyChangedEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPropertyChanged(class System.ComponentModel.PropertyChangedEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnPropertyChanged (e As PropertyChangedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnPropertyChanged(System::ComponentModel::PropertyChangedEventArgs ^ e);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.ComponentModel.PropertyChangedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          <span data-ttu-id="3eca5-298">발생하는 이벤트의 인수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-298">Arguments of the event being raised.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-299">지정한 인수를 사용하여 <see cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged" /> 이벤트를 발생시킵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-299">Raises the <see cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged" /> event using the specified arguments.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PassesFilter">
+      <MemberSignature Language="C#" Value="public virtual bool PassesFilter (object item);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool PassesFilter(object item) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.PassesFilter(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function PassesFilter (item As Object) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool PassesFilter(System::Object ^ item);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="item" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="item">
+          <span data-ttu-id="3eca5-300">확인할 항목입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-300">The item to check.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-301">기본 컬렉션에 있는 지정한 항목이 뷰에 속해 있는지 여부를 나타내는 값을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-301">Returns a value that indicates whether the specified item in the underlying collection belongs to the view.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-302">지정한 항목이 뷰에 속해 있거나 컬렉션 뷰에 설정된 필터가 없으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-302">
+              <see langword="true" /> if the specified item belongs to the view or if there is not filter set on the collection view; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-303">와 달리는 <xref:System.Windows.Data.CollectionView.Contains%2A> 메서드를이 메서드는 내부 컬렉션에 지정된 된 항목이 속해 있다고 가정 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-303">Unlike the <xref:System.Windows.Data.CollectionView.Contains%2A> method, this method assumes that the specified item belongs to the underlying collection.</span></span> <span data-ttu-id="3eca5-304">이 메서드는 필터를 고려 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-304">This method takes filters into account.</span></span> <span data-ttu-id="3eca5-305">일반적으로이 메서드를 사용 하면 컬렉션 변경 알림을 하는 동안 추가 또는 제거 항목을 처리 해야 하는 경우를 결정 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-305">Typically, you use this method during collection-changed notifications to determine if the added or removed item requires processing.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ProcessCollectionChanged">
+      <MemberSignature Language="C#" Value="protected virtual void ProcessCollectionChanged (System.Collections.Specialized.NotifyCollectionChangedEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void ProcessCollectionChanged(class System.Collections.Specialized.NotifyCollectionChangedEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.ProcessCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub ProcessCollectionChanged (args As NotifyCollectionChangedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void ProcessCollectionChanged(System::Collections::Specialized::NotifyCollectionChangedEventArgs ^ args);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.Collections.Specialized.NotifyCollectionChangedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">
+          <span data-ttu-id="3eca5-306">처리할 <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-306">The <see cref="T:System.Collections.Specialized.NotifyCollectionChangedEventArgs" /> object to process.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-307">파생 클래스에서 재정의된 경우 [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] 스레드의 단일 변경 내용을 처리합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-307">When overridden in a derived class, processes a single change on the [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] thread.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-308">단일 변경 작업을 처리 하려면 파생된 클래스에서이 메서드를 재정의 해야 합니다는 [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] 스레드입니다.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-308">This method must be overridden in a derived class to process a single change on the [!INCLUDE[TLA2#tla_ui](~/includes/tla2sharptla-ui-md.md)] thread.</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <Member MemberName="ProcessPendingChanges">
+      <MemberSignature Language="C#" Value="protected void ProcessPendingChanges ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void ProcessPendingChanges() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.ProcessPendingChanges" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub ProcessPendingChanges ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void ProcessPendingChanges();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-309">컬렉션에 대한 모든 보류 중인 변경 내용이 커밋되도록 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-309">Ensures that all pending changes to the collection have been committed.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PropertyChanged">
+      <MemberSignature Language="C#" Value="protected virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.ComponentModel.PropertyChangedEventHandler PropertyChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Windows.Data.CollectionView.PropertyChanged" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Event PropertyChanged As PropertyChangedEventHandler " />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual event System::ComponentModel::PropertyChangedEventHandler ^ PropertyChanged;" />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.PropertyChangedEventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-310">속성 값이 변경될 때 발생합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-310">Occurs when a property value has changed.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged" />
+      </Docs>
+    </Member>
+    <Member MemberName="Refresh">
+      <MemberSignature Language="C#" Value="public virtual void Refresh ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Refresh() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.Refresh" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub Refresh ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Refresh();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-311">뷰를 다시 만듭니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-311">Re-creates the view.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-312">설정 하는 경우는 <xref:System.Windows.Data.CollectionView.Filter%2A>, <xref:System.Windows.Data.CollectionView.SortDescriptions%2A>, 또는 <xref:System.Windows.Data.CollectionView.GroupDescriptions%2A> 속성, 새로 고침 발생 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-312">When you set  the <xref:System.Windows.Data.CollectionView.Filter%2A>, <xref:System.Windows.Data.CollectionView.SortDescriptions%2A>, or <xref:System.Windows.Data.CollectionView.GroupDescriptions%2A> property; a refresh occurs.</span></span>  <span data-ttu-id="3eca5-313">호출할 필요가 없습니다는 <xref:System.Windows.Data.CollectionView.Refresh%2A> 메서드 직후 이러한 속성 중 하나를 설정 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-313">You do not have to call the <xref:System.Windows.Data.CollectionView.Refresh%2A> method immediately after you set one of those properties.</span></span> <span data-ttu-id="3eca5-314">자동 새로 고침을 지연 하는 방법에 대 한 정보를 참조 하십시오. <xref:System.Windows.Data.CollectionView.DeferRefresh%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-314">For information about how to delay automatic refresh, see <xref:System.Windows.Data.CollectionView.DeferRefresh%2A>.</span></span>  
+  
+ <span data-ttu-id="3eca5-315">파생된 클래스를 사용 하 여 보호 된 <xref:System.Windows.Data.CollectionView.RefreshOverride%2A> 메서드를이 메서드의 동작을 재정의 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-315">Derived classes use the protected <xref:System.Windows.Data.CollectionView.RefreshOverride%2A> method to override the behavior of this method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Data.CollectionView.DeferRefresh" />
+        <altmember cref="P:System.Windows.Data.CollectionView.NeedsRefresh" />
+      </Docs>
+    </Member>
+    <Member MemberName="RefreshOrDefer">
+      <MemberSignature Language="C#" Value="protected void RefreshOrDefer ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void RefreshOrDefer() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.RefreshOrDefer" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub RefreshOrDefer ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void RefreshOrDefer();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-316">뷰를 새로 고치거나, 지연 주기가 완료되면 뷰 새로 고침이 필요하도록 지정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-316">Refreshes the view or specifies that the view needs to be refreshed when the defer cycle completes.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RefreshOverride">
+      <MemberSignature Language="C#" Value="protected virtual void RefreshOverride ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void RefreshOverride() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.RefreshOverride" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub RefreshOverride ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void RefreshOverride();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-317">뷰를 다시 만듭니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-317">Re-creates the view.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <block subset="none" type="overrides">
+          <para>
+            <span data-ttu-id="3eca5-318">파생된 클래스의 동작을 변경 하려면이 메서드를 재정의 해야는 <see cref="M:System.Windows.Data.CollectionView.Refresh" /> 메서드.</span>
+            <span class="sxs-lookup">
+              <span data-stu-id="3eca5-318">Derived classes should override this method to change the behavior of the <see cref="M:System.Windows.Data.CollectionView.Refresh" /> method.</span>
+            </span>
+          </para>
+        </block>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="SetCurrent">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-319">
+            <see cref="T:System.Windows.Data.CollectionView" />의 현재 항목을 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-319">Sets the current item of the <see cref="T:System.Windows.Data.CollectionView" />.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="SetCurrent">
+      <MemberSignature Language="C#" Value="protected void SetCurrent (object newItem, int newPosition);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void SetCurrent(object newItem, int32 newPosition) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.SetCurrent(System.Object,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub SetCurrent (newItem As Object, newPosition As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void SetCurrent(System::Object ^ newItem, int newPosition);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="newItem" Type="System.Object" />
+        <Parameter Name="newPosition" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="newItem">
+          <span data-ttu-id="3eca5-320">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정할 항목입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-320">The item to set as the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+          </span>
+        </param>
+        <param name="newPosition">
+          <span data-ttu-id="3eca5-321">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" /> 속성 값으로 설정할 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-321">The value to set as the <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" /> property value.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-322">지정한 항목 및 인덱스를 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> 및 <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" /> 속성 값으로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-322">Sets the specified item and index as the values of the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> and <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" /> properties.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCurrent">
+      <MemberSignature Language="C#" Value="protected void SetCurrent (object newItem, int newPosition, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void SetCurrent(object newItem, int32 newPosition, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.SetCurrent(System.Object,System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub SetCurrent (newItem As Object, newPosition As Integer, count As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void SetCurrent(System::Object ^ newItem, int newPosition, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="newItem" Type="System.Object" />
+        <Parameter Name="newPosition" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="newItem">
+          <span data-ttu-id="3eca5-323">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />으로 설정할 항목입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-323">The item to set as the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" />.</span>
+          </span>
+        </param>
+        <param name="newPosition">
+          <span data-ttu-id="3eca5-324">
+            <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" /> 속성 값으로 설정할 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-324">The value to set as the <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" /> property value.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="3eca5-325">
+            <see cref="T:System.Windows.Data.CollectionView" />의 항목 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-325">The number of items in the <see cref="T:System.Windows.Data.CollectionView" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="3eca5-326">지정한 항목 및 인덱스를 <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> 및 <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" /> 속성 값으로 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-326">Sets the specified item and index as the values of the <see cref="P:System.Windows.Data.CollectionView.CurrentItem" /> and <see cref="P:System.Windows.Data.CollectionView.CurrentPosition" /> properties.</span>
+          </span>
+          <span data-ttu-id="3eca5-327">파생 클래스의 생성자에서 이 메서드를 호출할 수 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-327">This method can be called from a constructor of a derived class.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-328">파생된 클래스의 생성자에서이 오버 로드를 호출 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-328">Call this overload from constructor of a derived class.</span></span>  <span data-ttu-id="3eca5-329">전달 하지 마십시오는 <xref:System.Windows.Data.CollectionView.Count%2A> 속성, 즉 가상 속성으로 `count`합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-329">Do not pass the <xref:System.Windows.Data.CollectionView.Count%2A> property, which is a virtual property, as `count`.</span></span> <span data-ttu-id="3eca5-330">대신, 내부의 개수를 전달 <xref:System.Collections.IList> 컬렉션을 나타내는입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-330">Instead, pass the count of the internal <xref:System.Collections.IList> that represents the collection.</span></span>  
+  
+ <span data-ttu-id="3eca5-331"><xref:System.Windows.Data.CollectionView.SetCurrent%2A> .NET Framework 버전 3.5에서에서 도입 되었습니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-331"><xref:System.Windows.Data.CollectionView.SetCurrent%2A> is introduced in the .NET Framework version 3.5.</span></span>  <span data-ttu-id="3eca5-332">자세한 내용은 [버전 및 종속성](~/docs/framework/migration-guide/versions-and-dependencies.md)을 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="3eca5-332">For more information, see [Versions and Dependencies](~/docs/framework/migration-guide/versions-and-dependencies.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SortDescriptions">
+      <MemberSignature Language="C#" Value="public virtual System.ComponentModel.SortDescriptionCollection SortDescriptions { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.SortDescriptionCollection SortDescriptions" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.SortDescriptions" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property SortDescriptions As SortDescriptionCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::ComponentModel::SortDescriptionCollection ^ SortDescriptions { System::ComponentModel::SortDescriptionCollection ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.SortDescriptionCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-333">컬렉션의 항목이 뷰에서 정렬되는 방법을 설명하는 <see cref="T:System.ComponentModel.SortDescription" /> 구조의 컬렉션을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-333">Gets a collection of <see cref="T:System.ComponentModel.SortDescription" /> structures that describes how the items in the collection are sorted in the view.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-334">모든 경우에 빈 <see cref="T:System.ComponentModel.SortDescriptionCollection" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-334">An empty <see cref="T:System.ComponentModel.SortDescriptionCollection" /> in all cases.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="3eca5-335">추가할 수 없습니다는 <xref:System.ComponentModel.SortDescription> 반환된 (비어 있음) 컬렉션을 하기 때문에 기본 클래스 <xref:System.Windows.Data.CollectionView> 정렬을 지원 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-335">You cannot add a <xref:System.ComponentModel.SortDescription> to the returned (empty) collection because the base class <xref:System.Windows.Data.CollectionView> does not support sorting.</span></span> <span data-ttu-id="3eca5-336">파생된 클래스를 사용 하는 대신 <xref:System.Windows.Data.ListCollectionView> 및 <xref:System.Windows.Data.BindingListCollectionView> 정렬이 지원 되 합니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-336">Instead, use the derived classes <xref:System.Windows.Data.ListCollectionView> and <xref:System.Windows.Data.BindingListCollectionView> that do support sorting.</span></span> <span data-ttu-id="3eca5-337">확인은 <xref:System.Windows.Data.CollectionView.CanSort%2A> 추가 또는 제거 하기 전에 속성을 <xref:System.ComponentModel.SortDescription> 예외를 방지 하기 위해 개체입니다.</span><span class="sxs-lookup"><span data-stu-id="3eca5-337">Also, check the <xref:System.Windows.Data.CollectionView.CanSort%2A> property before adding or removing <xref:System.ComponentModel.SortDescription> objects to avoid an exception.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Data.CollectionViewSource.SortDescriptions" />
+      </Docs>
+    </Member>
+    <Member MemberName="SourceCollection">
+      <MemberSignature Language="C#" Value="public virtual System.Collections.IEnumerable SourceCollection { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.IEnumerable SourceCollection" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.SourceCollection" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property SourceCollection As IEnumerable" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Collections::IEnumerable ^ SourceCollection { System::Collections::IEnumerable ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerable</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-338">필터링되지 않은 기본 컬렉션을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-338">Returns the underlying unfiltered collection.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-339">기본 컬렉션인 <see cref="T:System.Collections.IEnumerable" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-339">An <see cref="T:System.Collections.IEnumerable" /> object that is the underlying collection.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Collections.IEnumerable.GetEnumerator">
+      <MemberSignature Language="C#" Value="System.Collections.IEnumerator IEnumerable.GetEnumerator ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance class System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Data.CollectionView.System#Collections#IEnumerable#GetEnumerator" />
+      <MemberSignature Language="VB.NET" Value="Function GetEnumerator () As IEnumerator Implements IEnumerable.GetEnumerator" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Collections::IEnumerator ^ System.Collections.IEnumerable.GetEnumerator() = System::Collections::IEnumerable::GetEnumerator;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Collections.IEnumerable.GetEnumerator</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.IEnumerator</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-340">뷰의 항목을 열거하는 데 사용할 수 있는 <see cref="T:System.Collections.IEnumerator" /> 개체를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-340">Returns an <see cref="T:System.Collections.IEnumerator" /> object that you can use to enumerate the items in the view.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="3eca5-341">뷰의 항목을 열거하는 데 사용할 수 있는 <see cref="T:System.Collections.IEnumerator" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-341">An <see cref="T:System.Collections.IEnumerator" /> object that you can use to enumerate the items in the view.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UpdatedOutsideDispatcher">
+      <MemberSignature Language="C#" Value="protected bool UpdatedOutsideDispatcher { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UpdatedOutsideDispatcher" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Data.CollectionView.UpdatedOutsideDispatcher" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property UpdatedOutsideDispatcher As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property bool UpdatedOutsideDispatcher { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="3eca5-342">[!INCLUDE[TLA#tla_ui](~/includes/tlasharptla-ui-md.md)] 스레드 디스패처를 먼저 시작하지 않고 다른 스레드에서 <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> 알림을 받았기 때문에 변경 로그를 업데이트해야 할 필요가 있었는지 여부를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-342">Gets a value that indicates whether it has been necessary to update the change log because a <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> notification has been received on a different thread without first entering the [!INCLUDE[TLA#tla_ui](~/includes/tlasharptla-ui-md.md)] thread dispatcher.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="3eca5-343">
+            <see langword="true" /> 때문에 변경 로그를 업데이트 하는 데 필요한 했는지는 <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> 알림을 수신한 다른 스레드에서 먼저 시작 하지 않고는 [!INCLUDE[TLA#tla_ui](~/includes/tlasharptla-ui-md.md)] 발송자 스레드, 그렇지 않으면 <see langword="false" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="3eca5-343">
+              <see langword="true" /> if it has been necessary to update the change log because a <see cref="E:System.Windows.Data.CollectionView.CollectionChanged" /> notification has been received on a different thread without first entering the [!INCLUDE[TLA#tla_ui](~/includes/tlasharptla-ui-md.md)] thread dispatcher; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Data.CollectionView.OnBeginChangeLogging(System.Collections.Specialized.NotifyCollectionChangedEventArgs)" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

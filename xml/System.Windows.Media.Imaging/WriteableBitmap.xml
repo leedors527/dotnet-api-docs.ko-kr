@@ -1,0 +1,1402 @@
+<Type Name="WriteableBitmap" FullName="System.Windows.Media.Imaging.WriteableBitmap">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="d8faee124c2155a6b75d903b393c805332cebd28" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class WriteableBitmap : System.Windows.Media.Imaging.BitmapSource" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit WriteableBitmap extends System.Windows.Media.Imaging.BitmapSource" />
+  <TypeSignature Language="DocId" Value="T:System.Windows.Media.Imaging.WriteableBitmap" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class WriteableBitmap&#xA;Inherits BitmapSource" />
+  <TypeSignature Language="C++ CLI" Value="public ref class WriteableBitmap sealed : System::Windows::Media::Imaging::BitmapSource" />
+  <AssemblyInfo>
+    <AssemblyName>PresentationCore</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Windows.Media.Imaging.BitmapSource</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="83433-101">쓰고 업데이트할 수 있는 <see cref="T:System.Windows.Media.Imaging.BitmapSource" />를 제공합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="83433-101">Provides a <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> that can be written to and updated.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-102">사용 된 <xref:System.Windows.Media.Imaging.WriteableBitmap> 클래스를 업데이트 한 프레임별으로 비트맵을 렌더링 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-102">Use the <xref:System.Windows.Media.Imaging.WriteableBitmap> class to update and render a bitmap on a per-frame basis.</span></span> <span data-ttu-id="83433-103">프랙탈 이미지와 같은 알고리즘 내용 생성에 대 한 데이터 시각화를 음악 시각화 도우미에 유용 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-103">This is useful for generating algorithmic content, such as a fractal image, and for data visualization, such as a music visualizer.</span></span>  
+  
+ <span data-ttu-id="83433-104"><xref:System.Windows.Media.Imaging.WriteableBitmap> 클래스는 두 개의 버퍼를 사용 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-104">The <xref:System.Windows.Media.Imaging.WriteableBitmap> class uses two buffers.</span></span> <span data-ttu-id="83433-105">*백 버퍼* 시스템 메모리에 할당 하 고 표시 되지 않는 콘텐츠를 누적 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-105">The *back buffer* is allocated in system memory and accumulates content that is not currently displayed.</span></span> <span data-ttu-id="83433-106">*프런트 버퍼* 시스템 메모리에 할당 되 고 현재 표시 되는 콘텐츠를 포함 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-106">The *front buffer* is allocated in system memory and contains the content that is currently displayed.</span></span> <span data-ttu-id="83433-107">렌더링 시스템 표시에 대 한 비디오 메모리에 프런트 버퍼를 복사합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-107">The rendering system copies the front buffer to video memory for display.</span></span>  
+  
+ <span data-ttu-id="83433-108">두 스레드는 이러한 버퍼를 사용합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-108">Two threads use these buffers.</span></span> <span data-ttu-id="83433-109">*사용자 인터페이스 (UI) 스레드에서* UI를 생성 하지만 화면에 표시 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-109">The *user interface (UI) thread* generates the UI but does not present it to the screen.</span></span> <span data-ttu-id="83433-110">UI 스레드는 사용자 입력, 타이머, 및 기타 이벤트에 응답합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-110">The UI thread responds to user input, timers, and other events.</span></span> <span data-ttu-id="83433-111">응용 프로그램이 여러 UI 스레드를 가질 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-111">An application can have multiple UI threads.</span></span> <span data-ttu-id="83433-112">*렌더 스레드에* 작성 하 고 UI 스레드에서 변경 내용을 렌더링 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-112">The *render thread* composes and renders changes from the UI thread.</span></span> <span data-ttu-id="83433-113">응용 프로그램당 하나만 렌더링 스레드가 있습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-113">There is only one render thread per application.</span></span>  
+  
+ <span data-ttu-id="83433-114">UI 스레드는 백 버퍼에 콘텐츠를 씁니다.</span><span class="sxs-lookup"><span data-stu-id="83433-114">The UI thread writes content to the back buffer.</span></span> <span data-ttu-id="83433-115">렌더링 스레드에서 프런트 버퍼의 내용을 읽고 비디오 메모리에 복사 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-115">The render thread reads content from the front buffer and copies it to video memory.</span></span> <span data-ttu-id="83433-116">변경 된 사각형 영역 백 버퍼에 대 한 변경 내용은 추적 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-116">Changes to the back buffer are tracked with changed rectangular regions.</span></span>  
+  
+ <span data-ttu-id="83433-117">하나를 호출 하는 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A> 오버 로드를 업데이트 하 고 백 버퍼에 자동으로 콘텐츠를 표시 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-117">Call one of the <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A> overloads to update and display content in the back buffer automatically.</span></span>  
+  
+ <span data-ttu-id="83433-118">업데이트를 보다 효율적으로 제어 하 고 백 버퍼에 대 한 다중 스레드 액세스에 대 한 다음 워크플로 사용 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-118">For greater control over updates, and for multi-threaded access to the back buffer, use the following workflow.</span></span>  
+  
+1.  <span data-ttu-id="83433-119">호출 된 <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 업데이트에 대 한 백 버퍼를 예약 하는 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-119">Call the <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> method to reserve the back buffer for updates.</span></span>  
+  
+2.  <span data-ttu-id="83433-120">에 액세스 하 여 백 버퍼에 대 한 포인터를 가져오는 <xref:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="83433-120">Obtain a pointer to the back buffer by accessing the <xref:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer%2A> property.</span></span>  
+  
+3.  <span data-ttu-id="83433-121">백 버퍼에 쓰기 변경합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-121">Write changes to the back buffer.</span></span> <span data-ttu-id="83433-122">다른 스레드에서 변경 내용을 쓸 수 백 버퍼에 시기는 <xref:System.Windows.Media.Imaging.WriteableBitmap> 잠겨 있습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-122">Other threads may write changes to the back buffer when the <xref:System.Windows.Media.Imaging.WriteableBitmap> is locked.</span></span>  
+  
+4.  <span data-ttu-id="83433-123">호출 된 <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> 메서드 변경 된 영역을 나타냅니다.</span><span class="sxs-lookup"><span data-stu-id="83433-123">Call the <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> method to indicate areas that have changed.</span></span>  
+  
+5.  <span data-ttu-id="83433-124">호출 된 <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 메서드 백 버퍼를 해제 하 고 화면에 표시할 수 있게 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-124">Call the <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> method to release the back buffer and allow presentation to the screen.</span></span>  
+  
+ <span data-ttu-id="83433-125">업데이트 렌더링 스레드에 전송 되 면 렌더링 스레드에서 변경 된 사각형 백 버퍼에서는 전면 버퍼로 복사 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-125">When updates are sent to the rendering thread, the rendering thread copies the changed rectangles from the back buffer to the front buffer.</span></span> <span data-ttu-id="83433-126">렌더링 시스템이 교착 상태를 방지 하 고이 exchange를 "실행" 등의 아티팩트를 다시 그리기를 제어 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-126">The rendering system controls this exchange to avoid deadlocks and redraw artifacts, such as "tearing".</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="83433-127">다음 예제에서는 어떻게는 <xref:System.Windows.Media.Imaging.WriteableBitmap> 의 원본으로 사용할 수는 <xref:System.Windows.Controls.Image> 픽셀을 그리는 마우스를 이동 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-127">The following example demonstrates how a <xref:System.Windows.Media.Imaging.WriteableBitmap> can be used as the source of an <xref:System.Windows.Controls.Image> to draw pixels when the mouse moves.</span></span>  
+  
+ [!code-csharp[WriteableBitmap2#WriteableBitmapFullPage](~/samples/snippets/csharp/VS_Snippets_Wpf/WriteableBitmap2/CS/Program.cs#writeablebitmapfullpage)]  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Windows.Media.Imaging.BitmapSource" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="83433-128">
+            <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-128">Initializes a new instance of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public WriteableBitmap (System.Windows.Media.Imaging.BitmapSource source);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Windows.Media.Imaging.BitmapSource source) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.#ctor(System.Windows.Media.Imaging.BitmapSource)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (source As BitmapSource)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; WriteableBitmap(System::Windows::Media::Imaging::BitmapSource ^ source);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="source" Type="System.Windows.Media.Imaging.BitmapSource" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="83433-129">초기화에 사용할 <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-129">The <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> to use for initialization.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="83433-130">지정된 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />을 사용하여 <see cref="T:System.Windows.Media.Imaging.BitmapSource" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-130">Initializes a new instance of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> class using the given <see cref="T:System.Windows.Media.Imaging.BitmapSource" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-131"><xref:System.Windows.Media.Imaging.WriteableBitmap.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.Double%2CSystem.Double%2CSystem.Windows.Media.PixelFormat%2CSystem.Windows.Media.Imaging.BitmapPalette%29> 생성자가이 생성자를 사용 하는 보다 선호 됩니다.</span><span class="sxs-lookup"><span data-stu-id="83433-131">The <xref:System.Windows.Media.Imaging.WriteableBitmap.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.Double%2CSystem.Double%2CSystem.Windows.Media.PixelFormat%2CSystem.Windows.Media.Imaging.BitmapPalette%29> constructor is preferred over using this constructor.</span></span>  
+  
+ <span data-ttu-id="83433-132">경우 `source` 를 고유 하 게 지원 되는 비트맵 형식으로 형식 변환이 하므로 성능이 저하 각 프레임 업데이트에 적용 되므로 사용 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-132">If `source` does not use a natively supported bitmap format, format conversions are applied for each frame update, which reduces performance.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-133">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-133">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-134">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-134">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-135">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-135">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public WriteableBitmap (int pixelWidth, int pixelHeight, double dpiX, double dpiY, System.Windows.Media.PixelFormat pixelFormat, System.Windows.Media.Imaging.BitmapPalette palette);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(int32 pixelWidth, int32 pixelHeight, float64 dpiX, float64 dpiY, valuetype System.Windows.Media.PixelFormat pixelFormat, class System.Windows.Media.Imaging.BitmapPalette palette) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.#ctor(System.Int32,System.Int32,System.Double,System.Double,System.Windows.Media.PixelFormat,System.Windows.Media.Imaging.BitmapPalette)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; WriteableBitmap(int pixelWidth, int pixelHeight, double dpiX, double dpiY, System::Windows::Media::PixelFormat pixelFormat, System::Windows::Media::Imaging::BitmapPalette ^ palette);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="pixelWidth" Type="System.Int32" />
+        <Parameter Name="pixelHeight" Type="System.Int32" />
+        <Parameter Name="dpiX" Type="System.Double" />
+        <Parameter Name="dpiY" Type="System.Double" />
+        <Parameter Name="pixelFormat" Type="System.Windows.Media.PixelFormat" />
+        <Parameter Name="palette" Type="System.Windows.Media.Imaging.BitmapPalette" />
+      </Parameters>
+      <Docs>
+        <param name="pixelWidth">
+          <span data-ttu-id="83433-136">원하는 비트맵의 너비입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-136">The desired width of the bitmap.</span>
+          </span>
+        </param>
+        <param name="pixelHeight">
+          <span data-ttu-id="83433-137">원하는 비트맵의 높이입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-137">The desired height of the bitmap.</span>
+          </span>
+        </param>
+        <param name="dpiX">
+          <span data-ttu-id="83433-138">비트맵의 가로 [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)]입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-138">The horizontal [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] of the bitmap.</span>
+          </span>
+        </param>
+        <param name="dpiY">
+          <span data-ttu-id="83433-139">비트맵의 세로 [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)]입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-139">The vertical [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] of the bitmap.</span>
+          </span>
+        </param>
+        <param name="pixelFormat">
+          <span data-ttu-id="83433-140">비트맵의 <see cref="T:System.Windows.Media.PixelFormat" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-140">The <see cref="T:System.Windows.Media.PixelFormat" /> of the bitmap.</span>
+          </span>
+        </param>
+        <param name="palette">
+          <span data-ttu-id="83433-141">비트맵의 <see cref="T:System.Windows.Media.Imaging.BitmapPalette" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-141">The <see cref="T:System.Windows.Media.Imaging.BitmapPalette" /> of the bitmap.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="83433-142">지정된 매개 변수를 사용하여 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-142">Initializes a new instance of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> class with the specified parameters.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-143">에 대 한 기본 설정된 값 `pixelFormat` 는 <xref:System.Windows.Media.PixelFormats.Bgr32%2A> 및 <xref:System.Windows.Media.PixelFormats.Pbgra32%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-143">The preferred values for `pixelFormat` are <xref:System.Windows.Media.PixelFormats.Bgr32%2A> and <xref:System.Windows.Media.PixelFormats.Pbgra32%2A>.</span></span> <span data-ttu-id="83433-144">이러한 형식은 기본적으로 지 원하는 이며 형식 변환이 필요 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-144">These formats are natively supported and do not require a format conversion.</span></span> <span data-ttu-id="83433-145">다른 `pixelFormat` 값 하므로 성능이 저하 각 프레임 업데이트에 대 한 형식 변환이 필요 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-145">Other `pixelFormat` values require a format conversion for each frame update, which reduces performance.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-146">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-146">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-147">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-147">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-148">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-148">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="AddDirtyRect">
+      <MemberSignature Language="C#" Value="public void AddDirtyRect (System.Windows.Int32Rect dirtyRect);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddDirtyRect(valuetype System.Windows.Int32Rect dirtyRect) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect(System.Windows.Int32Rect)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AddDirtyRect (dirtyRect As Int32Rect)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AddDirtyRect(System::Windows::Int32Rect dirtyRect);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dirtyRect" Type="System.Windows.Int32Rect" />
+      </Parameters>
+      <Docs>
+        <param name="dirtyRect">
+          <span data-ttu-id="83433-149">변경된 영역을 나타내는 <see cref="T:System.Windows.Int32Rect" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-149">An <see cref="T:System.Windows.Int32Rect" /> representing the area that changed.</span>
+          </span>
+          <span data-ttu-id="83433-150">크기는 픽셀 단위입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-150">Dimensions are in pixels.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="83433-151">변경된 비트맵의 영역을 지정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-151">Specifies the area of the bitmap that changed.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-152">호출의 <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> 메서드 코드가 백 버퍼에 수행한 변경 내용을 나타냅니다.</span><span class="sxs-lookup"><span data-stu-id="83433-152">Call the <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> method to indicate changes your code has made to the back buffer.</span></span>  
+  
+ <span data-ttu-id="83433-153">이 메서드를 여러 번 호출 하면 변경된 된 영역 충분 하지만 최소한 반드시, 표현에 누적 됩니다.</span><span class="sxs-lookup"><span data-stu-id="83433-153">When you call this method multiple times, the changed areas are accumulated in a sufficient, but not necessarily minimal, representation.</span></span> <span data-ttu-id="83433-154">효율성을 높이기 위해 프런트 버퍼에 복사 될 커밋되지 않은 것으로 표시 된 영역에만 보장 됩니다.</span><span class="sxs-lookup"><span data-stu-id="83433-154">For efficiency, only the areas that are marked as dirty are guaranteed to be copied forward to the front buffer.</span></span> <span data-ttu-id="83433-155">그러나 일부 비트맵의 복사 될 수도, 전체 백 버퍼는 항상 유효한 지 확인 해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-155">However, any portion of the bitmap may be copied forward, so you must ensure that the entire back buffer is always valid.</span></span>  
+  
+ <span data-ttu-id="83433-156">호출의 <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> 에 대 한 호출 사이만 메서드는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 및 <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 에 설명 된 대로 메서드는 <xref:System.Windows.Media.Imaging.WriteableBitmap> 클래스 설명 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-156">Call the <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> method only between calls to the <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> and <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> methods, as described in the <xref:System.Windows.Media.Imaging.WriteableBitmap> class remarks.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="83433-157">다음 코드 예제에서는 뒷면의 영역을 지정 하는 방법을 보여 줍니다. 사용 하 여 변경 된 버퍼는 <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-157">The following code example shows how to specify the area of the back buffer that changed by using the <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> method.</span></span>  
+  
+ [!code-csharp[WriteableBitmap2#2](~/samples/snippets/csharp/VS_Snippets_Wpf/WriteableBitmap2/CS/Program.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="83433-158">
+            <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" /> 또는 <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" /> 메서드를 호출하여 비트맵을 잠그지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-158">The bitmap has not been locked by a call to the <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" /> or <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" /> methods.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="83433-159">
+            <paramref name="dirtyRect" />가 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 경계를 벗어났습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-159">
+              <paramref name="dirtyRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-160">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-160">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-161">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-161">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-162">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-162">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="BackBuffer">
+      <MemberSignature Language="C#" Value="public IntPtr BackBuffer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance native int BackBuffer" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property BackBuffer As IntPtr" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property IntPtr BackBuffer { IntPtr get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>set: System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="83433-163">백 버퍼에 대한 포인터를 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-163">Gets a pointer to the back buffer.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="83433-164">백 버퍼의 기본 주소를 가리키는 <see cref="T:System.IntPtr" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-164">An <see cref="T:System.IntPtr" /> that points to the base address of the back buffer.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-165">백 버퍼는 사용자가 요청한 픽셀 형식에서 비트맵 콘텐츠를 포함 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-165">The back buffer contains the bitmap contents in the pixel format requested by the user.</span></span>  
+  
+ <span data-ttu-id="83433-166">백 버퍼에 대 한 호출 사이만 업데이트는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 및 <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-166">Update the back buffer only between calls to the <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> and <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> methods.</span></span> <span data-ttu-id="83433-167">에 설명 된 잠금/잠금 해제 워크플로 준수 하지 않는 경우는 <xref:System.Windows.Media.Imaging.WriteableBitmap> 클래스 설명 하는 데 필요한와 같은 정의 되지 않은 동작을 발생할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-167">If you do not follow the Lock/Unlock workflow described in the <xref:System.Windows.Media.Imaging.WriteableBitmap> class remarks, undefined behaviors, such as tearing, can occur.</span></span>  
+  
+ <span data-ttu-id="83433-168">백 버퍼의 주소를 변경 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-168">The address of the back buffer does not change.</span></span>  
+  
+## <a name="thread-safety"></a><span data-ttu-id="83433-169">스레드로부터의 안전성</span><span class="sxs-lookup"><span data-stu-id="83433-169">Thread Safety</span></span>  
+ <span data-ttu-id="83433-170">전달할 수는 <xref:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer%2A> 외부 구성 요소 및 기타 스레드 처리에 대해에 대 한 포인터 경우 반드시 제공 해야 하면 자체의 스레드를 조정 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-170">You can pass the <xref:System.Windows.Media.Imaging.WriteableBitmap.BackBuffer%2A> pointer to external components and other threads for processing, but if you do, you must provide you own thread coordination.</span></span> <span data-ttu-id="83433-171">UI 스레드를 호출 하 여 변경 된 영역을 지정 하는지 확인 해야 특히는 <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> 메서드와 UI 스레드에 호출 하 여 버퍼의 잠금을 해제 하는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-171">In particular, you must ensure that the UI thread specifies changed areas by calling the <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> method, and that the UI thread unlocks the buffer by calling the <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BackBufferStride">
+      <MemberSignature Language="C#" Value="public int BackBufferStride { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 BackBufferStride" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Imaging.WriteableBitmap.BackBufferStride" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property BackBufferStride As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int BackBufferStride { int get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="83433-172">단일 행 픽셀 데이터의 바이트 수를 나타내는 값을 가져옵니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-172">Gets a value indicating the number of bytes in a single row of pixel data.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="83433-173">단일 행 픽셀 데이터의 바이트 수를 나타내는 정수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-173">An integer indicating the number of bytes in a single row of pixel data.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Clone">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Imaging.WriteableBitmap Clone ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.Imaging.WriteableBitmap Clone() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.Clone" />
+      <MemberSignature Language="VB.NET" Value="Public Function Clone () As WriteableBitmap" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::Imaging::WriteableBitmap ^ Clone();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Imaging.WriteableBitmap</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="83433-174">이 개체 값의 전체 복사본을 만들어 이 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 수정 가능한 복제본을 만듭니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-174">Creates a modifiable clone of this <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />, making deep copies of this object's values.</span>
+          </span>
+          <span data-ttu-id="83433-175">종속성 속성을 복사하는 경우 이 메서드는 더 이상 확인되지 않을 수도 있는 리소스 참조와 데이터 바인딩을 복사하지만 애니메이션이나 애니메이션의 현재 값은 복사하지 않습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-175">When copying dependency properties, this method copies resource references and data bindings (but they might no longer resolve) but not animations or their current values.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="83433-176">현재 개체의 수정 가능한 복제본입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-176">A modifiable clone of the current object.</span>
+          </span>
+          <span data-ttu-id="83433-177">소스의 <see cref="P:System.Windows.Freezable.IsFrozen" /> 속성이 <see langword="true." />인 경우에도 복제된 개체의 <see cref="P:System.Windows.Freezable.IsFrozen" /> 속성은 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-177">The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property will be <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property was <see langword="true." /></span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-178">수정 가능한 복사본을 생성 하기 위해이 메서드는 고정 된 <xref:System.Windows.Freezable> 개체 (또는 모든 <xref:System.Windows.Freezable> 개체).</span><span class="sxs-lookup"><span data-stu-id="83433-178">This method is used to produce modifiable copies of frozen <xref:System.Windows.Freezable> objects (or any <xref:System.Windows.Freezable> object).</span></span> <span data-ttu-id="83433-179">편의 위해이 메서드는 강력한 형식의 구현이 포함 된 상속 된 버전을 숨깁니다.</span><span class="sxs-lookup"><span data-stu-id="83433-179">For convenience, this method shadows the inherited version with a strongly typed implementation.</span></span>  
+  
+ <span data-ttu-id="83433-180">자세한 내용은 <xref:System.Windows.Freezable.Clone%2A?displayProperty=nameWithType>을 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="83433-180">For more information, see <xref:System.Windows.Freezable.Clone%2A?displayProperty=nameWithType>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCore">
+      <MemberSignature Language="C#" Value="protected override void CloneCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void CloneCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.CloneCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub CloneCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void CloneCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCurrentValue">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Imaging.WriteableBitmap CloneCurrentValue ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.Imaging.WriteableBitmap CloneCurrentValue() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.CloneCurrentValue" />
+      <MemberSignature Language="VB.NET" Value="Public Function CloneCurrentValue () As WriteableBitmap" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::Imaging::WriteableBitmap ^ CloneCurrentValue();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Imaging.WriteableBitmap</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="83433-181">
+            <see cref="T:System.Windows.Media.Animation.ByteAnimationUsingKeyFrames" /> 개체의 현재 값에 대한 전체 복사본을 만들어 이 개체의 수정 가능한 복제본을 만듭니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-181">Creates a modifiable clone of this <see cref="T:System.Windows.Media.Animation.ByteAnimationUsingKeyFrames" /> object, making deep copies of this object's current values.</span>
+          </span>
+          <span data-ttu-id="83433-182">리소스 참조, 데이터 바인딩 및 애니메이션은 복사되지 않지만 이러한 요소의 현재 값은 복사됩니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-182">Resource references, data bindings, and animations are not copied, but their current values are.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="83433-183">현재 개체의 수정 가능한 복제본입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-183">A modifiable clone of the current object.</span>
+          </span>
+          <span data-ttu-id="83433-184">소스의 <see cref="P:System.Windows.Freezable.IsFrozen" /> 속성이 <see langword="true" />인 경우에도 복제된 개체의 <see cref="P:System.Windows.Freezable.IsFrozen" /> 속성은 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-184">The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property will be <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property was <see langword="true" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-185">수정 가능한 복사본을 생성 하기 위해이 메서드는 고정 된 <xref:System.Windows.Freezable> 개체 (또는 모든 <xref:System.Windows.Freezable> 개체).</span><span class="sxs-lookup"><span data-stu-id="83433-185">This method is used to produce modifiable copies of frozen <xref:System.Windows.Freezable> objects (or any <xref:System.Windows.Freezable> object).</span></span> <span data-ttu-id="83433-186">편의 위해이 메서드는 강력한 형식의 구현이 포함 된 상속 된 버전을 숨깁니다.</span><span class="sxs-lookup"><span data-stu-id="83433-186">For convenience, this method shadows the inherited version with a strongly typed implementation.</span></span>  
+  
+ <span data-ttu-id="83433-187">자세한 내용은 <xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=nameWithType>을 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="83433-187">For more information, see <xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=nameWithType>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCurrentValueCore">
+      <MemberSignature Language="C#" Value="protected override void CloneCurrentValueCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void CloneCurrentValueCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.CloneCurrentValueCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub CloneCurrentValueCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void CloneCurrentValueCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateInstanceCore">
+      <MemberSignature Language="C#" Value="protected override System.Windows.Freezable CreateInstanceCore ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance class System.Windows.Freezable CreateInstanceCore() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.CreateInstanceCore" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function CreateInstanceCore () As Freezable" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::Windows::Freezable ^ CreateInstanceCore();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Freezable</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FreezeCore">
+      <MemberSignature Language="C#" Value="protected override bool FreezeCore (bool isChecking);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance bool FreezeCore(bool isChecking) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.FreezeCore(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function FreezeCore (isChecking As Boolean) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override bool FreezeCore(bool isChecking);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="isChecking" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="isChecking">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsFrozenCore">
+      <MemberSignature Language="C#" Value="protected override void GetAsFrozenCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void GetAsFrozenCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.GetAsFrozenCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub GetAsFrozenCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void GetAsFrozenCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCurrentValueAsFrozenCore">
+      <MemberSignature Language="C#" Value="protected override void GetCurrentValueAsFrozenCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void GetCurrentValueAsFrozenCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.GetCurrentValueAsFrozenCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub GetCurrentValueAsFrozenCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void GetCurrentValueAsFrozenCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Security.SecurityTreatAsSafe</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Lock">
+      <MemberSignature Language="C#" Value="public void Lock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Lock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Lock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Lock();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="83433-188">백 버퍼 업데이트를 예약합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-188">Reserves the back buffer for updates.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-189"><xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 메서드 잠금 수를 증가 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-189">The <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> method increments the lock count.</span></span> <span data-ttu-id="83433-190">경우는 <xref:System.Windows.Media.Imaging.WriteableBitmap> 은 잠긴 렌더링 시스템 보내지 않습니다 업데이트 될 때까지 <xref:System.Windows.Media.Imaging.WriteableBitmap> 를 호출 하 여 잠금을 완전히 해제는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-190">When a <xref:System.Windows.Media.Imaging.WriteableBitmap> is locked, the rendering system does not send updates until the <xref:System.Windows.Media.Imaging.WriteableBitmap> is fully unlocked by calls to the <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> method.</span></span>  
+  
+ <span data-ttu-id="83433-191">사용할 수는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 다중 스레드 구현을 지원 하기 위해 메서드에 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-191">You can use the <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> method to support multi-threaded implementations.</span></span> <span data-ttu-id="83433-192">이러한 시나리오에서 UI 스레드를 비트맵 잠그고 다른 스레드에 백 버퍼를 노출 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-192">In these scenarios, the UI thread locks the bitmap and exposes the back buffer to other threads.</span></span> <span data-ttu-id="83433-193">작업자 스레드 프레임 완료 되 면 UI 스레드에서 변경 된 사각형을 추가 하 고 버퍼의 잠금을 해제 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-193">When the worker thread has finished a frame, the UI thread adds changed rectangles and unlocks the buffer.</span></span>  
+  
+ <span data-ttu-id="83433-194">UI 스레드 렌더링 스레드에서 앞으로 프런트 버퍼에 복사 하는 백 버퍼에 잠금을 획득 하는 경우 차단할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-194">The UI thread can block when the render thread acquires a lock on the back buffer to copy it forward to the front buffer.</span></span> <span data-ttu-id="83433-195">사용 하 여이 블록의 대기 시간이 너무 긴 경우는 <xref:System.Windows.Media.Imaging.WriteableBitmap.TryLock%2A> 메서드를 짧은 시간 동안 기다린 다음 백 버퍼 잠겨 있는 동안 다른 작업을 수행 하는 UI 스레드를 차단 해제 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-195">If the latency from this block is too long, use the <xref:System.Windows.Media.Imaging.WriteableBitmap.TryLock%2A> method to wait for a short time and then unblock the UI thread to perform other tasks while the back buffer is locked.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="83433-196">다음 코드 예제를 사용 하 여 백 버퍼를 예약 하는 방법을 보여 줍니다는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-196">The following code example shows how to reserve the back buffer by using the <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> method.</span></span>  
+  
+ [!code-csharp[WriteableBitmap2#2](~/samples/snippets/csharp/VS_Snippets_Wpf/WriteableBitmap2/CS/Program.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" />
+        <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.Unlock" />
+      </Docs>
+    </Member>
+    <Member MemberName="TryLock">
+      <MemberSignature Language="C#" Value="public bool TryLock (System.Windows.Duration timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryLock(valuetype System.Windows.Duration timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryLock (timeout As Duration) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryLock(System::Windows::Duration timeout);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.Windows.Duration" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">
+          <span data-ttu-id="83433-197">기다릴 시간 길이를 나타내는 <see cref="T:System.Windows.Duration" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-197">A <see cref="T:System.Windows.Duration" /> that represents the length of time to wait.</span>
+          </span>
+          <span data-ttu-id="83433-198">값이 0이면 즉시 반환됩니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-198">A value of 0 returns immediately.</span>
+          </span>
+          <span data-ttu-id="83433-199">값이 <see cref="P:System.Windows.Duration.Forever" />이면 무한정 차단됩니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-199">A value of <see cref="P:System.Windows.Duration.Forever" /> blocks indefinitely.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="83433-200">비트맵을 잠그려고 시도하여 지정된 시간 길이 이하만 기다립니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-200">Attempts to lock the bitmap, waiting for no longer than the specified length of time.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="83433-201">잠금을 가져왔으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-201">
+              <see langword="true" /> if the lock was acquired; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-202">한 잠금을 획득할 때,의 동작은 <xref:System.Windows.Media.Imaging.WriteableBitmap.TryLock%2A> 와 같은지는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-202">When a lock is acquired, the behavior of the <xref:System.Windows.Media.Imaging.WriteableBitmap.TryLock%2A> method is the same as the <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="83433-203">
+            <paramref name="timeout" />이 <see cref="P:System.Windows.Duration.Automatic" />로 설정됩니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-203">
+              <paramref name="timeout" /> is set to <see cref="P:System.Windows.Duration.Automatic" />.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-204">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-204">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-205">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-205">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-206">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-206">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+        <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" />
+        <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.Unlock" />
+      </Docs>
+    </Member>
+    <Member MemberName="Unlock">
+      <MemberSignature Language="C#" Value="public void Unlock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unlock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.Unlock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Unlock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Unlock();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="83433-207">백 버퍼를 표시에 사용할 수 있도록 해제합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-207">Releases the back buffer to make it available for display.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-208"><xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 잠금 횟수를 메서드 줄입니다.</span><span class="sxs-lookup"><span data-stu-id="83433-208">The <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> method decrements the lock count.</span></span> <span data-ttu-id="83433-209">잠금 수가 0에 도달 하는 경우 렌더링 단계 요청 됩니다는 <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> 메서드가 호출 되었습니다.</span><span class="sxs-lookup"><span data-stu-id="83433-209">When the lock count reaches 0, a render pass is requested if the <xref:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect%2A> method has been called.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="83433-210">다음 코드 예제에 사용 하 여 백 버퍼를 해제 하는 방법을 보여 줍니다는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-210">The following code example shows how to release the back buffer by using the <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> method.</span></span>  
+  
+ [!code-csharp[WriteableBitmap2#2](~/samples/snippets/csharp/VS_Snippets_Wpf/WriteableBitmap2/CS/Program.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="83433-211">
+            <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" /> 또는 <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" /> 메서드를 호출하여 비트맵을 잠그지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-211">The bitmap has not been locked by a call to the <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" /> or <see cref="M:System.Windows.Media.Imaging.WriteableBitmap.TryLock(System.Windows.Duration)" /> methods.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-212">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-212">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-213">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-213">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-214">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-214">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+        <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.Lock" />
+        <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.AddDirtyRect(System.Windows.Int32Rect)" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="WritePixels">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="83433-215">쓰기 가능한 비트맵의 픽셀을 업데이트합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-215">Updates the pixels of the writeable bitmap.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="WritePixels">
+      <MemberSignature Language="C#" Value="public void WritePixels (System.Windows.Int32Rect sourceRect, Array pixels, int stride, int offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void WritePixels(valuetype System.Windows.Int32Rect sourceRect, class System.Array pixels, int32 stride, int32 offset) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.WritePixels(System.Windows.Int32Rect,System.Array,System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub WritePixels (sourceRect As Int32Rect, pixels As Array, stride As Integer, offset As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void WritePixels(System::Windows::Int32Rect sourceRect, Array ^ pixels, int stride, int offset);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceRect" Type="System.Windows.Int32Rect" />
+        <Parameter Name="pixels" Type="System.Array" />
+        <Parameter Name="stride" Type="System.Int32" />
+        <Parameter Name="offset" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="sourceRect">
+          <span data-ttu-id="83433-216">업데이트할 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 사각형입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-216">The rectangle of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> to update.</span>
+          </span>
+        </param>
+        <param name="pixels">
+          <span data-ttu-id="83433-217">비트맵을 업데이트하는 데 사용되는 픽셀 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-217">The pixel array used to update the bitmap.</span>
+          </span>
+        </param>
+        <param name="stride">
+          <span data-ttu-id="83433-218">
+            <c>pixels</c>에 있는 업데이트 영역의 스트라이드입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-218">The stride of the update region in <c>pixels</c>.</span>
+          </span>
+        </param>
+        <param name="offset">
+          <span data-ttu-id="83433-219">입력 버퍼 오프셋입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-219">The input buffer offset.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="83433-220">비트맵의 지정된 영역에 있는 픽셀을 업데이트합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-220">Updates the pixels in the specified region of the bitmap.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-221"><xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> 및 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.IntPtr%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> 오버 로드는이 메서드를 사용 하 여 보다 우선 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-221">The <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> and <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.IntPtr%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> overloads are preferred over using this method.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="83433-222">부분 신뢰에서 사용 하 여는 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> 오버 로드 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-222">In partial trust, use the <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> overload.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="83433-223">다음 코드 예제를 사용 하 여 백 버퍼의 픽셀을 업데이트 하는 방법을 보여 줍니다는 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="83433-223">The following code example shows how to update a pixel in the back buffer by using the <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A> method.</span></span>  
+  
+ [!code-csharp[WriteableBitmap2#3](~/samples/snippets/csharp/VS_Snippets_Wpf/WriteableBitmap2/CS/Program.cs#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="83433-224">다음 조건 중 하나 이상이 true인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-224">One or more of the following conditions is true.</span>
+          </span>
+          <span data-ttu-id="83433-225">
+            <paramref name="sourceRect" />가 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 경계를 벗어났습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-225">
+              <paramref name="sourceRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.</span>
+          </span>
+          <span data-ttu-id="83433-226">
+            <paramref name="stride" /> &lt; 1</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-226">
+              <paramref name="stride" /> &lt; 1</span>
+          </span>
+          <span data-ttu-id="83433-227">
+            <paramref name="offset" /> &lt; 0</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-227">
+              <paramref name="offset" /> &lt; 0</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="83433-228">
+            <paramref name="pixels" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-228">
+              <paramref name="pixels" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="83433-229">
+            <paramref name="pixels" />의 차수가 1 또는 2가 아니거나 해당 길이가 0보다 작거나 같은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-229">
+              <paramref name="pixels" /> has a rank other than 1 or 2, or its length is less than or equal to 0.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-230">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-230">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-231">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-231">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-232">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-232">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="WritePixels">
+      <MemberSignature Language="C#" Value="public void WritePixels (System.Windows.Int32Rect sourceRect, IntPtr buffer, int bufferSize, int stride);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void WritePixels(valuetype System.Windows.Int32Rect sourceRect, native int buffer, int32 bufferSize, int32 stride) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.WritePixels(System.Windows.Int32Rect,System.IntPtr,System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub WritePixels (sourceRect As Int32Rect, buffer As IntPtr, bufferSize As Integer, stride As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void WritePixels(System::Windows::Int32Rect sourceRect, IntPtr buffer, int bufferSize, int stride);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceRect" Type="System.Windows.Int32Rect" />
+        <Parameter Name="buffer" Type="System.IntPtr" />
+        <Parameter Name="bufferSize" Type="System.Int32" />
+        <Parameter Name="stride" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="sourceRect">
+          <span data-ttu-id="83433-233">업데이트할 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 사각형입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-233">The rectangle of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" /> to update.</span>
+          </span>
+        </param>
+        <param name="buffer">
+          <span data-ttu-id="83433-234">비트맵을 업데이트하는 데 사용되는 입력 버퍼입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-234">The input buffer used to update the bitmap.</span>
+          </span>
+        </param>
+        <param name="bufferSize">
+          <span data-ttu-id="83433-235">입력 버퍼의 크기입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-235">The size of the input buffer.</span>
+          </span>
+        </param>
+        <param name="stride">
+          <span data-ttu-id="83433-236">
+            <c>buffer</c>에 있는 업데이트 영역의 스트라이드입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-236">The stride of the update region in <c>buffer</c>.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="83433-237">비트맵의 지정된 영역에 있는 픽셀을 업데이트합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-237">Updates the pixels in the specified region of the bitmap.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-238"><xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> 및 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.IntPtr%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> 오버 로드는이 메서드를 사용 하 여 보다 우선 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-238">The <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> and <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.IntPtr%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> overloads are preferred over using this method.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="83433-239">부분 신뢰에서 사용 하 여는 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> 오버 로드 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-239">In partial trust, use the <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> overload.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="83433-240">다음 조건 중 하나 이상이 true인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-240">One or more of the following conditions is true.</span>
+          </span>
+          <span data-ttu-id="83433-241">
+            <paramref name="sourceRect" />가 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 경계를 벗어났습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-241">
+              <paramref name="sourceRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.</span>
+          </span>
+          <span data-ttu-id="83433-242">
+            <paramref name="bufferSize" /> &lt; 1</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-242">
+              <paramref name="bufferSize" /> &lt; 1</span>
+          </span>
+          <span data-ttu-id="83433-243">
+            <paramref name="stride" /> &lt; 1</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-243">
+              <paramref name="stride" /> &lt; 1</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="83433-244">
+            <paramref name="buffer" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-244">
+              <paramref name="buffer" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-245">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-245">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-246">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-246">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-247">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-247">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="WritePixels">
+      <MemberSignature Language="C#" Value="public void WritePixels (System.Windows.Int32Rect sourceRect, Array sourceBuffer, int sourceBufferStride, int destinationX, int destinationY);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void WritePixels(valuetype System.Windows.Int32Rect sourceRect, class System.Array sourceBuffer, int32 sourceBufferStride, int32 destinationX, int32 destinationY) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.WritePixels(System.Windows.Int32Rect,System.Array,System.Int32,System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub WritePixels (sourceRect As Int32Rect, sourceBuffer As Array, sourceBufferStride As Integer, destinationX As Integer, destinationY As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void WritePixels(System::Windows::Int32Rect sourceRect, Array ^ sourceBuffer, int sourceBufferStride, int destinationX, int destinationY);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceRect" Type="System.Windows.Int32Rect" />
+        <Parameter Name="sourceBuffer" Type="System.Array" />
+        <Parameter Name="sourceBufferStride" Type="System.Int32" />
+        <Parameter Name="destinationX" Type="System.Int32" />
+        <Parameter Name="destinationY" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="sourceRect">
+          <span data-ttu-id="83433-248">복사할 <c>sourceBuffer</c>에서 사각형입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-248">The rectangle in <c>sourceBuffer</c> to copy.</span>
+          </span>
+        </param>
+        <param name="sourceBuffer">
+          <span data-ttu-id="83433-249">비트맵을 업데이트하는 데 사용되는 입력 버퍼입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-249">The input buffer used to update the bitmap.</span>
+          </span>
+        </param>
+        <param name="sourceBufferStride">
+          <span data-ttu-id="83433-250">입력 버퍼의 스트라이드(바이트)입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-250">The stride of the input buffer, in bytes.</span>
+          </span>
+        </param>
+        <param name="destinationX">
+          <span data-ttu-id="83433-251">백 버퍼의 가장 왼쪽 픽셀의 대상 X 좌표입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-251">The destination x-coordinate of the left-most pixel in the back buffer.</span>
+          </span>
+        </param>
+        <param name="destinationY">
+          <span data-ttu-id="83433-252">백 버퍼의 가장 위쪽 픽셀의 대상 Y 좌표입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-252">The destination y-coordinate of the top-most pixel in the back buffer.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="83433-253">비트맵의 지정된 영역에 있는 픽셀을 업데이트합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-253">Updates the pixels in the specified region of the bitmap.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-254">호출 된 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A> 업데이트 하는 메서드는 <xref:System.Windows.Media.Imaging.WriteableBitmap> 의 내용으로 자동으로 `sourceBuffer`합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-254">Call the <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A> method to update the <xref:System.Windows.Media.Imaging.WriteableBitmap> automatically with the contents of `sourceBuffer`.</span></span> <span data-ttu-id="83433-255">이 메서드는 호출를 사용 하 여 해당 하는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 및 <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 에 설명 된 워크플로 <xref:System.Windows.Media.Imaging.WriteableBitmap> 클래스 설명 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-255">Calling this method is the equivalent of using the <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> and <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> workflow described in the <xref:System.Windows.Media.Imaging.WriteableBitmap> class remarks.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="83433-256">부분 신뢰 환경에서이 오버 로드를 사용 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-256">Use this overload in partial trust.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="83433-257">다음 조건 중 하나 이상이 true인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-257">One or more of the following conditions is true.</span>
+          </span>
+          <span data-ttu-id="83433-258">
+            <paramref name="sourceRect" />가 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 경계를 벗어났습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-258">
+              <paramref name="sourceRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.</span>
+          </span>
+          <span data-ttu-id="83433-259">
+            <paramref name="destinationX" /> 또는 <paramref name="destinationY" />가 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 범위 밖에 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-259">
+              <paramref name="destinationX" /> or <paramref name="destinationY" /> is outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.</span>
+          </span>
+          <span data-ttu-id="83433-260">
+            <paramref name="sourceBufferStride" /> &lt; 1</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-260">
+              <paramref name="sourceBufferStride" /> &lt; 1</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="83433-261">
+            <paramref name="sourceBuffer" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-261">
+              <paramref name="sourceBuffer" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="83433-262">
+            <paramref name="sourceBuffer" />의 차수가 1 또는 2가 아니거나 해당 길이가 0보다 작거나 같은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-262">
+              <paramref name="sourceBuffer" /> has a rank other than 1 or 2, or its length is less than or equal to 0.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-263">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-263">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-264">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-264">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-265">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-265">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+        <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.WritePixels(System.Windows.Int32Rect,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)" />
+      </Docs>
+    </Member>
+    <Member MemberName="WritePixels">
+      <MemberSignature Language="C#" Value="public void WritePixels (System.Windows.Int32Rect sourceRect, IntPtr sourceBuffer, int sourceBufferSize, int sourceBufferStride, int destinationX, int destinationY);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void WritePixels(valuetype System.Windows.Int32Rect sourceRect, native int sourceBuffer, int32 sourceBufferSize, int32 sourceBufferStride, int32 destinationX, int32 destinationY) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Imaging.WriteableBitmap.WritePixels(System.Windows.Int32Rect,System.IntPtr,System.Int32,System.Int32,System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub WritePixels (sourceRect As Int32Rect, sourceBuffer As IntPtr, sourceBufferSize As Integer, sourceBufferStride As Integer, destinationX As Integer, destinationY As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void WritePixels(System::Windows::Int32Rect sourceRect, IntPtr sourceBuffer, int sourceBufferSize, int sourceBufferStride, int destinationX, int destinationY);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceRect" Type="System.Windows.Int32Rect" />
+        <Parameter Name="sourceBuffer" Type="System.IntPtr" />
+        <Parameter Name="sourceBufferSize" Type="System.Int32" />
+        <Parameter Name="sourceBufferStride" Type="System.Int32" />
+        <Parameter Name="destinationX" Type="System.Int32" />
+        <Parameter Name="destinationY" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="sourceRect">
+          <span data-ttu-id="83433-266">복사할 <c>sourceBuffer</c>에서 사각형입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-266">The rectangle in <c>sourceBuffer</c> to copy.</span>
+          </span>
+        </param>
+        <param name="sourceBuffer">
+          <span data-ttu-id="83433-267">비트맵을 업데이트하는 데 사용되는 입력 버퍼입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-267">The input buffer used to update the bitmap.</span>
+          </span>
+        </param>
+        <param name="sourceBufferSize">
+          <span data-ttu-id="83433-268">입력 버퍼의 크기입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-268">The size of the input buffer.</span>
+          </span>
+        </param>
+        <param name="sourceBufferStride">
+          <span data-ttu-id="83433-269">입력 버퍼의 스트라이드(바이트)입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-269">The stride of the input buffer, in bytes.</span>
+          </span>
+        </param>
+        <param name="destinationX">
+          <span data-ttu-id="83433-270">백 버퍼의 가장 왼쪽 픽셀의 대상 X 좌표입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-270">The destination x-coordinate of the left-most pixel in the back buffer.</span>
+          </span>
+        </param>
+        <param name="destinationY">
+          <span data-ttu-id="83433-271">백 버퍼의 가장 위쪽 픽셀의 대상 Y 좌표입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-271">The destination y-coordinate of the top-most pixel in the back buffer.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="83433-272">비트맵의 지정된 영역에 있는 픽셀을 업데이트합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-272">Updates the pixels in the specified region of the bitmap.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="83433-273">호출 된 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A> 업데이트 하는 메서드는 <xref:System.Windows.Media.Imaging.WriteableBitmap> 의 내용으로 자동으로 `sourceBuffer`합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-273">Call the <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%2A> method to update the <xref:System.Windows.Media.Imaging.WriteableBitmap> automatically with the contents of `sourceBuffer`.</span></span> <span data-ttu-id="83433-274">이 메서드는 호출를 사용 하 여 해당 하는 <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> 및 <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> 에 설명 된 워크플로 <xref:System.Windows.Media.Imaging.WriteableBitmap> 클래스 설명 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-274">Calling this method is the equivalent of using the <xref:System.Windows.Media.Imaging.WriteableBitmap.Lock%2A> and <xref:System.Windows.Media.Imaging.WriteableBitmap.Unlock%2A> workflow described in the <xref:System.Windows.Media.Imaging.WriteableBitmap> class remarks.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="83433-275">부분 신뢰에서 사용 하 여는 <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> 오버 로드 합니다.</span><span class="sxs-lookup"><span data-stu-id="83433-275">In partial trust, use the <xref:System.Windows.Media.Imaging.WriteableBitmap.WritePixels%28System.Windows.Int32Rect%2CSystem.Array%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%29> overload.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="83433-276">다음 조건 중 하나 이상이 true인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-276">One or more of the following conditions is true.</span>
+          </span>
+          <span data-ttu-id="83433-277">
+            <paramref name="sourceRect" />가 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 경계를 벗어났습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-277">
+              <paramref name="sourceRect" /> falls outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.</span>
+          </span>
+          <span data-ttu-id="83433-278">
+            <paramref name="destinationX" /> 또는 <paramref name="destinationY" />가 <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />의 범위 밖에 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-278">
+              <paramref name="destinationX" /> or <paramref name="destinationY" /> is outside the bounds of the <see cref="T:System.Windows.Media.Imaging.WriteableBitmap" />.</span>
+          </span>
+          <span data-ttu-id="83433-279">
+            <paramref name="sourceBufferSize" /> &lt; 1</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-279">
+              <paramref name="sourceBufferSize" /> &lt; 1</span>
+          </span>
+          <span data-ttu-id="83433-280">
+            <paramref name="sourceBufferStride" /> &lt; 1</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-280">
+              <paramref name="sourceBufferStride" /> &lt; 1</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="83433-281">
+            <paramref name="sourceBuffer" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-281">
+              <paramref name="sourceBuffer" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">
+          <span data-ttu-id="83433-282">관리 되지 않는 리소스에 액세스 합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-282">for access to unmanaged resources.</span>
+          </span>
+          <span data-ttu-id="83433-283">보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-283">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="83433-284">연결 된 열거형의 경우: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="83433-284">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></span>
+          </span>
+        </permission>
+        <altmember cref="M:System.Windows.Media.Imaging.WriteableBitmap.WritePixels(System.Windows.Int32Rect,System.Array,System.Int32,System.Int32,System.Int32)" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

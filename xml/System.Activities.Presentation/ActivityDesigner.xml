@@ -1,0 +1,427 @@
+<Type Name="ActivityDesigner" FullName="System.Activities.Presentation.ActivityDesigner">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="b76608e78061541052b8d4568af47af5dd61cead" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class ActivityDesigner : System.Activities.Presentation.WorkflowViewElement" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi ActivityDesigner extends System.Activities.Presentation.WorkflowViewElement" />
+  <TypeSignature Language="DocId" Value="T:System.Activities.Presentation.ActivityDesigner" />
+  <TypeSignature Language="VB.NET" Value="Public Class ActivityDesigner&#xA;Inherits WorkflowViewElement" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ActivityDesigner : System::Activities::Presentation::WorkflowViewElement" />
+  <AssemblyInfo>
+    <AssemblyName>System.Activities.Presentation</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Activities.Presentation.WorkflowViewElement</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="503a7-101">모든 활동 디자이너 구성 요소에 대한 기본 클래스를 제공합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="503a7-101">Provides a base class for all activity designer components.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="503a7-102">이 형식은 다른 활동 디자이너에 대한 기본 모양 기능을 제공하며 개발자가 활동 디자이너 화면에 기능을 더 추가할 수 있도록 합니다.</span><span class="sxs-lookup"><span data-stu-id="503a7-102">This type provides the basic look-and-feel functionality for other activity designers and allows a developer to add additional capabilities to an activity designer surface.</span></span> <span data-ttu-id="503a7-103">이 속성은 일반적으로 중 하나는 활동의 사용자에 게 추가 흥미로운 정보를 표시, 편집 환경을 캔버스에 더 만들 하기 위해 수행 됩니다 (예를 들어를 사용 하 여는 `ExpressionTextBox` 에 `If` 활동 디자이너), 또는 수 있도록 포함 된 요소를 편집할 수 (를 보세요는 <xref:System.Activities.Statements.If.Then%2A> 및 <xref:System.Activities.Statements.If.Else%2A> 의 속성은 <xref:System.Activities.Statements.If> 활동).</span><span class="sxs-lookup"><span data-stu-id="503a7-103">This is typically done in order to either display additional interesting information to the user of the activity, create a better on canvas editing experience  (for example, using the `ExpressionTextBox` on an `If` activity designer), or to allow contained elements to be edited (again, consider the <xref:System.Activities.Statements.If.Then%2A> and <xref:System.Activities.Statements.If.Else%2A> properties of the <xref:System.Activities.Statements.If> activity).</span></span>  
+  
+ <span data-ttu-id="503a7-104"><xref:System.Activities.Presentation.ActivityDesigner>는 <xref:System.Activities.Presentation.WorkflowViewElement>에서 상속되며 주로 <xref:System.Activities.Presentation.ActivityDesigner.Icon%2A> 속성을 통해 아이콘을 사용자 지정하는 기능과 기본 스타일 지정을 추가합니다.</span><span class="sxs-lookup"><span data-stu-id="503a7-104">The <xref:System.Activities.Presentation.ActivityDesigner> inherits from <xref:System.Activities.Presentation.WorkflowViewElement> and primarily adds the default styling, as well as the ability to customize the icon via the <xref:System.Activities.Presentation.ActivityDesigner.Icon%2A> property.</span></span> <span data-ttu-id="503a7-105"><xref:System.Activities.Activity>에서 파생되는 형식용 디자이너를 만들 때마다 사용해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="503a7-105">It should be used whenever you are creating a designer for a type which derives from <xref:System.Activities.Activity>.</span></span> <span data-ttu-id="503a7-106"><xref:System.Activities.Activity> 형식과 연결된 경우 <xref:System.Activities.Presentation.WorkflowViewElement.ModelItem%2A> 속성은 편집 중인 해당 형식의 인스턴스를 설명하는 ModelItem 계층 구조를 가리킵니다.</span><span class="sxs-lookup"><span data-stu-id="503a7-106">When associated with an <xref:System.Activities.Activity> type, the <xref:System.Activities.Presentation.WorkflowViewElement.ModelItem%2A> property will point to the ModelItem hierarchy describing the instance of that type being edited.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="503a7-107">다음 샘플 코드에서는 `First2of3` 작업이 먼저 정의된 후 First2of3 디자이너의 코드가 표시되며, 마지막으로 Designer 특성을 사용하여 작업을 디자이너와 연결하는 방법이 제공됩니다.</span><span class="sxs-lookup"><span data-stu-id="503a7-107">In the sample code below, a `First2of3` activity is defined first, then the code for the First2of3 designer is shown, and finally it is shown how to use the Designer attribute to associate the activity with the designer is provided.</span></span>  
+  
+```  
+  
+//The First2of3 activity  
+using System.Activities;  
+using System.Collections.Generic;  
+using System.Linq;  
+  
+namespace Microsoft.Activities.Documentation.ActivityTypes  
+{  
+  
+    public sealed class First2of3 : NativeActivity  
+    {  
+        public Activity Activity1 { get; set; }  
+        public Activity Activity2 { get; set; }  
+        public Activity Activity3 { get; set; }  
+  
+        Variable<List<ActivityInstance>> ExecutingActivities { get; set; }  
+  
+        public First2of3()  
+        {  
+            ExecutingActivities = new Variable<List<ActivityInstance>>();  
+        }  
+  
+        // If your activity returns a value, derive from CodeActivity<TResult>  
+        // and return the value from the Execute method.  
+        protected override void Execute(NativeActivityContext context)  
+        {  
+            // Obtain the runtime value of the Text input argument  
+            var l = new List<ActivityInstance>();  
+            ExecutingActivities.Set(context, l);  
+            l.Add(context.ScheduleActivity(Activity1, onComplete));  
+            l.Add(context.ScheduleActivity(Activity2, onComplete));  
+            l.Add(context.ScheduleActivity(Activity3, onComplete));  
+        }  
+  
+        protected override void CacheMetadata(NativeActivityMetadata metadata)  
+        {  
+            metadata.AddImplementationVariable(ExecutingActivities);  
+            metadata.AddChild(Activity1);  
+            metadata.AddChild(Activity2);  
+            metadata.AddChild(Activity3);  
+        }  
+  
+        private void onComplete(NativeActivityContext context, ActivityInstance completedInstance)  
+        {  
+            var l = ExecutingActivities.Get(context);  
+            l.Remove(completedInstance);  
+            if (l.Count == 1)  
+            {  
+                context.CancelChild(l.Single());  
+            }  
+        }  
+    }  
+}  
+  
+//’Code for the First2of3 Designer:  
+<sap:ActivityDesigner x:Class="Microsoft.Activites.Documentation.First2of3Designer"  
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"  
+    xmlns:sapv="clr-namespace:System.Activities.Presentation.View;assembly=System.Activities.Presentation">  
+    <StackPanel>  
+        <Label Content="2 of 3 activity">  
+            <Label.ToolTip>  
+                This activity has 3 child activities which will be scheduled in parallel.    
+                Upon completion of any 2, the third will be cancelled  
+            </Label.ToolTip>  
+        </Label>  
+        <StackPanel Orientation="Horizontal">  
+            <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="2" Margin="2" Padding="2">  
+                <sap:WorkflowItemPresenter HintText="Drop Activity1 Here" Item="{Binding Path=ModelItem.Activity1, Mode=TwoWay}" />  
+            </Border>  
+            <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="2" Margin="2" Padding="2">  
+                <sap:WorkflowItemPresenter HintText="Drop Activity2 Here" Item="{Binding Path=ModelItem.Activity2, Mode=TwoWay}" />  
+  
+            </Border>  
+            <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="2" Margin="2" Padding="2">  
+                <sap:WorkflowItemPresenter HintText="Drop Activity3 Here" Item="{Binding Path=ModelItem.Activity3, Mode=TwoWay}" />  
+  
+            </Border>  
+        </StackPanel>  
+    </StackPanel>  
+</sap:ActivityDesigner>  
+  
+//Code for associating the activity with the designer using the Designer attribute.  
+[Designer(typeof(First2of3Designer))]  
+public sealed class First2of3 : NativeActivity  
+  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ActivityDesigner ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ActivityDesigner();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="503a7-108">
+            <see cref="T:System.Activities.Presentation.ActivityDesigner" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-108">Initializes a new instance of the <see cref="T:System.Activities.Presentation.ActivityDesigner" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAutomationIdMemberName">
+      <MemberSignature Language="C#" Value="protected override string GetAutomationIdMemberName ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance string GetAutomationIdMemberName() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.GetAutomationIdMemberName" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function GetAutomationIdMemberName () As String" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::String ^ GetAutomationIdMemberName();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="503a7-109">재정의된 이 메서드 구현에서 "DisplayName"이란 문자열을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-109">Returns the string "DisplayName" in this overridden method implementation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="503a7-110">재정의된 이 메서드 구현의 "DisplayName" 문자열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-110">The string "DisplayName" in this overridden method implementation.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAutomationItemStatus">
+      <MemberSignature Language="C#" Value="protected internal override string GetAutomationItemStatus ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance string GetAutomationItemStatus() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.GetAutomationItemStatus" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function GetAutomationItemStatus () As String" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override System::String ^ GetAutomationItemStatus();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="503a7-111">자동화 항목의 상태를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-111">Returns the status of the automation item.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="503a7-112">자동화 항목의 상태입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-112">The status of the automation item.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Icon">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.DrawingBrush Icon { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.DrawingBrush Icon" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.ActivityDesigner.Icon" />
+      <MemberSignature Language="VB.NET" Value="Public Property Icon As DrawingBrush" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Media::DrawingBrush ^ Icon { System::Windows::Media::DrawingBrush ^ get(); void set(System::Windows::Media::DrawingBrush ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.DrawingBrush</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="503a7-113">이 <see cref="T:System.Activities.Presentation.ActivityDesigner" />와 연결된 아이콘을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-113">Gets or sets the icon associated with this <see cref="T:System.Activities.Presentation.ActivityDesigner" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="503a7-114">
+            <see cref="T:System.Windows.Media.DrawingBrush" />와 연결된 아이콘을 나타내는 <see cref="T:System.Activities.Presentation.ActivityDesigner" />를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-114">Returns a <see cref="T:System.Windows.Media.DrawingBrush" /> that represents the icon associated with this <see cref="T:System.Activities.Presentation.ActivityDesigner" />.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IconProperty">
+      <MemberSignature Language="C#" Value="public static readonly System.Windows.DependencyProperty IconProperty;" />
+      <MemberSignature Language="ILAsm" Value=".field public static initonly class System.Windows.DependencyProperty IconProperty" />
+      <MemberSignature Language="DocId" Value="F:System.Activities.Presentation.ActivityDesigner.IconProperty" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly IconProperty As DependencyProperty " />
+      <MemberSignature Language="C++ CLI" Value="public: static initonly System::Windows::DependencyProperty ^ IconProperty;" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyProperty</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="503a7-115">
+            <see cref="F:System.Activities.Presentation.ActivityDesigner.IconProperty" /> 종속성 속성을 식별합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-115">Identifies the <see cref="F:System.Activities.Presentation.ActivityDesigner.IconProperty" /> dependency property.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnApplyTemplate">
+      <MemberSignature Language="C#" Value="public override void OnApplyTemplate ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void OnApplyTemplate() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnApplyTemplate" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub OnApplyTemplate ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void OnApplyTemplate();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="503a7-116">템플릿을 적용하여 <see cref="T:System.Activities.Presentation.ActivityDesigner" />를 만드는 프로세스를 시작합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-116">Begins the process of applying a template to create an <see cref="T:System.Activities.Presentation.ActivityDesigner" />.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEditAnnotation">
+      <MemberSignature Language="C#" Value="protected internal override void OnEditAnnotation ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void OnEditAnnotation() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnEditAnnotation" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub OnEditAnnotation ()" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void OnEditAnnotation();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="503a7-117">주석을 편집할 때 발생하는 처리를 시작합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-117">Begins the processing that occurs when editing annotation.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnModelItemChanged">
+      <MemberSignature Language="C#" Value="protected override void OnModelItemChanged (object newItem);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnModelItemChanged(object newItem) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnModelItemChanged(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnModelItemChanged (newItem As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnModelItemChanged(System::Object ^ newItem);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="newItem" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="newItem">
+          <span data-ttu-id="503a7-118">새 항목입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-118">The new item.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="503a7-119">모델 항목이 변경될 때 발생하는 처리를 시작합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-119">Begins the processing that occurs when the model item is changed..</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnMouseUp">
+      <MemberSignature Language="C#" Value="protected override void OnMouseUp (System.Windows.Input.MouseButtonEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnMouseUp(class System.Windows.Input.MouseButtonEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnMouseUp(System.Windows.Input.MouseButtonEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnMouseUp (e As MouseButtonEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnMouseUp(System::Windows::Input::MouseButtonEventArgs ^ e);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.Windows.Input.MouseButtonEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          <span data-ttu-id="503a7-120">이벤트 데이터를 포함하는 <see cref="T:System.Windows.Forms.DragEventArgs" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-120">A <see cref="T:System.Windows.Forms.DragEventArgs" /> that contains the event data.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="503a7-121">마우스 단추를 놓으면 발생하는 처리를 시작합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-121">Begins the processing that occurs when any mouse button is released.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPreviewMouseDown">
+      <MemberSignature Language="C#" Value="protected override void OnPreviewMouseDown (System.Windows.Input.MouseButtonEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnPreviewMouseDown(class System.Windows.Input.MouseButtonEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.ActivityDesigner.OnPreviewMouseDown(System.Windows.Input.MouseButtonEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnPreviewMouseDown (e As MouseButtonEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnPreviewMouseDown(System::Windows::Input::MouseButtonEventArgs ^ e);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.Windows.Input.MouseButtonEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">
+          <span data-ttu-id="503a7-122">이벤트 데이터를 포함하는 <see cref="T:System.Windows.Forms.DragEventArgs" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-122">A <see cref="T:System.Windows.Forms.DragEventArgs" /> that contains the event data.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="503a7-123">처리되지 않은 <see cref="T:System.Windows.Input.Mouse.PreviewMouseDown" /> 연결 라우팅 이벤트가 이 클래스에서 파생된 요소의 경로에 도달하면 발생하는 처리를 시작합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="503a7-123">Begins the processing that occurs when an unhandled <see cref="T:System.Windows.Input.Mouse.PreviewMouseDown" /> attached routed event reaches an element in its route that is derived from this class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

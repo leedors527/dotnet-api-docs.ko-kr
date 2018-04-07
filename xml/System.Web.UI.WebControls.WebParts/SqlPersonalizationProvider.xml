@@ -1,0 +1,931 @@
+<Type Name="SqlPersonalizationProvider" FullName="System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="d428d63128283010ac84bd2c98c56237ca6df74b" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class SqlPersonalizationProvider : System.Web.UI.WebControls.WebParts.PersonalizationProvider" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SqlPersonalizationProvider extends System.Web.UI.WebControls.WebParts.PersonalizationProvider" />
+  <TypeSignature Language="DocId" Value="T:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider" />
+  <TypeSignature Language="VB.NET" Value="Public Class SqlPersonalizationProvider&#xA;Inherits PersonalizationProvider" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SqlPersonalizationProvider : System::Web::UI::WebControls::WebParts::PersonalizationProvider" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Web.UI.WebControls.WebParts.PersonalizationProvider</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="1d99f-101">Microsoft SQL Server를 사용하는 개인 설정 공급자를 구현합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="1d99f-101">Implements a personalization provider that uses Microsoft SQL Server.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-102">이 클래스는 Microsoft SQL Server를 사용 하 여 개인 설정 공급자에 대 한 필요한 기능을 정의 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-102">This class defines the required functionality for a personalization provider using Microsoft SQL Server.</span></span> <span data-ttu-id="1d99f-103">개인 설정 공급자를 로드 하 고 대신 하 여 개인 설정 데이터를 저장 한 <xref:System.Web.UI.WebControls.WebParts.WebPartPersonalization> 인스턴스.</span><span class="sxs-lookup"><span data-stu-id="1d99f-103">A personalization provider both loads and stores personalization data on behalf of a <xref:System.Web.UI.WebControls.WebParts.WebPartPersonalization> instance.</span></span> <span data-ttu-id="1d99f-104">이 클래스는 읽기 및 쓰기를 SQL Server를 실행 하는 컴퓨터에 대 한 논리를 구현 하 고 구현 하는 모든 추상 메서드에도 정의 <xref:System.Web.UI.WebControls.WebParts.PersonalizationProvider>합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-104">This class implements the logic for reading from and writing to computers running SQL Server, and also implements all the abstract methods defined in <xref:System.Web.UI.WebControls.WebParts.PersonalizationProvider>.</span></span> <span data-ttu-id="1d99f-105">개인 설정 공급자에 대 한 자세한 내용은 참조 하십시오. <xref:System.Web.UI.WebControls.WebParts.PersonalizationProvider>합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-105">For more information on personalization providers, see <xref:System.Web.UI.WebControls.WebParts.PersonalizationProvider>.</span></span>  
+  
+ <span data-ttu-id="1d99f-106">개인 설정 웹 파트를 사용 하 여 SQL server에 대 한 데이터 디자인 두 개의 공통 SQL 데이터베이스 테이블의 존재에 의존 하 하며 원하는 저장 프로시저, 대부분의 SQL 기반 기능 구현에 대 한 공유 되는 키를 누릅니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-106">The data design for using Web Parts personalization with SQL Server relies on the existence of two common SQL database tables, and their supporting stored procedures, that are shared for most SQL-based feature implementations.</span></span> <span data-ttu-id="1d99f-107">이러한 설치 된 테이블과 뷰는 다음 스크립트를 사용 하 여 제거:</span><span class="sxs-lookup"><span data-stu-id="1d99f-107">These tables and views are installed and uninstalled using the following scripts:</span></span>  
+  
+-   <span data-ttu-id="1d99f-108">installpagepersonalization.sql – 개인 설정 테이블, 뷰 및 관련된 저장된 프로시저를 설치 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-108">installpagepersonalization.sql – Installs the personalization tables, views, and related stored procedures.</span></span>  
+  
+-   <span data-ttu-id="1d99f-109">uninstallpagepersonalization.sql – 개인 설정 테이블, 뷰 및 관련된 저장된 프로시저를 제거 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-109">uninstallpagepersonalization.sql – Uninstalls the personalization tables, views, and related stored procedures.</span></span>  
+  
+ <span data-ttu-id="1d99f-110">이 웹 응용 프로그램은에서 실행 되지 기본 신뢰 수준 개인 설정이 실패할 알아야 할 중요 <xref:System.Web.AspNetHostingPermissionLevel.Medium> 이상 (사용 하 여 Web.config 파일에서 사용자 지정 신뢰 수준을 설정할 수는 `<trust level="" />` 요소).</span><span class="sxs-lookup"><span data-stu-id="1d99f-110">It is important to be aware that personalization will fail if your Web application does not run at the default trust level of <xref:System.Web.AspNetHostingPermissionLevel.Medium> or higher (you can set custom trust levels in a Web.config file using the `<trust level="" />` element).</span></span> <span data-ttu-id="1d99f-111"><xref:System.Web.UI.WebControls.WebParts.PersonalizationAdministration> 및 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> 클래스는 둘 다의 신뢰 수준을 확인 <xref:System.Web.AspNetHostingPermissionLevel.Low> 는 초기화 될 때입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-111">The <xref:System.Web.UI.WebControls.WebParts.PersonalizationAdministration> and <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> classes both check for a trust level of <xref:System.Web.AspNetHostingPermissionLevel.Low> when they are initialized.</span></span> <span data-ttu-id="1d99f-112">실행할 신뢰 수준의 응용 프로그램을 구성 하는 경우 <xref:System.Web.AspNetHostingPermissionLevel.Low>, 기본값을 사용 하 여 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> 공급자 응용 프로그램에 대 한 개인 설정 데이터를 관리 하는 응용 프로그램 개인 설정 데이터에 액세스 하려고 처음으로 때문에 실패에서 실행 되는 ASP.NET 작업자 프로세스 <xref:System.Web.AspNetHostingPermissionLevel.Low> 신뢰의 다양 한 클래스를 호출 하는 데 필요한 권한이 없는 <xref:System.Data.SqlClient> 네임 스페이스입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-112">If you configure your application to run at a trust level of <xref:System.Web.AspNetHostingPermissionLevel.Low>, and you use the default <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> provider to manage the personalization data for your application, the first time that the application tries to access personalization data, it will fail because an ASP.NET worker process running in <xref:System.Web.AspNetHostingPermissionLevel.Low> trust does not have the permissions necessary to call into the various classes in the <xref:System.Data.SqlClient> namespace.</span></span>  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Web.UI.WebControls.WebParts.PersonalizationProvider" />
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SqlPersonalizationProvider ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlPersonalizationProvider();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="1d99f-113">
+            <see cref="T:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-113">Initializes a new instance of the <see cref="T:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider" /> class.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-114"><xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.%23ctor%2A> 생성자의 인스턴스를 만드는 ASP.NET에서 호출 되는 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> 응용 프로그램에 대 한 구성에 지정 된 대로 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-114">The <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.%23ctor%2A> constructor is called by ASP.NET to create an instance of the <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> class as specified in the configuration for the application.</span></span> <span data-ttu-id="1d99f-115">이 생성자는 사용자 코드에서 사용할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-115">This constructor is not intended to be used from your code.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ApplicationName">
+      <MemberSignature Language="C#" Value="public override string ApplicationName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ApplicationName" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property ApplicationName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ ApplicationName { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="1d99f-116">해당 개인 설정 정보를 저장하거나 검색할 응용 프로그램의 이름을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-116">Gets or sets the name of the application to store and retrieve personalization information for.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="1d99f-117">해당 개인 설정 정보를 저장하거나 검색할 응용 프로그램의 이름입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-117">The name of the application to store and retrieve personalization information for.</span>
+          </span>
+          <span data-ttu-id="1d99f-118">현재 <see cref="P:System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath" />의 기본값은 <see cref="P:System.Web.HttpContext.Request" /> 속성 값입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-118">The default is the <see cref="P:System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath" /> property value for the current <see cref="P:System.Web.HttpContext.Request" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-119"><xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> 속성은 사용 된 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> 사용자 정보를 그룹화 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-119">The <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> property is used by the <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> class to group user information.</span></span> <span data-ttu-id="1d99f-120">응용 프로그램 이름으로 사용자 정보를 정규화 하 여 중복 된 사용자 이름 충돌 없이 단일 데이터베이스에서 여러 응용 프로그램에 대 한 정보를 저장할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-120">By qualifying user information with an application name, you can store information for multiple applications in a single database without running into conflicts between duplicate user names.</span></span> <span data-ttu-id="1d99f-121">로 인해 여러 ASP.NET 응용 프로그램에서 같은 값을 지정 하 여 동일한 사용자 데이터베이스를 사용할 수는 또한는 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-121">Also, multiple ASP.NET applications can use the same user database by specifying the same value in the <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> property.</span></span> <span data-ttu-id="1d99f-122"><xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> 속성을 프로그래밍 방식으로 설정할 수 있습니다. 또는 사용 하 여 웹 응용 프로그램에 대 한 구성 파일에서 선언적으로 설정할 수 있습니다는 `applicationName` 특성에 `<providers>` 섹션.</span><span class="sxs-lookup"><span data-stu-id="1d99f-122">The <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> property can be set programmatically, or it can be set declaratively in the configuration file for the Web application using the `applicationName` attribute in the `<providers>` section.</span></span>  
+  
+ <span data-ttu-id="1d99f-123">에 대 한 값을 지정 하지 않으면는 `applicationName` 웹 응용 프로그램에 대 한 구성 파일의 특성에에서는 다음 <xref:System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath%2A> 응용 프로그램에 대 한 첫 번째 요청에 대 한 속성 값이 사용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-123">If a value is not specified for the `applicationName` attribute in the configuration file for the Web application, then the <xref:System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath%2A> property value for the first request made to the application is used.</span></span>  
+  
+> [!CAUTION]
+>  <span data-ttu-id="1d99f-124">단일 기본 개인 설정 공급자 인스턴스를 통해 저장 된 모든 요청에 사용 되므로 <xref:System.Web.HttpApplication> 개체를 동시에 실행 하 고 설정 하는 여러 요청을 할 수 있습니다는 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> 속성 값입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-124">Because a single default personalization provider instance is used for all the requests served by an <xref:System.Web.HttpApplication> object, you can have multiple requests executing concurrently and attempting to set the <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> property value.</span></span> <span data-ttu-id="1d99f-125"><xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> 속성 안전 하지 않은 스레드 여러 쓰기에 대 한 변경의 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> 속성 값에 대 한 응용 프로그램의 여러 사용자가 예기치 않은 동작이 발생할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-125">The <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> property is not thread-safe for multiple writes, and changing the <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> property value can result in unexpected behavior for multiple users of an application.</span></span> <span data-ttu-id="1d99f-126">사용자가을 설정할 수 있도록 코드를 방지 하는 것이 좋습니다.는 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> 속성 필요로 하지 않는 경우.</span><span class="sxs-lookup"><span data-stu-id="1d99f-126">It is recommended that you avoid code to allow users to set the <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> property unless required.</span></span> <span data-ttu-id="1d99f-127">응용 프로그램의 예에서는 설정 된 <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> 속성을 반드시 여러 응용 프로그램에 대 한 개인 설정 데이터를 관리 하는 관리 응용 프로그램입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-127">An example of an application where setting the <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ApplicationName%2A> property might be required is an administrative application that manages personalization data for multiple applications.</span></span> <span data-ttu-id="1d99f-128">단일 사용자 응용 프로그램 및 웹 응용 프로그램이 아닙니다. 이러한 응용 프로그램 이어야 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-128">Such an application should be a single-user application and not a Web application.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Configuration.Provider.ProviderException">
+          <span data-ttu-id="1d99f-129">256자보다 긴 문자열로 속성을 설정한 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-129">The property was set to a string with a length greater than 256 characters.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="FindState">
+      <MemberSignature Language="C#" Value="public override System.Web.UI.WebControls.WebParts.PersonalizationStateInfoCollection FindState (System.Web.UI.WebControls.WebParts.PersonalizationScope scope, System.Web.UI.WebControls.WebParts.PersonalizationStateQuery query, int pageIndex, int pageSize, out int totalRecords);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Web.UI.WebControls.WebParts.PersonalizationStateInfoCollection FindState(valuetype System.Web.UI.WebControls.WebParts.PersonalizationScope scope, class System.Web.UI.WebControls.WebParts.PersonalizationStateQuery query, int32 pageIndex, int32 pageSize, [out] int32&amp; totalRecords) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.FindState(System.Web.UI.WebControls.WebParts.PersonalizationScope,System.Web.UI.WebControls.WebParts.PersonalizationStateQuery,System.Int32,System.Int32,System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function FindState (scope As PersonalizationScope, query As PersonalizationStateQuery, pageIndex As Integer, pageSize As Integer, ByRef totalRecords As Integer) As PersonalizationStateInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Web::UI::WebControls::WebParts::PersonalizationStateInfoCollection ^ FindState(System::Web::UI::WebControls::WebParts::PersonalizationScope scope, System::Web::UI::WebControls::WebParts::PersonalizationStateQuery ^ query, int pageIndex, int pageSize, [Runtime::InteropServices::Out] int % totalRecords);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.UI.WebControls.WebParts.PersonalizationStateInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scope" Type="System.Web.UI.WebControls.WebParts.PersonalizationScope" />
+        <Parameter Name="query" Type="System.Web.UI.WebControls.WebParts.PersonalizationStateQuery" />
+        <Parameter Name="pageIndex" Type="System.Int32" />
+        <Parameter Name="pageSize" Type="System.Int32" />
+        <Parameter Name="totalRecords" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="scope">
+          <span data-ttu-id="1d99f-130">쿼리할 개인 설정 정보를 나타내는 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-130">A <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> indicating the personalization information to be queried.</span>
+          </span>
+          <span data-ttu-id="1d99f-131">이 값은 <see langword="null" />일 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-131">This value cannot be <see langword="null" />.</span>
+          </span>
+        </param>
+        <param name="query">
+          <span data-ttu-id="1d99f-132">쿼리가 포함된 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-132">A <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery" /> containing a query.</span>
+          </span>
+          <span data-ttu-id="1d99f-133">이 값은 <see langword="null" />일 수 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-133">This value can be <see langword="null" />.</span>
+          </span>
+        </param>
+        <param name="pageIndex">
+          <span data-ttu-id="1d99f-134">쿼리를 시작할 위치입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-134">The location where the query starts.</span>
+          </span>
+        </param>
+        <param name="pageSize">
+          <span data-ttu-id="1d99f-135">반환할 레코드 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-135">The number of records to return.</span>
+          </span>
+        </param>
+        <param name="totalRecords">
+          <span data-ttu-id="1d99f-136">사용할 수 있는 레코드의 총수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-136">The total number of records available.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="1d99f-137">지정된 매개 변수를 기반으로 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateInfo" /> 파생 개체가 0개 이상 포함된 컬렉션을 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-137">Returns a collection containing zero or more <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateInfo" />-derived objects, based on the specified scope and parameters.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="1d99f-138">0개 이상의 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateInfoCollection" /> 파생 개체가 포함된 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateInfo" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-138">A <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateInfoCollection" /> containing zero or more <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateInfo" />-derived objects.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-139">반환 되는 항목 집합에 의해 제한 되는 `pageSize` 및 `pageIndex` 매개 변수를 여기서 `pageSize` 반환할 레코드 수를 제어 하 고 `pageIndex` 반환할 레코드를 제어 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-139">The set of returned items is constrained by the `pageSize` and `pageIndex` parameters, where `pageSize` controls the number of records to return and `pageIndex` controls which records to return.</span></span> <span data-ttu-id="1d99f-140">예를 들어 한 `pageIndex` 0 및 `pageSize` 25 처음 25 개의 발생 횟수를 반환 합니다 동안는 `pageIndex` 1 및 `pageSize` 25 까지의 발생 26-50을 반환 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-140">For example, a `pageIndex` of 0 and a `pageSize` of 25 would return the first 25 occurrences, while a `pageIndex` of 1 and a `pageSize` of 25 would return occurrences 26-50.</span></span> <span data-ttu-id="1d99f-141">사용 가능한 모든 레코드를 인출 하려면 설정 `pageIndex` 0으로 및 `pageSize` 를 <xref:System.Int32.MaxValue>합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-141">If you want to fetch all available records, set `pageIndex` to 0, and `pageSize` to <xref:System.Int32.MaxValue>.</span></span>  
+  
+ <span data-ttu-id="1d99f-142"><xref:System.Web.UI.WebControls.WebParts.PersonalizationStateInfo>-파생 된 개체를 기준으로 정렬 되는 알파벳 순서로 반환 됩니다 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateInfo.Path%2A> 및 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.Username%2A>, 모두 오름차순입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-142">The <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateInfo>-derived objects are returned in alphabetical order sorted by <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateInfo.Path%2A> and <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.Username%2A>, both in ascending order.</span></span>  
+  
+ <span data-ttu-id="1d99f-143">이 메서드는 내부 데이터 저장소 쿼리 와일드 카드 문자를 전달합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-143">This method passes query wildcard characters to the underlying data store.</span></span> <span data-ttu-id="1d99f-144">와일드 카드 문자에 대 한 지원은 각 공급자는 별표 (\*), 백분율 기호 (%) 또는 밑줄 (_) 등의 문자를 처리 하는 방법을 의존 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-144">Support for wildcard characters is currently dependent on how each provider handles characters such as an asterisk (\*), a percent symbol (%), or an underscore (_).</span></span>  
+  
+ <span data-ttu-id="1d99f-145">일반적으로 SQL 호환 데이터 저장소에 대 한으로 수행할 수 와일드 카드 검색 하는 부분 경로에서 시작, 끝, 또는에 검색 문자열 텍스트의 가운데에는 와일드 카드 문자는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-145">Normally, for SQL-compliant data stores, you can perform a wildcard search on a partial path with the wildcard character appearing at the beginning, the end, or the middle of the search string text in the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> property.</span></span> <span data-ttu-id="1d99f-146">예를 들어, "~/approot"로 시작 하는 모든 경로를 찾으려면는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> 속성은 "~/approot%"로 설정 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-146">For example, to find all paths that start with "~/approot", the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> property would be set to "~/approot%".</span></span>  
+  
+ <span data-ttu-id="1d99f-147">마찬가지로, 일부 사용자 이름에 와일드 카드 검색의 텍스트 문자열의 한 지점에서 표시 하는 와일드 카드 문자를 가질 수는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-147">Likewise, a wildcard search on a partial user name could have the wildcard character appear at any point in the text string of the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> property.</span></span> <span data-ttu-id="1d99f-148">예를 들어, "John"으로 시작 하는 모든 사용자 이름을 찾으려면는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> "John %" 매개 변수는 같습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-148">For example, to find all user names that start with "John", the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> parameter would look like "John%".</span></span>  
+  
+ <span data-ttu-id="1d99f-149">다음 쿼리 제약 조건이 적용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-149">The following query constraints apply:</span></span>  
+  
+-   <span data-ttu-id="1d99f-150">경우에 `scope` 제공 됩니다 및 `query` 은 `null` 대 한 모든 속성 또는 `query` 반환 `null` 하거나 기본값을 사용한 후 표시 된 일치 하는 모든 레코드 `scope` 매개 변수가 반환 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-150">If only `scope` is provided, and `query` is `null` or all the properties on `query` return either `null` or default values, then all records matching the indicated `scope` parameter are returned.</span></span>  
+  
+-   <span data-ttu-id="1d99f-151">경우는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> 속성은 `null`, 반환 되는 레코드와 일치 하는 경로 기준된 필터링 된 사항도 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> 속성 값입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-151">If the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> property is not `null`, the returned records are also filtered based on paths that match the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> property value.</span></span>  
+  
+-   <span data-ttu-id="1d99f-152">경우는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> 속성은 `null`, 반환 되는 레코드와 일치 하는 필터링 된에 따라 사용자 이름을 됩니다는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> 속성 값입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-152">If the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> property is not `null`, the returned records are also filtered based on user names that match the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> property value.</span></span>  
+  
+-   <span data-ttu-id="1d99f-153">경우는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> 속성과 같지 않은 <xref:System.DateTime.MaxValue>, 반환 되는 레코드는 비활성 사용자와 관련 된 기록만 반환 하도록 필터링 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-153">If the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> property is not equal to <xref:System.DateTime.MaxValue>, then the returned records are also filtered to return only those records associated with inactive users.</span></span> <span data-ttu-id="1d99f-154">비교 레코드를 포함 합니다. 여기서는 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 속성 보다 작거나 같음는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-154">The comparison includes records where the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> property is less than or equal to the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> property.</span></span>  
+  
+ <span data-ttu-id="1d99f-155">참고가이 메서드 쿼리 매개 변수 조합의 유효성을 검사 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-155">Note that this method does not validate combinations of query parameters.</span></span> <span data-ttu-id="1d99f-156">예를 들어 코드 공유 범위에서 특정 사용자 이름과 연결 된 개인 설정 상태 레코드 집합을 요청할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-156">For example, code can request a set of personalization state records associated with a specific user name in the shared scope.</span></span> <span data-ttu-id="1d99f-157">사용자 이름, 공유 정보에 연결 되어 있으므로 반환 되는 컬렉션 빈 것입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-157">Because user names are not associated with shared information, the returned collection would be empty.</span></span>  
+  
+ <span data-ttu-id="1d99f-158">비어 있지 않은 컬렉션을 반환할 수 있는 매개 변수 조합은 다음과 같습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-158">Parameter combinations that have the potential to return a non-empty collection include:</span></span>  
+  
+-   <span data-ttu-id="1d99f-159"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> 범위와 함께에서 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-159"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> scope in combination with <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A>.</span></span>  
+  
+-   <span data-ttu-id="1d99f-160"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> 값 중 일부 또는 모두에 대 한 함께에서 범위는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A>, <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A>, 및 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-160"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> scope in combination with the values for any or all of the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A>, <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A>, and <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> properties.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="1d99f-161">
+            <paramref name="pageIndex" />가 0보다 작은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-161">
+              <paramref name="pageIndex" /> is less than zero.</span>
+          </span>
+          <span data-ttu-id="1d99f-162">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-162">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-163">
+            <paramref name="pageSize" />가 0보다 작거나 같은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-163">
+              <paramref name="pageSize" /> is less than or equal to zero.</span>
+          </span>
+          <span data-ttu-id="1d99f-164">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-164">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-165">
+            <paramref name="pageIndex" /> 및 <paramref name="pageSize" />를 조합한 값이 <see cref="F:System.Int32.MaxValue" />보다 큰 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-165">The combination of <paramref name="pageIndex" /> and <paramref name="pageSize" /> results in a value greater than <see cref="F:System.Int32.MaxValue" />.</span>
+          </span>
+          <span data-ttu-id="1d99f-166">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-166">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-167">
+            <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch" />가 <see langword="null" />이 아니고 트리밍 후 빈 문자열("")인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-167">
+              <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch" /> is non-<see langword="null" /> and is an empty string ("") after trimming.</span>
+          </span>
+          <span data-ttu-id="1d99f-168">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-168">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-169">값이 <see langword="null" />이 아니고 <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch" />의 길이가 256자보다 긴 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-169">The length of <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch" /> is greater than 256 characters when the value is non-<see langword="null" />.</span>
+          </span>
+          <span data-ttu-id="1d99f-170">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-170">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-171">
+            <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch" />가 <see langword="null" />이 아니고 트리밍 후 빈 문자열인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-171">
+              <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch" /> is non-<see langword="null" /> and is an empty string after trimming.</span>
+          </span>
+          <span data-ttu-id="1d99f-172">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-172">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-173">값이 <see langword="null" />이 아니고 <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch" />의 길이가 256자보다 긴 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-173">The length of <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch" /> is greater than 256 characters when the value is non-<see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="1d99f-174">지정한 <paramref name="scope" />가 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> 열거형의 유효한 값이 아닌 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-174">The <paramref name="scope" /> specified is not a valid value from the <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> enumeration.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCountOfState">
+      <MemberSignature Language="C#" Value="public override int GetCountOfState (System.Web.UI.WebControls.WebParts.PersonalizationScope scope, System.Web.UI.WebControls.WebParts.PersonalizationStateQuery query);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetCountOfState(valuetype System.Web.UI.WebControls.WebParts.PersonalizationScope scope, class System.Web.UI.WebControls.WebParts.PersonalizationStateQuery query) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.GetCountOfState(System.Web.UI.WebControls.WebParts.PersonalizationScope,System.Web.UI.WebControls.WebParts.PersonalizationStateQuery)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function GetCountOfState (scope As PersonalizationScope, query As PersonalizationStateQuery) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int GetCountOfState(System::Web::UI::WebControls::WebParts::PersonalizationScope scope, System::Web::UI::WebControls::WebParts::PersonalizationStateQuery ^ query);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scope" Type="System.Web.UI.WebControls.WebParts.PersonalizationScope" />
+        <Parameter Name="query" Type="System.Web.UI.WebControls.WebParts.PersonalizationStateQuery" />
+      </Parameters>
+      <Docs>
+        <param name="scope">
+          <span data-ttu-id="1d99f-175">쿼리할 개인 설정 정보를 나타내는 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-175">A <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> indicating the personalization information to be queried.</span>
+          </span>
+          <span data-ttu-id="1d99f-176">이 값은 <see langword="null" />일 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-176">This value cannot be <see langword="null" />.</span>
+          </span>
+        </param>
+        <param name="query">
+          <span data-ttu-id="1d99f-177">쿼리가 포함된 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-177">A <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery" /> containing a query.</span>
+          </span>
+          <span data-ttu-id="1d99f-178">이 값은 <see langword="null" />일 수 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-178">This value can be <see langword="null" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="1d99f-179">지정된 <paramref name="scope" /> 매개 변수에 대해 내부 데이터 저장소에 있는 행의 개수를 반환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-179">Returns a count of the number of rows in the underlying data store that exist for the specified <paramref name="scope" /> parameter.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="1d99f-180">지정된 <paramref name="scope" /> 매개 변수에 대해 내부 데이터 저장소에 있는 행의 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-180">The number of rows in the underlying data store that exist for the specified <paramref name="scope" /> parameter.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-181">이 메서드는 내부 데이터 저장소 쿼리 와일드 카드 문자를 전달합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-181">This method passes query wildcard characters to the underlying data store.</span></span> <span data-ttu-id="1d99f-182">와일드 카드 문자에 대 한 지원은 각 공급자는 별표 (\*), 백분율 기호 (%) 또는 밑줄 (_) 등의 문자를 처리 하는 방법을 의존 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-182">Support for wildcard characters is currently dependent on how each provider handles characters such as an asterisk (\*), a percent symbol (%), or an underscore (_).</span></span>  
+  
+ <span data-ttu-id="1d99f-183">일반적으로 SQL 호환 데이터 저장소에 대 한으로 수행할 수 와일드 카드 검색 하는 부분 경로에서 시작, 끝, 또는에 검색 문자열 텍스트의 가운데에는 와일드 카드 문자는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-183">Normally, for SQL-compliant data stores, you can perform a wildcard search on a partial path with the wildcard character appearing at the beginning, the end, or the middle of the search string text in the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> property.</span></span> <span data-ttu-id="1d99f-184">예를 들어, "~/approot"로 시작 하는 모든 경로를 찾으려면는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> 속성은 "~/approot%"로 설정 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-184">For example, to find all paths that start with "~/approot", the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> property would be set to "~/approot%".</span></span>  
+  
+ <span data-ttu-id="1d99f-185">마찬가지로, 일부 사용자 이름에 와일드 카드 검색의 텍스트 문자열의 한 지점에서 표시 하는 와일드 카드 문자를 가질 수는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-185">Likewise, a wildcard search on a partial user name could have the wildcard character appear at any point in the text string of the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> property.</span></span> <span data-ttu-id="1d99f-186">예를 들어, "John"으로 시작 하는 모든 사용자 이름을 찾으려면는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> "John %" 매개 변수는 같습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-186">For example, to find all user names that start with "John", the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> parameter would look like "John%".</span></span>  
+  
+ <span data-ttu-id="1d99f-187">다음 쿼리 제약 조건이 적용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-187">The following query constraints apply:</span></span>  
+  
+-   <span data-ttu-id="1d99f-188">경우에 `scope` 제공 됩니다 및 `query` 은 `null` 대 한 모든 속성 또는 `query` 반환 `null` 하거나 기본값을 사용한 후 표시 된 일치 하는 모든 레코드 `scope` 매개 변수가 반환 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-188">If only `scope` is provided, and `query` is `null` or all the properties on `query` return either `null` or default values, then all records matching the indicated `scope` parameter are returned.</span></span>  
+  
+-   <span data-ttu-id="1d99f-189">경우는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> 속성은 `null`, 반환 되는 레코드와 일치 하는 경로 기준된 필터링 된 사항도 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> 속성 값입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-189">If the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> property is not `null`, the returned records are also filtered based on paths that match the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A> property value.</span></span>  
+  
+-   <span data-ttu-id="1d99f-190">경우는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> 않습니다 `null`, 반환 되는 레코드와 일치 하는 필터링 된에 따라 사용자 이름을 됩니다는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> 속성 값입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-190">If the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> is not `null`, the returned records are also filtered based on user names that match the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A> property value.</span></span>  
+  
+-   <span data-ttu-id="1d99f-191">경우는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> 속성과 같지 않은 <xref:System.DateTime.MaxValue>, 반환 되는 레코드는 비활성 사용자와 관련 된 기록만 반환 하도록 필터링 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-191">If the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> property is not equal to <xref:System.DateTime.MaxValue>, then the returned records are also filtered to return only those records associated with inactive users.</span></span> <span data-ttu-id="1d99f-192">비교 레코드를 포함 합니다. 여기서는 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 속성 보다 작거나 같음는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-192">The comparison includes records where the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> property is less than or equal to the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> property.</span></span>  
+  
+ <span data-ttu-id="1d99f-193">참고가이 메서드 쿼리 매개 변수 조합의 유효성을 검사 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-193">Note that this method does not validate combinations of query parameters.</span></span> <span data-ttu-id="1d99f-194">예를 들어 코드 공유 범위에서 비활성 사용자와 관련 된 상태 레코드의 수를 요청할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-194">For example, code can request a count of state records associated with inactive users in the shared scope.</span></span> <span data-ttu-id="1d99f-195">비활성 사용자 지정의 개념이 없으므로 이기 때문에 반환 되는 개수는 0 것입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-195">Because there is no concept of inactive customizations, the returned count would be zero.</span></span>  
+  
+ <span data-ttu-id="1d99f-196">비어 있지 않은 컬렉션을 반환할 수 있는 매개 변수 조합은 다음과 같습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-196">Parameter combinations that have the potential to return a non-empty collection include:</span></span>  
+  
+-   <span data-ttu-id="1d99f-197"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> 범위와 함께에서 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-197"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> scope in combination with <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A>.</span></span>  
+  
+-   <span data-ttu-id="1d99f-198"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> 값 중 일부 또는 모두에 대 한 함께에서 범위는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A>, <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A>, 및 <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-198"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> scope in combination with the values for any or all of the <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch%2A>, <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch%2A>, and <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> properties.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="1d99f-199">
+            <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch" />가 <see langword="null" />이 아니고 트리밍 후 빈 문자열("")인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-199">
+              <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch" /> is non-<see langword="null" /> and is an empty string ("") after trimming.</span>
+          </span>
+          <span data-ttu-id="1d99f-200">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-200">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-201">값이 <see langword="null" />이 아니고 <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch" />의 길이가 256자보다 긴 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-201">The length of <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.PathToMatch" /> is greater than 256 characters when the value is non-<see langword="null" />.</span>
+          </span>
+          <span data-ttu-id="1d99f-202">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-202">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-203">
+            <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch" />가 <see langword="null" />이 아니고 트리밍 후 빈 문자열인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-203">
+              <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch" /> is non-<see langword="null" /> and is an empty string after trimming.</span>
+          </span>
+          <span data-ttu-id="1d99f-204">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-204">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-205">값이 <see langword="null" />이 아니고 <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch" />의 길이가 256자보다 긴 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-205">The length of <see cref="P:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UsernameToMatch" /> is greater than 256 characters when the value is non-<see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="1d99f-206">지정한 <paramref name="scope" />가 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> 열거형의 유효한 값이 아닌 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-206">The <paramref name="scope" /> specified is not a valid value from the <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> enumeration.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Initialize">
+      <MemberSignature Language="C#" Value="public override void Initialize (string name, System.Collections.Specialized.NameValueCollection configSettings);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Initialize(string name, class System.Collections.Specialized.NameValueCollection configSettings) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Initialize (name As String, configSettings As NameValueCollection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Initialize(System::String ^ name, System::Collections::Specialized::NameValueCollection ^ configSettings);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="configSettings" Type="System.Collections.Specialized.NameValueCollection" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="1d99f-207">구성 파일에 나타나는 응용 프로그램 이름입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-207">The application name as it appears in the configuration file.</span>
+          </span>
+        </param>
+        <param name="configSettings">
+          <span data-ttu-id="1d99f-208">응용 프로그램에 대한 구성 설정입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-208">The configuration settings for the application.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="1d99f-209">Microsoft SQL Server 개인 설정 공급자에 필요한 초기화 프로시저를 구현합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-209">Implements the initialization procedures required for a Microsoft SQL Server personalization provider.</span>
+          </span>
+          <span data-ttu-id="1d99f-210">이 메서드는 코드에서 직접 사용할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-210">This method is not intended to be used directly from your code.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-211">이 메서드는 개인 설정을 사용 하 여 SQL 데이터베이스에 대 한 초기화는 절차를 제공 및 사용자 코드에서 직접 사용할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-211">This method provides the initialization procedures for using personalization with a SQL database and is not intended to be used directly from your code.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Configuration.Provider.ProviderException">
+          <span data-ttu-id="1d99f-212">공급자에 대한 연결 문자열이 구성되지 않은 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-212">No connection string is configured for the provider.</span>
+          </span>
+          <span data-ttu-id="1d99f-213">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-213">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-214">공급자에 대한 연결 문자열을 찾을 수 없는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-214">The connection string for the provider cannot be found.</span>
+          </span>
+          <span data-ttu-id="1d99f-215">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-215">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-216">공급자의 <see langword="&lt;add&gt;" /> 요소에 대해 구성 설정에서 설명한 것 이외의 추가 특성이 있는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-216">There are additional attributes on the provider's <see langword="&lt;add&gt;" /> element beyond those described in the configuration settings.</span>
+          </span>
+          <span data-ttu-id="1d99f-217">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-217">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-218">응용 프로그램 이름의 길이가 256자를 넘는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-218">The length of the application name is greater than 256 characters.</span>
+          </span>
+          <span data-ttu-id="1d99f-219">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-219">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-220">응용 프로그램을 호스팅하는 응용 프로그램 도메인이 <see cref="F:System.Web.AspNetHostingPermissionLevel.Medium" />보다 낮은 신뢰 수준에서 실행되는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-220">The application domain hosting the application is running at a trust level below <see cref="F:System.Web.AspNetHostingPermissionLevel.Medium" /> trust.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="1d99f-221">
+            <paramref name="configSettings" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-221">
+              <paramref name="configSettings" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadPersonalizationBlobs">
+      <MemberSignature Language="C#" Value="protected override void LoadPersonalizationBlobs (System.Web.UI.WebControls.WebParts.WebPartManager webPartManager, string path, string userName, ref byte[] sharedDataBlob, ref byte[] userDataBlob);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void LoadPersonalizationBlobs(class System.Web.UI.WebControls.WebParts.WebPartManager webPartManager, string path, string userName, unsigned int8[]&amp; sharedDataBlob, unsigned int8[]&amp; userDataBlob) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.LoadPersonalizationBlobs(System.Web.UI.WebControls.WebParts.WebPartManager,System.String,System.String,System.Byte[]@,System.Byte[]@)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void LoadPersonalizationBlobs(System::Web::UI::WebControls::WebParts::WebPartManager ^ webPartManager, System::String ^ path, System::String ^ userName, cli::array &lt;System::Byte&gt; ^ % sharedDataBlob, cli::array &lt;System::Byte&gt; ^ % userDataBlob);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="webPartManager" Type="System.Web.UI.WebControls.WebParts.WebPartManager" />
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="userName" Type="System.String" />
+        <Parameter Name="sharedDataBlob" Type="System.Byte[]&amp;" RefType="ref" />
+        <Parameter Name="userDataBlob" Type="System.Byte[]&amp;" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="webPartManager">
+          <span data-ttu-id="1d99f-222">개인 설정 데이터를 관리하는 <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-222">The <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> managing the personalization data.</span>
+          </span>
+        </param>
+        <param name="path">
+          <span data-ttu-id="1d99f-223">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared" /> 범위에서 검색 키로 사용할 개인 설정 정보에 대한 경로입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-223">The path for personalization information in the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared" /> scope to be used as the retrieval key.</span>
+          </span>
+        </param>
+        <param name="userName">
+          <span data-ttu-id="1d99f-224">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> 범위에서 검색 키로 사용할 개인 설정 정보에 대한 사용자 이름입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-224">The user name for personalization information in the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> scope to be used as the retrieval key.</span>
+          </span>
+        </param>
+        <param name="sharedDataBlob">
+          <span data-ttu-id="1d99f-225">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared" /> 범위에 대해 반환되는 데이터입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-225">The returned data for the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared" /> scope.</span>
+          </span>
+        </param>
+        <param name="userDataBlob">
+          <span data-ttu-id="1d99f-226">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> 범위에 대해 반환되는 데이터입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-226">The returned data for the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> scope.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="1d99f-227">지정된 매개 변수를 기반으로 내부 데이터 저장소에서 개인 설정 데이터를 로드합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-227">Loads personalization data from the underlying data store, based on the specified parameters.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-228">이 메서드는 사용 된 `webPartManager`, `path`, 및 `username` 검색 키로 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-228">This method uses the `webPartManager`, `path`, and `username` parameters as retrieval keys.</span></span> <span data-ttu-id="1d99f-229">반환 된 데이터가 포함 되어 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-229">The returned data contains:</span></span>  
+  
+-   <span data-ttu-id="1d99f-230"><xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> 에 반환 된 데이터는 `sharedDataBlob` 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-230">The <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> data returned in the `sharedDataBlob` parameter.</span></span>  
+  
+-   <span data-ttu-id="1d99f-231">키 값에 따라 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> 데이터가 반환 됩니다는 `userDataBlob` 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-231">Depending on the key values, <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> data is returned in the `userDataBlob` parameter.</span></span> <span data-ttu-id="1d99f-232">비-`null` 에 대 한 값은 `userName` 매개 변수를 나타냅니다 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> 데이터를 검색할 수도 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-232">A non-`null` value for the `userName` parameter indicates that <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> data is also retrieved.</span></span>  
+  
+ <span data-ttu-id="1d99f-233"><xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> 개체를 자동으로 업데이트는 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 열에는 `aspnet_Users` 테이블 페이지 요청의 컨텍스트에서 데이터베이스에서 각 시간 사용자 고유의 개인 설정 데이터를 로드 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-233">The <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> object automatically updates the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> column in the `aspnet_Users` table each time user-specific personalization data is loaded from the database in the context of a page request.</span></span> <span data-ttu-id="1d99f-234">이 동작을 통해 다른 ASP.NET 기능을 사용 하 여 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 부실 데이터를 관리 하는 경우이 속성의 사이트에도 확인 하거나 최근 사용자 작업을 기록 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-234">This behavior allows other ASP.NET features to use the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> property when managing stale data records as well as determining recent user activity on a site.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetPersonalizationBlob">
+      <MemberSignature Language="C#" Value="protected override void ResetPersonalizationBlob (System.Web.UI.WebControls.WebParts.WebPartManager webPartManager, string path, string userName);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void ResetPersonalizationBlob(class System.Web.UI.WebControls.WebParts.WebPartManager webPartManager, string path, string userName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ResetPersonalizationBlob(System.Web.UI.WebControls.WebParts.WebPartManager,System.String,System.String)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void ResetPersonalizationBlob(System::Web::UI::WebControls::WebParts::WebPartManager ^ webPartManager, System::String ^ path, System::String ^ userName);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="webPartManager" Type="System.Web.UI.WebControls.WebParts.WebPartManager" />
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="userName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="webPartManager">
+          <span data-ttu-id="1d99f-235">개인 설정 데이터를 관리하는 <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-235">The <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> managing the personalization data.</span>
+          </span>
+        </param>
+        <param name="path">
+          <span data-ttu-id="1d99f-236">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared" /> 범위에서 검색 키로 사용할 개인 설정 정보에 대한 경로입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-236">The path for personalization information in the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared" /> scope to be used as the retrieval key.</span>
+          </span>
+        </param>
+        <param name="userName">
+          <span data-ttu-id="1d99f-237">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> 범위에서 검색 키로 사용할 개인 설정 정보에 대한 사용자 이름입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-237">The user name for personalization information in the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> scope to be used as the retrieval key.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="1d99f-238">내부 데이터 저장소에서 개인 설정 데이터를 삭제합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-238">Deletes personalization data from the underlying data store.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-239"><xref:System.Web.UI.WebControls.WebParts.WebPartPersonalization> 이 메서드를 사용 하 여 웹 사이트 사용자가 웹 파트 데이터 페이지를 다시 설정 하도록 선택 하면 데이터베이스에서 개인 설정 데이터를 삭제 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-239"><xref:System.Web.UI.WebControls.WebParts.WebPartPersonalization> uses this method to delete personalization data from the database when a Web site user chooses to reset Web Parts data on a page.</span></span> <span data-ttu-id="1d99f-240">경우 `username` 이 아닌`null`, 사용 하 여 데이터는 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> 고, 그렇지 않으면 삭제 된 범위 데이터를 사용 하 여 데이터의 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> 범위 삭제 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-240">If `username` is non-`null`, data with the <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> scope data is deleted; otherwise, data with the <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> scope is deleted.</span></span>  
+  
+ <span data-ttu-id="1d99f-241"><xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> 개체를 자동으로 업데이트는 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 열에는 `aspnet_Users` 테이블 시간 사용자 고유의 개인 설정 데이터가 각 페이지 요청의 컨텍스트에서 데이터베이스에서 삭제 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-241">The <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> object automatically updates the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> column in the `aspnet_Users` table each time user-specific personalization data is deleted from the database in the context of a page request.</span></span> <span data-ttu-id="1d99f-242">이 동작을 사용 하 여 다른 ASP.NET 기능을 통해는 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 값 부실 데이터 관리의 사이트에도 확인 하거나 최근 사용자 작업을 기록 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-242">This behavior allows other ASP.NET features to use the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> value when managing stale data records as well as determining recent user activity on a site.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetState">
+      <MemberSignature Language="C#" Value="public override int ResetState (System.Web.UI.WebControls.WebParts.PersonalizationScope scope, string[] paths, string[] usernames);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 ResetState(valuetype System.Web.UI.WebControls.WebParts.PersonalizationScope scope, string[] paths, string[] usernames) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ResetState(System.Web.UI.WebControls.WebParts.PersonalizationScope,System.String[],System.String[])" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ResetState (scope As PersonalizationScope, paths As String(), usernames As String()) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int ResetState(System::Web::UI::WebControls::WebParts::PersonalizationScope scope, cli::array &lt;System::String ^&gt; ^ paths, cli::array &lt;System::String ^&gt; ^ usernames);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scope" Type="System.Web.UI.WebControls.WebParts.PersonalizationScope" />
+        <Parameter Name="paths" Type="System.String[]" />
+        <Parameter Name="usernames" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="scope">
+          <span data-ttu-id="1d99f-243">쿼리할 개인 설정 정보를 나타내는 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-243">A <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> indicating the personalization information to be queried.</span>
+          </span>
+          <span data-ttu-id="1d99f-244">이 값은 <see langword="null" />일 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-244">This value cannot be <see langword="null" />.</span>
+          </span>
+        </param>
+        <param name="paths">
+          <span data-ttu-id="1d99f-245">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared" /> 범위에서 삭제할 개인 설정 정보의 경로입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-245">The paths for personalization information in the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared" /> scope to be deleted.</span>
+          </span>
+        </param>
+        <param name="usernames">
+          <span data-ttu-id="1d99f-246">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> 범위에서 삭제할 개인 설정 정보의 사용자 이름입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-246">The user names for personalization information in the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> scope to be deleted.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="1d99f-247">지정된 매개 변수를 기반으로 내부 데이터 저장소에서 개인 설정 상태 정보를 삭제합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-247">Deletes personalization state information from the underlying data store, based on the specified parameters.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="1d99f-248">삭제되는 행의 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-248">The number of rows deleted.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-249">와일드 카드 문자가 없는이 메서드에 의해 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-249">No wildcard characters are supported by this method.</span></span>  
+  
+ <span data-ttu-id="1d99f-250">매개 변수는 다음과 같은 조합은 허용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-250">Only the following combinations of parameters are allowed:</span></span>  
+  
+-   <span data-ttu-id="1d99f-251">`scope` 매개 변수를 설정 하 고 다른 모든 매개 변수를 설정 `null`합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-251">The `scope` parameter is set, and all other parameters are set to `null`.</span></span> <span data-ttu-id="1d99f-252">이 조합을 사용 하 여 지정한 개인 설정 범위와 연결 된 모든 웹 파트 개인 설정 데이터가 `scope`합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-252">This combination deletes all Web Parts personalization data associated with the personalization scope indicated by `scope`.</span></span>  
+  
+-   <span data-ttu-id="1d99f-253">`scope` 매개 변수를 설정 및 `paths` 매개 변수에 값이 하나 이상 포함 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-253">The `scope` parameter is set, and the `paths` parameter contains at least one value.</span></span> <span data-ttu-id="1d99f-254">지정 된 경로 또는에서 지정한 개인 설정 범위에 있는 경로 대 한 모든 웹 파트 개인 설정 데이터를 삭제 하는이 조합은 `scope`합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-254">This combination deletes all Web Parts personalization data for the specified path or paths that are in the personalization scope indicated by `scope`.</span></span>  
+  
+-   <span data-ttu-id="1d99f-255">`scope` 로 설정 된 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User>, `paths` 설정 하 고 하나의 경로 포함 하는 매개 변수 및 `usernames` 매개 변수에 값이 하나 이상 포함 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-255">The `scope` parameter is set to <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User>, the `paths` parameter is set and contains only one path, and the `usernames` parameter contains at least one value.</span></span> <span data-ttu-id="1d99f-256">모든 사용자 개인 설정 하는 사용자 또는에 포함 된 사용자와 연결 된 지정된 된 경로 대 한 웹 파트 데이터를 삭제 하는이 조합은 `usernames`합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-256">This combination deletes all user personalization Web Parts data for the given path that is associated with the user or users contained in `usernames`.</span></span>  
+  
+-   <span data-ttu-id="1d99f-257">`scope` 로 설정 된 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User>, `paths` 매개 변수는 `null`, 및 `usernames` 매개 변수에 값이 하나 이상 포함 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-257">The `scope` parameter is set to <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User>, the `paths` parameter is `null`, and the `usernames` parameter contains at least one value.</span></span> <span data-ttu-id="1d99f-258">이 조합에 포함 된 사용자와 연결 된 모든 경로에서 모든 사용자 개인 설정 웹 파트 데이터를 삭제 `usernames`합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-258">This combination deletes all per-user personalization Web Parts data, across all paths, associated with the user or users contained in `usernames`.</span></span>  
+  
+ <span data-ttu-id="1d99f-259">다른 매개 변수 값 조합을 잘못 되었으며 throw 합니다는 <xref:System.ArgumentException> 예외입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-259">Any other combination of parameter values is invalid and will throw an <xref:System.ArgumentException> exception.</span></span> <span data-ttu-id="1d99f-260">예를 들어 다음과 같은 두 조합은 허용 되지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-260">For example, the following two combinations are not allowed:</span></span>  
+  
+-   <span data-ttu-id="1d99f-261">`usernames` 때 매개 변수를 지정할 수 없습니다는 `scope` 로 설정 된 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared>합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-261">The `usernames` parameter cannot be provided when the `scope` parameter is set to <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared>.</span></span>  
+  
+-   <span data-ttu-id="1d99f-262">`paths` 매개 변수는 하나 이상의 항목을 포함할 수 없을 때는 `usernames` 매개 변수가 않습니다 `null`합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-262">The `paths` parameter cannot contain more than one entry when the `usernames` parameter is not `null`.</span></span>  
+  
+ <span data-ttu-id="1d99f-263">`paths` 및 `usernames` 각 배열에 포함 된 매개 변수에 다음 유효성 검사 규칙을 충족 해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-263">The `paths` and `usernames` parameters contained within the respective arrays must meet the following validation rules.</span></span> <span data-ttu-id="1d99f-264">매개 변수 배열의 모든 멤버에 대 한 모든 유효성 검사 규칙이 실패 하는 경우는 <xref:System.ArgumentException> 예외가 throw 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-264">If any validation rules fail for any member of the parameter arrays, an <xref:System.ArgumentException> exception is thrown.</span></span> <span data-ttu-id="1d99f-265">유효성 검사 규칙은 다음과 같습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-265">The validation rules include:</span></span>  
+  
+-   <span data-ttu-id="1d99f-266">`null` 값은 허용 되지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-266">`null` values are not allowed.</span></span>  
+  
+-   <span data-ttu-id="1d99f-267">빈 문자열 ("") 문자열 제거 된 후 사용할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-267">An empty string ("") after the string has been trimmed is not allowed.</span></span>  
+  
+-   <span data-ttu-id="1d99f-268">에 포함 된 사용자 이름에서 `usernames` 매개 변수는 쉼표를 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-268">No user names contained in the `usernames` parameter can contain commas.</span></span>  
+  
+-   <span data-ttu-id="1d99f-269">임의 경로 길이 `paths` 매개 변수는 256 자를 초과할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-269">The length of any path in the `paths` parameter cannot be greater than 256 characters.</span></span>  
+  
+-   <span data-ttu-id="1d99f-270">사용자 이름 길이 `usernames` 매개 변수는 256 자를 초과할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-270">The length of any user name in the `usernames` parameter cannot be greater than 256 characters.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="1d99f-271">
+            <paramref name="paths" /> 또는 <paramref name="usernames" /> 매개 변수가 빈 배열인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-271">Either the <paramref name="paths" /> or the <paramref name="usernames" /> parameter is an empty array.</span>
+          </span>
+          <span data-ttu-id="1d99f-272">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-272">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-273">각 배열에 포함된 <paramref name="paths" /> 및 <paramref name="usernames" /> 매개 변수가 유효성 검사 규칙을 충족하지 않는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-273">The <paramref name="paths" /> and <paramref name="usernames" /> parameters contained within the respective arrays do not meet the validation rules.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="1d99f-274">지정된 <paramref name="scope" />가 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> 열거형의 멤버가 아닌 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-274">The <paramref name="scope" /> specified is not a member of the <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> enumeration.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetUserState">
+      <MemberSignature Language="C#" Value="public override int ResetUserState (string path, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 ResetUserState(string path, valuetype System.DateTime userInactiveSinceDate) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.ResetUserState(System.String,System.DateTime)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ResetUserState (path As String, userInactiveSinceDate As DateTime) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int ResetUserState(System::String ^ path, DateTime userInactiveSinceDate);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="userInactiveSinceDate" Type="System.DateTime" />
+      </Parameters>
+      <Docs>
+        <param name="path">
+          <span data-ttu-id="1d99f-275">삭제할 개인 설정 데이터의 경로입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-275">The path of the personalization data to be deleted.</span>
+          </span>
+          <span data-ttu-id="1d99f-276">이 값은 <see langword="null" />일 수 있지만 빈 문자열("")일 수는 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-276">This value can be <see langword="null" /> but cannot be an empty string ("").</span>
+          </span>
+        </param>
+        <param name="userInactiveSinceDate">
+          <span data-ttu-id="1d99f-277">마지막 작업을 나타내는 데이터입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-277">The date indicating the last activity.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="1d99f-278">지정된 매개 변수를 기반으로 내부 데이터 저장소에서 사용자 개인 설정 데이터를 삭제합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-278">Deletes user personalization data from the underlying data store, based on the specified parameters.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="1d99f-279">내부 데이터 저장소에서 삭제되는 행 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-279">The count of rows deleted from the underlying data store.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-280">이 메서드의 매개이 변수는 다음과 같은 제한이 적용:</span><span class="sxs-lookup"><span data-stu-id="1d99f-280">This method's parameters have the following restrictions:</span></span>  
+  
+-   <span data-ttu-id="1d99f-281">`path` 매개 변수는 와일드 카드 문자를 포함할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-281">The `path` parameter cannot contain wildcard characters.</span></span>  
+  
+-   <span data-ttu-id="1d99f-282">경우는 `path` 매개 변수는 비-`null`만 사용자 개인 설정 레코드와 관련 된 다음 `path` 삭제 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-282">If the `path` parameter is non-`null`, then only per-user personalization records associated with `path` will be deleted.</span></span>  
+  
+-   <span data-ttu-id="1d99f-283">에 지정 된 날짜 이후 비활성 간주 되는 사용자와 관련 된 사용자 개인 설정 레코드는 `userInactiveSinceDate` 매개 변수를 삭제 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-283">Only per-user personalization records associated with users that are considered inactive since the date specified in the `userInactiveSinceDate` parameter will be deleted.</span></span> <span data-ttu-id="1d99f-284">정확한 비교 레코드를 삭제 하는 것에 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 속성 보다 작거나 같음는 `userInactiveSinceDate` 매개 변수입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-284">The exact comparison would be to delete records where the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> property is less than or equal to the `userInactiveSinceDate` parameter.</span></span>  
+  
+-   <span data-ttu-id="1d99f-285">두 매개 변수에 제공 되는 경우 제약 조건을 둘 다 일치 하는 레코드가 삭제 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-285">If both parameters are provided, then records that match both constraints are deleted.</span></span>  
+  
+-   <span data-ttu-id="1d99f-286">`path` 매개 변수 수 `null`합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-286">The `path` parameter can be `null`.</span></span>  
+  
+-   <span data-ttu-id="1d99f-287">`path` 매개 변수는 잘라낸 후 빈 문자열일 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-287">The `path` parameter cannot be an empty string after trimming.</span></span>  
+  
+-   <span data-ttu-id="1d99f-288"><xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> 속성은 `null`이 될 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-288">The <xref:System.Web.UI.WebControls.WebParts.PersonalizationStateQuery.UserInactiveSinceDate%2A> property cannot be `null`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="1d99f-289">
+            <paramref name="path" />이 빈 문자열인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-289">
+              <paramref name="path" /> is an empty string.</span>
+          </span>
+          <span data-ttu-id="1d99f-290">\- 또는 -</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-290">\- or -</span>
+          </span>
+          <span data-ttu-id="1d99f-291">경로 길이가 256자를 초과하는 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-291">The path is greater than 256 characters in length.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SavePersonalizationBlob">
+      <MemberSignature Language="C#" Value="protected override void SavePersonalizationBlob (System.Web.UI.WebControls.WebParts.WebPartManager webPartManager, string path, string userName, byte[] dataBlob);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void SavePersonalizationBlob(class System.Web.UI.WebControls.WebParts.WebPartManager webPartManager, string path, string userName, unsigned int8[] dataBlob) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider.SavePersonalizationBlob(System.Web.UI.WebControls.WebParts.WebPartManager,System.String,System.String,System.Byte[])" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void SavePersonalizationBlob(System::Web::UI::WebControls::WebParts::WebPartManager ^ webPartManager, System::String ^ path, System::String ^ userName, cli::array &lt;System::Byte&gt; ^ dataBlob);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="webPartManager" Type="System.Web.UI.WebControls.WebParts.WebPartManager" />
+        <Parameter Name="path" Type="System.String" />
+        <Parameter Name="userName" Type="System.String" />
+        <Parameter Name="dataBlob" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="webPartManager">
+          <span data-ttu-id="1d99f-292">개인 설정 데이터를 관리하는 <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-292">The <see cref="T:System.Web.UI.WebControls.WebParts.WebPartManager" /> managing the personalization data.</span>
+          </span>
+        </param>
+        <param name="path">
+          <span data-ttu-id="1d99f-293">저장할 개인 설정 정보를 나타내는 <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" />입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-293">A <see cref="T:System.Web.UI.WebControls.WebParts.PersonalizationScope" /> indicating the personalization information to be saved.</span>
+          </span>
+          <span data-ttu-id="1d99f-294">이 값은 <see langword="null" />일 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-294">This value cannot be <see langword="null" />.</span>
+          </span>
+        </param>
+        <param name="userName">
+          <span data-ttu-id="1d99f-295">
+            <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> 범위에서 키로 사용할 개인 설정 정보에 대한 사용자 이름입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-295">The user name for personalization information in the <see cref="F:System.Web.UI.WebControls.WebParts.PersonalizationScope.User" /> scope to be used as the key.</span>
+          </span>
+        </param>
+        <param name="dataBlob">
+          <span data-ttu-id="1d99f-296">저장할 데이터의 바이트 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-296">The byte array of data to be saved.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="1d99f-297">내부 Microsoft SQL Server 데이터베이스에 원시 개인 설정 데이터를 저장합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="1d99f-297">Saves raw personalization data to the underlying Microsoft SQL Server database.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="1d99f-298">아닌`null` 사용자 이름이 제공 하면 `dataBlob` 매개 변수에 대 한 개인 설정 데이터를 포함 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> 범위; 그렇지 않으면 `dataBlob` 에 대 한 데이터를 포함 하도록 간주 됩니다 <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> 범위입니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-298">If a non-`null` user name is provided, then the `dataBlob` parameter contains personalization data for <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.User> scope; otherwise, `dataBlob` is assumed to contain data for <xref:System.Web.UI.WebControls.WebParts.PersonalizationScope.Shared> scope.</span></span>  
+  
+ <span data-ttu-id="1d99f-299"><xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> 개체를 자동으로 업데이트는 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 열에는 `aspnet_Users` 테이블 시간 사용자 고유의 개인 설정 데이터가 각 페이지 요청의 컨텍스트에서 데이터베이스에 저장 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-299">The <xref:System.Web.UI.WebControls.WebParts.SqlPersonalizationProvider> object automatically updates the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> column in the `aspnet_Users` table each time user-specific personalization data is saved to the database in the context of a page request.</span></span> <span data-ttu-id="1d99f-300">이 동작을 통해 다른 ASP.NET 기능을 사용 하 여 <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> 부실 데이터를 관리 하는 경우이 속성의 사이트에도 확인 하거나 최근 사용자 작업을 기록 합니다.</span><span class="sxs-lookup"><span data-stu-id="1d99f-300">This behavior allows other ASP.NET features to use the <xref:System.Web.UI.WebControls.WebParts.UserPersonalizationStateInfo.LastActivityDate%2A> property when managing stale data records as well as determining recent user activity on a site.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

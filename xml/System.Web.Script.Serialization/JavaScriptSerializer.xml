@@ -1,0 +1,1201 @@
+<Type Name="JavaScriptSerializer" FullName="System.Web.Script.Serialization.JavaScriptSerializer">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="7d32f4b8263b0fde5028248c2a084efc30c7bca5" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.contentlocale" Value="ko-KR" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class JavaScriptSerializer" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit JavaScriptSerializer extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Web.Script.Serialization.JavaScriptSerializer" />
+  <TypeSignature Language="VB.NET" Value="Public Class JavaScriptSerializer" />
+  <TypeSignature Language="C++ CLI" Value="public ref class JavaScriptSerializer" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web.Extensions</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="37104-101">serialization 및 deserialization에는 [Json.NET](http://www.newtonsoft.com/json)이 사용되어야 합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="37104-101">[Json.NET](http://www.newtonsoft.com/json) should be used serialization and deserialization.</span>
+      </span>
+      <span data-ttu-id="37104-102">AJAX 사용 응용 프로그램을 위한 serialization 및 deserialization 기능을 제공합니다.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="37104-102">Provides serialization and deserialization functionality for AJAX-enabled applications.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-103"><xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스 하는 데 내부적으로 비동기 통신 계층에서 브라우저와 웹 서버 간에 전달 되는 데이터 serialize 및 deserialize 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-103">The <xref:System.Web.Script.Serialization.JavaScriptSerializer> class is used internally by the asynchronous communication layer to serialize and deserialize the data that is passed between the browser and the Web server.</span></span> <span data-ttu-id="37104-104">Serializer의 해당 인스턴스에 액세스할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-104">You cannot access that instance of the serializer.</span></span> <span data-ttu-id="37104-105">그러나이 클래스는 공용 API를 노출 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-105">However, this class exposes a public API.</span></span> <span data-ttu-id="37104-106">따라서 관리 코드에서 사용 하 여 JavaScript 개체 Notation (JSON)에서 실행 되도록 하려는 경우 클래스를 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-106">Therefore, you can use the class when you want to work with JavaScript Object Notation (JSON) in managed code.</span></span>  
+  
+ <span data-ttu-id="37104-107">개체를 serialize 하는 데 사용 된 <xref:System.Web.Script.Serialization.JavaScriptSerializer.Serialize%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="37104-107">To serialize an object, use the <xref:System.Web.Script.Serialization.JavaScriptSerializer.Serialize%2A> method.</span></span> <span data-ttu-id="37104-108">JSON 문자열을 deserialize 하는 데 사용 된 <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> 또는 <xref:System.Web.Script.Serialization.JavaScriptSerializer.DeserializeObject%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="37104-108">To deserialize a JSON string, use the <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> or <xref:System.Web.Script.Serialization.JavaScriptSerializer.DeserializeObject%2A> methods.</span></span> <span data-ttu-id="37104-109">기본적으로 지원 되지 않는 형식을 serialize 및 deserialize를 <xref:System.Web.Script.Serialization.JavaScriptSerializer>, 사용 하 여 사용자 지정 변환기 구현에서 <xref:System.Web.Script.Serialization.JavaScriptConverter> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-109">To serialize and deserialize types that are not natively supported by <xref:System.Web.Script.Serialization.JavaScriptSerializer>, implement custom converters by using the <xref:System.Web.Script.Serialization.JavaScriptConverter> class.</span></span> <span data-ttu-id="37104-110">그런 다음 변환기를 사용 하 여 등록 된 <xref:System.Web.Script.Serialization.JavaScriptSerializer.RegisterConverters%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="37104-110">Then register the converters by using the <xref:System.Web.Script.Serialization.JavaScriptSerializer.RegisterConverters%2A> method.</span></span>  
+  
+## <a name="mapping-between-managed-types-and-json"></a><span data-ttu-id="37104-111">관리 되는 형식 및 JSON 간 매핑</span><span class="sxs-lookup"><span data-stu-id="37104-111">Mapping Between Managed Types and JSON</span></span>  
+ <span data-ttu-id="37104-112">다음 표에서 serialization 프로세스에 대 한 관리 되는 형식 및 JSON 간의 매핑을 보여 줍니다.</span><span class="sxs-lookup"><span data-stu-id="37104-112">The following table shows the mapping between managed types and JSON for the serialization process.</span></span> <span data-ttu-id="37104-113">이러한 관리 되는 형식에서 기본적으로 지 <xref:System.Web.Script.Serialization.JavaScriptSerializer>합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-113">These managed types are natively supported by <xref:System.Web.Script.Serialization.JavaScriptSerializer>.</span></span> <span data-ttu-id="37104-114">관리 되는 형식에는 JSON 문자열에서 역직렬화 하 고는 동일한 매핑이 적용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="37104-114">When you are deserializing from a JSON string to a managed type, the same mapping applies.</span></span> <span data-ttu-id="37104-115">그러나 역직렬화 비대칭; 수 있습니다. 모든 직렬화 가능 관리 되는 형식은 JSON에서 역직렬화 할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-115">However, deserialization can be asymmetric; not all serializable managed types can be deserialized from JSON.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="37104-116">다차원 배열은 1 차원 배열에으로 serialize 되 고 평면 배열로 메서드를 사용 해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-116">A multidimensional array is serialized as a one-dimensional array, and you should use it as a flat array.</span></span>  
+  
+|<span data-ttu-id="37104-117">관리 되는 형식</span><span class="sxs-lookup"><span data-stu-id="37104-117">Managed type</span></span>|<span data-ttu-id="37104-118">해당 하는 JSON</span><span class="sxs-lookup"><span data-stu-id="37104-118">JSON equivalent</span></span>|  
+|------------------|---------------------|  
+|<span data-ttu-id="37104-119"><xref:System.String> (U t F-8만 인코딩)입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-119"><xref:System.String> (UTF-8 encoding only).</span></span>|<span data-ttu-id="37104-120">문자열</span><span class="sxs-lookup"><span data-stu-id="37104-120">String</span></span>|  
+|<xref:System.Char>|<span data-ttu-id="37104-121">문자열</span><span class="sxs-lookup"><span data-stu-id="37104-121">String</span></span>|  
+|<span data-ttu-id="37104-122">단일 null 문자 (예: \0)</span><span class="sxs-lookup"><span data-stu-id="37104-122">Single null char (such as, \0 )</span></span>|<span data-ttu-id="37104-123">Null</span><span class="sxs-lookup"><span data-stu-id="37104-123">Null</span></span>|  
+|<xref:System.Boolean>|<span data-ttu-id="37104-124">부울입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-124">Boolean.</span></span> <span data-ttu-id="37104-125">JSON으로 표현 `true` 또는 `false`</span><span class="sxs-lookup"><span data-stu-id="37104-125">Represented in JSON as `true` or `false`</span></span>|  
+|<span data-ttu-id="37104-126">`null` (`null` 개체에서 참조 하 고 <xref:System.Nullable> 값 형식).</span><span class="sxs-lookup"><span data-stu-id="37104-126">`null` (`null` object references and <xref:System.Nullable> value types).</span></span>|<span data-ttu-id="37104-127">Null 문자열 값</span><span class="sxs-lookup"><span data-stu-id="37104-127">A string value of null</span></span>|  
+|<xref:System.DBNull>|<span data-ttu-id="37104-128">Null 문자열 값</span><span class="sxs-lookup"><span data-stu-id="37104-128">A string value of null</span></span>|  
+|<span data-ttu-id="37104-129">숫자 (또는 숫자 호환)에 대 한 기본 형식: <xref:System.Byte>, <xref:System.SByte>, <xref:System.Int16>, <xref:System.Int32>, <xref:System.Int64>, <xref:System.UInt16>, <xref:System.UInt32>, <xref:System.UInt64>, <xref:System.Double>, 및 <xref:System.Single>합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-129">Primitive numeric (or numeric-compatible) types: <xref:System.Byte>, <xref:System.SByte>, <xref:System.Int16>, <xref:System.Int32>, <xref:System.Int64>, <xref:System.UInt16>, <xref:System.UInt32>, <xref:System.UInt64>, <xref:System.Double>, and <xref:System.Single>.</span></span> <span data-ttu-id="37104-130">고정 문화권의 문자열 표현이 사용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="37104-130">The culture-invariant string representation is used.</span></span>|<span data-ttu-id="37104-131">수</span><span class="sxs-lookup"><span data-stu-id="37104-131">Number</span></span>|  
+|<xref:System.DateTime>|<span data-ttu-id="37104-132">Date 개체를 JSON으로 표현 "\\/Date (틱 수가)\\/"입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-132">Date object, represented in JSON as "\\/Date(number of ticks)\\/".</span></span> <span data-ttu-id="37104-133">틱 수 (밀리초) 01 1970 년 1 월, UTC 자정 이후 경과 된 틱 수를 나타내는 long 한 값 양수 또는 음수입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-133">The number of ticks is a positive or negative long value that indicates the number of ticks (milliseconds) that have elapsed since midnight 01 January, 1970 UTC.</span></span><br /><br /> <span data-ttu-id="37104-134">지원 되는 최대 날짜 값은 <xref:System.DateTime.MaxValue> (9999/12/31 오후 11시 59분: 59) 지원 되는 최소 날짜 값은 <xref:System.DateTime.MinValue> (1/1/0001 오전 12시: 00).</span><span class="sxs-lookup"><span data-stu-id="37104-134">The maximum supported date value is <xref:System.DateTime.MaxValue> (12/31/9999 11:59:59 PM) and the minimum supported date value is <xref:System.DateTime.MinValue> (1/1/0001 12:00:00 AM).</span></span>|  
+|<span data-ttu-id="37104-135">정수 형식의 열거형</span><span class="sxs-lookup"><span data-stu-id="37104-135">Enumerations of integer type</span></span>|<span data-ttu-id="37104-136">열거형 값의 정수</span><span class="sxs-lookup"><span data-stu-id="37104-136">Integer equivalent of the enumeration value</span></span>|  
+|<span data-ttu-id="37104-137">구현 하는 형식은 <xref:System.Collections.IEnumerable> 또는 <xref:System.Collections.Generic.IEnumerable%601?displayProperty=nameWithType> 없는 구현의 <xref:System.Collections.IDictionary> 또는 <xref:System.Collections.Generic.IDictionary%602?displayProperty=nameWithType>합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-137">Types that implement <xref:System.Collections.IEnumerable> or <xref:System.Collections.Generic.IEnumerable%601?displayProperty=nameWithType> that are not also implementations of <xref:System.Collections.IDictionary> or <xref:System.Collections.Generic.IDictionary%602?displayProperty=nameWithType>.</span></span> <span data-ttu-id="37104-138">에 같은 <xref:System.Array>, <xref:System.Collections.ArrayList>, 및 <xref:System.Collections.Generic.List%601>합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-138">This includes types such as <xref:System.Array>, <xref:System.Collections.ArrayList>, and <xref:System.Collections.Generic.List%601>.</span></span>|<span data-ttu-id="37104-139">JSON 배열 구문을 사용 하는 배열</span><span class="sxs-lookup"><span data-stu-id="37104-139">Array that uses JSON array syntax</span></span>|  
+|<span data-ttu-id="37104-140">구현 하는 형식은 <xref:System.Collections.IDictionary> 또는 <xref:System.Collections.Generic.IDictionary%602?displayProperty=nameWithType>합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-140">Types that implement <xref:System.Collections.IDictionary> or <xref:System.Collections.Generic.IDictionary%602?displayProperty=nameWithType>.</span></span> <span data-ttu-id="37104-141">에 같은 <xref:System.Collections.Generic.Dictionary%602> 및 <xref:System.Collections.Hashtable>합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-141">This includes types such as <xref:System.Collections.Generic.Dictionary%602> and <xref:System.Collections.Hashtable>.</span></span>|<span data-ttu-id="37104-142">JSON 사전 구문을 사용 하는 JavaScript 개체</span><span class="sxs-lookup"><span data-stu-id="37104-142">JavaScript object that uses JSON dictionary syntax</span></span>|  
+|<span data-ttu-id="37104-143">가 있는 public 인스턴스 속성을 가진 사용자 지정 구체적인 (비추상) 형식을 접근자 또는 공용 인스턴스 필드를 가져옵니다.</span><span class="sxs-lookup"><span data-stu-id="37104-143">Custom concrete (non-abstract) types that have public instance properties that have get accessors or public instance fields.</span></span><br /><br /> <span data-ttu-id="37104-144">쓰기 전용 공용 속성, 공용 속성 또는 공용 필드 특성으로 표시 <xref:System.Web.Script.Serialization.ScriptIgnoreAttribute>, 이러한 종류의 인덱싱된 속성을 공개는 무시 됩니다.</span><span class="sxs-lookup"><span data-stu-id="37104-144">Note that public write-only properties, public property or public field attributes marked with <xref:System.Web.Script.Serialization.ScriptIgnoreAttribute>, and public indexed properties in these types are ignored.</span></span>|<span data-ttu-id="37104-145">JSON 사전 구문을 사용 하는 JavaScript 개체입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-145">JavaScript object that uses JSON dictionary syntax.</span></span> <span data-ttu-id="37104-146">"__Type" 라는 특별 한 메타 데이터 속성이 올바른 deserialization을 위해 포함 됩니다.</span><span class="sxs-lookup"><span data-stu-id="37104-146">A special metadata property named "__type" is included to ensure correct deserialization.</span></span> <span data-ttu-id="37104-147">Public 인스턴스 속성 get 및 set 접근자 올바른 deserialization 되도록 있는지 확인 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-147">Make sure that public instance properties have get and set accessors to ensure correct deserialization.</span></span>|  
+|<xref:System.Guid>|<span data-ttu-id="37104-148">GUID의 문자열 표현</span><span class="sxs-lookup"><span data-stu-id="37104-148">String representation of a GUID</span></span>|  
+|<xref:System.Uri>|<span data-ttu-id="37104-149">반환 값의 문자열 표현 <xref:System.Uri.GetComponents%2A></span><span class="sxs-lookup"><span data-stu-id="37104-149">String representation of the return value of <xref:System.Uri.GetComponents%2A></span></span>|  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="37104-150">첫 번째 예제를 직렬화 하 고 데이터 개체를 역직렬화 하는 방법에 대 한 간단한 설명을 제공 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-150">The first example provides a simple illustration of how to serialize and deserialize data objects.</span></span> <span data-ttu-id="37104-151">클래스 이름 아래에 나와 있는 사람이 필요 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-151">It requires a class names Person which is shown below.</span></span>  
+  
+ [!code-csharp[System.Web.Script.Serialization.JavaScriptSerializer#1](~/samples/snippets/csharp/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/cs/default.aspx.cs#1)]
+ [!code-vb[System.Web.Script.Serialization.JavaScriptSerializer#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/vb/default.aspx.vb#1)]  
+  
+ [!code-csharp[System.Web.Script.Serialization.JavaScriptSerializer#2](~/samples/snippets/csharp/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/cs/default.aspx.cs#2)]
+ [!code-vb[System.Web.Script.Serialization.JavaScriptSerializer#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/vb/default.aspx.vb#2)]  
+  
+ <span data-ttu-id="37104-152">다음 예제에서는 사용 하는 복잡 하 고 전체 프로젝트는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스 저장 하 고 JSON serialization을 사용 하 여 개체의 상태를 복원 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-152">The next example shows a more complicated and complete project that uses the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class to save and restore the state of an object by using JSON serialization.</span></span> <span data-ttu-id="37104-153">이 코드에 제공 하는 사용자 지정 변환기를 사용 하 여는 <xref:System.Web.Script.Serialization.JavaScriptConverter> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-153">This code uses a custom converter that is provided for the <xref:System.Web.Script.Serialization.JavaScriptConverter> class.</span></span>  
+  
+ [!code-aspx-csharp[System.Web.Script.Serialization#4](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.Script.Serialization/CS/Default.aspx#4)]
+ [!code-aspx-vb[System.Web.Script.Serialization#4](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.Script.Serialization/VB/Default.aspx#4)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="37104-154">
+            <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-154">Initializes a new instance of the <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public JavaScriptSerializer ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; JavaScriptSerializer();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="37104-155">형식 확인자가 없는 <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-155">Initializes a new instance of the <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> class that has no type resolver.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-156">인스턴스는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스 없이 형식 확인자 serialize 된 JSON 문자열의 형식 메타 데이터 속성 (이름: "__type")를 포함 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-156">An instance of the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class without a type resolver does not include type metadata properties (named "__type") in the serialized JSON string.</span></span> <span data-ttu-id="37104-157">형식 메타 데이터 속성은 사용 된 <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> 및 <xref:System.Web.Script.Serialization.JavaScriptSerializer.DeserializeObject%2A> JSON 문자열로 변환 될 적절 한 관리를 확인 하는 메서드를 입력 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-157">A type metadata property is used by the <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> and <xref:System.Web.Script.Serialization.JavaScriptSerializer.DeserializeObject%2A> methods to determine the appropriate managed type to which the JSON string will be converted.</span></span> <span data-ttu-id="37104-158">유형 해결 프로그램에 대 한 정보를 참조 하십시오.는 <xref:System.Web.Script.Serialization.JavaScriptTypeResolver> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-158">For information about type resolvers, see the <xref:System.Web.Script.Serialization.JavaScriptTypeResolver> class.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public JavaScriptSerializer (System.Web.Script.Serialization.JavaScriptTypeResolver resolver);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Web.Script.Serialization.JavaScriptTypeResolver resolver) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.#ctor(System.Web.Script.Serialization.JavaScriptTypeResolver)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (resolver As JavaScriptTypeResolver)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; JavaScriptSerializer(System::Web::Script::Serialization::JavaScriptTypeResolver ^ resolver);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="resolver" Type="System.Web.Script.Serialization.JavaScriptTypeResolver" />
+      </Parameters>
+      <Docs>
+        <param name="resolver">
+          <span data-ttu-id="37104-159">사용자 지정 형식 확인자 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-159">The custom type-resolver object.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-160">사용자 지정 형식 확인자가 있는 <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> 클래스의 새 인스턴스를 초기화합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-160">Initializes a new instance of the <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> class that has a custom type resolver.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-161">개체를 직렬화 할은 때는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스에서 사용 하는 `resolver` 매개 변수를 형식 메타 데이터 속성 ("__type")에 대 한 serialize 된 JSON 문자열에 포함할 적절 한 값을 확인 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-161">When it is serializing an object, the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class uses the `resolver` parameter to determine the appropriate value to include in the serialized JSON string for the type metadata property ("__type").</span></span> <span data-ttu-id="37104-162">마찬가지로,는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 확인자 인스턴스를 사용 하 여 적절 한 관리 되는 형식으로 형식 메타 데이터 속성 값 확인, 클래스는 JSON 문자열을 역직렬화 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-162">Similarly, when the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class  is deserializing a JSON string, it resolves the type metadata property value to the appropriate managed type by using the resolver instance.</span></span>  
+  
+ <span data-ttu-id="37104-163">설정할 수 있습니다는 `resolver` 매개 변수를 `null`,이 값은 호출 하는 <xref:System.Web.Script.Serialization.JavaScriptSerializer.%23ctor%2A> 생성자입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-163">You can set the `resolver` parameter to `null`, which is equivalent to calling the <xref:System.Web.Script.Serialization.JavaScriptSerializer.%23ctor%2A> constructor.</span></span>  
+  
+ <span data-ttu-id="37104-164">인스턴스 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 특별 한 유형 해결 프로그램을 사용 하 여 클라이언트 스크립트에서 웹 서비스 호출에 대 한 비동기 통신 계층에서 사용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="37104-164">The instance of <xref:System.Web.Script.Serialization.JavaScriptSerializer> that is used by the asynchronous communication layer for invoking Web services from client script uses a special type resolver.</span></span> <span data-ttu-id="37104-165">웹 서비스의 메서드 서명에 또는 수 있는 정의 된 deserialize 할 수 있는 형식 제한 하는이 형식 확인자는 <xref:System.Web.Script.Services.GenerateScriptTypeAttribute> 적용 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-165">This type resolver restricts the types that can be deserialized to those defined in the Web service’s method signature, or the ones that have the <xref:System.Web.Script.Services.GenerateScriptTypeAttribute> applied.</span></span> <span data-ttu-id="37104-166">이 기본 제공 형식 확인자를 프로그래밍 방식으로 수정할 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-166">You cannot modify this built-in type resolver programmatically.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="37104-167">사용자 지정 형식 확인자를 사용 하 여 초기화이 개체의 인스턴스를 사용 하 여 보안상 위험 해질 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-167">Using an instance of this object initialized with a custom type-resolver can present a security risk.</span></span> <span data-ttu-id="37104-168">신뢰할 수 있는 데이터에만이 개체를 사용 하십시오.</span><span class="sxs-lookup"><span data-stu-id="37104-168">Use this object only with trusted data.</span></span> <span data-ttu-id="37104-169">자세한 내용은 참조 [데이터 유효성 검사](https://www.owasp.org/index.php/Data_Validation)합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-169">For more information, see [Data Validation](https://www.owasp.org/index.php/Data_Validation).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Web.Script.Serialization.JavaScriptTypeResolver" />
+        <altmember cref="T:System.Web.Script.Serialization.SimpleTypeResolver" />
+      </Docs>
+    </Member>
+    <Member MemberName="ConvertToType">
+      <MemberSignature Language="C#" Value="public object ConvertToType (object obj, Type targetType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance object ConvertToType(object obj, class System.Type targetType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType(System.Object,System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Public Function ConvertToType (obj As Object, targetType As Type) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Object ^ ConvertToType(System::Object ^ obj, Type ^ targetType);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+        <Parameter Name="targetType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="obj">
+          <span data-ttu-id="37104-170">변환할 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-170">The object to convert.</span>
+          </span>
+        </param>
+        <param name="targetType">
+          <span data-ttu-id="37104-171">개체를 변환할 대상 유형입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-171">The type to convert the object to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-172">지정된 개체를 지정된 형식으로 변환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-172">Converts the specified object to the specified type.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="37104-173">serialize된 JSON 문자열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-173">The serialized JSON string.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-174">때는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 인스턴스 형식을 사용자 지정 변환기가 등록 되어 있는, serializer 호출 하 여 직렬화 되는 <xref:System.Web.Script.Serialization.JavaScriptConverter.Serialize%2A> 메서드를 JSON 형식 문자열로 변환 되는 이름/값 쌍의 사전입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-174">When the <xref:System.Web.Script.Serialization.JavaScriptSerializer> instance is serializing a type for which a custom converter is registered, the serializer calls the <xref:System.Web.Script.Serialization.JavaScriptConverter.Serialize%2A> method to obtain the dictionary of name/value pairs that will be converted to a JSON-formatted string.</span></span>  
+  
+ <span data-ttu-id="37104-175"><xref:System.Web.Script.Serialization.JavaScriptSerializer.Serialize%2A> 메서드가 개체 그래프는 너무 복잡 하거나의 인스턴스를 등록 하는 경우 예외가 throw 될 수 <xref:System.Web.Script.Serialization.JavaScriptConverter> 변환기 재귀가 발생 했습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-175">The <xref:System.Web.Script.Serialization.JavaScriptSerializer.Serialize%2A> method can also throw exceptions if the object graph is too complex, or if registered instances of <xref:System.Web.Script.Serialization.JavaScriptConverter> have caused converter recursion.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="37104-176">결과 JSON 형식의 문자열이 <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />의 값을 초과합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-176">The resulting JSON-formatted string exceeds the value of <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />.</span>
+          </span>
+          <span data-ttu-id="37104-177">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-177">-or-</span>
+          </span>
+          <span data-ttu-id="37104-178">
+            <paramref name="obj" />에 순환 참조가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-178">
+              <paramref name="obj" /> contains a circular reference.</span>
+          </span>
+          <span data-ttu-id="37104-179">순환 참조는 자식 개체와 부모 개체에서 서로를 참조하는 경우에 발생하며,</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-179">A circular reference occurs when a child object has a reference to a parent object, and the parent object has a reference to the child object.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="37104-180">
+            <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" />로 정의된 재귀 한계를 초과했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-180">The recursion limit defined by <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" /> was exceeded.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ConvertToType&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T ConvertToType&lt;T&gt; (object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance !!T ConvertToType&lt;T&gt;(object obj) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType``1(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Function ConvertToType(Of T) (obj As Object) As T" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T&gt;&#xA; T ConvertToType(System::Object ^ obj);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>T</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">
+          <span data-ttu-id="37104-181">대상 형식 <c>obj</c> 변환 됩니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-181">The type to which <c>obj</c> will be converted.</span>
+          </span>
+        </typeparam>
+        <param name="obj">
+          <span data-ttu-id="37104-182">변환할 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-182">The object to convert.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-183">지정된 개체를 지정된 형식으로 변환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-183">Converts the given object to the specified type.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="37104-184">대상 유형으로 변환된 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-184">The object that has been converted to the target type.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-185"><xref:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType%2A> 메서드를 나타내는 개체 인스턴스를 변환 하려고 `obj` 형식의 인스턴스로 `T`합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-185">The <xref:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType%2A> method tries to convert the object instance that is represented by `obj` to an instance of type `T`.</span></span> <span data-ttu-id="37104-186">이 변환 하는 동안 보장이 없습니다 개체 참조 일치 유지 됩니다.</span><span class="sxs-lookup"><span data-stu-id="37104-186">During this conversion there is no guarantee that object reference equality is maintained.</span></span> <span data-ttu-id="37104-187">한다고 가정할 수 없습니다 따라서 `obj` 및 `T` 같은 개체를 참조 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-187">Therefore, you cannot assume that `obj` and `T` refer to the same object.</span></span>  
+  
+ <span data-ttu-id="37104-188"><xref:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType%2A> 파생 되는 클래스를 구현 하는 경우 사용 하도록 <xref:System.Web.Script.Serialization.JavaScriptConverter>합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-188"><xref:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType%2A> is intended to be used if you implement a class that derives from <xref:System.Web.Script.Serialization.JavaScriptConverter>.</span></span> <span data-ttu-id="37104-189">변환기 코드 해야 serializer에 전달 하는 사전에 있는 값을 사용할 수 없으며 다음 해당 값 형식의 인스턴스로 변환 `T`합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-189">Converter code must be able to take a value that is in the dictionary that the serializer passes to it, and then convert that value to an instance of type `T`.</span></span> <span data-ttu-id="37104-190">이 작업을 수행 하는 사용자 지정 변환 코드를 다시 구현 하는 대신 호출할 수 있습니다는 <xref:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType%2A> 변환기 코드에서 메서드.</span><span class="sxs-lookup"><span data-stu-id="37104-190">Instead of re-implementing the custom conversion code to perform this task, you can call the <xref:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType%2A> method from the converter code.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="37104-191">사용 하는 방법을 보여 주는 다음 예제는 <xref:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType%2A> 를 얻는 메서드를 한 <xref:System.Web.UI.WebControls.ListItem> 변환기에 전달 되는 사전에서 값에서 개체입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-191">The following example shows how to use the <xref:System.Web.Script.Serialization.JavaScriptSerializer.ConvertToType%2A> method to obtain a <xref:System.Web.UI.WebControls.ListItem> object from a value in the dictionary that is passed to the converter.</span></span> <span data-ttu-id="37104-192">이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-192">This code example is part of a larger example provided for the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class.</span></span>  
+  
+ [!code-csharp[System.Web.Script.Serialization#5](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.Script.Serialization/CS/App_Code/ListItemCollectionConverter.cs#5)]
+ [!code-vb[System.Web.Script.Serialization#5](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.Script.Serialization/VB/App_Code/ListItemCollectionConverter.vb#5)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="37104-193">
+            <paramref name="obj" />(또는 <paramref name="obj" />의 중첩된 멤버)에는 사용자 형식을 나타내는 "__type" 속성이 포함되지만 serializer와 연결된 형식 확인자는 해당 관리되는 형식을 찾을 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-193">
+              <paramref name="obj" /> (or a nested member of <paramref name="obj" />) contains a "__type" property that indicates a custom type, but the type resolver that is associated with the serializer cannot find a corresponding managed type.</span>
+          </span>
+          <span data-ttu-id="37104-194">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-194">-or-</span>
+          </span>
+          <span data-ttu-id="37104-195">
+            <paramref name="obj" />(또는 <paramref name="obj" />의 중첩된 멤버)에 사용자 지정 형식을 나타내는 “__type” 속성이 포함되어 있지만 해당 JSON 문자열의 deserialize 결과를 원하는 대상 형식에 할당할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-195">
+              <paramref name="obj" /> (or a nested member of <paramref name="obj" />) contains a "__type" property that indicates a custom type, but the result of deserializing the corresponding JSON string cannot be assigned to the expected target type.</span>
+          </span>
+          <span data-ttu-id="37104-196">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-196">-or-</span>
+          </span>
+          <span data-ttu-id="37104-197">
+            <paramref name="obj" /> 또는 <paramref name="obj" />의 중첩된 멤버에 <see cref="T:System.Object" /> 또는 인스턴스화할 수 없는 형식(추상 형식 또는 인터페이스 등)을 나타내는 “__type” 속성이 포함되어 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-197">
+              <paramref name="obj" /> (or a nested member of <paramref name="obj" />) contains a "__type" property that indicates either <see cref="T:System.Object" /> or a non-instantiable type (for example, an abstract type or an interface).</span>
+          </span>
+          <span data-ttu-id="37104-198">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-198">-or-</span>
+          </span>
+          <span data-ttu-id="37104-199">
+            <paramref name="obj" />를 deserialization 대상으로 사용할 수 없는 배열 형태의 관리되는 형식으로 변환하려고 했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-199">An attempt was made to convert <paramref name="obj" /> to an array-like managed type, which is not supported for use as a deserialization target.</span>
+          </span>
+          <span data-ttu-id="37104-200">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-200">-or-</span>
+          </span>
+          <span data-ttu-id="37104-201">
+            <paramref name="obj" />를 <paramref name="T" />로 변환할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-201">It is not possible to convert <paramref name="obj" /> to <paramref name="T" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="37104-202">
+            <paramref name="obj" />는 사전 형식이며 문자열이 아닌 키 값이 발견되었습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-202">
+              <paramref name="obj" /> is a dictionary type and a non-string key value was encountered.</span>
+          </span>
+          <span data-ttu-id="37104-203">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-203">-or-</span>
+          </span>
+          <span data-ttu-id="37104-204">
+            <paramref name="obj" />에 형식 <paramref name="T" />에 사용할 수 없는 멤버 정의가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-204">
+              <paramref name="obj" /> includes member definitions that are not available on type <paramref name="T" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Deserialize">
+      <MemberSignature Language="C#" Value="public object Deserialize (string input, Type targetType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance object Deserialize(string input, class System.Type targetType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize(System.String,System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Deserialize (input As String, targetType As Type) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Object ^ Deserialize(System::String ^ input, Type ^ targetType);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="input" Type="System.String" />
+        <Parameter Name="targetType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="input">
+          <span data-ttu-id="37104-205">deserialize할 JSON 문자열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-205">The JSON string to deserialize.</span>
+          </span>
+        </param>
+        <param name="targetType">
+          <span data-ttu-id="37104-206">결과 개체의 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-206">The type of the resulting object.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-207">JSON 형식 문자열을 지정된 형식의 개체로 변환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-207">Converts a JSON-formatted string to an object of the specified type.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="37104-208">deserialize된 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-208">The deserialized object.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-209">이 deserialization 메서드는 방법은 특정 형식으로 개체 그래프의 루트를 캐스팅 하 려 하지 않습니다는 <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> 메서드 수행 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-209">This deserialization method does not try to cast the root of the object graph to a specific type, the way that the <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> method does.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="37104-210">
+            <paramref name="input" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-210">
+              <paramref name="input" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="37104-211">
+            <paramref name="input" /> 길이가 <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />의 값을 초과합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-211">The length of <paramref name="input" /> exceeds the value of <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />.</span>
+          </span>
+          <span data-ttu-id="37104-212">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-212">-or-</span>
+          </span>
+          <span data-ttu-id="37104-213">
+            <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" />로 정의된 재귀 한계를 초과했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-213">The recursion limit defined by <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" /> was exceeded.</span>
+          </span>
+          <span data-ttu-id="37104-214">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-214">-or-</span>
+          </span>
+          <span data-ttu-id="37104-215">
+            <paramref name="input" />에 예기치 않은 문자 시퀀스가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-215">
+              <paramref name="input" /> contains an unexpected character sequence.</span>
+          </span>
+          <span data-ttu-id="37104-216">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-216">-or-</span>
+          </span>
+          <span data-ttu-id="37104-217">
+            <paramref name="input" />는 사전 형식이며 문자열이 아닌 키 값이 발견되었습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-217">
+              <paramref name="input" /> is a dictionary type and a non-string key value was encountered.</span>
+          </span>
+          <span data-ttu-id="37104-218">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-218">-or-</span>
+          </span>
+          <span data-ttu-id="37104-219">
+            <paramref name="input" />에 대상 형식에 사용할 수 없는 멤버 정의가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-219">
+              <paramref name="input" /> includes member definitions that are not available on the target type.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="37104-220">
+            <paramref name="input" />에 사용자 지정 형식을 나타내는 “__type” 속성이 있지만 현재 serializer와 연결된 형식 확인자가 해당 관리되는 형식을 찾을 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-220">
+              <paramref name="input" /> contains a "__type" property that indicates a custom type, but the type resolver that is currently associated with the serializer cannot find a corresponding managed type.</span>
+          </span>
+          <span data-ttu-id="37104-221">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-221">-or-</span>
+          </span>
+          <span data-ttu-id="37104-222">
+            <paramref name="input" />에 사용자 지정 형식을 나타내는 “__type” 속성이 포함되어 있지만 해당 JSON 문자열의 deserialize 결과를 원하는 대상 형식에 할당할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-222">
+              <paramref name="input" /> contains a "__type" property that indicates a custom type, but the result of deserializing the corresponding JSON string cannot be assigned to the expected target type.</span>
+          </span>
+          <span data-ttu-id="37104-223">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-223">-or-</span>
+          </span>
+          <span data-ttu-id="37104-224">
+            <paramref name="input" />에 <see cref="T:System.Object" /> 또는 인스턴스화할 수 없는 형식(추상 형식 또는 인터페이스 등)을 나타내는 “__type” 속성이 포함되어 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-224">
+              <paramref name="input" /> contains a "__type" property that indicates either <see cref="T:System.Object" /> or a non-instantiable type (for example, an abstract type or an interface).</span>
+          </span>
+          <span data-ttu-id="37104-225">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-225">-or-</span>
+          </span>
+          <span data-ttu-id="37104-226">JSON 배열을 JSON deserialization 대상으로 사용할 수 없는 배열 형태의 관리되는 형식으로 변환하려고 했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-226">An attempt was made to convert a JSON array to an array-like managed type that is not supported for use as a JSON deserialization target.</span>
+          </span>
+          <span data-ttu-id="37104-227">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-227">-or-</span>
+          </span>
+          <span data-ttu-id="37104-228">
+            <paramref name="input" />을 대상 형식으로 변환할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-228">It is not possible to convert <paramref name="input" /> to the target type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Deserialize&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T Deserialize&lt;T&gt; (string input);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance !!T Deserialize&lt;T&gt;(string input) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize``1(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Deserialize(Of T) (input As String) As T" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T&gt;&#xA; T Deserialize(System::String ^ input);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>T</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T" />
+      </TypeParameters>
+      <Parameters>
+        <Parameter Name="input" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <typeparam name="T">
+          <span data-ttu-id="37104-229">결과 개체의 형식입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-229">The type of the resulting object.</span>
+          </span>
+        </typeparam>
+        <param name="input">
+          <span data-ttu-id="37104-230">deserialize할 JSON 문자열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-230">The JSON string to be deserialized.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-231">지정한 JSON 문자열을 <paramref name="T" /> 형식의 개체로 변환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-231">Converts the specified JSON string to an object of type <paramref name="T" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="37104-232">deserialize된 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-232">The deserialized object.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-233"><xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> 첫 번째 사용 하는 메서드는 <xref:System.Web.Script.Serialization.JavaScriptSerializer.DeserializeObject%2A> 개체 그래프를 형식으로 결과를 캐스팅 한 다음 시도 얻는 메서드를 `T`합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-233">The <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> method is equivalent to first using the <xref:System.Web.Script.Serialization.JavaScriptSerializer.DeserializeObject%2A> method to obtain an object graph and then trying to cast the result to type `T`.</span></span>  
+  
+ <span data-ttu-id="37104-234">역직렬화 하는 동안 배열 및 사전 형식 안에 중첩 된 요소를 변환할 때 사용할 관리 되는 형식을 결정 하는 serializer의 현재 유형 해결 프로그램 참조 됩니다.</span><span class="sxs-lookup"><span data-stu-id="37104-234">During deserialization, the serializer’s current type resolver is referenced, which determines the managed type to use when converting elements that are nested inside arrays and dictionary types.</span></span> <span data-ttu-id="37104-235">Deserialization 프로세스의 모든 중첩 된 요소를 반복 결과적으로, `input`합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-235">As a result, the deserialization process iterates through all nested elements of `input`.</span></span> <span data-ttu-id="37104-236">유형 해결 프로그램에 대 한 자세한 내용은 참조는 <xref:System.Web.Script.Serialization.JavaScriptTypeResolver> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-236">For more information about type resolvers, see the <xref:System.Web.Script.Serialization.JavaScriptTypeResolver> class.</span></span>  
+  
+   
+  
+## Examples  
+<span data-ttu-id="37104-237">다음 예제에서는 직렬화 하 고 데이터 개체를 역직렬화 하는 방법에 대 한 간단한 설명을 제공 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-237">The following example provides a simple illustration of how to serialize and deserialize data objects.</span></span>  
+  
+[!code-csharp[System.Web.Script.JavaScriptSerializer](~/samples/snippets/csharp/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/cs/default.aspx.cs#1)]  
+[!code-vb[System.Web.Script.JavaScriptSerializer](~/samples/snippets/visualbasic/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/vb/default.aspx.vb#1)]  
+
+<span data-ttu-id="37104-238">라는 클래스를 필요로 `Person`, 다음 예제에 나와 있는 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-238">It requires a class named `Person`, which is shown in the following example.</span></span> 
+
+[!code-csharp[System.Web.Script.JavaScriptSerializer](~/samples/snippets/csharp/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/cs/default.aspx.cs#2)]  
+[!code-vb[System.Web.Script.JavaScriptSerializer](~/samples/snippets/visualbasic/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/vb/default.aspx.vb#2)]  
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="37104-239">
+            <paramref name="input" /> 길이가 <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />의 값을 초과합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-239">The <paramref name="input" /> length exceeds the value of <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />.</span>
+          </span>
+          <span data-ttu-id="37104-240">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-240">-or-</span>
+          </span>
+          <span data-ttu-id="37104-241">
+            <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" />로 정의된 재귀 한계를 초과했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-241">The recursion limit defined by <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" /> was exceeded.</span>
+          </span>
+          <span data-ttu-id="37104-242">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-242">-or-</span>
+          </span>
+          <span data-ttu-id="37104-243">
+            <paramref name="input" />에 예기치 않은 문자 시퀀스가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-243">
+              <paramref name="input" /> contains an unexpected character sequence.</span>
+          </span>
+          <span data-ttu-id="37104-244">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-244">-or-</span>
+          </span>
+          <span data-ttu-id="37104-245">
+            <paramref name="input" />는 사전 형식이며 문자열이 아닌 키 값이 발견되었습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-245">
+              <paramref name="input" /> is a dictionary type and a non-string key value was encountered.</span>
+          </span>
+          <span data-ttu-id="37104-246">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-246">-or-</span>
+          </span>
+          <span data-ttu-id="37104-247">
+            <paramref name="input" />에 형식 <paramref name="T" />에 사용할 수 없는 멤버 정의가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-247">
+              <paramref name="input" /> includes member definitions that are not available on type <paramref name="T" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="37104-248">
+            <paramref name="input" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-248">
+              <paramref name="input" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="37104-249">
+            <paramref name="input" />에 사용자 지정 형식을 나타내는 “__type” 속성이 있지만 serializer와 연결된 형식 확인자에서 해당 관리되는 형식을 찾을 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-249">
+              <paramref name="input" /> contains a "__type" property that indicates a custom type, but the type resolver associated with the serializer cannot find a corresponding managed type.</span>
+          </span>
+          <span data-ttu-id="37104-250">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-250">-or-</span>
+          </span>
+          <span data-ttu-id="37104-251">
+            <paramref name="input" />에 사용자 지정 형식을 나타내는 “__type” 속성이 포함되어 있지만 해당 JSON 문자열의 deserialize 결과를 원하는 대상 형식에 할당할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-251">
+              <paramref name="input" /> contains a "__type" property that indicates a custom type, but the result of deserializing the corresponding JSON string cannot be assigned to the expected target type.</span>
+          </span>
+          <span data-ttu-id="37104-252">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-252">-or-</span>
+          </span>
+          <span data-ttu-id="37104-253">
+            <paramref name="input" />에 <see cref="T:System.Object" /> 또는 인스턴스화할 수 없는 형식(추상 형식 또는 인터페이스 등)을 나타내는 “__type” 속성이 포함되어 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-253">
+              <paramref name="input" /> contains a "__type" property that indicates either <see cref="T:System.Object" /> or a non-instantiable type (for example, an abstract types or an interface).</span>
+          </span>
+          <span data-ttu-id="37104-254">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-254">-or-</span>
+          </span>
+          <span data-ttu-id="37104-255">JSON 배열을 JSON deserialization 대상으로 사용할 수 없는 배열 형태의 관리되는 형식으로 변환하려고 했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-255">An attempt was made to convert a JSON array to an array-like managed type that is not supported for use as a JSON deserialization target.</span>
+          </span>
+          <span data-ttu-id="37104-256">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-256">-or-</span>
+          </span>
+          <span data-ttu-id="37104-257">
+            <paramref name="input" />를 <paramref name="T" />로 변환할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-257">It is not possible to convert <paramref name="input" /> to <paramref name="T" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeserializeObject">
+      <MemberSignature Language="C#" Value="public object DeserializeObject (string input);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance object DeserializeObject(string input) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.DeserializeObject(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeserializeObject (input As String) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Object ^ DeserializeObject(System::String ^ input);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="input" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="input">
+          <span data-ttu-id="37104-258">deserialize할 JSON 문자열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-258">The JSON string to be deserialized.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-259">지정한 JSON 문자열을 개체 그래프로 변환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-259">Converts the specified JSON string to an object graph.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="37104-260">deserialize된 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-260">The deserialized object.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-261">이 deserialization 메서드는 특정 형식으로 개체 그래프의 루트를 캐스팅 하 려 하지 않습니다과 마찬가지로 <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="37104-261">This deserialization method does not try to cast the root of the object graph to a specific type, as with the <xref:System.Web.Script.Serialization.JavaScriptSerializer.Deserialize%2A> method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="37104-262">
+            <paramref name="input" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-262">
+              <paramref name="input" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="37104-263">
+            <paramref name="input" /> 길이가 <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />의 값을 초과합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-263">The <paramref name="input" /> length exceeds the value of <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />.</span>
+          </span>
+          <span data-ttu-id="37104-264">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-264">-or-</span>
+          </span>
+          <span data-ttu-id="37104-265">
+            <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" />로 정의된 재귀 한계를 초과했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-265">The recursion limit defined by <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" /> was exceeded.</span>
+          </span>
+          <span data-ttu-id="37104-266">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-266">-or-</span>
+          </span>
+          <span data-ttu-id="37104-267">
+            <paramref name="input" />에 예기치 않은 문자 시퀀스가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-267">
+              <paramref name="input" /> contains an unexpected character sequence.</span>
+          </span>
+          <span data-ttu-id="37104-268">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-268">-or-</span>
+          </span>
+          <span data-ttu-id="37104-269">
+            <paramref name="input" />는 사전 형식이며 문자열이 아닌 키 값이 발견되었습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-269">
+              <paramref name="input" /> is a dictionary type and a non-string key value was encountered.</span>
+          </span>
+          <span data-ttu-id="37104-270">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-270">-or-</span>
+          </span>
+          <span data-ttu-id="37104-271">
+            <paramref name="input" />에 대상 형식에 사용할 수 없는 멤버 정의가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-271">
+              <paramref name="input" /> includes member definitions that are not available on the target type.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="37104-272">
+            <paramref name="input" />에 사용자 지정 형식을 나타내는 “__type” 속성이 있지만 현재 serializer와 연결된 형식 확인자가 해당 관리되는 형식을 찾을 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-272">
+              <paramref name="input" /> contains a "__type" property that indicates a custom type, but the type resolver that is currently associated with the serializer cannot find a corresponding managed type.</span>
+          </span>
+          <span data-ttu-id="37104-273">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-273">-or-</span>
+          </span>
+          <span data-ttu-id="37104-274">
+            <paramref name="input" />에 사용자 지정 형식을 나타내는 “__type” 속성이 포함되어 있지만 해당 JSON 문자열의 deserialize 결과를 원하는 대상 형식에 할당할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-274">
+              <paramref name="input" /> contains a "__type" property that indicates a custom type, but the result of deserializing the corresponding JSON string cannot be assigned to the expected target type.</span>
+          </span>
+          <span data-ttu-id="37104-275">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-275">-or-</span>
+          </span>
+          <span data-ttu-id="37104-276">
+            <paramref name="input" />에 <see cref="T:System.Object" /> 또는 인스턴스화할 수 없는 형식(추상 형식 또는 인터페이스 등)을 나타내는 “__type” 속성이 포함되어 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-276">
+              <paramref name="input" /> contains a "__type" property that indicates either <see cref="T:System.Object" /> or a non-instantiable type (for example, an abstract type or an interface).</span>
+          </span>
+          <span data-ttu-id="37104-277">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-277">-or-</span>
+          </span>
+          <span data-ttu-id="37104-278">JSON 배열을 JSON deserialization 대상으로 사용할 수 없는 배열 형태의 관리되는 형식으로 변환하려고 했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-278">An attempt was made to convert a JSON array to an array-like managed type that is not supported for use as a JSON deserialization target.</span>
+          </span>
+          <span data-ttu-id="37104-279">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-279">-or-</span>
+          </span>
+          <span data-ttu-id="37104-280">
+            <paramref name="input" />을 대상 형식으로 변환할 수 없습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-280">It is not possible to convert <paramref name="input" /> to the target type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="MaxJsonLength">
+      <MemberSignature Language="C#" Value="public int MaxJsonLength { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 MaxJsonLength" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />
+      <MemberSignature Language="VB.NET" Value="Public Property MaxJsonLength As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int MaxJsonLength { int get(); void set(int value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="37104-281">
+            <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> 클래스에서 허용되는 JSON 문자열의 최대 길이를 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-281">Gets or sets the maximum length of JSON strings that are accepted by the <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> class.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="37104-282">JSON 문자열의 최대 길이입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-282">The maximum length of JSON strings.</span>
+          </span>
+          <span data-ttu-id="37104-283">기본값은은 2097152 자로, 4MB의 유니코드 문자열 데이터와 같습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-283">The default is 2097152 characters, which is equivalent to 4 MB of Unicode string data.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-284">값은 <xref:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength%2A> 속성은의 인스턴스를 명시적으로 만드는 경우에 적용 됩니다.는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-284">The value of the <xref:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength%2A> property applies only when you explicitly create an instance of the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class.</span></span> <span data-ttu-id="37104-285">사용 하 여는 `jsonSerialization` 비동기 통신 계층에서 사용 되는 내부 serializer 인스턴스에 대 한 최대 길이 설정 하려면 구성 파일의 요소입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-285">Use the `jsonSerialization` element of the configuration file to set the maximum length for the internal serializer instance that is used by the asynchronous communication layer.</span></span> <span data-ttu-id="37104-286">Serialization에 대 한 구성 요소에 대 한 자세한 내용은 참조 [하는 방법: Microsoft Ajax에서 ASP.NET 서비스 구성](http://msdn.microsoft.com/library/ea4fb56e-bc1d-405a-9877-00cf5e552a30)합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-286">For more information about the configuration elements for serialization, see [How to: Configure ASP.NET Services in Microsoft Ajax](http://msdn.microsoft.com/library/ea4fb56e-bc1d-405a-9877-00cf5e552a30).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="37104-287">속성이 1보다 작은 값으로 설정됩니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-287">The property is set to a value that is less than one.</span>
+          </span>
+        </exception>
+        <altmember cref="P:System.Web.Configuration.ScriptingJsonSerializationSection.MaxJsonLength" />
+      </Docs>
+    </Member>
+    <Member MemberName="RecursionLimit">
+      <MemberSignature Language="C#" Value="public int RecursionLimit { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 RecursionLimit" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" />
+      <MemberSignature Language="VB.NET" Value="Public Property RecursionLimit As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int RecursionLimit { int get(); void set(int value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="37104-288">처리할 개체 수준 수에 대한 제한을 가져오거나 설정합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-288">Gets or sets the limit for constraining the number of object levels to process.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="37104-289">개체 수준 수입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-289">The number of object levels.</span>
+          </span>
+          <span data-ttu-id="37104-290">기본값은 100입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-290">The default is 100.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-291"><xref:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit%2A> 속성은 개체 계층의 수준 수를 참조 하는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 다음과 같은 경우에 처리 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-291">The <xref:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit%2A> property refers to the number of levels in the object hierarchy that <xref:System.Web.Script.Serialization.JavaScriptSerializer> will process in the following cases:</span></span>  
+  
+-   <span data-ttu-id="37104-292">경우는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스는 JSON 문자열을 역직렬화 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-292">When the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class is deserializing a JSON string.</span></span>  
+  
+-   <span data-ttu-id="37104-293">경우는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스는 직렬화 하는 동안 개체 graph를 검색 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-293">When the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class is walking an object graph during serialization.</span></span>  
+  
+ <span data-ttu-id="37104-294">값 <xref:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit%2A> 의 인스턴스를 명시적으로 만드는 경우에 적용 되는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-294">The value of <xref:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit%2A> applies only when you explicitly create an instance of the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class.</span></span> <span data-ttu-id="37104-295">사용 하 여는 `jsonSerialization` 비동기 통신 계층에서 사용 되는 내부 serializer 인스턴스의 처리할 개체 수준 수를 설정 하려면 구성 파일의 요소입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-295">Use the `jsonSerialization` element of the configuration file to set the number of object levels to process for the internal serializer instance that is used by the asynchronous communication layer.</span></span> <span data-ttu-id="37104-296">Serialization에 대 한 구성 요소에 대 한 자세한 내용은 참조 [하는 방법: Microsoft Ajax에서 ASP.NET 서비스 구성](http://msdn.microsoft.com/library/ea4fb56e-bc1d-405a-9877-00cf5e552a30)합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-296">For more information about the configuration elements for serialization, see [How to: Configure ASP.NET Services in Microsoft Ajax](http://msdn.microsoft.com/library/ea4fb56e-bc1d-405a-9877-00cf5e552a30).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="37104-297">속성이 1보다 작은 값으로 설정됩니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-297">The property is set to a value that is less than one.</span>
+          </span>
+        </exception>
+        <altmember cref="P:System.Web.Configuration.ScriptingJsonSerializationSection.RecursionLimit" />
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterConverters">
+      <MemberSignature Language="C#" Value="public void RegisterConverters (System.Collections.Generic.IEnumerable&lt;System.Web.Script.Serialization.JavaScriptConverter&gt; converters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RegisterConverters(class System.Collections.Generic.IEnumerable`1&lt;class System.Web.Script.Serialization.JavaScriptConverter&gt; converters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.RegisterConverters(System.Collections.Generic.IEnumerable{System.Web.Script.Serialization.JavaScriptConverter})" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RegisterConverters (converters As IEnumerable(Of JavaScriptConverter))" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RegisterConverters(System::Collections::Generic::IEnumerable&lt;System::Web::Script::Serialization::JavaScriptConverter ^&gt; ^ converters);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="converters" Type="System.Collections.Generic.IEnumerable&lt;System.Web.Script.Serialization.JavaScriptConverter&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="converters">
+          <span data-ttu-id="37104-298">등록될 사용자 지정 변환기가 포함된 배열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-298">An array that contains the custom converters to be registered.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-299">사용자 지정 변환기를 <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> 인스턴스에 등록합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-299">Registers a custom converter with the <see cref="T:System.Web.Script.Serialization.JavaScriptSerializer" /> instance.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-300">하나 이상의 사용자 지정 변환기를 등록할 수 있습니다는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 를 사용 하 여 인스턴스는 <xref:System.Web.Script.Serialization.JavaScriptSerializer.RegisterConverters%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="37104-300">You can register one or more custom converters with a <xref:System.Web.Script.Serialization.JavaScriptSerializer> instance by using the <xref:System.Web.Script.Serialization.JavaScriptSerializer.RegisterConverters%2A> method.</span></span> <span data-ttu-id="37104-301">사용자 지정 변환기를 등록 하는 경우 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 변환기를 사용 하 여 관리 되는 형식을 serialize 하 고 관리 되는 형식에 대 한 JSON 문자열을 deserialize 하는 데 있습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-301">When custom converters are registered, <xref:System.Web.Script.Serialization.JavaScriptSerializer> uses the converters both to serialize managed types and to deserialize JSON strings to managed types.</span></span>  
+  
+ <span data-ttu-id="37104-302">여러 변환기 동일한 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 인스턴스 및 이러한 변환기는 동일한 형식에 대 한 지원을 나타낼 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-302">Multiple converters can be registered with the same <xref:System.Web.Script.Serialization.JavaScriptSerializer> instance, and these converters can indicate support for the same type.</span></span> <span data-ttu-id="37104-303">결과적으로, 특정 형식에 대 한 등록 되어 있는 마지막 변환기는 사용해 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 여 형식을 serialize 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-303">As a result, the last converter that is registered for a specific type is the one that will be used by <xref:System.Web.Script.Serialization.JavaScriptSerializer> to serialize the type.</span></span>  
+  
+ <span data-ttu-id="37104-304">사용자 지정 변환기에 대 한 자세한 내용은 참조는 <xref:System.Web.Script.Serialization.JavaScriptConverter> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-304">For more information about custom converters, see the <xref:System.Web.Script.Serialization.JavaScriptConverter> class.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="37104-305">다음 예제에서는 사용자 지정 변환기를 등록 하는 방법을 보여 줍니다.는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 인스턴스.</span><span class="sxs-lookup"><span data-stu-id="37104-305">The following example shows how to register a custom converter with a <xref:System.Web.Script.Serialization.JavaScriptSerializer> instance.</span></span> <span data-ttu-id="37104-306">이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-306">This code example is part of a larger example provided for the <xref:System.Web.Script.Serialization.JavaScriptSerializer> class.</span></span>  
+  
+ [!code-csharp[System.Web.Script.Serialization#1](~/samples/snippets/csharp/VS_Snippets_Atlas/System.Web.Script.Serialization/CS/Default.aspx#1)]
+ [!code-vb[System.Web.Script.Serialization#1](~/samples/snippets/visualbasic/VS_Snippets_Atlas/System.Web.Script.Serialization/VB/Default.aspx#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="37104-307">
+            <paramref name="converters" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-307">
+              <paramref name="converters" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Serialize">
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="37104-308">개체를 JSON 문자열로 변환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-308">Converts an object to a JSON string.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Serialize">
+      <MemberSignature Language="C#" Value="public string Serialize (object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string Serialize(object obj) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.Serialize(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Serialize (obj As Object) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ Serialize(System::Object ^ obj);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">
+          <span data-ttu-id="37104-309">serialize할 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-309">The object to serialize.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-310">개체를 JSON 문자열로 변환합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-310">Converts an object to a JSON string.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="37104-311">serialize된 JSON 문자열입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-311">The serialized JSON string.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-312">때는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 인스턴스 형식을 사용자 지정 변환기가 등록 되어 있는, serializer 호출 하 여 직렬화 되는 <xref:System.Web.Script.Serialization.JavaScriptConverter.Serialize%2A> 메서드를 JSON 문자열로 변환 되는 이름/값 쌍의 사전입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-312">When the <xref:System.Web.Script.Serialization.JavaScriptSerializer> instance is serializing a type for which a custom converter is registered, the serializer calls the <xref:System.Web.Script.Serialization.JavaScriptConverter.Serialize%2A> method to obtain the dictionary of name/value pairs that will be converted to a JSON string.</span></span>  
+  
+ <span data-ttu-id="37104-313"><xref:System.Web.Script.Serialization.JavaScriptSerializer.Serialize%2A> 메서드가 개체 그래프는 너무 복잡 하거나의 인스턴스를 등록 하는 경우 예외가 throw 될 수 <xref:System.Web.Script.Serialization.JavaScriptConverter> 변환기 재귀가 발생 했습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-313">The <xref:System.Web.Script.Serialization.JavaScriptSerializer.Serialize%2A> method can also throw exceptions if the object graph is too complex, or if registered instances of <xref:System.Web.Script.Serialization.JavaScriptConverter> have caused converter recursion.</span></span>  
+  
+   
+  
+## Examples  
+<span data-ttu-id="37104-314">다음 예제에서는 직렬화 하 고 데이터 개체를 역직렬화 하는 방법에 대 한 간단한 설명을 제공 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-314">The following example provides a simple illustration of how to serialize and deserialize data objects.</span></span>  
+  
+[!code-csharp[System.Web.Script.JavaScriptSerializer](~/samples/snippets/csharp/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/cs/default.aspx.cs#1)]  
+[!code-vb[System.Web.Script.JavaScriptSerializer](~/samples/snippets/visualbasic/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/vb/default.aspx.vb#1)]  
+
+<span data-ttu-id="37104-315">라는 클래스를 필요로 `Person`, 다음 예제에 나와 있는 합니다.</span><span class="sxs-lookup"><span data-stu-id="37104-315">It requires a class named `Person`, which is shown in the following example.</span></span> 
+
+[!code-csharp[System.Web.Script.JavaScriptSerializer](~/samples/snippets/csharp/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/cs/default.aspx.cs#2)]  
+[!code-vb[System.Web.Script.JavaScriptSerializer](~/samples/snippets/visualbasic/VS_Snippets_WebNet/system.web.script.serialization.javascriptserializer/vb/default.aspx.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="37104-316">결과 JSON 문자열이 <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />의 값을 초과합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-316">The resulting JSON string exceeds the value of <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />.</span>
+          </span>
+          <span data-ttu-id="37104-317">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-317">-or-</span>
+          </span>
+          <span data-ttu-id="37104-318">
+            <paramref name="obj" />에 순환 참조가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-318">
+              <paramref name="obj" /> contains a circular reference.</span>
+          </span>
+          <span data-ttu-id="37104-319">순환 참조는 자식 개체와 부모 개체에서 서로를 참조하는 경우에 발생하며,</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-319">A circular reference occurs when a child object has a reference to a parent object, and the parent object has a reference to the child object.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="37104-320">
+            <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" />로 정의된 재귀 한계를 초과했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-320">The recursion limit defined by <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" /> was exceeded.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Serialize">
+      <MemberSignature Language="C#" Value="public void Serialize (object obj, System.Text.StringBuilder output);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Serialize(object obj, class System.Text.StringBuilder output) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Script.Serialization.JavaScriptSerializer.Serialize(System.Object,System.Text.StringBuilder)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Serialize (obj As Object, output As StringBuilder)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Serialize(System::Object ^ obj, System::Text::StringBuilder ^ output);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web.Extensions</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+        <Parameter Name="output" Type="System.Text.StringBuilder" />
+      </Parameters>
+      <Docs>
+        <param name="obj">
+          <span data-ttu-id="37104-321">serialize할 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-321">The object to serialize.</span>
+          </span>
+        </param>
+        <param name="output">
+          <span data-ttu-id="37104-322">JSON 문자열을 기록하는 데 사용되는 <see cref="T:System.Text.StringBuilder" /> 개체입니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-322">The <see cref="T:System.Text.StringBuilder" /> object that is used to write the JSON string.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="37104-323">개체를 serialize하고 결과 JSON 문자열을 지정한 <see cref="T:System.Text.StringBuilder" /> 개체에 기록합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-323">Serializes an object and writes the resulting JSON string to the specified <see cref="T:System.Text.StringBuilder" /> object.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="37104-324">때는 <xref:System.Web.Script.Serialization.JavaScriptSerializer> 인스턴스 형식을 사용자 지정 변환기가 등록 되어 있는, serializer 호출 하 여 직렬화 되는 <xref:System.Web.Script.Serialization.JavaScriptConverter.Serialize%2A> 메서드를 JSON 문자열로 변환 되는 이름/값 쌍의 사전입니다.</span><span class="sxs-lookup"><span data-stu-id="37104-324">When the <xref:System.Web.Script.Serialization.JavaScriptSerializer> instance is serializing a type for which a custom converter is registered, the serializer calls the <xref:System.Web.Script.Serialization.JavaScriptConverter.Serialize%2A> method to obtain the dictionary of name/value pairs that will be converted to a JSON string.</span></span>  
+  
+ <span data-ttu-id="37104-325"><xref:System.Web.Script.Serialization.JavaScriptSerializer.Serialize%2A> 메서드가 개체 그래프는 너무 복잡 하거나의 인스턴스를 등록 하는 경우 예외가 throw 될 수 <xref:System.Web.Script.Serialization.JavaScriptConverter> 변환기 재귀가 발생 했습니다.</span><span class="sxs-lookup"><span data-stu-id="37104-325">The <xref:System.Web.Script.Serialization.JavaScriptSerializer.Serialize%2A> method can also throw exceptions if the object graph is too complex, or if registered instances of <xref:System.Web.Script.Serialization.JavaScriptConverter> have caused converter recursion.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="37104-326">결과 JSON 문자열이 <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />의 값을 초과합니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-326">The resulting JSON string exceeds the value of <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.MaxJsonLength" />.</span>
+          </span>
+          <span data-ttu-id="37104-327">또는</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-327">-or-</span>
+          </span>
+          <span data-ttu-id="37104-328">
+            <paramref name="obj" />에 순환 참조가 있습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-328">
+              <paramref name="obj" /> contains a circular reference.</span>
+          </span>
+          <span data-ttu-id="37104-329">순환 참조는 자식 개체와 부모 개체에서 서로를 참조하는 경우에 발생하며,</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-329">A circular reference occurs when a child object has a reference to a parent object, and the parent object has a reference to the child object.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="37104-330">
+            <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" />로 정의된 재귀 한계를 초과했습니다.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-330">The recursion limit defined by <see cref="P:System.Web.Script.Serialization.JavaScriptSerializer.RecursionLimit" /> was exceeded.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="37104-331">
+            <paramref name="output" />가 <see langword="null" />인 경우</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="37104-331">
+              <paramref name="output" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

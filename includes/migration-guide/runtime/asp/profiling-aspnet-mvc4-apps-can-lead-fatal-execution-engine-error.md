@@ -1,0 +1,10 @@
+### <a name="profiling-aspnet-mvc4-apps-can-lead-to-fatal-execution-engine-error"></a><span data-ttu-id="1cfe0-101">ASP.Net MVC4 응용 프로그램 프로 파일링 실행 엔진 오류가 발생할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1cfe0-101">Profiling ASP.Net MVC4 apps can lead to Fatal Execution Engine Error</span></span>
+
+|   |   |
+|---|---|
+|<span data-ttu-id="1cfe0-102">설명</span><span class="sxs-lookup"><span data-stu-id="1cfe0-102">Details</span></span>|<span data-ttu-id="1cfe0-103">NGEN /Profile 어셈블리를 사용 하는 프로파일러는 프로 파일링된 ASP.NET MVC4 응용 프로그램을 시작할 때 ' 심각한 실행 엔진 예외가 발생 하 여' 충돌이 발생할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1cfe0-103">Profilers using NGEN /Profile assemblies may crash profiled ASP.NET MVC4 applications on startup with a 'Fatal Execution Engine Exception'</span></span>|
+|<span data-ttu-id="1cfe0-104">제안 해결 방법</span><span class="sxs-lookup"><span data-stu-id="1cfe0-104">Suggestion</span></span>|<span data-ttu-id="1cfe0-105">이 문제는.NET Framework 4.5.2에서에서 해결 됩니다.</span><span class="sxs-lookup"><span data-stu-id="1cfe0-105">This issue is fixed in the .NET Framework 4.5.2.</span></span> <span data-ttu-id="1cfe0-106">프로파일러를 지정 하 여이 문제를 방지 될 수 있습니다 또는 <code>COR_PRF_DISABLE_ALL_NGEN_IMAGES</code> 해당 이벤트 마스크에 있습니다.</span><span class="sxs-lookup"><span data-stu-id="1cfe0-106">Alternatively, the profiler may avoid this issue by specifying <code>COR_PRF_DISABLE_ALL_NGEN_IMAGES</code> in its event mask.</span></span>|
+|<span data-ttu-id="1cfe0-107">범위</span><span class="sxs-lookup"><span data-stu-id="1cfe0-107">Scope</span></span>|<span data-ttu-id="1cfe0-108">Microsoft Edge</span><span class="sxs-lookup"><span data-stu-id="1cfe0-108">Edge</span></span>|
+|<span data-ttu-id="1cfe0-109">버전</span><span class="sxs-lookup"><span data-stu-id="1cfe0-109">Version</span></span>|<span data-ttu-id="1cfe0-110">4.5</span><span class="sxs-lookup"><span data-stu-id="1cfe0-110">4.5</span></span>|
+|<span data-ttu-id="1cfe0-111">형식</span><span class="sxs-lookup"><span data-stu-id="1cfe0-111">Type</span></span>|<span data-ttu-id="1cfe0-112">런타임</span><span class="sxs-lookup"><span data-stu-id="1cfe0-112">Runtime</span></span>|
+

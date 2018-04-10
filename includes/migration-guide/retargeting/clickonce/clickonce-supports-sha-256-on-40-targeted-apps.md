@@ -1,0 +1,10 @@
+### <a name="clickonce-supports-sha-256-on-40-targeted-apps"></a><span data-ttu-id="7a86c-101">ClickOnce는 4.0 대상 앱에서 s h A-256를 지원합니다.</span><span class="sxs-lookup"><span data-stu-id="7a86c-101">ClickOnce supports SHA-256 on 4.0-targeted apps</span></span>
+
+|   |   |
+|---|---|
+|<span data-ttu-id="7a86c-102">설명</span><span class="sxs-lookup"><span data-stu-id="7a86c-102">Details</span></span>|<span data-ttu-id="7a86c-103">이전에 ClickOnce 앱을 s h A-256으로 서명 인증서로 앱 4.0를 대상으로 하는 경우에 나타날 수 있는.NET 4.5 이상이 필요 합니다.</span><span class="sxs-lookup"><span data-stu-id="7a86c-103">Previously, a ClickOnce app with a certificate signed with SHA-256 would require .NET 4.5 or later to be present, even if the app targeted 4.0.</span></span> <span data-ttu-id="7a86c-104">이제, s h A-256으로 서명 하는 경우에 4.0 대상 ClickOnce 앱 4.0, 실행할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="7a86c-104">Now, 4.0-targeted ClickOnce apps can run on 4.0, even if signed with SHA-256.</span></span>|
+|<span data-ttu-id="7a86c-105">제안 해결 방법</span><span class="sxs-lookup"><span data-stu-id="7a86c-105">Suggestion</span></span>|<span data-ttu-id="7a86c-106">이 변경은 해당 종속성을 제거 하 고 sha-256 인증서는.NET Framework 4 및 이전 버전을 대상으로 하는 ClickOnce 앱을 서명 하는 데 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="7a86c-106">This change removes that dependency and allows SHA-256 certificates to be used to sign ClickOnce apps that target .NET Framework 4 and earlier versions.</span></span>|
+|<span data-ttu-id="7a86c-107">범위</span><span class="sxs-lookup"><span data-stu-id="7a86c-107">Scope</span></span>|<span data-ttu-id="7a86c-108">부</span><span class="sxs-lookup"><span data-stu-id="7a86c-108">Minor</span></span>|
+|<span data-ttu-id="7a86c-109">버전</span><span class="sxs-lookup"><span data-stu-id="7a86c-109">Version</span></span>|<span data-ttu-id="7a86c-110">4.6</span><span class="sxs-lookup"><span data-stu-id="7a86c-110">4.6</span></span>|
+|<span data-ttu-id="7a86c-111">형식</span><span class="sxs-lookup"><span data-stu-id="7a86c-111">Type</span></span>|<span data-ttu-id="7a86c-112">대상 변경</span><span class="sxs-lookup"><span data-stu-id="7a86c-112">Retargeting</span></span>|
+

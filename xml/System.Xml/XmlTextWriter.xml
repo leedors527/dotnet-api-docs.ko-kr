@@ -1,0 +1,2374 @@
+<Type Name="XmlTextWriter" FullName="System.Xml.XmlTextWriter">
+  <TypeSignature Language="C#" Value="public class XmlTextWriter : System.Xml.XmlWriter" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XmlTextWriter extends System.Xml.XmlWriter" />
+  <TypeSignature Language="DocId" Value="T:System.Xml.XmlTextWriter" />
+  <TypeSignature Language="VB.NET" Value="Public Class XmlTextWriter&#xA;Inherits XmlWriter" />
+  <TypeSignature Language="C++ CLI" Value="public ref class XmlTextWriter : System::Xml::XmlWriter" />
+  <AssemblyInfo>
+    <AssemblyName>System.Xml</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Xml.XmlWriter</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary><span data-ttu-id="937e2-101">W3C XML(Extensible Markup Language) 1.0 및 Namespaces in XML 권장 사항을 따르는 XML 데이터를 포함하는 스트림이나 파일을 생성하는 빠르고, 캐시되지 않으며, 앞으로만 이동 가능한 방법을 제공하는 작성기를 나타냅니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-101">Represents a writer that provides a fast, non-cached, forward-only way of generating streams or files containing XML data that conforms to the W3C Extensible Markup Language (XML) 1.0 and the Namespaces in XML recommendations.</span></span>  
+  
+ <span data-ttu-id="937e2-102">.NET Framework 2.0부터 <see cref="T:System.Xml.XmlWriter" /> 클래스를 대신 사용하는 것이 좋습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-102">Starting with the .NET Framework 2.0, we recommend that you use the <see cref="T:System.Xml.XmlWriter" /> class instead.</span></span></summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="937e2-103">이 클래스가 구현 하는 <xref:System.Xml.XmlWriter> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-103">This class implements the <xref:System.Xml.XmlWriter> class.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-104">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-104">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-105">`XmlTextWriter` 에 현재 요소 스택에서 정의 된 모든 네임 스페이스에 해당 하는 네임 스페이스 스택을 유지 관리 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-105">`XmlTextWriter` maintains a namespace stack corresponding to all the namespaces defined in the current element stack.</span></span> <span data-ttu-id="937e2-106">사용 하 여 `XmlTextWriter` 수동으로 네임 스페이스를 선언할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-106">Using `XmlTextWriter` you can declare namespaces manually.</span></span>  
+  
+```  
+w.WriteStartElement("root");  
+w.WriteAttributeString("xmlns", "x", null, "urn:1");  
+ w.WriteStartElement("item","urn:1");  
+ w.WriteEndElement();  
+ w.WriteStartElement("item","urn:1");  
+ w.WriteEndElement();  
+w.WriteEndElement();  
+```  
+  
+ <span data-ttu-id="937e2-107">위의 C# 코드는 다음과 같은 출력을 생성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-107">The above C# code produces the following output.</span></span> <span data-ttu-id="937e2-108">`XmlTextWriter` 두 명의 자식 요소에서 중복 되지 않도록 하려면 루트 요소에 네임 스페이스 선언을 수준을 올립니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-108">`XmlTextWriter` promotes the namespace declaration to the root element to avoid having it duplicated on the two child elements.</span></span> <span data-ttu-id="937e2-109">자식 요소는 네임 스페이스 선언에서 접두사를 선택 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-109">The child elements pick up the prefix from the namespace declaration.</span></span>  
+  
+```  
+<root xmlns:x="urn:1">  
+ <x:item/>  
+ <x:item/>  
+</x:root>  
+```  
+  
+ <span data-ttu-id="937e2-110">`XmlTextWriter` 에서는 현재 네임 스페이스 선언을 재정의할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-110">`XmlTextWriter` also allows you to override the current namespace declaration.</span></span> <span data-ttu-id="937e2-111">다음 예제에서는 네임 스페이스 URI "123"을 "abc" XML 요소를 생성 하기 위해로 재정의 `<x:node xmlns:x="abc"/>`합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-111">In the following example, the namespace URI "123" is overridden by "abc" to produce the XML element `<x:node xmlns:x="abc"/>`.</span></span>  
+  
+```  
+w.WriteStartElement("x","node","123");  
+w.WriteAttributeString("xmlns","x",null,"abc");  
+```  
+  
+ <span data-ttu-id="937e2-112">접두사를 인수로 사용 하는 쓰기 메서드를 사용 하 여 사용할 접두사를 지정할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-112">By using the write methods that take a prefix as an argument you can also specify which prefix to use.</span></span> <span data-ttu-id="937e2-113">다음 예제에서는 두 개의 서로 다른 접두사는 동일한 네임 스페이스는 XML 텍스트를 생성 하는 URI에 매핑됩니다 `<x:root xmlns:x="urn:1"><y:item xmlns:y="urn:1"/></x:root>`합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-113">In the following example, two different prefixes are mapped to the same namespace URI to produce the XML text `<x:root xmlns:x="urn:1"><y:item xmlns:y="urn:1"/></x:root>`.</span></span>  
+  
+```  
+XmlTextWriter w = new XmlTextWriter(Console.Out);  
+w.WriteStartElement("x","root","urn:1");  
+ w.WriteStartElement("y","item","urn:1");  
+ w.WriteEndElement();  
+w.WriteEndElement();  
+w.Close();  
+```  
+  
+ <span data-ttu-id="937e2-114">동일한 네임 스페이스 URI에 다른 접두사를 매핑하는 여러 네임 스페이스 선언이 있을 경우 `XmlTextWriter` 네임 스페이스 선언의 스택으로 뒤로 검색 하 고 가장 가까운 스택을 선택 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-114">If there are multiple namespace declarations mapping different prefixes to the same namespace URI, `XmlTextWriter` walks the stack of namespace declarations backwards and picks the closest one.</span></span>  
+  
+```  
+XmlTextWriter w = new XmlTextWriter(Console.Out);  
+w.Formatting = Formatting.Indented;  
+w.WriteStartElement("x","root","urn:1");  
+w.WriteStartElement("y","item","urn:1");  
+w.WriteAttributeString("attr","urn:1","123");  
+w.WriteEndElement();  
+w.WriteEndElement();  
+w.Close();  
+```  
+  
+ <span data-ttu-id="937e2-115">위의 C# 예제에서는 때문에 `WriteAttributeString` 에 호출 접두사를 지정 하지 않으므로 작성기 네임 스페이스 스택에 밀어 넣은 마지막 접두사를 사용 하 고 다음과 같은 XML을 생성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-115">In the above C# example, because the `WriteAttributeString` call does not specify a prefix, the writer uses the last prefix pushed onto the namespace stack, and produces the following XML:</span></span>  
+  
+```  
+<x:root xmlns:x="urn:1">  
+ <y:item y:attr="123" xmlns:y="urn:1" />  
+</x:root>  
+```  
+  
+ <span data-ttu-id="937e2-116">네임 스페이스 충돌이 발생 하면 `XmlTextWriter` 대체 접두사를 생성 하 여이 확인 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-116">If namespace conflicts occur, `XmlTextWriter` resolves them by generating alternate prefixes.</span></span> <span data-ttu-id="937e2-117">예를 들어 하지만 서로 다른 네임 스페이스 접두사 같은 특성 및 요소는 `XmlWriter` 특성에 대 한 다른 접두사를 생성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-117">For example, if an attribute and element have the same prefix but different namespaces, `XmlWriter` generates an alternate prefix for the attribute.</span></span> <span data-ttu-id="937e2-118">생성 된 접두사의 이름은 `n{i}` 여기서 `i` 1부터 시작 하는 숫자입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-118">The generated prefixes are named `n{i}` where `i` is a number beginning at 1.</span></span> <span data-ttu-id="937e2-119">각 요소에 대해 1로 다시 설정 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-119">The number is reset to 1 for each element.</span></span>  
+  
+ <span data-ttu-id="937e2-120">네임 스페이스 URI와 관련 된 특성에는 접두사 (기본 네임 스페이스 특성에 적용 되지 않습니다) 있어야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-120">Attributes which are associated with a namespace URI must have a prefix (default namespaces do not apply to attributes).</span></span> <span data-ttu-id="937e2-121">이 XML 권장 사항에 W3C 네임 스페이스의 5.2 섹션에 따릅니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-121">This conforms to section 5.2 of the W3C Namespaces in XML recommendation.</span></span> <span data-ttu-id="937e2-122">특성 네임 스페이스 URI를 참조 하지만, 접두사를 지정 하지 않습니다, 작성기 특성에 대 한 접두사를 생성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-122">If an attribute references a namespace URI, but does not specify a prefix, the writer generates a prefix for the attribute.</span></span>  
+  
+ <span data-ttu-id="937e2-123">빈 요소를 작성할 때는 추가 사이 공백을 추가 태그 이름 및 닫는 태그 예를 들어 `<item />`합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-123">When writing an empty element, an additional space is added between tag name and the closing tag, for example `<item />`.</span></span> <span data-ttu-id="937e2-124">오래 된 브라우저와 호환성을 제공합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-124">This provides compatibility with older browsers.</span></span>  
+  
+ <span data-ttu-id="937e2-125">경우는 `String` 메서드 매개 변수로 사용 되 `null` 및 `String.Empty` 동일 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-125">When a `String` is used as method parameter, `null` and `String.Empty` are equivalent.</span></span> <span data-ttu-id="937e2-126">`String.Empty` W3C 규칙을 따릅니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-126">`String.Empty` follows the W3C rules.</span></span>  
+  
+ <span data-ttu-id="937e2-127">사용 하 여 강력한 형식의 데이터를 작성 하려면는 <xref:System.Xml.XmlConvert> 데이터 형식을 문자열로 변환 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-127">To write strongly typed data, use the <xref:System.Xml.XmlConvert> class to convert data types to string.</span></span> <span data-ttu-id="937e2-128">다음 C# 코드에서 데이터를 변환 하는 예를 들어 `Double` 를 `String` 요소를 작성 하 고 `<price>19.95</price>`합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-128">For example, the following C# code converts the data from `Double` to `String` and writes the element `<price>19.95</price>`.</span></span>  
+  
+```  
+Double price = 19.95;  
+writer.WriteElementString("price", XmlConvert.ToString(price));  
+```  
+  
+ <span data-ttu-id="937e2-129">`XmlTextWriter` 다음을 확인 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-129">`XmlTextWriter` does not check for the following:</span></span>  
+  
+-   <span data-ttu-id="937e2-130">특성 및 요소 이름에 잘못 된 문자가 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-130">Invalid characters in attribute and element names.</span></span>  
+  
+-   <span data-ttu-id="937e2-131">지정 된 인코딩을 맞지 않는 유니코드 문자입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-131">Unicode characters that do not fit the specified encoding.</span></span> <span data-ttu-id="937e2-132">지정 된 인코딩을 유니코드 문자가 포함 되지 않을 경우의 `XmlTextWriter` 문자 엔터티를 유니코드 문자를 이스케이프 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-132">If the Unicode characters do not fit the specified encoding, the `XmlTextWriter` does not escape the Unicode characters into character entities.</span></span>  
+  
+-   <span data-ttu-id="937e2-133">중복 된 특성입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-133">Duplicate attributes.</span></span>  
+  
+-   <span data-ttu-id="937e2-134">DOCTYPE 공개 식별자 또는 시스템 식별자의 문자 수입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-134">Characters in the DOCTYPE public identifier or system identifier.</span></span>  
+  
+## <a name="security-considerations"></a><span data-ttu-id="937e2-135">보안 고려 사항</span><span class="sxs-lookup"><span data-stu-id="937e2-135">Security Considerations</span></span>  
+ <span data-ttu-id="937e2-136">다음 항목은 작업할 때 고려 사항에서 <xref:System.Xml.XmlTextWriter> 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-136">The following items are things to consider when working with the <xref:System.Xml.XmlTextWriter> class.</span></span>  
+  
+-   <span data-ttu-id="937e2-137">throw 된 예외는 <xref:System.Xml.XmlTextWriter> 응용 프로그램에 버블링 원하지 않는 경로 정보가 공개 될 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-137">Exceptions thrown by the <xref:System.Xml.XmlTextWriter> can disclose path information that you do not want bubbled up to the application.</span></span> <span data-ttu-id="937e2-138">응용 프로그램에서는 예외를 캐치하고 적절히 처리해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-138">Your applications must catch exceptions and process them appropriately.</span></span>  
+  
+-   <span data-ttu-id="937e2-139"><xref:System.Xml.XmlTextWriter>를 다른 응용 프로그램에 전달하면 원본으로 사용하는 스트림이 해당 응용 프로그램에 노출됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-139">When you pass the <xref:System.Xml.XmlTextWriter> to another application the underlying stream is exposed to that application.</span></span> <span data-ttu-id="937e2-140"><xref:System.Xml.XmlTextWriter>를 부분 신뢰 응용 프로그램에 전달해야 할 경우 <xref:System.Xml.XmlWriter> 메서드에서 만든 <xref:System.Xml.XmlWriter.Create%2A> 개체를 대신 사용해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-140">If you need to pass the <xref:System.Xml.XmlTextWriter> to a semi-trusted application, you should use an <xref:System.Xml.XmlWriter> object created by the <xref:System.Xml.XmlWriter.Create%2A> method instead.</span></span>  
+  
+-   <span data-ttu-id="937e2-141"><xref:System.Xml.XmlTextWriter> 에 전달 되는 모든 데이터의 유효성을 검사 하지 않습니다는 <xref:System.Xml.XmlTextWriter.WriteDocType%2A> 또는 <xref:System.Xml.XmlTextWriter.WriteRaw%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="937e2-141">The <xref:System.Xml.XmlTextWriter> does not validate any data that is passed to the <xref:System.Xml.XmlTextWriter.WriteDocType%2A> or <xref:System.Xml.XmlTextWriter.WriteRaw%2A> methods.</span></span> <span data-ttu-id="937e2-142">임의의 데이터를 이러한 메서드에 전달 해서는 안 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-142">You should not pass arbitrary data to these methods.</span></span>  
+  
+-   <span data-ttu-id="937e2-143">기본 설정이 변경 되 면에 생성 된 출력이 올바른 형식의 XML 데이터는 아닙니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-143">If the default settings are changed, there is no guarantee that the generated output is well-formed XML data.</span></span>  
+  
+-   <span data-ttu-id="937e2-144">와 같은 지원 구성 요소를 받아들이지 않습니다는 <xref:System.Text.Encoding> 신뢰할 수 없는 소스에서 개체입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-144">Do not accept supporting components, such as an <xref:System.Text.Encoding> object, from an untrusted source.</span></span>  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><span data-ttu-id="937e2-145"><see langword="XmlTextWriter" /> 클래스의 인스턴스를 만듭니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-145">Creates an instance of the <see langword="XmlTextWriter" /> class.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-146">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-146">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XmlTextWriter (System.IO.TextWriter w);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.TextWriter w) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.#ctor(System.IO.TextWriter)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (w As TextWriter)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XmlTextWriter(System::IO::TextWriter ^ w);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="w" Type="System.IO.TextWriter" />
+      </Parameters>
+      <Docs>
+        <param name="w"><span data-ttu-id="937e2-147">쓸 <see langword="TextWriter" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-147">The <see langword="TextWriter" /> to write to.</span></span> <span data-ttu-id="937e2-148"><see langword="TextWriter" />가 이미 올바른 인코딩으로 설정된 것으로 가정합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-148">It is assumed that the <see langword="TextWriter" /> is already set to the correct encoding.</span></span></param>
+        <summary><span data-ttu-id="937e2-149">지정된 <see cref="T:System.IO.TextWriter" />를 사용하여 <see langword="XmlTextWriter" /> 클래스의 인스턴스를 만듭니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-149">Creates an instance of the <see langword="XmlTextWriter" /> class using the specified <see cref="T:System.IO.TextWriter" />.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-150">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-150">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XmlTextWriter (System.IO.Stream w, System.Text.Encoding encoding);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IO.Stream w, class System.Text.Encoding encoding) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.#ctor(System.IO.Stream,System.Text.Encoding)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XmlTextWriter(System::IO::Stream ^ w, System::Text::Encoding ^ encoding);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="w" Type="System.IO.Stream" />
+        <Parameter Name="encoding" Type="System.Text.Encoding" />
+      </Parameters>
+      <Docs>
+        <param name="w"><span data-ttu-id="937e2-151">작성하려는 스트림입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-151">The stream to which you want to write.</span></span></param>
+        <param name="encoding"><span data-ttu-id="937e2-152">생성할 인코딩입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-152">The encoding to generate.</span></span> <span data-ttu-id="937e2-153">인코딩이 <see langword="null" />이면 스트림이 UTF-8로 작성되고 <see langword="ProcessingInstruction" />의 인코딩 특성이 생략됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-153">If encoding is <see langword="null" /> it writes out the stream as UTF-8 and omits the encoding attribute from the <see langword="ProcessingInstruction" />.</span></span></param>
+        <summary><span data-ttu-id="937e2-154">지정된 스트림 및 인코딩을 사용하여 <see langword="XmlTextWriter" /> 클래스의 인스턴스를 만듭니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-154">Creates an instance of the <see langword="XmlTextWriter" /> class using the specified stream and encoding.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-155">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-155">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-156">인코딩이 지원되지 않거나 스트림을 작성할 수 없는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-156">The encoding is not supported or the stream cannot be written to.</span></span></exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="937e2-157"><paramref name="w" />가 <see langword="null" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-157"><paramref name="w" /> is <see langword="null" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XmlTextWriter (string filename, System.Text.Encoding encoding);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string filename, class System.Text.Encoding encoding) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.#ctor(System.String,System.Text.Encoding)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XmlTextWriter(System::String ^ filename, System::Text::Encoding ^ encoding);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="filename" Type="System.String" />
+        <Parameter Name="encoding" Type="System.Text.Encoding" />
+      </Parameters>
+      <Docs>
+        <param name="filename"><span data-ttu-id="937e2-158">작성할 파일 이름입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-158">The filename to write to.</span></span> <span data-ttu-id="937e2-159">파일이 있으면 해당 파일이 잘리고 새 콘텐츠로 덮어써집니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-159">If the file exists, it truncates it and overwrites it with the new content.</span></span></param>
+        <param name="encoding"><span data-ttu-id="937e2-160">생성할 인코딩입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-160">The encoding to generate.</span></span> <span data-ttu-id="937e2-161">인코딩이 <see langword="null" />이면 파일이 UTF-8로 작성되고 <see langword="ProcessingInstruction" />의 인코딩 특성이 생략됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-161">If encoding is <see langword="null" /> it writes the file out as UTF-8, and omits the encoding attribute from the <see langword="ProcessingInstruction" />.</span></span></param>
+        <summary><span data-ttu-id="937e2-162">지정된 파일을 사용하여 <see cref="T:System.Xml.XmlTextWriter" /> 클래스의 인스턴스를 만듭니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-162">Creates an instance of the <see cref="T:System.Xml.XmlTextWriter" /> class using the specified file.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-163">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-163">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-164">인코딩이 지원되지 않는 경우 또는 파일 이름이 비어 있거나 공백 또는 잘못된 문자가 포함되어 있는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-164">The encoding is not supported; the filename is empty, contains only white space, or contains one or more invalid characters.</span></span></exception>
+        <exception cref="T:System.UnauthorizedAccessException"><span data-ttu-id="937e2-165">액세스가 거부되었습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-165">Access is denied.</span></span></exception>
+        <exception cref="T:System.ArgumentNullException"><span data-ttu-id="937e2-166">파일 이름이 <see langword="null" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-166">The filename is <see langword="null" />.</span></span></exception>
+        <exception cref="T:System.IO.DirectoryNotFoundException"><span data-ttu-id="937e2-167">쓸 디렉터리가 없는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-167">The directory to write to is not found.</span></span></exception>
+        <exception cref="T:System.IO.IOException"><span data-ttu-id="937e2-168">파일 이름에 정확하지 않거나 올바르지 않은 파일 이름, 디렉터리 이름 또는 볼륨 레이블 구문이 있는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-168">The filename includes an incorrect or invalid syntax for file name, directory name, or volume label syntax.</span></span></exception>
+        <exception cref="T:System.Security.SecurityException"><span data-ttu-id="937e2-169">호출자에게 필요한 권한이 없는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-169">The caller does not have the required permission.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BaseStream">
+      <MemberSignature Language="C#" Value="public System.IO.Stream BaseStream { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IO.Stream BaseStream" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.BaseStream" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property BaseStream As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IO::Stream ^ BaseStream { System::IO::Stream ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-170">내부 스트림 개체를 가져옵니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-170">Gets the underlying stream object.</span></span></summary>
+        <value><span data-ttu-id="937e2-171"><see langword="XmlTextWriter" />가 작성 중인 스트림이거나, <see cref="T:System.IO.TextWriter" /> 클래스에서 상속되지 않은 <see cref="T:System.IO.StreamWriter" />를 사용하여 <see langword="null" />가 생성된 경우에는 <see langword="XmlTextWriter" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-171">The stream to which the <see langword="XmlTextWriter" /> is writing or <see langword="null" /> if the <see langword="XmlTextWriter" /> was constructed using a <see cref="T:System.IO.TextWriter" /> that does not inherit from the <see cref="T:System.IO.StreamWriter" /> class.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-172">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-172">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-173">작성기가 사용 하 여 생성 된 경우는 `TextWriter` 에서 파생 되는 `StreamWriter` 클래스,이 속성은 해당 하는 <xref:System.IO.StreamWriter.BaseStream%2A?displayProperty=nameWithType> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-173">If the writer was constructed using a `TextWriter` that is derived from the `StreamWriter` class, this property is equivalent to the <xref:System.IO.StreamWriter.BaseStream%2A?displayProperty=nameWithType> property.</span></span> <span data-ttu-id="937e2-174">기록기가 사용 하 여 생성 된 경우는 <xref:System.IO.Stream>,이 속성은 반환 된 `Stream` 생성자에 전달 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-174">If the writer was constructed using a <xref:System.IO.Stream>, this property returns the `Stream` passed to the constructor.</span></span> <span data-ttu-id="937e2-175">이 속성을 반환 하는 경우 기록기가 구성 파일 이름을 사용 하 여 `Stream` 파일을 나타내는입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-175">If the writer was constructed using a file name, this property returns the `Stream` representing the file.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Close">
+      <MemberSignature Language="C#" Value="public override void Close ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Close() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.Close" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Close ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Close();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="937e2-176">이 스트림과 내부 스트림을 닫습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-176">Closes this stream and the underlying stream.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-177">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-177">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-178">모든 요소 또는 특성을 열린 상태로 자동으로 닫힙니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-178">Any elements or attributes left open are automatically closed.</span></span>  
+  
+ <span data-ttu-id="937e2-179">이 메서드는 모든 예외를 throw 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-179">This method does not throw any exceptions.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-180">다음 예제에서는 XML 조각을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-180">The following example writes an XML fragment.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Flush">
+      <MemberSignature Language="C#" Value="public override void Flush ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Flush() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.Flush" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Flush ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Flush();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="937e2-181">버퍼에 있는 모든 내용을 내부 스트림으로 플러시하고 내부 스트림도 플러시합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-181">Flushes whatever is in the buffer to the underlying streams and also flushes the underlying stream.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-182">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-182">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-183">이 대신 이라고 <xref:System.Xml.XmlTextWriter.Close%2A> 버퍼에 있는 내용을 손실 하지 않고 기본 스트림에 더 작성 하려는 경우.</span><span class="sxs-lookup"><span data-stu-id="937e2-183">This is called instead of <xref:System.Xml.XmlTextWriter.Close%2A> when you want to write more to the underlying stream without losing what is still in the buffer.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-184">다음 예제에서는 두 개의 XML 조각을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-184">The following example writes out two XML fragments.</span></span>  
+  
+ [!code-cpp[XmlTextWriter.Flush#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlTextWriter.Flush/CPP/write2docs.cpp#1)]
+ [!code-csharp[XmlTextWriter.Flush#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlTextWriter.Flush/CS/write2docs.cs#1)]
+ [!code-vb[XmlTextWriter.Flush#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlTextWriter.Flush/VB/write2docs.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Formatting">
+      <MemberSignature Language="C#" Value="public System.Xml.Formatting Formatting { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Xml.Formatting Formatting" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.Formatting" />
+      <MemberSignature Language="VB.NET" Value="Public Property Formatting As Formatting" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xml::Formatting Formatting { System::Xml::Formatting get(); void set(System::Xml::Formatting value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.Formatting</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-185">출력의 형식이 지정되는 방법을 나타냅니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-185">Indicates how the output is formatted.</span></span></summary>
+        <value><span data-ttu-id="937e2-186"><see cref="T:System.Xml.Formatting" /> 값 중 하나입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-186">One of the <see cref="T:System.Xml.Formatting" /> values.</span></span> <span data-ttu-id="937e2-187">기본값은 <see langword="Formatting.None" />(특별한 형식 지정 없음)입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-187">The default is <see langword="Formatting.None" /> (no special formatting).</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-188">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-188">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-189">경우는 `Indented` 옵션이 설정 되어, 자식 요소를 사용 하 여 들여씁니다는 <xref:System.Xml.XmlTextWriter.Indentation%2A> 및 <xref:System.Xml.XmlTextWriter.IndentChar%2A> 속성입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-189">If the `Indented` option is set, child elements are indented using the <xref:System.Xml.XmlTextWriter.Indentation%2A> and <xref:System.Xml.XmlTextWriter.IndentChar%2A> properties.</span></span> <span data-ttu-id="937e2-190">요소 콘텐츠만 들여씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-190">Only element content is indented.</span></span> <span data-ttu-id="937e2-191">다음 C# 코드 혼합 된 콘텐츠를 포함 하 여 HTML 요소를 작성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-191">The following C# code writes out HTML elements including mixed content:</span></span>  
+  
+```  
+XmlTextWriter w = new XmlTextWriter(Console.Out);   
+ w.Formatting = Formatting.Indented;   
+ w.WriteStartElement("ol");   
+ w.WriteStartElement("li");   
+ w.WriteString("The big "); // This means "li" now has a mixed content model.  
+ w.WriteElementString("b", "E");   
+ w.WriteElementString("i", "lephant");   
+ w.WriteString(" walks slowly.");   
+ w.WriteEndElement();   
+ w.WriteEndElement();  
+```  
+  
+ <span data-ttu-id="937e2-192">위의 코드는 다음과 같은 출력을 생성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-192">The above code produces the following output:</span></span>  
+  
+```  
+<ol>   
+  <li>The big <b>E</b><i>lephant</i> walks slowly.</li>   
+</ol>  
+```  
+  
+ <span data-ttu-id="937e2-193">HTML에서이 볼 때 굵게 및 기울임꼴 요소 사이 공백이 없습니다 나타납니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-193">When this is viewed in HTML no white space appears between the bold and italic elements.</span></span> <span data-ttu-id="937e2-194">실제로이 예제에서는 들여쓰기가 이러한 요소 간의 추가 되 면 "코끼리" 라는 단어가 될 잘못 깨질.</span><span class="sxs-lookup"><span data-stu-id="937e2-194">In fact, in this example, if indenting was added between these elements the word "Elephant" would be incorrectly broken.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-195">모든 텍스트를 제외 하 고 콘텐츠 쓰기 `String.Empty` 혼합 콘텐츠 모드로 해당 요소를 설정 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-195">Writing any text content, excluding `String.Empty` puts that element into mixed content mode.</span></span> <span data-ttu-id="937e2-196">자식 요소는이 "혼합된" 모드 상태를 상속 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-196">Child elements do not inherit this "mixed" mode status.</span></span> <span data-ttu-id="937e2-197">"혼합" 요소는 자식 요소가 들여쓰기를 포함 하지 않은 경우 "혼합 된" 콘텐츠.</span><span class="sxs-lookup"><span data-stu-id="937e2-197">A child element of a "mixed" element does indenting, unless it is also contains "mixed" content.</span></span> <span data-ttu-id="937e2-198">요소 콘텐츠 (http://www.w3.org/TR/1998/REC-xml-19980210#sec-element-content) 된 혼합 된 내용 및 (http://www.w3.org/TR/1998/REC-xml-19980210#sec-mixed-content) 이러한 용어의 XML 1.0 정의 따라 정의 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-198">Element content (http://www.w3.org/TR/1998/REC-xml-19980210#sec-element-content) and mixed content (http://www.w3.org/TR/1998/REC-xml-19980210#sec-mixed-content) are defined according to the XML 1.0 definitions of these terms.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-199">다음 예제에서는 XML 조각을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-199">The following example writes an XML fragment.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Xml.Formatting" />
+      </Docs>
+    </Member>
+    <Member MemberName="Indentation">
+      <MemberSignature Language="C#" Value="public int Indentation { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Indentation" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.Indentation" />
+      <MemberSignature Language="VB.NET" Value="Public Property Indentation As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Indentation { int get(); void set(int value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-200"><see cref="P:System.Xml.XmlTextWriter.Formatting" />이 <see langword="Formatting.Indented" />로 설정될 때 계층구조의 각 수준에 작성할 IndentChars 수를 가져오거나 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-200">Gets or sets how many IndentChars to write for each level in the hierarchy when <see cref="P:System.Xml.XmlTextWriter.Formatting" /> is set to <see langword="Formatting.Indented" />.</span></span></summary>
+        <value><span data-ttu-id="937e2-201">각 수준의 <see langword="IndentChars" /> 수입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-201">Number of <see langword="IndentChars" /> for each level.</span></span> <span data-ttu-id="937e2-202">기본값은 2입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-202">The default is 2.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-203">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-203">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-204">노드 형식에서 들여쓰기를 수행: `DocumentType`, `Element`, `Comment`, `ProcessingInstruction`, 및 `CDATASection`합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-204">Indentation is performed on following node types: `DocumentType`, `Element`, `Comment`, `ProcessingInstruction`, and `CDATASection`.</span></span> <span data-ttu-id="937e2-205">다른 모든 노드 형식은 영향을 받지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-205">All other node types are not affected.</span></span> <span data-ttu-id="937e2-206">`XmlTextWriter` 내부 DTD 하위 집합을 들여쓰지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-206">The `XmlTextWriter` does not indent the internal DTD subset.</span></span> <span data-ttu-id="937e2-207">그러나 내부 DTD 하위 집합에 서식을 적용 하려면 다음을 수행할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-207">However, you could do the following to apply formatting to the internal DTD subset.</span></span>  
+  
+```  
+String name = "Employees";  
+String pubid = null;  
+String sysid = null;  
+String subset =  
+@"  
+    <!ELEMENT Employees (Employee)+>  
+    <!ELEMENT Employee EMPTY>  
+    <!ATTLIST Employee firstname CDATA #REQUIRED>  
+    <!ENTITY Company 'Microsoft'>]>  
+";  
+XmlTextWriter tw = new XmlTextWriter(Console.Out);  
+tw.WriteDocType(name, pubid, sysid, subset);  
+```  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-208">다음 예제에서는 XML 조각을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-208">The following example writes an XML fragment.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-209">이 속성을 음의 값으로 설정하는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-209">Setting this property to a negative value.</span></span></exception>
+        <altmember cref="P:System.Xml.XmlTextWriter.IndentChar" />
+        <altmember cref="T:System.Xml.Formatting" />
+      </Docs>
+    </Member>
+    <Member MemberName="IndentChar">
+      <MemberSignature Language="C#" Value="public char IndentChar { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance char IndentChar" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.IndentChar" />
+      <MemberSignature Language="VB.NET" Value="Public Property IndentChar As Char" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property char IndentChar { char get(); void set(char value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Char</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-210"><see cref="P:System.Xml.XmlTextWriter.Formatting" />이 <see langword="Formatting.Indented" />로 설정된 경우 들여쓰기에 사용할 문자를 가져오거나 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-210">Gets or sets which character to use for indenting when <see cref="P:System.Xml.XmlTextWriter.Formatting" /> is set to <see langword="Formatting.Indented" />.</span></span></summary>
+        <value><span data-ttu-id="937e2-211">들여쓰기에 사용할 문자입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-211">The character to use for indenting.</span></span> <span data-ttu-id="937e2-212">기본값은 공백입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-212">The default is space.</span></span>  
+  
+ <block subset="none" type="note"><para>  
+ <span data-ttu-id="937e2-213"><see langword="XmlTextWriter" />를 사용하면 이 속성을 모든 문자로 설정할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-213">The <see langword="XmlTextWriter" /> allows you to set this property to any character.</span></span> <span data-ttu-id="937e2-214">유효한 XML을 확인하려면 유효한 공백 문자 0x9, 0x10, 0x13 또는 0x20을 지정해야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-214">To ensure valid XML, you must specify a valid white space character, 0x9, 0x10, 0x13 or 0x20.</span></span>  
+  
+</para></block></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-215">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-215">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xml.XmlTextWriter.Indentation" />
+        <altmember cref="T:System.Xml.Formatting" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupPrefix">
+      <MemberSignature Language="C#" Value="public override string LookupPrefix (string ns);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string LookupPrefix(string ns) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.LookupPrefix(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function LookupPrefix (ns As String) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ LookupPrefix(System::String ^ ns);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ns" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="ns"><span data-ttu-id="937e2-216">찾으려는 접두사를 가진 네임스페이스 URI입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-216">Namespace URI whose prefix you want to find.</span></span></param>
+        <summary><span data-ttu-id="937e2-217">네임스페이스 URI의 현재 네임스페이스 범위에 정의된 가장 비슷한 접두사를 반환합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-217">Returns the closest prefix defined in the current namespace scope for the namespace URI.</span></span></summary>
+        <returns><span data-ttu-id="937e2-218">일치하는 접두사입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-218">The matching prefix.</span></span> <span data-ttu-id="937e2-219">또는 현재 범위에 일치하는 네임스페이스 URI가 없는 경우에는 <see langword="null" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-219">Or <see langword="null" /> if no matching namespace URI is found in the current scope.</span></span></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-220">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-220">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-221">다음 예제에서는 책을 작성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-221">The following example writes out a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="937e2-222"><paramref name="ns" />가 <see langword="null" /> 또는 <see langword="String.Empty" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-222"><paramref name="ns" /> is either <see langword="null" /> or <see langword="String.Empty" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Namespaces">
+      <MemberSignature Language="C#" Value="public bool Namespaces { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Namespaces" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.Namespaces" />
+      <MemberSignature Language="VB.NET" Value="Public Property Namespaces As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool Namespaces { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-223">네임스페이스 지원 여부를 나타내는 값을 가져오거나 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-223">Gets or sets a value indicating whether to do namespace support.</span></span></summary>
+        <value>
+          <span data-ttu-id="937e2-224">네임스페이스를 지원하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-224"><see langword="true" /> to support namespaces; otherwise, <see langword="false" />.</span></span>  
+  
+ <span data-ttu-id="937e2-225">기본값은 <see langword="true" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-225">The default is <see langword="true" />.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-226">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-226">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-227">이 속성 작성기 www.w3.org/TR/REC-xml-names에 있는 XML 권장 사항에 W3C 네임 스페이스를 지원 하는지 여부를 결정 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-227">This property determines whether the writer supports the W3C Namespaces in XML recommendation located at www.w3.org/TR/REC-xml-names.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-228"><see langword="WriteState.Start" /> 상태일 때만 이 속성을 변경할 수 있는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-228">You can only change this property when in the <see langword="WriteState.Start" /> state.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="QuoteChar">
+      <MemberSignature Language="C#" Value="public char QuoteChar { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance char QuoteChar" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.QuoteChar" />
+      <MemberSignature Language="VB.NET" Value="Public Property QuoteChar As Char" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property char QuoteChar { char get(); void set(char value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Char</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-229">특성 값을 인용하는 데 사용할 문자를 가져오거나 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-229">Gets or sets which character to use to quote attribute values.</span></span></summary>
+        <value><span data-ttu-id="937e2-230">특성 값을 인용하는 데 사용할 문자입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-230">The character to use to quote attribute values.</span></span> <span data-ttu-id="937e2-231">작은따옴표를 이어야 합니다 (&amp;#39;) 또는 큰따옴표 (&amp;#34;).</span><span class="sxs-lookup"><span data-stu-id="937e2-231">This must be a single quote (&amp;#39;) or a double quote (&amp;#34;).</span></span> <span data-ttu-id="937e2-232">기본값은 큰따옴표입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-232">The default is a double quote.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-233">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-233">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-234">이 속성을 작은따옴표 또는 큰따옴표 이외의 값으로 설정하는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-234">Setting this property to something other than either a single or double quote.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteBase64">
+      <MemberSignature Language="C#" Value="public override void WriteBase64 (byte[] buffer, int index, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteBase64(unsigned int8[] buffer, int32 index, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteBase64(System.Byte[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteBase64 (buffer As Byte(), index As Integer, count As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteBase64(cli::array &lt;System::Byte&gt; ^ buffer, int index, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Byte[]" />
+        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="buffer"><span data-ttu-id="937e2-235">인코딩할 바이트 배열입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-235">Byte array to encode.</span></span></param>
+        <param name="index"><span data-ttu-id="937e2-236">쓸 바이트의 시작을 나타내는 버퍼 내의 위치입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-236">The position within the buffer indicating the start of the bytes to write.</span></span></param>
+        <param name="count"><span data-ttu-id="937e2-237">쓸 바이트 수입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-237">The number of bytes to write.</span></span></param>
+        <summary><span data-ttu-id="937e2-238">지정된 바이너리 바이트를 base64로 인코딩하고 결과 텍스트를 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-238">Encodes the specified binary bytes as base64 and writes out the resulting text.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-239">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-239">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-240">다음 예제에서는 사용 하 여 입력된 파일 인코딩합니다 `WriteBase64` 및 임시 XML 파일을 생성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-240">The following example encodes an input file using `WriteBase64` and generates a temporary XML file.</span></span> <span data-ttu-id="937e2-241">임시 XML 파일은 사용 하 여 디코딩됩니다는 <xref:System.Xml.XmlTextReader.ReadBase64%2A> 메서드 사용 권한과 원본 파일에 비교 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-241">The temporary XML file is decoded using the <xref:System.Xml.XmlTextReader.ReadBase64%2A> method and compared to the original file.</span></span>  
+  
+ [!code-cpp[XmlWriter.WriteBase64#1](~/samples/snippets/cpp/VS_Snippets_Data/XmlWriter.WriteBase64/CPP/writebase64.cpp#1)]
+ [!code-csharp[XmlWriter.WriteBase64#1](~/samples/snippets/csharp/VS_Snippets_Data/XmlWriter.WriteBase64/CS/writebase64.cs#1)]
+ [!code-vb[XmlWriter.WriteBase64#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XmlWriter.WriteBase64/VB/writebase64.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="937e2-242"><paramref name="buffer" />가 <see langword="null" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-242"><paramref name="buffer" /> is <see langword="null" />.</span></span></exception>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-243">버퍼 길이에서 <paramref name="index" />를 빼면 <paramref name="count" />보다 작은 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-243">The buffer length minus <paramref name="index" /> is less than <paramref name="count" />.</span></span></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="937e2-244"><paramref name="index" /> 또는 <paramref name="count" />가 0보다 작습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-244"><paramref name="index" /> or <paramref name="count" /> is less than zero.</span></span></exception>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-245"><see cref="P:System.Xml.XmlTextWriter.WriteState" />이 <see langword="Closed" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-245">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is <see langword="Closed" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteBinHex">
+      <MemberSignature Language="C#" Value="public override void WriteBinHex (byte[] buffer, int index, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteBinHex(unsigned int8[] buffer, int32 index, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteBinHex(System.Byte[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteBinHex (buffer As Byte(), index As Integer, count As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteBinHex(cli::array &lt;System::Byte&gt; ^ buffer, int index, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Byte[]" />
+        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="buffer"><span data-ttu-id="937e2-246">인코딩할 바이트 배열입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-246">Byte array to encode.</span></span></param>
+        <param name="index"><span data-ttu-id="937e2-247">쓸 바이트의 시작을 나타내는 버퍼 내의 위치입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-247">The position in the buffer indicating the start of the bytes to write.</span></span></param>
+        <param name="count"><span data-ttu-id="937e2-248">쓸 바이트 수입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-248">The number of bytes to write.</span></span></param>
+        <summary><span data-ttu-id="937e2-249">지정된 바이너리 바이트를 Binhex로 인코딩하고 결과 텍스트를 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-249">Encodes the specified binary bytes as binhex and writes out the resulting text.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-250">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-250">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="937e2-251"><paramref name="buffer" />가 <see langword="null" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-251"><paramref name="buffer" /> is <see langword="null" />.</span></span></exception>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-252">버퍼 길이에서 <paramref name="index" />를 빼면 <paramref name="count" />보다 작은 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-252">The buffer length minus <paramref name="index" /> is less than <paramref name="count" />.</span></span></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="937e2-253"><paramref name="index" /> 또는 <paramref name="count" />가 0보다 작습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-253"><paramref name="index" /> or <paramref name="count" /> is less than zero.</span></span></exception>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-254"><see cref="P:System.Xml.XmlTextWriter.WriteState" />가 Closed인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-254">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is Closed.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteCData">
+      <MemberSignature Language="C#" Value="public override void WriteCData (string text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteCData(string text) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteCData(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteCData (text As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteCData(System::String ^ text);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="text"><span data-ttu-id="937e2-255">CDATA 블록 내에 배치할 텍스트입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-255">Text to place inside the CDATA block.</span></span></param>
+        <summary><span data-ttu-id="937e2-256">지정된 텍스트를 포함하는 &lt;![CDATA[...]]&gt; 블록을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-256">Writes out a &lt;![CDATA[...]]&gt; block containing the specified text.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-257">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-257">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-258">경우 `text` 있거나 `null` 또는 `String.Empty`,이 메서드는 빈 CDATA 블록을 예를 들어 작성 \<! [ CDATA []]] ><! [CDATA] >.</span><span class="sxs-lookup"><span data-stu-id="937e2-258">If `text` is either `null` or `String.Empty`, this method writes an empty CDATA block, for example \<![CDATA[]]]><![CDATA[]>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-259">다음 예제에서는 책을 나타내는 XML 파일을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-259">The following example writes an XML file representing a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-260">텍스트로 인해 XML 문서가 제대로 구성되지 않은 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-260">The text would result in a non-well formed XML document.</span></span></exception>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-261"><see cref="P:System.Xml.XmlTextWriter.WriteState" />이 <see langword="Closed" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-261">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is <see langword="Closed" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteCharEntity">
+      <MemberSignature Language="C#" Value="public override void WriteCharEntity (char ch);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteCharEntity(char ch) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteCharEntity(System.Char)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteCharEntity (ch As Char)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteCharEntity(char ch);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ch" Type="System.Char" />
+      </Parameters>
+      <Docs>
+        <param name="ch"><span data-ttu-id="937e2-262">문자 엔터티를 생성할 유니코드 문자입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-262">Unicode character for which to generate a character entity.</span></span></param>
+        <summary><span data-ttu-id="937e2-263">지정된 유니코드 문자 값에 대한 문자 엔터티가 생성되도록 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-263">Forces the generation of a character entity for the specified Unicode character value.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-264">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-264">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-265">이 메서드는 16 진 문자 엔터티 참조 형식에는 유니코드 문자를 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-265">This method writes the Unicode character in hexadecimal character entity reference format.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-266">다음 예제에서는 `WriteCharEntity` 메서드가 전자 메일 주소를 작성할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-266">The following example uses the `WriteCharEntity` method to write an email address.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteTimeSpan Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteTimeSpan Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteTimeSpan Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteTimeSpan Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-267">문자가 서로게이트 쌍 문자 범위 <see langword="0xd800" /> - <see langword="0xdfff" />에 있거나 텍스트로 인해 XML 문서가 제대로 구성되지 않은 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-267">The character is in the surrogate pair character range, <see langword="0xd800" /> - <see langword="0xdfff" />; or the text would result in a non-well formed XML document.</span></span></exception>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-268"><see cref="P:System.Xml.XmlTextWriter.WriteState" />이 <see langword="Closed" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-268">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is <see langword="Closed" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteChars">
+      <MemberSignature Language="C#" Value="public override void WriteChars (char[] buffer, int index, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteChars(char[] buffer, int32 index, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteChars(System.Char[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteChars (buffer As Char(), index As Integer, count As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteChars(cli::array &lt;char&gt; ^ buffer, int index, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Char[]" />
+        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="buffer"><span data-ttu-id="937e2-269">쓸 텍스트가 포함된 문자 배열입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-269">Character array containing the text to write.</span></span></param>
+        <param name="index"><span data-ttu-id="937e2-270">쓸 텍스트의 시작을 나타내는 버퍼 내의 위치입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-270">The position in the buffer indicating the start of the text to write.</span></span></param>
+        <param name="count"><span data-ttu-id="937e2-271">쓸 문자 수입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-271">The number of characters to write.</span></span></param>
+        <summary><span data-ttu-id="937e2-272">한 번에 한 버퍼씩 텍스트를 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-272">Writes text one buffer at a time.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-273">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-273">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-274">이 메서드는 한 번에 많은 양의 텍스트 한 버퍼를 쓰는 데 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-274">This method can be used to write large amounts of text one buffer at a time.</span></span>  
+  
+ <span data-ttu-id="937e2-275">되도록 특수 처리를 수행 해야 합니다는 `WriteChars` 메서드가 여러 버퍼 쓰기 서로게이트 쌍 문자가 분할 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-275">Special handling must be done to ensure the `WriteChars` method does not split surrogate pair characters across multiple buffer writes.</span></span> <span data-ttu-id="937e2-276">서로게이트 쌍에 대 한 유효한 범위를 정의 하는 XML 사양입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-276">The XML specification defines the valid ranges for surrogate pairs.</span></span>  
+  
+ <span data-ttu-id="937e2-277">서로게이트 쌍 문자가 서로게이트 쌍 문자 버퍼에서 분할 되 고 그렇게 하면 작성 되 면 예외가 throw 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-277">An exception is thrown if surrogate pair characters are written that would result in the surrogate pair characters being split in the buffer.</span></span>  
+  
+   
+  
+## Examples  
+ [!code-csharp[XmlTextWriter.WriteChars#1](~/samples/snippets/csharp/VS_Snippets_Data/xmltextwriter.writechars/cs/xmlwriterwritecharsexample.cs#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="937e2-278"><paramref name="buffer" />가 <see langword="null" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-278"><paramref name="buffer" /> is <see langword="null" />.</span></span></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="937e2-279"><paramref name="index" /> 또는 <paramref name="count" />가 0보다 작습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-279"><paramref name="index" /> or <paramref name="count" /> is less than zero.</span></span>  
+  
+ <span data-ttu-id="937e2-280">또는</span><span class="sxs-lookup"><span data-stu-id="937e2-280">-or-</span></span>  
+  
+ <span data-ttu-id="937e2-281">버퍼 길이에서 <paramref name="index" />를 뺀 값이 <paramref name="count" />보다 작고, 호출한 결과 서로게이트 쌍 문자가 분할되거나 잘못된 서로게이트 쌍이 작성되는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-281">The buffer length minus <paramref name="index" /> is less than <paramref name="count" />; the call results in surrogate pair characters being split or an invalid surrogate pair being written.</span></span></exception>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-282"><see cref="P:System.Xml.XmlTextWriter.WriteState" />가 Closed인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-282">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is Closed.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteComment">
+      <MemberSignature Language="C#" Value="public override void WriteComment (string text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteComment(string text) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteComment(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteComment (text As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteComment(System::String ^ text);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="text"><span data-ttu-id="937e2-283">주석 내에 배치할 텍스트입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-283">Text to place inside the comment.</span></span></param>
+        <summary><span data-ttu-id="937e2-284">지정된 텍스트를 포함하는 주석 &lt;!--...--&gt;을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-284">Writes out a comment &lt;!--...--&gt; containing the specified text.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-285">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-285">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-286">경우 `text` 는 `null` 또는 `String.Empty`,이 메서드는 작성 한 `Comment` 데이터 예제에 대 한 콘텐츠가 없는 \<!--->.</span><span class="sxs-lookup"><span data-stu-id="937e2-286">If `text` is either `null` or `String.Empty`, this method writes a `Comment` with no data content, for example \<!---->.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-287">다음 예제에서는 책을 나타내는 XML 파일을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-287">The following example writes an XML file representing a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-288">텍스트로 인해 XML 문서가 제대로 구성되지 않은 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-288">The text would result in a non-well formed XML document</span></span></exception>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-289"><see cref="P:System.Xml.XmlTextWriter.WriteState" />이 <see langword="Closed" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-289">The <see cref="P:System.Xml.XmlTextWriter.WriteState" /> is <see langword="Closed" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteDocType">
+      <MemberSignature Language="C#" Value="public override void WriteDocType (string name, string pubid, string sysid, string subset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteDocType(string name, string pubid, string sysid, string subset) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteDocType(System.String,System.String,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteDocType (name As String, pubid As String, sysid As String, subset As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteDocType(System::String ^ name, System::String ^ pubid, System::String ^ sysid, System::String ^ subset);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="pubid" Type="System.String" />
+        <Parameter Name="sysid" Type="System.String" />
+        <Parameter Name="subset" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name"><span data-ttu-id="937e2-290">DOCTYPE의 이름입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-290">The name of the DOCTYPE.</span></span> <span data-ttu-id="937e2-291">이 이름은 비어 있지 않아야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-291">This must be non-empty.</span></span></param>
+        <param name="pubid"><span data-ttu-id="937e2-292">null이 아닌 경우 PUBLIC "pubid" "sysid"도 씁니다. 여기서 <c>pubid</c>와 <c>sysid</c>는 지정된 인수 값으로 바뀝니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-292">If non-null it also writes PUBLIC "pubid" "sysid" where <c>pubid</c> and <c>sysid</c> are replaced with the value of the given arguments.</span></span></param>
+        <param name="sysid"><span data-ttu-id="937e2-293"><c>pubid</c>가 null이고 <c>sysid</c>가 null이 아닌 경우 SYSTEM "sysid"를 씁니다. 여기서 <c>sysid</c>는 이 인수 값으로 바뀝니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-293">If <c>pubid</c> is null and <c>sysid</c> is non-null it writes SYSTEM "sysid" where <c>sysid</c> is replaced with the value of this argument.</span></span></param>
+        <param name="subset"><span data-ttu-id="937e2-294">null이 아닌 경우 하위 집합이 이 인수 값으로 대체되는 [subset]을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-294">If non-null it writes [subset] where subset is replaced with the value of this argument.</span></span></param>
+        <summary><span data-ttu-id="937e2-295">지정된 이름과 선택적 특성을 사용하여 DOCTYPE 선언을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-295">Writes the DOCTYPE declaration with the specified name and optional attributes.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-296">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-296">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-297">이 메서드는 잘못 된 문자에 대 한 확인 하지 않습니다 `pubid`, `sysid` 또는 `subset`합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-297">This method does not check for invalid characters in `pubid`, `sysid` or `subset`.</span></span> <span data-ttu-id="937e2-298">또한 확인 하지 않습니다 내부 하위 집합이 올바른 형식이 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-298">It also does not check that the internal subset is well-formed.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="937e2-299"><xref:System.Xml.XmlTextWriter> 에 전달 되는 모든 데이터의 유효성을 검사 하지 않습니다는 <xref:System.Xml.XmlTextWriter.WriteDocType%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="937e2-299">The <xref:System.Xml.XmlTextWriter> does not validate any data that is passed to the <xref:System.Xml.XmlTextWriter.WriteDocType%2A> method.</span></span> <span data-ttu-id="937e2-300">이 메서드를 임의의 데이터를 전달 하지 않아야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-300">You should not pass arbitrary data to this method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-301">다음 예제에서는 책을 나타내는 XML 파일을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-301">The following example writes an XML file representing a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-302">이 메서드가 루트 요소 다음의 프롤로그 외부에서 호출된 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-302">This method was called outside the prolog (after the root element).</span></span></exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="937e2-303"><paramref name="name" />이 <see langword="null" /> 또는 <see langword="String.Empty" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-303"><paramref name="name" /> is <see langword="null" /> or <see langword="String.Empty" /></span></span>  
+  
+ <span data-ttu-id="937e2-304">또는</span><span class="sxs-lookup"><span data-stu-id="937e2-304">-or-</span></span>  
+  
+ <span data-ttu-id="937e2-305"><paramref name="name" />의 값이 잘못된 XML이 되는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-305">the value for <paramref name="name" /> would result in invalid XML.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteEndAttribute">
+      <MemberSignature Language="C#" Value="public override void WriteEndAttribute ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteEndAttribute() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteEndAttribute" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteEndAttribute ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteEndAttribute();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="937e2-306">이전 <see cref="M:System.Xml.XmlTextWriter.WriteStartAttribute(System.String,System.String,System.String)" /> 호출을 닫습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-306">Closes the previous <see cref="M:System.Xml.XmlTextWriter.WriteStartAttribute(System.String,System.String,System.String)" /> call.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-307">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-307">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-308">호출 하는 경우 `WriteStartAttribute`,이 방법으로 특성을 닫을 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-308">If you call `WriteStartAttribute`, you can close the attribute with this method.</span></span>  
+  
+ <span data-ttu-id="937e2-309">호출 하 여 특성을 닫을 수도 `WriteStartAttribute` 다시 호출 <xref:System.Xml.XmlWriter.WriteAttributeString%2A>, 또는 호출 <xref:System.Xml.XmlTextWriter.WriteEndElement%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-309">You can also close the attribute by calling `WriteStartAttribute` again, calling <xref:System.Xml.XmlWriter.WriteAttributeString%2A>, or calling <xref:System.Xml.XmlTextWriter.WriteEndElement%2A>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-310">다음 예제에서는 책을 작성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-310">The following example writes out a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteEndDocument">
+      <MemberSignature Language="C#" Value="public override void WriteEndDocument ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteEndDocument() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteEndDocument" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteEndDocument ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteEndDocument();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="937e2-311">열려 있는 모든 요소나 특성을 닫고 작성기를 시작 상태로 설정합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-311">Closes any open elements or attributes and puts the writer back in the Start state.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-312">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-312">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-313">다음 예제에서는 책을 나타내는 XML 파일을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-313">The following example writes an XML file representing a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-314">XML 문서가 잘못된 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-314">The XML document is invalid.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteEndElement">
+      <MemberSignature Language="C#" Value="public override void WriteEndElement ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteEndElement() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteEndElement" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteEndElement ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteEndElement();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="937e2-315">한 요소를 닫고 해당 네임스페이스 범위를 팝합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-315">Closes one element and pops the corresponding namespace scope.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-316">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-316">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-317">짧은 끝 태그 요소에 콘텐츠가 없는 경우 "/ >" 작성 됩니다. 그렇지 않으면 전체 끝 태그를 작성 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-317">If the element contains no content a short end tag "/>" is written; otherwise a full end tag is written.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-318">다음 예제에서는 책을 나타내는 XML 파일을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-318">The following example writes an XML file representing a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteEndElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteEndElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteEndElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteEndElement Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteEntityRef">
+      <MemberSignature Language="C#" Value="public override void WriteEntityRef (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteEntityRef(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteEntityRef(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteEntityRef (name As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteEntityRef(System::String ^ name);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name"><span data-ttu-id="937e2-319">엔터티 참조의 이름입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-319">Name of the entity reference.</span></span></param>
+        <summary><span data-ttu-id="937e2-320">엔터티 참조를 <see langword="&amp;name;" />처럼 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-320">Writes out an entity reference as <see langword="&amp;name;" />.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-321">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-321">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-322">다음 예제에서는 책을 나타내는 XML 파일을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-322">The following example writes an XML file representing a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-323">텍스트로 인해 XML 문서가 제대로 구성되지 않거나 <paramref name="name" />이 <see langword="null" /> 또는 <see langword="String.Empty" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-323">The text would result in a non-well formed XML document or <paramref name="name" /> is either <see langword="null" /> or <see langword="String.Empty" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteFullEndElement">
+      <MemberSignature Language="C#" Value="public override void WriteFullEndElement ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteFullEndElement() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteFullEndElement" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteFullEndElement ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteFullEndElement();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="937e2-324">한 요소를 닫고 해당 네임스페이스 범위를 팝합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-324">Closes one element and pops the corresponding namespace scope.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-325">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-325">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-326">이 메서드는 항상 전체 끝 태그를 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-326">This method always writes the full end tag.</span></span> <span data-ttu-id="937e2-327">전체 끝 태그를 포함 해야 하는 요소를 처리할 때 유용 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-327">This is useful when dealing with elements that must include a full end tag.</span></span> <span data-ttu-id="937e2-328">브라우저에서 HTML 스크립트 블록으로 끝나도록를 예상 하는 예를 들어 " \< />"입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-328">For example, browsers expect HTML script blocks to be closed with "\</script>".</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-329">다음 예제에서는 요소 콘텐츠를 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-329">The following example writes out an element with no content.</span></span> <span data-ttu-id="937e2-330">WriteFullEndElement를 사용 하 여 전체 끝 요소 태그를 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-330">It uses WriteFullEndElement to write the full end element tag.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteFullEndElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteFullEndElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteFullEndElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteFullEndElement Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteName">
+      <MemberSignature Language="C#" Value="public override void WriteName (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteName(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteName(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteName (name As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteName(System::String ^ name);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name"><span data-ttu-id="937e2-331">작성할 이름입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-331">Name to write.</span></span></param>
+        <summary><span data-ttu-id="937e2-332">W3C XML 1.0 권장 사항(http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name))에 따라 유효한 이름이 되도록 지정된 이름을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-332">Writes out the specified name, ensuring it is a valid name according to the W3C XML 1.0 recommendation (http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name).</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-333">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-333">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-334">경우 <xref:System.Xml.XmlTextWriter.Namespaces%2A> 로 설정 된 `true`, `WriteName` name은 XML 권장 사항에 W3C 네임 스페이스에 유효도 확인 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-334">If <xref:System.Xml.XmlTextWriter.Namespaces%2A> is set to `true`, `WriteName` also checks that the name is also valid according to the W3C Namespaces in XML recommendation.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="937e2-335"><paramref name="name" />이 올바른 XML 이름이 아니거나 <paramref name="name" />이 <see langword="null" /> 또는 <see langword="String.Empty" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-335"><paramref name="name" /> is not a valid XML name; or <paramref name="name" /> is either <see langword="null" /> or <see langword="String.Empty" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteNmToken">
+      <MemberSignature Language="C#" Value="public override void WriteNmToken (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteNmToken(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteNmToken(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteNmToken (name As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteNmToken(System::String ^ name);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name"><span data-ttu-id="937e2-336">작성할 이름입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-336">Name to write.</span></span></param>
+        <summary><span data-ttu-id="937e2-337">W3C XML 1.0 권장 사항(http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name))에 따라 유효한 <see langword="NmToken" />이 되도록 지정된 이름을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-337">Writes out the specified name, ensuring it is a valid <see langword="NmToken" /> according to the W3C XML 1.0 recommendation (http://www.w3.org/TR/1998/REC-xml-19980210#NT-Name).</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-338">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-338">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="937e2-339"><paramref name="name" />이 올바른 <see langword="NmToken" />이 아니거나 <paramref name="name" />이 <see langword="null" /> 또는 <see langword="String.Empty" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-339"><paramref name="name" /> is not a valid <see langword="NmToken" />; or <paramref name="name" /> is either <see langword="null" /> or <see langword="String.Empty" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteProcessingInstruction">
+      <MemberSignature Language="C#" Value="public override void WriteProcessingInstruction (string name, string text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteProcessingInstruction(string name, string text) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteProcessingInstruction(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteProcessingInstruction (name As String, text As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteProcessingInstruction(System::String ^ name, System::String ^ text);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name"><span data-ttu-id="937e2-340">처리 명령의 이름입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-340">Name of the processing instruction.</span></span></param>
+        <param name="text"><span data-ttu-id="937e2-341">처리 명령에 포함할 텍스트입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-341">Text to include in the processing instruction.</span></span></param>
+        <summary><span data-ttu-id="937e2-342">이름과 텍스트 사이의 공백을 사용하여 처리 명령을 작성합니다(예: &lt;?name text?&gt;).</span><span class="sxs-lookup"><span data-stu-id="937e2-342">Writes out a processing instruction with a space between the name and text as follows: &lt;?name text?&gt;.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-343">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-343">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-344">경우 `text` 있거나 `null` 또는 `String.Empty`,이 메서드는 작성는 `ProcessingInstruction` 데이터 예제에 대 한 콘텐츠가 없는 \<? 이름? > 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-344">If `text` is either `null` or `String.Empty`, this method writes a `ProcessingInstruction` with no data content, for example \<?name?>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-345">다음 예제에서는 책을 나타내는 XML 파일을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-345">The following example writes an XML file representing a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-346">텍스트로 인해 XML 문서가 제대로 구성되지 않은 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-346">The text would result in a non-well formed XML document.</span></span>  
+  
+ <span data-ttu-id="937e2-347"><paramref name="name" />가 <see langword="null" /> 또는 <see langword="String.Empty" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-347"><paramref name="name" /> is either <see langword="null" /> or <see langword="String.Empty" />.</span></span>  
+  
+ <span data-ttu-id="937e2-348"><see cref="M:System.Xml.XmlTextWriter.WriteStartDocument" />가 이미 호출된 후 이 메서드를 사용하여 XML 선언을 만드는 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-348">This method is being used to create an XML declaration after <see cref="M:System.Xml.XmlTextWriter.WriteStartDocument" /> has already been called.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteQualifiedName">
+      <MemberSignature Language="C#" Value="public override void WriteQualifiedName (string localName, string ns);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteQualifiedName(string localName, string ns) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteQualifiedName(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteQualifiedName (localName As String, ns As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteQualifiedName(System::String ^ localName, System::String ^ ns);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="localName" Type="System.String" />
+        <Parameter Name="ns" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="localName"><span data-ttu-id="937e2-349">작성할 로컬 이름입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-349">The local name to write.</span></span></param>
+        <param name="ns"><span data-ttu-id="937e2-350">이름과 연결할 네임스페이스 URI 입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-350">The namespace URI to associate with the name.</span></span></param>
+        <summary><span data-ttu-id="937e2-351">네임스페이스로 한정된 이름을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-351">Writes out the namespace-qualified name.</span></span> <span data-ttu-id="937e2-352">이 메서드는 지정된 네임스페이스의 범위에 속하는 접두사를 찾습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-352">This method looks up the prefix that is in scope for the given namespace.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-353">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-353">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-354">예를 들어 다음 Microsoft Visual C# 코드:</span><span class="sxs-lookup"><span data-stu-id="937e2-354">For example, the following Microsoft Visual C# code:</span></span>  
+  
+```  
+writer.Formatting = Formatting.Indented;  
+writer.WriteStartElement("root");  
+ writer.WriteAttributeString("xmlns","x",null,"urn:abc");  
+ writer.WriteStartElement("item");  
+ writer.WriteStartAttribute("href",null);  
+ writer.WriteString("#");  
+ writer.WriteQualifiedName("test","urn:abc");  
+ writer.WriteEndAttribute();  
+ writer.WriteEndElement();  
+ writer.WriteEndElement();  
+ writer.Close();  
+```  
+  
+ <span data-ttu-id="937e2-355">다음과 같은 출력을 생성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-355">Generates the following output:</span></span>  
+  
+```  
+<root xmlns:x="urn:abc">  
+ <item href="#x:test"/>  
+ </root>  
+```  
+  
+ <span data-ttu-id="937e2-356">경우 `ns` 접두사가 없습니다. 현재 기본 네임 스페이스로 맵이 생성 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-356">If `ns` maps to the current default namespace, no prefix is generated.</span></span>  
+  
+ <span data-ttu-id="937e2-357">이 메서드는 접두사는 경우 생성 특성 값을 작성할 때 `ns` 찾을 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-357">When writing attribute values, this method generates a prefix if `ns` is not found.</span></span> <span data-ttu-id="937e2-358">이면 예외가 발생 요소 콘텐츠를 작성할 때 `ns` 찾을 수 없습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-358">When writing element content, it throws an exception if `ns` is not found.</span></span>  
+  
+ <span data-ttu-id="937e2-359">이 작성기 네임 스페이스를 지 원하는 경우 (<xref:System.Xml.XmlTextWriter.Namespaces%2A> 로 설정 된 `true`),이 메서드는 또한 W3C 네임 스페이스 XML 권장 사항에 따라 올바른 이름 인지 확인 (http://www.w3.org/TR/REC-xml-names)합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-359">If this writer supports namespaces (<xref:System.Xml.XmlTextWriter.Namespaces%2A> is set to `true`), this method also checks that the name is valid according to the W3C Namespaces in XML recommendation (http://www.w3.org/TR/REC-xml-names).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-360">다음 예에서는 XSD 스키마의 일부를 작성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-360">The following example writes out a portion of a XSD schema.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteQualifiedName Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteQualifiedName Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteQualifiedName Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteQualifiedName Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="937e2-361"><paramref name="localName" />가 <see langword="null" /> 또는 <see langword="String.Empty" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-361"><paramref name="localName" /> is either <see langword="null" /> or <see langword="String.Empty" />.</span></span>  
+  
+ <span data-ttu-id="937e2-362"><paramref name="localName" />이 W3C Namespaces 사양에 따르는 유효한 이름이 아닌 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-362"><paramref name="localName" /> is not a valid name according to the W3C Namespaces spec.</span></span></exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="WriteRaw">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><span data-ttu-id="937e2-363">원시 태그를 직접 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-363">Writes raw markup manually.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-364">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-364">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="WriteRaw">
+      <MemberSignature Language="C#" Value="public override void WriteRaw (string data);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteRaw(string data) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteRaw(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteRaw (data As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteRaw(System::String ^ data);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="data" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="data"><span data-ttu-id="937e2-365">작성할 텍스트를 포함하는 문자열입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-365">String containing the text to write.</span></span></param>
+        <summary><span data-ttu-id="937e2-366">문자열에서 직접 원시 태그를 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-366">Writes raw markup manually from a string.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-367">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-367">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-368">이 메서드는 특수 문자를 이스케이프 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-368">This method does not escape special characters.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="937e2-369"><xref:System.Xml.XmlTextWriter> 에 전달 되는 모든 데이터의 유효성을 검사 하지 않습니다는 <xref:System.Xml.XmlTextWriter.WriteRaw%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="937e2-369">The <xref:System.Xml.XmlTextWriter> does not validate any data that is passed to the <xref:System.Xml.XmlTextWriter.WriteRaw%2A> method.</span></span> <span data-ttu-id="937e2-370">이 메서드를 임의의 데이터를 전달 하지 않아야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-370">You should not pass arbitrary data to this method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-371">다음 예제에서는 사용 하 여 문자열을 작성 된 `WriteRaw` 메서드.</span><span class="sxs-lookup"><span data-stu-id="937e2-371">The following example writes a string using the `WriteRaw` method.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteRaw1 Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteRaw1 Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteRaw1 Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteRaw1 Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteRaw">
+      <MemberSignature Language="C#" Value="public override void WriteRaw (char[] buffer, int index, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteRaw(char[] buffer, int32 index, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteRaw(System.Char[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteRaw (buffer As Char(), index As Integer, count As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteRaw(cli::array &lt;char&gt; ^ buffer, int index, int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Char[]" />
+        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="buffer"><span data-ttu-id="937e2-372">쓸 텍스트가 포함된 문자 배열입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-372">Character array containing the text to write.</span></span></param>
+        <param name="index"><span data-ttu-id="937e2-373">쓸 텍스트의 시작을 나타내는 버퍼 내의 위치입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-373">The position within the buffer indicating the start of the text to write.</span></span></param>
+        <param name="count"><span data-ttu-id="937e2-374">쓸 문자 수입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-374">The number of characters to write.</span></span></param>
+        <summary><span data-ttu-id="937e2-375">문자 버퍼에서 직접 원시 태그를 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-375">Writes raw markup manually from a character buffer.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-376">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-376">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-377">이 메서드는 특수 문자를 이스케이프 하지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-377">This method does not escape special characters.</span></span>  
+  
+> [!IMPORTANT]
+>  <span data-ttu-id="937e2-378"><xref:System.Xml.XmlTextWriter> 에 전달 되는 모든 데이터의 유효성을 검사 하지 않습니다는 <xref:System.Xml.XmlTextWriter.WriteRaw%2A> 메서드.</span><span class="sxs-lookup"><span data-stu-id="937e2-378">The <xref:System.Xml.XmlTextWriter> does not validate any data that is passed to the <xref:System.Xml.XmlTextWriter.WriteRaw%2A> method.</span></span> <span data-ttu-id="937e2-379">이 메서드를 임의의 데이터를 전달 하지 않아야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-379">You should not pass arbitrary data to this method.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="937e2-380"><paramref name="buffer" />가 <see langword="null" />인 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-380"><paramref name="buffer" /> is <see langword="null" />.</span></span></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="937e2-381"><paramref name="index" /> 또는 <paramref name="count" />가 0보다 작습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-381"><paramref name="index" /> or <paramref name="count" /> is less than zero.</span></span>  
+  
+ <span data-ttu-id="937e2-382">또는</span><span class="sxs-lookup"><span data-stu-id="937e2-382">-or-</span></span>  
+  
+ <span data-ttu-id="937e2-383">버퍼 길이에서 <paramref name="index" />를 빼면 <paramref name="count" />보다 작은 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-383">The buffer length minus <paramref name="index" /> is less than <paramref name="count" />.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteStartAttribute">
+      <MemberSignature Language="C#" Value="public override void WriteStartAttribute (string prefix, string localName, string ns);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteStartAttribute(string prefix, string localName, string ns) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteStartAttribute(System.String,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteStartAttribute (prefix As String, localName As String, ns As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteStartAttribute(System::String ^ prefix, System::String ^ localName, System::String ^ ns);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="prefix" Type="System.String" />
+        <Parameter Name="localName" Type="System.String" />
+        <Parameter Name="ns" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="prefix">
+          <span data-ttu-id="937e2-384">특성의 <see langword="Namespace" /> 접두사입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-384"><see langword="Namespace" /> prefix of the attribute.</span></span></param>
+        <param name="localName">
+          <span data-ttu-id="937e2-385">특성의 <see langword="LocalName" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-385"><see langword="LocalName" /> of the attribute.</span></span></param>
+        <param name="ns">
+          <span data-ttu-id="937e2-386">특성의 <see langword="NamespaceURI" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-386"><see langword="NamespaceURI" /> of the attribute</span></span></param>
+        <summary><span data-ttu-id="937e2-387">특성의 시작을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-387">Writes the start of an attribute.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-388">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-388">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-389">이 고급 버전의 <xref:System.Xml.XmlWriter.WriteAttributeString%2A> 같은 여러 쓰기 메서드를 사용 하 여 특성 값을 작성할 수 있는 <xref:System.Xml.XmlTextWriter.WriteString%2A>합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-389">This is a more advanced version of <xref:System.Xml.XmlWriter.WriteAttributeString%2A> that allows you to write an attribute value using multiple write methods, such as <xref:System.Xml.XmlTextWriter.WriteString%2A>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-390">다음 예제에서는 책을 작성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-390">The following example writes out a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="937e2-391"><paramref name="localName" />가 <see langword="null" /> 또는 <see langword="String.Empty" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-391"><paramref name="localName" /> is either <see langword="null" /> or <see langword="String.Empty" />.</span></span></exception>
+        <altmember cref="M:System.Xml.XmlTextWriter.WriteEndAttribute" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="WriteStartDocument">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><span data-ttu-id="937e2-392">버전 "1.0"을 사용하여 XML 선언을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-392">Writes the XML declaration with the version "1.0".</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-393">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-393">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="WriteStartDocument">
+      <MemberSignature Language="C#" Value="public override void WriteStartDocument ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteStartDocument() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteStartDocument" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteStartDocument ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteStartDocument();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><span data-ttu-id="937e2-394">버전 "1.0"을 사용하여 XML 선언을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-394">Writes the XML declaration with the version "1.0".</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-395">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-395">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-396">문서의 인코딩 수준 작성기를 구현 하는 방법을 의해 결정 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-396">The encoding level of the document is determined by how the writer is implemented.</span></span> <span data-ttu-id="937e2-397">예를 들어 경우는 <xref:System.Text.Encoding> 개체에 지정 된는 `XmlTextWriter` 생성자가 인코딩 특성의 값을 결정 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-397">For example, if an <xref:System.Text.Encoding> object is specified in the `XmlTextWriter` constructor, this determines the value of the encoding attribute.</span></span> <span data-ttu-id="937e2-398">이 메서드는 독립형 특성을 만들지 않습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-398">This method does not create a standalone attribute.</span></span>  
+  
+ <span data-ttu-id="937e2-399">때 `WriteStartDocument` 라고 작성기 작성 하는 올바른 형식의 XML 문서 유효성을 검사 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-399">When `WriteStartDocument` is called the writer validates that what you are writing is a well-formed XML document.</span></span> <span data-ttu-id="937e2-400">예를 들어 XML 선언이 첫 번째 노드를 하나 있고 루트 수준 요소가 하나만 존재 하는지 확인 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-400">For example, it checks that the XML declaration is the first node, that one and only one root-level element exists and so on.</span></span> <span data-ttu-id="937e2-401">이 메서드가 호출 되지 않으면 XML 조각을 쓰고 및 없는 루트 수준 규칙을 적용 작성기 가정 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-401">If this method is not called, the writer assumes an XML fragment is being written and applies no root level rules.</span></span>  
+  
+ <span data-ttu-id="937e2-402">경우 `WriteStartDocument` 를 호출한 다음는 <xref:System.Xml.XmlTextWriter.WriteProcessingInstruction%2A> 메서드는 XML 선언을 다른 데, 예외가 throw 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-402">If `WriteStartDocument` has been called and then the <xref:System.Xml.XmlTextWriter.WriteProcessingInstruction%2A> method is used to create another XML declaration, an exception is thrown.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-403">다음 예제에서는 책을 나타내는 XML 파일을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-403">The following example writes an XML file representing a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartDocument Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartDocument Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-404">생성자 다음에 호출된 첫 번째 쓰기 메서드가 아닌 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-404">This is not the first write method called after the constructor.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteStartDocument">
+      <MemberSignature Language="C#" Value="public override void WriteStartDocument (bool standalone);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteStartDocument(bool standalone) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteStartDocument(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteStartDocument (standalone As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteStartDocument(bool standalone);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="standalone" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="standalone"><span data-ttu-id="937e2-405"><see langword="true" />이면 "standalone=yes"로 작성하고, <see langword="false" />이면 "standalone=no"로 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-405">If <see langword="true" />, it writes "standalone=yes"; if <see langword="false" />, it writes "standalone=no".</span></span></param>
+        <summary><span data-ttu-id="937e2-406">버전 "1.0"과 독립형 특성을 사용하여 XML 선언을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-406">Writes the XML declaration with the version "1.0" and the standalone attribute.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-407">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-407">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-408">문서의 인코딩 수준 작성기를 구현 하는 방법을 의해 결정 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-408">The encoding level of the document is determined by how the writer is implemented.</span></span> <span data-ttu-id="937e2-409">예를 들어 경우는 <xref:System.Text.Encoding> 개체에 지정 된는 `XmlTextWriter` 생성자가 인코딩 특성의 값을 결정 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-409">For example, if an <xref:System.Text.Encoding> object is specified in the `XmlTextWriter` constructor, this determines the value of the encoding attribute.</span></span>  
+  
+ <span data-ttu-id="937e2-410">때 `WriteStartDocument` 라고 작성기 작성 하는 올바른 형식의 XML 문서 유효성을 검사 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-410">When `WriteStartDocument` is called the writer validates that what you are writing is a well-formed XML document.</span></span> <span data-ttu-id="937e2-411">예를 들어 XML 선언이 첫 번째 노드를 하나 있고 루트 수준 요소가 하나만 존재 하는지 확인 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-411">For example, it checks that the XML declaration is the first node, that one and only one root-level element exists and so on.</span></span> <span data-ttu-id="937e2-412">이 메서드가 호출 되지 않으면 XML 조각을 쓰고 및 없는 루트 수준 규칙을 적용 작성기 가정 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-412">If this method is not called, the writer assumes an XML fragment is being written and applies no root level rules.</span></span>  
+  
+ <span data-ttu-id="937e2-413">경우 `WriteStartDocument` 를 호출한 다음는 <xref:System.Xml.XmlTextWriter.WriteProcessingInstruction%2A> 메서드는 XML 선언을 다른 데, 예외가 throw 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-413">If `WriteStartDocument` has been called and then the <xref:System.Xml.XmlTextWriter.WriteProcessingInstruction%2A> method is used to create another XML declaration, an exception is thrown.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-414">생성자 다음에 호출된 첫 번째 쓰기 메서드가 아닌 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-414">This is not the first write method called after the constructor.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteStartElement">
+      <MemberSignature Language="C#" Value="public override void WriteStartElement (string prefix, string localName, string ns);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteStartElement(string prefix, string localName, string ns) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteStartElement(System.String,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteStartElement (prefix As String, localName As String, ns As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteStartElement(System::String ^ prefix, System::String ^ localName, System::String ^ ns);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="prefix" Type="System.String" />
+        <Parameter Name="localName" Type="System.String" />
+        <Parameter Name="ns" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="prefix"><span data-ttu-id="937e2-415">요소의 네임스페이스 접두사입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-415">The namespace prefix of the element.</span></span></param>
+        <param name="localName"><span data-ttu-id="937e2-416">요소의 로컬 이름입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-416">The local name of the element.</span></span></param>
+        <param name="ns"><span data-ttu-id="937e2-417">요소와 연결할 네임스페이스 URI입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-417">The namespace URI to associate with the element.</span></span> <span data-ttu-id="937e2-418">이 네임스페이스가 이미 범위에 있고 관련된 접두사가 있는 경우 작성기는 해당 접두사도 자동으로 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-418">If this namespace is already in scope and has an associated prefix then the writer automatically writes that prefix also.</span></span></param>
+        <summary><span data-ttu-id="937e2-419">지정된 시작 태그를 작성하고 주어진 네임스페이스 및 접두사와 연결합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-419">Writes the specified start tag and associates it with the given namespace and prefix.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-420">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-420">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-421">특성을 작성 하거나 만들려면이 메서드를 호출한 후 사용 하는 콘텐츠 <xref:System.Xml.XmlTextWriter.WriteComment%2A>, <xref:System.Xml.XmlTextWriter.WriteString%2A>, 또는 <xref:System.Xml.XmlTextWriter.WriteStartElement%2A> 자식 요소에 대 한 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-421">After calling this method you can either write attributes or create content using <xref:System.Xml.XmlTextWriter.WriteComment%2A>, <xref:System.Xml.XmlTextWriter.WriteString%2A>, or <xref:System.Xml.XmlTextWriter.WriteStartElement%2A> for child elements.</span></span> <span data-ttu-id="937e2-422">사용 하 여 요소를 닫을 수 있습니다 <xref:System.Xml.XmlTextWriter.WriteEndElement%2A> 될 때 끝 태그가 쓰여집니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-422">You can close the element with <xref:System.Xml.XmlTextWriter.WriteEndElement%2A> at which time an end tag is written out.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-423">다음 예제에서는 책을 작성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-423">The following example writes out a book.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.WriteStartElement Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.WriteStartElement Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><span data-ttu-id="937e2-424">작성기가 닫힌 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-424">The writer is closed.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteState">
+      <MemberSignature Language="C#" Value="public override System.Xml.WriteState WriteState { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Xml.WriteState WriteState" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.WriteState" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property WriteState As WriteState" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Xml::WriteState WriteState { System::Xml::WriteState get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.WriteState</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-425">작성기의 상태를 가져옵니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-425">Gets the state of the writer.</span></span></summary>
+        <value><span data-ttu-id="937e2-426"><see cref="T:System.Xml.WriteState" /> 값 중 하나입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-426">One of the <see cref="T:System.Xml.WriteState" /> values.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-427">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-427">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteString">
+      <MemberSignature Language="C#" Value="public override void WriteString (string text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteString(string text) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteString(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteString (text As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteString(System::String ^ text);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="text"><span data-ttu-id="937e2-428">작성할 텍스트입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-428">Text to write.</span></span></param>
+        <summary><span data-ttu-id="937e2-429">주어진 텍스트 콘텐츠를 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-429">Writes the given text content.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-430">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-430">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-431">`WriteString` 다음 작업을 수행합니다</span><span class="sxs-lookup"><span data-stu-id="937e2-431">`WriteString` does the following</span></span>  
+  
+-   <span data-ttu-id="937e2-432">문자 `&`, `<`, 및 `>` 바뀝니다 `&amp;`, `&lt;`, 및 `&gt;`각각.</span><span class="sxs-lookup"><span data-stu-id="937e2-432">The characters `&`, `<`, and `>` are replaced with `&amp;`, `&lt;`, and `&gt;`, respectively.</span></span>  
+  
+-   <span data-ttu-id="937e2-433">범위는 0 x-0x1F (공백 문자 0x9, 0xA 및 0xD)에서 문자 값은 숫자 문자 엔터티로 바뀝니다 (`&#0;` 통해 `&#0x1F`).</span><span class="sxs-lookup"><span data-stu-id="937e2-433">Character values in the range 0x-0x1F (excluding white space characters 0x9, 0xA, and 0xD) are replaced with numeric character entities (`&#0;` through `&#0x1F`).</span></span>  
+  
+-   <span data-ttu-id="937e2-434">경우 `WriteString` 라고 큰따옴표와 작은따옴표 바뀝니다 특성 값의 컨텍스트에서 `&quot;` 및 `&apos;` 각각.</span><span class="sxs-lookup"><span data-stu-id="937e2-434">If `WriteString` is called in the context of an attribute value, double and single quotes are replaced with `&quot;` and `&apos;` respectively.</span></span>  
+  
+ <span data-ttu-id="937e2-435">예를 들어이 입력 문자열 `test<item>test` 로 작성</span><span class="sxs-lookup"><span data-stu-id="937e2-435">For example, this input string `test<item>test` is written as</span></span>  
+  
+```  
+test&lt;item&gt;test  
+```  
+  
+ <span data-ttu-id="937e2-436">경우 `text` 있거나 `null` 또는 `String.Empty`,이 메서드는 데이터 콘텐츠가 없는 텍스트 노드를 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-436">If `text` is either `null` or `String.Empty`, this method writes a text node with no data content.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-437">다음 예제에서는 XML 조각을 씁니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-437">The following example writes an XML fragment.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.Formatting Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.Formatting Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-438">텍스트 문자열에 잘못된 서로게이트 쌍이 포함된 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-438">The text string contains an invalid surrogate pair.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteSurrogateCharEntity">
+      <MemberSignature Language="C#" Value="public override void WriteSurrogateCharEntity (char lowChar, char highChar);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteSurrogateCharEntity(char lowChar, char highChar) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteSurrogateCharEntity(System.Char,System.Char)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteSurrogateCharEntity (lowChar As Char, highChar As Char)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteSurrogateCharEntity(char lowChar, char highChar);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="lowChar" Type="System.Char" />
+        <Parameter Name="highChar" Type="System.Char" />
+      </Parameters>
+      <Docs>
+        <param name="lowChar"><span data-ttu-id="937e2-439">하위 서로게이트입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-439">The low surrogate.</span></span> <span data-ttu-id="937e2-440">이 값은 <see langword="0xDC00" />에서 <see langword="0xDFFF" /> 사이에 있어야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-440">This must be a value between <see langword="0xDC00" /> and <see langword="0xDFFF" />.</span></span></param>
+        <param name="highChar"><span data-ttu-id="937e2-441">상위 서로게이트입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-441">The high surrogate.</span></span> <span data-ttu-id="937e2-442">이 값은 <see langword="0xD800" />에서 <see langword="0xDBFF" /> 사이에 있어야 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-442">This must be a value between <see langword="0xD800" /> and <see langword="0xDBFF" />.</span></span></param>
+        <summary><span data-ttu-id="937e2-443">서로게이트 문자 쌍에 대한 서로게이트 문자 엔터티를 생성하고 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-443">Generates and writes the surrogate character entity for the surrogate character pair.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-444">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-444">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-445">이 메서드는 utf-16 인코딩을 사용 하는 시스템에 적용할 수만 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-445">This method is only applicable on systems that use UTF-16 encoding.</span></span>  
+  
+ <span data-ttu-id="937e2-446">서로게이트 문자 엔터티는 16 진수 형식으로 기록 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-446">The surrogate character entity is written in hexadecimal format.</span></span> <span data-ttu-id="937e2-447">서로게이트 문자에 대 한 범위는 `#x10000` 를 `#x10FFFF`합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-447">The range for surrogate characters is `#x10000` to `#x10FFFF`.</span></span> <span data-ttu-id="937e2-448">서로게이트 문자 엔터티를 생성 하려면 다음 수식을 사용 하는: (`highChar` - `0xD800`) \* `0x400` + (`lowChar` - `0xDC00`) + `0x10000`합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-448">The following formula is used to generate the surrogate character entity: (`highChar` - `0xD800`) \* `0x400` + (`lowChar` - `0xDC00`) + `0x10000`.</span></span>  
+  
+ <span data-ttu-id="937e2-449">HTML 및 XML 모두에 대 한 문서 문자 집합 (및 따라서 숫자 문자 참조의 표기법) 기반으로 u c S [ISO 10646] 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-449">For both HTML and XML, the document character set (and therefore the notation of numeric character references) is based on UCS [ISO-10646].</span></span> <span data-ttu-id="937e2-450">소스 문서에서 단일 숫자 문자 참조 (상위 서로게이트 및 하위 서로게이트) 문자열에 두 명의 16 비트 단위에 해당할 경우에 따라 따라서 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-450">A single numeric character reference in a source document may therefore in some cases correspond to two 16-bit units in a string (a high surrogate and a low surrogate).</span></span> <span data-ttu-id="937e2-451">이러한 16 비트 단위는 서로게이트 쌍 이라고 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-451">These 16-bit units are referred to as a surrogate pair.</span></span>  
+  
+ <span data-ttu-id="937e2-452">문자나 서로게이트에 관한 자세한 내용은의 섹션을 3.7는 유니코드 표준 3.0/유니코드 2.0에 있는 참조 http://www.unicode.org, 섹션 2.2의 W3C XML 1.0 권장 사항에 위치 하거나 http://www.w3.org/TR/REC-xml#charsets합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-452">For more information regarding surrogates or characters, refer to section 3.7 of the Unicode 3.0/Unicode 2.0 standard located at http://www.unicode.org, or section 2.2 of the W3C XML 1.0 Recommendation located at http://www.w3.org/TR/REC-xml#charsets.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Exception"><span data-ttu-id="937e2-453">잘못된 서로게이트 문자 쌍이 전달된 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-453">An invalid surrogate character pair was passed.</span></span></exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteWhitespace">
+      <MemberSignature Language="C#" Value="public override void WriteWhitespace (string ws);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteWhitespace(string ws) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.XmlTextWriter.WriteWhitespace(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteWhitespace (ws As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteWhitespace(System::String ^ ws);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ws" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="ws"><span data-ttu-id="937e2-454">공백 문자의 문자열입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-454">The string of white space characters.</span></span></param>
+        <summary><span data-ttu-id="937e2-455">주어진 공백을 작성합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-455">Writes out the given white space.</span></span></summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-456">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-456">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-457">이 메서드를 수동으로 문서 형식을 사용 됩니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-457">This method is used to manually format your document.</span></span> <span data-ttu-id="937e2-458">사용 하 여는 <xref:System.Xml.XmlTextWriter.Formatting%2A> 속성을 자동으로 출력 형식을 작성기가 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-458">Use the <xref:System.Xml.XmlTextWriter.Formatting%2A> property to have the writer format the output automatically.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-459">사용 하 여 다음 예제는 `WriteWhitespace` 메서드는 파일 형식 지정 방법을 제어할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-459">The following example uses the `WriteWhitespace` method to control how the file is formatted.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><span data-ttu-id="937e2-460">문자열에 공백이 아닌 문자가 포함된 경우</span><span class="sxs-lookup"><span data-stu-id="937e2-460">The string contains non-white space characters.</span></span></exception>
+        <altmember cref="P:System.Xml.XmlTextWriter.Formatting" />
+      </Docs>
+    </Member>
+    <Member MemberName="XmlLang">
+      <MemberSignature Language="C#" Value="public override string XmlLang { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string XmlLang" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.XmlLang" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property XmlLang As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ XmlLang { System::String ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-461">현재 <see langword="xml:lang" /> 범위를 가져옵니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-461">Gets the current <see langword="xml:lang" /> scope.</span></span></summary>
+        <value><span data-ttu-id="937e2-462">현재 <see langword="xml:lang" />이거나, 현재 범위에 <see langword="null" />이 없으면 <see langword="xml:lang" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-462">The current <see langword="xml:lang" /> or <see langword="null" /> if there is no <see langword="xml:lang" /> in the current scope.</span></span></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-463">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-463">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-464">이 속성에는 한 구성 요소를 어떤 상태를 다른 구성 요소가 유지 작성기 확인할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-464">This property allows one component to find out what state another component has left the writer in.</span></span> <span data-ttu-id="937e2-465">예를 들어 아마도 한 구성 하려고 다른 어떤 언어 도움말 텍스트를 생성 합니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-465">For example, perhaps one component wants to tell another which language help text to generate.</span></span> <span data-ttu-id="937e2-466">작성 하 여 전달 되는 언어 정보는 `xml:lang` 특성입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-466">The language information is communicated by writing an `xml:lang` attribute.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlSpace">
+      <MemberSignature Language="C#" Value="public override System.Xml.XmlSpace XmlSpace { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Xml.XmlSpace XmlSpace" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlTextWriter.XmlSpace" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property XmlSpace As XmlSpace" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Xml::XmlSpace XmlSpace { System::Xml::XmlSpace get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.XmlSpace</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><span data-ttu-id="937e2-467">현재 <see langword="xml:space" /> 범위를 나타내는 <see cref="T:System.Xml.XmlSpace" />를 가져옵니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-467">Gets an <see cref="T:System.Xml.XmlSpace" /> representing the current <see langword="xml:space" /> scope.</span></span></summary>
+        <value><span data-ttu-id="937e2-468">현재 <see langword="XmlSpace" /> 범위를 나타내는 <see langword="xml:space" />입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-468">An <see langword="XmlSpace" /> representing the current <see langword="xml:space" /> scope.</span></span>  
+  
+ <span data-ttu-id="937e2-469"><list type="table"><listheader><term> 값</span><span class="sxs-lookup"><span data-stu-id="937e2-469"><list type="table"><listheader><term> Value</span></span>  
+  
+ <span data-ttu-id="937e2-470"></term><description> 의미</span><span class="sxs-lookup"><span data-stu-id="937e2-470"></term><description> Meaning</span></span>  
+  
+ <span data-ttu-id="937e2-471"></description></listheader><item><term> 없음</span><span class="sxs-lookup"><span data-stu-id="937e2-471"></description></listheader><item><term> None</span></span>  
+  
+ <span data-ttu-id="937e2-472"></term><description> 되지 않은 경우 이것이 기본값 <see langword="xml:space" /> 범위가 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-472"></term><description> This is the default if no <see langword="xml:space" /> scope exists.</span></span>  
+  
+ <span data-ttu-id="937e2-473"></description></item><item><term> 기본값</span><span class="sxs-lookup"><span data-stu-id="937e2-473"></description></item><item><term> Default</span></span>  
+  
+ <span data-ttu-id="937e2-474"></term><description> 현재 범위는 <see langword="xml:space" />= "default"입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-474"></term><description> The current scope is <see langword="xml:space" />="default".</span></span>  
+  
+ <span data-ttu-id="937e2-475"></description></item><item><term> 유지</span><span class="sxs-lookup"><span data-stu-id="937e2-475"></description></item><item><term> Preserve</span></span>  
+  
+ <span data-ttu-id="937e2-476"></term><description> 현재 범위는 <see langword="xml:space" />= "preserve"입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-476"></term><description> The current scope is <see langword="xml:space" />="preserve".</span></span>  
+  
+ </description></item></list></value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  <span data-ttu-id="937e2-477">만드는 권장.NET Framework 2.0 부터는 <xref:System.Xml.XmlWriter> 를 사용 하 여 인스턴스는 <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> 메서드 및 <xref:System.Xml.XmlWriterSettings> 새로운 기능을 활용 하는 클래스입니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-477">Starting with the .NET Framework 2.0, we recommend that you create <xref:System.Xml.XmlWriter> instances by using the <xref:System.Xml.XmlWriter.Create%2A?displayProperty=nameWithType> method and the <xref:System.Xml.XmlWriterSettings> class to take advantage of new functionality.</span></span>  
+  
+ <span data-ttu-id="937e2-478">이 속성에는 한 구성 요소를 내 다른 구성 요소가 유지 작성기 상태를 확인할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-478">This property allows one component to find out in what state another component has left the writer.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="937e2-479">사용 하 여 다음 예제는 `WriteWhitespace` 메서드는 파일 형식 지정 방법을 제어할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="937e2-479">The following example uses the `WriteWhitespace` method to control how the file is formatted.</span></span>  
+  
+ [!code-cpp[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlTextWriter.XmlSpace Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlTextWriter.XmlSpace Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

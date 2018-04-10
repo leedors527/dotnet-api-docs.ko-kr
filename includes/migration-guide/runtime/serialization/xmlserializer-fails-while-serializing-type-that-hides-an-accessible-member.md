@@ -1,0 +1,11 @@
+### <a name="xmlserializer-fails-while-serializing-a-type-that-hides-an-accessible-member-with-an-inaccessible-one"></a>XmlSerializer는 형식을 액세스할 수 있는 액세스 가능 멤버를 숨기는 직렬화 하는 동안 실패
+
+|   |   |
+|---|---|
+|설명|파생 된 형식으로 직렬화 할 때의 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> 유형이 액세스할 수 없는 필드 또는 기본 형식에서 필드 또는 이전에 액세스할 수 (공개, 예:)가 동일한 이름의 속성 ('new' 키워드)를 통해 숨기는 속성을 포함 하는 경우 실패할 수 있습니다.|
+|제안 해결 방법|새, 숨기고 멤버에 액세스할 수 하 여이 문제를 해결할 수는 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> (표시 하 여 공용, 예를 들어). 또는 다음 구성 설정으로 되돌아갑니다 4.0 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> 문제를 수정 하는 동작:<pre><code class="language-xml">&lt;system.xml.serialization&gt;&#13;&#10;&lt;xmlSerializer useLegacySerializerGeneration=&quot;true&quot; /&gt;&#13;&#10;&lt;/system.xml.serialization&gt;&#13;&#10;</code></pre>|
+|범위|부|
+|버전|4.5|
+|형식|런타임|
+|영향을 받는 API|<ul><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.IO.Stream,System.Object)?displayProperty=nameWithType></li><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.IO.TextWriter,System.Object)?displayProperty=nameWithType></li><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.Object,System.Xml.Serialization.XmlSerializationWriter)?displayProperty=nameWithType></li><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.Xml.XmlWriter,System.Object)?displayProperty=nameWithType></li><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.IO.Stream,System.Object,System.Xml.Serialization.XmlSerializerNamespaces)?displayProperty=nameWithType></li><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.IO.TextWriter,System.Object,System.Xml.Serialization.XmlSerializerNamespaces)?displayProperty=nameWithType></li><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.Xml.XmlWriter,System.Object,System.Xml.Serialization.XmlSerializerNamespaces)?displayProperty=nameWithType></li><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.Xml.XmlWriter,System.Object,System.Xml.Serialization.XmlSerializerNamespaces,System.String)?displayProperty=nameWithType></li><li><xref:System.Xml.Serialization.XmlSerializer.Serialize(System.Xml.XmlWriter,System.Object,System.Xml.Serialization.XmlSerializerNamespaces,System.String,System.String)?displayProperty=nameWithType></li></ul>|
+

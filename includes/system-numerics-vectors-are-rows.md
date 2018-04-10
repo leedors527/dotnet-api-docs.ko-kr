@@ -1,0 +1,1 @@
+매트릭스 변환에는 <xref:System.Numerics.Vector2>, <xref:System.Numerics.Vector3>, 및 <xref:System.Numerics.Vector4> 인스턴스 행으로 표시 됩니다: 벡터 *v* 행렬에 의해 변환 *M* 와 *vM*  곱하기.

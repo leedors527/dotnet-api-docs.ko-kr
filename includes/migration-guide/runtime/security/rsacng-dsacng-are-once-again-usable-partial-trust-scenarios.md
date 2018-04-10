@@ -1,0 +1,11 @@
+### <a name="rsacng-and-dsacng-are-once-again-usable-in-partial-trust-scenarios"></a>RSACng 및 DSACng 부분 신뢰 시나리오에서 다시 사용할 수는
+
+|   |   |
+|---|---|
+|설명|CngLightup (몇 가지 더 높은 수준의 암호화에 사용 되는 api와 같은 <xref:System.Security.Cryptography.Xml.EncryptedXml?displayProperty=nameWithType>) 및 <xref:System.Security.Cryptography.RSACng?displayProperty=nameWithType> 경우에 따라 완전 신뢰에 의존 합니다. 여기에 P/Invoke 어설션 하지 않고 <xref:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode?displayProperty=nameWithType> 권한과 코드 경로 여기서 <xref:System.Security.Cryptography.CngKey?displayProperty=nameWithType> 에 대 한 사용 권한 요청이 <xref:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode?displayProperty=nameWithType>합니다. .NET Framework 4.6.2부터 CngLightup 사용한 전환할 <xref:System.Security.Cryptography.RSACng?displayProperty=nameWithType> 가능 합니다. 따라서 부분 신뢰 응용 프로그램을 성공적으로 사용 되는 <xref:System.Security.Cryptography.Xml.EncryptedXml?displayProperty=nameWithType> 실패 하 고 throw 시작 <xref:System.Security.SecurityException> 예외입니다. 이 변경은 CngLightup를 사용 하 여 모든 함수는 필요한 권한이 있도록 필요한 어설션을 추가 합니다.|
+|제안 해결 방법|.NET Framework 4.6.2에서에서 이러한 변경에 부분 신뢰 응용 프로그램 부정적인 영향을 주는, 경우에.NET Framework 4.7.1 업그레이드 합니다.|
+|범위|Microsoft Edge|
+|버전|4.6.2|
+|형식|런타임|
+|영향을 받는 API|<ul><li><xref:System.Security.Cryptography.DSACng.%23ctor(System.Security.Cryptography.CngKey)?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.DSACng.Key?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.DSACng.LegalKeySizes?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.DSACng.CreateSignature(System.Byte[])?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.DSACng.VerifySignature(System.Byte[],System.Byte[])?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.RSACng.%23ctor(System.Security.Cryptography.CngKey)?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.RSACng.Key?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.RSACng.Decrypt(System.Byte[],System.Security.Cryptography.RSAEncryptionPadding)?displayProperty=nameWithType></li><li><xref:System.Security.Cryptography.RSACng.SignHash(System.Byte[],System.Security.Cryptography.HashAlgorithmName,System.Security.Cryptography.RSASignaturePadding)?displayProperty=nameWithType></li></ul>|
+

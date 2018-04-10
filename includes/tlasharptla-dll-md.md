@@ -1,0 +1,1 @@
+<span data-ttu-id="154a4-101">DLL(동적 연결 라이브러리)</span><span class="sxs-lookup"><span data-stu-id="154a4-101">dynamic-link library (DLL)</span></span>

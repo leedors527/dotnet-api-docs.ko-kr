@@ -1,0 +1,1 @@
+<span data-ttu-id="d50d7-101">Microsoft Windows XP SP2(서비스 팩 2)</span><span class="sxs-lookup"><span data-stu-id="d50d7-101">Microsoft Windows XP Service Pack 2 (SP2)</span></span>

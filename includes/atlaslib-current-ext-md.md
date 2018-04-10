@@ -1,0 +1,1 @@
+<span data-ttu-id="700a2-101">Microsoft AJAX 라이브러리</span><span class="sxs-lookup"><span data-stu-id="700a2-101">Microsoft Ajax Library</span></span>

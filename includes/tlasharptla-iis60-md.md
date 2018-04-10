@@ -1,0 +1,1 @@
+<span data-ttu-id="bf86e-101">Microsoft IIS(인터넷 정보 서비스) 6.0</span><span class="sxs-lookup"><span data-stu-id="bf86e-101">Microsoft Internet Information Services (IIS) 6.0</span></span>

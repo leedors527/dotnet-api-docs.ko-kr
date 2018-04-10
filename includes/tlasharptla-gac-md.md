@@ -1,0 +1,1 @@
+<span data-ttu-id="711d8-101">GAC(전역 어셈블리 캐시)</span><span class="sxs-lookup"><span data-stu-id="711d8-101">global assembly cache (GAC)</span></span>

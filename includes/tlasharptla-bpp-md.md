@@ -1,0 +1,1 @@
+<span data-ttu-id="9e99f-101">BPP(픽셀당 비트 수)</span><span class="sxs-lookup"><span data-stu-id="9e99f-101">bits per pixel (BPP)</span></span>

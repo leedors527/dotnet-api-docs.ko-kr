@@ -1,0 +1,1 @@
+<span data-ttu-id="fd71e-101">**이 항목은 ✓** .NET Core SDK 1.x **✓** .NET Core SDK 2.0에 적용됩니다.</span><span class="sxs-lookup"><span data-stu-id="fd71e-101">**This topic applies to: ✓** .NET Core SDK 1.x **✓** .NET Core SDK 2.0</span></span>

@@ -1,0 +1,1 @@
+<span data-ttu-id="22bf4-101">프레임워크</span><span class="sxs-lookup"><span data-stu-id="22bf4-101">Framework</span></span>

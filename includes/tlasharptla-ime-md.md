@@ -1,0 +1,1 @@
+<span data-ttu-id="562b0-101">IME(입력기)</span><span class="sxs-lookup"><span data-stu-id="562b0-101">Input Method Editor (IME)</span></span>

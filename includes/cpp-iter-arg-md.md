@@ -1,0 +1,1 @@
+<span data-ttu-id="515c9-101">제어되는 시퀀스의 요소 형식입니다.</span><span class="sxs-lookup"><span data-stu-id="515c9-101">The type of an element in the controlled sequence.</span></span>

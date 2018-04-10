@@ -1,0 +1,1 @@
+<span data-ttu-id="e0ed8-101">Microsoft Windows Presentation Foundation Imaging Component</span><span class="sxs-lookup"><span data-stu-id="e0ed8-101">Microsoft Windows Presentation Foundation Imaging Component</span></span>

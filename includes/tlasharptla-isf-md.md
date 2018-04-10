@@ -1,0 +1,1 @@
+<span data-ttu-id="c1433-101">ISF(Serialize된 잉크 형식)</span><span class="sxs-lookup"><span data-stu-id="c1433-101">Ink Serialized Format (ISF)</span></span>

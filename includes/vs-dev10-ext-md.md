@@ -1,0 +1,1 @@
+<span data-ttu-id="e8029-101">Microsoft Visual Studio 2010</span><span class="sxs-lookup"><span data-stu-id="e8029-101">Microsoft Visual Studio 2010</span></span>

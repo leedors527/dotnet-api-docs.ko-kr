@@ -1,0 +1,1 @@
+<span data-ttu-id="ddf04-101">Microsoft IIS(인터넷 정보 서비스) 5.0</span><span class="sxs-lookup"><span data-stu-id="ddf04-101">Microsoft Internet Information Services (IIS) 5.0</span></span>

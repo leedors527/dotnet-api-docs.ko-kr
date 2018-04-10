@@ -1,0 +1,1 @@
+<span data-ttu-id="bce0e-101">PNG(이동식 네트워크 그래픽)</span><span class="sxs-lookup"><span data-stu-id="bce0e-101">Portable Network Graphics (PNG)</span></span>

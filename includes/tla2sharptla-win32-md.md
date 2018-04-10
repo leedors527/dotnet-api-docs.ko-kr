@@ -1,0 +1,1 @@
+<span data-ttu-id="1e36c-101">Win32</span><span class="sxs-lookup"><span data-stu-id="1e36c-101">Win32</span></span>

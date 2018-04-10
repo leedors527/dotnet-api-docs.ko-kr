@@ -1,0 +1,1 @@
+<span data-ttu-id="ca2d4-101">Microsoft Internet Explorer 6</span><span class="sxs-lookup"><span data-stu-id="ca2d4-101">Microsoft Internet Explorer 6</span></span>

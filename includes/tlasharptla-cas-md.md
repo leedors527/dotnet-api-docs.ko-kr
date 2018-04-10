@@ -1,0 +1,1 @@
+<span data-ttu-id="bcb55-101">CAS(코드 액세스 보안)</span><span class="sxs-lookup"><span data-stu-id="bcb55-101">Code Access Security (CAS)</span></span>

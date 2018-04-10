@@ -1,0 +1,1 @@
+<span data-ttu-id="6d914-101">유니코드</span><span class="sxs-lookup"><span data-stu-id="6d914-101">Unicode</span></span>

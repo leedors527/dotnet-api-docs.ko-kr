@@ -1,9 +1,9 @@
-### <a name="xmlserializer-fails-while-serializing-a-type-that-hides-an-accessible-member-with-an-inaccessible-one"></a>XmlSerializer는 형식을 액세스할 수 있는 액세스 가능 멤버를 숨기는 직렬화 하는 동안 실패
+### <a name="xmlserializer-fails-while-serializing-a-type-that-hides-an-accessible-member-with-an-inaccessible-one"></a>액세스할 수 있는 멤버를 액세스할 수 없는 멤버로 숨기는 형식을 직렬화하는 동안 XmlSerializer가 실패함
 
 |   |   |
 |---|---|
-|설명|파생 된 형식으로 직렬화 할 때의 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> 유형이 액세스할 수 없는 필드 또는 기본 형식에서 필드 또는 이전에 액세스할 수 (공개, 예:)가 동일한 이름의 속성 ('new' 키워드)를 통해 숨기는 속성을 포함 하는 경우 실패할 수 있습니다.|
-|제안 해결 방법|새, 숨기고 멤버에 액세스할 수 하 여이 문제를 해결할 수는 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> (표시 하 여 공용, 예를 들어). 또는 다음 구성 설정으로 되돌아갑니다 4.0 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> 문제를 수정 하는 동작:<pre><code class="language-xml">&lt;system.xml.serialization&gt;&#13;&#10;&lt;xmlSerializer useLegacySerializerGeneration=&quot;true&quot; /&gt;&#13;&#10;&lt;/system.xml.serialization&gt;&#13;&#10;</code></pre>|
+|설명|파생된 형식을 직렬화할 때 형식에 액세스할 수 없는 필드 또는 ('new' 키워드를 통해) 필드를 숨기는 속성 또는 기본 유형에서 이전에 액세스할 수 있었던 같은 이름(예: public)의 속성이 포함된 경우 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name>이 실패할 수 있습니다.|
+|제안 해결 방법|이 문제는 숨어 있는 멤버를 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name>에 액세스할 수 있는 새로운 숨김 멤버를 만들어 해결할 수 있습니다(예: 공개로 표시). 또는 다음 구성 설정을 4.0 <xref:System.Xml.Serialization.XmlSerializer?displayProperty=name> 동작으로 되돌리면 문제를 해결할 수 있습니다.<pre><code class="language-xml">&lt;system.xml.serialization&gt;&#13;&#10;&lt;xmlSerializer useLegacySerializerGeneration=&quot;true&quot; /&gt;&#13;&#10;&lt;/system.xml.serialization&gt;&#13;&#10;</code></pre>|
 |범위|부|
 |버전|4.5|
 |형식|런타임|

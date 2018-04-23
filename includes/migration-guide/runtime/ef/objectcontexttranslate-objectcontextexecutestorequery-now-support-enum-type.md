@@ -1,4 +1,4 @@
-### <a name="objectcontexttranslate-and-objectcontextexecutestorequery-now-support-enum-type"></a>ObjectContext.Translate와 ObjectContext.ExecuteStoreQuery 열거형 형식 지원
+### <a name="objectcontexttranslate-and-objectcontextexecutestorequery-now-support-enum-type"></a>이제 ObjectContext.Translate와 ObjectContext.ExecuteStoreQuery가 열거형 형식을 지원합니다.
 
 |   |   |
 |---|---|

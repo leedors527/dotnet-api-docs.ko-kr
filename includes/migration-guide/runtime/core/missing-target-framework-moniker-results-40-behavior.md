@@ -1,9 +1,9 @@
-### <a name="missing-target-framework-moniker-results-in-40-behavior"></a>누락 된 대상 프레임 워크 모니커 4.0 동작이 발생
+### <a name="missing-target-framework-moniker-results-in-40-behavior"></a>누락된 대상 프레임워크 모니커로 인해 4.0 동작 발생
 
 |   |   |
 |---|---|
-|설명|응용 프로그램을 <xref:System.Runtime.Versioning.TargetFrameworkAttribute?displayProperty=name> 어셈블리 수준도 자동으로.NET Framework 4.0의 (quirks) 의미 체계를 사용 하 여를 실행에 적용 합니다. 높은 품질을 보장 하려면 것이 좋습니다 모든 이진 파일에 명시적으로 추측할는 <xref:System.Runtime.Versioning.TargetFrameworkAttribute?displayProperty=name> 으로 빌드된.NET Framework의 버전을 나타내는입니다. 프로젝트 파일의 대상 프레임 워크 모니커를 사용 하 여 자동으로 적용 하기 위해 MSBuild 발생할 됩니다는 <xref:System.Runtime.Versioning.TargetFrameworkAttribute?displayProperty=name>합니다.|
-|제안 해결 방법|A <xref:System.Runtime.Versioning.TargetFrameworkAttribute?displayProperty=name> 제공 해야 합니다는 어셈블리를 직접 또는에 대상 프레임 워크를 지정 하 여 특성을 추가 하는 과정 중 하나는 [프로젝트 파일 또는 Visual Studio를 통해 프로젝트 속성 GUI](http://blogs.msdn.com/b/visualstudio/archive/2010/05/19/visual-studio- managed-multi-targeting-part-1-concepts-target-framework-moniker-target-framework.aspx)합니다.|
+|설명|어셈블리 수준에 적용된 <xref:System.Runtime.Versioning.TargetFrameworkAttribute?displayProperty=name>이 없는 응용 프로그램은 .NET Framework 4.0의 의미 체계(쿼크)를 사용하여 자동으로 실행됩니다. 높은 품질을 보장하려면 모든 바이너리가 빌드될 때 사용된 .NET Framework의 버전을 나타내는 <xref:System.Runtime.Versioning.TargetFrameworkAttribute?displayProperty=name>로 명시적으로 특성을 사용하는 것이 좋습니다. 프로젝트 파일에서 대상 프레임워크 모니커를 사용하면 MSBuild가 <xref:System.Runtime.Versioning.TargetFrameworkAttribute?displayProperty=name>를 자동으로 적용합니다.|
+|제안 해결 방법|어셈블리에 직접 특성을 추가하거나 [프로젝트 파일 또는 Visual Studio의 프로젝트 속성 GUI를 통해](http://blogs.msdn.com/b/visualstudio/archive/2010/05/19/visual-studio- managed-multi-targeting-part-1-concepts-target-framework-moniker-target-framework.aspx) 대상 프레임워크를 지정하여 <xref:System.Runtime.Versioning.TargetFrameworkAttribute?displayProperty=name>을 지정해야 합니다.|
 |범위|주요함|
 |버전|4.5|
 |형식|런타임|

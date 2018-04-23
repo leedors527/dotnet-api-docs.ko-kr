@@ -1,4 +1,4 @@
-### <a name="sqlvariant-data-uses-sqlvariant-collation-rather-than-database-collation"></a>데이터베이스 데이터 정렬 대신 sql_variant 데이터 정렬 Sql_variant 데이터 사용
+### <a name="sqlvariant-data-uses-sqlvariant-collation-rather-than-database-collation"></a>Sql_variant 데이터는 데이터베이스 데이터 정렬 대신 sql_variant 데이터 정렬을 사용합니다.
 
 |   |   |
 |---|---|

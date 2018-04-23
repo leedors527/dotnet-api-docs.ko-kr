@@ -1,4 +1,4 @@
-### <a name="entityframework-60-loads-very-slowly-in-apps-launched-from-visual-studio"></a>Visual Studio에서 시작 하는 응용 프로그램에서는 매우 느리게 EntityFramework 6.0 부하
+### <a name="entityframework-60-loads-very-slowly-in-apps-launched-from-visual-studio"></a>EntityFramework 6.0은 Visual Studio에서 시작된 앱에서 매우 느리게 로드됩니다.
 
 |   |   |
 |---|---|

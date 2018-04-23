@@ -1,4 +1,4 @@
-### <a name="systemnetpeertopeercollaboration-unavailable-on-windows-8"></a>System.Net.PeerToPeer.Collaboration Windows 8에서 사용할 수 없음
+### <a name="systemnetpeertopeercollaboration-unavailable-on-windows-8"></a>Windows 8에서 System.Net.PeerToPeer.Collaboration을 사용할 수 없습니다
 
 |   |   |
 |---|---|

@@ -1,4 +1,4 @@
-### <a name="previewlostkeyboardfocus-is-called-repeatedly-if-its-handler-shows-a-windows-forms-message-box"></a>Windows Forms 메시지 상자를 표시 하는 처리기 경우 PreviewLostKeyboardFocus가 반복적으로 호출
+### <a name="previewlostkeyboardfocus-is-called-repeatedly-if-its-handler-shows-a-windows-forms-message-box"></a>PreviewLostKeyboardFocus는 처리기가 Windows Forms 메시지 상자를 표시하는 경우 반복적으로 호출됩니다.
 
 |   |   |
 |---|---|

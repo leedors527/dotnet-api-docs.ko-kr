@@ -1,9 +1,9 @@
-### <a name="datagridcellspanelbringindexintoview-throws-argumentoutofrangeexception"></a>DataGridCellsPanel.BringIndexIntoView ArgumentOutOfRangeException를 발생 시킵니다.
+### <a name="datagridcellspanelbringindexintoview-throws-argumentoutofrangeexception"></a>DataGridCellsPanel.BringIndexIntoView가 ArgumentOutOfRangeException을 throw합니다.
 
 |   |   |
 |---|---|
-|설명|<xref:System.Windows.Controls.DataGrid.ScrollIntoView(System.Object)> 열 가상화를 사용할 수 있지만 열 너비 아직 확인 되지 않아 비동기적으로 작동 합니다.  비동기 작업이 발생 하기 전에 열 제거는 <xref:System.ArgumentOutOfRangeException?displayProperty=name> 발생할 수 있습니다.|
-|제안 해결 방법|다음 중 하나:<ol><li>4.7.NET으로 업그레이드 합니다.</li><li>.NET 4.6.2 용 최신 서비스 패치를 설치 합니다.</li><li>열에 대 한 비동기 응답 될 때까지 제거 되지 않도록 <xref:System.Windows.Controls.DataGrid.ScrollIntoView(System.Object)> 완료 되었습니다.</li></ol>|
+|설명|<xref:System.Windows.Controls.DataGrid.ScrollIntoView(System.Object)>는 열 가상화가 활성화되었지만 열 너비가 아직 결정되지 않았을 때 비동기적으로 작동합니다.  비동기 작업이 실행되기 전에 열이 제거되면 <xref:System.ArgumentOutOfRangeException?displayProperty=name>이 발생할 수 있습니다.|
+|제안 해결 방법|다음 중 하나:<ol><li>.NET 4.7로 업그레이드합니다.</li><li>.NET 4.6.2에 대한 최신 서비스 패치를 설치합니다.</li><li><xref:System.Windows.Controls.DataGrid.ScrollIntoView(System.Object)>에 대한 비동기 응답이 완료될 때까지 열이 제거되지 않도록 합니다.</li></ol>|
 |범위|Microsoft Edge|
 |버전|4.6.2|
 |형식|런타임|

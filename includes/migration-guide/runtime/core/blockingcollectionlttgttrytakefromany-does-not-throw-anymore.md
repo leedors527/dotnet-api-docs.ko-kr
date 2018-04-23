@@ -1,4 +1,4 @@
-### <a name="blockingcollectionlttgttrytakefromany-does-not-throw-anymore"></a>BlockingCollection&lt;T&gt;합니다. TryTakeFromAny 더 이상 throw 하지 않습니다.
+### <a name="blockingcollectionlttgttrytakefromany-does-not-throw-anymore"></a>BlockingCollection&lt;T&gt;.TryTakeFromAny는 더 이상 throw하지 않습니다.
 
 |   |   |
 |---|---|

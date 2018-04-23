@@ -1,9 +1,9 @@
-### <a name="exception-message-has-changed-for-failed-datacontract-serialization-in-case-of-an-unknown-type"></a>알 수 없는 형식 발생 한 경우 실패 한 DataContract serialization에 대 한 예외 메시지가 변경 되었습니다.
+### <a name="exception-message-has-changed-for-failed-datacontract-serialization-in-case-of-an-unknown-type"></a>알 수 없는 형식의 경우 실패한 DataContract serialization에 대한 예외 메시지가 변경되었습니다.
 
 |   |   |
 |---|---|
-|설명|경우에 제공 예외 메시지는.NET Framework 4.6부터는 <xref:System.Runtime.Serialization.DataContractSerializer?displayProperty=name> 또는 <xref:System.Runtime.Serialization.Json.DataContractJsonSerializer?displayProperty=name> 실패를 직렬화 또는 역직렬화 '알려진된 형식' 누락으로 인해이 확인 되었습니다.|
-|제안 해결 방법|특정 예외 메시지는 응용 프로그램 신뢰 하지 않아야 합니다. 경우이 메시지에 따라 앱을 하십시오 하거나 업데이트 하는 새 메시지를 예상 하거나 (권장) 예외 형식에 따라서만 결정 하도록를 변경 합니다.|
+|설명|.NET Framework 4.6부터 <xref:System.Runtime.Serialization.DataContractSerializer?displayProperty=name> 또는 <xref:System.Runtime.Serialization.Json.DataContractJsonSerializer?displayProperty=name>가 누락된 '알려진 형식'으로 인해 직렬화 또는 역직렬화에 실패하는 경우 지정된 예외 메시지는 명확해졌습니다.|
+|제안 해결 방법|앱은 특정 예외 메시지를 사용하지 않아야 합니다. 앱이 이 메시지를 사용하는 경우 새 메시지를 사용하도록 업데이트하거나 예외 형식에서만 사용하도록 변경하는 것이 좋습니다.|
 |범위|Microsoft Edge|
 |버전|4.6|
 |형식|런타임|

@@ -1,4 +1,4 @@
-### <a name="resolveassemblyreference-task-now-warns-of-dependencies-with-the-wrong-architecture"></a>잘못 된 아키텍처와의 종속성을 이제 경고 ResolveAssemblyReference 작업
+### <a name="resolveassemblyreference-task-now-warns-of-dependencies-with-the-wrong-architecture"></a>ResolveAssemblyReference 작업이 이제 잘못된 아키텍처의 종속성에 대해 경고
 
 |   |   |
 |---|---|

@@ -1,4 +1,4 @@
-### <a name="vbnet-no-longer-supports-partial-namespace-qualification-for-systemwindows-apis"></a>VB.NET은 System.Windows Api에 대 한 부분 네임 스페이스 한정자는 더 이상 지원
+### <a name="vbnet-no-longer-supports-partial-namespace-qualification-for-systemwindows-apis"></a>VB.NET가 System.Windows API에 대한 부분 네임스페이스 한정을 더 이상 지원하지 않음
 
 |   |   |
 |---|---|

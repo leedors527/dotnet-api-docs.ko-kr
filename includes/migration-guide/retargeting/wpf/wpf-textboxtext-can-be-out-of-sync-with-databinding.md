@@ -1,4 +1,4 @@
-### <a name="wpf-textboxtext-can-be-out-of-sync-with-databinding"></a>WPF TextBox.Text 동기화 아웃 수 데이터 바인딩
+### <a name="wpf-textboxtext-can-be-out-of-sync-with-databinding"></a>WPF TextBox.Text가 데이터 바인딩과 비동기화될 수 있음
 
 |   |   |
 |---|---|

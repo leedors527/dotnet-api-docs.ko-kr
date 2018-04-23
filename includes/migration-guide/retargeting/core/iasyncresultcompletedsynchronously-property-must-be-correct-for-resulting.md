@@ -1,9 +1,9 @@
-### <a name="iasyncresultcompletedsynchronously-property-must-be-correct-for-the-resulting-task-to-complete"></a>IAsyncResult.CompletedSynchronously 속성 결과 작업을 완료 하려면 정확 해야 합니다.
+### <a name="iasyncresultcompletedsynchronously-property-must-be-correct-for-the-resulting-task-to-complete"></a>결과 작업을 완료하려면 IAsyncResult.CompletedSynchronously 속성이 정확해야 함
 
 |   |   |
 |---|---|
-|설명|TaskFactory.FromAsync의 구현을 호출 하는 경우는 <xref:System.IAsyncResult.CompletedSynchronously> 속성 결과 작업을 완료 하려면 정확 해야 합니다. 즉, 이 속성은 구현이 동기적으로 완료된 경우에만 true를 반환해야 합니다. 이전에는 이 속성이 선택되어 있지 않았습니다.|
-|제안 해결 방법|경우 <xref:System.IAsyncResult?displayProperty=name> 구현 올바르게 true가 반환에 대 한는 <xref:System.IAsyncResult.CompletedSynchronously?displayProperty=name> 작업이 중단 없음을 준수 하는 다음 동기적으로 완료 된 경우에 속성입니다. 사용자가 검토 해야 <xref:System.IAsyncResult?displayProperty=name> 구현 자신이 소유한 (있는 경우) 올바르게 평가 하는지 여부를 동기적으로 완료 되도록 합니다.|
+|설명|TaskFactory.FromAsync를 호출할 때 <xref:System.IAsyncResult.CompletedSynchronously> 속성이 올바르게 구현되어야 결과 작업을 완료할 수 있습니다. 즉, 이 속성은 구현이 동기적으로 완료된 경우에만 true를 반환해야 합니다. 이전에는 이 속성이 선택되어 있지 않았습니다.|
+|제안 해결 방법|<xref:System.IAsyncResult?displayProperty=name> 구현이 작업이 동기적으로 완료된 경우에만 <xref:System.IAsyncResult.CompletedSynchronously?displayProperty=name> 속성에 대해 true를 반환한다면, 중단이 관찰되지 않습니다. 사용자는 소유하고 있는 <xref:System.IAsyncResult?displayProperty=name> 구현(소유한 경우)을 검토하여 작업의 동기적 완료 여부를 올바르게 평가하는지 확인해야 합니다.|
 |범위|Microsoft Edge|
 |버전|4.5|
 |형식|대상 변경|

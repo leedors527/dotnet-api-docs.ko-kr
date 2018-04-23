@@ -1,9 +1,9 @@
-### <a name="xmlwriter-throws-on-invalid-surrogate-pairs"></a>잘못 된 서로게이트 쌍에 XmlWriter를 발생 시킵니다.
+### <a name="xmlwriter-throws-on-invalid-surrogate-pairs"></a>잘못된 서로게이트 쌍에서 XmlWriter가 throw함
 
 |   |   |
 |---|---|
-|설명|.NET Framework 4.5.2 또는 이전 버전을 대상으로 하는 앱의 경우 예외 대체(fallback) 처리를 사용하여 잘못된 서로게이트 쌍을 작성해도 항상 예외가 발생하지는 않습니다. .NET Framework 4.6을 대상으로 하는 응용 프로그램의 경우 쓰려고 했습니다. 잘못 된 서로게이트 쌍는 <xref:System.ArgumentException?displayProperty=name>합니다.|
-|제안 해결 방법|필요한 경우이 줄 바꿈으로.NET Framework 4.5.2를 대상으로 하 여 회피 또는 이전 버전을 수 있습니다. 또는 잘못 된 서로게이트 쌍 미리 쓰기 전에 유효한 xml로 처리 될 수 있습니다.|
+|설명|.NET Framework 4.5.2 또는 이전 버전을 대상으로 하는 앱의 경우 예외 대체(fallback) 처리를 사용하여 잘못된 서로게이트 쌍을 써도 항상 예외가 발생하지는 않습니다. .NET Framework 4.6을 대상으로 하는 앱의 경우 잘못된 서로게이트 쌍을 쓰려고 하면 <xref:System.ArgumentException?displayProperty=name>을 throw합니다.|
+|제안 해결 방법|필요한 경우 .NET Framework 4.5.2 이전 버전을 대상으로 하여 이 중단을 피할 수 있습니다. 또는 잘못된 서로게이트 쌍을 쓰기 전에 유효한 xml로 사전 처리할 수 있습니다.|
 |범위|Microsoft Edge|
 |버전|4.6|
 |형식|대상 변경|

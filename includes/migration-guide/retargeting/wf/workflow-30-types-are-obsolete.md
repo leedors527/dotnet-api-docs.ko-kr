@@ -1,4 +1,4 @@
-### <a name="workflow-30-types-are-obsolete"></a>워크플로 3.0 형식을 사용 되지 않습니다.
+### <a name="workflow-30-types-are-obsolete"></a>워크플로 3.0 형식이 사용되지 않음
 
 |   |   |
 |---|---|

@@ -1,1 +1,0 @@
-Microsoft Windows XP SP2(서비스 팩 2)

@@ -1,1 +1,0 @@
-W3C(World Wide Web 컨소시엄)

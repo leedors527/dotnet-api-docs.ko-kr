@@ -1,1 +1,1 @@
-<span data-ttu-id="e68d2-101">창</span><span class="sxs-lookup"><span data-stu-id="e68d2-101">Windows</span></span>
+<span data-ttu-id="78e03-101">창</span><span class="sxs-lookup"><span data-stu-id="78e03-101">Windows</span></span>

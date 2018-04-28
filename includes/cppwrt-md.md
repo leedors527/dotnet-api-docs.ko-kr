@@ -1,1 +1,0 @@
-<span data-ttu-id="a2422-101">Visual C++ 구성 요소 확장</span><span class="sxs-lookup"><span data-stu-id="a2422-101">Visual C++ component extensions</span></span>

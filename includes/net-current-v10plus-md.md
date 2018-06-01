@@ -1,1 +1,0 @@
-<span data-ttu-id="d2620-101">1.0부터 사용할 수 있음</span><span class="sxs-lookup"><span data-stu-id="d2620-101">Available since 1.0</span></span>

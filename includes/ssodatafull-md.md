@@ -1,1 +1,0 @@
-<span data-ttu-id="aa1a7-101">개방형 데이터 프로토콜(OData)</span><span class="sxs-lookup"><span data-stu-id="aa1a7-101">Open Data Protocol (OData)</span></span>

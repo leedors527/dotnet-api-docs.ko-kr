@@ -1,1 +1,0 @@
-<span data-ttu-id="ae136-101">GUI(그래픽 사용자 인터페이스)</span><span class="sxs-lookup"><span data-stu-id="ae136-101">graphical user interfaces (GUIs)</span></span>

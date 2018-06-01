@@ -1,1 +1,0 @@
-<span data-ttu-id="7333b-101">XPS(XML Paper Specification) 문서</span><span class="sxs-lookup"><span data-stu-id="7333b-101">XML Paper Specification (XPS) document</span></span>

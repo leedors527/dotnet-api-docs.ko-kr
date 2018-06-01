@@ -1,1 +1,0 @@
-<span data-ttu-id="052fe-101">Windows Installer</span><span class="sxs-lookup"><span data-stu-id="052fe-101">Windows Installer</span></span>

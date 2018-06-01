@@ -1,1 +1,0 @@
-<span data-ttu-id="13d74-101">Windows 7 운영 체제</span><span class="sxs-lookup"><span data-stu-id="13d74-101">Windows°7 operating system</span></span>

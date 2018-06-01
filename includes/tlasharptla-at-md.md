@@ -1,1 +1,0 @@
-<span data-ttu-id="cfe72-101">보조 기술</span><span class="sxs-lookup"><span data-stu-id="cfe72-101">assistive technology</span></span>

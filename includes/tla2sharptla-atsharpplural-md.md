@@ -1,1 +1,0 @@
-<span data-ttu-id="cbc36-101">보조 기술</span><span class="sxs-lookup"><span data-stu-id="cbc36-101">Assistive technologies</span></span>

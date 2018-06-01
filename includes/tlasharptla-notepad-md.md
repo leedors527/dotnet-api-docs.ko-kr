@@ -1,1 +1,0 @@
-<span data-ttu-id="ae49b-101">Microsoft 메모장</span><span class="sxs-lookup"><span data-stu-id="ae49b-101">Microsoft Notepad</span></span>

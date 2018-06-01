@@ -1,1 +1,0 @@
-<span data-ttu-id="39467-101">목록은</span><span class="sxs-lookup"><span data-stu-id="39467-101">For a list of</span></span>

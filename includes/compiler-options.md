@@ -1,2 +1,0 @@
-
-<span data-ttu-id="ae349-101">모든 컴파일러 옵션은 **-옵션** 및 **/옵션**의 두 가지 형태로 사용할 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="ae349-101">Every compiler option is available in two forms: **-option** and **/option**.</span></span> <span data-ttu-id="ae349-102">문서에는 -옵션 형식만 나와 있습니다.</span><span class="sxs-lookup"><span data-stu-id="ae349-102">The documentation only shows the -option form.</span></span> 

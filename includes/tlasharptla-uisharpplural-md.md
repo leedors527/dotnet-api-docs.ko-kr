@@ -1,1 +1,0 @@
-<span data-ttu-id="7c57d-101">UI(사용자 인터페이스)</span><span class="sxs-lookup"><span data-stu-id="7c57d-101">user interfaces (UIs)</span></span>

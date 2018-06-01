@@ -1,1 +1,0 @@
-<span data-ttu-id="6a388-101">SDK(소프트웨어 개발 키트)</span><span class="sxs-lookup"><span data-stu-id="6a388-101">software development kit (SDK)</span></span>

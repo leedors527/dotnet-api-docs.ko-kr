@@ -6,7 +6,7 @@
 각 문자 액세스가 인덱싱할 올바른 버퍼를 찾기 위해 연결된 전체 청크 목록을 확인하기 때문에 성능이 심각하게 저하됩니다.
 
 > [!NOTE]
->  대규모 "청크" <xref:System.Text.StringBuilder> 개체의 경우 하나 이하의 문자에 대한 인덱스 기반 액세스에 <xref:System.Text.StringBuilder.Chars%2A> 속성을 사용하면 성능에 미치는 영향이 적습니다. 일반적으로 **0(n)**개 작업에 영향을 줍니다. <xref:System.Text.StringBuilder> 개체에서 문자를 반복할 때 성능에 상당한 영향이 발생합니다. **O(n^2)**개 작업에 영향을 줍니다. 
+>  대규모 "청크" <xref:System.Text.StringBuilder> 개체의 경우 하나 이하의 문자에 대한 인덱스 기반 액세스에 <xref:System.Text.StringBuilder.Chars%2A> 속성을 사용하면 성능에 미치는 영향이 적습니다. 일반적으로 **0(n)** 개 작업에 영향을 줍니다. <xref:System.Text.StringBuilder> 개체에서 문자를 반복할 때 성능에 상당한 영향이 발생합니다. **O(n^2)** 개 작업에 영향을 줍니다. 
 
 <xref:System.Text.StringBuilder> 개체에서 문자 기반 인덱싱을 사용할 때 성능 문제가 발생하는 경우 다음 방법 중 하나를 사용할 수 있습니다.
 

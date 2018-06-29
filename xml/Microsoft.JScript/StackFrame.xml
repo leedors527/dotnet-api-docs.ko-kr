@@ -1,17 +1,18 @@
 <Type Name="StackFrame" FullName="Microsoft.JScript.StackFrame">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="f1a65251107ef89a341969b2dd867d76920e8742" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.openlocfilehash" Value="ab5d243fd10f23e1764e18736ca4240fd358805c" />
+    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-    <Meta Name="ms.locfileid" Value="30339107" />
+    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.locfileid" Value="36662273" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class StackFrame : Microsoft.JScript.ScriptObject, Microsoft.JScript.IActivationObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit StackFrame extends Microsoft.JScript.ScriptObject implements class Microsoft.JScript.IActivationObject" />
   <TypeSignature Language="DocId" Value="T:Microsoft.JScript.StackFrame" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class StackFrame&#xA;Inherits ScriptObject&#xA;Implements IActivationObject" />
   <TypeSignature Language="C++ CLI" Value="public ref class StackFrame sealed : Microsoft::JScript::ScriptObject, Microsoft::JScript::IActivationObject" />
+  <TypeSignature Language="F#" Value="type StackFrame = class&#xA;    inherit ScriptObject&#xA;    interface IActivationObject" />
   <AssemblyInfo>
     <AssemblyName>Microsoft.JScript</AssemblyName>
     <AssemblyVersion>10.0.0.0</AssemblyVersion>
@@ -25,7 +26,7 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>실행 코드의 스택 프레임을 나타냅니다. 이 클래스에는 범위를 확인하기 위한 메서드가 포함됩니다. 이 클래스는 컴파일 및 런타임 상태 범주에 속합니다.</summary>
+    <summary>Represents a stack frame for executing code. This class contains methods for resolving scope. It belongs to the compilation and run-time state category.</summary>
     <remarks>To be added.</remarks>
     <forInternalUseOnly />
     <altmember cref="T:Microsoft.JScript.Closure" />
@@ -39,6 +40,7 @@
       <MemberSignature Language="DocId" Value="F:Microsoft.JScript.StackFrame.closureInstance" />
       <MemberSignature Language="VB.NET" Value="Public closureInstance As Object " />
       <MemberSignature Language="C++ CLI" Value="public: System::Object ^ closureInstance;" />
+      <MemberSignature Language="F#" Value="val mutable closureInstance : obj" Usage="Microsoft.JScript.StackFrame.closureInstance" />
       <MemberType>Field</MemberType>
       <AssemblyInfo>
         <AssemblyName>Microsoft.JScript</AssemblyName>
@@ -48,7 +50,7 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>현재 스택 프레임의 호출자에 대한 참조를 저장합니다.</summary>
+        <summary>Stores a reference to the caller of the current stack frame.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -71,6 +73,7 @@
       <MemberSignature Language="DocId" Value="M:Microsoft.JScript.StackFrame.GetDefaultThisObject" />
       <MemberSignature Language="VB.NET" Value="Public Function GetDefaultThisObject () As Object" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ GetDefaultThisObject();" />
+      <MemberSignature Language="F#" Value="abstract member GetDefaultThisObject : unit -&gt; obj&#xA;override this.GetDefaultThisObject : unit -&gt; obj" Usage="stackFrame.GetDefaultThisObject " />
       <MemberType>Method</MemberType>
       <Implements>
         <InterfaceMember>M:Microsoft.JScript.IActivationObject.GetDefaultThisObject</InterfaceMember>
@@ -84,9 +87,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>
-          <see langword="with" /> 문 범위의 포함된 개체이거나 전역 범위인 현재 기본 범위를 가져옵니다.</summary>
-        <returns>현재 기본 범위입니다.</returns>
+        <summary>Gets the current default scope, which will be either the contained object of a <see langword="with" /> statement scope, or the global scope.</summary>
+        <returns>The current default scope.</returns>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -102,6 +104,7 @@
       <MemberSignature Language="DocId" Value="M:Microsoft.JScript.StackFrame.GetField(System.String,System.Int32)" />
       <MemberSignature Language="VB.NET" Value="Public Function GetField (name As String, lexLevel As Integer) As FieldInfo" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Reflection::FieldInfo ^ GetField(System::String ^ name, int lexLevel);" />
+      <MemberSignature Language="F#" Value="override this.GetField : string * int -&gt; System.Reflection.FieldInfo" Usage="stackFrame.GetField (name, lexLevel)" />
       <MemberType>Method</MemberType>
       <Implements>
         <InterfaceMember>M:Microsoft.JScript.IActivationObject.GetField(System.String,System.Int32)</InterfaceMember>
@@ -118,10 +121,10 @@
         <Parameter Name="lexLevel" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="name">검색할 필드의 이름입니다.</param>
-        <param name="lexLevel">검색할 어휘 수준입니다.</param>
-        <summary>범위 계층 구조를 검색하여 지정된 이름을 갖는 필드를 가져옵니다. 이 메서드는 어휘 수준으로 지정된 범위만 검색합니다.</summary>
-        <returns>모든 경우 null입니다.</returns>
+        <param name="name">The name of the field to search for.</param>
+        <param name="lexLevel">The lexical level to search.</param>
+        <summary>Gets a field that has the specified name by searching the scope hierarchy. This method searches only the scope that is specified by the lexical level.</summary>
+        <returns>null in all cases.</returns>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -137,6 +140,7 @@
       <MemberSignature Language="DocId" Value="M:Microsoft.JScript.StackFrame.GetGlobalScope" />
       <MemberSignature Language="VB.NET" Value="Public Function GetGlobalScope () As GlobalScope" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual Microsoft::JScript::GlobalScope ^ GetGlobalScope();" />
+      <MemberSignature Language="F#" Value="abstract member GetGlobalScope : unit -&gt; Microsoft.JScript.GlobalScope&#xA;override this.GetGlobalScope : unit -&gt; Microsoft.JScript.GlobalScope" Usage="stackFrame.GetGlobalScope " />
       <MemberType>Method</MemberType>
       <Implements>
         <InterfaceMember>M:Microsoft.JScript.IActivationObject.GetGlobalScope</InterfaceMember>
@@ -150,8 +154,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>모듈 범위와 같은 정적 변수를 포함하는 범위를 찾을 때까지 범위 계층 구조를 검색하여 전역 범위를 가져옵니다.</summary>
-        <returns>전역 범위입니다.</returns>
+        <summary>Gets the global scope by searching the scope hierarchy until it finds a scope that includes static variables, for example, a module scope.</summary>
+        <returns>The global scope.</returns>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -166,6 +170,7 @@
       <MemberSignature Language="DocId" Value="M:Microsoft.JScript.StackFrame.GetMember(System.String,System.Reflection.BindingFlags)" />
       <MemberSignature Language="VB.NET" Value="Public Overrides Function GetMember (name As String, bindingAttr As BindingFlags) As MemberInfo()" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Reflection::MemberInfo ^&gt; ^ GetMember(System::String ^ name, System::Reflection::BindingFlags bindingAttr);" />
+      <MemberSignature Language="F#" Value="override this.GetMember : string * System.Reflection.BindingFlags -&gt; System.Reflection.MemberInfo[]" Usage="stackFrame.GetMember (name, bindingAttr)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>Microsoft.JScript</AssemblyName>
@@ -179,11 +184,10 @@
         <Parameter Name="bindingAttr" Type="System.Reflection.BindingFlags" />
       </Parameters>
       <Docs>
-        <param name="name">검색할 멤버의 이름입니다.</param>
-        <param name="bindingAttr">리플렉션을 통해 멤버를 검색하는 방법을 지정하는 열거형 값의 비트 조합입니다.</param>
-        <summary>지정된 이름과 일치하는 이름을 가진 모든 멤버에 해당하는 <see cref="T:System.Reflection.MemberInfo" /> 개체의 배열을 검색합니다.</summary>
-        <returns>
-          <paramref name="name" /> 인수와 일치하는 개체의 배열입니다.</returns>
+        <param name="name">The member name to search for.</param>
+        <param name="bindingAttr">A bitwise combination of the enumeration values that specifies how the search for members is conducted by reflection.</param>
+        <summary>Retrieves an array of <see cref="T:System.Reflection.MemberInfo" /> objects that correspond to all members that match a specified name.</summary>
+        <returns>An array of objects that match the <paramref name="name" /> argument.</returns>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -199,6 +203,7 @@
       <MemberSignature Language="DocId" Value="M:Microsoft.JScript.StackFrame.GetMembers(System.Reflection.BindingFlags)" />
       <MemberSignature Language="VB.NET" Value="Public Overrides Function GetMembers (bindingAttr As BindingFlags) As MemberInfo()" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Reflection::MemberInfo ^&gt; ^ GetMembers(System::Reflection::BindingFlags bindingAttr);" />
+      <MemberSignature Language="F#" Value="override this.GetMembers : System.Reflection.BindingFlags -&gt; System.Reflection.MemberInfo[]" Usage="stackFrame.GetMembers bindingAttr" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>Microsoft.JScript</AssemblyName>
@@ -211,9 +216,9 @@
         <Parameter Name="bindingAttr" Type="System.Reflection.BindingFlags" />
       </Parameters>
       <Docs>
-        <param name="bindingAttr">리플렉션을 통해 멤버를 검색하는 방법을 지정하는 열거형 값의 비트 조합입니다.</param>
-        <summary>현재 개체의 모든 멤버에 해당하는 <see cref="T:System.Reflection.MemberInfo" /> 개체의 배열을 검색합니다.</summary>
-        <returns>현재 개체의 모든 멤버가 포함된 개체의 배열입니다.</returns>
+        <param name="bindingAttr">A bitwise combination of the enumeration values that specifies how the search for members is conducted by reflection.</param>
+        <summary>Retrieves an array of <see cref="T:System.Reflection.MemberInfo" /> objects that correspond to all members of the current object.</summary>
+        <returns>An array of objects that contains all members of the current object.</returns>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -229,6 +234,7 @@
       <MemberSignature Language="DocId" Value="M:Microsoft.JScript.StackFrame.GetMemberValue(System.String,System.Int32)" />
       <MemberSignature Language="VB.NET" Value="Public Function GetMemberValue (name As String, lexlevel As Integer) As Object" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ GetMemberValue(System::String ^ name, int lexlevel);" />
+      <MemberSignature Language="F#" Value="abstract member GetMemberValue : string * int -&gt; obj&#xA;override this.GetMemberValue : string * int -&gt; obj" Usage="stackFrame.GetMemberValue (name, lexlevel)" />
       <MemberType>Method</MemberType>
       <Implements>
         <InterfaceMember>M:Microsoft.JScript.IActivationObject.GetMemberValue(System.String,System.Int32)</InterfaceMember>
@@ -250,11 +256,10 @@
         <Parameter Name="lexlevel" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="name">검색할 멤버의 이름입니다.</param>
-        <param name="lexlevel">검색할 어휘 수준입니다.</param>
-        <summary>범위 계층 구조를 검색하여 지정된 멤버의 값을 가져옵니다. 이 메서드는 어휘 수준으로 지정된 범위만 검색합니다.</summary>
-        <returns>
-          <paramref name="name" /> 멤버의 값입니다.</returns>
+        <param name="name">The name of the member to search for.</param>
+        <param name="lexlevel">The lexical level to search.</param>
+        <summary>Gets the value of the specified member by searching the scope hierarchy. This method searches only the scope that is specified by the lexical level.</summary>
+        <returns>The value of the member <paramref name="name" />.</returns>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -270,6 +275,7 @@
       <MemberSignature Language="DocId" Value="F:Microsoft.JScript.StackFrame.localVars" />
       <MemberSignature Language="VB.NET" Value="Public localVars As Object() " />
       <MemberSignature Language="C++ CLI" Value="public: cli::array &lt;System::Object ^&gt; ^ localVars;" />
+      <MemberSignature Language="F#" Value="val mutable localVars : obj[]" Usage="Microsoft.JScript.StackFrame.localVars" />
       <MemberType>Field</MemberType>
       <AssemblyInfo>
         <AssemblyName>Microsoft.JScript</AssemblyName>
@@ -279,7 +285,7 @@
         <ReturnType>System.Object[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>스택 프레임의 로컬 변수를 저장합니다.</summary>
+        <summary>Stores the local variables for this stack frame.</summary>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -310,9 +316,9 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">@FSHO2@필드의 이름입니다.</param>
-        <summary>지정된 이름이 있는 필드의 로컬 선언을 가져옵니다. 이 메서드는 컴파일 타임에 오류 확인을 위해 사용됩니다.</summary>
-        <returns>필드의 지역 선언입니다.</returns>
+        <param name="name">The name of the field.</param>
+        <summary>Gets the local declaration of a field that has the specified name. This method is used at compile time for error checking.</summary>
+        <returns>The local declaration of the field.</returns>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -328,6 +334,7 @@
       <MemberSignature Language="DocId" Value="M:Microsoft.JScript.StackFrame.PushStackFrameForMethod(System.Object,Microsoft.JScript.JSLocalField[],Microsoft.JScript.Vsa.VsaEngine)" />
       <MemberSignature Language="VB.NET" Value="Public Shared Sub PushStackFrameForMethod (thisob As Object, fields As JSLocalField(), engine As VsaEngine)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; static void PushStackFrameForMethod(System::Object ^ thisob, cli::array &lt;Microsoft::JScript::JSLocalField ^&gt; ^ fields, Microsoft::JScript::Vsa::VsaEngine ^ engine);" />
+      <MemberSignature Language="F#" Value="static member PushStackFrameForMethod : obj * Microsoft.JScript.JSLocalField[] * Microsoft.JScript.Vsa.VsaEngine -&gt; unit" Usage="Microsoft.JScript.StackFrame.PushStackFrameForMethod (thisob, fields, engine)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>Microsoft.JScript</AssemblyName>
@@ -342,10 +349,10 @@
         <Parameter Name="engine" Type="Microsoft.JScript.Vsa.VsaEngine" />
       </Parameters>
       <Docs>
-        <param name="thisob">메서드가 포함된 개체입니다.</param>
-        <param name="fields">스택 프레임의 로컬 변수입니다.</param>
-        <param name="engine">스크립팅 엔진에 대한 참조입니다.</param>
-        <summary>메서드에 대한 새로운 <see cref="T:Microsoft.JScript.StackFrame" /> 개체를 만들고 이를 전역 범위 스택에 푸시합니다.</summary>
+        <param name="thisob">The object that contains the method.</param>
+        <param name="fields">The local variables for the stack frame.</param>
+        <param name="engine">A reference to the scripting engine.</param>
+        <summary>Creates a new <see cref="T:Microsoft.JScript.StackFrame" /> object for a method and pushes it onto the global scope stack.</summary>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />
@@ -361,6 +368,7 @@
       <MemberSignature Language="DocId" Value="M:Microsoft.JScript.StackFrame.PushStackFrameForStaticMethod(System.RuntimeTypeHandle,Microsoft.JScript.JSLocalField[],Microsoft.JScript.Vsa.VsaEngine)" />
       <MemberSignature Language="VB.NET" Value="Public Shared Sub PushStackFrameForStaticMethod (thisclass As RuntimeTypeHandle, fields As JSLocalField(), engine As VsaEngine)" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; static void PushStackFrameForStaticMethod(RuntimeTypeHandle thisclass, cli::array &lt;Microsoft::JScript::JSLocalField ^&gt; ^ fields, Microsoft::JScript::Vsa::VsaEngine ^ engine);" />
+      <MemberSignature Language="F#" Value="static member PushStackFrameForStaticMethod : RuntimeTypeHandle * Microsoft.JScript.JSLocalField[] * Microsoft.JScript.Vsa.VsaEngine -&gt; unit" Usage="Microsoft.JScript.StackFrame.PushStackFrameForStaticMethod (thisclass, fields, engine)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>Microsoft.JScript</AssemblyName>
@@ -375,10 +383,10 @@
         <Parameter Name="engine" Type="Microsoft.JScript.Vsa.VsaEngine" />
       </Parameters>
       <Docs>
-        <param name="thisclass">정적 메서드가 포함된 클래스입니다.</param>
-        <param name="fields">스택 프레임의 로컬 변수입니다.</param>
-        <param name="engine">스크립팅 엔진에 대한 참조입니다.</param>
-        <summary>정적 메서드에 대한 새로운 <see cref="T:Microsoft.JScript.StackFrame" /> 개체를 만들고 이를 전역 범위 스택에 푸시합니다.</summary>
+        <param name="thisclass">The class that contains the static method.</param>
+        <param name="fields">The local variables for the stack frame.</param>
+        <param name="engine">A reference to the scripting engine.</param>
+        <summary>Creates a new <see cref="T:Microsoft.JScript.StackFrame" /> object for a static method and pushes it onto the global scope stack.</summary>
         <remarks>To be added.</remarks>
         <forInternalUseOnly />
         <altmember cref="T:Microsoft.JScript.ScriptObject" />

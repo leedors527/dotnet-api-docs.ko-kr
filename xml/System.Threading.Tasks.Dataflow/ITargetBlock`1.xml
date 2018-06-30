@@ -1,17 +1,18 @@
 <Type Name="ITargetBlock&lt;TInput&gt;" FullName="System.Threading.Tasks.Dataflow.ITargetBlock&lt;TInput&gt;">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="919f18b0a34690ff2f350592c530c03c35539e73" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.openlocfilehash" Value="8acdc4f452bc7e4455e3f120340be132eb5d1fff" />
+    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-    <Meta Name="ms.locfileid" Value="30526617" />
+    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.locfileid" Value="36407268" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface ITargetBlock&lt;in TInput&gt; : System.Threading.Tasks.Dataflow.IDataflowBlock" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract ITargetBlock`1&lt;- TInput&gt; implements class System.Threading.Tasks.Dataflow.IDataflowBlock" />
   <TypeSignature Language="DocId" Value="T:System.Threading.Tasks.Dataflow.ITargetBlock`1" />
   <TypeSignature Language="VB.NET" Value="Public Interface ITargetBlock(Of In TInput)&#xA;Implements IDataflowBlock" />
   <TypeSignature Language="C++ CLI" Value="generic &lt;typename TInput&gt;&#xA;public interface class ITargetBlock : System::Threading::Tasks::Dataflow::IDataflowBlock" />
+  <TypeSignature Language="F#" Value="type ITargetBlock&lt;'Input&gt; = interface&#xA;    interface IDataflowBlock" />
   <AssemblyInfo>
     <AssemblyName>System.Threading.Tasks.Dataflow</AssemblyName>
     <AssemblyVersion>4.6.0.0</AssemblyVersion>
@@ -51,6 +52,7 @@
       <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance valuetype System.Threading.Tasks.Dataflow.DataflowMessageStatus OfferMessage(valuetype System.Threading.Tasks.Dataflow.DataflowMessageHeader messageHeader, !TInput messageValue, class System.Threading.Tasks.Dataflow.ISourceBlock`1&lt;!TInput&gt; source, bool consumeToAccept) cil managed" />
       <MemberSignature Language="DocId" Value="M:System.Threading.Tasks.Dataflow.ITargetBlock`1.OfferMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader,`0,System.Threading.Tasks.Dataflow.ISourceBlock{`0},System.Boolean)" />
       <MemberSignature Language="VB.NET" Value="Public Function OfferMessage (messageHeader As DataflowMessageHeader, messageValue As TInput, source As ISourceBlock(Of In TInput), consumeToAccept As Boolean) As DataflowMessageStatus" />
+      <MemberSignature Language="F#" Value="abstract member OfferMessage : System.Threading.Tasks.Dataflow.DataflowMessageHeader * 'Input * System.Threading.Tasks.Dataflow.ISourceBlock&lt;'Input&gt; * bool -&gt; System.Threading.Tasks.Dataflow.DataflowMessageStatus" Usage="iTargetBlock.OfferMessage (messageHeader, messageValue, source, consumeToAccept)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Threading.Tasks.Dataflow</AssemblyName>
@@ -74,18 +76,10 @@
         <param name="source">메시지를 제공하는 <see cref="T:System.Threading.Tasks.Dataflow.ISourceBlock`1" />입니다. null일 수 있습니다.</param>
         <param name="consumeToAccept">메시지를 사용하기 위해 <see cref="M:System.Threading.Tasks.Dataflow.ISourceBlock`1.ConsumeMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader,System.Threading.Tasks.Dataflow.ITargetBlock{`0},System.Boolean@)" />를 반환하기 전에 <see cref="M:System.Threading.Tasks.Dataflow.ITargetBlock`1.OfferMessage(System.Threading.Tasks.Dataflow.DataflowMessageHeader,`0,System.Threading.Tasks.Dataflow.ISourceBlock{`0},System.Boolean)" />를 호출하는 동안 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Accepted" />를 동기적으로 호출하도록 대상에 지시하려면 <see langword="true" />로 설정합니다.</param>
         <summary>메시지를 <see cref="T:System.Threading.Tasks.Dataflow.ITargetBlock`1" />에 제공하며 대상에서 메시지를 선택적으로 사용하거나 연기할 수 있습니다.</summary>
-        <returns>제공된 메시지의 상태입니다. 메시지가 대상에서 허용된 경우  <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Accepted" />가 반환되고 원본은 현재 대상에서 그대로 소유하고 있으므로 제안된 메시지를 더 이상 사용할 수 없습니다. 메시지가 대상에 의해 연기된 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Postponed" />는 나중에 메시지를 사용하거나 예약하려고 시도할 수 있는 알림으로 반환됩니다. 그 동안 소스는 메시지를 계속 소유하고 있으며 다른 블록에 메시지를 제공할 수 있습니다.  
-  
- 대상이 메시지를 연기해야 하지만 원본이 <see langword="null" />인 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Declined" />가 대신 반환됩니다.  
-  
- 대상이 메시지를 받으려고 시도했지만 다른 대상에 메시지를 전달하는 소스 또는 단순히 삭제로 인해 누락된 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.NotAvailable" />이 반환됩니다.  
-  
- 대상이 메시지를 수락하지 않도록 선택한 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Declined" />이 반환 됩니다. 대상이 메시지를 받지 않도록 선택했고 이 소스에서 다른 메시지를 받지 않을 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.DecliningPermanently" />이 반환됩니다.</returns>
+        <returns>제공된 메시지의 상태입니다. 메시지가 대상에서 허용된 경우  <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Accepted" />가 반환되고 원본은 현재 대상에서 그대로 소유하고 있으므로 제안된 메시지를 더 이상 사용할 수 없습니다. 메시지가 대상에 의해 연기된 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Postponed" />는 나중에 메시지를 사용하거나 예약하려고 시도할 수 있는 알림으로 반환됩니다. 그 동안 소스는 메시지를 계속 소유하고 있으며 다른 블록에 메시지를 제공할 수 있습니다.  대상이 메시지를 연기해야 하지만 원본이 <see langword="null" />인 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Declined" />가 대신 반환됩니다.  대상이 메시지를 받으려고 시도했지만 다른 대상에 메시지를 전달하는 소스 또는 단순히 삭제로 인해 누락된 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.NotAvailable" />이 반환됩니다.  대상이 메시지를 수락하지 않도록 선택한 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.Declined" />이 반환 됩니다. 대상이 메시지를 받지 않도록 선택했고 이 소스에서 다른 메시지를 받지 않을 경우 <see cref="F:System.Threading.Tasks.Dataflow.DataflowMessageStatus.DecliningPermanently" />이 반환됩니다.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentException">
-          <paramref name="messageHeader" />이 유효하지 않은 경우  
-  
- 또는 null이 아닌 <paramref name="source" />가 제공되는 경우 <paramref name="consumeToAccept" />는 true만 될 수 있습니다.</exception>
+          <paramref name="messageHeader" />이 유효하지 않은 경우  또는 null이 아닌 <paramref name="source" />가 제공되는 경우 <paramref name="consumeToAccept" />는 true만 될 수 있습니다.</exception>
       </Docs>
     </Member>
   </Members>

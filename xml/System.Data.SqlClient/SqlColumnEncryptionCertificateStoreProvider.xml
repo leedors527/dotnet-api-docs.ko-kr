@@ -1,17 +1,18 @@
 <Type Name="SqlColumnEncryptionCertificateStoreProvider" FullName="System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="286f4297f1a7b2b06ac983edccbee0ec1c40bd89" />
-    <Meta Name="ms.sourcegitcommit" Value="e7865e39826e7aaf54da4c7042975153813a31c7" />
+    <Meta Name="ms.openlocfilehash" Value="f096213f9a5fe505bbfae8c61667155915e1736f" />
+    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="04/16/2018" />
-    <Meta Name="ms.locfileid" Value="31042866" />
+    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.locfileid" Value="36680096" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class SqlColumnEncryptionCertificateStoreProvider : System.Data.SqlClient.SqlColumnEncryptionKeyStoreProvider" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SqlColumnEncryptionCertificateStoreProvider extends System.Data.SqlClient.SqlColumnEncryptionKeyStoreProvider" />
   <TypeSignature Language="DocId" Value="T:System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider" />
   <TypeSignature Language="VB.NET" Value="Public Class SqlColumnEncryptionCertificateStoreProvider&#xA;Inherits SqlColumnEncryptionKeyStoreProvider" />
   <TypeSignature Language="C++ CLI" Value="public ref class SqlColumnEncryptionCertificateStoreProvider : System::Data::SqlClient::SqlColumnEncryptionKeyStoreProvider" />
+  <TypeSignature Language="F#" Value="type SqlColumnEncryptionCertificateStoreProvider = class&#xA;    inherit SqlColumnEncryptionKeyStoreProvider" />
   <AssemblyInfo>
     <AssemblyName>System.Data</AssemblyName>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
@@ -21,7 +22,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Windows 인증서 저장소의 키 저장소 공급자 구현입니다. 이 클래스를 사용하면 Windows 인증서 저장소에 저장된 인증서를 열 마스터 키로 사용할 수 있습니다. 자세한 내용은 [Always Encrypted](/sql/relational-databases/security/encryption/always-encrypted-database-engine)를 참조하세요.</summary>
+    <summary>The implementation of the key store provider for Windows Certificate Store. This class enables using certificates stored in the Windows Certificate Store as column master keys. For details, see [Always Encrypted](/sql/relational-databases/security/encryption/always-encrypted-database-engine).</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -38,7 +39,7 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Windows 인증서 저장소의 키 저장소 공급자입니다.</summary>
+        <summary>Key store provider for Windows Certificate Store.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -48,6 +49,7 @@
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider.DecryptColumnEncryptionKey(System.String,System.String,System.Byte[])" />
       <MemberSignature Language="VB.NET" Value="Public Overrides Function DecryptColumnEncryptionKey (masterKeyPath As String, encryptionAlgorithm As String, encryptedColumnEncryptionKey As Byte()) As Byte()" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Byte&gt; ^ DecryptColumnEncryptionKey(System::String ^ masterKeyPath, System::String ^ encryptionAlgorithm, cli::array &lt;System::Byte&gt; ^ encryptedColumnEncryptionKey);" />
+      <MemberSignature Language="F#" Value="override this.DecryptColumnEncryptionKey : string * string * byte[] -&gt; byte[]" Usage="sqlColumnEncryptionCertificateStoreProvider.DecryptColumnEncryptionKey (masterKeyPath, encryptionAlgorithm, encryptedColumnEncryptionKey)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
@@ -62,13 +64,11 @@
         <Parameter Name="encryptedColumnEncryptionKey" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="masterKeyPath">마스터 키 경로입니다.</param>
-        <param name="encryptionAlgorithm">암호화 알고리즘입니다. 현재 유효한 값은 <c>RSA_OAEP</c>뿐입니다.</param>
-        <param name="encryptedColumnEncryptionKey">암호화된 열 암호화 키입니다.</param>
-        <summary>열 암호화 키의 지정된 암호화 값을 해독합니다. 암호화 값은 지정된 키 경로를 포함한 인증서와 지정된 알고리즘을 사용하여 암호화되어야 합니다. 키 경로의 형식은 "Local Machine/My/&lt;certificate_thumbrint&gt;" 또는 "Current User/My/&lt;certificate_thumbprint&gt;"여야 합니다.</summary>
-        <returns>
-          <see cref="T:System.Byte" />를 반환합니다.   
-암호 해독된 열 암호화 키입니다.</returns>
+        <param name="masterKeyPath">The master key path.</param>
+        <param name="encryptionAlgorithm">The encryption algorithm. Currently, the only valid value is: <c>RSA_OAEP</c></param>
+        <param name="encryptedColumnEncryptionKey">The encrypted column encryption key.</param>
+        <summary>Decrypts the specified encrypted value of a column encryption key. The encrypted value is expected to be encrypted using the certificate with the specified key path and using the specified algorithm. The format of the key path should be "Local Machine/My/&lt;certificate_thumbrint&gt;" or "Current User/My/&lt;certificate_thumbprint&gt;".</summary>
+        <returns>Returns <see cref="T:System.Byte" />. The decrypted column encryption key.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -78,6 +78,7 @@
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider.EncryptColumnEncryptionKey(System.String,System.String,System.Byte[])" />
       <MemberSignature Language="VB.NET" Value="Public Overrides Function EncryptColumnEncryptionKey (masterKeyPath As String, encryptionAlgorithm As String, columnEncryptionKey As Byte()) As Byte()" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Byte&gt; ^ EncryptColumnEncryptionKey(System::String ^ masterKeyPath, System::String ^ encryptionAlgorithm, cli::array &lt;System::Byte&gt; ^ columnEncryptionKey);" />
+      <MemberSignature Language="F#" Value="override this.EncryptColumnEncryptionKey : string * string * byte[] -&gt; byte[]" Usage="sqlColumnEncryptionCertificateStoreProvider.EncryptColumnEncryptionKey (masterKeyPath, encryptionAlgorithm, columnEncryptionKey)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
@@ -92,13 +93,11 @@
         <Parameter Name="columnEncryptionKey" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="masterKeyPath">마스터 키 경로입니다.</param>
-        <param name="encryptionAlgorithm">암호화 알고리즘입니다. 현재 유효한 값은 <c>RSA_OAEP</c>뿐입니다.</param>
-        <param name="columnEncryptionKey">암호화된 열 암호화 키입니다.</param>
-        <summary>지정된 키 경로 및 지정된 알고리즘과 함께 인증서를 사용하여 열 암호화 키를 암호화합니다. 키 경로의 형식은 "Local Machine/My/&lt;certificate_thumbrint&gt;" 또는 "Current User/My/&lt;certificate_thumbprint&gt;"여야 합니다.</summary>
-        <returns>
-          <see cref="T:System.Byte" />를 반환합니다.   
-암호화된 열 암호화 키입니다.</returns>
+        <param name="masterKeyPath">The master key path.</param>
+        <param name="encryptionAlgorithm">The encryption algorithm. Currently, the only valid value is: <c>RSA_OAEP</c></param>
+        <param name="columnEncryptionKey">The encrypted column encryption key.</param>
+        <summary>Encrypts a column encryption key using the certificate with the specified key path and using the specified algorithm. The format of the key path should be "Local Machine/My/&lt;certificate_thumbrint&gt;" or "Current User/My/&lt;certificate_thumbprint&gt;".</summary>
+        <returns>Returns <see cref="T:System.Byte" />. The encrypted column encryption key.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -108,6 +107,7 @@
       <MemberSignature Language="DocId" Value="F:System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider.ProviderName" />
       <MemberSignature Language="VB.NET" Value="Public Const ProviderName As String " />
       <MemberSignature Language="C++ CLI" Value="public: System::String ^ ProviderName;" />
+      <MemberSignature Language="F#" Value="val mutable ProviderName : string" Usage="System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider.ProviderName" />
       <MemberType>Field</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
@@ -117,7 +117,7 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>공급자 이름입니다.</summary>
+        <summary>The provider name.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -127,6 +127,7 @@
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider.SignColumnMasterKeyMetadata(System.String,System.Boolean)" />
       <MemberSignature Language="VB.NET" Value="Public Overrides Function SignColumnMasterKeyMetadata (masterKeyPath As String, allowEnclaveComputations As Boolean) As Byte()" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Byte&gt; ^ SignColumnMasterKeyMetadata(System::String ^ masterKeyPath, bool allowEnclaveComputations);" />
+      <MemberSignature Language="F#" Value="override this.SignColumnMasterKeyMetadata : string * bool -&gt; byte[]" Usage="sqlColumnEncryptionCertificateStoreProvider.SignColumnMasterKeyMetadata (masterKeyPath, allowEnclaveComputations)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
@@ -140,12 +141,11 @@
         <Parameter Name="allowEnclaveComputations" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="masterKeyPath">열 마스터 키 경로</param>
+        <param name="masterKeyPath">The column master key path.</param>
         <param name="allowEnclaveComputations">
-          열 마스터 키가 enclave 계산을 지원할 경우 <see langword="true" />가 표시되며 지원하지 않는 경우 <see langword="false" />가 표시됩니다.</param>
-        <summary>
-          <paramref name="masterKeyPath" /> 매개 변수로 참조되는 열 마스터 키를 사용하여 열 마스터 키 메타데이터에 디지털 서명합니다.</summary>
-        <returns>열 마스터 키 메타데이터의 서명</returns>
+          <see langword="true" /> to indicate that the column master key supports enclave computations; otherwise, <see langword="false" />.</param>
+        <summary>Digitally signs the column master key metadata with the column master key referenced by the <paramref name="masterKeyPath" /> parameter.</summary>
+        <returns>The signature of the column master key metadata.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -155,6 +155,7 @@
       <MemberSignature Language="DocId" Value="M:System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider.VerifyColumnMasterKeyMetadata(System.String,System.Boolean,System.Byte[])" />
       <MemberSignature Language="VB.NET" Value="Public Overrides Function VerifyColumnMasterKeyMetadata (masterKeyPath As String, allowEnclaveComputations As Boolean, signature As Byte()) As Boolean" />
       <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool VerifyColumnMasterKeyMetadata(System::String ^ masterKeyPath, bool allowEnclaveComputations, cli::array &lt;System::Byte&gt; ^ signature);" />
+      <MemberSignature Language="F#" Value="override this.VerifyColumnMasterKeyMetadata : string * bool * byte[] -&gt; bool" Usage="sqlColumnEncryptionCertificateStoreProvider.VerifyColumnMasterKeyMetadata (masterKeyPath, allowEnclaveComputations, signature)" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
@@ -169,11 +170,11 @@
         <Parameter Name="signature" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="masterKeyPath">비대칭 키의 전체 경로. 경로 형식은 키 저장소 공급자에 따라 다릅니다.</param>
-        <param name="allowEnclaveComputations">이 키를 신뢰할 수 있는 enclave로 전송할 수 있는지 여부를 나타내는 부울입니다.</param>
-        <param name="signature">마스터 키 메타데이터 서명.</param>
-        <summary>이 함수는 해당 Key Store 공급자에 의해 구현되어야 합니다. 이 함수는 키 경로로 식별되는 비대칭 키를 사용하고 (masterKeyPath, allowEnclaveComputations, providerName)으로 구성된 마스터 키 메타데이터를 확인해야 합니다.</summary>
-        <returns>제공된 서명을 기반으로 마스터 키 메타데이터를 확인할 수 있는지 여부를 나타내는 부울 값입니다.</returns>
+        <param name="masterKeyPath">The complete path of an asymmetric key. The path format is specific to a key store provider.</param>
+        <param name="allowEnclaveComputations">A Boolean that indicates if this key can be sent to the trusted enclave.</param>
+        <param name="signature">The master key metadata siognature.</param>
+        <summary>This function must be implemented by the corresponding Key Store providers. This function should use an asymmetric key identified by a key path and verify the masterkey metadata consisting of (masterKeyPath, allowEnclaveComputations, providerName).</summary>
+        <returns>A Boolean value that indicates if the master key metadata can be verified based on the provided signature.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

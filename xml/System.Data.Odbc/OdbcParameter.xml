@@ -1,11 +1,11 @@
 <Type Name="OdbcParameter" FullName="System.Data.Odbc.OdbcParameter">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="28832a71bec8dc374624438f5981ee69ae576d51" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="86f08384607fc2c28a39dbe1b2a62868cceb6355" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36685894" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37677773" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class OdbcParameter : System.Data.Common.DbParameter, ICloneable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit OdbcParameter extends System.Data.Common.DbParameter implements class System.Data.IDataParameter, class System.Data.IDbDataParameter, class System.ICloneable" />
@@ -15,6 +15,8 @@
   <TypeSignature Language="F#" Value="type OdbcParameter = class&#xA;    inherit DbParameter&#xA;    interface ICloneable&#xA;    interface IDbDataParameter&#xA;    interface IDataParameter" />
   <AssemblyInfo>
     <AssemblyName>System.Data</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <AssemblyInfo>
@@ -23,6 +25,7 @@
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Data.Common.DbParameter</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-1.1">System.MarshalByRefObject</BaseTypeName>
   </Base>
   <Interfaces>
     <Interface>
@@ -42,7 +45,7 @@
 ## Remarks  
  매개 변수 이름은 대/소문자를 구분하지 않습니다.  
   
- Microsoft OLE DB Provider를 사용 하 여 Oracle MSDAORA () 및.NET Framework ODBC Data Provider는 Oracle 데이터베이스를 쿼리할 때 사용 하는 `LIKE` 절 쿼리 고정 길이 필드 값을 일치 하는 모든 필요한 항목을 반환할 수 없습니다. Oracle의 고정 길이 필드 값을 일치 하는 경우는 이유는는 `LIKE` 절 뒤쪽 채움 공백을 포함 하 여 문자열의 전체 길이 일치 합니다. 예를 들어 테이블에 Oracle 데이터베이스 필드가 "Field1"으로 정의 된 `char(3)`, 값을 입력 하 고 다음 코드를 해당 테이블의 행에 "a"는 행을 반환 하지 합니다.  
+ Oracle (MSDAORA) 및 ODBC.NET Framework 데이터 공급자에 대 한 Microsoft OLE DB Provider를 사용 하 여 Oracle 데이터베이스를 쿼리할 때 사용 하 여 `LIKE` 절 쿼리 고정 길이 필드 값을 필요한 모든 일치 항목을 반환 하지 않을 수 있습니다. 이유는 Oracle에는 고정 길이 필드에 대 한 값과 일치 하는 경우는 `LIKE` 절 뒤쪽 채움 공백을 포함 하 여 문자열의 전체 길이 일치 합니다. 예를 들어 테이블에 Oracle 데이터베이스 필드가 "Field1"로 정의 된 `char(3)`, 값을 입력 하 고 다음 코드는 테이블의 행에 "a"는 행을 반환 하지.  
   
 ```vb  
 Dim queryString As String = "SELECT * FROM Table1 WHERE Field1 LIKE ?"  
@@ -58,14 +61,14 @@ command.Parameters.Add("@p1", OleDbType.Char, 3).Value = "a";
 OleDbDataReader reader = command.ExecuteReader();  
 ```  
   
- Oracle "a"로 서의 열 값을 저장 하기 때문에 이것이 (패딩 "a"와 후행 공백 3의 고정된 필드 길이), Oracle의 경우 "a"의 매개 변수 값에 대 한 일치 하는 항목으로 처리 하지 않습니다는 `LIKE` 고정 길이 필드의 비교 합니다.  
+ Oracle "a"로 열 값을 저장 하기 때문에 이것이 (패딩 "a", 후행 공백으로, 3의 고정된 필드 길이), Oracle의 경우 "a"의 매개 변수 값에 대 한 일치 항목으로 처리 하지 않습니다는 `LIKE` 고정 길이 필드 비교 합니다.  
   
- 이 문제를 해결 하려면 매개 변수 값에 백분율 ("%") 와일드 카드 문자를 추가 (`"a%"`), 하거나 SQL을 사용 하 여 `=` 비교 대신 합니다.  
+ 이 문제를 해결 하려면 비율 ("%") 와일드 카드 문자 매개 변수 값에 추가 합니다 (`"a%"`), SQL을 사용 하 여 또는 `=` 비교 대신 합니다.  
   
    
   
 ## Examples  
- 다음 예제에서는 여러 인스턴스의 <xref:System.Data.Odbc.OdbcParameter> 통해는 <xref:System.Data.Odbc.OdbcParameterCollection> 내는 <xref:System.Data.Odbc.OdbcDataAdapter>합니다. 이러한 매개 변수는 데이터를 데이터 원본에서 데이터를 선택 하는 데는 <xref:System.Data.DataSet>합니다. 이 예에서는 가정 하는 <xref:System.Data.DataSet> 및 <xref:System.Data.Odbc.OdbcDataAdapter> 적절 한 스키마, 명령 및 연결을 사용 하 여 이미 만들어져 있습니다.  
+ 다음 예제에서는의 여러 인스턴스를 만듭니다 <xref:System.Data.Odbc.OdbcParameter> 를 통해 합니다 <xref:System.Data.Odbc.OdbcParameterCollection> 내는 <xref:System.Data.Odbc.OdbcDataAdapter>합니다. 이러한 매개 변수는 데이터를 데이터 원본에서 데이터를 선택 하는 데는 <xref:System.Data.DataSet>합니다. 이 예에서는 가정를 <xref:System.Data.DataSet> 및 <xref:System.Data.Odbc.OdbcDataAdapter> 적절 한 스키마, 명령 및 연결을 사용 하 여 이미 만들어져 있습니다.  
   
  [!code-csharp[Classic WebData OdbcParameter#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter/VB/source.vb#1)]  
@@ -93,6 +96,8 @@ OleDbDataReader reader = command.ExecuteReader();
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -107,7 +112,7 @@ OleDbDataReader reader = command.ExecuteReader();
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 기본 생성자는 모든 필드를를 기본값으로 초기화합니다.  
+ 기본 생성자는 모든 필드를 기본값으로 초기화합니다.  
   
    
   
@@ -131,6 +136,8 @@ OleDbDataReader reader = command.ExecuteReader();
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -171,6 +178,8 @@ OleDbDataReader reader = command.ExecuteReader();
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -190,13 +199,13 @@ OleDbDataReader reader = command.ExecuteReader();
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 이 오버 로드를 사용 하는 경우 주의 해야는 <xref:System.Data.Odbc.OdbcParameter> 정수 매개 변수 값을 지정 하는 생성자입니다. 이 오버로드는 <xref:System.Object> 형식의 `value`를 사용하므로 다음 C# 예제와 같이 값이 0인 경우 정수 계열 값을 <xref:System.Object> 형식으로 변환해야 합니다.  
+ 이 오버 로드를 사용할 때는 주의 <xref:System.Data.Odbc.OdbcParameter> 정수 매개 변수 값을 지정 하는 생성자입니다. 이 오버로드는 <xref:System.Object> 형식의 `value`를 사용하므로 다음 C# 예제와 같이 값이 0인 경우 정수 계열 값을 <xref:System.Object> 형식으로 변환해야 합니다.  
   
 ```  
 Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));  
 ```  
   
- 이 변환을 수행 하지 않으면 컴파일러를 호출 하는 것을 가정은 <xref:System.Data.Odbc.OdbcParameter.%23ctor%2A?displayProperty=nameWithType> 생성자 오버 로드 합니다.  
+ 이 변환을 수행 하지 않는 경우 컴파일러는 호출 하려고 하는 <xref:System.Data.Odbc.OdbcParameter.%23ctor%2A?displayProperty=nameWithType> 생성자 오버 로드 합니다.  
   
  ]]></format>
         </remarks>
@@ -212,6 +221,8 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -254,6 +265,8 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -297,6 +310,8 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -305,7 +320,7 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+          <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
         </Attribute>
       </Attributes>
       <Parameters>
@@ -362,6 +377,7 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -370,7 +386,7 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       </AssemblyInfo>
       <Attributes>
         <Attribute>
-          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+          <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
         </Attribute>
       </Attributes>
       <Parameters>
@@ -445,6 +461,8 @@ public void CreateOdbcParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -462,17 +480,17 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 및 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 연결 됩니다. 설정의 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 변경은 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 을 지 원하는 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>합니다.  
+ 합니다 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 고 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 연결 됩니다. 따라서 설정 합니다 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 변경 합니다 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 을 지 원하는 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>합니다.  
   
- 지원 되는 데이터 형식의 목록에 대 한 적절 한 참조 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 멤버입니다. 자세한 내용은 참조 [DataAdapter 매개 변수](~/docs/framework/data/adonet/dataadapter-parameters.md)합니다.  
+ 지원 되는 데이터 형식의 목록, 참조 적절 한 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 멤버입니다. 자세한 내용은 [DataAdapter 매개 변수](~/docs/framework/data/adonet/dataadapter-parameters.md)합니다.  
   
 > [!NOTE]
->  <xref:System.Data.DbType.Object> 지원 되지 않습니다에서 Microsoft.NET Framework Data Provider for ODBC.  
+>  <xref:System.Data.DbType.Object> 지원 되지 않습니다 하 여 Microsoft.NET Framework Data Provider for ODBC.  
   
    
   
 ## Examples  
- 다음 예제에서는 한 **저장 프로시저** 관리 공급자를 ODBC를 사용 하 여 세 개의 매개 변수를 사용 합니다.  
+ 다음 예제에서는 호출을 **저장 프로시저** 세 개의 매개 변수를 사용 하 여 ODBC를 사용 하 여 관리 되는 공급자입니다.  
   
  [!code-csharp[Classic WebData OdbcParameter.DbType#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.DbType/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter.DbType#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.DbType/VB/source.vb#1)]  
@@ -495,6 +513,8 @@ public void CreateOdbcParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -517,9 +537,9 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 경우는 <xref:System.Data.ParameterDirection> 은 `Output`, 및 관련 된 실행 <xref:System.Data.Odbc.OdbcCommand> 는 값을 반환 하지 않습니다는 <xref:System.Data.Odbc.OdbcParameter> null 값이 포함 됩니다. Null 값을 사용 하 여 처리 하는 <xref:System.DBNull> 클래스입니다.  
+ 경우는 <xref:System.Data.ParameterDirection> 됩니다 `Output`, 및 연결 된 실행 <xref:System.Data.Odbc.OdbcCommand> 값을 반환 하지 않습니다는 <xref:System.Data.Odbc.OdbcParameter> null 값이 포함 됩니다. Null 값이 사용 하 여 처리 되는 <xref:System.DBNull> 클래스입니다.  
   
- `Output``InputOut`, 및 `ReturnValue` 매개 변수를 호출 하 여 반환 된 <xref:System.Data.Odbc.OdbcCommand.ExecuteReader%2A> 호출할 때까지 액세스할 수 없습니다 <xref:System.Data.Odbc.OdbcDataReader.Close%2A> 또는 `Dispose` 에 <xref:System.Data.Odbc.OdbcDataReader>합니다.  
+ `Output`를 `InputOut`, 및 `ReturnValue` 호출에서 반환 하는 매개 변수 <xref:System.Data.Odbc.OdbcCommand.ExecuteReader%2A> 호출할 때까지 액세스할 수 없습니다 <xref:System.Data.Odbc.OdbcDataReader.Close%2A> 또는 `Dispose` 에 <xref:System.Data.Odbc.OdbcDataReader>합니다.  
   
    
   
@@ -564,6 +584,8 @@ public void CreateMyProc(OdbcConnection connection)
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -580,7 +602,7 @@ public void CreateMyProc(OdbcConnection connection)
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Null 값을 사용 하 여 처리 하는 <xref:System.DBNull> 클래스입니다.  
+ Null 값이 사용 하 여 처리 되는 <xref:System.DBNull> 클래스입니다.  
   
    
   
@@ -618,6 +640,8 @@ public void CreateOdbcParameter()
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -645,9 +669,9 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 및 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 연결 됩니다. 설정의 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 변경은 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 을 지 원하는 <xref:System.Data.Odbc.OdbcType>합니다.  
+ 합니다 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 고 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 연결 됩니다. 따라서 설정 합니다 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 변경 합니다 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 을 지 원하는 <xref:System.Data.Odbc.OdbcType>합니다.  
   
- 지원 되는 데이터 형식의 목록에 대 한 적절 한 참조 <xref:System.Data.Odbc.OdbcType> 멤버입니다. 자세한 내용은 참조 [DataAdapter 매개 변수](~/docs/framework/data/adonet/dataadapter-parameters.md)합니다.  
+ 지원 되는 데이터 형식의 목록, 참조 적절 한 <xref:System.Data.Odbc.OdbcType> 멤버입니다. 자세한 내용은 [DataAdapter 매개 변수](~/docs/framework/data/adonet/dataadapter-parameters.md)합니다.  
   
  ]]></format>
         </remarks>
@@ -670,7 +694,7 @@ public void CreateOdbcParameter()
           <AttributeName>System.ComponentModel.Browsable(false)</AttributeName>
         </Attribute>
         <Attribute>
-          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+          <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
         </Attribute>
       </Attributes>
       <ReturnValue>
@@ -695,6 +719,8 @@ public void CreateOdbcParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -713,19 +739,19 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 명명 된 매개 변수 대신 ODBC.NET 공급자는 명령 텍스트 구문에서 물음표 (?)로 표시 된 위치 매개 변수를 사용 합니다. 매개 변수 개체는 <xref:System.Data.Odbc.OdbcParameterCollection> 및 저장된 프로시저에 의해 허용 되는 실제 매개 변수 또는 매개 변수가 있는 SQL 문을 해당 하는 순서에 따라 서로 <xref:System.Data.Odbc.OdbcParameter> 개체는 순서가 아니라 컬렉션에 삽입 됩니다. 매개 변수 이름입니다. 매개 변수 이름은 지정할 수 있지만 매개 변수 개체 바인딩 중에 무시 됩니다.  
+ 명명 된 매개 변수 대신 ODBC.NET 공급자는 명령 텍스트 구문에서 물음표 (?)로 표시 되는 위치 매개 변수를 사용 합니다. 매개 변수 개체를 <xref:System.Data.Odbc.OdbcParameterCollection> 및 저장된 프로시저에 의해 허용 되는 실제 매개 변수 또는 매개 변수가 있는 SQL 문을 해당 하는 순서에 따라 서로 <xref:System.Data.Odbc.OdbcParameter> 개체 대신 컬렉션에 삽입 됩니다 매개 변수 이름입니다. 매개 변수 이름을 제공할 수 있습니다 하지만 매개 변수 개체 바인딩 중 무시 됩니다.  
   
    
   
 ## Examples  
- 다음 예에서는 데이터 원본 테이블 이름이 있음을 가정 **MyTable** 및으로에서는 라는 저장된 프로시저:  
+ 다음 예제에서는 데이터 원본에 테이블 이름을 가정 **MyTable** 및 MyProc로 정의 된 명명 된 저장된 프로시저:  
   
 ```  
 CREATE TABLE MyTable (col1 int, col2 smallmoney, col3 decimal)  
 CREATE PROC MyProc (@p1 int, @p2 smallmoney, @p3 decimal) AS INSERT INTO MyTable VALUES (@p1, @p2, @p3)  
 ```  
   
- 다음 예제에서는 매개 변수를 만들고를 MyProc 저장 프로시저를 호출 합니다.  
+ 다음 예제에서는 매개 변수를 만듭니다 및 MyProc 저장 프로시저를 호출 합니다.  
   
 ```vb  
 Public Sub CreateMyProc(connection As OdbcConnection)  
@@ -769,6 +795,8 @@ public void CreateMyProc(OdbcConnection connection)
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -792,12 +820,12 @@ public void CreateMyProc(OdbcConnection connection)
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 데이터베이스의 값이 아닌 값으로이 속성을 설정 합니다. 데이터 공급자의 구현에 따라 및 오류 코드, truncate, 또는 라운드 데이터를 반환할 수 있습니다.  
+ 데이터베이스의 값이 아닌 값으로이 속성을 설정 합니다. 오류 코드, 자르기, 또는 둥근 데이터를 반환할 수 있습니다 및 데이터 공급자의 구현에 따라 다릅니다.  
   
- <xref:System.Data.Odbc.OdbcParameter.Precision%2A> 매개 변수 속성에만 영향을 가진 <xref:System.Data.Odbc.OdbcType> 은 `Decimal` 또는 `Numeric`합니다. 다른 데이터 형식에 대 한 <xref:System.Data.Odbc.OdbcParameter.Precision%2A> 는 무시 됩니다.  
+ <xref:System.Data.Odbc.OdbcParameter.Precision%2A> 속성이 영향을 주는지 매개 변수입니다 <xref:System.Data.Odbc.OdbcType> 됩니다 `Decimal` 또는 `Numeric`합니다. 다른 데이터 형식에 대 한 <xref:System.Data.Odbc.OdbcParameter.Precision%2A> 무시 됩니다.  
   
 > [!NOTE]
->  데이터베이스에 전달 되는 데이터를 강제 하려면이 속성의 사용이 지원 되지 않습니다. 반올림 하거나 그렇지 않으면 데이터베이스에 전달 하기 전에 데이터를 강제를 사용 하 여는 <xref:System.Math> 의 일부인 클래스는 `System` 네임 스페이스에 매개 변수의 값을 할당 하기 전에 `Value` 속성입니다.  
+>  데이터베이스에 전달 된 데이터를 강제 하려면이 속성의 사용이 지원 되지 않습니다. Round, truncate, 또는 그렇지 않은 경우 데이터베이스에 전달 하기 전에 데이터를 강제 하려면 사용 합니다 <xref:System.Math> 의 일부인 클래스를 `System` 네임 스페이스에 매개 변수의 값을 할당 하기 전에 `Value` 속성입니다.  
   
    
   
@@ -837,6 +865,7 @@ public void CreateOdbcParameter()
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -853,9 +882,9 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 명령을 실행할 때 매개 변수 값을 포함 하는 코드 형식의 매개 변수를 명시적으로 설정 하거나 수 또는 매개 변수 값에서 형식을 유추할 수 있습니다. 이 메서드를 호출 하 여 다시 매개 변수에 전달 된 값에서 해당 형식을 유추할 수 있는 매개 변수 다시 설정 합니다. 둘 다이 메서드를 호출 하면는 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 및 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 의 속성은 <xref:System.Data.Odbc.OdbcParameter>합니다.  
+ 명령을 실행할 때 매개 변수 값을 포함 하는 코드는 매개 변수의 형식을 명시적으로 설정 하거나 수 또는 매개 변수 값에서 형식을 유추할 수 있습니다. 이 메서드를 호출 다시 매개 변수에 전달 된 값에서 형식을 유추할 수 있도록 매개 변수 다시 설정 합니다. 둘 다에 영향을이 메서드를 호출 합니다 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 및 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 의 속성을 <xref:System.Data.Odbc.OdbcParameter>합니다.  
   
- 호출 <xref:System.Data.Odbc.OdbcParameter.ResetDbType%2A> 다시 설정 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 기본값으로 (String).  
+ 호출 <xref:System.Data.Odbc.OdbcParameter.ResetDbType%2A> 다시 설정 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 기본값으로 (문자열)입니다.  
   
  ]]></format>
         </remarks>
@@ -871,6 +900,7 @@ public void CreateOdbcParameter()
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -887,7 +917,7 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 명령을 실행할 때 매개 변수 값을 포함 하는 코드 형식의 매개 변수를 명시적으로 설정 하거나 수 또는 매개 변수 값에서 형식을 유추할 수 있습니다. 이 메서드를 호출 하 여 다시 매개 변수에 전달 된 값에서 해당 형식을 유추할 수 있는 매개 변수 다시 설정 합니다. 둘 다이 메서드를 호출 하면는 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 및 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 의 속성은 <xref:System.Data.Odbc.OdbcParameter>합니다.  
+ 명령을 실행할 때 매개 변수 값을 포함 하는 코드는 매개 변수의 형식을 명시적으로 설정 하거나 수 또는 매개 변수 값에서 형식을 유추할 수 있습니다. 이 메서드를 호출 다시 매개 변수에 전달 된 값에서 형식을 유추할 수 있도록 매개 변수 다시 설정 합니다. 둘 다에 영향을이 메서드를 호출 합니다 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 및 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 의 속성을 <xref:System.Data.Odbc.OdbcParameter>합니다.  
   
  ]]></format>
         </remarks>
@@ -906,6 +936,8 @@ public void CreateOdbcParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -931,17 +963,17 @@ public void CreateOdbcParameter()
 ## Remarks  
  <xref:System.Data.Odbc.OdbcParameter.Scale%2A> 속성은 10 진수 및 숫자 입력된 매개 변수에 대해서만 사용 됩니다.  
   
- 데이터베이스의 값이 아닌 값으로이 속성을 설정할 때의 결과 데이터 공급자의 구현에 따라 및 오류 코드는 반환 또는 truncate 수도 있습니다 반올림 데이터.  
+ 데이터베이스의 값이 아닌 값으로이 속성을 설정할 때의 결과 데이터 공급자의 구현에 따라 달라 집니다와 오류 코드를 반환 또는 truncate 수도 있고 데이터 반올림.  
   
- <xref:System.Data.Odbc.OdbcParameter.Scale%2A> 매개 변수 속성에만 영향을 가진 <xref:System.Data.Odbc.OdbcType> 은 `Decimal` 또는 `Numeric`합니다. 다른 데이터 형식에 대 한 <xref:System.Data.Odbc.OdbcParameter.Scale%2A> 는 무시 됩니다.  
+ <xref:System.Data.Odbc.OdbcParameter.Scale%2A> 속성이 영향을 주는지 매개 변수입니다 <xref:System.Data.Odbc.OdbcType> 됩니다 `Decimal` 또는 `Numeric`합니다. 다른 데이터 형식에 대 한 <xref:System.Data.Odbc.OdbcParameter.Scale%2A> 무시 됩니다.  
   
- SQL Server Native Client 10 (또는 이후 버전)를 사용 하는 경우 형식이 Decimal, Numeric, VarNumeric, DBDate, 또는 DBTimeStamp 변수인 매개 변수를 바인딩하려면 수동으로 적절 한 배율 값을 지정 해야 합니다.  
-  
-> [!NOTE]
->  데이터베이스에 전달 되는 데이터를 강제 하려면이 속성의 사용이 지원 되지 않습니다. 반올림 하거나 그렇지 않으면 데이터베이스에 전달 하기 전에 데이터를 강제를 사용 하 여는 <xref:System.Math> 의 일부인 클래스는 `System` 네임 스페이스에 매개 변수의 값을 할당 하기 전에 `Value` 속성입니다.  
+ SQL Server Native Client 10 개 (이상)를 사용 하는 경우 또는 매개 변수 형식이 Decimal, Numeric, VarNumeric, DBDate, DBTimeStamp 바인딩할 수동으로 적절 한 확장 값을 지정 해야 합니다.  
   
 > [!NOTE]
->  .NET Framework 버전 1.0에 포함 된.NET framework 데이터 공급자를 확인 하지 않습니다는 `scale` 의 <xref:System.Decimal> 매개 변수 값입니다. 이 인해 데이터 소스에 삽입 되는 수정 된 데이터가 있습니다. .NET Framework 버전 1.0 사용 하는 경우 유효성 검사는 s`cale` d`ecimal` 매개 변수 값을 설정 하기 전에 값입니다. .NET Framework 버전 1.1 또는 이상 버전에서 사용 하 여 `scale` 초과 하는 값은 `decimal` 매개 변수 소수 자릿수가 잘릴 수 있습니다, 규모에 맞게 기본 ODBC 드라이버의 동작입니다.  
+>  데이터베이스에 전달 된 데이터를 강제 하려면이 속성의 사용이 지원 되지 않습니다. Round, truncate, 또는 그렇지 않은 경우 데이터베이스에 전달 하기 전에 데이터를 강제 하려면 사용 합니다 <xref:System.Math> 의 일부인 클래스를 `System` 네임 스페이스에 매개 변수의 값을 할당 하기 전에 `Value` 속성입니다.  
+  
+> [!NOTE]
+>  .NET Framework 버전 1.0에 포함 된.NET framework 데이터 공급자를 확인 하지 않습니다 합니다 `scale` 의 <xref:System.Decimal> 매개 변수 값입니다. 이 인해 데이터 소스에서 삽입 되는 수정 된 데이터가 있습니다. .NET Framework 버전 1.0 사용 하는 경우에 유효성 검사`cale` d`ecimal` 매개 변수 값을 설정 하기 전에 값입니다. .NET Framework 버전 1.1 또는 이후 버전을 사용 하는 경우 `scale` 초과 하는 값은 `decimal` 기본 ODBC 드라이버의 동작 하는 경우 매개 변수 크기 눈금에 잘릴만 있습니다.  
   
    
   
@@ -984,6 +1016,8 @@ public void CreateOdbcParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1000,20 +1034,20 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.Size%2A> 속성 이진 및 문자열 형식에 사용 됩니다.  
+ <xref:System.Data.Odbc.OdbcParameter.Size%2A> 이진 및 문자열 형식 속성은 사용 합니다.  
   
- 문자열이 아닌 데이터 형식 및 ANSI 문자열 데이터에 대 한는 <xref:System.Data.Odbc.OdbcParameter.Size%2A> 속성 바이트 수를 나타냅니다. 유니코드 문자열 데이터에 대 한 <xref:System.Data.Odbc.OdbcParameter.Size%2A> 문자의 수를 나타냅니다. 문자열에 대 한 개수 종결 문자를 포함 하지 않습니다.  
+ 문자열이 아닌 데이터 형식 및 ANSI 문자열 데이터에 대 한는 <xref:System.Data.Odbc.OdbcParameter.Size%2A> 속성 바이트 수를 나타냅니다. 유니코드 문자열 데이터는 <xref:System.Data.Odbc.OdbcParameter.Size%2A> 문자의 수를 나타냅니다. 문자열의 수는 종결 문자를 포함 하지 않습니다.  
   
- 가변 길이 데이터 형식에 대 한 `Size` 서버에 전송할 데이터의 최대 양에 대해 설명 합니다. 유니코드 문자열 값에 대 한 예를 들어 `Size` 하나 백 먼저 자로 서버에 전송 되는 데이터의 양을 제한 하기 위해 사용할 수 있습니다.  
+ 가변 길이 데이터 형식에 대 한 `Size` 서버로 전송할 데이터의 최대 크기에 설명 합니다. 유니코드 문자열 값에 대 한 예를 들어 `Size` 하나 백 먼저 자로 서버로 전송 되는 데이터의 양을 제한할 수 있습니다.  
   
- 양방향 및 출력 매개 변수 및 반환 값에 대 한 값을 설정 해야 `Size`합니다. 이 입력된 매개 변수에 대 한 명시적으로 설정의 값에서에서 유추 됩니다 지정된 된 매개 변수의 실제 크기 매개 변수가 있는 문을 실행 하 고 있습니다.  
+ 양방향 및 출력 매개 변수 및 반환 값의 값을 설정 해야 `Size`합니다. 입력된 매개 변수를 필요 하지 않습니다 명시적으로 설정의 값에서에서 유추 됩니다 지정된 된 매개 변수의 실제 크기 매개 변수가 있는 문을 실행 하 고 있습니다.  
   
- <xref:System.Data.Common.DbParameter.DbType%2A>, <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>, 및 <xref:System.Data.Odbc.OdbcParameter.Size%2A> 매개 변수 속성을 설정 하 여 유추할 수 <xref:System.Data.Odbc.OdbcParameter.Value%2A>합니다. 따라서는 지정할 필요가 없습니다. 그러나에 노출 되지 않습니다 <xref:System.Data.Odbc.OdbcParameter> 속성 설정 합니다. 예를 들어, 매개 변수의 크기 유추 된 경우 `Size` 문이 실행 된 다음 유추 된 값이 포함 되지 않습니다.  
+ 합니다 <xref:System.Data.Common.DbParameter.DbType%2A>, <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>, 및 <xref:System.Data.Odbc.OdbcParameter.Size%2A> 매개 변수의 속성을 설정 하 여 유추할 수 <xref:System.Data.Odbc.OdbcParameter.Value%2A>입니다. 따라서는 지정할 필요가 없습니다. 그러나에 노출 되지 않습니다 <xref:System.Data.Odbc.OdbcParameter> 속성 설정 합니다. 예를 들어 매개 변수의 크기 유추 된 `Size` 문 실행 후 유추 된 값에 포함 되지 않습니다.  
   
 > [!NOTE]
->  에 대 한 프로그램 `OdbcParameter` 와 <xref:System.Data.Odbc.OdbcParameter.Direction%2A> 의 `ParameterDirection.Output`, `ParameterDirection.InputOutput`, 또는 `ParameterDirection.ReturnValue`, 지정 된 데이터 원본에 의해 반환 되는 값의 크기를 초과 하는 경우에 명령이 실행 되 면 예외가 throw 됩니다 `Size` 는 의<xref:System.Data.Odbc.OdbcParameter>.  
+>  에 대 한는 `OdbcParameter` 사용 하 여는 <xref:System.Data.Odbc.OdbcParameter.Direction%2A> 의 `ParameterDirection.Output`를 `ParameterDirection.InputOutput`, 또는 `ParameterDirection.ReturnValue`를 지정 된 데이터 원본에 의해 반환 되는 값의 크기를 초과 하는 경우 명령이 실행 될 때 예외가 throw 됩니다 `Size` 합니다 의<xref:System.Data.Odbc.OdbcParameter>.  
   
- 고정 길이 데이터 형식, 값에 대 한 `Size` 는 무시 됩니다. 정보 제공 목적으로 검색할 수 있습니다 하 고 공급자 서버에 매개 변수 값을 전송할 때 사용 하는 바이트의 최대 크기를 반환 합니다.  
+ 고정 길이 데이터 형식의 경우 값 `Size` 무시 됩니다. 정보 제공 목적으로 검색할 수 있습니다 하 고 서버에 대 한 매개 변수의 값을 전송 하는 경우 공급자를 사용 하는 바이트의 최대 크기를 반환 합니다.  
   
    
   
@@ -1058,6 +1092,8 @@ public void CreateOdbcParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1075,9 +1111,9 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 때 <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> 인 열에서 검색 되는 빈 문자열이 매개 변수의 값 이외의 값으로 설정 되어는 `SourceColumn` 이름입니다. 경우 <xref:System.Data.Odbc.OdbcParameter.Direction%2A> 로 설정 된 `Input`에서 값을 가져옵니다는 <xref:System.Data.DataSet>합니다. 경우 `Direction` 로 설정 된 `Output`, 데이터 원본에서 값을 가져옵니다. A `Direction` 의 `InputOutput` 둘의 조합입니다.  
+ 때 <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> 인 열에서 검색 되는 빈 문자열이 매개 변수의 값 이외의 값으로 설정 된 `SourceColumn` 이름입니다. 하는 경우 <xref:System.Data.Odbc.OdbcParameter.Direction%2A> 로 설정 된 `Input`에서 값을 가져옵니다는 <xref:System.Data.DataSet>합니다. 하는 경우 `Direction` 로 설정 된 `Output`, 데이터 원본에서 값을 가져옵니다. A `Direction` 의 `InputOutput` 모두의 조합입니다.  
   
- 사용 하는 방법에 대 한 자세한 내용은 <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> 속성 참조 [DataAdapter 매개 변수](~/docs/framework/data/adonet/dataadapter-parameters.md) 및 [Dataadapter로 데이터 원본 업데이트](~/docs/framework/data/adonet/updating-data-sources-with-dataadapters.md)합니다.  
+ 사용 하는 방법에 대 한 자세한 합니다 <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> 속성을 참조 하세요 [DataAdapter 매개 변수](~/docs/framework/data/adonet/dataadapter-parameters.md) 및 [Dataadapter 사용 하 여 데이터 원본 업데이트](~/docs/framework/data/adonet/updating-data-sources-with-dataadapters.md)합니다.  
   
    
   
@@ -1113,6 +1149,7 @@ public void CreateOdbcParameter()
       <MemberType>Property</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1129,22 +1166,22 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> 사용 되는 <xref:System.Data.Common.DbCommandBuilder> null 허용 열을 다룰 때 제대로 업데이트 명령을 생성 합니다. 일반적으로 사용의 <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> 으로 제한 됩니다 <xref:System.Data.Common.DbCommandBuilder>합니다.  
+ <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> 사용 되는 <xref:System.Data.Common.DbCommandBuilder> null 허용 열을 다룰 때 업데이트 명령이 제대로 생성 합니다. 일반적으로 사용 <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> 에서 상속 하는 개발자에 게 제한 됩니다 <xref:System.Data.Common.DbCommandBuilder>합니다.  
   
- <xref:System.Data.Common.DbCommandBuilder> 원본 열이 null을 허용 하 고이 속성을 설정 하는지 여부를 확인 하려면이 속성을 사용 하 여 `true` 은 null을 허용 하는 경우 및 `false` 없는 경우. 때 <xref:System.Data.Common.DbCommandBuilder> 가 검사 하는 Update 문을 생성는 <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> 각 매개 변수에 대 한 합니다. 속성이 `true`, <xref:System.Data.Common.DbCommandBuilder> 다음 예제와 같은 WHERE 절을 생성 합니다. 이 쿼리 식은 "FieldName" 필드의 이름을 나타냅니다.  
+ <xref:System.Data.Common.DbCommandBuilder> 이 속성을 사용 하 여 원본 열은 null을 허용 하 고이 속성을 설정 하는지 여부를 결정할 `true` 은 null을 허용 하는 경우 및 `false` 없는 경우. 때 <xref:System.Data.Common.DbCommandBuilder> 는 검사는 Update 문을 생성는 <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> 각 매개 변수에 대 한 합니다. 속성이 `true`, <xref:System.Data.Common.DbCommandBuilder> 다음과 같이 WHERE 절을 생성 합니다. 이 쿼리 식은 "FieldName" 필드의 이름을 나타냅니다.  
   
 ```  
 ((@IsNull_FieldName = 1 AND FieldName IS NULL) OR   
   (FieldName = @Original_FieldName))  
 ```  
   
- 경우 <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> false 인 경우이 필드는에 대 한 <xref:System.Data.Common.DbCommandBuilder> 다음 WHERE 절을 생성 합니다.  
+ 하는 경우 <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> 필드는 false <xref:System.Data.Common.DbCommandBuilder> 다음 WHERE 절을 생성 합니다.  
   
 ```  
 FieldName = @OriginalFieldName  
 ```  
   
- 또한 @IsNull_FieldName 원본 필드 및 포함 된 경우 null, 0 그렇지 않은 경우 1을 포함 합니다. 이 메커니즘의 SQL Server 성능 최적화 기능을 허용 하 고 여러 공급자 들 간에 작동 하는 일반적인 코드에 대 한 제공 합니다.  
+ 또한 @IsNull_FieldName 없으면 null이 고 0 소스 필드를 포함 하는 경우 1을 포함 합니다. 이 메커니즘의 SQL Server 성능 최적화 기능을 허용 하 고 여러 공급자에서 작동 하는 일반적인 코드에 대 한 제공 합니다.  
   
  ]]></format>
         </remarks>
@@ -1163,6 +1200,8 @@ FieldName = @OriginalFieldName
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1181,9 +1220,9 @@ FieldName = @OriginalFieldName
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `SourceVersion` ´ â <xref:System.Data.Odbc.OdbcDataAdapter.UpdateCommand%2A> 중는 <xref:System.Data.Common.DbDataAdapter.Update*> 매개 변수 값은 현재 버전 또는 원래 설정 되는지 여부를 결정 하는 작업입니다. 이렇게 하면 기본 키를 업데이트할 수 있습니다.  
+ 합니다 `SourceVersion` 에서 사용 하는 <xref:System.Data.Odbc.OdbcDataAdapter.UpdateCommand%2A> 하는 동안는 <xref:System.Data.Common.DbDataAdapter.Update*> 현재 또는 원래 매개 변수 값 설정 되는지 여부를 결정 하는 작업입니다. 이렇게 하면 기본 키를 업데이트할 수 있습니다.  
   
- 이 속성의 버전에는 <xref:System.Data.DataRow> 중 하나에서 사용 하는 `Item` 속성 (`DataRow` 인덱서), 또는 <xref:System.Data.DataRow.GetChildRows%2A> 메서드.  
+ 버전에이 속성은 <xref:System.Data.DataRow> 중 하나에서 사용 하는 합니다 `Item` 속성 (`DataRow` 인덱서), 또는 <xref:System.Data.DataRow.GetChildRows%2A> 메서드.  
   
    
   
@@ -1223,6 +1262,8 @@ public void CreateOdbcParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1256,6 +1297,8 @@ public void CreateOdbcParameter()
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1287,6 +1330,8 @@ public void CreateOdbcParameter()
       </Implements>
       <AssemblyInfo>
         <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <AssemblyInfo>
@@ -1311,15 +1356,15 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 에 바인딩된 값에 대 한 입력된 매개 변수는 <xref:System.Data.Odbc.OdbcCommand> 서버로 보내집니다. 출력 및 반환 값 매개 변수의 값은이 설정의 완료는 <xref:System.Data.Odbc.OdbcCommand> 후의 <xref:System.Data.Odbc.OdbcDataReader> 닫힙니다.  
+ 입력 매개 변수의 값에 바인딩되는 <xref:System.Data.Odbc.OdbcCommand> 서버로 전송 되는 합니다. 출력 및 반환 값 매개 변수 값은 설정 완료 합니다 <xref:System.Data.Odbc.OdbcCommand> 후는 <xref:System.Data.Odbc.OdbcDataReader> 닫혀 합니다.  
   
- 서버에 null 매개 변수 값을 보낼 때 사용자를 지정 해야 <xref:System.DBNull>null입니다. 시스템에서 null 값은 값이 없는 빈 개체입니다. <xref:System.DBNull> 은 null 값을 나타내는 데 사용됩니다. 설정 하는 기본값이 지정 된 매개 변수가 있는 저장된 프로시저를 호출 하는 매개 변수를 사용 하는 <xref:System.Data.Odbc.OdbcParameter.Value%2A> 를 null로 설정 하면 기본값을 사용할 수 있습니다.  
+ 사용자 지정 해야 null 매개 변수 값을 서버로 보내면 <xref:System.DBNull>null이 아니고 합니다. 시스템에서 null 값이 값이 없는 빈 개체입니다. <xref:System.DBNull> 은 null 값을 나타내는 데 사용됩니다. 매개 변수 기본값을 설정 하는 매개 변수를 사용 하 여 저장된 프로시저를 호출 하는 경우 <xref:System.Data.Odbc.OdbcParameter.Value%2A> 를 null로 설정 하면 기본값을 사용할 수 있습니다.  
   
- 응용 프로그램 데이터베이스 형식을 지정 하는 경우 바인딩된 값 공급자가 서버에 데이터를 보낼 때 해당 형식으로 변환 됩니다. 공급자가 지 원하는 경우 모든 유형의 값을 변환 하는 <xref:System.IConvertible> 인터페이스입니다. 지정된 된 형식의 값과 호환 되지 않는 경우 변환 오류가 발생할 수 있습니다.  
+ 응용 프로그램 데이터베이스 형식을 지정 하는 경우 공급자가 서버에 데이터를 보내면 해당 형식에 바인딩된 값 변환 됩니다. 공급자가 지 원하는 경우 모든 유형의 값을 변환 하려고 합니다 <xref:System.IConvertible> 인터페이스입니다. 지정된 된 형식의 값을 사용 하 여 호환 되지 않는 경우 변환 오류가 발생할 수 있습니다.  
   
- 둘 다는 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 및 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 속성을 설정 하 여 유추할 수 <xref:System.Data.Odbc.OdbcParameter.Value%2A>합니다. 해당 되는 크기, 전체 자릿수 및 소수 자릿수도에서 유추 됩니다 <xref:System.Data.Odbc.OdbcParameter.Value%2A> 매개 변수가 있는 문을 실행 되는 시기입니다. 그러나 유추 된 값은 사용자에 게 노출 되지 않습니다.  
+ 모두를 <xref:System.Data.Odbc.OdbcParameter.DbType%2A> 하 고 <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> 속성을 설정 하 여 유추할 수 <xref:System.Data.Odbc.OdbcParameter.Value%2A>입니다. 하는 경우 해당 크기, 전체 자릿수 및 소수에서 유추 <xref:System.Data.Odbc.OdbcParameter.Value%2A> 매개 변수화 된 문이 실행 될 때입니다. 그러나 유추 된 값은 사용자에 게 노출 되지 않습니다.  
   
- <xref:System.Data.Odbc.OdbcParameter.Value%2A> 속성을 덮어씁니다는 `Update` 메서드.  
+ 합니다 <xref:System.Data.Odbc.OdbcParameter.Value%2A> 속성을 덮어씁니다를 `Update` 메서드.  
   
    
   

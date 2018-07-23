@@ -1,11 +1,11 @@
 <Type Name="TransactionManager" FullName="System.Transactions.TransactionManager">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="94a7df2187676486db82e4651339fa18685001a3" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="0ed5091b9916cf14169e9bf44326acc319defaca" />
+    <Meta Name="ms.sourcegitcommit" Value="01f28caab7b3f23878dd07b402a8dd48b9478c8c" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37608483" />
+    <Meta Name="ms.lasthandoff" Value="07/19/2018" />
+    <Meta Name="ms.locfileid" Value="39141826" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class TransactionManager" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed TransactionManager extends System.Object" />
@@ -241,8 +241,8 @@
         <Parameter Name="manager" Type="System.Guid" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="resourceManagerIdentifier">To be added.</param>
-        <param name="manager">To be added.</param>
+        <param name="resourceManagerIdentifier">복구할 리소스를 고유하게 식별하는 <see cref="T:System.Guid" />입니다.</param>
+        <param name="manager">복구할 리소스를 고유하게 식별하는 <see cref="T:System.Guid" />입니다.</param>
         <summary>오류가 복구된 리소스 관리자가 미해결된 모든 트랜잭션에 다시 참여했음을 트랜잭션 관리자에게 알립니다.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -250,7 +250,7 @@
 ## Remarks  
  모든 지속적인 리소스 관리자는 시작 될 때 먼저 호출 하 여 복구를 수행 해야 합니다 <xref:System.Transactions.TransactionManager.Reenlist%2A> 미해결 각 트랜잭션에 대해 메서드.  다시 참여가 모두 완료 하는 경우에 리소스 관리자를 호출 해야 <xref:System.Transactions.TransactionManager.RecoveryComplete%2A>합니다.  
   
- 복구에 대 한 자세한 내용은 참조 하세요. [복구 수행](http://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691)합니다.  
+ 복구에 대 한 자세한 내용은 참조 하세요. [복구 수행](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691)합니다.  
   
  **하지만 참고** 이 메서드는 <xref:System.Security.Permissions.SecurityAction.LinkDemand> 신뢰할 수 없는 코드에서 호출할를 방지 하기 위해 필요, 직접 실행 호출자만 소유는 `FullTrust` 권한 집합입니다.  
   
@@ -300,15 +300,44 @@
         <Parameter Name="notification" Type="System.Transactions.IEnlistmentNotification" Index="2" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="resourceManagerIdentifier">To be added.</param>
-        <param name="manager">To be added.</param>
-        <param name="recoveryInformation">To be added.</param>
-        <param name="recoveryInfo">To be added.</param>
-        <param name="enlistmentNotification">To be added.</param>
-        <param name="notification">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="resourceManagerIdentifier">리소스 관리자를 고유하게 식별하는 <see cref="T:System.Guid" />입니다.</param>
+        <param name="manager">리소스 관리자를 고유하게 식별하는 <see cref="T:System.Guid" />입니다.</param>
+        <param name="recoveryInformation">복구 정보의 추가 정보를 포함합니다.</param>
+        <param name="recoveryInfo">복구 정보의 추가 정보를 포함합니다.</param>
+        <param name="enlistmentNotification">
+          <see cref="T:System.Transactions.IEnlistmentNotification" />을 구현하여 알림을 수신하는 리소스 개체입니다.</param>
+        <param name="notification">
+          <see cref="T:System.Transactions.IEnlistmentNotification" />을 구현하여 알림을 수신하는 리소스 개체입니다.</param>
+        <summary>영속적 참가 요소를 트랜잭션에 다시 참여시킵니다.</summary>
+        <returns>참여 항목을 설명하는 <see cref="T:System.Transactions.Enlistment" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+
+## Remarks
+
+리소스 관리자는 리소스 오류가 발생한 후에 트랜잭션 참가 요소를 다시 참여시켜 트랜잭션에서 영속적 참여 항목을 쉽게 확인할 수 있도록 합니다.
+
+`resourceManagerIdentifier` 리소스 오류가 발생할 경우 트랜잭션 참가자에 일관성 있게 레이블을 매개 변수를 사용 합니다. 호출 하는 경우는 <xref:System.Transactions.TransactionManager.Reenlist%2A> 메서드를 리소스 관리자를 제공 해야 동일한 `resourceManagerIdentifier` 원래 호출 될 때 사용한 것과 <xref:System.Transactions.Transaction.EnlistDurable%2A> 참여 중 메서드 또는 <xref:System.Transactions.TransactionException> throw 됩니다.
+
+이 메서드를 사용하여 참가 요소가 다시 참여되면 트랜잭션 결과에 해당하는 <xref:System.Transactions.IEnlistmentNotification>의 2단계 메서드(즉, <xref:System.Transactions.IEnlistmentNotification.Commit%2A> , <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> 또는 <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>)가 알맞게 호출됩니다.
+
+다음 호출 해야 합니다 참가 요소가 성공적으로, 후 <xref:System.Transactions.TransactionManager.RecoveryComplete%2A> 복구를 완료 합니다.
+
+리소스 관리자 오류를 다시 시작 하는 경우에이 메서드를 호출 해야 합니다. 또한 2단계 커밋의 초기 준비 단계에서 리소스 관리자가 로그한 미해결된 트랜잭션만 다시 참여시켜야 합니다. 알맞지 않은 시기에 이 메서드를 호출하려고 하면 잘못된 결과가 생성될 수 있습니다.
+
+트랜잭션 관리자가 실패 하 고 리소스 관리자에 게 복구를 수행 짧은 시간 동안에 호출 하면 후 합니다 <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 2 단계 커밋 프로토콜의 1 단계에서 인리스트먼트에 메서드, 리소스 관리자에 게 받을 수 있습니다는 <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> 또는 <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> 콜백 합니다.
+
+복구에 대 한 자세한 내용은 참조 하세요. [복구 수행](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691)합니다.
+
+**하지만 참고** 이 메서드는 <xref:System.Security.Permissions.SecurityAction.LinkDemand> 신뢰할 수 없는 코드에서 호출할를 방지 하기 위해 필요, 직접 실행 호출자만 소유는 `FullTrust` 권한 집합입니다.
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="recoveryInformation" />이 잘못되었습니다.  -or- <paramref name="recoveryInformation" />의 트랜잭션 관리자 정보가 구성된 트랜잭션 관리자와 일치하지 않는 경우  -or- <see cref="N:System.Transactions" />가 <paramref name="RecoveryInformation" />을 인식할 수 없는 경우</exception>
+        <exception cref="T:System.InvalidOperationException">지정된 <paramref name="resourceManagerIdentifier" />에 대해 <see cref="M:System.Transactions.TransactionManager.RecoveryComplete(System.Guid)" />가 이미 호출된 경우. 다시 참여가 거부됩니다.</exception>
+        <exception cref="T:System.Transactions.TransactionException">
+          <paramref name="resourceManagerIdentifier" />가 <paramref name="recoveryInformation" />의 지정된 복구 정보 내용과 일치하지 않는 경우</exception>
       </Docs>
     </Member>
   </Members>

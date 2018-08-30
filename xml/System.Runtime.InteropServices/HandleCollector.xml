@@ -1,11 +1,11 @@
 <Type Name="HandleCollector" FullName="System.Runtime.InteropServices.HandleCollector">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7d25b758dfdf5b33c91e5ce511c71cb29dd83726" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="9fcb273235acc414d31f162f613eb4a5fc977f08" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37637109" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
+    <Meta Name="ms.locfileid" Value="39781594" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class HandleCollector" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit HandleCollector extends System.Object" />
@@ -38,7 +38,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Tracks outstanding handles and forces a garbage collection when the specified threshold is reached.</summary>
+    <summary>지정된 임계값에 도달하는 경우 미처리 핸들을 추적하고 가비지 수집을 수행합니다.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -77,16 +77,22 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <Parameters>
         <Parameter Name="name" Type="System.String" />
         <Parameter Name="initialThreshold" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="name">A name for the collector. This parameter allows you to name collectors that track handle types separately.</param>
-        <param name="initialThreshold">A value that specifies the point at which collections should begin.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.HandleCollector" /> class using a name and a threshold at which to begin handle collection.</summary>
+        <param name="name">수집기의 이름입니다. 이 매개 변수를 사용하면 핸들 형식을 개별적으로 추적하는 수집기의 이름을 지정할 수 있습니다.</param>
+        <param name="initialThreshold">수집을 시작할 시점을 지정하는 값입니다.</param>
+        <summary>핸들 수집을 시작할 임계값과 이름을 사용하여 <see cref="T:System.Runtime.InteropServices.HandleCollector" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="initialThreshold" /> parameter is less than 0.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="initialThreshold" /> 매개 변수가 0보다 작은 경우</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -123,13 +129,18 @@
         <Parameter Name="maximumThreshold" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="name">A name for the collector.  This parameter allows you to name collectors that track handle types separately.</param>
-        <param name="initialThreshold">A value that specifies the point at which collections should begin.</param>
-        <param name="maximumThreshold">A value that specifies the point at which collections must occur. This should be set to the maximum number of available handles.</param>
-        <summary>Initializes a new instance of the <see cref="T:System.Runtime.InteropServices.HandleCollector" /> class using a name, a threshold at which to begin handle collection, and a threshold at which handle collection must occur.</summary>
+        <param name="name">수집기의 이름입니다.  이 매개 변수를 사용하면 핸들 형식을 개별적으로 추적하는 수집기의 이름을 지정할 수 있습니다.</param>
+        <param name="initialThreshold">수집을 시작할 시점을 지정하는 값입니다.</param>
+        <param name="maximumThreshold">수집을 반드시 시작해야 하는 시점을 지정하는 값입니다. 이 매개 변수에는 사용할 수 있는 최대 핸들 수를 설정해야 합니다.</param>
+        <summary>이름, 핸들 수집을 시작할 임계값 및 핸들 수집을 반드시 시작해야 하는 임계값을 사용하여 <see cref="T:System.Runtime.InteropServices.HandleCollector" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">The <paramref name="initialThreshold" /> parameter is less than 0.  -or-  The <paramref name="maximumThreshold" /> parameter is less than 0.</exception>
-        <exception cref="T:System.ArgumentException">The <paramref name="maximumThreshold" /> parameter is less than the <paramref name="initialThreshold" /> parameter.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="initialThreshold" /> 매개 변수가 0보다 작은 경우  
+  
+또는 
+<paramref name="maximumThreshold" /> 매개 변수가 0보다 작은 경우</exception>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="maximumThreshold" /> 매개 변수가 <paramref name="initialThreshold" /> 매개 변수보다 작은 경우</exception>
       </Docs>
     </Member>
     <Member MemberName="Add">
@@ -165,9 +176,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Increments the current handle count.</summary>
+        <summary>현재 핸들 수를 늘립니다.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Runtime.InteropServices.HandleCollector.Count" /> property is less than 0.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Runtime.InteropServices.HandleCollector.Count" /> 속성이 0보다 작은 경우</exception>
       </Docs>
     </Member>
     <Member MemberName="Count">
@@ -198,12 +210,17 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the number of handles collected.</summary>
-        <value>수집 된 핸들의 수입니다.</value>
+        <summary>수집된 핸들의 수를 가져옵니다.</summary>
+        <value>수집된 핸들의 수입니다.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -235,12 +252,17 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that specifies the point at which collections should begin.</summary>
-        <value>수집을 시작할 시점을 지정 하는 값입니다.</value>
+        <summary>수집을 시작할 시점을 지정하는 값을 가져옵니다.</summary>
+        <value>수집을 시작할 시점을 지정하는 값입니다.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -272,12 +294,17 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets a value that specifies the point at which collections must occur.</summary>
-        <value>수집을 반드시 시점을 지정 하는 값입니다.</value>
+        <summary>수집을 반드시 시작해야 하는 시점을 지정하는 값을 가져옵니다.</summary>
+        <value>수집을 반드시 시작해야 하는 시점을 지정하는 값입니다.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -309,12 +336,19 @@
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Gets the name of a <see cref="T:System.Runtime.InteropServices.HandleCollector" /> object.</summary>
-        <value>이 <see cref="P:System.Runtime.InteropServices.HandleCollector.Name" /> 속성 핸들 형식을 개별적으로 추적 하는 수집기의 이름 하면 메시지를 표시 합니다.</value>
+        <summary>
+          <see cref="T:System.Runtime.InteropServices.HandleCollector" /> 개체의 이름을 가져옵니다.</summary>
+        <value>
+          <see cref="P:System.Runtime.InteropServices.HandleCollector.Name" /> 속성을 사용하면 핸들 형식을 개별적으로 추적하는 수집기의 이름을 지정할 수 있습니다.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -351,9 +385,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Decrements the current handle count.</summary>
+        <summary>현재 핸들 수를 줄입니다.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">The <see cref="P:System.Runtime.InteropServices.HandleCollector.Count" /> property is less than 0.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="P:System.Runtime.InteropServices.HandleCollector.Count" /> 속성이 0보다 작은 경우</exception>
       </Docs>
     </Member>
   </Members>

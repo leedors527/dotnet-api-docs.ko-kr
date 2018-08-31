@@ -1,11 +1,11 @@
 <Type Name="Toolset" FullName="Microsoft.Build.Evaluation.Toolset">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ea8ec3b298507abec3154ba6ea36812060798ce2" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="0acb1685fc4773b6d4f058145bcdeef2a0150ff5" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36736883" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
+    <Meta Name="ms.locfileid" Value="40001047" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class Toolset" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Toolset extends System.Object" />
@@ -22,7 +22,7 @@
   </Base>
   <Interfaces />
   <Attributes>
-    <Attribute>
+    <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2">
       <AttributeName>System.Diagnostics.DebuggerDisplay("ToolsVersion={ToolsVersion} ToolsPath={ToolsPath} #Properties={properties.Count}")</AttributeName>
     </Attribute>
   </Attributes>
@@ -32,7 +32,7 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- UNDONE: (danmose) 검토 불변성입니다. 변경할 수 없는 경우에 프로젝트 컬렉션/s 해당 toolsetVersion을 증가 소유 알리기 위해 하는 메커니즘을 추가 합니다.  
+ UNDONE: (danmose) 검토 불변성입니다. 변경할 수 없는 경우를 프로젝트 컬렉션/s 소유 하는 해당 toolsetVersion을 증가 하는 것을 알리는 메커니즘을 추가 합니다.  
   
  ]]></format>
     </remarks>
@@ -58,6 +58,11 @@
         <AssemblyName>Microsoft.Build</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <Parameters>
         <Parameter Name="toolsVersion" Type="System.String" />
         <Parameter Name="toolsPath" Type="System.String" />
@@ -94,7 +99,9 @@
       <Docs>
         <param name="toolsVersion">도구 집합의 이름입니다.</param>
         <param name="toolsPath">이 도구 집합의 작업 및 대상에 대한 경로입니다.</param>
-        <param name="buildProperties">도구 집합과 연결되어야 하는 속성입니다.  빈 속성 그룹이 사용되는 경우 null일 수 있습니다.</param>
+        <param name="buildProperties">도구 집합과 연결되어야 하는 속성입니다.  
+  
+빈 속성 그룹이 사용되는 경우 null일 수 있습니다.</param>
         <param name="projectCollection">속성을 가져오는 원본 프로젝트 컬렉션입니다.</param>
         <param name="msbuildOverrideTasksPath">msbuild overridetasks 파일을 검색할 경로입니다.</param>
         <summary>지정된 도구 버전, 도구 경로 및 빌드 속성을 사용하여 도구 집합을 만듭니다. 지정된 프로젝트 컬렉션에서 전역 속성, 예약된 속성 및 환경 속성을 가져옵니다.</summary>
@@ -123,7 +130,9 @@
       <Docs>
         <param name="toolsVersion">도구 집합의 이름입니다.</param>
         <param name="toolsPath">이 도구 집합의 작업 및 대상에 대한 경로입니다.</param>
-        <param name="buildProperties">도구 집합과 연결되어야 하는 속성입니다.  빈 속성 그룹이 사용되는 경우 null일 수 있습니다.</param>
+        <param name="buildProperties">도구 집합과 연결되어야 하는 속성입니다.  
+  
+빈 속성 그룹이 사용되는 경우 null일 수 있습니다.</param>
         <param name="projectCollection">속성을 가져오는 원본 프로젝트 컬렉션입니다.</param>
         <param name="subToolsets">이 도구 집합에 추가할 하위 도구 집합의 집합입니다.</param>
         <param name="msbuildOverrideTasksPath">msbuild overridetasks 파일을 검색할 경로입니다. 이 도구 집합에 추가할 하위 도구 집합의 집합입니다.</param>
@@ -155,7 +164,7 @@
 ## Remarks  
  경우 [!INCLUDE[vs_dev10_long](~/includes/vs-dev10-long-md.md)] 는 기본 도구 집합을 사용 하 여 설치 하 고 "10.0"의 하위 도구 집합 버전을 반환 합니다.  
   
- 그렇지 않으면 찾을 수 버전이 지정 된 가장 높은 하위 도구 집합을 사용 합니다. 버전 번호가 매겨진 하위 도구 집합은 숫자; 숫자 정렬 모든 추가 하위 도구 집합에 있는 순서 목록의 시작 부분 앞에 추가 됩니다. 사용할 수 있는 하위 도구 집합이 없는 경우 null을 반환 하 고 [!INCLUDE[vs_dev10_long](~/includes/vs-dev10-long-md.md)] 설치 되어 있지 않습니다.  
+ 그렇지 않은 경우 가장 높은 버전 하위 도구 집합을 찾을 수를 사용 합니다. 번호가 매겨진된 버전을 사용 하 여 하위 도구 집합은 숫자로; 정렬 모든 추가 하위 도구 집합 앞에 있는 순서 목록의 시작 부분에 추가 됩니다. 사용할 수 있는 하위 도구 집합이 없으면 null을 반환 하 고 [!INCLUDE[vs_dev10_long](~/includes/vs-dev10-long-md.md)] 설치 되어 있지 않습니다.  
   
  ]]></format>
         </remarks>
@@ -193,9 +202,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- "VisualStudioVersion"을 자체 도구 집합 속성으로 설정 하면 하위 도구 집합 버전은 "VisualStudioVersion"로 설정 합니다.  
+ "VisualStudioVersion" 자체 도구 집합 속성으로 설정 되어, 하위 도구 집합 버전은 "VisualStudioVersion"로 설정 됩니다.  
   
- 그렇지 않은 경우 하위 도구 집합 버전의 도구 집합 DefaultSubToolsetVersion에 설정 됩니다.  
+ 그렇지 않은 경우 하위 도구 집합 버전의 도구 집합 DefaultSubToolsetVersion로 설정 됩니다.  
   
  ]]></format>
         </remarks>
@@ -229,13 +238,13 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 전역 속성의 전역 속성 집합에 있는 "VisualStudioVersion" 전달 되는 경우에 하위 도구 집합 버전 "VisualStudioVersion"으로 설정 됩니다.  
+ 전역 속성의 전역 속성 집합에 있는 "VisualStudioVersion" 전달 되는 경우 하위 도구 집합 버전은 "VisualStudioVersion"로 설정 됩니다.  
   
- 그렇지 않으면 "VisualStudioVersion" 자체 도구 집합에 속성으로 설정 되어 하위 도구 집합 버전 "VisualStudioVersion"로 설정 됩니다.  
+ 그렇지 않으면 "VisualStudioVersion" 자체 도구 집합 속성으로 설정 되 면 하는 경우 하위 도구 집합 버전 "VisualStudioVersion"에 설정 됩니다.  
   
- 그렇지 않은 경우, 솔루션 버전에 해당 하는 Visual Studio 버전 (Visual Studio 버전 = 솔루션 버전-1)에 전달 된 맵 기존 하위 도구 집합 하위 도구 집합 버전은 Visual Studio 버전으로 설정 합니다.  
+ 그렇지 않은 경우, 솔루션 버전에 해당 하는 Visual Studio 버전 (Visual Studio 버전 = 솔루션 버전-1)에 전달 된 지도 기존 하위 도구 집합 하위 도구 집합 버전은 Visual Studio 버전으로 설정 합니다.  
   
- 그렇지 않은 경우 하위 도구 집합 버전의 도구 집합 DefaultSubToolsetVersion에 설정 됩니다.  
+ 그렇지 않은 경우 하위 도구 집합 버전의 도구 집합 DefaultSubToolsetVersion로 설정 됩니다.  
   
  ]]></format>
         </remarks>
@@ -269,9 +278,9 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 속성 하위 도구 집합에 없는 경우 기본 도구 집합에 대 한 속성 검색 합니다.  
+ 속성 하위 도구 집합에 없는 경우에 기본 도구 집합의 속성에 대 한 검색 합니다.  
   
- 하위 도구 집합 또는 기본 도구 집합에서 속성이 없으면 null을 반환 합니다.  
+ 속성의 기본 도구 집합이 나 하위 도구 집합에 없는 경우 null을 반환 합니다.  
   
  ]]></format>
         </remarks>
@@ -331,6 +340,11 @@
         <AssemblyName>Microsoft.Build</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
@@ -341,7 +355,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 프로젝트 또는 대상 파일에 $ (msbuildtoolspath)에 해당합니다.  
+ 프로젝트 또는 대상 파일에서 $ (msbuildtoolspath)에 해당합니다.  
   
  ]]></format>
         </remarks>
@@ -359,6 +373,11 @@
         <AssemblyName>Microsoft.Build</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>

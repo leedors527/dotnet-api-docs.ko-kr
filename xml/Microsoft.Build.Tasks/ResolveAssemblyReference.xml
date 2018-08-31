@@ -1,10 +1,10 @@
 <Type Name="ResolveAssemblyReference" FullName="Microsoft.Build.Tasks.ResolveAssemblyReference">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="b2ed6ea0a0e517db6630a4f59efde385e2fbde17" />
-    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
+    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
     <Meta Name="ms.locfileid" Value="39979767" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class ResolveAssemblyReference : Microsoft.Build.Tasks.TaskExtension" />
@@ -364,7 +364,17 @@
       </ReturnValue>
       <Docs>
         <summary>종속성 확인 방법 및 종속성을 로컬로 복사할지 여부를 결정하는 스위치를 가져오거나 설정합니다.</summary>
-        <value>종속성을 로컬로 복사할지 여부를 결정하는 경우 수행된 검사 중 하나에서 프로젝트 파일의 부모 참조에 Private 메타데이터가 설정되어 있는지 여부를 확인하면 true를 반환합니다. 메타데이터가 설정되어 있으면 종속성에도 해당 메타데이터가 사용됩니다.  메타데이터가 설정되어 있지 않으면 종속성은 부모 참조와 동일한 검사를 거칩니다. 이러한 검사 중 하나는 참조가 GAC에 있는지 확인하는 것입니다. 참조가 GAC에 있으면 대상 컴퓨터의 GAC에도 있는 것으로 간주되므로 해당 참조가 로컬로 복사되지 않습니다. 그러나 이 설명은 특정 참조에만 적용되며 해당 종속성에는 적용되지 않습니다.  즉, 프로젝트 파일의 참조는 GAC에 있기 때문에 로컬 복사가 false이지만 해당 종속성은 GAC에 있지 않으므로 여전히 로컬로 복사될 수 있습니다. 이것은 RAR의 기본 동작이며 따라서 이 속성의 기본값은 true가 됩니다.  프로젝트 파일 참조가 GAC에 있는지 여부를 계속 검사하고 로컬 복사 상태를 적절하게 설정하는 경우 false를 반환합니다.  그러나 종속성의 경우에는 해당 종속성이 GAC에 있는지 여부를 검사할 뿐만 아니라 프로젝트 파일의 부모 참조가 GAC에 있는지 여부도 검사합니다.  프로젝트 파일의 부모 참조가 GAC에 있으면 해당 종속성이 로컬로 복사되지 않습니다.  
+        <value>종속성을 로컬로 복사할지 여부를 결정하는 경우 수행된 검사 중 하나에서 프로젝트 파일의 부모 참조에 Private 메타데이터가 설정되어 있는지 여부를 확인하면 true를 반환합니다. 메타데이터가 설정되어 있으면 종속성에도 해당 메타데이터가 사용됩니다.  
+  
+메타데이터가 설정되어 있지 않으면 종속성은 부모 참조와 동일한 검사를 거칩니다. 이러한 검사 중 하나는 참조가 GAC에 있는지 확인하는 것입니다. 참조가 GAC에 있으면 대상 컴퓨터의 GAC에도 있는 것으로 간주되므로 해당 참조가 로컬로 복사되지 않습니다. 그러나 이 설명은 특정 참조에만 적용되며 해당 종속성에는 적용되지 않습니다.  
+  
+즉, 프로젝트 파일의 참조는 GAC에 있기 때문에 로컬 복사가 false이지만 해당 종속성은 GAC에 있지 않으므로 여전히 로컬로 복사될 수 있습니다. 이것은 RAR의 기본 동작이며 따라서 이 속성의 기본값은 true가 됩니다.  
+  
+프로젝트 파일 참조가 GAC에 있는지 여부를 계속 검사하고 로컬 복사 상태를 적절하게 설정하는 경우 false를 반환합니다.  
+  
+그러나 종속성의 경우에는 해당 종속성이 GAC에 있는지 여부를 검사할 뿐만 아니라 프로젝트 파일의 부모 참조가 GAC에 있는지 여부도 검사합니다.  
+  
+프로젝트 파일의 부모 참조가 GAC에 있으면 해당 종속성이 로컬로 복사되지 않습니다.  
   
  <block subset="none" type="note"><para> 여러 부모 참조가 있고 그 중 하나는 GAC에서 가져오지 않은 경우 다음 것으로 복사 로컬 true로 설정 합니다.  </para></block></value>
         <remarks>To be added.</remarks>
@@ -1105,7 +1115,9 @@
         <ReturnType>Microsoft.Build.Framework.ITaskItem[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>SDK 이름, SDK 위치 및 대상 구성을 포함하는 확인된 SDK 참조의 목록입니다.  참조에 이러한 위치와 연결된 SDKName 메타데이터가 있을 경우에만 해당 위치가 검색됩니다.</summary>
+        <summary>SDK 이름, SDK 위치 및 대상 구성을 포함하는 확인된 SDK 참조의 목록입니다.  
+  
+참조에 이러한 위치와 연결된 SDKName 메타데이터가 있을 경우에만 해당 위치가 검색됩니다.</summary>
         <value>
           <see cref="T:Microsoft.Build.Framework.ITaskItem" />를 반환합니다.</value>
         <remarks>To be added.</remarks>

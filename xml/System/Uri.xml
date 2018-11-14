@@ -1,11 +1,11 @@
 <Type Name="Uri" FullName="System.Uri">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="bc748165070ca7c2fc35cc5a3d821923907161f7" />
-    <Meta Name="ms.sourcegitcommit" Value="41742a1055cefdeaf2f9d76364f4bad3c9f83126" />
+    <Meta Name="ms.openlocfilehash" Value="6a2e8da0423adb69adab3d2953a45d27b12eeb0c" />
+    <Meta Name="ms.sourcegitcommit" Value="dc6ea82452beeb642259a38f3c2fad756ebd3d9f" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="10/16/2018" />
-    <Meta Name="ms.locfileid" Value="48689801" />
+    <Meta Name="ms.lasthandoff" Value="11/07/2018" />
+    <Meta Name="ms.locfileid" Value="51264569" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class Uri : System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit Uri extends System.Object implements class System.Runtime.Serialization.ISerializable" />
@@ -71,7 +71,9 @@
 -   호스트 이름이 IPv6 주소 이면에 정식 IPv6 주소가 사용 됩니다. ScopeId 및 기타 선택적인 IPv6 데이터가 제거 됩니다.  
   
 -   기본 및 빈 포트 번호를 제거합니다.
-
+  
+-   암시적 파일 경로 (예: "C:\my\file")는 file:// scheme 없이 file:// scheme 사용 하 여 명시적 파일 경로를 변환합니다.
+  
 -   예약 된 용도가 없는 이스케이프 된 문자 (라고도: 백분율로 인코딩된 옥텟을) 디코딩 (라고도 이스케이프 해제 된). 예약 되지 않은 이러한 문자는 대문자 및 소문자 (%41 %5A 및 %61 %7A), 소수 자릿수 (%30-%39), 하이픈 (%2D), 마침표 (%2E) (%5F), 밑줄 및 물결표 (%7E).
 
 -   이스케이프 된 계층적 Uri에 대 한 압축 순서에서 같은 /. / /... 및 / / (시퀀스 이스케이프 여부). 이러한 시퀀스 압축 되지 않습니다 일부 구성표는 참고 합니다.
@@ -168,6 +170,14 @@ http://myUrl/
  또한 <xref:System.GenericUriParser?displayProperty=nameWithType> 클래스는 IRI 및 IDN을 지원하는 사용자 지정 가능한 파서를 만들 수 있도록 확장되었습니다. <xref:System.GenericUriParser?displayProperty=nameWithType> 개체의 동작은 <xref:System.GenericUriParserOptions?displayProperty=nameWithType> 열거형에서 사용 가능한 값의 비트 조합을 <xref:System.GenericUriParser?displayProperty=nameWithType> 생성자에 전달하여 지정합니다. <xref:System.GenericUriParserOptions.IriParsing?displayProperty=nameWithType> 형식은 파서가 RFC 3987에 지정된 IRI(International Resource Identifier)에 대한 구문 분석 규칙을 지원함을 나타냅니다. IRI 사용 여부는 위에 설명 된 구성 값에 따라 결정 됩니다.  
   
  <xref:System.GenericUriParserOptions.Idn?displayProperty=nameWithType> 형식은 파서가 호스트 이름의 IDN(Internationalized Domain Name) 구문 분석을 지원함을 나타냅니다. IDN 사용 여부는 위에 설명 된 구성 값에 따라 결정 됩니다.  
+  
+## <a name="implicit-file-path-support"></a>암시적 파일 경로 지원
+ <xref:System.Uri> 로컬 파일 시스템 경로 나타내는 데 사용할 수도 있습니다. 이러한 경로 나타낼 수 있습니다 *명시적으로* Uri는 file:// scheme을 사용 하 여 시작 하는에서 및 *암시적으로* Uri는 file:// scheme 없는에 합니다. 구체적인 예로, 다음 두 Uri 모두 유효 합니다 하 고 동일한 파일 경로 나타냅니다.
+```csharp
+Uri uri1 = new Uri("C:/test/path/file.txt") // Implicit file path.
+Uri uri2 = new Uri("file:///C:/test/path/file.txt") // Explicit file path.
+```
+ 이러한 암시적 파일 경로 URI 사양을 준수 하지 않는 및 하므로 피해 야 가능한 경우. Unix 기반 시스템에서.NET Core를 사용 하는 경우 암시적 파일 경로 문제가 발생할 수 있습니다, 암시적 절대 파일 경로 이므로 *수 없는* 에서 상대 경로입니다. 이러한 모호성 있으면 <xref:System.Uri> 기본적으로 경로 절대 URI로 해석 합니다.
   
 ## <a name="performance-considerations"></a>성능 고려 사항  
  *Web.config을 사용 하는 경우 * 파일이 응용 프로그램, 추가 시간을 초기화 하는 Uri를 포함 하는 구성표 식별자가 비표준 경우 Uri를 처리 하는 데 필요 합니다. 이러한 경우 시작 때가 아니라 Uri가 필요할 때 응용 프로그램의 영향을 받는 파트를 초기화 합니다.  

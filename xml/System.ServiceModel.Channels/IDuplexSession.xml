@@ -1,11 +1,11 @@
 <Type Name="IDuplexSession" FullName="System.ServiceModel.Channels.IDuplexSession">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="62d83bb1e28be138c942555207ea0e72095d52de" />
-    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
+    <Meta Name="ms.openlocfilehash" Value="a7b801b05899f26eebe24bc1705382cc49a5b354" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="08/24/2018" />
-    <Meta Name="ms.locfileid" Value="37461061" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51303355" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IDuplexSession : System.ServiceModel.Channels.IInputSession, System.ServiceModel.Channels.IOutputSession" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IDuplexSession implements class System.ServiceModel.Channels.IInputSession, class System.ServiceModel.Channels.IOutputSession, class System.ServiceModel.Channels.ISession" />
@@ -32,9 +32,12 @@
     <Interface>
       <InterfaceName>System.ServiceModel.Channels.IOutputSession</InterfaceName>
     </Interface>
+    <Interface>
+      <InterfaceName>System.ServiceModel.Channels.ISession</InterfaceName>
+    </Interface>
   </Interfaces>
   <Docs>
-    <summary>메시징 끝점 간 양방향 통신의 양쪽에 구현된 세션에 대한 인터페이스를 정의합니다.</summary>
+    <summary>메시징 엔드포인트 간 양방향 통신의 양쪽에 구현된 세션에 대한 인터페이스를 정의합니다.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -152,7 +155,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>세션과 관련된 채널의 이 끝점에서 더 이상 메시지가 전송되지 않음을 나타내는 아웃바운드 세션을 종료합니다.</summary>
+        <summary>세션과 관련된 채널의 이 엔드포인트에서 더 이상 메시지가 전송되지 않음을 나타내는 아웃바운드 세션을 종료합니다.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="CloseOutputSession">
@@ -180,7 +183,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>세션과 관련된 채널의 이 끝점에서 더 이상 메시지가 전송되지 않음을 나타내는 아웃바운드 세션을 종료합니다.</summary>
+        <summary>세션과 관련된 채널의 이 엔드포인트에서 더 이상 메시지가 전송되지 않음을 나타내는 아웃바운드 세션을 종료합니다.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -193,7 +196,16 @@
         </remarks>
         <block subset="none" type="overrides">
           <para>
-            <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 와 상호 작용할 수 있는 세션 메서드입니다는 <see cref="T:System.ServiceModel.Channels.IDuplexSessionChannel" /> 세션을 소유 하는 합니다. 특히, (예: TCP 및 신뢰할 수 있는 세션 및 보안 된) 세션 수명과 채널 수명과 함께 배치 됩니다.- <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 전에 호출 됩니다 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 채널에서 호출 됩니다 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 기다려야 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 완료 합니다.  -채널이 하는 경우는 <see cref="F:System.ServiceModel.CommunicationState.Created" /> 또는 <see cref="F:System.ServiceModel.CommunicationState.Opening" /> 상태 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 시켜야는 <see cref="T:System.InvalidOperationException" />합니다.  -채널이 있는 경우 합니다 <see cref="F:System.ServiceModel.CommunicationState.Faulted" /> 상태 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> throw 해야는 <see cref="T:System.ServiceModel.CommunicationObjectFaultedException" />합니다.  면-채널에 오류가 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> throw 합니다.  -구현의 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 채널에서 호출 해야 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 되는지 확인 합니다 <see cref="M:System.ServiceModel.Channels.IInputChannel.Receive" /> 반환 <see langword="null" />를 나타내는 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 세션의 다른 쪽에서 호출 되었습니다.</para>
+            <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" />은 세션을 포함한 <see cref="T:System.ServiceModel.Channels.IDuplexSessionChannel" />과 상호 작용할 수 있는 세션 메서드입니다. 특히, TCP뿐만 아니라 신뢰할 수 있는 세션 및 보안의 경우와 마찬가지로 세션 수명과 채널 수명을 함께 고려해 보면 다음과 같은 결과가 발생합니다. 
+- <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 하기 전에 호출 됩니다 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 채널에서 호출 됩니다 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 기다려야 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 완료 합니다.  
+  
+-채널이 하는 경우는 <see cref="F:System.ServiceModel.CommunicationState.Created" /> 또는 <see cref="F:System.ServiceModel.CommunicationState.Opening" /> 상태 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 시켜야는 <see cref="T:System.InvalidOperationException" />합니다.  
+  
+-채널이 있는 경우 합니다 <see cref="F:System.ServiceModel.CommunicationState.Faulted" /> 상태 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> throw 해야는 <see cref="T:System.ServiceModel.CommunicationObjectFaultedException" />합니다.  
+  
+면-채널에 오류가 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> throw 합니다.  
+  
+-구현의 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 채널에서 호출 해야 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 되는지 확인 합니다 <see cref="M:System.ServiceModel.Channels.IInputChannel.Receive" /> 반환 <see langword="null" />를 나타내는 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 세션의 다른 쪽에서 호출 되었습니다.</para>
         </block>
       </Docs>
     </Member>
@@ -225,7 +237,7 @@
       </Parameters>
       <Docs>
         <param name="timeout">작업을 완료해야 할 시간 간격을 지정하는 <see cref="T:System.TimeSpan" />입니다.</param>
-        <summary>지정된 시간 간격 이내에 세션과 관련된 채널의 이 끝점에서 더 이상 메시지가 전송되지 않음을 나타내는 아웃바운드 세션을 종료합니다.</summary>
+        <summary>지정된 시간 간격 이내에 세션과 관련된 채널의 이 엔드포인트에서 더 이상 메시지가 전송되지 않음을 나타내는 아웃바운드 세션을 종료합니다.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -238,7 +250,16 @@
         </remarks>
         <block subset="none" type="overrides">
           <para>
-            <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 와 상호 작용할 수 있는 세션 메서드입니다는 <see cref="T:System.ServiceModel.Channels.IDuplexSessionChannel" /> 세션을 소유 하는 합니다. 특히, (예: TCP 및 신뢰할 수 있는 세션 및 보안 된) 세션 수명과 채널 수명과 함께 배치 됩니다.- <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 전에 호출 됩니다 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 채널에서 호출 됩니다 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 기다려야 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 완료 합니다.  -채널이 하는 경우는 <see cref="F:System.ServiceModel.CommunicationState.Created" /> 또는 <see cref="F:System.ServiceModel.CommunicationState.Opening" /> 상태 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 시켜야는 <see cref="T:System.InvalidOperationException" />합니다.  -채널이 있는 경우 합니다 <see cref="F:System.ServiceModel.CommunicationState.Faulted" /> 상태 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> throw 해야는 <see cref="T:System.ServiceModel.CommunicationObjectFaultedException" />합니다.  면-채널에 오류가 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> throw 합니다.  -구현의 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 채널에서 호출 해야 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 되는지 확인 합니다 <see cref="M:System.ServiceModel.Channels.IInputChannel.Receive" /> 반환 <see langword="null" />나타내는 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 세션의 다른 쪽에서 호출 되었습니다.</para>
+            <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" />은 세션을 포함한 <see cref="T:System.ServiceModel.Channels.IDuplexSessionChannel" />과 상호 작용할 수 있는 세션 메서드입니다. 특히, TCP뿐만 아니라 신뢰할 수 있는 세션 및 보안의 경우와 마찬가지로 세션 수명과 채널 수명을 함께 고려해 보면 다음과 같은 결과가 발생합니다. 
+- <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 하기 전에 호출 됩니다 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 채널에서 호출 됩니다 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 기다려야 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 완료 합니다.  
+  
+-채널이 하는 경우는 <see cref="F:System.ServiceModel.CommunicationState.Created" /> 또는 <see cref="F:System.ServiceModel.CommunicationState.Opening" /> 상태 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 시켜야는 <see cref="T:System.InvalidOperationException" />합니다.  
+  
+-채널이 있는 경우 합니다 <see cref="F:System.ServiceModel.CommunicationState.Faulted" /> 상태 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> throw 해야는 <see cref="T:System.ServiceModel.CommunicationObjectFaultedException" />합니다.  
+  
+면-채널에 오류가 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> throw 합니다.  
+  
+-구현의 <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> 채널에서 호출 해야 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 되는지 확인 합니다 <see cref="M:System.ServiceModel.Channels.IInputChannel.Receive" /> 반환 <see langword="null" />나타내는 <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> 세션의 다른 쪽에서 호출 되었습니다.</para>
         </block>
       </Docs>
     </Member>
@@ -271,7 +292,7 @@
       <Docs>
         <param name="result">
           <see cref="T:System.IAsyncResult" /> 메서드 중 하나를 호출하면 반환되는 <see cref="Overload:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession" />입니다.</param>
-        <summary>세션과 관련된 채널의 이 끝점에서 더 이상 메시지가 전송되지 않음을 나타내는 아웃바운드 세션을 종료하는 비동기 작업을 완료합니다.</summary>
+        <summary>세션과 관련된 채널의 이 엔드포인트에서 더 이상 메시지가 전송되지 않음을 나타내는 아웃바운드 세션을 종료하는 비동기 작업을 완료합니다.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   

@@ -1,11 +1,11 @@
 <Type Name="ToolTask" FullName="Microsoft.Build.Utilities.ToolTask">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="33f36b3fd7b88547fbf2d436637320109ef7ec23" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="57c54120a16bf1466b84eaa1dd29666f08c6c05e" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48771428" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51312460" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class ToolTask : Microsoft.Build.Utilities.Task, Microsoft.Build.Framework.ICancelableTask" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ToolTask extends Microsoft.Build.Utilities.Task implements class Microsoft.Build.Framework.ICancelableTask, class Microsoft.Build.Framework.ITask" />
@@ -31,6 +31,9 @@
   <Interfaces>
     <Interface>
       <InterfaceName>Microsoft.Build.Framework.ICancelableTask</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>Microsoft.Build.Framework.ITask</InterfaceName>
     </Interface>
   </Interfaces>
   <Docs>
@@ -113,7 +116,7 @@
         <Parameter Name="taskResources" Type="System.Resources.ResourceManager" />
       </Parameters>
       <Docs>
-        <param name="taskResources">작업 리소스의 <see cref="T:System.Resources.ResourceManager" />입니다.</param>
+        <param name="taskResources">작업 리소스에 대한 <see cref="T:System.Resources.ResourceManager" />입니다.</param>
         <summary>지정된 <see cref="T:Microsoft.Build.Utilities.ToolTask" />를 사용하여 <see cref="T:System.Resources.ResourceManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -143,9 +146,9 @@
         <Parameter Name="helpKeywordPrefix" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="taskResources">작업 리소스의 <see cref="T:System.Resources.ResourceManager" />입니다.</param>
+        <param name="taskResources">작업 리소스에 대한 <see cref="T:System.Resources.ResourceManager" />입니다.</param>
         <param name="helpKeywordPrefix">작업에 의해 발생하는 메시지에 사용할 도움말 키워드입니다.</param>
-        <summary>지정한 <see cref="T:Microsoft.Build.Utilities.ToolTask" />와 도움말 키워드 접두사를 사용하여 <see cref="T:System.Resources.ResourceManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <summary>지정된 <see cref="T:System.Resources.ResourceManager" /> 및 도움말 키워드 접두사를 사용하여 <see cref="T:Microsoft.Build.Utilities.ToolTask" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -330,16 +333,16 @@ using System.Collections.Specialized;
 /// </summary>  
 abstract class CustomToolTask : ToolTask  
 {  
-      protected override StringDictionary EnvironmentOverride  
-      {  
-            get  
-            {  
-                  string newPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Process) + @";C:\MyDirectory";  
-                  StringDictionary result = new StringDictionary();  
-                  result.Add("Path", newPath);  
-                  return result;  
-            }  
-      }  
+      protected override StringDictionary EnvironmentOverride  
+      {  
+            get  
+            {  
+                  string newPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Process) + @";C:\MyDirectory";  
+                  StringDictionary result = new StringDictionary();  
+                  result.Add("Path", newPath);  
+                  return result;  
+            }  
+      }  
 }  
   
 ```  
@@ -1035,7 +1038,7 @@ abstract class CustomToolTask : ToolTask
       <Parameters />
       <Docs>
         <summary>작업 실행을 건너뛸지 여부를 나타냅니다.</summary>
-        <returns>작업 실행을 건너뛰려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <returns>작업 실행을 건너뛰려면 <see langword="true" />이고, 그러지 않으면 <see langword="false" />입니다.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1165,8 +1168,8 @@ abstract class CustomToolTask : ToolTask
         <ReturnType>Microsoft.Build.Framework.MessageImportance</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>오류를 기록할 때 사용할 <see cref="T:Microsoft.Build.Framework.MessageImportance" />를 가져옵니다.</summary>
-        <value>오류를 기록할 때 사용할 <see cref="T:Microsoft.Build.Framework.MessageImportance" />입니다.</value>
+        <summary>오류를 기록할 <see cref="T:Microsoft.Build.Framework.MessageImportance" />를 가져옵니다.</summary>
+        <value>오류를 기록할 <see cref="T:Microsoft.Build.Framework.MessageImportance" />입니다.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1289,8 +1292,8 @@ abstract class CustomToolTask : ToolTask
         <ReturnType>Microsoft.Build.Framework.MessageImportance</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>오류를 기록할 때 사용할 <see cref="T:Microsoft.Build.Framework.MessageImportance" />를 가져옵니다.</summary>
-        <value>오류를 기록할 때 사용할 <see cref="T:Microsoft.Build.Framework.MessageImportance" />입니다.</value>
+        <summary>오류를 기록할 <see cref="T:Microsoft.Build.Framework.MessageImportance" />를 가져옵니다.</summary>
+        <value>오류를 기록할 <see cref="T:Microsoft.Build.Framework.MessageImportance" />입니다.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

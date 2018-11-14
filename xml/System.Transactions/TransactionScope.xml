@@ -1,11 +1,11 @@
 <Type Name="TransactionScope" FullName="System.Transactions.TransactionScope">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="a82d108607f3f18ca21c7c9b6212a340a2a97bc3" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="45dd699021cf8a33b96b1b8974ed6335d84a9f52" />
+    <Meta Name="ms.sourcegitcommit" Value="610a413147ca5b230ff99a6df778612e165a6cdf" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48705992" />
+    <Meta Name="ms.lasthandoff" Value="11/10/2018" />
+    <Meta Name="ms.locfileid" Value="51506176" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class TransactionScope : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit TransactionScope extends System.Object implements class System.IDisposable" />
@@ -757,11 +757,11 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 이 메서드를 호출 하면 트랜잭션 범위의 끝을 표시 합니다. 경우는 <xref:System.Transactions.TransactionScope> 개체가 생성 된 트랜잭션 및 <xref:System.Transactions.TransactionScope.Complete%2A> 범위에서 호출 된를 <xref:System.Transactions.TransactionScope> 개체가이 메서드가 호출 될 때 트랜잭션을 커밋하려고 시도 합니다.  
+ 이 메서드를 호출 하면 트랜잭션 범위의 끝을 표시 합니다. 경우는 <xref:System.Transactions.TransactionScope> 개체가 생성 된 트랜잭션 및 <xref:System.Transactions.TransactionScope.Complete%2A> 범위에서 호출 된를 <xref:System.Transactions.TransactionScope> 개체가이 메서드가 호출 될 때 트랜잭션을 커밋하려고 시도 합니다. 이 경우 트랜잭션 처리의 첫 번째 단계까지 메서드 블록이 완료 되었습니다. 첫 번째 단계는 모든 리소스 관리자 후 종료 하 고 트랜잭션에 인 리스트 먼 트 트랜잭션 결과에 투표 했습니다. 및 <xref:System.Transactions.TransactionManager> 지속적으로 커밋 또는 트랜잭션을 중단 했습니다. 처리의 두 번째 단계는 항상 비동기입니다. 따라서 보장이 없습니다만 지정된 된 트랜잭션 내에서 커밋된 데이터 수 있는 즉시 나중에 다른 트랜잭션이이 데이터를 사용 하지 않는 경우.  
   
  C#을 사용 하 여 `using` 생성 하면 예외가 발생 하는 경우에이 메서드가 호출 됩니다. 이 메서드를 호출한 후에 발생하는 예외는 트랜잭션에 영향을 주지 않습니다. 또한이 메서드 앰비언트 트랜잭션이 원래 상태를 복원합니다. <xref:System.Transactions.TransactionAbortedException> 트랜잭션이 실제로 커밋된 경우 throw 됩니다.  
   
- 이 메서드는 동기적 이므로 트랜잭션이 커밋 또는 중단 될 때까지 차단 합니다. 이 때문에 Windows Form (WinForm) 응용 프로그램에서는이 메서드를 사용 하는 경우에 매우 주의 해야 하거나 교착 상태가 발생할 수 있습니다. (예: 단추 클릭), 하나의 WinForm 컨트롤 이벤트 내에서이 메서드를 호출 하 고 동기를 사용 하는 경우 <xref:System.Windows.Forms.Control.Invoke%2A> 트랜잭션을 처리 하는 중 몇 가지 UI 작업 (예를 들어 변경 색)을 수행 하는 컨트롤을 직접 메서드를 교착 상태가 발생 합니다. 왜냐하면는 <xref:System.Windows.Forms.Control.Invoke%2A> 동기는 메서드와 UI 스레드에 해당 작업이 완료 될 때까지 작업자 스레드를 차단 합니다. 그러나이 시나리오에서는 UI 스레드 대기 중 트랜잭션 커밋 작업자 스레드에 대 한 합니다. 결과 범위를 완료 하려면 커밋을 위해 무기한 대기를 계속할 수 없는 경우 사용 해야 <xref:System.Windows.Forms.Control.BeginInvoke%2A> 대신 <xref:System.Windows.Forms.Control.Invoke%2A> 가능한 경우 비동기 및 교착 상태가 발생할 가능성이 적으므로 되었기 때문입니다.  
+ 이 메서드 차단 트랜잭션 처리의 첫 번째 단계 완료 될 때까지, 매우 주의 해야 응용 프로그램을 Windows Form (WinForm) 또는 교착 상태에서이 메서드를 사용 하는 경우 발생할 수 있습니다 때문에. (예: 단추 클릭), 하나의 WinForm 컨트롤 이벤트 내에서이 메서드를 호출 하 고 동기를 사용 하는 경우 <xref:System.Windows.Forms.Control.Invoke%2A> 트랜잭션을 처리 하는 중 몇 가지 UI 작업 (예를 들어 변경 색)을 수행 하는 컨트롤을 직접 메서드를 교착 상태가 발생 합니다. 왜냐하면는 <xref:System.Windows.Forms.Control.Invoke%2A> 동기는 메서드와 UI 스레드에 해당 작업이 완료 될 때까지 작업자 스레드를 차단 합니다. 그러나이 시나리오에서는 UI 스레드 대기 중 트랜잭션 커밋 작업자 스레드에 대 한 합니다. 결과 범위를 완료 하려면 커밋을 위해 무기한 대기를 계속할 수 없는 경우 사용 해야 <xref:System.Windows.Forms.Control.BeginInvoke%2A> 대신 <xref:System.Windows.Forms.Control.Invoke%2A> 가능한 경우 비동기 및 교착 상태가 발생할 가능성이 적으므로 되었기 때문입니다.  
   
  이 메서드를 사용 하는 방법에 대 한 자세한 내용은 참조는 [구현 하는 암시적 트랜잭션을 사용 하 여 트랜잭션 범위](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md) 항목입니다.  
   

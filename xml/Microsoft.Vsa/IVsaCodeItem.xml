@@ -1,11 +1,11 @@
 <Type Name="IVsaCodeItem" FullName="Microsoft.Vsa.IVsaCodeItem">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="3d52b4e13d62d9a7363590361d0bd20b652f28e6" />
-    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
+    <Meta Name="ms.openlocfilehash" Value="02ffa3d80165d4caa3178d3b714320a67262d734" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
-    <Meta Name="ms.locfileid" Value="39791003" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52610029" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IVsaCodeItem : Microsoft.Vsa.IVsaItem" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IVsaCodeItem implements class Microsoft.Vsa.IVsaItem" />
@@ -35,8 +35,19 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>스크립트 엔진이 컴파일할 코드 항목을 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[
+
+## Remarks  
+클래스, 모듈 또는 기타 소스 텍스트에 지정 된 코드 항목을 포함할 수 있습니다.
+
+IVsaCodeItem 인터페이스의 모든 멤버를 호출 하는 데 필요한 권한은 없습니다.
+
+스크립트 엔진이 코드 항목을 추가 하려면이 인터페이스를 구현 합니다.
+
+]]></format>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="AddEventSource">
@@ -60,10 +71,27 @@
         <Parameter Name="eventSourceType" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="eventSourceName">To be added.</param>
-        <param name="eventSourceType">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="eventSourceName">이벤트 소스의 프로그래밍 이름입니다.</param>
+        <param name="eventSourceType">이벤트 소스의 형식 이름입니다.</param>
+        <summary>코드 항목에 이벤트 소스를 추가합니다. 코드 항목은 호스트가 구현하는 IVsaSite.GetEventSourceInstance 메서드를 호출하여 명명된 이벤트 소스에 이벤트를 후크하는 데 이벤트 소스를 사용합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+스크립트 엔진이 명명 된 이벤트 소스에 이벤트를 후크 AddEventSource 메서드에서 제공 하는 정보를 사용 합니다. 호스트에서 구현 하는 IVsaSite.GetEventSourceInstance 메서드를 호출 하 여 이벤트 소스를 가져옵니다. AddEventSource 메서드는 호스트에서 제공한 개체에서 발생 하는 이벤트를 처리 하는 클래스를 만듭니다.
+
+> [!NOTE]
+> JScript.NET 스크립트 엔진에서이 메서드를 지원 하지 않습니다. JScript.NET 엔진 이벤트 후크 해야 있는 경우에는 전역 항목을 사용 하 여 수행 해야 합니다. 대신 이벤트 원본, JScript.NET 엔진 AppGlobal 항목 형식을 사용 합니다. 자세한 내용은 VsaItemType를 참조 하세요.
+
+
+코드 항목, 이벤트 소스 개체 이름으로 액세스할 수 있습니다 하 고 액세스 되 면 개체에 대해 이벤트 처리기를 작성할 수 있습니다. 이벤트 소스 유형에 관리 되지 않는 호스트에서 형식 개체를 구현 하는 이벤트 소스를 용이 하 게 아니라 문자열로 전달 됩니다.
+
+컴파일러는 형식에서 제공 하는 메서드에 바인딩할 eventSourceType 매개 변수를 사용 합니다. 스크립트 엔진 형식 개체의 인스턴스를 요청 하려면 IVsaSite.GetEventSourceInstance 메서드를 호출 하는 경우 나중에 사용도 됩니다.
+
+스크립트 엔진에 대 한 이벤트를 연결 하기 위한 메커니즘에 대 한 자세한 내용은 IVsaSite.GetEventSourceInstance 메서드를 참조 하세요.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AppendSourceText">
@@ -86,9 +114,18 @@
         <Parameter Name="text" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="text">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="text">코드 항목에 추가되는 텍스트입니다.</param>
+        <summary>지정된 텍스트를 코드 항목 끝에 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+추가 된 소스 텍스트 유효성 검사가 수행 되지 않습니다. 이러한 이유로 오류가 있는 경우 노출할 IVsaEngine.Compile 메서드에 다음 호출에서.
+
+추가 된 소스 텍스트를 단일 문자열로 제공 됩니다. 문자열 해야 모든 서식 지정이 직접 제공 해야 합니다.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CodeDOM">
@@ -108,9 +145,16 @@
         <ReturnType>System.CodeDom.CodeObject</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>코드 항목에 표시되는 CodeDOM(코드 문서 개체 모델)을 가져옵니다.</summary>
+        <value>코드 항목의 CodeDOM을 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+CodeDOM 속성은 사용할 수 없을 때까지 IVsaEngine.Compile 메서드를 호출한 후 하므로 컴파일 단계의 스크립트 엔진의 일부로 일반적으로 생성 됩니다. 일부 VSA 구현은 명시적인 컴파일 단계가 필요 없이 CodeDOM을 동적으로 제공할 수 있지만 호스트는이 동작에 의존할 수 없습니다. 일부 스크립트 엔진, 예를 들어, JScript.NET 스크립트 엔진에서이 동작을 지원 하지 않습니다.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RemoveEventSource">
@@ -133,9 +177,16 @@
         <Parameter Name="eventSourceName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="eventSourceName">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="eventSourceName">제거될 이벤트 소스의 프로그래밍 이름입니다.</param>
+        <summary>코드 항목에서 지정된 이벤트 소스를 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+이벤트 소스를 제거 해도 원본 텍스트에서 기본 이벤트 처리기를 제거 되지 않습니다. 대신, 이벤트는 더 이상 이벤트 처리기에는 알림을 발생 시킵니다. 따라서 이벤트 원본을 삭제 해도 기본 함수 소스 코드를 유지 하는 경우 컴파일러 오류가 발생 합니다.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SourceText">
@@ -155,9 +206,20 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>자동 생성된 코드가 있으면 해당 코드를 포함하여 지정된 코드 항목의 텍스트를 설정하거나 가져옵니다.</summary>
+        <value>코드 항목의 소스 텍스트를 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+이 속성을 설정 하는 경우 텍스트 하지 유효성 검사를 거쳐야 합니다. 이러한 이유로 오류가 있는 경우 노출할 IVsaEngine.Compile 메서드에 다음 호출에서.
+
+SourceText 속성은 반환 캐리지 등의 서식 문자를 포함 하는 하나의 큰 문자열의 소스 텍스트를 반환 합니다.
+
+이 속성을 가져오는 엔진 하지 닫아야 합니다. 엔진은이 속성을 설정 하려면 해야 하지 닫히고 엔진 실행 하지 않아야 합니다.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,11 +1,11 @@
 <Type Name="IsolatedStorageFileStream" FullName="System.IO.IsolatedStorage.IsolatedStorageFileStream">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="8aae778493bf66e76fe8b19633344f8127b1e61c" />
-    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
+    <Meta Name="ms.openlocfilehash" Value="8b5c74ce52efd9404fe42f44754ae999bbefd8fe" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
-    <Meta Name="ms.locfileid" Value="52252154" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52615479" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class IsolatedStorageFileStream : System.IO.FileStream" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit IsolatedStorageFileStream extends System.IO.FileStream" />
@@ -897,8 +897,65 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>
+          <see cref="T:System.IO.IsolatedStorage.IsolatedStorageFileStream" /> 개체와 연결된 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
+호출 하는 데 필요한 이므로 파일 스트림이 닫혀 전에 파일에 이전에 버퍼에 기록 된 모든 데이터가 복사 됩니다 <xref:System.IO.IsolatedStorage.IsolatedStorageFileStream.Flush%2A> Close를 호출 하기 전에 합니다.
+
+Close 호출을 다음 파일 스트림에 대 한 모든 작업에는 예외가 발생할 수 있습니다. 후 `Close` 가 다시 호출 하는 경우 아무것도 수행 하지 않는다면 한 번 호출 되었습니다. <xref:System.Object.Finalize> 메서드는 가비지 수집기가 개체를 종료 하기 전에 파일 스트림이 닫혀 있으므로 Close를 호출 합니다.
+
+<xref:System.IO.IsolatedStorage.IsolatedStorageFileStream> 필요한 개체는 <xref:System.IO.IsolatedStorage.IsolatedStorageFile> 액세스 되는 파일에 대 한 저장소 컨텍스트를 결정 하는 개체입니다. 전달 하지 않고 열린 스트림에 대 한는 <xref:System.IO.IsolatedStorage.IsolatedStorageFile> 개체를 기본 <xref:System.IO.IsolatedStorage.IsolatedStorageFile> 실행 되는 어셈블리에 대 한 개체를 만들어 Close 호출 하는 동안 닫힙니다.
+
+> [!NOTE]
+> 합니다 `Close` 메서드 호출 <xref:System.IO.IsolatedStorage.IsolatedStorageFileStream.Dispose%2A> 리소스를 해제 하려면 true로 설정 삭제를 사용 하 여 호출 <xref:System.GC.SuppressFinalize%2A> 가비지 수집기에 의해이 개체의 종료를 표시 하지 않으려면입니다.
+
+## Examples
+
+다음 코드 예제에서는 Close 메서드를 보여 줍니다.
+
+```csharp
+IsolatedStorageFileStream source =
+     new IsolatedStorageFileStream(this.userName,FileMode.Open,isoFile);
+ // This stream is the one that data will be read from
+ Console.WriteLine("Source can be read?" + (source.CanRead?"true":"false"));
+ IsolatedStorageFileStream target =
+     new IsolatedStorageFileStream("Archive\\ " + this.userName,FileMode.OpenOrCreate,isoFile);
+ // This stream is the one that data will be written to
+ Console.WriteLine("Target is writable?" + (target.CanWrite?"true":"false"));
+ // Do work...
+ // After you have read and written to the streams, close them
+ source.Close();
+ target.Close();
+```
+
+```vb
+Dim source As New IsolatedStorageFileStream(UserName,FileMode.Open,isoFile)
+ ' This stream is the one that data will be read from
+ If source.CanRead Then
+     Console.WriteLine("Source can read ? true")
+ Else
+     Console.WriteLine("Source can read ? false")
+ End If
+ Dim target As New IsolatedStorageFileStream("Archive\\ " & UserName, _
+                                             FileMode.OpenOrCreate, _
+                                             isoFile)
+ ' This stream is the one that data will be written to
+ If target.CanWrite Then
+     Console.WriteLine("Target is writable? true")
+ Else
+     Console.WriteLine("Target is writable? false")
+ End If
+ ' After you have read and written to the streams, close them
+ source.Close()
+ target.Close()
+```
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Dispose">

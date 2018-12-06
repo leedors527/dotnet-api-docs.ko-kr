@@ -1,11 +1,11 @@
 <Type Name="XmlTextReader" FullName="System.Xml.XmlTextReader">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="90c77f83b2fbfa6e63a1bd5b61d10dfe1d19eaf4" />
-    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
+    <Meta Name="ms.openlocfilehash" Value="5cb88eb979766bf7bddf81d0b3c1e58bf53f76d8" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="HT" />
     <Meta Name="ms.contentlocale" Value="ko-KR" />
-    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
-    <Meta Name="ms.locfileid" Value="52244280" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52602336" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class XmlTextReader : System.Xml.XmlReader, System.Xml.IXmlLineInfo, System.Xml.IXmlNamespaceResolver" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XmlTextReader extends System.Xml.XmlReader implements class System.Xml.IXmlLineInfo, class System.Xml.IXmlNamespaceResolver" />
@@ -111,7 +111,7 @@
     <block subset="none" type="overrides">
       <para>이 클래스는 상속 요청이 있습니다. 완전 신뢰에서 상속 해야 <see langword="XmlTextReader" />합니다.</para>
     </block>
-    <related type="Article" href="https://msdn.microsoft.com/library/e695047f-3c0f-4045-8708-5baea91cc380">XML 문서 및 데이터</related>
+    <related type="Article" href="~/docs/standard/data/xml/index.md">XML 문서 및 데이터</related>
   </Docs>
   <Members>
     <MemberGroup MemberName=".ctor">
@@ -1366,7 +1366,25 @@ XmlTextReader reader = new XmlTextReader(s);
  엔터티 간의 차이점을 설명 하기 위해 처리 모드는 다음 XML을 고려 합니다.  
   
 ```  
-<!DOCTYPE doc [<!ENTITY num "123"]]></format>
+<!DOCTYPE doc [<!ENTITY num "123">]>  
+    <doc> &#65; &num; </doc>  
+```  
+  
+ 때 `EntityHandling` 로 설정 된 `ExpandEntities` "doc" 요소 노드 확장된 엔터티 텍스트를 사용 하 여 하나의 텍스트 노드를 포함 합니다.  
+  
+|깊이|노드 형식|name|값|  
+|-----------|---------------|----------|-----------|  
+|1|`Text`||A 123|  
+  
+ 때 `EntityHandling` 로 설정 된 `ExpandCharEntites`, 및 <xref:System.Xml.XmlTextReader.WhitespaceHandling%2A> 로 설정 되어 `Significant` 또는 `All`, 문자 엔터티를 확장 하 고 노드로 일반 엔터티를 반환 하는 "doc" 요소:  
+  
+|깊이|노드 형식|name|값|  
+|-----------|---------------|----------|-----------|  
+|1|`Text`||A|  
+|1|`EntityReference`|num||  
+|1|`SignificantWhitespace`|||  
+  
+ ]]></format>
         </remarks>
         <altmember cref="T:System.Xml.XmlReader" />
       </Docs>
@@ -4088,9 +4106,17 @@ if (XmlNodeType.Element == reader.NodeType && "thing" == reader.Name)
         <ReturnType>System.Xml.XmlReaderSettings</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>이 <see cref="T:System.Xml.XmlTextReader" /> 인스턴스를 만드는 데 사용되는 <see cref="T:System.Xml.XmlReaderSettings" /> 개체를 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xml.XmlTextReader" /> 인스턴스를 만드는 데 사용된 <see cref="T:System.Xml.XmlReaderSettings" /> 개체이거나, <see cref="Overload:System.Xml.XmlReader.Create" /> 메서드를 사용하여 판독기를 만들지 않은 경우에는 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+
+> [!INCLUDE[dnprdnext](~/includes/dnprdnext-md.md)]에서는 <xref:System.Xml.XmlReader> 클래스와 <xref:System.Xml.XmlReaderSettings> 메서드를 사용하여 <xref:System.Xml.XmlReader.Create%2A> 인스턴스를 만드는 것이 좋습니다. 그러면 [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)]의 새로운 기능을 모두 사용할 수 있습니다. 자세한 내용은 주의 섹션을 참조 합니다 <xref:System.Xml.XmlReader> 참조 페이지입니다.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Skip">
@@ -4175,9 +4201,17 @@ if (XmlNodeType.Element == reader.NodeType && "thing" == reader.Name)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>이 멤버에 대한 설명은 <see cref="M:System.Xml.IXmlLineInfo.HasLineInfo" />를 참조하세요.</summary>
+        <returns>
+          <see cref="P:System.Xml.IXmlLineInfo.LineNumber" />, <see cref="P:System.Xml.IXmlLineInfo.LinePosition" />을 사용할 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.Xml.XmlTextReader> 인스턴스가 <xref:System.Xml.IXmlLineInfo> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="System.Xml.IXmlNamespaceResolver.GetNamespacesInScope">

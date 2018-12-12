@@ -1,1 +1,1 @@
-<span data-ttu-id="951b0-101">Visual C++</span><span class="sxs-lookup"><span data-stu-id="951b0-101">Visual C++</span></span>
+<span data-ttu-id="f8261-101">Visual C++</span><span class="sxs-lookup"><span data-stu-id="f8261-101">Visual C++</span></span>

@@ -1,1 +1,1 @@
-<span data-ttu-id="0f76c-101">EMF(확장 메타파일)</span><span class="sxs-lookup"><span data-stu-id="0f76c-101">Enhanced Metafile (EMF)</span></span>
+<span data-ttu-id="faed3-101">EMF(확장 메타파일)</span><span class="sxs-lookup"><span data-stu-id="faed3-101">Enhanced Metafile (EMF)</span></span>

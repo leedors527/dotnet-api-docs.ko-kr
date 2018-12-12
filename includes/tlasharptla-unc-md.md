@@ -1,1 +1,1 @@
-<span data-ttu-id="aa47f-101">UNC(범용 명명 규칙)</span><span class="sxs-lookup"><span data-stu-id="aa47f-101">Universal Naming Convention (UNC)</span></span>
+<span data-ttu-id="94ecc-101">UNC(범용 명명 규칙)</span><span class="sxs-lookup"><span data-stu-id="94ecc-101">Universal Naming Convention (UNC)</span></span>

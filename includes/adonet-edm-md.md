@@ -1,1 +1,1 @@
-<span data-ttu-id="7d4a3-101">엔터티 데이터 모델</span><span class="sxs-lookup"><span data-stu-id="7d4a3-101">Entity Data Model</span></span>
+<span data-ttu-id="d0ebd-101">엔터티 데이터 모델</span><span class="sxs-lookup"><span data-stu-id="d0ebd-101">Entity Data Model</span></span>

@@ -1,1 +1,1 @@
-<span data-ttu-id="bcb55-101">CAS(코드 액세스 보안)</span><span class="sxs-lookup"><span data-stu-id="bcb55-101">Code Access Security (CAS)</span></span>
+<span data-ttu-id="e64c8-101">CAS(코드 액세스 보안)</span><span class="sxs-lookup"><span data-stu-id="e64c8-101">Code Access Security (CAS)</span></span>

@@ -1,1 +1,1 @@
-<span data-ttu-id="42927-101">dpi(인치당 도트 수)</span><span class="sxs-lookup"><span data-stu-id="42927-101">dots per inch (dpi)</span></span>
+<span data-ttu-id="20e50-101">dpi(인치당 도트 수)</span><span class="sxs-lookup"><span data-stu-id="20e50-101">dots per inch (dpi)</span></span>

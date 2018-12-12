@@ -1,1 +1,1 @@
-<span data-ttu-id="396a8-101">XMP(Extensible Metadata Platform)</span><span class="sxs-lookup"><span data-stu-id="396a8-101">Extensible Metadata Platform (XMP)</span></span>
+<span data-ttu-id="0092b-101">XMP(Extensible Metadata Platform)</span><span class="sxs-lookup"><span data-stu-id="0092b-101">Extensible Metadata Platform (XMP)</span></span>

@@ -1,1 +1,1 @@
-<span data-ttu-id="8ee8f-101">WPF(Windows Presentation Foundation)</span><span class="sxs-lookup"><span data-stu-id="8ee8f-101">Windows Presentation Foundation (WPF)</span></span>
+<span data-ttu-id="7754b-101">WPF(Windows Presentation Foundation)</span><span class="sxs-lookup"><span data-stu-id="7754b-101">Windows Presentation Foundation (WPF)</span></span>

@@ -1,1 +1,1 @@
-<span data-ttu-id="00c54-101">.NET Core</span><span class="sxs-lookup"><span data-stu-id="00c54-101">.NET Core</span></span>
+<span data-ttu-id="f72d7-101">.NET Core</span><span class="sxs-lookup"><span data-stu-id="f72d7-101">.NET Core</span></span>

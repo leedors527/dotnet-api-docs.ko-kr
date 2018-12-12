@@ -1,1 +1,1 @@
-<span data-ttu-id="f30bd-101">ID(식별자)</span><span class="sxs-lookup"><span data-stu-id="f30bd-101">identifiers (IDs)</span></span>
+<span data-ttu-id="c06b2-101">ID(식별자)</span><span class="sxs-lookup"><span data-stu-id="c06b2-101">identifiers (IDs)</span></span>

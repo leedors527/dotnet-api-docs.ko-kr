@@ -1,1 +1,1 @@
-<span data-ttu-id="13dcc-101">RTF(서식 있는 텍스트)</span><span class="sxs-lookup"><span data-stu-id="13dcc-101">Rich Text Format (RTF)</span></span>
+<span data-ttu-id="24d30-101">RTF(서식 있는 텍스트)</span><span class="sxs-lookup"><span data-stu-id="24d30-101">Rich Text Format (RTF)</span></span>

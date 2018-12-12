@@ -1,1 +1,1 @@
-<span data-ttu-id="e9ea8-101">CLR(공용 언어 런타임)</span><span class="sxs-lookup"><span data-stu-id="e9ea8-101">common language runtime (CLR)</span></span>
+<span data-ttu-id="45336-101">CLR(공용 언어 런타임)</span><span class="sxs-lookup"><span data-stu-id="45336-101">common language runtime (CLR)</span></span>

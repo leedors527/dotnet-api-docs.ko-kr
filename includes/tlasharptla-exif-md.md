@@ -1,1 +1,1 @@
-<span data-ttu-id="fba7d-101">EXIF(교환 이미지 파일 형식)</span><span class="sxs-lookup"><span data-stu-id="fba7d-101">Exchangeable image file (Exif)</span></span>
+<span data-ttu-id="1c869-101">EXIF(교환 이미지 파일 형식)</span><span class="sxs-lookup"><span data-stu-id="1c869-101">Exchangeable image file (Exif)</span></span>

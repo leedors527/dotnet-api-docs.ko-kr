@@ -1,1 +1,1 @@
-<span data-ttu-id="8b376-101">장치 독립적 단위(1/96인치)</span><span class="sxs-lookup"><span data-stu-id="8b376-101">device-independent unit (1/96th inch)</span></span>
+<span data-ttu-id="e9568-101">장치 독립적 단위(1/96인치)</span><span class="sxs-lookup"><span data-stu-id="e9568-101">device-independent unit (1/96th inch)</span></span>

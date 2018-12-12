@@ -1,1 +1,1 @@
-<span data-ttu-id="30836-101">UI 자동화</span><span class="sxs-lookup"><span data-stu-id="30836-101">UI Automation</span></span>
+<span data-ttu-id="41002-101">UI 자동화</span><span class="sxs-lookup"><span data-stu-id="41002-101">UI Automation</span></span>

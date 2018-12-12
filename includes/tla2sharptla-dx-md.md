@@ -1,1 +1,1 @@
-<span data-ttu-id="11de2-101">DirectX</span><span class="sxs-lookup"><span data-stu-id="11de2-101">DirectX</span></span>
+<span data-ttu-id="0a145-101">DirectX</span><span class="sxs-lookup"><span data-stu-id="0a145-101">DirectX</span></span>

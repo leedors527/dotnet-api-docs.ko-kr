@@ -1,1 +1,1 @@
-<span data-ttu-id="55bc3-101">BMP(비트맵)</span><span class="sxs-lookup"><span data-stu-id="55bc3-101">bitmap (BMP)</span></span>
+<span data-ttu-id="26f7b-101">BMP(비트맵)</span><span class="sxs-lookup"><span data-stu-id="26f7b-101">bitmap (BMP)</span></span>

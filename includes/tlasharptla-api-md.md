@@ -1,1 +1,1 @@
-<span data-ttu-id="a7725-101">API</span><span class="sxs-lookup"><span data-stu-id="a7725-101">API</span></span>
+<span data-ttu-id="5a42b-101">API</span><span class="sxs-lookup"><span data-stu-id="5a42b-101">API</span></span>

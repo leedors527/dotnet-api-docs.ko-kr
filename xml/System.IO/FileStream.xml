@@ -1,5 +1,5 @@
 <Type Name="FileStream" FullName="System.IO.FileStream">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="7a06f70b77d575d1a15d0e980c99c1c5daf7ad47" /><Meta Name="ms.sourcegitcommit" Value="c5fd6b431a16f0412349201a0e93a9eacddf4b35" /><Meta Name="ms.translationtype" Value="HT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/14/2018" /><Meta Name="ms.locfileid" Value="53395489" /></Metadata><TypeSignature Language="C#" Value="public class FileStream : System.IO.Stream" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="dc5ed181a3b71bafd66689b0d61664367786fda3" /><Meta Name="ms.sourcegitcommit" Value="662f143e6be46d519ff8ab4451d543d91e651478" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/18/2018" /><Meta Name="ms.locfileid" Value="53568709" /></Metadata><TypeSignature Language="C#" Value="public class FileStream : System.IO.Stream" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit FileStream extends System.IO.Stream" />
   <TypeSignature Language="DocId" Value="T:System.IO.FileStream" />
   <TypeSignature Language="VB.NET" Value="Public Class FileStream&#xA;Inherits Stream" />
@@ -1489,14 +1489,18 @@
         <Parameter Name="stateObject" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <param name="offset">To be added.</param>
-        <param name="numBytes">To be added.</param>
-        <param name="userCallback">To be added.</param>
-        <param name="stateObject">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="array">데이터를 읽어올 버퍼입니다.</param>
+        <param name="offset">읽기를 시작할 <paramref name="array" />의 바이트 오프셋입니다.</param>
+        <param name="numBytes">읽을 최대 바이트 수입니다.</param>
+        <param name="userCallback">비동기 읽기 작업이 완료되면 호출될 메서드입니다.</param>
+        <param name="stateObject">다른 요청에서 특정 비동기 읽기 요청을 구별하는 사용자 제공 개체입니다.</param>
+        <summary>비동기 읽기 작업을 시작합니다. 대신 <see cref="M:System.IO.FileStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" />을 사용하는 것이 좋습니다.</summary>
+        <returns>비동기 읽기를 참조하는 개체입니다.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">배열 길이에서 <paramref name="offset" />을 빼면 <paramref name="numBytes" />보다 작습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="array" />가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> 또는 <paramref name="numBytes" />가 음수입니다.</exception>
+        <exception cref="T:System.IO.IOException">파일의 끝을 지나 비동기 읽기를 시도했습니다.</exception>
       </Docs>
     </Member>
     <Member MemberName="BeginWrite">
@@ -1540,14 +1544,20 @@
         <Parameter Name="stateObject" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <param name="offset">To be added.</param>
-        <param name="numBytes">To be added.</param>
-        <param name="userCallback">To be added.</param>
-        <param name="stateObject">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="array">현재 스트림에 쓸 데이터를 포함하는 버퍼입니다.</param>
+        <param name="offset">현재 스트림으로 바이트를 복사하기 시작할 <paramref name="array" />의 바이트 오프셋(0부터 시작)입니다.</param>
+        <param name="numBytes">쓸 최대 바이트 수입니다.</param>
+        <param name="userCallback">비동기 쓰기 작업이 완료되면 호출될 메서드입니다.</param>
+        <param name="stateObject">다른 요청에서 특정 비동기 쓰기 요청을 구별하는 사용자 제공 개체입니다.</param>
+        <summary>비동기 쓰기 작업을 시작합니다. 대신 <see cref="M:System.IO.FileStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" />을 사용하는 것이 좋습니다.</summary>
+        <returns>비동기 쓰기를 참조하는 개체입니다.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="array" /> 길이에서 <paramref name="offset" />을 뺀 값이 <paramref name="numBytes" />보다 작습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="array" />가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> 또는 <paramref name="numBytes" />가 음수입니다.</exception>
+        <exception cref="T:System.NotSupportedException">스트림이 쓰기를 지원하지 않습니다.</exception>
+        <exception cref="T:System.ObjectDisposedException">스트림이 닫혔습니다.</exception>
+        <exception cref="T:System.IO.IOException">I/O 오류가 발생했습니다.</exception>
       </Docs>
     </Member>
     <Member MemberName="CanRead">
@@ -1582,7 +1592,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>현재 스트림이 읽기를 지원하는지를 나타내는 값을 가져옵니다.</summary>
+        <summary>현재 스트림이 읽기를 지원하는지 여부를 나타내는 값을 가져옵니다.</summary>
         <value>스트림이 읽기를 지원하면 <see langword="true" />이고, 스트림이 닫혀 있거나 쓰기 전용 권한으로 열렸으면 <see langword="false" />입니다.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1640,7 +1650,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>현재 스트림이 검색을 지원하는지를 나타내는 값을 가져옵니다.</summary>
+        <summary>현재 스트림이 검색을 지원하는지 여부를 나타내는 값을 가져옵니다.</summary>
         <value>스트림이 검색을 지원하면 <see langword="true" />이고, 스트림이 닫혔거나 <see langword="FileStream" />이 콘솔에 대한 출력 또는 파이프와 같은 운영 체제 핸들로부터 생성된 경우에는 <see langword="false" />입니다.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -1698,7 +1708,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>현재 스트림이 쓰기를 지원하는지를 나타내는 값을 가져옵니다.</summary>
+        <summary>현재 스트림이 쓰기를 지원하는지 여부를 나타내는 값을 가져옵니다.</summary>
         <value>스트림이 쓰기를 지원하면 <see langword="true" />이고, 스트림이 닫혀 있거나 읽기 전용 권한으로 열렸으면 <see langword="false" />입니다.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2368,7 +2378,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary><see langword="FileStream" />이 동기적으로 열렸는지 또는 비동기적으로 열렸는지를 나타내는 값을 가져옵니다.</summary>
+        <summary><see langword="FileStream" />이 비동기적으로 열렸는지 또는 동기적으로 열렸는지 여부를 나타내는 값을 가져옵니다.</summary>
         <value><see langword="FileStream" />이 비동기적으로 열렸으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  

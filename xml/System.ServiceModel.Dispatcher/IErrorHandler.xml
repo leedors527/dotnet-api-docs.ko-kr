@@ -17,11 +17,11 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 예외가 throw 되 면 응용 프로그램의 동작을 명시적으로 제어를 구현 합니다 <xref:System.ServiceModel.Dispatcher.IErrorHandler> 인터페이스에 추가 하는 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher>의 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A> 속성입니다. <xref:System.ServiceModel.Dispatcher.IErrorHandler>를 사용하면 발생되는 SOAP 오류를 명시적으로 제어하고, 오류를 클라이언트에게 다시 보낼지 여부를 결정하며, 로깅과 같은 관련 작업을 수행할 수 있습니다. 오류 처리기는 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A> 속성에 추가된 순서대로 호출됩니다.  
+ 예외가 throw 되 면 애플리케이션의 동작을 명시적으로 제어를 구현 합니다 <xref:System.ServiceModel.Dispatcher.IErrorHandler> 인터페이스에 추가 하는 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher>의 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A> 속성입니다. <xref:System.ServiceModel.Dispatcher.IErrorHandler>를 사용하면 발생되는 SOAP 오류를 명시적으로 제어하고, 오류를 클라이언트에게 다시 보낼지 여부를 결정하며, 로깅과 같은 관련 작업을 수행할 수 있습니다. 오류 처리기는 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A> 속성에 추가된 순서대로 호출됩니다.  
   
  클라이언트에게 반환되는 오류 메시지를 제어하려면 <xref:System.ServiceModel.Dispatcher.IErrorHandler.ProvideFault%2A> 메서드를 구현합니다.  
   
- 오류 로깅, fail-fast 보장, 응용 프로그램 종료 등과 같은 오류 관련 동작을 확인하려면 <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 메서드를 구현합니다.  
+ 오류 로깅, fail-fast 보장, 애플리케이션 종료 등과 같은 오류 관련 동작을 확인하려면 <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 메서드를 구현합니다.  
   
 > [!NOTE]
 >  <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 메서드는 여러 다른 위치에서 호출될 수 있기 때문에 이 메서드가 특정 스레드에서 호출된다고 보장할 수 없습니다. <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 메서드가 작업 스레드에서 호출된다고 단정하지 마십시오.  
@@ -29,7 +29,7 @@
  모든 <xref:System.ServiceModel.Dispatcher.IErrorHandler.ProvideFault%2A> 구현은 응답 메시지를 보내기 전에 처음으로 호출됩니다. 모든 <xref:System.ServiceModel.Dispatcher.IErrorHandler.ProvideFault%2A> 구현이 호출되어 반환될 경우 `fault`가 `null`이 아니면 작업 계약에 따라 클라이언트에게 다시 전송됩니다. 모든 구현이 호출된 후에 `fault`가 `null`이면 응답 메시지는 <xref:System.ServiceModel.ServiceBehaviorAttribute.IncludeExceptionDetailInFaults%2A?displayProperty=nameWithType> 속성 값에 의해 제어됩니다.  
   
 > [!NOTE]
->  모든 <xref:System.ServiceModel.Dispatcher.IErrorHandler.ProvideFault%2A> 구현이 호출되고 응답 메시지가 채널로 전달된 후 예외가 발생할 수 있습니다. (예: 메시지를 직렬화 하는 어려움) 채널 예외가 발생 하는 경우 <xref:System.ServiceModel.Dispatcher.IErrorHandler> 개체 알림이 표시 됩니다. 이 경우 여전히 확인 해야 catch 하 고 이러한 예외를 표시 하는 개발 환경 또는 사용 하 여 추적 하는 문제를 검색 합니다. 추적에 대 한 자세한 내용은 참조 하세요. [응용 프로그램 문제 해결을 사용 하 여 추적](~/docs/framework/wcf/diagnostics/tracing/using-tracing-to-troubleshoot-your-application.md)합니다.  
+>  모든 <xref:System.ServiceModel.Dispatcher.IErrorHandler.ProvideFault%2A> 구현이 호출되고 응답 메시지가 채널로 전달된 후 예외가 발생할 수 있습니다. (예: 메시지를 직렬화 하는 어려움) 채널 예외가 발생 하는 경우 <xref:System.ServiceModel.Dispatcher.IErrorHandler> 개체 알림이 표시 됩니다. 이 경우 여전히 확인 해야 catch 하 고 이러한 예외를 표시 하는 개발 환경 또는 사용 하 여 추적 하는 문제를 검색 합니다. 추적에 대 한 자세한 내용은 참조 하세요. [애플리케이션 문제 해결을 사용 하 여 추적](~/docs/framework/wcf/diagnostics/tracing/using-tracing-to-troubleshoot-your-application.md)합니다.  
   
  응답 메시지가 전송된 후 모든 <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 구현이 동일한 순서로 호출됩니다.  
   
@@ -52,7 +52,7 @@
  [!code-csharp[IErrorHandler#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
  [!code-vb[IErrorHandler#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
   
- 다음 코드 예제에서는 응용 프로그램 구성 파일을 사용하여 서비스 동작을 로드하도록 서비스를 구성하는 방법을 보여 줍니다. 구성 파일에서 서비스 동작을 공개하는 방법에 대한 자세한 내용은 <xref:System.ServiceModel.Description.IServiceBehavior>를 참조하십시오.  
+ 다음 코드 예제에서는 애플리케이션 구성 파일을 사용하여 서비스 동작을 로드하도록 서비스를 구성하는 방법을 보여 줍니다. 구성 파일에서 서비스 동작을 공개하는 방법에 대한 자세한 내용은 <xref:System.ServiceModel.Description.IServiceBehavior>를 참조하십시오.  
 
  [!code-xml[IErrorHandler#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]   
   
@@ -92,7 +92,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 오류 로깅, 시스템 알림, 응용 프로그램 종료 등의 오류 관련 동작을 구현하고 예외가 적절하게 처리되었는지 여부를 지정하는 값을 반환하려면 <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 메서드를 사용하십시오.  
+ 오류 로깅, 시스템 알림, 애플리케이션 종료 등의 오류 관련 동작을 구현하고 예외가 적절하게 처리되었는지 여부를 지정하는 값을 반환하려면 <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 메서드를 사용하십시오.  
   
 > [!NOTE]
 >  <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 메서드는 여러 다른 위치에서 호출될 수 있기 때문에 이 메서드가 특정 스레드에서 호출된다고 보장할 수 없습니다. <xref:System.ServiceModel.Dispatcher.IErrorHandler.HandleError%2A> 메서드가 작업 스레드에서 호출된다고 단정하지 마십시오.  
@@ -118,7 +118,7 @@
  [!code-csharp[IErrorHandler#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
  [!code-vb[IErrorHandler#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
   
- 다음 코드 예제에서는 응용 프로그램 구성 파일을 사용하여 서비스 동작을 로드하도록 서비스를 구성하는 방법을 보여 줍니다. 구성 파일에서 서비스 동작을 공개하는 방법에 대한 자세한 내용은 <xref:System.ServiceModel.Description.IServiceBehavior>를 참조하십시오.  
+ 다음 코드 예제에서는 애플리케이션 구성 파일을 사용하여 서비스 동작을 로드하도록 서비스를 구성하는 방법을 보여 줍니다. 구성 파일에서 서비스 동작을 공개하는 방법에 대한 자세한 내용은 <xref:System.ServiceModel.Description.IServiceBehavior>를 참조하십시오.  
   
  [!code-xml[IErrorHandler#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]   
   
@@ -182,7 +182,7 @@
  [!code-csharp[IErrorHandler#7](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/ierrorhandler.cs#7)]
  [!code-vb[IErrorHandler#7](~/samples/snippets/visualbasic/VS_Snippets_CFX/ierrorhandler/vb/ierrorhandler.vb#7)]  
   
- 다음 코드 예제에서는 응용 프로그램 구성 파일을 사용하여 서비스 동작을 로드하도록 서비스를 구성하는 방법을 보여 줍니다. 구성 파일에서 서비스 동작을 공개하는 방법에 대한 자세한 내용은 <xref:System.ServiceModel.Description.IServiceBehavior>를 참조하십시오.  
+ 다음 코드 예제에서는 애플리케이션 구성 파일을 사용하여 서비스 동작을 로드하도록 서비스를 구성하는 방법을 보여 줍니다. 구성 파일에서 서비스 동작을 공개하는 방법에 대한 자세한 내용은 <xref:System.ServiceModel.Description.IServiceBehavior>를 참조하십시오.  
   
  [!code-xml[IErrorHandler#4](~/samples/snippets/csharp/VS_Snippets_CFX/ierrorhandler/cs/hostapplication.exe.config#4)]   
   

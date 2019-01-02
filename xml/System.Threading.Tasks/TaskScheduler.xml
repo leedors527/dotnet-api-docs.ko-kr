@@ -62,7 +62,7 @@
   
 <a name="Queues"></a>   
 ### <a name="the-global-queue-vs-local-queues"></a>전역 큐와 로컬 큐 비교  
- 스레드 풀 전역 FIFO (선입 선출) 큐 각 응용 프로그램 도메인의 스레드에 대 한 작업을 유지 합니다. 프로그램을 호출할 때마다 합니다 <xref:System.Threading.ThreadPool.QueueUserWorkItem%2A?displayProperty=nameWithType> (또는 <xref:System.Threading.ThreadPool.UnsafeQueueUserWorkItem%2A?displayProperty=nameWithType>) 메서드를 작업이 공유 큐에 배치 되며 최종적으로 사용할 수 있는 다음 스레드 큐 해제 합니다. .NET Framework 4부터이 큐가 향상 되었습니다 유사한 잠금 없는 알고리즘을 사용 하 여 <xref:System.Collections.Concurrent.ConcurrentQueue%601> 클래스입니다. 이 잠금 없는 구현을 사용 하 여 스레드 풀 데 큐 및 작업 항목 큐에서 제거 하면 시간을 줄입니다. 이 성능 혜택은 스레드 풀을 사용 하는 모든 프로그램에 제공 됩니다.  
+ 스레드 풀 전역 FIFO (선입 선출) 큐 각 애플리케이션 도메인의 스레드에 대 한 작업을 유지 합니다. 프로그램을 호출할 때마다 합니다 <xref:System.Threading.ThreadPool.QueueUserWorkItem%2A?displayProperty=nameWithType> (또는 <xref:System.Threading.ThreadPool.UnsafeQueueUserWorkItem%2A?displayProperty=nameWithType>) 메서드를 작업이 공유 큐에 배치 되며 최종적으로 사용할 수 있는 다음 스레드 큐 해제 합니다. .NET Framework 4부터이 큐가 향상 되었습니다 유사한 잠금 없는 알고리즘을 사용 하 여 <xref:System.Collections.Concurrent.ConcurrentQueue%601> 클래스입니다. 이 잠금 없는 구현을 사용 하 여 스레드 풀 데 큐 및 작업 항목 큐에서 제거 하면 시간을 줄입니다. 이 성능 혜택은 스레드 풀을 사용 하는 모든 프로그램에 제공 됩니다.  
   
  다른 작업의 컨텍스트에서 생성되지 않은 작업인 최상위 작업은 다른 작업 항목과 마찬가지로 전역 큐에 배치됩니다. 그러나 다른 작업의 컨텍스트에서 생성된 중첩된 작업이나 자식 작업은 전혀 다르게 처리됩니다. 자식 작업이나 중첩된 작업은 부모 작업이 실행되는 스레드와 관련된 로컬 큐에 배치됩니다. 부모 작업은 최상위 작업이거나 다른 작업의 자식일 수 있습니다. 이 스레드가 추가 작업을 수행할 준비가 되면 먼저 로컬 큐를 확인합니다. 작업 항목이 대기 중이면 신속하게 액세스할 수 있습니다. 로컬 큐를 마지막에 선출 lifo (후입선출) 경합을 줄이고 캐시 집약성을 유지 하려면에서 액세스 됩니다. 자식 작업 및 중첩 된 작업에 대 한 자세한 내용은 참조 하세요. [연결 된 자식 작업과 분리 된 자식 작업](~/docs/standard/parallel-programming/attached-and-detached-child-tasks.md)합니다.  
   
@@ -91,11 +91,11 @@
  [!code-csharp[TPL_SyncContext#01](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_synccontext/cs/mainwindow.xaml.cs#01)]
  [!code-vb[TPL_SyncContext#01](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_synccontext/vb/MainWindow.xaml.vb#01)]  
   
- 예제를 만들려면 Visual Studio에서 WPF 응용 프로그램 프로젝트를 만들고 WPF_CS1 이름을 (에 대 한는 C# WPF 프로젝트) 또는 WPF_VB1 (Visual Basic WPF 프로젝트를)에 대 한 합니다. 다음을 수행 합니다.  
+ 예제를 만들려면 Visual Studio에서 WPF 애플리케이션 프로젝트를 만들고 WPF_CS1 이름을 (에 대 한는 C# WPF 프로젝트) 또는 WPF_VB1 (Visual Basic WPF 프로젝트를)에 대 한 합니다. 다음을 수행 합니다.  
   
 1. 디자인 뷰에서 <xref:System.Windows.Controls.Image> 에서 제어를 **도구 상자** 디자인 화면의 왼쪽된 위 모퉁이에 있습니다. 에 **이름** 의 텍스트 상자를 **속성** 창 "제어"이미지 이름입니다.    
   
-2. 끌어서를 <xref:System.Windows.Controls.Button> 에서 제어 합니다 **도구 상자** 응용 프로그램 창의 왼쪽된 아래 부분에 합니다. XAML 뷰에서 지정 된 <xref:System.Windows.Controls.ContentControl.Content%2A> "Make 시스템"으로 단추의 속성 지정 해당 <xref:System.Windows.FrameworkElement.Width> 속성을 "100"으로 합니다. 연결 합니다 <xref:System.Windows.Controls.Primitives.ButtonBase.Click> 이벤트를 `button_Click` 이벤트 처리기를 추가 하 여 예제의 코드에 정의 된 `Click="button_Click"` 에 `<Button>` 요소. 에 **이름** 의 텍스트 상자를 **속성** 창 "단추" 컨트롤 이름입니다.  
+2. 끌어서를 <xref:System.Windows.Controls.Button> 에서 제어 합니다 **도구 상자** 애플리케이션 창의 왼쪽된 아래 부분에 합니다. XAML 뷰에서 지정 된 <xref:System.Windows.Controls.ContentControl.Content%2A> "Make 시스템"으로 단추의 속성 지정 해당 <xref:System.Windows.FrameworkElement.Width> 속성을 "100"으로 합니다. 연결 합니다 <xref:System.Windows.Controls.Primitives.ButtonBase.Click> 이벤트를 `button_Click` 이벤트 처리기를 추가 하 여 예제의 코드에 정의 된 `Click="button_Click"` 에 `<Button>` 요소. 에 **이름** 의 텍스트 상자를 **속성** 창 "단추" 컨트롤 이름입니다.  
   
 3. 이 예제에서 코드를 사용 하 여 MainWindow.xaml.vb 또는 MainWindow.xaml.cs 파일의 전체 내용을 대체 합니다. 에 대 한는 C# WPF 프로젝트에서 작업 영역의 이름을 프로젝트 이름이 일치 하는지 확인 합니다. 
   
@@ -767,7 +767,7 @@ protected override IEnumerable<Task> GetScheduledTasks()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- 이 응용 프로그램 도메인 전체 이벤트에서 트리거 (기본적으로 종료 하는 프로세스)는 예외 에스컬레이션 정책을 방지 하는 메커니즘을 제공 합니다.  
+ 이 애플리케이션 도메인 전체 이벤트에서 트리거 (기본적으로 종료 하는 프로세스)는 예외 에스컬레이션 정책을 방지 하는 메커니즘을 제공 합니다.  
   
  개발자가 작업 기반 비동기 코드를 작성 하는 데 쉽게는 [!INCLUDE[net_v45](~/includes/net-v45-md.md)] 관찰 되지 않은 예외에 대 한 기본 예외 동작을 변경 합니다. 관찰 되지 않은 예외를 여전히 발생 하지만 <xref:System.Threading.Tasks.TaskScheduler.UnobservedTaskException> 예외를 기본적으로 프로세스는 종료 되지 않습니다. 대신, 이벤트 처리기에서 예외를 관찰 하는 여부에 관계 없이 이벤트가 발생 한 후 예외가 런타임에서 처리 됩니다. 이 동작을 구성할 수 있습니다. 로 시작 합니다 [!INCLUDE[net_v45](~/includes/net-v45-md.md)], 구성 요소를 사용 하 여 동작으로 되돌리려면는 [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)] 프로세스를 종료 하 고:  
   

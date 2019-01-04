@@ -1,0 +1,4 @@
+
+> [!IMPORTANT]
+>  <span data-ttu-id="e5ee8-101">중간점 값을 반올림 하는 경우 반올림 알고리즘 같음 테스트를 수행 합니다.</span><span class="sxs-lookup"><span data-stu-id="e5ee8-101">When rounding midpoint values, the rounding algorithm performs an equality test.</span></span> <span data-ttu-id="e5ee8-102">이진 표현 및 정밀도 부동 소수점 형식에서의 문제 때문에 확장 메서드에서 반환한 값 예상 수 있습니다.</span><span class="sxs-lookup"><span data-stu-id="e5ee8-102">Because of problems of binary representation and precision in the floating-point format, the value returned by the method can be unexpected.</span></span> <span data-ttu-id="e5ee8-103">자세한 내용은 [“반올림 및 전체 자릿수”](xref:System.Math.Round%2A#rounding-and-precision)를 참조하세요.</span><span class="sxs-lookup"><span data-stu-id="e5ee8-103">For more information, see ["Rounding and precision"](xref:System.Math.Round%2A#rounding-and-precision).</span></span>
+

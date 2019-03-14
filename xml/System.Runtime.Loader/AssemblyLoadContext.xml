@@ -1,5 +1,5 @@
 <Type Name="AssemblyLoadContext" FullName="System.Runtime.Loader.AssemblyLoadContext">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="8ebdc67076b230b6f3fc37df9fe5903780b82006" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56772326" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6209379b4106b6c91c0c89b2b8a7511fc986490a" /><Meta Name="ms.sourcegitcommit" Value="67e8bb367eab32b26025454e7769040cfb1d71c4" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/09/2019" /><Meta Name="ms.locfileid" Value="57701360" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit AssemblyLoadContext extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Loader.AssemblyLoadContext" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class AssemblyLoadContext" />
@@ -71,6 +71,8 @@
  ]]></format>
     </remarks>
     <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/assemblyloadcontext.md">AssemblyLoadContext CoreCLR 디자인 문서</related>
+    <related type="Article" href="/en-us/dotnet/standard/assembly/unloadability-howto">.NET Core에서 디버그 어셈블리 unloadability 및 사용 방법</related>.
+    <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/unloadability.md">AssemblyLoadContext unloadability 디자인 문서</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -121,8 +123,8 @@
         <Parameter Name="isCollectible" Type="System.Boolean" Index="0" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="isCollectible">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="isCollectible">가비지 수집을 사용하도록 설정하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>가비지 수집 사용 여부를 나타내는 값을 사용하여 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -237,9 +239,16 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>이 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />가 수집 가능한지를 나타내는 값을 가져옵니다.</summary>
+        <value><see langword="true" /> 이 경우 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 이 고, 그렇지 않으면 수집 가능한 <see langword="false" />합니다. 생성자에서 값을 지정 하지 않으면이 값은 <see langword="false" />합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ 자세한 내용은 참조 <see href="/en-us/dotnet/standard/assembly/unloadability-howto">사용 하 여.NET Core에서 unloadability 어셈블리를 디버그 하는 방법을</see>합니다.
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -706,8 +715,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>이 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />의 언로드를 시작합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
++ AssemblyLoadContext만 언로드할 수 수집 가능한 경우.
++ 언로드 비동기적으로 수행 됩니다.
++ 언로드를 AssemblyLoadContext에 대 한 참조가 하는 동안 발생 하지 않습니다.
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">언로드가 허용되지 않습니다.</exception>
       </Docs>
     </Member>
     <Member MemberName="Unloading">

@@ -1,5 +1,5 @@
 <Type Name="StringLengthAttribute" FullName="System.ComponentModel.DataAnnotations.StringLengthAttribute">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="51d331bc16db945d74a534119894a67783c52523" /><Meta Name="ms.sourcegitcommit" Value="8e213bb5e6801f6e29861ba72664978ad00e34fa" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="02/18/2019" /><Meta Name="ms.locfileid" Value="56387771" /></Metadata><TypeSignature Language="C#" Value="public class StringLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="c5702fa8b42a49316d32fa07f8c2ec6567d686d5" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57936539" /></Metadata><TypeSignature Language="C#" Value="public class StringLengthAttribute : System.ComponentModel.DataAnnotations.ValidationAttribute" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit StringLengthAttribute extends System.ComponentModel.DataAnnotations.ValidationAttribute" />
   <TypeSignature Language="DocId" Value="T:System.ComponentModel.DataAnnotations.StringLengthAttribute" />
   <TypeSignature Language="VB.NET" Value="Public Class StringLengthAttribute&#xA;Inherits ValidationAttribute" />
@@ -38,9 +38,10 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- ASP.NET Dynamic Data 데이터 모델에서 CRUD (만들기, 읽기, 업데이트 및 삭제) 작업을 실행할 수 있습니다. 데이터 될 때 각 필드에 대 한 문자의 최소 및 최대 길이 지정할 수 있습니다 삽입 하거나 업데이트 합니다. 문자 데이터 형식에는 <xref:System.ComponentModel.DataAnnotations.StringLengthAttribute.MinimumLength%2A> 및 <xref:System.ComponentModel.DataAnnotations.StringLengthAttribute.MaximumLength%2A> 속성 문자열을 저장 하는 데 필요한 바이트의 최대 수를 식별 합니다.  
-  
-   
+ ASP.NET Dynamic Data 데이터 모델에서 CRUD (만들기, 읽기, 업데이트 및 삭제) 작업을 실행할 수 있습니다. 데이터 될 때 각 필드에 대 한 문자의 최소 및 최대 길이 지정할 수 있습니다 삽입 하거나 업데이트 합니다. 문자 데이터 형식에는 <xref:System.ComponentModel.DataAnnotations.StringLengthAttribute.MinimumLength%2A> 및 <xref:System.ComponentModel.DataAnnotations.StringLengthAttribute.MaximumLength%2A> 속성 문자열을 저장 하는 데 필요한 바이트의 최대 수를 식별 합니다.
+ 
+사용할 수 있습니다 [복합 서식 지정](~/docs/standard/base-types/composite-formatting.md) 오류 메시지의 자리 표시자: {0} ; 속성의 이름 {1} 는 최대 길이인; 및 {2} 최소 길이입니다.
+에 전달 되는 인수에 해당 하는 자리 표시자는 <xref:System.String.Format%2A?displayProperty=nameWithType> 런타임에 메서드.   
   
 ## Examples  
  다음 예에서는 필드의 문자 수를 제한 하는 방법을 보여 줍니다. 이 예제에서는 AdventureWorksLT 데이터베이스의 Products 테이블에서 ThumbnailPhotoFileName 필드와 작동합니다. 필드는 적용 하 여 제한 된 4 자는 <xref:System.ComponentModel.DataAnnotations.StringLengthAttribute> 제품 엔터티를 나타내는 partial 클래스에 특성입니다.  
@@ -59,6 +60,10 @@ public class ProductMetadata
     [StringLength(4, ErrorMessage = "The ThumbnailPhotoFileName value cannot exceed 4 characters. ")]  
     public object ThumbnailPhotoFileName;  
   
+    [ScaffoldColumn(true)]  
+    [StringLength(4, ErrorMessage = "The {0} value cannot exceed {1} characters. ")]  
+    public object PhotoFileName;  
+
 }  
 ```  
   
@@ -73,6 +78,10 @@ Public Class ProductMetadata
     <ScaffoldColumn(True)> _   
     <StringLength(4, ErrorMessage := "The ThumbnailPhotoFileName value cannot exceed 4 characters. ")> _   
     Public ThumbnailPhotoFileName As Object   
+  
+    <ScaffoldColumn(True)> _   
+    <StringLength(4, ErrorMessage := "The {0} value cannot exceed {1} characters. ")> _   
+    Public PhotoFileName As Object   
   
 End Class  
 ```  
@@ -138,7 +147,7 @@ End Class
       </Parameters>
       <Docs>
         <param name="name">유효성 검사 오류를 발생시킨 필드의 이름입니다.</param>
-        <summary>지정된 오류 메시지에 형식을 적용합니다.</summary>
+        <summary>지정된 오류 메시지에 서식을 적용합니다.</summary>
         <returns>형식이 지정된 오류 메시지입니다.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maximumLength" />가 음수입니다.  

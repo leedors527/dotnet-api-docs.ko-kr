@@ -1,5 +1,5 @@
 <Type Name="XslTransform" FullName="System.Xml.Xsl.XslTransform">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="4afbddceffc87860ef4d77470b0756b765447efc" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58736735" /></Metadata><TypeSignature Language="C#" Value="public sealed class XslTransform" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="56c2b4ff793499c653610da3b24ae254bfe9e9b3" /><Meta Name="ms.sourcegitcommit" Value="3efce15f3841385ee3ba24bd71ff0c0cf9a47815" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="04/03/2019" /><Meta Name="ms.locfileid" Value="58875374" /></Metadata><TypeSignature Language="C#" Value="public sealed class XslTransform" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit XslTransform extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Xml.Xsl.XslTransform" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class XslTransform" />
@@ -85,13 +85,52 @@
   
 -   합니다 `msxsl:script` 요소에 포함 해야 합니다는 `implements-prefix` 스크립트 블록에 연결 된 네임 스페이스를 나타내는 접두사를 포함 하는 특성입니다. 이 네임 스페이스는 스타일 시트 내에서 정의 되어야 합니다. 스타일 시트는 네임 스페이스에 의해 그룹화 되는 여러 스크립트 블록을 포함할 수 있습니다. 동일한 네임 스페이스 내에서 여러 언어를 사용 하 여 스크립트 블록 수는 없습니다. 스크립트 블록이 동일한 네임 스페이스 내에 제공 된 스크립트 블록에서 다른 스크립트 블록에 정의 된 함수를 호출할 수 있습니다. 규칙 및 스크립트 언어의 구문에 따라 스크립트 블록의 내용을 구문 분석 됩니다 (제공한는 `language` 특성). 예를 들어 C# 스크립트 블록을 설치한 경우 주석 접두사로 옵니다는 `//` 문자입니다. 설명에는 유효한 XML 콘텐츠 여야 합니다.  
   
- `Note` CDATA 섹션의 스크립트 블록을 래핑하는 것이 좋습니다.  
+> [!NOTE]
+> CDATA 섹션의 스크립트 블록을 래핑하는 것이 좋습니다.
   
-```  
-<msxsl:script implements-prefix='xy' language='C#'>  
-  <![CDATA[  
-  // Add code here.  
-  ]]]></format>
+ [!INCLUDE [xsltransform-script](~/includes/xsltransform-script.md)] 
+   
+ 함수는 `msxsl:script` 요소 내에서 선언할 수 있습니다. 다음 표에서는 기본적으로 지원되는 네임스페이스를 보여 줍니다.  
+  
+|지원 되는 네임 스페이스|설명|  
+|--------------------------|-----------------|  
+|`System`|시스템 클래스입니다.|  
+|`System.Collection`|Collection 클래스|  
+|`System.Text`|텍스트 처리 클래스입니다.|  
+|`System.Xml`|핵심 XML 클래스|  
+|`System.Xml.Xsl`|XSLT 클래스|  
+|`System.Xml.XPath`|XPath(XML Path Language) 클래스|  
+  
+ 제공 된 인수 및 반환 값 스크립트 함수에 의해 정의 아래에 나열 된 World Wide Web Consortium (W3C) 형식 중 하나 여야 합니다. 다음 표에서 XPath 또는 XSLT는 W3C 형식 간의 매핑을 설명 하 고 해당 하는.NET Framework 클래스입니다.  
+  
+|W3C 형식|해당.NET 클래스|  
+|--------------|---------------------------|  
+|문자열 (XPath)|`System.String`|  
+|부울 값 (XPath)|`System.Boolean`|  
+|수 (XPath)|`System.Double`|  
+|결과 트리 조각 (XSLT)|`System.Xml.XPath.XPathNavigator`|  
+|노드 집합 (XPath)|`System.Xml.XPath.XPathNodeIterator`|  
+  
+ 스크립트 함수가 다음 숫자 유형 중 하나를 사용하는 경우: 이러한 형식 강제 변환 된 Int16, UInt16, Int32, UInt32, Int64, UInt64, Single 또는 Decimal, W3C XPath 형식의 숫자에 매핑되는 Double입니다.  
+  
+ 예외가 발생 하는 함수가 호출 될 때 필요한 형식 중 하나를 인수 결과 변환할 수 없습니다.  
+  
+> [!NOTE]
+>  `msxsl:script` 및 `msxsl:node-list` 에서 유일한 함수는 `urn:schemas-microsoft-com:xslt` 에서 지원 되는 네임 스페이스는 <xref:System.Xml.Xsl.XslTransform> 클래스입니다.  
+  
+ <xref:System.Xml.Xsl.XslTransform> 공용 언어 런타임 (CLR) 코드 확장 메커니즘으로 활용할 수가 있습니다. 클래스의 인스턴스를 전달 하 여 이렇게는 <xref:System.Xml.Xsl.XslTransform> 클래스 및 XSLT 스타일 시트 내에서 공용 메서드를 호출 합니다. 정의 된 메서드는 `params` 키워드 전달할 매개 변수 개수는 지정 되지 않은 허용 하는이 시나리오에서는 올바르게 작동 하지 않습니다. 참조 [params](~/docs/csharp/language-reference/keywords/params.md) 대 한 자세한 내용은 합니다.  
+  
+ 자세한 내용은 참조 [XslTransform 클래스를 사용 하 여 XSLT 변환을](~/docs/standard/data/xml/xslt-transformations-with-the-xsltransform-class.md)입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 지정된 된 XML 문서를 변환 하 고 결과를 콘솔에 출력 합니다.  
+  
+ [!code-csharp[Classic WebData XslTransform Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XslTransform Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XslTransform Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XslTransform Example/VB/source.vb#1)]  
+  
+ ]]></format>
     </remarks>
     <threadsafe><see cref="T:System.Xml.Xsl.XslTransform" /> 개체는 변환 작업에 대 한 유일한 스레드로부터 안전 합니다. 다른 작업은 스레드로부터 안전한 되도록 보장 되지 않습니다. 로드 작업 중 다른 방법이 없습니다 개체에서 호출 되는 확인 해야 합니다.</threadsafe>
   </Docs>

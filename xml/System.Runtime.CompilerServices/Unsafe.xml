@@ -1,5 +1,5 @@
 <Type Name="Unsafe" FullName="System.Runtime.CompilerServices.Unsafe">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="25f6f9e753a0c47cbfccc2147725a47353028eab" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58703992" /></Metadata><TypeSignature Language="C#" Value="public static class Unsafe" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="bfce2be5c17299e8735ea4a200426489fb8d145b" /><Meta Name="ms.sourcegitcommit" Value="76fb6534b56e2b5f6aaaac2150d71a43c9133dbd" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="04/22/2019" /><Meta Name="ms.locfileid" Value="59893415" /></Metadata><TypeSignature Language="C#" Value="public static class Unsafe" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Unsafe extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.CompilerServices.Unsafe" />
   <TypeSignature Language="VB.NET" Value="Public Class Unsafe" />
@@ -1046,11 +1046,38 @@
         <Parameter Name="box" Type="System.Object" Index="0" FrameworkAlternate="dotnet-plat-ext-3.0" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="box">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">되도록 boxed 형식입니다.</typeparam>
+        <param name="box">unboxing할 값입니다.</param>
+        <summary>boxed 값에 대해 <see langword="mutable ref" />를 반환합니다.</summary>
+        <returns>boxed 값 <paramref name="box" />에 대해 <see langword="mutable ref" />를 반환합니다.</returns>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+합니다 `Unbox<T>` 메서드는 단순히 IL에 대 한 래퍼 [unbox](xref:System.Reflection.Emit.OpCodes.Unbox) 명령입니다. 성능 최적화로 두는 것이 유용합니다. 때마다 사용 하는 API는 <xref:System.Object> 해야 같은 값 형식의 다른 값을 사용 하 여 반복적으로 호출할 수 상자 개체 다시 사용할 수 있습니다 하나 생성 될 때마다 새 대신 합니다.
+
+`Unbox<T>` 메서드에 중요 한 사용 제약 조건이 언어 컴파일러에서 적용 되지 않습니다 및 호출자의 책임입니다. IL `unbox` 제어 가변성 관리 되는 포인터를 반환 하는 명령입니다. 때문에.NET 및.NET 언어 컴파일러에서는이 제약 조건을 나타낼 수 없습니다는 `Unbox<T>` 메서드는 보통의 길이 변경할 수 `ref T`입니다. 그러나 개발자 **안** 있지 않는 한 특정는 반환 된 참조를 변경할 `T` 변경할 수 있는 구조체 형식입니다. 예를 들어, 때문에 같은 기본 숫자 형식을 <xref:System.Int32> 변경할 수 있는 구조체 형식이 아닌 다음 코드는 지원 되지 않습니다.
+
+```csharp
+Unsafe.Box<int>(obj) = 30;
+```
+
+반대로, 같이 <xref:System.Drawing.Point?<displayProperty=nameWithType> 공용 속성 setter 사용 하 여 변경할 수 있는 구조체 이므로 다음 코드는:
+
+```csharp
+Unsafe.Unbox<System.Drawing.Point>(obj).X = 50;
+```
+
+자세한 내용은 III.1.8.1.2.2 섹션을 참조 하세요. ("제어 된 muttability 관리 되는 포인터") 및 III.4.32 ("unbox-boxed 값 형식을 원시 형식으로 변환할")에서 [ECMA-335: Common Language Infrastructure (CLI) 파티션으로 있습니까 VI](https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf)합니다.
+
+         ]]></format>
+         </remarks>       
+        <exception cref="T:System.NullReferenceException"><paramref name="box" />가 <see langword="null" />이며 <typeparamref name="T" />는 nullable이 아닌 값 형식입니다.</exception>
+         <exception cref="T:System.InvalidCastException"><paramref name="box" />가 boxed 값 형식이 아닙니다.
+         
+또는
+
+<paramref name="box" />가 boxed <typeparamref name="T" />가 아닙니다.</exception>
+        <exception cref="T:System.TypeLoadException"><typeparamref name="T" />을 찾을 수 없습니다.</exception>
       </Docs>
     </Member>
     <Member MemberName="Write&lt;T&gt;">

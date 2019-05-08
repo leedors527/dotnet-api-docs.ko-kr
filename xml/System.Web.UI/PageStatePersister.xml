@@ -1,0 +1,331 @@
+<Type Name="PageStatePersister" FullName="System.Web.UI.PageStatePersister">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="221c40c806b2709ceb47c005e59947a1f6d712ee" /><Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="11/17/2018" /><Meta Name="ms.locfileid" Value="51914255" /></Metadata><TypeSignature Language="C#" Value="public abstract class PageStatePersister" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit PageStatePersister extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Web.UI.PageStatePersister" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class PageStatePersister" />
+  <TypeSignature Language="C++ CLI" Value="public ref class PageStatePersister abstract" />
+  <TypeSignature Language="F#" Value="type PageStatePersister = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>ASP.NET 뷰 상태 유지 메커니즘의 기본 기능을 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ HTTP 요청 및 응답을 기본적으로 상태 비저장 이며 HTTP 요청 간에 상태 정보를 유지 하려면 ASP.NET 서버 페이지를 저장할 수 <xref:System.Web.UI.Page> 상태입니다. 뷰 상태 라고 하는이 상태에서는 페이지 및 컨트롤 설정 및 데이터 페이지 및 컨트롤 표시 처럼 동일 하다는 사용자 확인 하 고 서버에 마지막 라운드트립에서에서 상호 작용할 수 있도록 구성 됩니다. 동일한 페이지에 대 한 후속 요청 간에 뷰 상태를 저장 하는 여러 메커니즘 존재 합니다. 추상 <xref:System.Web.UI.PageStatePersister> 클래스는 이러한 상태 정보 스토리지 메커니즘에 대한 기본 클래스를 나타냅니다.  
+  
+ ASP.NET의 기본 뷰 상태 유지 메커니즘이 숨겨진된 HTML 요소를 Base64로 인코딩된 문자열로 상태 정보를 유지 하는 것 (사용 하 여 요소를 `type` 특성이로 설정 `"hidden"`) 페이지. ASP.NET 페이지를 사용 하 여는 <xref:System.Web.UI.HiddenFieldPageStatePersister> 이 작업을 수행 하는 개체를 사용 하 여 작동는 <xref:System.Web.UI.IStateFormatter> 인스턴스를 직렬화 및 역직렬화 개체 상태 정보를 합니다. 또는 사용자 페이지의 뷰 상태를 저장할 수 있습니다 합니다 <xref:System.Web.HttpContext.Session%2A> 사용 하 여 서버 개체는 <xref:System.Web.UI.SessionPageStatePersister> 제한 된 대역폭 및 리소스를 사용 하 여 모바일 클라이언트에 대 한 클래스입니다. 경우에 따라 보기 상태 지 속성을 완전히 비활성화할 수도 있습니다. 이 작업을 수행 하는 경우 결과 경우에 따라 페이지 및 컨트롤 상태 지 속성을 사용 하는 올바르게 작동 하지 않을 합니다. 페이지 상태 관리 및 보기 상태에 대 한 자세한 내용은 참조 하세요. [ASP.NET 상태 관리 개요](https://msdn.microsoft.com/library/0218d965-5d30-445b-b6a6-8870e70e63ce(v=vs.100))합니다.  
+  
+ 컨트롤을 작성 하는 경우 컨트롤에 대 한 상태 정보를 저장할 수 있습니다 합니다 <xref:System.Web.UI.Control.ViewState%2A> 사전에는 <xref:System.Web.UI.StateBag> 개체입니다. 개발자는 컨트롤 상태를 통해 검색 된 <xref:System.Web.UI.PageStatePersister.ControlState%2A> 속성입니다. 키와 값을 할당 합니다 <xref:System.Web.UI.Control.ViewState%2A> 속성 및 <xref:System.Web.UI.Page> 개체가 요청 간에 상태 정보를 serialize 합니다. 컨트롤에서 처리 하는 사용자 지정 상태를 수행 하려면 재정의 <xref:System.Web.UI.Control.LoadViewState%2A> 고 <xref:System.Web.UI.Control.SaveViewState%2A> 메서드. 이 사전에 저장 된 모든 상태 정보 페이지 개발자가 뷰 상태를 비활성화 하는 경우 손실 됩니다. 이 문제를 줄이려면, asp.net 버전 2.0 컨트롤 상태 라는 별도 개체에서 중요 한 상태 정보를 저장할 수 있습니다. 컨트롤 상태 개체는 페이지 개발자가 뷰 상태를 비활성화 하는 경우에 영향이 없습니다. 컨트롤의 재정의 필요 컨트롤 상태 개체에 상태 정보를 저장 합니다 <xref:System.Web.UI.Control.LoadControlState%2A> 및 <xref:System.Web.UI.Control.SaveControlState%2A> 메서드 및 컨트롤에서 상태 정보를 저장할 등록 하는 컨트롤이 초기화 될 때마다 상태를 제어 합니다. 재정의 하 여 컨트롤 상태를 사용 하기 위한 컨트롤을 등록할 수 있습니다 합니다 <xref:System.Web.UI.Control.OnInit%2A> 메서드를 호출 합니다 <xref:System.Web.UI.Page.RegisterRequiresControlState%2A> 메서드. 사용에 대 한 자세한 내용은 합니다 <xref:System.Web.UI.Control.ViewState%2A> 속성 및 컨트롤 상태 컨트롤을 개발할 때 참조 [사용자 지정 ASP.NET 서버 컨트롤 개발](https://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef)합니다.  
+  
+ 뷰 상태를 유지 하려면 기존 지원할 수 없는 클라이언트 뷰 상태 유지 메커니즘, 확장할 수 있습니다는 <xref:System.Web.UI.PageStatePersister> 고유한 상태 지 속성 메서드를 소개 하기 위해 클래스 및 페이지 어댑터를 사용 하 여 ASP.NET 애플리케이션을 구성 하려면 페이지가 제공 되는 클라이언트의 유형에 따라 다른 뷰 상태를 유지 하는 메커니즘을 사용 하도록 파생 된 클래스는 <xref:System.Web.UI.PageStatePersister> 클래스는 추상 재정의 해야 합니다 <xref:System.Web.UI.PageStatePersister.Save%2A> 지 속성 매체에서 뷰 상태 및 컨트롤 상태를 저장 하 고 재정의 하는 메서드는 <xref:System.Web.UI.PageStatePersister.Load%2A> 추출 하는 방법입니다. 뷰 상태와 컨트롤 상태를 문자열로 serialize 해야 하는 경우 사용할 수 있습니다 합니다 <xref:System.Web.UI.IStateFormatter> 를 사용 하 여 액세스 되는 개체는 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> 속성입니다. 효율적으로 직렬화 하 고 Base64로 인코딩된 문자열로 개체 상태 정보를 deserialize 합니다. 재정의할 수도 있습니다는 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> 속성을 사용자 고유의 개체 상태 serialization 메커니즘을 제공 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 만드는 방법을 보여 줍니다는 <xref:System.Web.UI.PageStatePersister> 웹 서버의 뷰 및 컨트롤 상태를 저장 하는 개체입니다. 합니다 `StreamPageStatePersister` 재정의 하는 방법에 설명 합니다 <xref:System.Web.UI.PageStatePersister.Load%2A> 및 <xref:System.Web.UI.PageStatePersister.Save%2A> 상태 정보를 추출 하 고 보기를 저장 하는 메서드. 상태 지 속성 메커니즘 적응형 렌더링 및 클라이언트 기능에 관련 되어 있으므로 합니다 `MyPageAdapter` 클래스를 지정을 활성화를 `StreamPageStatePersister` ASP.NET 애플리케이션에 대 한 합니다. 브라우저 기능 (.browser) 파일로 사용할 수 있도록 제공 됩니다 마지막으로 `MyPageAdapter` 어댑터 (이 경우 기본 웹 브라우저)에서 클라이언트의 특정 클래스에 대 한 합니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#1)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#1)]  
+  
+ 다음 코드 예제에서는 만드는 방법을 보여 줍니다.는 <xref:System.Web.UI.Adapters.PageAdapter> 클래스의 인스턴스를 반환 하는 `StreamPageStatePersister`에 ASP.NET 웹 페이지 보기 및 컨트롤 상태를 유지 하는 데 사용 됩니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#5](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/mypageadapter.cs#5)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/mypageadapter.vb#5)]  
+  
+ 이 두 클래스를를 사용할 수 있는 샘플을 실행 하려면 다음 컴파일러 명령줄을 사용 하 여 어셈블리로 컴파일하십시오. ASP.NET 애플리케이션 루트 아래의 \Bin 디렉터리에 컴파일된 어셈블리 인지 확인 합니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#6](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/mypageadapter.cs#6)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/mypageadapter.vb#6)]  
+  
+ 마지막으로 사용 하도록 설정 된 `MyPageAdapter` 어댑터를 ASP.NET 애플리케이션 루트 아래에 있는 브라우저 라는 디렉터리를 만들고 구성 정보를 사용 하 여.browser 파일을 포함 해야 합니다. `<refid>` 요소 구성 파일에서 구성을 Default.browser 구성 파일에 기본 브라우저에 대 한 지정 된 값을 재정의 함을 나타냅니다. 이 예제에서는 `MyPageAdapter` (일반적으로 어댑터가 사용 된 위치) ASP.NET 웹 페이지에 사용 됩니다.  
+  
+```  
+<browsers>  
+    <browser refid="Default" >  
+        <controlAdapters>  
+            <adapter   
+                controlType="System.Web.UI.Page"                              
+                adapterType="Samples.AspNet.CS.MyPageAdapter" />  
+        </controlAdapters>  
+    </browser>  
+</browsers>  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Web.UI.ObjectStateFormatter" />
+    <altmember cref="T:System.Web.UI.LosFormatter" />
+    <altmember cref="T:System.Web.UI.Pair" />
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected PageStatePersister (System.Web.UI.Page page);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class System.Web.UI.Page page) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.PageStatePersister.#ctor(System.Web.UI.Page)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; PageStatePersister(System::Web::UI::Page ^ page);" />
+      <MemberSignature Language="F#" Value="new System.Web.UI.PageStatePersister : System.Web.UI.Page -&gt; System.Web.UI.PageStatePersister" Usage="new System.Web.UI.PageStatePersister page" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="page" Type="System.Web.UI.Page" />
+      </Parameters>
+      <Docs>
+        <param name="page">뷰 상태 유지 메커니즘이 작성된 대상 <see cref="T:System.Web.UI.Page" />입니다.</param>
+        <summary><see cref="T:System.Web.UI.PageStatePersister" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="page" /> 매개 변수가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ControlState">
+      <MemberSignature Language="C#" Value="public object ControlState { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object ControlState" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.PageStatePersister.ControlState" />
+      <MemberSignature Language="VB.NET" Value="Public Property ControlState As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ ControlState { System::Object ^ get(); void set(System::Object ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ControlState : obj with get, set" Usage="System.Web.UI.PageStatePersister.ControlState" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Web.UI.Page" /> 개체에 포함된 컨트롤에서 웹 서버에 대한 HTTP 요청 간에 유지하기 위해 사용하는 데이터를 나타내는 개체를 가져오거나 설정합니다.</summary>
+        <value>뷰 상태 데이터가 들어 있는 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 컨트롤 상태는 중요 한 보기 상태 데이터를 웹 서버 컨트롤 필요가 함수 및 기본 보기 상태 정보를 별도 개체에 포함 된 구성 개체입니다. 컨트롤 상태 데이터의 뷰 상태를 비활성화 하는 경우 영향을 받지 않습니다는 <xref:System.Web.UI.Page> 수준 수 있지만 사용 하도록 추가로 구현 단계가 필요 합니다. 사용 하 여 대 한 자세한 내용은 합니다 <xref:System.Web.UI.Control.ViewState%2A> 속성 및 컨트롤 상태 컨트롤을 개발할 때 참조 [사용자 지정 ASP.NET 서버 컨트롤 개발](https://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 클래스에서 파생 되는 방법을 보여 줍니다.는 <xref:System.Web.UI.PageStatePersister> 초기화 클래스는 <xref:System.Web.UI.PageStatePersister.ControlState%2A> 속성입니다. 이 예제에서는 합니다 <xref:System.Web.UI.PageStatePersister.ControlState%2A> 속성에 할당 된를 <xref:System.Web.UI.Pair.Second> 필드를 <xref:System.Web.UI.Pair> 개체를 사용 하 여 serialize를 <xref:System.Web.UI.ObjectStateFormatter> 클래스입니다. 경우는 <xref:System.Web.UI.PageStatePersister.Load%2A> 메서드를 호출 합니다 <xref:System.Web.UI.ObjectStateFormatter> 클래스 뷰 상태 및 컨트롤 상태 정보를 deserialize 하는 데 사용 됩니다 및 <xref:System.Web.UI.PageStatePersister.ControlState%2A> 속성은 결과에서 초기화 됩니다 <xref:System.Web.UI.Pair> 개체의 <xref:System.Web.UI.Pair.Second> 필드입니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.UI.PageStatePersister> 클래스입니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Load">
+      <MemberSignature Language="C#" Value="public abstract void Load ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Load() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.PageStatePersister.Load" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub Load ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void Load();" />
+      <MemberSignature Language="F#" Value="abstract member Load : unit -&gt; unit" Usage="pageStatePersister.Load " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Web.UI.Page" /> 개체에서 해당 컨트롤 계층을 초기화할 때 유지된 상태 정보를 deserialize하고 로드하기 위해 파생된 클래스에서 재정의합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스는 <xref:System.Web.UI.PageStatePersister> 클래스 구현 합니다 <xref:System.Web.UI.PageStatePersister.Load%2A> 초기화 하는 방법을 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 및 <xref:System.Web.UI.PageStatePersister.ControlState%2A> 일부 지속형된 형식에서 속성입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 클래스에서 파생 되는 방법을 보여 줍니다.는 <xref:System.Web.UI.PageStatePersister> 구현 클래스는 <xref:System.Web.UI.PageStatePersister.Load%2A> 지 속성 매체에서 뷰 상태를 로드 하는 방법입니다. `StreamPageStatePersister` 스트림에서 데이터를 판독 하 려 합니다. 사용 하 여는 <xref:System.Web.UI.IStateFormatter> 뷰 상태 데이터를 deserialize 하 고 초기화 하는 개체를 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 속성 및 <xref:System.Web.UI.PageStatePersister.ControlState%2A> 속성 페이지를 사용 하 여 컨트롤을 초기화 합니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.UI.PageStatePersister> 클래스입니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Page">
+      <MemberSignature Language="C#" Value="protected System.Web.UI.Page Page { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.UI.Page Page" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.PageStatePersister.Page" />
+      <MemberSignature Language="VB.NET" Value="Protected Property Page As Page" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Web::UI::Page ^ Page { System::Web::UI::Page ^ get(); void set(System::Web::UI::Page ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Page : System.Web.UI.Page with get, set" Usage="System.Web.UI.PageStatePersister.Page" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Web.UI.Page</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>뷰 상태 유지 메커니즘이 작성된 대상 <see cref="T:System.Web.UI.Page" /> 개체를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Web.UI.Page" />가 연결된 <see cref="T:System.Web.UI.PageStatePersister" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용할 수는 <xref:System.Web.UI.PageStatePersister.Page%2A> 속성에 현재 액세스 <xref:System.Web.HttpContext> 개체입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public abstract void Save ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Save() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.PageStatePersister.Save" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub Save ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void Save();" />
+      <MemberSignature Language="F#" Value="abstract member Save : unit -&gt; unit" Usage="pageStatePersister.Save " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Web.UI.Page" /> 개체를 메모리에서 언로드할 때 유지된 상태 정보를 serialize하기 위해 파생된 클래스에서 재정의합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스는 <xref:System.Web.UI.PageStatePersister> 클래스 구현 합니다 <xref:System.Web.UI.PageStatePersister.Save%2A> 콘텐츠를 유지 하는 방법을 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 및 <xref:System.Web.UI.PageStatePersister.ControlState%2A> 미디어에는 속성입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 클래스에서 파생 되는 방법을 보여 줍니다.는 <xref:System.Web.UI.PageStatePersister> 구현 클래스는 <xref:System.Web.UI.PageStatePersister.Save%2A> 지 속성 매체에 뷰 상태를 유지 하는 방법입니다. `StreamPageStatePersister` 사용 하는 <xref:System.Web.UI.IStateFormatter> 의 내용을 serialize 할 개체를 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 속성 및 <xref:System.Web.UI.PageStatePersister.ControlState%2A> 속성입니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.UI.PageStatePersister> 클래스입니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StateFormatter">
+      <MemberSignature Language="C#" Value="protected System.Web.UI.IStateFormatter StateFormatter { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.UI.IStateFormatter StateFormatter" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.PageStatePersister.StateFormatter" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property StateFormatter As IStateFormatter" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Web::UI::IStateFormatter ^ StateFormatter { System::Web::UI::IStateFormatter ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.StateFormatter : System.Web.UI.IStateFormatter" Usage="System.Web.UI.PageStatePersister.StateFormatter" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.UI.IStateFormatter</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Web.UI.IStateFormatter" /> 및 <see cref="P:System.Web.UI.PageStatePersister.ViewState" /> 메서드를 호출하는 동안 <see cref="P:System.Web.UI.PageStatePersister.ControlState" /> 및 <see cref="M:System.Web.UI.PageStatePersister.Save" /> 속성에 포함된 상태 정보를 serialize 및 deserialize하는 데 사용되는 <see cref="M:System.Web.UI.PageStatePersister.Load" /> 개체를 가져옵니다.</summary>
+        <value>개체 상태를 serialize 및 deserialize하는 데 사용되는 <see cref="T:System.Web.UI.IStateFormatter" />의 인스턴스입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 재정의할 수 있습니다는 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> 속성 고유한 보기 상태 포맷터를 제공 해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 클래스에서 파생 되는 방법을 보여 줍니다.는 <xref:System.Web.UI.PageStatePersister> 액세스 클래스를 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> 검색할 속성은 <xref:System.Web.UI.ObjectStateFormatter> 기본 구현인 개체의는 <xref:System.Web.UI.IStateFormatter> 보기 직렬화 인터페이스 스트림에 상태 및 컨트롤 상태입니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.UI.PageStatePersister> 클래스입니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ViewState">
+      <MemberSignature Language="C#" Value="public object ViewState { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object ViewState" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.PageStatePersister.ViewState" />
+      <MemberSignature Language="VB.NET" Value="Public Property ViewState As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ ViewState { System::Object ^ get(); void set(System::Object ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ViewState : obj with get, set" Usage="System.Web.UI.PageStatePersister.ViewState" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Web.UI.Page" /> 개체에 포함된 컨트롤에서 웹 서버에 대한 HTTP 요청 간에 유지하기 위해 사용하는 데이터를 나타내는 개체를 가져오거나 설정합니다.</summary>
+        <value>뷰 상태 데이터가 들어 있는 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 뷰 상태는 사전 웹 서버 컨트롤 함수 및 렌더링 해야 하는 상태 데이터입니다. 컨트롤 개발자가 일반적으로 사용 하 여 뷰 상태 개체에 액세스 합니다 <xref:System.Web.UI.Control.ViewState%2A> 속성입니다. 뷰 상태를 비활성화할 때 보기 상태는 영향을 받지는 <xref:System.Web.UI.Page> 수준 및 결과적으로 컨트롤 수에서 올바르게 작동 하지 이러한 시나리오입니다. 사용 하 여 대 한 자세한 내용은 <xref:System.Web.UI.Control.ViewState%2A> 컨트롤을 개발할 때 상태를 제어 하 고, 참조 [사용자 지정 ASP.NET 서버 컨트롤 개발](https://msdn.microsoft.com/library/fbe26c16-cff4-4089-b3dd-877411f0c0ef)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 클래스에서 파생 되는 방법을 보여 줍니다.는 <xref:System.Web.UI.PageStatePersister> 초기화 클래스는 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 속성입니다. 이 예제에서는 합니다 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 속성에 할당 된를 <xref:System.Web.UI.Pair.First> 필드를 <xref:System.Web.UI.Pair> 개체를 사용 하 여 serialize를 <xref:System.Web.UI.ObjectStateFormatter> 인스턴스인 개체의를 <xref:System.Web.UI.IStateFormatter> 인터페이스. 경우는 <xref:System.Web.UI.PageStatePersister.Load%2A> 메서드를 호출 합니다 <xref:System.Web.UI.ObjectStateFormatter> 인터페이스 뷰 상태 정보를 deserialize 하는 데 사용 됩니다 및 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 속성은 결과에서 초기화 <xref:System.Web.UI.Pair> 개체의 <xref:System.Web.UI.Pair.First> 필드. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.UI.PageStatePersister> 클래스입니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

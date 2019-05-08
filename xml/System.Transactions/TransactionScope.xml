@@ -1,0 +1,809 @@
+<Type Name="TransactionScope" FullName="System.Transactions.TransactionScope">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="9730e601d83935b655e6cafb6aa55bdad57e44c0" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58743673" /></Metadata><TypeSignature Language="C#" Value="public sealed class TransactionScope : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit TransactionScope extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Transactions.TransactionScope" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class TransactionScope&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class TransactionScope sealed : IDisposable" />
+  <TypeSignature Language="F#" Value="type TransactionScope = class&#xA;    interface IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Transactions</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Transactions.Local</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>트랜잭션 코드 블록을 만듭니다. 이 클래스는 상속될 수 없습니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Transactions> 인프라가 모두 명시적 프로그래밍 모델을 기반으로 합니다 <xref:System.Transactions.Transaction> 사용 하는 암시적 프로그래밍 모델 뿐만 아니라 클래스는 <xref:System.Transactions.TransactionScope> 트랜잭션을 관리 하는 자동으로 인프라에서 클래스입니다.  
+  
+> [!IMPORTANT]
+>  사용 하 여 암시적 트랜잭션을 만드는 것이 좋습니다는 <xref:System.Transactions.TransactionScope> 클래스에 앰비언트 트랜잭션 컨텍스트가 자동으로 관리 되도록 합니다. 또한 사용 해야 합니다 <xref:System.Transactions.TransactionScope> 및 <xref:System.Transactions.DependentTransaction> 여러 함수 호출이 나 여러 스레드 호출에서 동일한 트랜잭션의 사용을 해야 하는 응용 프로그램에 대 한 클래스입니다. 이 모델에 대 한 자세한 내용은 참조는 [구현 하는 암시적 트랜잭션을 사용 하 여 트랜잭션 범위](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md) 항목입니다. 트랜잭션 응용 프로그램 작성에 대 한 자세한 내용은 참조 하세요. [쓰기는 트랜잭션 응용 프로그램](~/docs/framework/data/transactions/writing-a-transactional-application.md)합니다.  
+  
+ 인스턴스화 시를 <xref:System.Transactions.TransactionScope> 여는 `new` 문에서 트랜잭션 관리자에 참여할 트랜잭션을 결정 합니다. 일단 결정되면 범위는 항상 해당 트랜잭션에 참여합니다. 앰비언트 트랜잭션이 있는지 여부와 생성자에 있는 `TransactionScopeOption` 매개 변수의 값에 따라 참여할 트랜잭션이 결정됩니다.  앰비언트 트랜잭션은 매우 코드에서 실행 되는 트랜잭션입니다. <xref:System.Transactions.Transaction.Current%2A?displayProperty=nameWithType> 클래스의 정적 <xref:System.Transactions.Transaction> 속성을 호출하여 앰비언트 트랜잭션에 대한 참조를 가져올 수 있습니다. 이 매개 변수를 사용 하는 방법에 대 한 자세한 내용은 "트랜잭션 흐름 관리" 섹션을 참조 합니다 [구현 하는 암시적 트랜잭션을 사용 하 여 트랜잭션 범위](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md) 항목입니다.  
+  
+ 트랜잭션 범위 내에서 예외가 발생 하는 경우 (즉, 초기화 간의 <xref:System.Transactions.TransactionScope> 개체와의 호출을 해당 <xref:System.Transactions.TransactionScope.Dispose%2A> 메서드), 범위 참여 하는 트랜잭션이 진행을 허용 합니다. 트랜잭션 범위 내에서 예외가 발생할 경우 참여 하는 트랜잭션이 롤백됩니다.  
+  
+ 트랜잭션에서 수행 하려는 응용 프로그램에 모든 작업이 완료 될 때 호출 해야 합니다는 <xref:System.Transactions.TransactionScope.Complete%2A> 메서드는 트랜잭션 커밋이 허용 되었음을 해당 트랜잭션 관리자에 게 알리는를 한 번만 합니다. 이 메서드를 호출 하지 못하면 트랜잭션을 중단 합니다.  
+  
+ 에 대 한 호출을 <xref:System.Transactions.TransactionScope.Dispose%2A> 메서드 트랜잭션 범위의 끝을 표시 합니다. 이 메서드를 호출한 후에 발생하는 예외는 트랜잭션에 영향을 주지 않습니다.  
+  
+ 값을 수정 하는 경우 <xref:System.Transactions.Transaction.Current%2A> 범위 내에서 예외가 throw 됩니다 때 <xref:System.Transactions.TransactionScope.Dispose%2A> 라고 합니다. 그러나 범위 끝 이전 값이 복원 됩니다. 또한 호출 하는 경우 <xref:System.Transactions.TransactionScope.Dispose%2A> 에서 <xref:System.Transactions.Transaction.Current%2A> 트랜잭션을 생성 하는 트랜잭션 범위 내에서 범위의 끝에서 트랜잭션이 중단 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법에 설명 합니다 <xref:System.Transactions.TransactionScope> 트랜잭션에 참여 하는 코드 블록을 정의 하는 클래스입니다.  
+  
+ [!code-csharp[TransactionScope#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
+ [!code-vb[TransactionScope#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>이 형식은 스레드로부터 안전합니다.</threadsafe>
+    <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자를 만듭니다 새 트랜잭션 범위가 트랜잭션 범위 옵션을 사용 하 여 같음 <xref:System.Transactions.TransactionScopeOption.Required>합니다. 즉, 트랜잭션이 필요 새 범위에서 앰비언트 트랜잭션이 이미 있을 경우 사용 됩니다. 그렇지 않으면 범위에 진입하기 전에 새 트랜잭션을 만듭니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.Transaction transactionToUse);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Transactions.Transaction transactionToUse) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.Transaction)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (transactionToUse As Transaction)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::Transaction ^ transactionToUse);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.Transaction transaction);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Transactions.Transaction transaction) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::Transaction ^ transaction);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.Transaction)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.Transaction -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope transaction" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.Transaction -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope transaction" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="transactionToUse" Type="System.Transactions.Transaction" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="transaction" Type="System.Transactions.Transaction" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="transactionToUse">범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 앰비언트 트랜잭션으로 설정할 트랜잭션입니다.</param>
+        <param name="transaction">범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 앰비언트 트랜잭션으로 설정할 트랜잭션입니다.</param>
+        <summary><see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화하고 지정된 트랜잭션을 앰비언트 트랜잭션으로 설정하여 범위에서 수행된 트랜잭션 작업에 이 트랜잭션을 사용합니다.</summary>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.Transaction transactionToUse, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Transactions.Transaction transactionToUse, valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.Transaction,System.Transactions.TransactionScopeAsyncFlowOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (transactionToUse As Transaction, asyncFlowOption As TransactionScopeAsyncFlowOption)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::Transaction ^ transactionToUse, System::Transactions::TransactionScopeAsyncFlowOption asyncFlowOption);" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.Transaction * System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (transactionToUse, asyncFlowOption)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="transactionToUse" Type="System.Transactions.Transaction" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="transactionToUse">범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 앰비언트 트랜잭션으로 설정할 트랜잭션입니다.</param>
+        <param name="asyncFlowOption">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>[.NET Framework 4.5.1 이상 버전에서 지원됨] 
+<see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화하고 지정된 트랜잭션을 앰비언트 트랜잭션으로 설정하여 범위에서 수행된 트랜잭션 작업에 이 트랜잭션을 사용합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (asyncFlowOption As TransactionScopeAsyncFlowOption)" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeAsyncFlowOption asyncFlowOption);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeAsyncFlowOption asyncFlow);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlow) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (asyncFlow As TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeAsyncFlowOption asyncFlow);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope asyncFlowOption" FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope asyncFlow" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="asyncFlow" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="asyncFlowOption">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="asyncFlow">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>지정된 비동기 흐름 옵션을 사용하여 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (scopeOption As TransactionScopeOption)" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption option);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption option) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (option As TransactionScopeOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption option);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope option" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope option" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="scopeOption" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="option" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="scopeOption">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="option">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>지정된 요구 사항에 따라 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.Transaction transactionToUse, TimeSpan scopeTimeout, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Transactions.Transaction transactionToUse, valuetype System.TimeSpan scopeTimeout, valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.Transaction,System.TimeSpan,System.Transactions.TransactionScopeAsyncFlowOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (transactionToUse As Transaction, scopeTimeout As TimeSpan, asyncFlowOption As TransactionScopeAsyncFlowOption)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::Transaction ^ transactionToUse, TimeSpan scopeTimeout, System::Transactions::TransactionScopeAsyncFlowOption asyncFlowOption);" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.Transaction * TimeSpan * System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (transactionToUse, scopeTimeout, asyncFlowOption)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="transactionToUse" Type="System.Transactions.Transaction" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="scopeTimeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="transactionToUse">범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 앰비언트 트랜잭션으로 설정할 트랜잭션입니다.</param>
+        <param name="scopeTimeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="asyncFlowOption">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>[.NET Framework 4.5.1 이상 버전에서 지원됨] 
+지정된 시간 제한 값을 가진 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화하고, 범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 지정된 트랜잭션을 앰비언트 트랜잭션으로 설정합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netcore-2.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.7.2;netframework-4.8;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption, valuetype System.Transactions.TransactionOptions transactionOptions) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netcore-2.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.7.2;netframework-4.8;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.Transactions.TransactionOptions)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption, System::Transactions::TransactionOptions transactionOptions);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netcore-2.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.7.2;netframework-4.8;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions options);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption, valuetype System.Transactions.TransactionOptions options) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (scopeOption As TransactionScopeOption, options As TransactionOptions)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption, System::Transactions::TransactionOptions options);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.Transactions.TransactionOptions)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (scopeOption As TransactionScopeOption, options As TransactionOptions)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * System.Transactions.TransactionOptions -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (scopeOption, options)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * System.Transactions.TransactionOptions -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (scopeOption, options)" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="scopeOption" Type="System.Transactions.TransactionScopeOption" Index="0" />
+        <Parameter Name="transactionOptions" Type="System.Transactions.TransactionOptions" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="options" Type="System.Transactions.TransactionOptions" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="scopeOption">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="transactionOptions">새 트랜잭션을 만드는 경우 사용할 트랜잭션 옵션을 설명하는 <see cref="T:System.Transactions.TransactionOptions" /> 구조체입니다. 기존 트랜잭션이 사용되면 이 매개 변수의 시간 제한 값이 트랜잭션 범위에 적용됩니다. 범위가 삭제되기 전에 이 시간이 만료되면 트랜잭션이 중단됩니다.</param>
+        <param name="options">새 트랜잭션을 만드는 경우 사용할 트랜잭션 옵션을 설명하는 <see cref="T:System.Transactions.TransactionOptions" /> 구조체입니다. 기존 트랜잭션이 사용되면 이 매개 변수의 시간 제한 값이 트랜잭션 범위에 적용됩니다. 범위가 삭제되기 전에 이 시간이 만료되면 트랜잭션이 중단됩니다.</param>
+        <summary>지정된 요구 사항에 따라 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하는 경우는 `transactionOptions` 지정 하려면 매개 변수는 <xref:System.Transactions.IsolationLevel>, 및 범위를 나중에 트랜잭션을 만들고, 새 트랜잭션이 지정된 된 격리 수준에 연관 된 합니다. 격리 수준 트랜잭션을 함께 전달 되 면 트랜잭션은 동일한 격리 수준에 있어야 합니다. 아니면 예외가 throw 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption, valuetype System.Transactions.TransactionOptions transactionOptions, valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.Transactions.TransactionOptions,System.Transactions.TransactionScopeAsyncFlowOption)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption, System::Transactions::TransactionOptions transactionOptions, System::Transactions::TransactionScopeAsyncFlowOption asyncFlowOption);" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * System.Transactions.TransactionOptions * System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (scopeOption, transactionOptions, asyncFlowOption)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="scopeOption" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="transactionOptions" Type="System.Transactions.TransactionOptions" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="scopeOption">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="transactionOptions">새 트랜잭션을 만드는 경우 사용할 트랜잭션 옵션을 설명하는 <see cref="T:System.Transactions.TransactionOptions" /> 구조체입니다. 기존 트랜잭션이 사용되면 이 매개 변수의 시간 제한 값이 트랜잭션 범위에 적용됩니다. 범위가 삭제되기 전에 이 시간이 만료되면 트랜잭션이 중단됩니다.</param>
+        <param name="asyncFlowOption">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>[.NET Framework 4.5.1 이상 버전에서 지원됨] 
+지정된 요구 사항 및 비동기 흐름 옵션을 사용해서 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.Transaction transactionToUse, TimeSpan scopeTimeout);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Transactions.Transaction transactionToUse, valuetype System.TimeSpan scopeTimeout) cil managed" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.Transaction,System.TimeSpan)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (transactionToUse As Transaction, scopeTimeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::Transaction ^ transactionToUse, TimeSpan scopeTimeout);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.Transaction transaction, TimeSpan timeout);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Transactions.Transaction transaction, valuetype System.TimeSpan timeout) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::Transaction ^ transaction, TimeSpan timeout);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.Transaction,System.TimeSpan)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.Transaction * TimeSpan -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (transaction, timeout)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.Transaction * TimeSpan -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (transaction, timeout)" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="transactionToUse" Type="System.Transactions.Transaction" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="transaction" Type="System.Transactions.Transaction" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="scopeTimeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="timeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="transactionToUse">범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 앰비언트 트랜잭션으로 설정할 트랜잭션입니다.</param>
+        <param name="transaction">범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 앰비언트 트랜잭션으로 설정할 트랜잭션입니다.</param>
+        <param name="scopeTimeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="timeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <summary>지정된 시간 제한 값을 가진 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화하고, 범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 지정된 트랜잭션을 앰비언트 트랜잭션으로 설정합니다.</summary>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption, TimeSpan scopeTimeout);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption, valuetype System.TimeSpan scopeTimeout) cil managed" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.TimeSpan)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (scopeOption As TransactionScopeOption, scopeTimeout As TimeSpan)" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption, TimeSpan scopeTimeout);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption option, TimeSpan timeout);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption option, valuetype System.TimeSpan timeout) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (option As TransactionScopeOption, timeout As TimeSpan)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption option, TimeSpan timeout);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.TimeSpan)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * TimeSpan -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (option, timeout)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * TimeSpan -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (option, timeout)" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="scopeOption" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="option" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="scopeTimeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="timeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="scopeOption">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="option">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="scopeTimeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="timeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <summary>지정된 시간 제한 값과 요구 사항을 가진 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption, valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) cil managed" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.Transactions.TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (scopeOption As TransactionScopeOption, asyncFlowOption As TransactionScopeAsyncFlowOption)" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption, System::Transactions::TransactionScopeAsyncFlowOption asyncFlowOption);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption option, System.Transactions.TransactionScopeAsyncFlowOption asyncFlow);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption option, valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlow) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (option As TransactionScopeOption, asyncFlow As TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption option, System::Transactions::TransactionScopeAsyncFlowOption asyncFlow);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (scopeOption, asyncFlowOption)" FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.Transactions.TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (option, asyncFlow)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="scopeOption" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="option" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="asyncFlow" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="scopeOption">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="option">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="asyncFlowOption">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="asyncFlow">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>지정된 요구 사항 및 비동기 흐름 옵션을 사용해서 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="VB.NET" Value="Public Sub New (scopeOption As TransactionScopeOption, options As TransactionOptions, opt As EnterpriseServicesInteropOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions transactionOptions, System.Transactions.EnterpriseServicesInteropOption interopOption);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption, valuetype System.Transactions.TransactionOptions transactionOptions, valuetype System.Transactions.EnterpriseServicesInteropOption interopOption) cil managed" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.Transactions.TransactionOptions,System.Transactions.EnterpriseServicesInteropOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption, System::Transactions::TransactionOptions transactionOptions, System::Transactions::EnterpriseServicesInteropOption interopOption);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption, System.Transactions.TransactionOptions options, System.Transactions.EnterpriseServicesInteropOption opt);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption, valuetype System.Transactions.TransactionOptions options, valuetype System.Transactions.EnterpriseServicesInteropOption opt) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption, System::Transactions::TransactionOptions options, System::Transactions::EnterpriseServicesInteropOption opt);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.Transactions.TransactionOptions,System.Transactions.EnterpriseServicesInteropOption)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (scopeOption As TransactionScopeOption, options As TransactionOptions, opt As EnterpriseServicesInteropOption)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * System.Transactions.TransactionOptions * System.Transactions.EnterpriseServicesInteropOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (scopeOption, options, opt)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * System.Transactions.TransactionOptions * System.Transactions.EnterpriseServicesInteropOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (scopeOption, options, opt)" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="scopeOption" Type="System.Transactions.TransactionScopeOption" Index="0" />
+        <Parameter Name="transactionOptions" Type="System.Transactions.TransactionOptions" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="options" Type="System.Transactions.TransactionOptions" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="interopOption" Type="System.Transactions.EnterpriseServicesInteropOption" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="opt" Type="System.Transactions.EnterpriseServicesInteropOption" Index="2" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="scopeOption">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="transactionOptions">새 트랜잭션을 만드는 경우 사용할 트랜잭션 옵션을 설명하는 <see cref="T:System.Transactions.TransactionOptions" /> 구조체입니다. 기존 트랜잭션이 사용되면 이 매개 변수의 시간 제한 값이 트랜잭션 범위에 적용됩니다. 범위가 삭제되기 전에 이 시간이 만료되면 트랜잭션이 중단됩니다.</param>
+        <param name="options">새 트랜잭션을 만드는 경우 사용할 트랜잭션 옵션을 설명하는 <see cref="T:System.Transactions.TransactionOptions" /> 구조체입니다. 기존 트랜잭션이 사용되면 이 매개 변수의 시간 제한 값이 트랜잭션 범위에 적용됩니다. 범위가 삭제되기 전에 이 시간이 만료되면 트랜잭션이 중단됩니다.</param>
+        <param name="interopOption">관련된 트랜잭션이 COM+ 트래잭션과 상호 작용하는 방법을 설명하는 <see cref="T:System.Transactions.EnterpriseServicesInteropOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="opt">관련된 트랜잭션이 COM+ 트래잭션과 상호 작용하는 방법을 설명하는 <see cref="T:System.Transactions.EnterpriseServicesInteropOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>지정된 범위, COM+ 상호 운용성 요구 사항 및 트랜잭션 옵션을 가진 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+사용 하는 경우는 `transactionOptions` 지정 하려면 매개 변수는 <xref:System.Transactions.IsolationLevel>, 및 범위를 나중에 트랜잭션을 만들고, 새 트랜잭션이 지정된 된 격리 수준에 연관 된 합니다. 격리 수준 트랜잭션을 함께 전달 되 면 트랜잭션은 동일한 격리 수준에 있어야 합니다. 아니면 예외가 throw 됩니다.
+  
+**하지만 참고** 이 메서드는 <xref:System.Security.Permissions.SecurityAction.LinkDemand> 신뢰할 수 없는 코드에서 호출할를 방지 하기 위해 필요, 직접 실행 호출자만 소유는 `FullTrust` 권한 집합입니다.
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.Transaction transactionToUse, TimeSpan scopeTimeout, System.Transactions.EnterpriseServicesInteropOption interopOption);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Transactions.Transaction transactionToUse, valuetype System.TimeSpan scopeTimeout, valuetype System.Transactions.EnterpriseServicesInteropOption interopOption) cil managed" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.Transaction,System.TimeSpan,System.Transactions.EnterpriseServicesInteropOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (transactionToUse As Transaction, scopeTimeout As TimeSpan, interopOption As EnterpriseServicesInteropOption)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::Transaction ^ transactionToUse, TimeSpan scopeTimeout, System::Transactions::EnterpriseServicesInteropOption interopOption);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.Transaction transaction, TimeSpan timeout, System.Transactions.EnterpriseServicesInteropOption opt);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Transactions.Transaction transaction, valuetype System.TimeSpan timeout, valuetype System.Transactions.EnterpriseServicesInteropOption opt) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::Transaction ^ transaction, TimeSpan timeout, System::Transactions::EnterpriseServicesInteropOption opt);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.Transaction,System.TimeSpan,System.Transactions.EnterpriseServicesInteropOption)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.Transaction * TimeSpan * System.Transactions.EnterpriseServicesInteropOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (transaction, timeout, opt)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.Transaction * TimeSpan * System.Transactions.EnterpriseServicesInteropOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (transaction, timeout, opt)" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="transactionToUse" Type="System.Transactions.Transaction" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="transaction" Type="System.Transactions.Transaction" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="scopeTimeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="timeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="interopOption" Type="System.Transactions.EnterpriseServicesInteropOption" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="opt" Type="System.Transactions.EnterpriseServicesInteropOption" Index="2" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="transactionToUse">범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 앰비언트 트랜잭션으로 설정할 트랜잭션입니다.</param>
+        <param name="transaction">범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 앰비언트 트랜잭션으로 설정할 트랜잭션입니다.</param>
+        <param name="scopeTimeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="timeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="interopOption">관련된 트랜잭션이 COM+ 트래잭션과 상호 작용하는 방법을 설명하는 <see cref="T:System.Transactions.EnterpriseServicesInteropOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="opt">관련된 트랜잭션이 COM+ 트래잭션과 상호 작용하는 방법을 설명하는 <see cref="T:System.Transactions.EnterpriseServicesInteropOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>지정된 시간 제한 값과 COM+ 상호 운용성 요구 사항을 가진 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화하고, 범위에서 수행된 트랜잭션 작업에 이 트랜잭션이 사용되도록 지정된 트랜잭션을 앰비언트 트랜잭션으로 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+**하지만 참고** 이 메서드는 <xref:System.Security.Permissions.SecurityAction.LinkDemand> 신뢰할 수 없는 코드에서 호출할를 방지 하기 위해 필요, 직접 실행 호출자만 소유는 `FullTrust` 권한 집합입니다.
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption scopeOption, TimeSpan scopeTimeout, System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption scopeOption, valuetype System.TimeSpan scopeTimeout, valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlowOption) cil managed" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.TimeSpan,System.Transactions.TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (scopeOption As TransactionScopeOption, scopeTimeout As TimeSpan, asyncFlowOption As TransactionScopeAsyncFlowOption)" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption scopeOption, TimeSpan scopeTimeout, System::Transactions::TransactionScopeAsyncFlowOption asyncFlowOption);" FrameworkAlternate="netcore-2.0;netcore-2.1;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public TransactionScope (System.Transactions.TransactionScopeOption option, TimeSpan timeout, System.Transactions.TransactionScopeAsyncFlowOption asyncFlow);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Transactions.TransactionScopeOption option, valuetype System.TimeSpan timeout, valuetype System.Transactions.TransactionScopeAsyncFlowOption asyncFlow) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (option As TransactionScopeOption, timeout As TimeSpan, asyncFlow As TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TransactionScope(System::Transactions::TransactionScopeOption option, TimeSpan timeout, System::Transactions::TransactionScopeAsyncFlowOption asyncFlow);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * TimeSpan * System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (scopeOption, scopeTimeout, asyncFlowOption)" FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.#ctor(System.Transactions.TransactionScopeOption,System.TimeSpan,System.Transactions.TransactionScopeAsyncFlowOption)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="new System.Transactions.TransactionScope : System.Transactions.TransactionScopeOption * TimeSpan * System.Transactions.TransactionScopeAsyncFlowOption -&gt; System.Transactions.TransactionScope" Usage="new System.Transactions.TransactionScope (option, timeout, asyncFlow)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="scopeOption" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="option" Type="System.Transactions.TransactionScopeOption" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="scopeTimeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="timeout" Type="System.TimeSpan" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="asyncFlowOption" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="asyncFlow" Type="System.Transactions.TransactionScopeAsyncFlowOption" Index="2" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="scopeOption">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="option">이 트랜잭션 범위와 관련된 트랜잭션 요구 사항을 설명하는 <see cref="T:System.Transactions.TransactionScopeOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="scopeTimeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="timeout">트랜잭션 범위의 제한 시간이 만료되어 트랜잭션이 중단되는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="asyncFlowOption">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <param name="asyncFlow">트랜잭션 범위와 연관된 앰비언트 트랜잭션 흐름이 Task 또는 async/await .NET 비동기 프로그래밍 패턴을 사용할 때 스레드 연속 사이에 수행되는지 여부를 설명하는 <see cref="T:System.Transactions.TransactionScopeAsyncFlowOption" /> 열거형의 인스턴스입니다.</param>
+        <summary>지정된 제한 시간 값, 요구 사항 및 비동기 흐름 옵션을 사용하여 <see cref="T:System.Transactions.TransactionScope" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Complete">
+      <MemberSignature Language="C#" Value="public void Complete ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Complete() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.Complete" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Complete ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Complete();" />
+      <MemberSignature Language="F#" Value="member this.Complete : unit -&gt; unit" Usage="transactionScope.Complete " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>범위의 모든 작업이 성공적으로 완료되었음을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 만족할 경우 범위 내에서 모든 작업을 성공적으로 완료를 알리고 해당 트랜잭션 관리자는 모든 리소스 상태는 일관 된 트랜잭션을 커밋할 수를이 메서드를 한 번만 호출 해야 합니다. 호출의 마지막 문으로 배치 하는 매우 것이 좋습니다는 `using` 블록입니다.  
+  
+ 이 메서드를 사용 하는 방법에 대 한 자세한 내용은 참조는 [구현 하는 암시적 트랜잭션을 사용 하 여 트랜잭션 범위](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md) 항목입니다.  
+  
+ 이 메서드를 호출 하지 못하면 트랜잭션을 중단 트랜잭션 관리자는이 시스템 실패로 해석 하기 때문에 또는 트랜잭션의 범위 내에서 throw 된 예외입니다. 그러나 유의이 메서드를 호출 하는 트랜잭션의 커밋을 보장 하지 않습니다. 이 메서드를 호출하는 것은 트랜잭션 관리자에게 상태를 알리는 수단일 뿐입니다. 이 메서드를 호출한 후 더 이상 액세스할 수 통해 앰비언트 트랜잭션에 <xref:System.Transactions.Transaction.Current%2A> 속성 및 예외가 발생 하면 발생 작업을 수행 하려고 합니다.  
+  
+ 리소스 관리자 간의 커밋의 실제 작업을 수행 합니다 `End Using` 문을 경우는 <xref:System.Transactions.TransactionScope> 개체 트랜잭션을 만든 합니다. 트랜잭션을 만들지 않은 경우 <xref:System.Transactions.CommittableTransaction.Commit%2A> 개체 소유자가 <xref:System.Transactions.CommittableTransaction>을 호출할 때마다 커밋이 발생합니다. 트랜잭션 관리자 리소스 관리자를 호출 하 고 커밋 또는 롤백,이 메서드를 호출한 여부에 따라 알리는 하는 시점을 <xref:System.Transactions.TransactionScope> 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법에 설명 합니다 <xref:System.Transactions.TransactionScope> 트랜잭션에 참여 하는 코드 블록을 정의 하는 클래스입니다.  
+  
+ [!code-csharp[TransactionScope#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
+ [!code-vb[TransactionScope#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이 메서드가 이미 한 번 호출된 경우</exception>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionScope.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="transactionScope.Dispose " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>트랜잭션 범위를 종료합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 호출 하면 트랜잭션 범위의 끝을 표시 합니다. 경우는 <xref:System.Transactions.TransactionScope> 개체가 생성 된 트랜잭션 및 <xref:System.Transactions.TransactionScope.Complete%2A> 범위에서 호출 된를 <xref:System.Transactions.TransactionScope> 개체가이 메서드가 호출 될 때 트랜잭션을 커밋하려고 시도 합니다. 이 경우 트랜잭션 처리의 첫 번째 단계까지 메서드 블록이 완료 되었습니다. 첫 번째 단계는 모든 리소스 관리자 후 종료 하 고 트랜잭션에 인 리스트 먼 트 트랜잭션 결과에 투표 했습니다. 및 <xref:System.Transactions.TransactionManager> 지속적으로 커밋 또는 트랜잭션을 중단 했습니다. 처리의 두 번째 단계는 항상 비동기입니다. 따라서 보장이 없습니다만 지정된 된 트랜잭션 내에서 커밋된 데이터 수 있는 즉시 나중에 다른 트랜잭션이이 데이터를 사용 하지 않는 경우.  
+  
+ C#을 사용 하 여 `using` 생성 하면 예외가 발생 하는 경우에이 메서드가 호출 됩니다. 이 메서드를 호출한 후에 발생하는 예외는 트랜잭션에 영향을 주지 않습니다. 또한이 메서드 앰비언트 트랜잭션이 원래 상태를 복원합니다. <xref:System.Transactions.TransactionAbortedException> 트랜잭션이 실제로 커밋된 경우 throw 됩니다.  
+  
+ 이 메서드 차단 트랜잭션 처리의 첫 번째 단계 완료 될 때까지, 매우 주의 해야 응용 프로그램을 Windows Form (WinForm) 또는 교착 상태에서이 메서드를 사용 하는 경우 발생할 수 있습니다 때문에. (예: 단추 클릭), 하나의 WinForm 컨트롤 이벤트 내에서이 메서드를 호출 하 고 동기를 사용 하는 경우 <xref:System.Windows.Forms.Control.Invoke%2A> 트랜잭션을 처리 하는 중 몇 가지 UI 작업 (예를 들어 변경 색)을 수행 하는 컨트롤을 직접 메서드를 교착 상태가 발생 합니다. 왜냐하면는 <xref:System.Windows.Forms.Control.Invoke%2A> 동기는 메서드와 UI 스레드에 해당 작업이 완료 될 때까지 작업자 스레드를 차단 합니다. 그러나이 시나리오에서는 UI 스레드 대기 중 트랜잭션 커밋 작업자 스레드에 대 한 합니다. 결과 범위를 완료 하려면 커밋을 위해 무기한 대기를 계속할 수 없는 경우 사용 해야 <xref:System.Windows.Forms.Control.BeginInvoke%2A> 대신 <xref:System.Windows.Forms.Control.Invoke%2A> 가능한 경우 비동기 및 교착 상태가 발생할 가능성이 적으므로 되었기 때문입니다.  
+  
+ 이 메서드를 사용 하는 방법에 대 한 자세한 내용은 참조는 [구현 하는 암시적 트랜잭션을 사용 하 여 트랜잭션 범위](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md) 항목입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법에 설명 합니다 <xref:System.Transactions.TransactionScope> 트랜잭션에 참여 하는 코드 블록을 정의 하는 클래스입니다.  
+  
+ [!code-csharp[TransactionScope#1](~/samples/snippets/csharp/VS_Snippets_Remoting/TransactionScope/cs/ScopeWithSQL.cs#1)]
+ [!code-vb[TransactionScope#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/TransactionScope/vb/ScopeWithSQL.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.0/ms172152(v=vs.85)">트랜잭션 범위를 사용 하 여 암시적 트랜잭션 구현</related>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

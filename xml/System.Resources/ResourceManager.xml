@@ -1,0 +1,2100 @@
+<Type Name="ResourceManager" FullName="System.Resources.ResourceManager">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="1f4576691fe95ae036b83eb8f7fd45935ddefe96" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58729886" /></Metadata><TypeSignature Language="C#" Value="public class ResourceManager" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit ResourceManager extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Resources.ResourceManager" />
+  <TypeSignature Language="VB.NET" Value="Public Class ResourceManager" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ResourceManager" />
+  <TypeSignature Language="F#" Value="type ResourceManager = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
+    </Attribute>
+    <Attribute FrameworkAlternate="netcore-2.0;netcore-2.1;netstandard-1.0;netstandard-1.1;netcore-2.2;dotnet-uwp-10.0;netcore-3.0">
+      <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
+    </Attribute>
+    <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+      <AttributeName>System.Serializable</AttributeName>
+    </Attribute>
+    <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6">
+      <AttributeName>System.ComponentModel.EditorBrowsable</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>런타임에 문화권별 리소스에 편리한 액세스를 제공하는 리소스 관리자를 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+[!INCLUDE [untrusted-data-class-note](~/includes/untrusted-data-class-note.md)]
+
+ <xref:System.Resources.ResourceManager> 클래스는 어셈블리에 포함 된 이진.resources 파일에서 또는 독립 실행형.resources 파일에서 리소스를 검색 합니다. 앱 지역화 되었는지 및 지역화 된 리소스에 배포 된 경우 [위성 어셈블리](~/docs/framework/resources/creating-satellite-assemblies-for-desktop-apps.md), 문화권 관련 리소스를 조회, 지역화 된 리소스 존재 하지 않는 리소스를 지 원하는 경우 리소스 대체를 제공 합니다. 직렬화입니다.  
+  
+ 만들기 및 데스크톱 앱의 리소스를 관리 하는 방법에 대 한 자세한 내용은 및 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱, 다음 섹션을 참조 하세요.  
+  
+-   [데스크톱 앱](#desktop)  
+  
+    -   [리소스 만들기](#creating_resources)  
+  
+    -   [ResourceManager 개체 인스턴스화](#instantiating)  
+  
+    -   [ResourceManager 및 문화권 관련 리소스](#CultureSpecific)  
+  
+    -   [리소스 검색](#retrieving)  
+  
+    -   [MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리](#exception)  
+  
+    -   [리소스 버전 관리](#versioning)  
+  
+    -   [\<satelliteassemblies > 구성 파일 노드](#config)  
+  
+-   [Windows 스토어 앱](#ws)  
+  
+<a name="desktop"></a>   
+## <a name="desktop-apps"></a>데스크톱 앱  
+ 데스크톱 앱의 경우는 <xref:System.Resources.ResourceManager> 이진 리소스 (.resources) 파일에서 리소스를 검색 하는 클래스입니다. 일반적으로 언어 컴파일러 또는 [어셈블리 링커 (AL.exe)](~/docs/framework/tools/al-exe-assembly-linker.md) 어셈블리에 이러한 리소스 파일을 포함 합니다. 사용할 수도 있습니다는 <xref:System.Resources.ResourceManager> 를 호출 하 여 어셈블리에서 포함 되지 않은.resources 파일에서 직접 리소스를 검색 하는 개체는 <xref:System.Resources.ResourceManager.CreateFileBasedResourceManager%2A> 메서드.  
+  
+> [!CAUTION]
+>  ASP.NET 앱에서 독립 실행형.resources 파일을 사용 하는 XCOPY 배포가 중단 하 여 명시적으로 릴리스될 때까지 리소스가 잠겨 있기 때문에 <xref:System.Resources.ResourceManager.ReleaseAllResources%2A> 메서드. ASP.NET 응용 프로그램을 사용 하 여 리소스를 배포 하려는 경우 위성 어셈블리에.resources 파일 컴파일해야 합니다.  
+  
+ 리소스 기반 앱을 하나.resources 파일 없음 문화권별 리소스를 찾을 수 있습니다 하는 경우 해당 리소스가 사용 됩니다 기본 문화권의 리소스를 포함 합니다. 예를 들어 영어 (en) 앱의 기본 문화권을 사용 하는 경우에 영어 (미국) (영문) 또는 프랑스어 (프랑스) (FR) 등의 특정 문화권의 지역화 된 리소스를 찾을 수 없는 때마다 영어 언어 리소스가 사용 됩니다. 일반적으로 기본 문화권의 리소스에 주 앱 어셈블리에 포함 되 고 다른 지역화 된 문화권에 대 한 리소스 위성 어셈블리에 포함 됩니다. 위성 어셈블리는 리소스만 포함 됩니다. 확장의 주 어셈블리와 동일한 루트 파일 이름을 갖습니다. resources.dll 합니다. 해당 어셈블리를 전역 어셈블리 캐시에 등록 되지 않은 앱에 대 한 위성 어셈블리는 이름이 어셈블리의 culture에 해당 하는 앱 하위 디렉터리에 저장 됩니다.  
+  
+<a name="creating_resources"></a>   
+### <a name="creating-resources"></a>리소스 만들기  
+ 리소스 기반 앱을 개발할 때에 텍스트 파일 (.txt 또는.restext 확장명을 가진 파일) 또는 XML 파일 (.resx 확장명을 가진 파일)에서 리소스 정보를 저장 합니다. 다음 텍스트 또는 XML 파일을 컴파일하는 [리소스 파일 생성기 (Resgen.exe)](~/docs/framework/tools/resgen-exe-resource-file-generator.md) 이진.resources 파일을 만듭니다. 그런 다음 결과.resources 파일 실행 파일 또는 라이브러리와 같은 컴파일러 옵션을 사용 하 여 포함할 수 있습니다 `/resources` 하거나 C# 및 Visual Basic 컴파일러에에서 포함할 수 위성 어셈블리를 사용 하 여에 대 한 합니다. Visual Studio 프로젝트에.resx 파일을 포함 하는 경우 Visual Studio 컴파일과 기본 포함을 처리 하 고 빌드 프로세스의 일부로 자동으로 지역화 된 리소스.  
+  
+ 이상적으로 앱을 만들 모든 언어에 대 한 리소스를 지 원하는 또는 최소한 각 언어의 의미 있는 하위 집합입니다. 이진.resources 파일 이름은 명명 규칙을 따릅니다 *basename*. *cultureName*.resources, 여기서 *basename* 은 앱의 이름 또는 원하는 세부 수준에 따라 클래스의 이름입니다. <xref:System.Globalization.CultureInfo.Name%2A?displayProperty=nameWithType> 속성은 확인 데 *cultureName*합니다. 앱의 기본 문화권에 대 한 리소스를 명명할 *basename*.resources입니다.  
+  
+ 예를 들어, 어셈블리에 기본 이름이 MyResources 리소스 파일에 여러 개의 리소스가 있습니다. 이러한 리소스 파일에는 일본 (일본어) 문화권의 경우 독일 문화권의 간단한 중국어 문화권에 대 한 MyResources.zh CHS.resources MyResources.de.resources MyResources.ja JP.resources 같은 이름을 사용 해야 합니다. 및 프랑스어 (벨기에) 문화권에 대 한 MyResources.fr BE.resources 합니다. 기본 리소스 파일 MyResources.resources 이름을 지정 해야 합니다. 문화권 관련 리소스 파일은 일반적으로 각 문화권에 대 한 위성 어셈블리에 패키지 됩니다. 기본 리소스 파일은 앱의 주 어셈블리에 포함 해야 합니다.  
+  
+ 리소스를 전용으로 표시할 수 있도록 되었지만 항상 표시 해야 해당 공용으로 다른 어셈블리에서 액세스할 수 있도록 지원 됩니다. (하므로 위성 어셈블리 코드가 없는 개인용으로 표시 되는 리소스 않습니다 임의 메커니즘을 통해 앱에 사용할 수 있습니다.)  
+  
+ 패키징 및 배포 리소스, 참조 문서를 만드는 방법에 대 한 자세한 내용은 [리소스 파일 만들기](~/docs/framework/resources/creating-resource-files-for-desktop-apps.md)하십시오 [위성 어셈블리 만들기](~/docs/framework/resources/creating-satellite-assemblies-for-desktop-apps.md), 및 [패키징 및 배포 리소스](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md)합니다.  
+  
+<a name="instantiating"></a>   
+### <a name="instantiating-a-resourcemanager-object"></a>ResourceManager 개체 인스턴스화  
+ 인스턴스화하는 <xref:System.Resources.ResourceManager> 클래스 생성자 오버 로드 중 하나를 호출 하 여 포함 된.resources 파일에서 리소스를 검색 하는 개체입니다. 이 밀접 하 게 결합 된 <xref:System.Resources.ResourceManager> 특정.resources 파일 및 모든 관련 개체를 위성 어셈블리에에서.resources 파일을 지역화 합니다.  
+  
+ 두 명의 가장 일반적으로 호출된 된 생성자는 다음과 같습니다.  
+  
+-   <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29> 두 가지 제공 하는 정보에 따라 리소스 조회:.resources 파일 및 기본.resources 파일 상주 하는 어셈블리의 기본 이름입니다. 기본 이름을 해당 문화권 또는 확장 없이.resources 파일의 루트 이름과 네임 스페이스를 포함합니다. 참고 일반적으로 명령줄에서 컴파일되는.resources 파일 Visual Studio 환경에서 작성 되는.resources 파일에서 수행 하는 반면 네임 스페이스 이름을 포함 하지 않습니다. 예를 들어 MyCompany.StringResources.resources 라는 리소스 파일 및 <xref:System.Resources.ResourceManager> 라는 정적 메서드를 생성자가 호출 `Example.Main`, 다음 코드를 인스턴스화하는 <xref:System.Resources.ResourceManager> 에서 리소스를 검색할 수 있는 개체는. 리소스 파일:  
+  
+     [!code-csharp[Conceptual.Resources.Retrieving#1](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.resources.retrieving/cs/ctor1.cs#1)]
+     [!code-vb[Conceptual.Resources.Retrieving#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.resources.retrieving/vb/ctor1.vb#1)]  
+  
+-   <xref:System.Resources.ResourceManager.%23ctor%28System.Type%29> 형식 개체에서 정보를 기반으로 하는 위성 어셈블리에서 리소스를 조회 합니다. 형식의 정규화 된 이름을 파일 이름 확장명 없이.resources 파일의 기본 이름에 해당합니다. Visual Studio 리소스 디자이너를 사용 하 여 만든 데스크톱 앱의 경우 Visual Studio는.resources 파일의 루트 이름과 같은 정규화 된 이름이 래퍼 클래스를 만듭니다. 예를 들어 리소스 파일 MyCompany.StringResources.resources 라는 이며 라는 래퍼 클래스 `MyCompany.StringResources`, 다음 코드를 인스턴스화하는 <xref:System.Resources.ResourceManager> .resources 파일에서 리소스를 검색할 수 있는 개체:  
+  
+     [!code-csharp[Conceptual.Resources.Retrieving#2](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.resources.retrieving/cs/ctor1.cs#2)]
+     [!code-vb[Conceptual.Resources.Retrieving#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.resources.retrieving/vb/ctor1.vb#2)]  
+  
+ 생성자 호출을 만들고 올바른 적절 한 리소스를 찾을 수 없는 경우 <xref:System.Resources.ResourceManager> 개체입니다. 그러나 리소스를 검색 하려고 throw를 <xref:System.Resources.MissingManifestResourceException> 예외입니다. 예외 처리에 대 한 내용은 참조는 [처리 MissingManifestResourceException 및 MissingSatelliteAssembly 예외](#exception) 이 문서의 뒷부분에 나오는 섹션.  
+  
+ 다음 예제에서는 인스턴스화하는 방법을 보여 줍니다는 <xref:System.Resources.ResourceManager> 개체입니다. ShowTime.exe 라는 실행 파일에 대 한 소스 코드를 포함 합니다. 또한 단일 문자열 리소스를 포함 하는 Strings.txt 라는 텍스트 파일 `TimeHeader`:  
+  
+```  
+TimeHeader=The current time is  
+```  
+  
+ 리소스 파일을 생성 하 고 실행 파일에 포함 하는 배치 파일을 사용할 수 있습니다. 다음은 C# 컴파일러를 사용 하 여 실행 파일을 생성 하도록 배치 파일이입니다.  
+  
+```  
+  
+resgen strings.txt  
+csc ShowTime.cs /resource:strings.resources  
+  
+```  
+  
+ Visual Basic 컴파일러의 경우 다음 배치 파일을 사용할 수 있습니다.  
+  
+```  
+  
+resgen strings.txt  
+vbc ShowTime.vb /resource:strings.resources  
+  
+```  
+  
+ [!code-csharp[System.Resources.ResourceManager.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.class/cs/showtime.cs#1)]
+ [!code-vb[System.Resources.ResourceManager.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.class/vb/showtime.vb#1)]  
+  
+<a name="CultureSpecific"></a>   
+### <a name="resourcemanager-and-culture-specific-resources"></a>ResourceManager 및 문화권 관련 리소스  
+ 문서에 설명 된 대로 현지화 된 앱을 배포 해야 하는 리소스를 필요로 [리소스 패키징 및 배포](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md)합니다. 어셈블리를 제대로 구성 되어, 현재 스레드의 기준으로 검색할 리소스를 리소스 관리자 결정 <xref:System.Threading.Thread.CurrentUICulture%2A?displayProperty=nameWithType> 속성입니다. (속성 또한 반환 현재 스레드의 UI 문화권입니다.) 예를 들어, 앱을 사용 하 여 컴파일된 경우 영어 언어 리소스가 주 어셈블리에 두 위성 어셈블리의 프랑스어 및 러시아어 언어 리소스를 사용 하 여 기본 및 <xref:System.Threading.Thread.CurrentUICulture%2A?displayProperty=nameWithType> 속성이-FR로 설정 되어에서 프랑스어를 검색 하는 리소스 관리자 리소스입니다.  
+  
+ 설정할 수 있습니다는 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A> 속성 명시적 또는 암시적으로 합니다. 설정 방법을 결정 하는 방법을 <xref:System.Resources.ResourceManager> 개체가 문화권을 기준으로 리소스를 검색 합니다.  
+  
+-   명시적으로 설정 하는 경우는 <xref:System.Threading.Thread.CurrentUICulture%2A?displayProperty=nameWithType> 속성을 특정 문화권에 리소스 관리자는 항상 사용자의 브라우저 또는 운영 체제 언어에 관계 없이 해당 문화권에 대 한 리소스를 검색 합니다. 기본 영어 리소스를 사용 하 여 컴파일되는 앱 및 영어 (미국), 프랑스어 (프랑스) 및 러시아어 (러시아)에 대 한 리소스를 포함 하는 위성 어셈블리를 세는 것이 좋습니다. 경우는 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A> FR-FR 속성는 <xref:System.Resources.ResourceManager> 개체는 항상 프랑스어 (프랑스) 리소스를 검색, 시스템 언어가 프랑스어가 아닌 사용자의 운영 하는 경우에 합니다. 이것이 원하는 동작을 명시적으로 속성을 설정 하기 전에 있는지 확인 합니다.  
+  
+     ASP.NET 앱에서 설정 해야 합니다 <xref:System.Threading.Thread.CurrentUICulture%2A?displayProperty=nameWithType> 속성 명시적으로 가능성이 서버의 설정을 들어오는 클라이언트 요청 일치 하지 않기 때문입니다. ASP.NET 앱을 설정할 수는 <xref:System.Threading.Thread.CurrentUICulture%2A?displayProperty=nameWithType> 속성 사용자의 브라우저를 명시적으로 허용 하는 언어로 합니다.  
+  
+     명시적으로 설정 된 <xref:System.Threading.Thread.CurrentUICulture%2A?displayProperty=nameWithType> 속성은 해당 스레드에 대 한 현재 UI 문화권을 정의 합니다. 앱에서 스레드의 현재 UI 문화권에는 영향을 주지 않습니다.  
+  
+-   할당 하 여 응용 프로그램 도메인에서 모든 스레드의 UI 문화권을 설정할 수 있습니다는 <xref:System.Globalization.CultureInfo> 개체를 고정 문화권을 나타내는 <xref:System.Globalization.CultureInfo.DefaultThreadCurrentUICulture%2A?displayProperty=nameWithType> 속성입니다.  
+  
+-   현재 UI 문화권을 명시적으로 설정 하지 않으면 및 현재 앱 도메인에 대 한 기본 문화권을 정의 하지 않으면 경우는 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> 속성이 암시적으로 Windows `GetUserDefaultUILanguage` 함수입니다. 이 함수는 여는 인터페이스 MUI (다국어 사용자), 기본 언어를 설정 하려면 사용자 제공 됩니다. UI 언어 사용자가 설정 되어 있지 않으면, 운영 체제 리소스의 언어 시스템 설치 언어를 기본값으로 합니다.  
+  
+ 다음 간단한 "Hello world" 예제는 현재 UI 문화권을 명시적으로 설정합니다. 세 개의 문화권에 대 한 리소스를 포함합니다. 영어 (미국) 또는 EN-US, 프랑스어 (프랑스) FR-FR 및 러시아어 (러시아) 또는 RU-RU입니다. EN-US 리소스 Greetings.txt 라는 텍스트 파일에 포함 됩니다.  
+  
+```  
+HelloString=Hello world!  
+```  
+  
+ Greetings.fr 라는 텍스트 파일에 포함 된 FR-FR 리소스-FR.txt:  
+  
+```  
+HelloString=Salut tout le monde!  
+```  
+  
+ Greetings.ru 라는 텍스트 파일에 포함 된 RU-RU 리소스-RU.txt:  
+  
+```  
+HelloString=Всем привет!  
+```  
+  
+ 예를 들어 (Visual Basic 버전 example.vb 라고 가정) 하거나 Example.cs C# 버전에 대 한 소스 코드는 다음과 같습니다.  
+  
+ [!code-csharp[Conceptual.Resources.CurrentCulture#1](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.resources.currentculture/cs/example.cs#1)]
+ [!code-vb[Conceptual.Resources.CurrentCulture#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.resources.currentculture/vb/example.vb#1)]  
+  
+ 이 예제를 컴파일하려면 다음 명령을 포함 하 고 명령 프롬프트에서 실행 하는 배치 (.bat) 파일을 만듭니다. C#을 사용 하는 경우 지정 `csc` of `vbc` 하 고 `Example.cs` 대신 `Example.vb`합니다.  
+  
+```  
+resgen Greetings.txt   
+vbc Example.vb /resource:Greetings.resources  
+  
+resgen Greetings.fr-FR.txt  
+Md fr-FR  
+al /embed:Greetings.fr-FR.resources /culture:fr-FR /out:fr-FR\Example.resources.dll  
+  
+resgen Greetings.ru-RU.txt  
+Md ru-RU  
+al /embed:Greetings.ru-RU.resources /culture:ru-RU /out:ru-RU\Example.resources.dll  
+```  
+  
+<a name="retrieving"></a>   
+### <a name="retrieving-resources"></a>리소스 검색  
+ 호출 된 <xref:System.Resources.ResourceManager.GetObject%28System.String%29> 및 <xref:System.Resources.ResourceManager.GetString%28System.String%29> 특정 리소스에 액세스 하는 방법입니다. 호출할 수도 있습니다는 <xref:System.Resources.ResourceManager.GetStream%28System.String%29> 바이트 배열 형식의 문자열이 아닌 리소스를 검색 하는 방법입니다. 기본적으로 이러한 메서드 반환는 리소스를 번역 하는 앱에서 리소스를 호출 하는 스레드의 현재 UI 문화권에 의해 결정 된 문화권에 대 한 합니다. 이전 섹션을 참조 하세요 [ResourceManager 및 문화권별 리소스](#CultureSpecific), 스레드의 현재 UI 문화권을 정의 하는 방법에 대 한 자세한 내용은 합니다. 리소스 관리자는 현재 스레드의 UI 문화권에 대 한 리소스를 찾을 수 없습니다, 하는 경우 지정된 된 리소스를 검색할 대체 (fallback) 프로세스를 사용 합니다. 리소스 관리자에서 모든 지역화 된 리소스를 찾을 수 없으면 기본 문화권의 리소스를 사용 합니다. 리소스 대체 규칙에 대 한 자세한 내용은 문서의 "리소스 대체 프로세스" 섹션을 참조 하세요 [리소스 패키징 및 배포](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md)합니다.  
+  
+> [!NOTE]
+>  .Resources 파일에 지정 된 경우는 <xref:System.Resources.ResourceManager> 클래스 생성자를 찾을 수 없습니다, 리소스를 검색 하려는 시도가 발생 한 <xref:System.Resources.MissingManifestResourceException> 또는 <xref:System.Resources.MissingSatelliteAssemblyException> 예외입니다. 예외 처리에 대 한 내용은 참조는 [처리 MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외](#exception) 이 항목의 뒷부분에 나오는 섹션.  
+  
+ 다음 예제에서는 <xref:System.Resources.ResourceManager.GetString%2A> 문화권별 리소스를 검색 하는 방법입니다. 영어 (en), 프랑스어 (프랑스) (FR-FR) 및 러시아어 (러시아) (RU-RU).txt 파일에서 컴파일된 리소스 이루어져 문화권입니다. 이 예제에서는 영어 (미국), 프랑스어 (프랑스), 러시아어 (러시아) 및 스웨덴어 (스웨덴)를 현재 문화권 및 현재 UI 문화권을 변경합니다. 그런 다음 호출 하 여 <xref:System.Resources.ResourceManager.GetString%2A> 현재 일 및 월을 함께 표시 하는 지역화 된 문자열을 검색 하는 방법. 현재 UI 문화권 경우 스웨덴어 (스웨덴) 제외 하 고 적절 한 지역화 된 문자열 출력에 표시 되는지 확인 합니다. 스웨덴어 언어 리소스를 사용할 수 없으므로 앱 영어는 기본 문화권의 리소스를 대신 사용 합니다.  
+  
+ 예제에는 다음 표에 나열 된 텍스트 기반 리소스 파일이 필요 합니다. 이라는 단일 문자열 리소스를 각각 `DateStart`합니다.  
+  
+|culture|파일 이름|리소스 이름|리소스 값|  
+|-------------|---------------|-------------------|--------------------|  
+|en-US|DateStrings.txt|`DateStart`|오늘이|  
+|fr-FR|DateStrings.fr-FR.txt|`DateStart`|Aujourd'hui, c'est le|  
+|ru-RU|DateStrings.ru-RU.txt|`DateStart`|СЕГОДНЯ|  
+  
+ 예를 들어 (Visual Basic 버전에 대 한 ShowDate.vb) 하거나 ShowDate.cs C# 버전의 코드에 대 한 소스 코드는 다음과 같습니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.class/cs/showdate.cs#2)]
+ [!code-vb[System.Resources.ResourceManager.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.class/vb/showdate.vb#2)]  
+  
+ 이 예제를 컴파일하려면 다음 명령을 포함 하 고 명령 프롬프트에서 실행 하는 배치 파일을 만듭니다. C#을 사용 하는 경우 지정 `csc` of `vbc` 하 고 `showdate.cs` 대신 `showdate.vb`합니다.  
+  
+```  
+  
+resgen DateStrings.txt  
+vbc showdate.vb /resource:DateStrings.resources  
+  
+md fr-FR  
+resgen DateStrings.fr-FR.txt  
+al /out:fr-FR\Showdate.resources.dll /culture:fr-FR /embed:DateStrings.fr-FR.resources   
+  
+md ru-RU  
+resgen DateStrings.ru-RU.txt  
+al /out:ru-RU\Showdate.resources.dll /culture:ru-RU /embed:DateStrings.ru-RU.resources  
+  
+```  
+  
+ 현재 UI 문화권이 아닌 특정 문화권의 리소스를 검색 하려면 두 가지가 있습니다.  
+  
+-   호출할 수 있습니다 합니다 <xref:System.Resources.ResourceManager.GetString%28System.String%2CSystem.Globalization.CultureInfo%29>, <xref:System.Resources.ResourceManager.GetObject%28System.String%2CSystem.Globalization.CultureInfo%29>, 또는 <xref:System.Resources.ResourceManager.GetStream%28System.String%2CSystem.Globalization.CultureInfo%29> 특정 문화권의 리소스를 검색 하는 방법입니다. 지역화 된 리소스를 찾을 수 없는 경우 리소스 관리자 리소스 대체 프로세스를 사용 하 여 적절 한 리소스를 찾기.  
+  
+-   호출할 수 있습니다 합니다 <xref:System.Resources.ResourceManager.GetResourceSet%2A> 메서드는 <xref:System.Resources.ResourceSet> 특정 문화권에 대 한 리소스를 나타내는 개체입니다. 메서드 호출에서 지역화 된 리소스를 찾을 수 없는 경우 리소스 관리자 부모 문화권에 대 한 프로브 인지 또는 인지 간단히로 되돌아가기 기본 문화권의 리소스를 확인할 수 있습니다. 사용할 수 있습니다는 <xref:System.Resources.ResourceSet> 메서드 (해당 문화권에 대 한 지역화 된) 리소스 이름별로 액세스 또는 열거 집합의 리소스입니다.  
+  
+<a name="exception"></a>   
+### <a name="handling-missingmanifestresourceexception-and-missingsatelliteassemblyexception-exceptions"></a>MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리  
+ 특정 리소스를 검색 하려는 경우 resource manager에 정의 된 리소스 및 없는 기본 문화권 중 하나 또는 기본 문화권의 리소스를 찾을 수 없습니다를 throw 하는 리소스 관리자를 찾을 수 없습니다는 <xref:System.Resources.MissingManifestResourceException> 예외 경우 해당 주 어셈블리에 리소스를 찾으려고 시도 또는 <xref:System.Resources.MissingSatelliteAssemblyException> 위성 어셈블리에서 리소스를 찾을 수 있다고 예상 하는 경우. 와 같은 리소스 검색 메서드에 호출 하면 예외가 throw 되는 참고 <xref:System.Resources.ResourceManager.GetString%2A> 또는 <xref:System.Resources.ResourceManager.GetObject%2A>, 하지 인스턴스화하는 경우 및을 <xref:System.Resources.ResourceManager> 개체입니다.  
+  
+ 예외는 일반적으로 다음과 같은 경우 throw 됩니다.  
+  
+-   적절 한 리소스 파일 또는 위성 어셈블리는 존재 하지 않습니다. 리소스 관리자를 주 앱 어셈블리에 포함할 응용 프로그램의 기본 리소스에 필요한 경우 나타나지 않습니다. 경우는 <xref:System.Resources.NeutralResourcesLanguageAttribute> 앱의 기본 리소스 위성 어셈블리에 있는, 어셈블리를 찾을 수 없는 특성을 나타냅니다. 앱을 컴파일할 때에 리소스는 주 어셈블리에 포함 됩니다는 또는 필요한 위성 어셈블리를 생성 하 고 적절 하 게 이름이 있는지 확인 합니다. 이름 형식 이어야 합니다. *appName*. resources.dll을 하며 리소스가 포함 된 문화권의 이름을 딴 디렉터리에 배치 해야 합니다.  
+  
+-   앱은 기본 또는 중립 문화권 정의 없습니다. 추가 된 <xref:System.Resources.NeutralResourcesLanguageAttribute> 특성을 소스 코드 파일 또는 프로젝트 정보 파일 (Visual Basic 앱의 AssemblyInfo.vb) 또는 C# 앱에 대 한 AssemblyInfo.cs 파일에 있습니다.  
+  
+-   합니다 `baseName` 의 매개 변수는 <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29> 생성자.resources 파일의 이름을 지정 하지 않습니다. 리소스 파일의 정규화 된 네임 스페이스만 해당 파일 이름 확장명이 아닌 이름이 포함 해야 합니다. 일반적으로 Visual Studio에서 만든 리소스 파일 네임 스페이스 이름을 포함 하지만 생성 되 고 명령 프롬프트에서 컴파일된 리소스 파일에는 않습니다. 컴파일하고 다음 유틸리티를 실행 하 여 포함 된.resources 파일의 이름을 확인할 수 있습니다. 주 어셈블리 또는 위성 어셈블리는 명령줄 매개 변수로 이름을 허용 하는 콘솔 앱입니다. 로 제공 해야 하는 문자열을 표시 합니다 `baseName` 매개 변수 리소스 관리자 리소스를 올바르게 식별할 수 있도록 합니다.  
+  
+     [!code-csharp[System.Resources.ResourceManager.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.class/cs/resourcenames.cs#4)]
+     [!code-vb[System.Resources.ResourceManager.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.class/vb/resourcenames.vb#4)]  
+  
+ 응용 프로그램의 현재 문화권을 명시적으로 변경 하는 경우 기억해 야 리소스 관리자의 값을 기반으로 리소스 집합을 검색 하는 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> 속성인 아니라는 <xref:System.Globalization.CultureInfo.CurrentCulture%2A?displayProperty=nameWithType> 속성입니다. 일반적으로 하나의 값을 변경한 경우 변경 해야 다른 합니다.  
+  
+<a name="versioning"></a>   
+### <a name="resource-versioning"></a>리소스 버전 관리  
+ 앱의 기본 리소스를 포함 하는 주 어셈블리를 응용 프로그램의 위성 어셈블리에서 별도 이므로 위성 어셈블리를 다시 배포할 필요 없이 주 어셈블리의 새 버전을 릴리스할 수 있습니다. 사용 된 <xref:System.Resources.SatelliteContractVersionAttribute> 기존 위성 어셈블리를 사용 하지 배포 하는 것에 주 어셈블리의 새 버전을 사용 하 여 리소스 관리자에 지시 하는 특성  
+  
+ 위성 어셈블리의 버전 관리 지원에 대 한 자세한 내용은 문서를 참조 하세요 [리소스 검색](~/docs/framework/resources/retrieving-resources-in-desktop-apps.md)합니다.  
+  
+<a name="config"></a>   
+### <a name="satelliteassemblies-configuration-file-node"></a>\<satelliteassemblies > 구성 파일 노드  
+ 배포 되 고 웹 사이트 (HREF.exe 파일)에서 실행 되는 실행 파일에 대 한는 <xref:System.Resources.ResourceManager> 개체는 위성 어셈블리에 대 한 앱의 성능이 저하 될 수 있는 웹을 통해 프로브 수 있습니다. 성능 문제를 제거 하려면 앱을 배포한 경우 위성 어셈블리에이 검색을 제한할 수 있습니다. 만든이 위해을 `<satelliteassemblies>` 지정 하 고 앱에 대 한 문화권의 특정 집합을 배포 하려면 앱의 구성 파일에서 노드를 <xref:System.Resources.ResourceManager> 개체 노드에 있는 나열 되지 않은 모든 문화권에 대 한 프로브 하지 않아야 합니다.  
+  
+> [!NOTE]
+>  만드는 기본 대안을 `<satelliteassemblies>` 노드를 사용 하는 [ClickOnce 배포 매니페스트](https://msdn.microsoft.com/library/8457e615-e3b6-4990-8dcf-11bc590e4e9b) 기능.  
+  
+ 앱의 구성 파일에서 섹션을 다음과 비슷하게 만듭니다.  
+  
+```  
+<?xml version ="1.0"?>  
+<configuration>  
+    <satelliteassemblies>  
+        <assembly name="MainAssemblyName, Version=versionNumber, Culture=neutral, PublicKeyToken=null|yourPublicKeyToken">  
+            <culture>cultureName1</culture>  
+            <culture>cultureName2</culture>  
+            <culture>cultureName3</culture>  
+        </assembly>  
+    </satelliteassemblies>  
+</configuration>  
+```  
+  
+ 이 구성 정보를 다음과 같이 편집 합니다.  
+  
+-   하나 이상을 지정 `<assembly>` 노드를 배포 하는 각 주 어셈블리에 대 한 각 노드의 정규화 된 어셈블리 이름을 지정 하는 위치입니다. 대신 주 어셈블리의 이름을 지정 *MainAssemblyName*를 지정 합니다 `Version`, `PublicKeyToken`, 및 `Culture` 주 어셈블리에 해당 하는 값을 특성입니다.  
+  
+     에 대 한는 `Version` 특성을 어셈블리의 버전 번호를 지정 합니다. 예를 들어, 첫 번째 릴리스에서 어셈블리의 1.0.0.0 버전 번호를 수 있습니다.  
+  
+     에 대 한 합니다 `PublicKeyToken` 특성에 키워드를 지정 `null` 강력한 이름의 어셈블리를 서명 되지 않은 또는 어셈블리에 서명한 경우 공개 키 토큰을 지정 하는 경우.  
+  
+     에 대 한 합니다 `Culture` 특성에 키워드를 지정 합니다 `neutral` 주 어셈블리를 지정 하 고 발생 하는 <xref:System.Resources.ResourceManager> 에 나열 된 문화권에 대해서만 검색 하는 클래스는 `<culture>` 노드.  
+  
+     정규화 된 어셈블리 이름에 대 한 자세한 내용은 문서 참조 [어셈블리 이름](~/docs/framework/app-domains/assembly-names.md)합니다. 강력한 이름의 어셈블리에 대 한 자세한 내용은 문서를 참조 하세요 [강력한 어셈블리 만들기 및 사용](~/docs/framework/app-domains/create-and-use-strong-named-assemblies.md)합니다.  
+  
+-   하나 이상을 지정 `<culture>` "FR-FR"와 같은 특정 문화권 이름, 또는 중립 문화권 이름을 "fr" 등을 사용 하 여 노드.  
+  
+ 아래 나열 되지 않은 어셈블리에 대 한 리소스가 필요한 경우는 `<satelliteassemblies>` 노드를 <xref:System.Resources.ResourceManager> 표준 검색 규칙을 사용 하 여 문화권에 대 한 프로브 클래스.  
+  
+<a name="ws"></a>   
+## <a name="includewin8appnamelongincludeswin8-appname-long-mdmd-apps"></a>[!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 응용 프로그램  
+  
+> [!IMPORTANT]
+>  하지만 합니다 <xref:System.Resources.ResourceManager> 클래스에서 지원 됩니다 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱 권장 하지는 않습니다 사용 합니다. 이 클래스를 사용 하 여 개발 하는 경우에 [!INCLUDE[net_portable](~/includes/net-portable-md.md)] 사용 하 여 사용할 수 있는 프로젝트 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱. 리소스를 검색할 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 사용 합니다 [Windows.ApplicationModel.Resources.ResourceLoader](https://go.microsoft.com/fwlink/p/?LinkId=238182) 클래스를 대신 합니다.  
+  
+ 에 대 한 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 <xref:System.Resources.ResourceManager> 클래스 패키지 리소스 인덱스 (PRI) 파일에서 리소스를 검색 합니다. 모두 기본 문화권 및 리소스를 포함 하는 단일 PRI 파일 (응용 프로그램 패키지 PRI 파일) 문화권을 지역화 합니다. MakePRI 유틸리티를 사용 하 여 XML 리소스 (.resw) 형식으로 된 하나 이상의 리소스 파일에서 PRI 파일을 만듭니다. Visual Studio 프로젝트에 포함 된 리소스에 대 한 Visual Studio 만들고 PRI 파일을 자동으로 패키징하는 과정을 처리 합니다. 그런 다음.NET Framework를 사용 하 여 <xref:System.Resources.ResourceManager> 앱 또는 라이브러리의 리소스에 액세스 하는 클래스입니다.  
+  
+ 인스턴스화할 수 있습니다는 <xref:System.Resources.ResourceManager> 개체는 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 데스크톱 앱에 대해 수행 하는 동일한 방식에서으로 앱.  
+  
+ 특정 문화권에 대 한 리소스를 검색할 리소스의 이름을 전달 하 여 액세스할 수 있습니다는 <xref:System.Resources.ResourceManager.GetString%28System.String%29> 메서드. 기본적으로이 메서드를 호출 하는 스레드의 현재 UI 문화권에 의해 결정 된 문화권에 대 한 리소스를 반환 합니다. 리소스의 이름을 전달 하 여 특정 문화권의 리소스를 검색할 수도 있습니다와 <xref:System.Globalization.CultureInfo> 인 리소스를 검색할 문화권을 나타내는 개체를 <xref:System.Resources.ResourceManager.GetString%28System.String%2CSystem.Globalization.CultureInfo%29> 메서드. 현재 UI 문화권 또는 지정된 된 문화권에 대 한 리소스를 찾을 수 없는 경우 리소스 관리자 UI 언어 대체 (fallback) 목록 적합 한 리소스를 찾는 데 사용 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 주 어셈블리와 위성 어셈블리에서 문자열 리소스를 가져오는 명시적 culture 및 암시적 현재 UI 문화권을 사용 하는 방법에 설명 합니다. 자세한 내용은 "디렉터리 위치에 대 한 위성 어셈블리 하지 설치에서 전역 어셈블리 캐시" 섹션을 참조 합니다 [위성 어셈블리 만들기](~/docs/framework/resources/creating-satellite-assemblies-for-desktop-apps.md) 항목입니다.  
+  
+ 이 예제를 실행 합니다.  
+  
+1.  앱 디렉터리에서 다음 리소스 문자열이 포함 된 rmc.txt 라는 파일을 만듭니다.  
+  
+    ```  
+  
+    day=Friday  
+    year=2006  
+    holiday="Cinco de Mayo"  
+  
+    ```  
+  
+2.  사용 된 [리소스 파일 생성기](~/docs/framework/tools/resgen-exe-resource-file-generator.md) rmc.txt 입력된 파일에서 다음과 같이 rmc.resources 리소스 파일을 생성 하려면:  
+  
+    ```  
+    resgen rmc.txt  
+    ```  
+  
+3.  앱 디렉터리의 하위 디렉터리를 만들고 "ES-MX" 이름을 합니다. 다음 세 단계에서 만든 위성 어셈블리의 문화권 이름입니다.  
+  
+4.  다음 리소스 문자열을 포함 하는 ES-MX 디렉터리에서 rmc.es MX.txt 라는 파일을 만듭니다.  
+  
+    ```  
+  
+    day=Viernes  
+    year=2006  
+    holiday="Cinco de Mayo"  
+  
+    ```  
+  
+5.  사용 된 [리소스 파일 생성기](~/docs/framework/tools/resgen-exe-resource-file-generator.md) rmc.es MX.txt 입력된 파일에서 다음과 같이 rmc.es MX.resources 리소스 파일을 생성 하려면:  
+  
+    ```  
+    resgen rmc.es-MX.txt  
+    ```  
+  
+6.  이 예제에 대 한 filename rmc.vb 또는 rmc.cs 있다고 가정 합니다. 다음 소스 코드 파일을 복사 합니다. 그런 다음 컴파일하고 rmc.resources, 주 어셈블리 리소스 파일을 실행 가능한 어셈블리에 포함 합니다. Visual Basic 컴파일러를 사용 하는 경우 구문은 다음과 같습니다.  
+  
+    ```  
+    vbc rmc.vb /resource:rmc.resources  
+    ```  
+  
+     C# 컴파일러에 대 한 해당 구문은 다음과 같습니다.  
+  
+    ```  
+    csc /resource:rmc.resources rmc.cs  
+    ```  
+  
+7.  사용 합니다 [어셈블리 링커](~/docs/framework/tools/al-exe-assembly-linker.md) 위성 어셈블리를 만들 수 있습니다. 앱의 기본 이름 rmc 경우 위성 어셈블리 이름이 rmc.resources.dll 이어야 합니다. 위성 어셈블리에서 ES-MX 디렉터리에 만들어야 합니다. 현재 디렉터리에서 ES-MX을 사용 하는 경우이 명령을 사용 합니다.  
+  
+    ```  
+    al /embed:rmc.es-MX.resources /c:es-MX /out:rmc.resources.dll   
+    ```  
+  
+8.  Rmc.exe를 가져오고 표시할 포함 된 리소스 문자열을 실행 합니다.  
+  
+ [!code-csharp[ResourceManager_Class#1](~/samples/snippets/csharp/VS_Snippets_CLR/ResourceManager_Class/cs/rmc.cs#1)]
+ [!code-vb[ResourceManager_Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/ResourceManager_Class/vb/rmc.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>이 형식은 스레드로부터 안전합니다.</threadsafe>
+    <altmember cref="T:System.Globalization.CultureInfo" />
+    <altmember cref="P:System.Globalization.CultureInfo.CurrentUICulture" />
+    <altmember cref="T:System.Resources.SatelliteContractVersionAttribute" />
+    <related type="Article" href="https://msdn.microsoft.com/library/8ad495d4-2941-40cf-bf64-e82e85825890">응용 프로그램의 리소스</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Resources.ResourceManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ResourceManager ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ResourceManager();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>기본값을 사용하여 <see cref="T:System.Resources.ResourceManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자에서 파생 되는 고유한 클래스를 작성 하는 경우에 유용 합니다 <xref:System.Resources.ResourceManager> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ResourceManager (Type resourceSource);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Type resourceSource) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.#ctor(System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (resourceSource As Type)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ResourceManager(Type ^ resourceSource);" />
+      <MemberSignature Language="F#" Value="new System.Resources.ResourceManager : Type -&gt; System.Resources.ResourceManager" Usage="new System.Resources.ResourceManager resourceSource" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="resourceSource" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="resourceSource">리소스 관리자가 .resources 파일을 찾는 데 필요한 모든 정보를 파생시키는 형식입니다.</param>
+        <summary>지정된 형색 개체의 정보를 기초로 위성 어셈블리에서 리소스를 찾는 <see cref="T:System.Resources.ResourceManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+## <a name="desktop-apps"></a>데스크톱 앱  
+ 리소스 관리자는 데스크톱 앱에서 다음을 사용 합니다.는 `resourceSource` 매개 변수를 다음과 같이 특정 리소스 파일을 로드 합니다.  
+  
+-   경우는 <xref:System.Resources.NeutralResourcesLanguageAttribute> 위성 어셈블리에 있는 기본 문화권의 리소스, 리소스 관리자를 에지정된형식으로동일한어셈블리의기본문화권에대한리소스파일을찾을가정하는특성이사용되지않습니다`resourceSource` 매개 변수입니다.  
+  
+-   리소스 관리자 기본 리소스 파일에 지정 된 형식으로 동일한 기본 이름을 이라고 가정 합니다 `resourceSource` 매개 변수입니다.  
+  
+-   기본값을 사용 하 여 리소스 관리자 <xref:System.Resources.ResourceSet> 리소스 파일을 조작 하는 클래스입니다.  
+  
+ Resource manager 라는 이름의 MyCompany.MyProduct.MyType.resources MyType을 정의 하는 어셈블리에.resources 파일에 대 한 예를 들어 찾습니다 MyCompany.MyProduct.MyType 이라는 형식을 지정 합니다.  
+  
+ Visual Studio 리소스 디자이너에서 자동으로 생성 정의 하는 코드를 `internal` (에서 C#) 또는 `Friend` 클래스 (Visual Basic)의 이름이 기본 문화권에 대 한.resources 파일의 기본 이름으로 동일 합니다. 따라서 인스턴스화할 수는 <xref:System.Resources.ResourceManager> 개체 및으로 리소스 클래스는 컴파일러에 표시를 해야 하므로 이름이 리소스의 이름에 해당 하는 형식 개체를 가져와 특정 리소스 집합으로 결합 도 합니다. 예를 들어 Resource1.resources 파일의 이름이 인 경우 다음 문은 인스턴스화하는 <xref:System.Resources.ResourceManager> Resource1 라는.resources 파일을 관리 하는 개체:  
+  
+ [!code-csharp[System.Resources.ResourceManager.ctor#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.ctor/cs/ctor1.cs#2)]  
+  
+ Visual Studio를 사용 하지 않는 경우에 해당 이름과 네임 스페이스가 동일 기본.resources 파일의 멤버 없이 클래스를 만들 수 있습니다. 예제에서는 그림을 제공합니다.  
+  
+## <a name="includewin8appnamelongincludeswin8-appname-long-mdmd-apps"></a>[!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 응용 프로그램  
+  
+> [!IMPORTANT]
+>  하지만 합니다 <xref:System.Resources.ResourceManager> 클래스에서 지원 됩니다 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱 권장 하지는 않습니다 사용 합니다. 이 클래스를 사용 하 여 개발 하는 경우에 [!INCLUDE[net_portable](~/includes/net-portable-md.md)] 사용 하 여 사용할 수 있는 프로젝트 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱. 리소스를 검색할 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 사용 합니다 [Windows.ApplicationModel.Resources.ResourceLoader](https://go.microsoft.com/fwlink/p/?LinkId=238182) 클래스를 대신 합니다.  
+  
+ [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱 <xref:System.Resources.ResourceManager> 사용 하는 `resourceSource` 어셈블리, 기본 이름 및 리소스 항목을 앱의 패키지 리소스 인덱스 (PRI) 파일 내에서 찾을 수 있는 네임 스페이스를 유추 하는 매개 변수입니다. 예를 들어 MyCompany.MyProduct.MyType에 정의 된 명명 된 형식이 지정 된 `MyAssembly`, 리소스 관리자 리소스 이름이 MyAssembly 식별자 집합은 데이터를 해당 리소스 집합 내의 MyCompany.MyProduct.MyType 범위에 대 한 검색 합니다. 리소스 관리자 컨텍스트에서 기본 (현재 문화권을 현재 고대비 설정 및 등)이이 범위 내에서 리소스 항목을 검색합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 합니다 <xref:System.Resources.ResourceManager.%23ctor%28System.Type%29> 인스턴스화하는 생성자를 <xref:System.Resources.ResourceManager> 개체입니다. 영어 (en), 프랑스어 (프랑스) (FR-FR) 및 러시아어 (러시아) (RU-RU).txt 파일에서 컴파일된 리소스 이루어져 문화권입니다. 이 예제에서는 영어 (미국), 프랑스어 (프랑스), 러시아어 (러시아) 및 스웨덴어 (스웨덴)를 현재 문화권 및 현재 UI 문화권을 변경합니다. 그런 다음 호출 하 여 <xref:System.Resources.ResourceManager.GetString%28System.String%29> 하루 중 시간에 따라 달라 지는 인사말을 표시 하는 지역화 된 문자열을 검색 하는 방법입니다.  
+  
+ 이 예제에서는 다음 표에 나열 된 세 가지 텍스트 기반 리소스 파일을 필요 합니다. 각 파일에 명명 된 문자열 리소스가 포함 된 `Morning`, `Afternoon`, 및 `Evening`합니다.  
+  
+|culture|파일 이름|리소스 이름|리소스 값|  
+|-------------|---------------|-------------------|--------------------|  
+|en-US|GreetingResources.txt|`Morning`|안녕하세요|  
+|en-US|GreetingResources.txt|`Afternoon`|안녕하세요|  
+|en-US|GreetingResources.txt|`Evening`|안녕하세요|  
+|fr-FR|GreetingResources.fr-FR.txt|`Morning`|Bonjour|  
+|fr-FR|GreetingResources.fr-FR.txt|`Afternoon`|Bonjour|  
+|fr-FR|GreetingResources.fr-FR.txt|`Evening`|Bonsoir|  
+|ru-RU|GreetingResources.ru-RU.txt|`Morning`|ДОБРОЕ УТРО|  
+|ru-RU|GreetingResources.ru-RU.txt|`Afternoon`|Добрый день|  
+|ru-RU|GreetingResources.ru-RU.txt|`Evening`|Добрый вечер|  
+  
+ Greet.exe 라는 실행 파일을 만들고 Visual Basic 예제를 컴파일하려면 다음 배치 파일을 사용할 수 있습니다. C#으로 컴파일하려면 이름을 변경 하는 컴파일러에서 `vbc` 하 `csc` 에서 파일 확장명 `.vb` 에 `.cs`.  
+  
+```  
+  
+resgen GreetingResources.txt  
+vbc Greet.vb /resource: GreetingResources.resources  
+  
+md fr-FR  
+resgen GreetingResources.fr-FR.txt  
+al /out:fr-FR\Greet.resources.dll /culture:fr-FR /embed: GreetingResources.fr-FR.resources   
+  
+md ru-RU  
+resgen GreetingResources.ru-RU.txt  
+al /out:ru-RU\Greet.resources.dll /culture:ru-RU /embed: GreetingResources.ru-RU.resources  
+  
+```  
+  
+ 예를 들어 (Visual Basic 버전에 대 한 ShowDate.vb) 하거나 ShowDate.cs C# 버전의 코드에 대 한 소스 코드는 다음과 같습니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.Ctor#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.ctor/cs/greet.cs#3)]
+ [!code-vb[System.Resources.ResourceManager.Ctor#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.ctor/vb/greet.vb#3)]  
+  
+ App 클래스를 정의 하는 것 외에도 명명 된 `Example`, 소스 코드에서 정의 하는 내부 클래스 이름이, `GreetingResources`, 리소스 파일의 기본 이름과 동일 합니다. 따라서 성공적으로 인스턴스화할 수는 <xref:System.Resources.ResourceManager> 를 호출 하 여 개체를 <xref:System.Resources.ResourceManager.%23ctor%28System.Type%29> 생성자입니다.  
+  
+ 통지는 적절 한 지역화 된 출력 표시 문자열 경우에서 현재 UI 문화권 스웨덴어 (스웨덴) 인 경우 제외 하는 영어 언어 리소스가 사용 됩니다. 스웨덴어 언어 리소스를 사용할 수 없는 때문에 앱에 정의 된 대로 기본 문화권의 리소스를 사용 하 여는 <xref:System.Resources.NeutralResourcesLanguageAttribute> 특성을 대신 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="resourceSource" /> 매개 변수가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ResourceManager (string baseName, System.Reflection.Assembly assembly);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string baseName, class System.Reflection.Assembly assembly) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.#ctor(System.String,System.Reflection.Assembly)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ResourceManager(System::String ^ baseName, System::Reflection::Assembly ^ assembly);" />
+      <MemberSignature Language="F#" Value="new System.Resources.ResourceManager : string * System.Reflection.Assembly -&gt; System.Resources.ResourceManager" Usage="new System.Resources.ResourceManager (baseName, assembly)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="baseName" Type="System.String" />
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+      </Parameters>
+      <Docs>
+        <param name="baseName">확장명이 없지만 정규화된 네임스페이스 이름을 포함하는 리소스 파일의 루트 이름입니다. 예를 들어, "MyApplication.MyResource.en-US.resources"라는 리소스 파일의 루트 이름은 "MyApplication.MyResource"입니다.</param>
+        <param name="assembly">리소스에 대한 주 어셈블리입니다.</param>
+        <summary>지정된 어셈블리에서 지정된 루트 이름에서 파생된 파일에 포함된 리소스를 찾는 <see cref="T:System.Resources.ResourceManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+## <a name="desktop-apps"></a>데스크톱 앱  
+ 데스크톱 앱에서 개별 문화권 관련 리소스 파일을 위성 어셈블리에 포함 되어야 합니다 하 고 기본 문화권의 리소스 파일은 주 어셈블리에 포함 되어야 합니다. 위성 어셈블리를 해당 어셈블리의 매니페스트에 지정 된 단일 문화권의 리소스를 포함할 것으로 간주 되 고 필요에 따라 로드 됩니다.  
+  
+> [!NOTE]
+>  호출 어셈블리에서 검색 하는 대신 직접.resources 파일에서 리소스를 검색 해야 합니다는 <xref:System.Resources.ResourceManager.CreateFileBasedResourceManager%2A> 메서드 대신를 인스턴스화하는 <xref:System.Resources.ResourceManager> 개체입니다.  
+  
+ 리소스 파일을 구분 하는 경우 `baseName` 에서 찾을 수 없습니다 `assembly`, 메서드를 인스턴스화하는 <xref:System.Resources.ResourceManager> 있으 나 특정 리소스를 검색 하려는 시도가 예외를 throw 일반적으로 <xref:System.Resources.MissingManifestResourceException>합니다. 예외의 원인을 진단 하는 방법에 대 한 내용은 "MissingManifestResourceException 예외 처리" 섹션을 참조 합니다 <xref:System.Resources.ResourceManager> 클래스 항목입니다.  
+  
+## <a name="includewin8appnamelongincludeswin8-appname-long-mdmd-apps"></a>[!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 응용 프로그램  
+  
+> [!IMPORTANT]
+>  하지만 합니다 <xref:System.Resources.ResourceManager> 클래스에서 지원 됩니다 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱 권장 하지는 않습니다 사용 합니다. 이 클래스를 사용 하 여 개발 하는 경우에 [!INCLUDE[net_portable](~/includes/net-portable-md.md)] 사용 하 여 사용할 수 있는 프로젝트 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱. 리소스를 검색할 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 사용 합니다 [Windows.ApplicationModel.Resources.ResourceLoader](https://go.microsoft.com/fwlink/p/?LinkId=238182) 클래스를 대신 합니다.  
+  
+ [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 리소스 관리자의 단순한 이름을 사용 하는 `assembly` 앱의 패키지 리소스 인덱스 (PRI) 파일에서 일치 하는 리소스를 조회 하는 매개 변수 설정 합니다. `baseName` 리소스 집합 내의 리소스 항목 조회 매개 변수를 사용 합니다. 예를 들어 PortableLibrary1.Resource1.de-DE.resources에 대 한 루트 이름은 PortableLibrary1.Resource1입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 간단한 지역화 되지 않은 "Hello World" 앱을 사용 하 여 나타냅니다는 <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29> 생성자입니다. 다음은 ExampleResources.txt 라는 텍스트 파일의 내용을 보여 줍니다. 앱이 컴파일되는 경우 리소스는 주 앱 어셈블리에 포함 됩니다.  
+  
+```  
+Greeting=Hello  
+```  
+  
+ 사용 하 여 이진 리소스 파일로 변환할 수 텍스트 파일을 명령 프롬프트에서 다음과 같이 합니다.  
+  
+```  
+resgen ExampleResources.txt  
+```  
+  
+ 다음 예에서는 실행 코드를 인스턴스화하는 <xref:System.Resources.ResourceManager> 개체 이름을 입력 하 라는 메시지와 인사말을 표시 합니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.ctor#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.ctor/cs/example.cs#1)]
+ [!code-vb[System.Resources.ResourceManager.ctor#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.ctor/vb/example.vb#1)]  
+  
+ Visual Basic에서 다음 명령을 사용 하 여 컴파일할 수 있습니다.  
+  
+```  
+vbc Example.vb /resource:ExampleResources.resources  
+```  
+  
+ 또는 다음을 사용 하 여 C# 명령:  
+  
+```  
+csc Example.cs /resource:ExampleResources.resources  
+```  
+  
+ 이 예제에서는 해당 어셈블리에 정의 된 형식을 전달 하 여 리소스 파일을 포함 하는 어셈블리에 대 한 참조를 검색 하는 `typeof` 함수 (C#) 또는 `GetType` 함수 (Visual Basic) 및 해당 의값을검색<xref:System.Type.Assembly%2A?displayProperty=nameWithType>속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="baseName" /> 또는 <paramref name="assembly" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <block subset="none" type="overrides"><para>이 생성자는 시스템 제공 <see cref="T:System.Resources.ResourceSet" /> 구현 합니다. 사용자 지정 리소스 파일 형식을 사용 하려면에서 파생 되어야 합니다 <see cref="T:System.Resources.ResourceSet" /> 클래스에서 재정의 <see cref="M:System.Resources.ResourceSet.GetDefaultReader" /> 및 <see cref="M:System.Resources.ResourceSet.GetDefaultWriter" /> 메서드 및 형식에 성공은 <see cref="M:System.Resources.ResourceManager.#ctor(System.String,System.Reflection.Assembly,System.Type)" /> 생성자. 사용자 지정을 사용 하 여 <see cref="T:System.Resources.ResourceSet" /> 제어 리소스 캐싱 정책 또는 사용자 고유의 리소스 파일 형식으로 지원 하지만 일반적으로 필요 없는 유용할 수 있습니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ResourceManager (string baseName, System.Reflection.Assembly assembly, Type usingResourceSet);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string baseName, class System.Reflection.Assembly assembly, class System.Type usingResourceSet) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.#ctor(System.String,System.Reflection.Assembly,System.Type)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ResourceManager(System::String ^ baseName, System::Reflection::Assembly ^ assembly, Type ^ usingResourceSet);" />
+      <MemberSignature Language="F#" Value="new System.Resources.ResourceManager : string * System.Reflection.Assembly * Type -&gt; System.Resources.ResourceManager" Usage="new System.Resources.ResourceManager (baseName, assembly, usingResourceSet)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="baseName" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="usingResourceSet" Type="System.Type" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="baseName">확장명이 없지만 정규화된 네임스페이스 이름을 포함하는 리소스 파일의 루트 이름입니다. 예를 들어, "MyApplication.MyResource.en-US.resources"라는 리소스 파일의 루트 이름은 "MyApplication.MyResource"입니다.</param>
+        <param name="assembly">리소스에 대한 주 어셈블리입니다.</param>
+        <param name="usingResourceSet">사용할 사용자 지정 <see cref="T:System.Resources.ResourceSet" />의 형식입니다. <see langword="null" />이면 기본 런타임 <see cref="T:System.Resources.ResourceSet" /> 개체가 사용됩니다.</param>
+        <summary>지정된 어셈블리에서 지정된 루트 이름의 파일에 포함된 리소스를 찾는 데 지정된 <see cref="T:System.Resources.ResourceManager" /> 클래스를 사용하는 <see cref="T:System.Resources.ResourceSet" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 개별 문화권 관련 리소스 파일을 위성 어셈블리에 포함 되어야 합니다 하 고 기본 문화권의 리소스 파일은 주 어셈블리에 포함 되어야 합니다. 위성 어셈블리를 해당 어셈블리의 매니페스트에 지정 된 단일 문화권의 리소스를 포함할 것으로 간주 되 고 필요에 따라 로드 됩니다.  
+  
+> [!NOTE]
+>  호출 어셈블리에서 검색 하는 대신 직접.resources 파일에서 리소스를 검색 해야 합니다는 <xref:System.Resources.ResourceManager.CreateFileBasedResourceManager%2A> 메서드 대신를 인스턴스화하는 <xref:System.Resources.ResourceManager> 개체입니다.  
+  
+ 리소스 파일을 구분 하는 경우 `baseName` 에서 찾을 수 없습니다 `assembly`, 메서드를 인스턴스화하는 <xref:System.Resources.ResourceManager> 있으 나 특정 리소스를 검색 하려는 시도가 예외를 throw 일반적으로 <xref:System.Resources.MissingManifestResourceException>합니다. 예외의 원인을 진단 하는 방법에 대 한 내용은 "MissingManifestResourceException 예외 처리" 섹션을 참조 합니다 <xref:System.Resources.ResourceManager> 클래스 항목입니다.  
+  
+> [!NOTE]
+>  합니다 `usingResourceSet` 매개 변수는 사용자 고유의 리소스 형식을 지원 하 고 일반적으로 `null`입니다. 이 생성자를 다릅니다는 <xref:System.Type> 만 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="usingResourceset" />이 <see cref="T:System.Resources.ResourceSet" />의 파생 클래스가 아닌 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="baseName" /> 또는 <paramref name="assembly" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <block subset="none" type="usage"><para>이 생성자를 사용 하면 지정 된 <see cref="T:System.Resources.ResourceSet" /> 구현 합니다. 특정을 원하지 않는 경우 <see cref="T:System.Resources.ResourceSet" /> 구현 하지만를 사용자 지정 리소스 파일 형식을 사용 하는 등에서 파생 되어야 합니다 <see cref="T:System.Resources.ResourceSet" /> 클래스에서 재정의 <see cref="M:System.Resources.ResourceSet.GetDefaultReader" /> 및 <see cref="M:System.Resources.ResourceSet.GetDefaultWriter" /> 메서드 및이 생성자를 형식에 전달 합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="BaseName">
+      <MemberSignature Language="C#" Value="public virtual string BaseName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string BaseName" />
+      <MemberSignature Language="DocId" Value="P:System.Resources.ResourceManager.BaseName" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property BaseName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ BaseName { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.BaseName : string" Usage="System.Resources.ResourceManager.BaseName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Resources.ResourceManager" />에서 리소스를 검색하는 리소스 파일의 루트 이름을 가져옵니다.</summary>
+        <value><see cref="T:System.Resources.ResourceManager" />에서 리소스를 검색하는 리소스 파일의 루트 이름입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Resources.ResourceManager.BaseName%2A> 정규화 된 네임 스페이스 이름 및 루트 리소스 이름을 해당 문화권 또는 파일 이름 확장명이 없는 리소스 파일의 속성을 반영 합니다. 예를 들어 앱의 기본 리소스 파일의 이름은 `SampleApps.StringResources.resources`의 값을 <xref:System.Resources.ResourceManager.BaseName%2A> 속성이 "SampleApps.StringResources"입니다. 앱의 기본 리소스 파일의 이름이 `SampleApps.StringResources.en-US.resources` 위성 어셈블리의 값에 포함 되 고는 <xref:System.Resources.ResourceManager.BaseName%2A> 속성은 여전히 "SampleApps.StringResources"입니다.  
+  
+> [!IMPORTANT]
+>  <xref:System.Resources.ResourceManager.BaseName%2A> 포함 하지 않으면 명시적으로 하나는 파일을 컴파일할 때 컴파일된 이며 명령줄에서 포함 리소스 파일의 속성 값에는 네임 스페이스 이름이 포함 되지 않습니다. 다른 한편으로 <xref:System.Resources.ResourceManager.BaseName%2A> 컴파일된 이며 일반적으로 Visual Studio 환경 내에서 포함 리소스 파일의 속성 값에는 기본 네임 스페이스 이름을 포함 합니다.  
+  
+ <xref:System.Resources.ResourceManager.BaseName%2A> 에 전달 된 문자열 속성 값이 동일 합니다 <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29> 또는 <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%2CSystem.Type%29> 인스턴스화할 때 생성자는 <xref:System.Resources.ResourceManager> 인스턴스.  
+  
+   
+  
+## Examples  
+ 컴파일하고 다음 유틸리티를 실행 하 여 포함 된.resources 파일의 이름을 확인할 수 있습니다. 주 어셈블리 또는 위성 어셈블리는 명령줄 매개 변수로 이름을 허용 하는 콘솔 앱입니다. 로 제공 해야 하는 문자열을 표시 합니다 `baseName` 의 매개 변수를 <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%29> 또는 <xref:System.Resources.ResourceManager.%23ctor%28System.String%2CSystem.Reflection.Assembly%2CSystem.Type%29> 생성자 resource manager 리소스를 올바르게 식별할 수 있도록 합니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.class/cs/resourcenames.cs#4)]
+ [!code-vb[System.Resources.ResourceManager.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.class/vb/resourcenames.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BaseNameField">
+      <MemberSignature Language="C#" Value="protected string BaseNameField;" />
+      <MemberSignature Language="ILAsm" Value=".field family string BaseNameField" />
+      <MemberSignature Language="DocId" Value="F:System.Resources.ResourceManager.BaseNameField" />
+      <MemberSignature Language="VB.NET" Value="Protected BaseNameField As String " />
+      <MemberSignature Language="C++ CLI" Value="protected: System::String ^ BaseNameField;" />
+      <MemberSignature Language="F#" Value="val mutable BaseNameField : string" Usage="System.Resources.ResourceManager.BaseNameField" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Resources.ResourceManager" />에서 리소스를 검색하는 리소스 파일의 루트 이름을 지정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Resources.ResourceManager.BaseNameField> 필드에서 파생 되는 고유한 클래스를 작성 하는 경우에 유용 합니다 <xref:System.Resources.ResourceManager> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateFileBasedResourceManager">
+      <MemberSignature Language="C#" Value="public static System.Resources.ResourceManager CreateFileBasedResourceManager (string baseName, string resourceDir, Type usingResourceSet);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Resources.ResourceManager CreateFileBasedResourceManager(string baseName, string resourceDir, class System.Type usingResourceSet) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.CreateFileBasedResourceManager(System.String,System.String,System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function CreateFileBasedResourceManager (baseName As String, resourceDir As String, usingResourceSet As Type) As ResourceManager" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Resources::ResourceManager ^ CreateFileBasedResourceManager(System::String ^ baseName, System::String ^ resourceDir, Type ^ usingResourceSet);" />
+      <MemberSignature Language="F#" Value="static member CreateFileBasedResourceManager : string * string * Type -&gt; System.Resources.ResourceManager" Usage="System.Resources.ResourceManager.CreateFileBasedResourceManager (baseName, resourceDir, usingResourceSet)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Resources.ResourceManager</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="baseName" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="resourceDir" Type="System.String" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="usingResourceSet" Type="System.Type" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="baseName">리소스의 루트 이름입니다. 예를 들어 “MyResource.en-US.resources"라는 리소스 파일의 루트 이름은 "MyResource"입니다.</param>
+        <param name="resourceDir">리소스를 검색할 디렉터리의 이름입니다. <paramref name="resourceDir" />는 애플리케이션 디렉터리의 절대 경로 또는 상대 경로일 수 있습니다.</param>
+        <param name="usingResourceSet">사용할 사용자 지정 <see cref="T:System.Resources.ResourceSet" />의 형식입니다. <see langword="null" />이면 기본 런타임 <see cref="T:System.Resources.ResourceSet" /> 개체가 사용됩니다.</param>
+        <summary>리소스에 대한 어셈블리 매니페스트 대신 특정 디렉터리를 검색하는 <see cref="T:System.Resources.ResourceManager" /> 개체를 반환합니다.</summary>
+        <returns>리소스에 대한 어셈블리 매니페스트 대신 지정된 디렉터리를 검색하는 리소스 관리자의 새 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 어셈블리에 포함 되지 않은.resources 파일에서 리소스를 검색 하는 리소스 관리자를 반환 합니다. 사용할 수 있습니다 <xref:System.Resources.ResourceManager> ASP.NET 페이지에 대 한 리소스를 로드 하거나 테스트 하려면 개체를 <xref:System.Resources.ResourceSet> 구현 합니다.  독립 실행형.resources 파일에서 리소스를 검색 하는 예제를 참조 합니다 [리소스 검색](~/docs/framework/resources/retrieving-resources-in-desktop-apps.md) 문서.  
+  
+ 이 메서드를 사용 하면 지정 된 <xref:System.Resources.ResourceSet> 구현 합니다. 특정을 원하지 않는 경우 <xref:System.Resources.ResourceSet> 구현 사용자 지정 리소스 파일 형식을 사용 하려고 하지만에서 파생 되어야 합니다 <xref:System.Resources.ResourceSet> 클래스에서 재정의 <xref:System.Resources.ResourceSet.GetDefaultReader%2A> 및 <xref:System.Resources.ResourceSet.GetDefaultWriter%2A> 메서드 및이 생성자를 형식에 전달 합니다.  
+  
+> [!CAUTION]
+>  ASP.NET 앱에서 독립 실행형.resources 파일을 사용 하는 XCOPY 배포가 중단 하 여 명시적으로 릴리스될 때까지 리소스가 잠겨 있기 때문에 <xref:System.Resources.ResourceManager.ReleaseAllResources%2A> 메서드. ASP.NET 응용 프로그램을 사용 하 여 리소스를 배포 하려는 경우.resources 파일을 위성 어셈블리로 컴파일하십시오.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="baseName" /> 또는 <paramref name="resourceDir" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+      </Docs>
+    </Member>
+    <Member MemberName="FallbackLocation">
+      <MemberSignature Language="C#" Value="protected System.Resources.UltimateResourceFallbackLocation FallbackLocation { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Resources.UltimateResourceFallbackLocation FallbackLocation" />
+      <MemberSignature Language="DocId" Value="P:System.Resources.ResourceManager.FallbackLocation" />
+      <MemberSignature Language="VB.NET" Value="Protected Property FallbackLocation As UltimateResourceFallbackLocation" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Resources::UltimateResourceFallbackLocation FallbackLocation { System::Resources::UltimateResourceFallbackLocation get(); void set(System::Resources::UltimateResourceFallbackLocation value); };" />
+      <MemberSignature Language="F#" Value="member this.FallbackLocation : System.Resources.UltimateResourceFallbackLocation with get, set" Usage="System.Resources.ResourceManager.FallbackLocation" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Resources.UltimateResourceFallbackLocation</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>기본 대체(fallback) 리소스를 검색할 위치를 가져오거나 설정합니다.</summary>
+        <value>리소스 관리자는 대체 (fallback) 리소스를 찾을 수 있습니다 위치를 지정 하는 열거형 값 중 하나입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Resources.ResourceManager.FallbackLocation%2A> 속성에서 파생 되는 고유한 클래스를 작성 하는 경우에 유용 합니다 <xref:System.Resources.ResourceManager> 클래스입니다.  
+  
+ 사용할 수는 <xref:System.Resources.NeutralResourcesLanguageAttribute> 리소스 관리자는 앱에 대 한 기본 문화권을 찾을 수 있는 위치를 알리기 위해 특성: (기본값)는 주 어셈블리 또는 위성 어셈블리에 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Resources.UltimateResourceFallbackLocation" />
+        <altmember cref="T:System.Resources.NeutralResourcesLanguageAttribute" />
+        <related type="Article" href="~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md">리소스 패키징 및 배포</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNeutralResourcesLanguage">
+      <MemberSignature Language="C#" Value="protected static System.Globalization.CultureInfo GetNeutralResourcesLanguage (System.Reflection.Assembly a);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Globalization.CultureInfo GetNeutralResourcesLanguage(class System.Reflection.Assembly a) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetNeutralResourcesLanguage(System.Reflection.Assembly)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function GetNeutralResourcesLanguage (a As Assembly) As CultureInfo" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Globalization::CultureInfo ^ GetNeutralResourcesLanguage(System::Reflection::Assembly ^ a);" />
+      <MemberSignature Language="F#" Value="static member GetNeutralResourcesLanguage : System.Reflection.Assembly -&gt; System.Globalization.CultureInfo" Usage="System.Resources.ResourceManager.GetNeutralResourcesLanguage a" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Globalization.CultureInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="a" Type="System.Reflection.Assembly" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="a">문화권 관련 정보를 반환하는 어셈블리입니다.</param>
+        <summary>지정된 어셈블리에서 <see cref="T:System.Resources.NeutralResourcesLanguageAttribute" /> 특성의 값을 검색하여 주 어셈블리의 기본 리소스에 대한 문화권별 정보를 반환합니다.</summary>
+        <returns>있을 경우 <see cref="T:System.Resources.NeutralResourcesLanguageAttribute" /> 특성의 문화권이거나, 그렇지 않으면 고정 문화권입니다.</returns>
+        <remarks>To be added.</remarks>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetObject">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>현재 문화권에 대해 지정된 비문자열 리소스의 값을 반환합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public virtual object GetObject (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object GetObject(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetObject(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetObject (name As String) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ GetObject(System::String ^ name);" />
+      <MemberSignature Language="F#" Value="abstract member GetObject : string -&gt; obj&#xA;override this.GetObject : string -&gt; obj" Usage="resourceManager.GetObject name" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="name">가져올 리소스 이름입니다.</param>
+        <summary>지정된 문자열이 아닌 리소스의 값을 반환합니다.</summary>
+        <returns>호출자의 현재 문화권 설정에 대해 지역화된 리소스의 값입니다. 해당 리소스 집합이 존재하지만 <paramref name="name" />을 찾을 수 없다면, 메서드가 <see langword="null" />을 반환합니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Resources.ResourceManager.GetObject%2A> 메서드 검색 문자열이 아닌 리소스를 사용 합니다. 와 같은 기본 데이터 형식에 속하는 값을 다음과 <xref:System.Int32> 또는 <xref:System.Double>, 비트맵 (같은 <xref:System.Drawing.Bitmap?displayProperty=nameWithType> 개체), 또는 사용자 지정 직렬화 된 개체입니다. 일반적으로 반환 되는 개체 캐스팅 (C#) 또는 (Visual Basic)에서는 적절 한 형식의 개체로 변환 해야 합니다.  
+  
+ 반환 되는 리소스에 정의 된 현재 스레드의 UI 문화권에 대 한 지역화 되는 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> 속성입니다. 리소스가 해당 문화권에 대 한 지역화 되지 않으면, 리소스 관리자는 적절 한 리소스를 로드 하려면 대체 (fallback) 규칙을 사용 합니다. 사용할 수 있는 지역화 된 리소스 집합이 있으면는 <xref:System.Resources.ResourceManager> 기본 문화권의 리소스에 의존 합니다. 리소스 기본 문화권에 대 한 집합을 없으면 메서드에서 throw를 <xref:System.Resources.MissingManifestResourceException> 예외 또는 위성 어셈블리에 있는 리소스 집합이 될 경우는 <xref:System.Resources.MissingSatelliteAssemblyException> 예외입니다. 리소스 관리자를 로드할 수는 적절 한 리소스 설정 되지만 명명 된 리소스를 찾을 수 없습니다 `name`, 메서드가 반환 `null`합니다.  
+  
+ <xref:System.Resources.ResourceManager.IgnoreCase%2A> 속성에 따라 결정 하는지 여부를 비교 `name` 리소스 이름의 대/소문자가 (기본값) 또는 대/소문자 구분 합니다.  
+  
+> [!CAUTION]
+>  이 메서드는 나열 된 것 보다 자세한 예외를 throw 할 수 있습니다. 이 문제가 발생 하는 한 가지 이유는이 메서드를 호출 하는 메서드는 예외를 throw 하는 경우.  예를 들어, 한 <xref:System.IO.FileLoadException> 위성 어셈블리를 설치 또는 배포 오류가 발생 했습니다 하는 경우 예외를 throw 될 수 있습니다 <xref:System.Runtime.Serialization.SerializationException> 형식을 역직렬화 할 때 사용자 정의 예외를 throw 하는 사용자 정의 형식 예외가 throw 될 수 있습니다.  
+  
+## <a name="performance-considerations"></a>성능 고려 사항  
+ 호출 하는 경우는 <xref:System.Resources.ResourceManager.GetObject%2A> 메서드를 여러 번 사용 하 여 동일한 `name` 매개 변수를 각 호출을 사용 하 여 동일한 개체에 대 한 참조를 반환 하는 메서드에 종속 되지 않습니다. 왜냐하면는 <xref:System.Resources.ResourceManager.GetObject%2A> 메서드는 캐시에 있는 기존 리소스 개체에 대 한 참조를 반환할 수 있습니다 또는 리소스를 다시 로드 하 고 새 리소스 개체에 대 한 참조를 반환할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Resources.ResourceManager.GetObject%28System.String%29> 메서드를 사용하여 사용자 지정 개체를 deserialize합니다. 예제에는 UIElements.cs (Visual Basic을 사용 하는 경우에 경우) 라는 소스 코드 파일을 포함 됩니다. 이라는 다음 구조를 정의 하는 `PersonTable`합니다. 이 구조는 테이블 열의 지역화된 이름을 표시하는 일반 테이블 표시 루틴에서 사용하기 위한 것입니다. `PersonTable` 구조체는 <xref:System.SerializableAttribute> 특성으로 표시됩니다.  
+  
+ [!code-csharp[Conceptual.Resources.Retrieving#6](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.resources.retrieving/cs/example.cs#6)]
+ [!code-vb[Conceptual.Resources.Retrieving#6](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.resources.retrieving/vb/example.vb#6)]  
+  
+ CreateResources.cs(Visual Basic의 경우 CreateResources.vb)라는 파일에서 온 다음 코드는 테이블 제목 및 영어에 대해 지역화된 앱에 대한 정보를 포함하는 `PersonTable` 개체를 저장하는 UIResources.resx라는 XML 리소스 파일을 만듭니다.  
+  
+ [!code-csharp[Conceptual.Resources.Retrieving#7](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.resources.retrieving/cs/example1.cs#7)]
+ [!code-vb[Conceptual.Resources.Retrieving#7](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.resources.retrieving/vb/example.vb#7)]  
+  
+ 그런 다음 GetObject.cs(GetObject.vb)라는 소스 코드 파일의 다음 코드가 리소스를 검색하여 콘솔에 표시합니다.  
+  
+ [!code-csharp[Conceptual.Resources.Retrieving#8](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.resources.retrieving/cs/example2.cs#8)]
+ [!code-vb[Conceptual.Resources.Retrieving#8](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.resources.retrieving/vb/example2.vb#8)]  
+  
+ 필요한 리소스 파일 및 어셈블리를 빌드하고 다음 배치 파일을 실행하여 앱을 실행할 수 있습니다. `/r` 옵션을 사용하여 UIElements.dll에 대한 참조와 함께 Resgen.exe를 제공해야 합니다. 이렇게 해야 `PersonTable` 구조에 대한 정보에 액세스할 수 있습니다. C#을 사용하는 경우 `vbc` 컴파일러 이름을 `csc`로 바꾸고, `.vb` 확장을 `.cs`로 바꿉니다.  
+  
+```  
+  
+vbc /t:library UIElements.vb  
+vbc CreateResources.vb /r:UIElements.dll  
+CreateResources  
+  
+resgen UIResources.resx  /r:UIElements.dll  
+vbc GetObject.vb /r:UIElements.dll /resource:UIResources.resources  
+  
+GetObject.exe  
+  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Resources.MissingManifestResourceException">사용할 수 있는 지역화된 리소스 집합을 찾을 수 없고 기본 문화권 리소스가 없는 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <exception cref="T:System.Resources.MissingSatelliteAssemblyException">기본 문화권의 리소스가 찾을 수 없는 위성 어셈블리에 있을 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <altmember cref="M:System.Resources.ResourceManager.GetStream(System.String)" />
+        <related type="Article" href="~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md">리소스 패키징 및 배포</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetObject">
+      <MemberSignature Language="C#" Value="public virtual object GetObject (string name, System.Globalization.CultureInfo culture);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object GetObject(string name, class System.Globalization.CultureInfo culture) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetObject(System.String,System.Globalization.CultureInfo)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetObject (name As String, culture As CultureInfo) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Object ^ GetObject(System::String ^ name, System::Globalization::CultureInfo ^ culture);" />
+      <MemberSignature Language="F#" Value="abstract member GetObject : string * System.Globalization.CultureInfo -&gt; obj&#xA;override this.GetObject : string * System.Globalization.CultureInfo -&gt; obj" Usage="resourceManager.GetObject (name, culture)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="culture" Type="System.Globalization.CultureInfo" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="name">가져올 리소스 이름입니다.</param>
+        <param name="culture">리소스를 지역화할 문화권입니다. 이 문화권에 대해 리소스가 지역화되지 않았으면 리소스 관리자에서 적절한 리소스를 찾기 위한 폴백 규칙을 사용합니다.  
+  
+이 값이 <see langword="null" />이면 문화권의 <see cref="T:System.Globalization.CultureInfo" /> 속성을 사용하여 <see cref="P:System.Globalization.CultureInfo.CurrentUICulture" /> 개체를 가져옵니다.</param>
+        <summary>지정된 문화권에 대해 지역화된 비문자열 리소스의 값을 가져옵니다.</summary>
+        <returns>지정된 문화권에 대해 지역화된 리소스의 값입니다. 해당 리소스 집합이 존재하지만 <paramref name="name" />을 찾을 수 없다면, 메서드가 <see langword="null" />을 반환합니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Resources.ResourceManager.GetObject%28System.String%2CSystem.Globalization.CultureInfo%29> 메서드 검색 문자열이 아닌 리소스를 사용 합니다. 와 같은 기본 데이터 형식에 속하는 값을 다음과 <xref:System.Int32> 또는 <xref:System.Double>, 비트맵 (같은 <xref:System.Drawing.Bitmap?displayProperty=nameWithType> 개체), 또는 사용자 지정 직렬화 된 개체입니다. 일반적으로 반환 되는 개체 캐스팅 (C#) 또는 (Visual Basic)에서는 적절 한 형식의 개체로 변환 해야 합니다.  
+  
+ 반환 되는 리소스에 지정 된 문화권에 대 한 지역화 됩니다 `culture`, 또는 지정 된 문화권에 대 한는 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> 속성 경우 `culture` 는 `null`합니다. 리소스가 해당 문화권에 대 한 지역화 되지 않으면, 리소스 관리자는 적절 한 리소스를 로드 하려면 대체 (fallback) 규칙을 사용 합니다. 사용할 수 있는 지역화 된 리소스 집합이 있으면 리소스 관리자 기본 문화권의 리소스에 대체 합니다. 리소스 기본 문화권에 대 한 집합을 없으면 메서드에서 throw를 <xref:System.Resources.MissingManifestResourceException> 예외 또는 위성 어셈블리에 있는 리소스 집합이 될 경우는 <xref:System.Resources.MissingSatelliteAssemblyException> 예외입니다. 리소스 관리자를 로드할 수는 적절 한 리소스 설정 되지만 명명 된 리소스를 찾을 수 없습니다 `name`, 메서드가 반환 `null`합니다.  
+  
+ <xref:System.Resources.ResourceManager.IgnoreCase%2A> 속성에 따라 결정 하는지 여부를 비교 `name` 리소스 이름의 대/소문자가 (기본값) 또는 대/소문자 구분 합니다.  
+  
+> [!CAUTION]
+>  이 메서드는 나열 된 것 보다 자세한 예외를 throw 할 수 있습니다. 이 문제가 발생 하는 한 가지 이유는이 메서드를 호출 하는 메서드는 예외를 throw 하는 경우.  예를 들어, 한 <xref:System.IO.FileLoadException> 위성 어셈블리를 설치 또는 배포 오류가 발생 했습니다 하는 경우 예외를 throw 될 수 있습니다 <xref:System.Runtime.Serialization.SerializationException> 형식을 역직렬화 할 때 사용자 정의 예외를 throw 하는 사용자 정의 형식 예외가 throw 될 수 있습니다.  
+  
+## <a name="performance-considerations"></a>성능 고려 사항  
+ 호출 하는 경우는 <xref:System.Resources.ResourceManager.GetObject%2A> 메서드를 여러 번 사용 하 여 동일한 `name` 매개 변수를 각 호출을 사용 하 여 동일한 개체에 대 한 참조를 반환 하는 메서드에 종속 되지 않습니다. 왜냐하면는 <xref:System.Resources.ResourceManager.GetObject%2A> 메서드는 캐시에 있는 기존 리소스 개체에 대 한 참조를 반환할 수 있습니다 또는 리소스를 다시 로드 하 고 새 리소스 개체에 대 한 참조를 반환할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Resources.ResourceManager.GetObject%28System.String%2CSystem.Globalization.CultureInfo%29> 메서드를 사용하여 사용자 지정 개체를 deserialize합니다. 예제 NumberInfo.cs (Visual Basic을 사용 하는 경우에 NumberInfo.vb) 라는 소스 코드 파일에 포함 되어 이라는 다음 구조를 정의 하는 `Numbers`합니다. 이 구조는 강의 영어가 아닌 말하기를 영어로 10으로 계산 하는 간단한 교육용 앱에서 사용할 것입니다. 유의 합니다 `Numbers` 가 표시 되는 <xref:System.SerializableAttribute> 특성입니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.GetObject#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.getobject/cs/numberinfo.cs#1)]
+ [!code-vb[System.Resources.ResourceManager.GetObject#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.getobject/vb/numberinfo.vb#1)]  
+  
+ 다음 소스 코드 파일에서 명명 된 CreateResources.cs (Visual Basic의 경우 CreateResources.vb) 프랑스어, 포르투갈어 및 러시아어 언어 뿐만 아니라 기본 영어 언어에 대 한 XML 리소스 파일을 만듭니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.GetObject#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.getobject/cs/createresources.cs#2)]
+ [!code-vb[System.Resources.ResourceManager.GetObject#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.getobject/vb/createresources.vb#2)]  
+  
+ 리소스는 현재 UI 문화권을 프랑스어 (프랑스), 포르투갈어 (브라질) 또는 러시아어 (러시아) 설정 하는 다음 앱에서 사용 됩니다. 호출을 <xref:System.Resources.ResourceManager.GetObject%28System.String%29> 메서드를를 `Numbers` 지역화 된 숫자를 포함 하는 개체 및 <xref:System.Resources.ResourceManager.GetObject%28System.String%2CSystem.Globalization.CultureInfo%29> 메서드를를 `Numbers` 영어 숫자를 포함 하는 개체입니다. 현재 UI 문화권 및 영어를 사용 하 여 홀수 번호를 표시 합니다. 소스 코드 파일에는 ShowNumbers.cs (ShowNumbers.vb) 라고 합니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.GetObject#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.getobject/cs/shownumbers.cs#3)]
+ [!code-vb[System.Resources.ResourceManager.GetObject#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.getobject/vb/shownumbers.vb#3)]  
+  
+ 빌드 및 Visual Basic 버전의 예제를 실행 하려면 다음 배치 파일을 사용할 수 있습니다. C#을 사용 하는 경우 교체 `vbc` 사용 하 여 `csc`, 및 바꾸기는 `.vb` 확장과 `.cs`합니다.  
+  
+```  
+  
+vbc /t:library NumberInfo.vb  
+  
+vbc CreateResources.vb /r:NumberInfo.dll  
+CreateResources  
+  
+resgen NumberResources.resx /r:NumberInfo.dll  
+  
+resgen NumberResources.fr.resx /r:Numberinfo.dll  
+Md fr  
+al /embed:NumberResources.fr.resources /culture:fr /t:lib /out:fr\ShowNumbers.resources.dll  
+  
+resgen NumberResources.pt.resx  /r:Numberinfo.dll  
+Md pt  
+al /embed:NumberResources.pt.resources /culture:pt /t:lib /out:pt\ShowNumbers.resources.dll  
+  
+resgen NumberResources.ru.resx /r:Numberinfo.dll  
+Md ru  
+al /embed:NumberResources.ru.resources /culture:ru /t:lib /out:ru\ShowNumbers.resources.dll  
+  
+vbc ShowNumbers.vb /r:NumberInfo.dll /resource:NumberResources.resources  
+ShowNumbers.exe  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Resources.MissingManifestResourceException">사용할 수 있는 리소스 집합을 찾을 수 없으며 기본 문화권 리소스가 없는 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <exception cref="T:System.Resources.MissingSatelliteAssemblyException">기본 문화권의 리소스가 찾을 수 없는 위성 어셈블리에 있을 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <threadsafe><see cref="M:System.Resources.ResourceManager.GetObject(System.String,System.Globalization.CultureInfo)" /> 메서드는 스레드로부터 안전 합니다.</threadsafe>
+        <altmember cref="M:System.Resources.ResourceManager.GetStream(System.String,System.Globalization.CultureInfo)" />
+        <altmember cref="T:System.Globalization.CultureInfo" />
+        <related type="Article" href="~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md">리소스 패키징 및 배포</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetResourceFileName">
+      <MemberSignature Language="C#" Value="protected virtual string GetResourceFileName (System.Globalization.CultureInfo culture);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string GetResourceFileName(class System.Globalization.CultureInfo culture) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetResourceFileName(System.Globalization.CultureInfo)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetResourceFileName (culture As CultureInfo) As String" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::String ^ GetResourceFileName(System::Globalization::CultureInfo ^ culture);" />
+      <MemberSignature Language="F#" Value="abstract member GetResourceFileName : System.Globalization.CultureInfo -&gt; string&#xA;override this.GetResourceFileName : System.Globalization.CultureInfo -&gt; string" Usage="resourceManager.GetResourceFileName culture" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="culture" Type="System.Globalization.CultureInfo" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="culture">리소스 파일 이름을 생성할 문화권 개체입니다.</param>
+        <summary>지정된 <see cref="T:System.Globalization.CultureInfo" /> 개체에 대한 리소스 파일 이름을 생성합니다.</summary>
+        <returns>지정된 <see cref="T:System.Globalization.CultureInfo" /> 개체에 대한 리소스 파일에 사용할 수 있는 이름입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Resources.ResourceManager.GetResourceFileName%2A> 메서드는에서 파생 되는 고유한 클래스를 작성 하는 경우에 유용 합니다 <xref:System.Resources.ResourceManager> 클래스입니다.  
+  
+ 이 메서드는 사용 된 <xref:System.Globalization.CultureInfo.Name%2A?displayProperty=nameWithType> 고정 문화권이 아닌 모든 문화권에 대 한 파일 이름의 일부로 속성입니다. 이 메서드는 어셈블리 매니페스트 또는 디스크를 찾지 않습니다 및 리소스 파일 이름을 생성에 사용 됩니다 (에 전달 하기에 적합 합니다 <xref:System.Resources.ResourceReader> 생성자) 또는 매니페스트 리소스 blob 이름입니다.  
+  
+ 파생된 클래스와 같은 다른 확장을 검색할이 메서드를 재정의할 수 있습니다 ". "ResX 또는 리소스 파일 이름 지정에 대 한 완전히 다른 구성표입니다. 메서드를 사용할 수 있도록 위성 어셈블리 내에서 리소스 파일의 이름을 사용자 지정 하 고 위성 어셈블리 자체의 이름을 사용자 지정할 필요가 참고 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <altmember cref="T:System.Globalization.CultureInfo" />
+        <related type="Article" href="~/docs/standard/globalization-localization/index.md">.NET 애플리케이션 전역화 및 지역화</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetResourceSet">
+      <MemberSignature Language="C#" Value="public virtual System.Resources.ResourceSet GetResourceSet (System.Globalization.CultureInfo culture, bool createIfNotExists, bool tryParents);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Resources.ResourceSet GetResourceSet(class System.Globalization.CultureInfo culture, bool createIfNotExists, bool tryParents) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetResourceSet(System.Globalization.CultureInfo,System.Boolean,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetResourceSet (culture As CultureInfo, createIfNotExists As Boolean, tryParents As Boolean) As ResourceSet" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Resources::ResourceSet ^ GetResourceSet(System::Globalization::CultureInfo ^ culture, bool createIfNotExists, bool tryParents);" />
+      <MemberSignature Language="F#" Value="abstract member GetResourceSet : System.Globalization.CultureInfo * bool * bool -&gt; System.Resources.ResourceSet&#xA;override this.GetResourceSet : System.Globalization.CultureInfo * bool * bool -&gt; System.Resources.ResourceSet" Usage="resourceManager.GetResourceSet (culture, createIfNotExists, tryParents)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Resources.ResourceSet</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="culture" Type="System.Globalization.CultureInfo" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="createIfNotExists" Type="System.Boolean" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="tryParents" Type="System.Boolean" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="culture">리소스를 검색할 문화권입니다.</param>
+        <param name="createIfNotExists">리소스 집합이 아직 로드되지 않은 경우 이를 로드하려면 <see langword="true" />로 설정하고, 그렇지 않으면 <see langword="false" />로 설정합니다.</param>
+        <param name="tryParents">리소스 집합을 찾을 수 없는 경우 리소스 대체를 사용하여 적절한 리소스를 로드하도록 하려면 <see langword="true" />이고, 리소스 대체 프로세스를 무시하려면 <see langword="false" />입니다.</param>
+        <summary>특정 문화에 대해 설정된 리소스를 검색합니다.</summary>
+        <returns>지정된 문화권의 리소스 집합입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 반환 되는 리소스 집합에 지정된 된 문화권에 대 한 지역화 된 리소스를 나타냅니다. 리소스가 해당 문화권에 대 한 지역화 되지 경우 및 `tryParents` 은 `true`, <xref:System.Resources.ResourceManager.GetResourceSet%2A> 리소스 대체 규칙을 사용 하 여 적절 한 리소스를 로드 합니다. 하는 경우 `tryParents` 됩니다 `false` 문화권별 리소스 집합을 찾을 수 없는 경우 메서드에서 반환 `null`합니다. 리소스 대체 (fallback)에 대 한 자세한 내용은 "리소스 대체 프로세스" 섹션을 참조 하세요. 합니다 [리소스 패키징 및 배포](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md) 문서.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Resources.ResourceManager.GetResourceSet%2A> 프랑스어 (프랑스) 문화권에 대 한 문화권 관련 리소스를 검색 하는 방법입니다. 그런 다음 모든 리소스 집합의 리소스를 열거합니다. ShowNumbers.exe 라는 실행 파일에 대 한 소스 코드를 포함 합니다. 또한 숫자의 이름을 포함 하는 다음 두 개의 텍스트 파일을 포함 합니다. 숫자 1에서 영어의 10의 이름을 포함 하는 첫 번째 NumberResources.txt:  
+  
+```  
+  
+one=one  
+two=two  
+three=three  
+four=four  
+five=five  
+six=six  
+seven=seven  
+eight=eight  
+nine=nine  
+ten=ten  
+  
+```  
+  
+ 숫자 1부터 4 프랑스어 언어에서의 이름을 포함 하는 두 번째 NumberResources.fr-FR.txt:  
+  
+```  
+  
+one=un  
+two=deux  
+three=trois  
+four=quatre  
+  
+```  
+  
+ 프랑스어 리소스에 대 한 위성 어셈블리를 만들고 리소스 파일을 생성, 실행 파일에는 영어 리소스 파일을 포함 하는 배치 파일을 사용할 수 있습니다. 다음은 Visual Basic 컴파일러를 사용 하 여 실행 파일을 생성 하도록 배치 파일이입니다.  
+  
+```  
+  
+resgen NumberResources.txt  
+vbc shownumbers.vb /resource:NumberResources.resources  
+  
+md fr-FR  
+resgen NumberResources.fr-FR.txt  
+al /out:fr-FR\ShowNumbers.resources.dll /culture:fr-FR /embed:NumberResources.fr-FR.resources  
+```  
+  
+ C# 컴파일러의 경우 다음 배치 파일을 사용할 수 있습니다.  
+  
+```  
+  
+resgen NumberResources.txt  
+csc shownumbers.cs /resource:NumberResources.resources  
+  
+md fr-FR  
+resgen NumberResources.fr-FR.txt  
+al /out:fr-FR\ShowNumbers.resources.dll /culture:fr-FR /embed:NumberResources.fr-FR.resources  
+  
+```  
+  
+ [!code-csharp[System.Resources.ResourceManager.GetResourceSet#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.getresourceset/cs/shownumbers.cs#1)]
+ [!code-vb[System.Resources.ResourceManager.GetResourceSet#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.getresourceset/vb/shownumbers.vb#1)]  
+  
+ 값을 변경 하는 경우는 `createIfNotExists` 인수를 `false`, 메서드 호출이 반환 `null`Resource Manager 프랑스어 리소스를 이미 로드 되지 않은 때문입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="culture" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Resources.MissingManifestResourceException"><paramref name="tryParents" />가 <see langword="true" />이고, 사용할 수 있는 리소스 집합을 찾을 수 없으며 기본 문화권 리소스가 없는 경우</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <altmember cref="T:System.Globalization.CultureInfo" />
+        <related type="Article" href="~/docs/standard/globalization-localization/index.md">.NET 애플리케이션 전역화 및 지역화</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSatelliteContractVersion">
+      <MemberSignature Language="C#" Value="protected static Version GetSatelliteContractVersion (System.Reflection.Assembly a);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Version GetSatelliteContractVersion(class System.Reflection.Assembly a) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetSatelliteContractVersion(System.Reflection.Assembly)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function GetSatelliteContractVersion (a As Assembly) As Version" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static Version ^ GetSatelliteContractVersion(System::Reflection::Assembly ^ a);" />
+      <MemberSignature Language="F#" Value="static member GetSatelliteContractVersion : System.Reflection.Assembly -&gt; Version" Usage="System.Resources.ResourceManager.GetSatelliteContractVersion a" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Version</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="a" Type="System.Reflection.Assembly" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="a"><see cref="T:System.Resources.SatelliteContractVersionAttribute" /> 특성을 확인할 어셈블리입니다.</param>
+        <summary>지정된 어셈블리의 <see cref="T:System.Resources.SatelliteContractVersionAttribute" /> 특성으로 지정된 버전을 반환합니다.</summary>
+        <returns>지정된 어셈블리의 위성 계약 버전이거나 버전이 없는 경우 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 위성 어셈블리 버전 관리에 대 한 자세한 내용은 참조는 <xref:System.Resources.SatelliteContractVersionAttribute> 참조 항목입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="a" /> 어셈블리에 있는 <see cref="T:System.Version" />이 잘못된 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="a" />가 <see langword="null" />입니다.</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <altmember cref="T:System.Resources.SatelliteContractVersionAttribute" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetStream">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>관리되지 않는 메모리 스트림 개체에서 지정된 리소스를 반환합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetStream">
+      <MemberSignature Language="C#" Value="public System.IO.UnmanagedMemoryStream GetStream (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IO.UnmanagedMemoryStream GetStream(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetStream(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStream (name As String) As UnmanagedMemoryStream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IO::UnmanagedMemoryStream ^ GetStream(System::String ^ name);" />
+      <MemberSignature Language="F#" Value="member this.GetStream : string -&gt; System.IO.UnmanagedMemoryStream" Usage="resourceManager.GetStream name" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5">
+          <AttributeName>System.CLSCompliant(false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IO.UnmanagedMemoryStream</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="name">리소스의 이름입니다.</param>
+        <summary>관리되지 않는 메모리 스트림 개체에서 지정된 리소스를 반환합니다.</summary>
+        <returns>리소스를 나타내는 관리되지 않는 메모리 스트림 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Resources.ResourceManager.GetStream%2A> 메서드는 이름으로 저장 되는 리소스의를 <xref:System.IO.MemoryStream> 개체의 값을 가져옵니다 합니다 <xref:System.Object> 리소스 및 반환은 <xref:System.IO.UnmanagedMemoryStream> 개체. 다음 개체를 변환 하는 바이트 스트림을와 직접 협력 해야 합니다. 이 메서드는 주로 성능상의 이유로 유용 합니다. 대신 명시적 개체를 바이트 스트림으로 리소스를 검색 성능을 향상 시킬 수 있습니다.  
+  
+ 반환 되는 리소스에 정의 된 현재 스레드의 UI 문화권에 대 한 지역화 되는 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> 속성입니다. 리소스가 해당 문화권에 대 한 지역화 되지 않으면, 리소스 관리자는 적절 한 리소스를 로드 하려면 대체 (fallback) 규칙을 사용 합니다. 사용할 수 있는 지역화 된 리소스 집합이 있으면는 <xref:System.Resources.ResourceManager> 기본 문화권의 리소스에 의존 합니다. 리소스 기본 문화권에 대 한 집합을 없으면 메서드에서 throw를 <xref:System.Resources.MissingManifestResourceException> 예외 또는 위성 어셈블리에 있는 리소스 집합이 될 경우는 <xref:System.Resources.MissingSatelliteAssemblyException> 예외입니다. 리소스 관리자를 로드할 수는 적절 한 리소스 설정 되지만 명명 된 리소스를 찾을 수 없습니다 `name`, 메서드가 반환 `null`합니다.  
+  
+ <xref:System.Resources.ResourceManager.IgnoreCase%2A> 속성에 따라 결정 하는지 여부를 비교 `name` 리소스 이름의 대/소문자가 (기본값) 또는 대/소문자 구분 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Resources.ResourceManager.GetStream%28System.String%29> 메서드를 사용하여 앱의 열기 시작 창에 사용되는 비트맵을 검색합니다. 다음 소스 코드 파일에서 CreateResources.cs (C# 용) 또는 CreateResources.vb (Visual Basic) 라는 AppResources.resx는 serialize 된 이미지를 포함 하는.resx 파일을 생성 합니다. 이 경우 이미지는 SplashScreen.jpg라는 파일에서 로드됩니다. 이 파일 이름을 수정하여 자신의 고유한 이미지로 대체할 수 있습니다.  
+  
+ [!code-csharp[Conceptual.Resources.Retrieving#4](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.resources.retrieving/cs/createresources.cs#4)]
+ [!code-vb[Conceptual.Resources.Retrieving#4](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.resources.retrieving/vb/createresources.vb#4)]  
+  
+ GetStream.cs (에 대 한 C#) 라는 파일에서 다음 코드 또는 GetStream.vb (Visual Basic의 경우)에 대 한 리소스를 검색 하 고 이미지의 표시를 <xref:System.Windows.Forms.PictureBox?displayProperty=nameWithType> 제어 합니다.  
+  
+ [!code-csharp[Conceptual.Resources.Retrieving#5](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.resources.retrieving/cs/getstream.cs#5)]
+ [!code-vb[Conceptual.Resources.Retrieving#5](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.resources.retrieving/vb/getstream.vb#5)]  
+  
+ C# 예제를 빌드하려면 다음 배치 파일을 사용할 수 있습니다. Visual Basic의 경우 `csc` 를 `vbc`로 변경하고, 소스 코드 파일의 확장을 `.cs` 에서 `.vb`로 변경합니다. 
+  
+```  
+  
+csc CreateResources.cs  
+CreateResources  
+  
+resgen AppResources.resx  
+  
+csc GetStream.cs /resource:AppResources.resources  
+  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">지정된 리소스의 값이 <see cref="T:System.IO.MemoryStream" /> 개체가 아닌 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Resources.MissingManifestResourceException">사용할 수 있는 리소스 집합을 찾을 수 없으며 기본 리소스가 없는 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <exception cref="T:System.Resources.MissingSatelliteAssemblyException">기본 문화권의 리소스가 찾을 수 없는 위성 어셈블리에 있을 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+      </Docs>
+    </Member>
+    <Member MemberName="GetStream">
+      <MemberSignature Language="C#" Value="public System.IO.UnmanagedMemoryStream GetStream (string name, System.Globalization.CultureInfo culture);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IO.UnmanagedMemoryStream GetStream(string name, class System.Globalization.CultureInfo culture) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetStream(System.String,System.Globalization.CultureInfo)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStream (name As String, culture As CultureInfo) As UnmanagedMemoryStream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IO::UnmanagedMemoryStream ^ GetStream(System::String ^ name, System::Globalization::CultureInfo ^ culture);" />
+      <MemberSignature Language="F#" Value="member this.GetStream : string * System.Globalization.CultureInfo -&gt; System.IO.UnmanagedMemoryStream" Usage="resourceManager.GetStream (name, culture)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5">
+          <AttributeName>System.CLSCompliant(false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IO.UnmanagedMemoryStream</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="culture" Type="System.Globalization.CultureInfo" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="name">리소스의 이름입니다.</param>
+        <param name="culture">리소스 조회에 사용할 문화권을 지정하는 개체입니다. <paramref name="culture" />가 <see langword="null" />이면 현재 스레드의 문화권이 사용됩니다.</param>
+        <summary>지정된 문화권을 사용하여 지정된 리소스에서 관리되지 않은 메모리 스트림 개체를 반환합니다.</summary>
+        <returns>리소스를 나타내는 관리되지 않는 메모리 스트림 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Resources.ResourceManager.GetStream%2A> 메서드는 이름으로 저장 되는 리소스의를 <xref:System.IO.MemoryStream> 개체의 값을 가져옵니다 합니다 <xref:System.Object> 리소스 및 반환은 <xref:System.IO.UnmanagedMemoryStream> 개체. 다음 개체를 변환 하는 바이트 스트림을와 직접 협력 해야 합니다. 이 메서드는 주로 성능상의 이유로 유용 합니다. 대신 명시적 개체를 바이트 스트림으로 리소스를 검색 성능을 향상 시킬 수 있습니다.  
+  
+ 반환 되는 리소스에 지정 된 문화권에 대 한 지역화 됩니다 `culture`, 또는 지정 된 문화권에 대 한는 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> 속성 경우 `culture` 는 `null`합니다. 리소스가 해당 문화권에 대 한 지역화 되지 않으면, 리소스 관리자는 적절 한 리소스를 로드 하려면 대체 (fallback) 규칙을 사용 합니다. 사용할 수 있는 지역화 된 리소스 집합이 있으면는 <xref:System.Resources.ResourceManager> 기본 문화권의 리소스에 의존 합니다. 리소스 기본 문화권에 대 한 집합을 없으면 메서드에서 throw를 <xref:System.Resources.MissingManifestResourceException> 예외 또는 위성 어셈블리에 있는 리소스 집합이 될 경우는 <xref:System.Resources.MissingSatelliteAssemblyException> 예외입니다. 리소스 관리자를 로드할 수는 적절 한 리소스 설정 되지만 명명 된 리소스를 찾을 수 없습니다 `name`, 메서드가 반환 `null`합니다.  
+  
+ <xref:System.Resources.ResourceManager.IgnoreCase%2A> 속성에 따라 결정 하는지 여부를 비교 `name` 리소스 이름의 대/소문자가 (기본값) 또는 대/소문자 구분 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">지정된 리소스의 값이 <see cref="T:System.IO.MemoryStream" /> 개체가 아닌 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Resources.MissingManifestResourceException">사용할 수 있는 리소스 집합을 찾을 수 없으며 기본 리소스가 없는 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <exception cref="T:System.Resources.MissingSatelliteAssemblyException">기본 문화권의 리소스가 찾을 수 없는 위성 어셈블리에 있을 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetString">
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>지정된 문화권이나 현재 UI 문화권에 대한 지정된 문자열 리소스를 반환합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetString">
+      <MemberSignature Language="C#" Value="public virtual string GetString (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetString(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetString(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetString (name As String) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::String ^ GetString(System::String ^ name);" />
+      <MemberSignature Language="F#" Value="abstract member GetString : string -&gt; string&#xA;override this.GetString : string -&gt; string" Usage="resourceManager.GetString name" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">검색할 리소스의 이름입니다.</param>
+        <summary>지정된 문자열 리소스의 값을 반환합니다.</summary>
+        <returns>호출자의 현재 UI 문화권에 맞게 지역화된 리소스의 값이거나, 리소스 집합에서 <paramref name="name" />을 찾을 수 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+## <a name="desktop-apps"></a>데스크톱 앱  
+ 데스크톱 앱에서 반환 되는 리소스는 지역화 된 현재 스레드의 UI 문화권에 대 한 정의 된 대로 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> 속성입니다. 리소스 관리자의 "리소스 대체 프로세스" 섹션에 설명 된 단계를 수행 하 여 리소스에 대 한 프로브 해당 문화권에 대 한 리소스를 지역화 되지 않았으면, 하는 경우는 [리소스 패키징 및 배포](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md) 문서. 사용할 수 있는 지역화 된 리소스 집합이 있으면 리소스 관리자 기본 문화권의 리소스에 대체 합니다. 메서드에서 throw 하는 리소스 관리자 기본 문화권의 리소스 집합을 로드할 수 없는 경우는 <xref:System.Resources.MissingManifestResourceException> 예외 또는 위성 어셈블리에 있는 리소스 집합이 될 경우는 <xref:System.Resources.MissingSatelliteAssemblyException> 예외입니다. 리소스 관리자를 로드할 수는 적절 한 리소스 설정 되지만 명명 된 리소스를 찾을 수 없습니다 `name`, 메서드가 반환 `null`합니다.  
+  
+ <xref:System.Resources.ResourceManager.IgnoreCase%2A> 속성에 따라 결정 하는지 여부를 비교 `name` 리소스 이름의 대/소문자가 (기본값) 또는 대/소문자 구분 합니다.  
+  
+> [!CAUTION]
+>  이 메서드는 나열 된 것 보다 자세한 예외를 throw 할 수 있습니다. 이 문제가 발생 하는 한 가지 이유는이 메서드를 호출 하는 메서드는 예외를 throw 하는 경우.  예를 들어, 한 <xref:System.IO.FileLoadException> 위성 어셈블리를 설치 또는 배포 오류가 발생 했습니다 하는 경우 예외를 throw 될 수 있습니다 <xref:System.Runtime.Serialization.SerializationException> 형식을 역직렬화 할 때 사용자 정의 예외를 throw 하는 사용자 정의 형식 예외가 throw 될 수 있습니다.  
+  
+## <a name="includewin8appnamelongincludeswin8-appname-long-mdmd-apps"></a>[!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 응용 프로그램  
+  
+> [!IMPORTANT]
+>  하지만 합니다 <xref:System.Resources.ResourceManager> 클래스에서 지원 됩니다 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱 권장 하지는 않습니다 사용 합니다. 이 클래스를 사용 하 여 개발 하는 경우에 [!INCLUDE[net_portable](~/includes/net-portable-md.md)] 사용 하 여 사용할 수 있는 프로젝트 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱. 리소스를 검색할 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 사용 합니다 [Windows.ApplicationModel.Resources.ResourceLoader](https://go.microsoft.com/fwlink/p/?LinkId=238182) 클래스를 대신 합니다.  
+  
+ [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 <xref:System.Resources.ResourceManager.GetString%28System.String%29> 의 값을 반환 하는 메서드는 `name` 호출자의 현재 UI 문화권 설정에 대 한 지역화 된 리소스 문자열입니다. 문화권의 목록 운영 체제의 기본 설정된 UI 언어 목록에서 파생 됩니다. 리소스 관리자를 일치 시킬 수 없는 경우 `name`, 메서드가 반환 `null`합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Resources.ResourceManager.GetString%2A> 문화권별 리소스를 검색 하는 방법입니다. 영어 (en), 프랑스어 (프랑스) (FR-FR) 및 러시아어 (러시아) (RU-RU).txt 파일에서 컴파일된 리소스 이루어져 문화권입니다. 이 예제에서는 영어 (미국), 프랑스어 (프랑스), 러시아어 (러시아) 및 스웨덴어 (스웨덴)를 현재 문화권 및 현재 UI 문화권을 변경합니다. 그런 다음 호출 하 여 <xref:System.Resources.ResourceManager.GetString%2A> 현재 일 및 월을 함께 표시 하는 지역화 된 문자열을 검색 하는 방법. 현재 UI 문화권 경우 스웨덴어 (스웨덴) 제외 하 고 적절 한 지역화 된 문자열 출력에 표시 되는지 확인 합니다. 스웨덴어 언어 리소스를 사용할 수 없으므로 앱 영어는 기본 문화권의 리소스를 대신 사용 합니다. 예제에는 다음 표에 나열 된 텍스트 기반 리소스 파일이 필요 합니다. 이라는 단일 문자열 리소스를 각각 `DateStart`합니다.  
+  
+|culture|파일 이름|리소스 이름|리소스 값|  
+|-------------|---------------|-------------------|--------------------|  
+|en-US|DateStrings.txt|`DateStart`|오늘이|  
+|fr-FR|DateStrings.fr-FR.txt|`DateStart`|Aujourd'hui, c'est le|  
+|ru-RU|DateStrings.ru-RU.txt|`DateStart`|СЕГОДНЯ|  
+  
+ C# 예제를 컴파일하려면 다음 배치 파일을 사용할 수 있습니다. Visual Basic의 경우 `csc` 를 `vbc`로 변경하고, 소스 코드 파일의 확장을 `.cs` 에서 `.vb`로 변경합니다.  
+  
+```  
+resgen DateStrings.txt  
+csc showdate.cs /resource:DateStrings.resources  
+  
+md fr-FR  
+resgen DateStrings.fr-FR.txt  
+al /out:fr-FR\Showdate.resources.dll /culture:fr-FR /embed:DateStrings.fr-FR.resources   
+  
+md ru-RU  
+resgen DateStrings.ru-RU.txt  
+al /out:ru-RU\Showdate.resources.dll /culture:ru-RU /embed:DateStrings.ru-RU.resources  
+```  
+  
+ 예를 들어 (Visual Basic 버전에 대 한 ShowDate.vb) 하거나 ShowDate.cs C# 버전에 대 한 소스 코드는 다음과 같습니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.class/cs/showdate.cs#2)]
+ [!code-vb[System.Resources.ResourceManager.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.class/vb/showdate.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">지정된 리소스의 값이 문자열이 아닌 경우</exception>
+        <exception cref="T:System.Resources.MissingManifestResourceException">사용할 수 있는 리소스 집합을 찾을 수 없고 기본 문화권에 대한 리소스가 없는 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <exception cref="T:System.Resources.MissingSatelliteAssemblyException">기본 문화권의 리소스가 찾을 수 없는 위성 어셈블리에 있을 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <threadsafe><see cref="M:System.Resources.ResourceManager.GetString(System.String)" /> 메서드는 스레드로부터 안전 합니다.</threadsafe>
+        <altmember cref="T:System.Globalization.CultureInfo" />
+        <related type="Article" href="~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md">리소스 패키징 및 배포</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/eca16922-1c46-4f68-aefe-e7a12283641f">위성 어셈블리에서 리소스를 검색합니다.</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetString">
+      <MemberSignature Language="C#" Value="public virtual string GetString (string name, System.Globalization.CultureInfo culture);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetString(string name, class System.Globalization.CultureInfo culture) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.GetString(System.String,System.Globalization.CultureInfo)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetString (name As String, culture As CultureInfo) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::String ^ GetString(System::String ^ name, System::Globalization::CultureInfo ^ culture);" />
+      <MemberSignature Language="F#" Value="abstract member GetString : string * System.Globalization.CultureInfo -&gt; string&#xA;override this.GetString : string * System.Globalization.CultureInfo -&gt; string" Usage="resourceManager.GetString (name, culture)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="culture" Type="System.Globalization.CultureInfo" />
+      </Parameters>
+      <Docs>
+        <param name="name">검색할 리소스의 이름입니다.</param>
+        <param name="culture">지역화하는 리소스에 대한 문화권을 나타내는 개체입니다.</param>
+        <summary>지정된 문화권에 대해 지역화된 문자열 리소스의 값을 반환합니다.</summary>
+        <returns>지정된 문화권에 맞게 지역화된 리소스의 값이거나, 리소스 집합에서 <paramref name="name" />을 찾을 수 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+## <a name="desktop-apps"></a>데스크톱 앱  
+ 데스크톱 앱의 경우 `culture` 됩니다 `null`, <xref:System.Resources.ResourceManager.GetString%28System.String%2CSystem.Globalization.CultureInfo%29> 에서 가져온 현재 UI 문화권을 사용 하는 메서드를 <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> 속성입니다.  
+  
+ 반환 되는 리소스는 지정 된 문화권에 대 한 지역화 된 `culture` 매개 변수입니다. 리소스에 대 한 지역화 되지 않았으면 하는 경우 `culture`의 "리소스 대체 프로세스" 섹션에 설명 된 단계를 수행 하 여 리소스에 대 한 resource manager를 프로브 합니다 [리소스 패키징 및 배포](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md) 항목입니다. 사용할 수 있는 리소스 집합이 있으면 리소스 관리자 기본 문화권의 리소스에 대체 합니다. 메서드에서 throw 하는 리소스 관리자 기본 문화권의 리소스 집합을 로드할 수 없는 경우는 <xref:System.Resources.MissingManifestResourceException> 예외 또는 위성 어셈블리에 있는 리소스 집합이 될 경우는 <xref:System.Resources.MissingSatelliteAssemblyException> 예외입니다. 리소스 관리자를 로드할 수는 적절 한 리소스 설정 되지만 명명 된 리소스를 찾을 수 없습니다 `name`, 메서드가 반환 `null`합니다.  
+  
+ <xref:System.Resources.ResourceManager.IgnoreCase%2A> 속성에 따라 결정 하는지 여부를 비교 `name` 리소스 이름의 대/소문자가 (기본값) 또는 대/소문자 구분 합니다.  
+  
+> [!CAUTION]
+>  이 메서드는 나열 된 것 보다 자세한 예외를 throw 할 수 있습니다. 이 문제가 발생 하는 한 가지 이유는이 메서드를 호출 하는 메서드는 예외를 throw 하는 경우.  예를 들어, 한 <xref:System.IO.FileLoadException> 위성 어셈블리를 설치 또는 배포 오류가 발생 했습니다 하는 경우 예외를 throw 될 수 있습니다 <xref:System.Runtime.Serialization.SerializationException> 형식을 역직렬화 할 때 사용자 정의 예외를 throw 하는 사용자 정의 형식 예외가 throw 될 수 있습니다.  
+  
+## <a name="includewin8appnamelongincludeswin8-appname-long-mdmd-apps"></a>[!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 응용 프로그램  
+  
+> [!IMPORTANT]
+>  하지만 합니다 <xref:System.Resources.ResourceManager> 클래스에서 지원 됩니다 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱 권장 하지는 않습니다 사용 합니다. 이 클래스를 사용 하 여 개발 하는 경우에 [!INCLUDE[net_portable](~/includes/net-portable-md.md)] 사용 하 여 사용할 수 있는 프로젝트 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱. 리소스를 검색할 [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 사용 합니다 [Windows.ApplicationModel.Resources.ResourceLoader](https://go.microsoft.com/fwlink/p/?LinkId=238182) 클래스를 대신 합니다.  
+  
+ [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] 앱을 <xref:System.Resources.ResourceManager.GetString%28System.String%2CSystem.Globalization.CultureInfo%29> 의 값을 반환 하는 메서드는 `name` 에 지정 된 문화권에 대 한 지역화 된 리소스 문자열는 `culture` 매개 변수. 리소스에 대 한 지역화 되지 않으면 합니다 `culture` 전체를 사용 하는 문화권을 조회 [!INCLUDE[win8](~/includes/win8-md.md)] 언어 대체 (fallback) 목록 및 기본 culture를 조사한 후 중지 됩니다. 리소스 관리자를 일치 시킬 수 없는 경우 `name`, 메서드가 반환 `null`합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Resources.ResourceManager.GetString%28System.String%2CSystem.Globalization.CultureInfo%29> 문화권별 리소스를 검색 하는 방법입니다. 예제의 기본 문화권은 영어 (en) 및 프랑스어 (프랑스) (FR) 및 러시아어 (러시아) (RU-RU)에 대 한 위성 어셈블리 포함 문화권입니다. 이 예제에서는 현재 문화권 및 현재 UI 문화권을 변경 러시아어 (러시아) 호출 하기 전에 <xref:System.Resources.ResourceManager.GetString%28System.String%2CSystem.Globalization.CultureInfo%29>입니다. 그런 다음 호출 하는 <xref:System.Resources.ResourceManager.GetString%2A> 메서드 및 <xref:System.DateTime.ToString%28System.String%2CSystem.IFormatProvider%29?displayProperty=nameWithType> 메서드와 전달 <xref:System.Globalization.CultureInfo> 각 메서드에 프랑스어 (프랑스) 및 스웨덴어 (스웨덴) 문화권을 나타내는 개체입니다. 출력 월과 일을 앞에 오는 문자열 뿐만 아니라 해당 월의 프랑스어에 있으므로 표시 된 <xref:System.Resources.ResourceManager.GetString%2A> 메서드는 프랑스어 리소스를 검색할 수 있습니다. 그러나 스웨덴어 (스웨덴) 문화권을 사용 하는 경우 월 및 월의 일은 나타나지 스웨덴어 문자열 앞에 있는 영어는 있지만. 이것이 기본 영어 문화권의 리소스 대신 반환 하도록 리소스 관리자를 스웨덴어 언어 리소스를 찾을 수 없기 때문입니다.  
+  
+ 예제에는 다음 표에 나열 된 텍스트 기반 리소스 파일이 필요 합니다. 이라는 단일 문자열 리소스를 각각 `DateStart`합니다.  
+  
+|culture|파일 이름|리소스 이름|리소스 값|  
+|-------------|---------------|-------------------|--------------------|  
+|en-US|DateStrings.txt|`DateStart`|오늘이|  
+|fr-FR|DateStrings.fr-FR.txt|`DateStart`|Aujourd'hui, c'est le|  
+|ru-RU|DateStrings.ru-RU.txt|`DateStart`|СЕГОДНЯ|  
+  
+ Visual Basic 예제를 컴파일하려면 다음 배치 파일을 사용할 수 있습니다. C#으로 컴파일하려면를 변경 `vbc` 하 `csc`에서 소스 코드 파일의 확장명을 변경 `.vb` 에 `.cs`입니다.  
+  
+```  
+resgen DateStrings.txt  
+vbc showdate.vb /resource:DateStrings.resources  
+  
+md fr-FR  
+resgen DateStrings.fr-FR.txt  
+al /out:fr-FR\Showdate.resources.dll /culture:fr-FR /embed:DateStrings.fr-FR.resources   
+  
+md ru-RU  
+resgen DateStrings.ru-RU.txt  
+al /out:ru-RU\Showdate.resources.dll /culture:ru-RU /embed:DateStrings.ru-RU.resources  
+```  
+  
+ 예를 들어 (Visual Basic 버전에 대 한 ShowDate.vb) 하거나 ShowDate.cs C# 버전에 대 한 소스 코드는 다음과 같습니다.  
+  
+ [!code-csharp[System.Resources.ResourceManager.Class#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.resourcemanager.class/cs/showdate2.cs#3)]
+ [!code-vb[System.Resources.ResourceManager.Class#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.resourcemanager.class/vb/showdate2.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">지정된 리소스의 값이 문자열이 아닌 경우</exception>
+        <exception cref="T:System.Resources.MissingManifestResourceException">사용할 수 있는 리소스 집합을 찾을 수 없고 기본 문화권에 대한 리소스가 없는 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <exception cref="T:System.Resources.MissingSatelliteAssemblyException">기본 문화권의 리소스가 찾을 수 없는 위성 어셈블리에 있을 경우 이 예외를 처리하는 방법에 대한 자세한 내용은 <see cref="T:System.Resources.ResourceManager" /> 클래스 항목의 "MissingManifestResourceException 및 MissingSatelliteAssemblyException 예외 처리" 단원을 참조하십시오.</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <threadsafe><see cref="M:System.Resources.ResourceManager.GetString(System.String,System.Globalization.CultureInfo)" /> 메서드는 스레드로부터 안전 합니다.</threadsafe>
+        <altmember cref="T:System.Globalization.CultureInfo" />
+        <related type="Article" href="~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md">리소스 패키징 및 배포</related>
+      </Docs>
+    </Member>
+    <Member MemberName="HeaderVersionNumber">
+      <MemberSignature Language="C#" Value="public static readonly int HeaderVersionNumber;" />
+      <MemberSignature Language="ILAsm" Value=".field public static initonly int32 HeaderVersionNumber" />
+      <MemberSignature Language="DocId" Value="F:System.Resources.ResourceManager.HeaderVersionNumber" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly HeaderVersionNumber As Integer " />
+      <MemberSignature Language="C++ CLI" Value="public: static initonly int HeaderVersionNumber;" />
+      <MemberSignature Language="F#" Value=" staticval mutable HeaderVersionNumber : int" Usage="System.Resources.ResourceManager.HeaderVersionNumber" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Resources.ResourceManager" />의 현재 구현에서 해석하고 생성할 수 있는 리소스 파일 헤더의 버전을 지정합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IgnoreCase">
+      <MemberSignature Language="C#" Value="public virtual bool IgnoreCase { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IgnoreCase" />
+      <MemberSignature Language="DocId" Value="P:System.Resources.ResourceManager.IgnoreCase" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property IgnoreCase As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool IgnoreCase { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.IgnoreCase : bool with get, set" Usage="System.Resources.ResourceManager.IgnoreCase" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>리소스 관리자가 <see cref="M:System.Resources.ResourceManager.GetString(System.String)" /> 및 <see cref="M:System.Resources.ResourceManager.GetObject(System.String)" /> 메서드에서 대/소문자를 구분하지 않고 리소스를 조회할 수 있는지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>리소스 조회 시 대/소문자를 무시하려면 <see langword="true" />로 설정하고, 그렇지 않으면 <see langword="false" />로 설정합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우의 값을 <xref:System.Resources.ResourceManager.IgnoreCase%2A> 속성은 `false`, 이름 "Resource"를 사용 하 여 리소스 이름 "리소스"를 사용 하 여 리소스 동일 하지 않습니다. 하는 경우 <xref:System.Resources.ResourceManager.IgnoreCase%2A> 는 `true`, 이름 "Resource"를 사용 하 여 리소스 이름 "리소스"를 사용 하 여 리소스와 동일 합니다. 단 때 <xref:System.Resources.ResourceManager.IgnoreCase%2A> 됩니다 `true`, <xref:System.Resources.ResourceManager.GetString%2A?displayProperty=nameWithType> 및 <xref:System.Resources.ResourceManager.GetObject%2A?displayProperty=nameWithType> 메서드 고정 문화권을 사용 하 여 대/소문자 구분 문자열 비교를 수행 합니다. 장점은 이러한 메서드가 수행 하는 대/소문자 구분 문자열 비교의 결과가 문화권에 관계 없이 모든 컴퓨터에서 동일 합니다. 단점은 결과가 모든 문화권의 대/소문자 규칙에 부합 되지 않습니다.  
+  
+ 예를 들어 터키어 알파벳 문자 I에 점이 하나에 두 개 및 점이 없는 있습니다. 터키어 문자 I (유니코드 0049) 간주 됩니다에 다른 문자 © ґ (유니코드 0131)의 대문자 버전. 문자 i (유니코드 0069) 아직 다른 문자 İ (유니코드 0130)의 소문자 버전 것으로 간주 됩니다. 이 대/소문자 규칙을 대/소문자 구분 문자열 비교에 따라 "TR-TR" (터키어-터키에서) 문화권에 대 한 (유니코드 0069) i와 I (0049 유니코드) 문자의 실패 합니다. 그러나 비교 수행 하는 경우 고정 문화권의 대/소문자 규칙을 사용 하 여 때문 <xref:System.Resources.ResourceManager.IgnoreCase%2A> 는 `true`,이 비교가 성공 합니다.  
+  
+> [!NOTE]
+>  성능상의 이유로 항상 리소스 이름에 대 한 정확한 대/소문자를 지정 하는 것이 적합 합니다. 설정 <xref:System.Resources.ResourceManager.IgnoreCase%2A> 에 `true` 크게 증가 하는 작업 집합에는 상당한 성능 저하가 발생할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InternalGetResourceSet">
+      <MemberSignature Language="C#" Value="protected virtual System.Resources.ResourceSet InternalGetResourceSet (System.Globalization.CultureInfo culture, bool createIfNotExists, bool tryParents);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Resources.ResourceSet InternalGetResourceSet(class System.Globalization.CultureInfo culture, bool createIfNotExists, bool tryParents) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.InternalGetResourceSet(System.Globalization.CultureInfo,System.Boolean,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function InternalGetResourceSet (culture As CultureInfo, createIfNotExists As Boolean, tryParents As Boolean) As ResourceSet" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Resources::ResourceSet ^ InternalGetResourceSet(System::Globalization::CultureInfo ^ culture, bool createIfNotExists, bool tryParents);" />
+      <MemberSignature Language="F#" Value="abstract member InternalGetResourceSet : System.Globalization.CultureInfo * bool * bool -&gt; System.Resources.ResourceSet&#xA;override this.InternalGetResourceSet : System.Globalization.CultureInfo * bool * bool -&gt; System.Resources.ResourceSet" Usage="resourceManager.InternalGetResourceSet (culture, createIfNotExists, tryParents)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Resources.ResourceSet</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="culture" Type="System.Globalization.CultureInfo" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="createIfNotExists" Type="System.Boolean" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="tryParents" Type="System.Boolean" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="culture">찾을 문화권 개체입니다.</param>
+        <param name="createIfNotExists">리소스 집합이 아직 로드되지 않은 경우 이를 로드하려면 <see langword="true" />로 설정하고, 그렇지 않으면 <see langword="false" />로 설정합니다.</param>
+        <param name="tryParents">리소스 집합을 로드할 수 없을 경우 부모 <see cref="T:System.Globalization.CultureInfo" /> 개체를 확인하려면 <see langword="true" />로 설정하고 그렇지 않으면 <see langword="false" />로 설정합니다.</param>
+        <summary>리소스 집합을 찾는 구현을 제공합니다.</summary>
+        <returns>지정된 리소스 집합입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.Resources.MissingManifestResourceException">주 어셈블리에 .resources 파일이 없으므로 리소스를 찾아야 하는 경우</exception>
+        <exception cref="T:System.ExecutionEngineException">런타임에 내부 오류가 있었던 경우</exception>
+        <exception cref="T:System.Resources.MissingSatelliteAssemblyException"><paramref name="culture" />와 연결된 위성 어셈블리를 찾지 못한 경우</exception>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+        <block subset="none" type="overrides"><para>이 메서드는 리소스 집합과 recursive 및 재진입 수를 찾는 데 필요한 모든 작업을 완료 합니다. 이 메서드는 어셈블리 및 트리거를 로드할 수 있습니다 즉,는 <see cref="E:System.AppDomain.AssemblyLoad" /> 를 다시 호출 하는 이벤트를 <see cref="T:System.Resources.ResourceManager" /> 완전히 초기화 되지 않은 개체입니다. 추가 잠금이 방지 하려면이 메서드는 스레드로부터 안전 하지 않습니다. 합니다 <see cref="M:System.Resources.ResourceManager.GetResourceSet(System.Globalization.CultureInfo,System.Boolean,System.Boolean)" />, <see cref="M:System.Resources.ResourceManager.GetString(System.String)" />, 및 <see cref="M:System.Resources.ResourceManager.GetObject(System.String)" /> 메서드는 필요한 모든 동기화를 수행 합니다.</para></block>
+        <altmember cref="T:System.Globalization.CultureInfo" />
+        <related type="Article" href="~/docs/standard/globalization-localization/index.md">.NET 애플리케이션 전역화 및 지역화</related>
+      </Docs>
+    </Member>
+    <Member MemberName="MagicNumber">
+      <MemberSignature Language="C#" Value="public static readonly int MagicNumber;" />
+      <MemberSignature Language="ILAsm" Value=".field public static initonly int32 MagicNumber" />
+      <MemberSignature Language="DocId" Value="F:System.Resources.ResourceManager.MagicNumber" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly MagicNumber As Integer " />
+      <MemberSignature Language="C++ CLI" Value="public: static initonly int MagicNumber;" />
+      <MemberSignature Language="F#" Value=" staticval mutable MagicNumber : int" Usage="System.Resources.ResourceManager.MagicNumber" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>리소스 파일을 식별하는 데 사용되는 숫자를 유지합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값은 0xBEEFCACE로 설정 됩니다. Little-endian 형식의 32 비트 부호 있는 정수를 포함 하는 시스템 기본 파일 형식으로의 처음 4 바이트 (참조 <xref:System.Text.Encoding>).  
+  
+ 경우는 <xref:System.Resources.ResourceManager.MagicNumber> 발견 되 면 다음 바이트에 대 한 버전 번호를 됩니다를 <xref:System.Resources.ResourceManager> 헤더 뒤에이 헤더를 통과 하도록 바이트 수를 건너뛸지를 나타내는 숫자입니다. 다음 번호의 버전을 나타내는 <xref:System.Resources.ResourceManager> 버전 특정 정보 뒤에 헤더를 생성 하는 합니다.  
+  
+ 현재 구현에 대 한 버전 번호는 하나입니다. 다음 바이트 길이 접두사가 있는 문자열의 이름을 포함 하는 <xref:System.Resources.IResourceReader>,이 파일을 읽을 수는 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MainAssembly">
+      <MemberSignature Language="C#" Value="protected System.Reflection.Assembly MainAssembly;" />
+      <MemberSignature Language="ILAsm" Value=".field family class System.Reflection.Assembly MainAssembly" />
+      <MemberSignature Language="DocId" Value="F:System.Resources.ResourceManager.MainAssembly" />
+      <MemberSignature Language="VB.NET" Value="Protected MainAssembly As Assembly " />
+      <MemberSignature Language="C++ CLI" Value="protected: System::Reflection::Assembly ^ MainAssembly;" />
+      <MemberSignature Language="F#" Value="val mutable MainAssembly : System.Reflection.Assembly" Usage="System.Resources.ResourceManager.MainAssembly" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.Assembly</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>리소스를 포함한 주 어셈블리를 지정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Resources.ResourceManager.MainAssembly> 필드에서 파생 되는 고유한 클래스를 작성 하는 경우에 유용 합니다 <xref:System.Resources.ResourceManager> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseAllResources">
+      <MemberSignature Language="C#" Value="public virtual void ReleaseAllResources ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ReleaseAllResources() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.ResourceManager.ReleaseAllResources" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub ReleaseAllResources ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void ReleaseAllResources();" />
+      <MemberSignature Language="F#" Value="abstract member ReleaseAllResources : unit -&gt; unit&#xA;override this.ReleaseAllResources : unit -&gt; unit" Usage="resourceManager.ReleaseAllResources " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>리소스 담당자에게 모든 <see cref="M:System.Resources.ResourceSet.Close" /> 개체에 있는 <see cref="T:System.Resources.ResourceSet" /> 메서드를 호출하고 모든 리소스를 해제하도록 알립니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 실행 중인 앱에서 작업 집합을 축소 됩니다. 이 모든 향후의 리소스 조회 <xref:System.Resources.ResourceManager> 리소스 관리자를 검색 해야 하기 때문에 개체를 첫 번째 조회 보다 비용이 됩니다 하 고 리소스를 다시 로드 합니다. 새로 만들 경우 일부 복잡 한 스레드 시나리오에서 유용할 수 있습니다이 <xref:System.Resources.ResourceManager> 개체는 적절 한 동작입니다.  
+  
+> [!NOTE]
+>  .NET Framework 버전 2.0 사용 하 여 시작 합니다 <xref:System.Resources.ResourceManager.ReleaseAllResources%2A> 메서드는 스레드로부터 기준으로 안전 하지 <xref:System.Resources.ResourceManager.GetObject%2A>, <xref:System.Resources.ResourceManager.GetString%2A>, 및 <xref:System.Resources.ResourceManager.GetStream%2A> 작업. 이 변경의 장점은 리소스에 액세스 하는 여러 스레드에 대해 성능을 향상 시킵니다. 그러나 호출 하는 경우는 <xref:System.Resources.ResourceManager.ReleaseAllResources%2A> get 작업에서 throw 할 수 있습니다 다른 스레드에서 동시에 리소스를 가져오는 동안 한 스레드에서 메서드를 <xref:System.ObjectDisposedException> 예외.  
+  
+ 또한 리소스 관리자를 완전히 범위를 벗어나 가비지 수집 될 때까지 기다리지 않고 명확 하 게 출시 될 현재 리소스 관리자가 만든 리소스에 대 한 관리 되는 인스턴스가 있는 경우이 메서드를 사용할 수 있습니다.  
+  
+> [!NOTE]
+>  이 메서드를 호출 해도 위성 어셈블리는 언로드되지 않습니다. 위성 어셈블리 언로드 작업을 사용 하 여를 <xref:System.AppDomain.Unload%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <permission cref="T:System.Security.Permissions.ReflectionPermission">호출 될 때 런타임에 바인딩된 메커니즘을 통해 같은 <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />합니다. 연관된 열거형: <see cref="F:System.Security.Permissions.ReflectionPermissionFlag.MemberAccess" /></permission>
+      </Docs>
+    </Member>
+    <Member MemberName="ResourceSets">
+      <MemberSignature Language="C#" Value="protected System.Collections.Hashtable ResourceSets;" />
+      <MemberSignature Language="ILAsm" Value=".field family class System.Collections.Hashtable ResourceSets" />
+      <MemberSignature Language="DocId" Value="F:System.Resources.ResourceManager.ResourceSets" />
+      <MemberSignature Language="VB.NET" Value="Protected ResourceSets As Hashtable " />
+      <MemberSignature Language="C++ CLI" Value="protected: System::Collections::Hashtable ^ ResourceSets;" />
+      <MemberSignature Language="F#" Value="val mutable ResourceSets : System.Collections.Hashtable" Usage="System.Resources.ResourceManager.ResourceSets" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Obsolete("call InternalGetResourceSet instead")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Collections.Hashtable</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>문화권에서 <see cref="T:System.Collections.Hashtable" /> 개체로의 매핑을 반환하는 <see cref="T:System.Resources.ResourceSet" />이 들어 있습니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResourceSetType">
+      <MemberSignature Language="C#" Value="public virtual Type ResourceSetType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Type ResourceSetType" />
+      <MemberSignature Language="DocId" Value="P:System.Resources.ResourceManager.ResourceSetType" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property ResourceSetType As Type" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property Type ^ ResourceSetType { Type ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ResourceSetType : Type" Usage="System.Resources.ResourceManager.ResourceSetType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Resources.ResourceManager</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>리소스 관리자가 <see cref="T:System.Resources.ResourceSet" /> 개체를 생성하는 데 사용하는 리소스 집합 개체의 형식을 가져옵니다.</summary>
+        <value>리소스 관리자가 <see cref="T:System.Resources.ResourceSet" /> 개체를 생성하는 데 사용하는 리소스 집합 개체의 형식입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

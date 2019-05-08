@@ -1,0 +1,439 @@
+<Type Name="TransactionInterop" FullName="System.Transactions.TransactionInterop">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="e11f94538a8379fa12a0488430c4fc8daf4f448e" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58744423" /></Metadata><TypeSignature Language="C#" Value="public static class TransactionInterop" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit TransactionInterop extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Transactions.TransactionInterop" />
+  <TypeSignature Language="VB.NET" Value="Public Class TransactionInterop" />
+  <TypeSignature Language="C++ CLI" Value="public ref class TransactionInterop abstract sealed" />
+  <TypeSignature Language="F#" Value="type TransactionInterop = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Transactions</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Transactions.Local</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary><see cref="N:System.Transactions" />와 구성 요소(MSDTC, COM+ 또는 <see cref="N:System.EnterpriseServices" />와 상호 작용하도록 이전에 작성된 구성 요소) 간의 상호 작용을 원활하게 합니다. 이 클래스는 상속될 수 없습니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 클래스는 트랜잭션 전파에 대 한 메서드를 제공합니다. 이 프로세스의 작동 방식에 대 한 자세한 내용은 참조 하세요. [트랜잭션 전파](https://msdn.microsoft.com/library/default.asp?url=/library/cossdk/html/b09541e6-4baf-4e37-b879-62884fbb0969.asp)합니다.  
+  
+ 이 클래스에서 제공 하는 메서드를 사용 하 두 가지 유형의 트랜잭션 전파를 내보내기/가져오기 (밀어넣기 모델) 및 전송기/수신기 (끌어오기 모델)에 참여할 수 있습니다.  
+  
+ 내보내기/가져오기 (밀어넣기 모델) 전파이 단계 포함  
+  
+1.  원격 컴퓨터에는 "위치" 해당 컴퓨터의 트랜잭션 관리자의 호출 하 여 가져올는 <xref:System.Transactions.TransactionInterop.GetWhereabouts%2A> 메서드. 그런 다음이 부분은 향후 사용을 위해 클라이언트 컴퓨터에 대 한 정보를 캐시할 수 있습니다.  
+  
+2.  기본 메서드를 사용 하 여 클라이언트 컴퓨터에 위치를 포함 하는 데이터를 전송 합니다.  
+  
+3.  클라이언트 컴퓨터의 whereabouts를 사용 하 여 트랜잭션을 원격 컴퓨터에 "export" 트랜잭션 "쿠키"를 생성 하 합니다.  호출 하 여 이렇게 <xref:System.Transactions.TransactionInterop.GetExportCookie%2A> 원격 컴퓨터의 위치를 전달 합니다.  
+  
+4.  기본 메서드를 사용 하 여 원격 컴퓨터에 "쿠키" 트랜잭션을 포함 하는 데이터를 보내기  
+  
+5.  원격 컴퓨터를 사용 하 여 트랜잭션 "쿠키"를 호출 하 여 클라이언트 트랜잭션의 복제본을 가져옵니다는 <xref:System.Transactions.TransactionInterop.GetTransactionFromExportCookie%2A> 메서드.  
+  
+6.  원격 컴퓨터를 사용 하 여 복제 트랜잭션을 사용 하 여 리소스 관리자를 등록 합니다 <xref:System.Transactions.Transaction.EnlistVolatile%2A> 또는 <xref:System.Transactions.Transaction.EnlistDurable%2A> 의 메서드는 <xref:System.Transactions.Transaction> 클래스.  
+  
+ (끌어오기 모델) 전송기/수신기 전파에서는 다음이 단계  
+  
+-   클라이언트 컴퓨터는 트랜잭션을 사용 하 여 토큰을 생성 해당 "전파"를 호출 하 여 <xref:System.Transactions.TransactionInterop.GetTransmitterPropagationToken%2A>  
+  
+-   토큰이 포함 된 "전파" 트랜잭션의 기본 메서드를 사용 하 여 원격 컴퓨터에 데이터 보내기  
+  
+-   원격 컴퓨터에서 "전파 토큰"을 사용 하 여 호출 하 여 클라이언트 트랜잭션 복제를 가져오려면 <xref:System.Transactions.TransactionInterop.GetTransactionFromTransmitterPropagationToken%2A>  
+  
+ 전송기/수신기 모델 트랜잭션 토큰이 원격 컴퓨터에 전송 됩니다 하지만 원격 컴퓨터를 사용할 수 없으며 트랜잭션을 가져올 수 있는 시나리오에 더 나은 성능을 제공 합니다.  될 때까지 트랜잭션 전파 되지 않으므로 이것이 <xref:System.Transactions.TransactionInterop.GetTransactionFromTransmitterPropagationToken%2A> 라고 합니다. 또 다른 장점은 내보내기 쿠키 whereabouts를 제공 하는 컴퓨터 에서만 사용할 수 있지만 모든 원격 컴퓨터에 전파 토큰을 받을 수 있는지입니다.  
+  
+ 그러나 유의 원격 트랜잭션 관리자의 whereabouts 전파 토큰에서 캡슐화 되는 내보내기/가져오기 모델에서 해당 트랜잭션 쿠키 보다 커집니다.  
+  
+ **하지만 참고** 이 형식을 사용 하 여 <xref:System.Security.Permissions.SecurityAction.LinkDemand> 신뢰할 수 없는 코드에서 호출할를 방지 하기 위해 필요, 직접 실행 호출자만 소유는 `FullTrust` 권한 집합입니다.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="GetDtcTransaction">
+      <MemberSignature Language="C#" Value="public static System.Transactions.IDtcTransaction GetDtcTransaction (System.Transactions.Transaction transaction);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Transactions.IDtcTransaction GetDtcTransaction(class System.Transactions.Transaction transaction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetDtcTransaction(System.Transactions.Transaction)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Transactions::IDtcTransaction ^ GetDtcTransaction(System::Transactions::Transaction ^ transaction);" />
+      <MemberSignature Language="F#" Value="static member GetDtcTransaction : System.Transactions.Transaction -&gt; System.Transactions.IDtcTransaction" Usage="System.Transactions.TransactionInterop.GetDtcTransaction transaction" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Transactions.IDtcTransaction</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="transaction" Type="System.Transactions.Transaction" />
+      </Parameters>
+      <Docs>
+        <param name="transaction">마샬링할 <see cref="T:System.Transactions.Transaction" /> 인스턴스입니다.</param>
+        <summary><see cref="T:System.Transactions.Transaction" />을 나타내는 <see cref="T:System.Transactions.IDtcTransaction" /> 인스턴스를 가져옵니다.</summary>
+        <returns><see cref="T:System.Transactions.IDtcTransaction" />을 나타내는 <see cref="T:System.Transactions.Transaction" /> 인스턴스입니다.  <see cref="T:System.Transactions.IDtcTransaction" /> 인스턴스는 MSDTC에서 사용되는 관리되지 않는 형식의 <see href="https://docs.microsoft.com/previous-versions/windows/desktop/ms686531(v=vs.85)">ITransaction</see> 및 <see cref="N:System.EnterpriseServices" />에서 사용되는 관리된 형식의 <see cref="T:System.EnterpriseServices.ITransaction" />과 호환됩니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetExportCookie">
+      <MemberSignature Language="C#" Value="public static byte[] GetExportCookie (System.Transactions.Transaction transaction, byte[] whereabouts);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] GetExportCookie(class System.Transactions.Transaction transaction, unsigned int8[] whereabouts) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetExportCookie(System.Transactions.Transaction,System.Byte[])" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ GetExportCookie(System::Transactions::Transaction ^ transaction, cli::array &lt;System::Byte&gt; ^ whereabouts);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public static byte[] GetExportCookie (System.Transactions.Transaction transaction, byte[] exportCookie);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] GetExportCookie(class System.Transactions.Transaction transaction, unsigned int8[] exportCookie) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ GetExportCookie(System::Transactions::Transaction ^ transaction, cli::array &lt;System::Byte&gt; ^ exportCookie);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetExportCookie(System.Transactions.Transaction,System.Byte[])" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="static member GetExportCookie : System.Transactions.Transaction * byte[] -&gt; byte[]" Usage="System.Transactions.TransactionInterop.GetExportCookie (transaction, exportCookie)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member GetExportCookie : System.Transactions.Transaction * byte[] -&gt; byte[]" Usage="System.Transactions.TransactionInterop.GetExportCookie (transaction, exportCookie)" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="transaction" Type="System.Transactions.Transaction" Index="0" />
+        <Parameter Name="whereabouts" Type="System.Byte[]" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="exportCookie" Type="System.Byte[]" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="transaction">마샬링할 <see cref="T:System.Transactions.Transaction" /> 개체입니다.</param>
+        <param name="whereabouts">대상 트랜잭션 관리자의 위치를 설명하는 주소입니다. 이 주소를 통해 두 트랜잭션 관리자가 서로 통신하여 시스템 간에 트랜잭션을 전파할 수 있습니다.</param>
+        <param name="exportCookie">대상 트랜잭션 관리자의 위치를 설명하는 주소입니다. 이 주소를 통해 두 트랜잭션 관리자가 서로 통신하여 시스템 간에 트랜잭션을 전파할 수 있습니다.</param>
+        <summary>트랜잭션 개체를 내보내기 트랜잭션 쿠키로 변형합니다.</summary>
+        <returns>지정된 <see cref="T:System.Transactions.Transaction" /> 개체를 나타내는 내보내기 트랜잭션 쿠키입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 트랜잭션 내보내려는 경우이 메서드를 호출 합니다. `transaction` 전달 되는 함께 트랜잭션 쿠키로 마샬링됩니다. 그런 다음 대상 프로세스에 트랜잭션 쿠키를 보낼 수 있습니다. 이 프로세스 또는 시스템 간에 트랜잭션을 전파할 이라고 합니다. 전파는 로컬 트랜잭션이 대상에 푸시됩니다. 여기서 푸시 모델으로 간주 됩니다.  따라서에 포함 된 정보 `whereabouts` 대상 트랜잭션 관리자에 설명 합니다.  
+  
+ 다양한 전파 모델에 대한 자세한 내용은 <xref:System.Transactions.TransactionInterop> 클래스의 설명 섹션을 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTransactionFromDtcTransaction">
+      <MemberSignature Language="C#" Value="public static System.Transactions.Transaction GetTransactionFromDtcTransaction (System.Transactions.IDtcTransaction transactionNative);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Transactions.Transaction GetTransactionFromDtcTransaction(class System.Transactions.IDtcTransaction transactionNative) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetTransactionFromDtcTransaction(System.Transactions.IDtcTransaction)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetTransactionFromDtcTransaction (transactionNative As IDtcTransaction) As Transaction" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Transactions::Transaction ^ GetTransactionFromDtcTransaction(System::Transactions::IDtcTransaction ^ transactionNative);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public static System.Transactions.Transaction GetTransactionFromDtcTransaction (System.Transactions.IDtcTransaction dtc);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Transactions.Transaction GetTransactionFromDtcTransaction(class System.Transactions.IDtcTransaction dtc) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetTransactionFromDtcTransaction (dtc As IDtcTransaction) As Transaction" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Transactions::Transaction ^ GetTransactionFromDtcTransaction(System::Transactions::IDtcTransaction ^ dtc);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetTransactionFromDtcTransaction(System.Transactions.IDtcTransaction)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="static member GetTransactionFromDtcTransaction : System.Transactions.IDtcTransaction -&gt; System.Transactions.Transaction" Usage="System.Transactions.TransactionInterop.GetTransactionFromDtcTransaction dtc" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member GetTransactionFromDtcTransaction : System.Transactions.IDtcTransaction -&gt; System.Transactions.Transaction" Usage="System.Transactions.TransactionInterop.GetTransactionFromDtcTransaction dtc" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Transactions.Transaction</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="transactionNative" Type="System.Transactions.IDtcTransaction" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="dtc" Type="System.Transactions.IDtcTransaction" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="transactionNative">마샬링할 <see cref="T:System.Transactions.IDtcTransaction" /> 개체입니다.</param>
+        <param name="dtc">마샬링할 <see cref="T:System.Transactions.IDtcTransaction" /> 개체입니다.</param>
+        <summary>지정된 <see cref="T:System.Transactions.IDtcTransaction" />에서 <see cref="T:System.Transactions.Transaction" />을 생성합니다.</summary>
+        <returns>지정된 <see cref="T:System.Transactions.IDtcTransaction" />을 나타내는 <see cref="T:System.Transactions.Transaction" /> 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 `transactionNative` 관리 되지 않는 형식의 호환 [ITransaction](https://msdn.microsoft.com/library/default.asp?url=/library/cossdk/html/d40264be-f9b2-4044-aac6-84b43e5be666.asp) MSDTC에서 관리 되는 형식으로 사용 <xref:System.EnterpriseServices.ITransaction> 에서 사용 하는 <xref:System.EnterpriseServices>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTransactionFromExportCookie">
+      <MemberSignature Language="C#" Value="public static System.Transactions.Transaction GetTransactionFromExportCookie (byte[] cookie);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Transactions.Transaction GetTransactionFromExportCookie(unsigned int8[] cookie) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetTransactionFromExportCookie(System.Byte[])" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetTransactionFromExportCookie (cookie As Byte()) As Transaction" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Transactions::Transaction ^ GetTransactionFromExportCookie(cli::array &lt;System::Byte&gt; ^ cookie);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public static System.Transactions.Transaction GetTransactionFromExportCookie (byte[] exportCookie);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Transactions.Transaction GetTransactionFromExportCookie(unsigned int8[] exportCookie) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetTransactionFromExportCookie (exportCookie As Byte()) As Transaction" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Transactions::Transaction ^ GetTransactionFromExportCookie(cli::array &lt;System::Byte&gt; ^ exportCookie);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetTransactionFromExportCookie(System.Byte[])" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="static member GetTransactionFromExportCookie : byte[] -&gt; System.Transactions.Transaction" Usage="System.Transactions.TransactionInterop.GetTransactionFromExportCookie exportCookie" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member GetTransactionFromExportCookie : byte[] -&gt; System.Transactions.Transaction" Usage="System.Transactions.TransactionInterop.GetTransactionFromExportCookie exportCookie" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Transactions.Transaction</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cookie" Type="System.Byte[]" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="exportCookie" Type="System.Byte[]" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="cookie">마샬링된 형식의 트랜잭션 개체입니다.</param>
+        <param name="exportCookie">마샬링된 형식의 트랜잭션 개체입니다.</param>
+        <summary>지정된 내보내기 쿠키에서 <see cref="T:System.Transactions.Transaction" />을 생성합니다.</summary>
+        <returns>지정된 내보내기 쿠키에서 생성된 <see cref="T:System.Transactions.Transaction" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 다양한 전파 모델에 대한 자세한 내용은 <xref:System.Transactions.TransactionInterop> 클래스의 설명 섹션을 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTransactionFromTransmitterPropagationToken">
+      <MemberSignature Language="C#" Value="public static System.Transactions.Transaction GetTransactionFromTransmitterPropagationToken (byte[] propagationToken);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Transactions.Transaction GetTransactionFromTransmitterPropagationToken(unsigned int8[] propagationToken) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetTransactionFromTransmitterPropagationToken(System.Byte[])" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetTransactionFromTransmitterPropagationToken (propagationToken As Byte()) As Transaction" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Transactions::Transaction ^ GetTransactionFromTransmitterPropagationToken(cli::array &lt;System::Byte&gt; ^ propagationToken);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netstandard-2.0;netcore-2.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      <MemberSignature Language="C#" Value="public static System.Transactions.Transaction GetTransactionFromTransmitterPropagationToken (byte[] token);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Transactions.Transaction GetTransactionFromTransmitterPropagationToken(unsigned int8[] token) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetTransactionFromTransmitterPropagationToken (token As Byte()) As Transaction" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Transactions::Transaction ^ GetTransactionFromTransmitterPropagationToken(cli::array &lt;System::Byte&gt; ^ token);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetTransactionFromTransmitterPropagationToken(System.Byte[])" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="F#" Value="static member GetTransactionFromTransmitterPropagationToken : byte[] -&gt; System.Transactions.Transaction" Usage="System.Transactions.TransactionInterop.GetTransactionFromTransmitterPropagationToken token" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member GetTransactionFromTransmitterPropagationToken : byte[] -&gt; System.Transactions.Transaction" Usage="System.Transactions.TransactionInterop.GetTransactionFromTransmitterPropagationToken token" FrameworkAlternate="xamarinandroid-7.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Transactions.Transaction</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="propagationToken" Type="System.Byte[]" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+        <Parameter Name="token" Type="System.Byte[]" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="propagationToken">트랜잭션을 나타내는 전파 토큰입니다.</param>
+        <param name="token">트랜잭션을 나타내는 전파 토큰입니다.</param>
+        <summary>지정된 전송기 전파 토큰에서 <see cref="T:System.Transactions.Transaction" /> 인스턴스를 생성합니다.</summary>
+        <returns>지정된 전송기 전파 토큰에서 생성된 <see cref="T:System.Transactions.Transaction" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 와 함께이 메서드는 <xref:System.Transactions.TransactionInterop.GetTransmitterPropagationToken%2A> 메서드는 트랜잭션을 "끌어옵니다" 원격 컴퓨터에서 트랜잭션을 역마샬링을이 메서드가 호출 되 면 "끌어오기" 전파에 대 한 기능을 제공 합니다.  
+  
+ 다양한 전파 모델에 대한 자세한 내용은 <xref:System.Transactions.TransactionInterop> 클래스의 설명 섹션을 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Transactions.TransactionManagerCommunicationException">트랜잭션 관리자에 연결할 수 없어 트랜잭션의 deserialization에 실패한 경우. 이 예외는 네트워크 방화벽이나 보안 설정으로 인해 발생할 수 있습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTransmitterPropagationToken">
+      <MemberSignature Language="C#" Value="public static byte[] GetTransmitterPropagationToken (System.Transactions.Transaction transaction);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] GetTransmitterPropagationToken(class System.Transactions.Transaction transaction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetTransmitterPropagationToken(System.Transactions.Transaction)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ GetTransmitterPropagationToken(System::Transactions::Transaction ^ transaction);" />
+      <MemberSignature Language="F#" Value="static member GetTransmitterPropagationToken : System.Transactions.Transaction -&gt; byte[]" Usage="System.Transactions.TransactionInterop.GetTransmitterPropagationToken transaction" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="transaction" Type="System.Transactions.Transaction" />
+      </Parameters>
+      <Docs>
+        <param name="transaction">전파 토큰으로 마샬링할 트랜잭션입니다.</param>
+        <summary>지정된 <see cref="T:System.Transactions.Transaction" />에 대한 전파 토큰을 생성합니다.</summary>
+        <returns>이 메서드는 <see cref="M:System.Transactions.TransactionInterop.GetTransactionFromTransmitterPropagationToken(System.Byte[])" /> 메서드와 함께 전송기/수신기 전파 기능을 제공하는데 전송기/수신기 전파에서는 트랜잭션의 역마샬링을 위해 후자가 호출될 때 원격 컴퓨터로부터 트랜잭션을 “끌어옵니다”.  
+  
+다양한 전파 모델에 대한 자세한 내용은 <see cref="T:System.Transactions.TransactionInterop" /> 클래스를 참조하세요.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetWhereabouts">
+      <MemberSignature Language="C#" Value="public static byte[] GetWhereabouts ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] GetWhereabouts() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.TransactionInterop.GetWhereabouts" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetWhereabouts () As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ GetWhereabouts();" />
+      <MemberSignature Language="F#" Value="static member GetWhereabouts : unit -&gt; byte[]" Usage="System.Transactions.TransactionInterop.GetWhereabouts " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="N:System.Transactions" />에서 사용되는 분산 트랜잭션 관리자의 Whereabouts를 가져옵니다.</summary>
+        <returns><see cref="N:System.Transactions" />에서 사용되는 분산 트랜잭션 관리자의 Whereabouts입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Whereabouts는 트랜잭션 관리자의 위치를 설명 하는 주소를 포함 합니다. 이 주소를 통해 두 트랜잭션 관리자가 서로 통신하여 시스템 간에 트랜잭션을 전파할 수 있습니다. 이 메서드에서 반환 되는 정보를 사용 하 여 푸시 모델 트랜잭션 전파에 대 한 위치 정보를 제공 하 사용할 수는 <xref:System.Transactions.TransactionInterop.GetExportCookie%2A> 메서드.  
+  
+ 다양한 전파 모델에 대한 자세한 내용은 <xref:System.Transactions.TransactionInterop> 클래스의 설명 섹션을 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PromoterTypeDtc">
+      <MemberSignature Language="C#" Value="public static readonly Guid PromoterTypeDtc;" />
+      <MemberSignature Language="ILAsm" Value=".field public static initonly valuetype System.Guid PromoterTypeDtc" />
+      <MemberSignature Language="DocId" Value="F:System.Transactions.TransactionInterop.PromoterTypeDtc" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly PromoterTypeDtc As Guid " />
+      <MemberSignature Language="C++ CLI" Value="public: static initonly Guid PromoterTypeDtc;" />
+      <MemberSignature Language="F#" Value=" staticval mutable PromoterTypeDtc : Guid" Usage="System.Transactions.TransactionInterop.PromoterTypeDtc" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Guid</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>분산된 트랜잭션 프로세서의 유형입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 대 한이 값은 사용 합니다 `Transaction.PromoterType` 트랜잭션이 또는 MSDTC 승격 됩니다 하는 경우 속성 및 `Transaction.GetPromotedToken` 메서드는 MSDTC 트랜잭션 전파 토큰을 반환 합니다 `byte[]` 결과.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

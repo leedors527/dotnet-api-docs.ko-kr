@@ -1,0 +1,556 @@
+<Type Name="ObjectStateFormatter" FullName="System.Web.UI.ObjectStateFormatter">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="2c2e6c347dc9794b8ac1fc42ab8aeeefb7809081" /><Meta Name="ms.sourcegitcommit" Value="42a3c35677e9d87eeb503607ae50c9d39827d414" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/17/2018" /><Meta Name="ms.locfileid" Value="53483318" /></Metadata><TypeSignature Language="C#" Value="public sealed class ObjectStateFormatter : System.Runtime.Serialization.IFormatter" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ObjectStateFormatter extends System.Object implements class System.Runtime.Serialization.IFormatter, class System.Web.UI.IStateFormatter" />
+  <TypeSignature Language="DocId" Value="T:System.Web.UI.ObjectStateFormatter" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ObjectStateFormatter&#xA;Implements IFormatter" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ObjectStateFormatter sealed : System::Runtime::Serialization::IFormatter" />
+  <TypeSignature Language="F#" Value="type ObjectStateFormatter = class&#xA;    interface IStateFormatter&#xA;    interface IFormatter" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Runtime.Serialization.IFormatter</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.Web.UI.IStateFormatter</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>개체의 상태를 나타내는 개체 그래프를 직렬화 및 역직렬화합니다. 이 클래스는 상속될 수 없습니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.UI.ObjectStateFormatter> 클래스를 직렬화 및 압축 된 형식으로 개체 상태 그래프를 역직렬화 합니다.  
+  
+ <xref:System.Web.UI.ObjectStateFormatter> 사용 되는 <xref:System.Web.UI.PageStatePersister> 클래스와 뷰 상태를 serialize 하 고 상태를 제어 하에서 파생 되는 클래스입니다. 이 사용 하는 <xref:System.Web.UI.LosFormatter> ASP.NET 인프라의 다양 한 부분에 대 한 서식 지정 하는 개체 상태 그래프를 제공 하는 클래스입니다.  
+  
+ <xref:System.Web.UI.ObjectStateFormatter> 클래스를 serialize 하 고 많은 일반적인.NET Framework 참조 형식 뿐만 아니라 상수 서식을 지정 하도록 최적화 됩니다. 다음 표에서 최적화 된 형식을 나열 합니다.  
+  
+|||||  
+|-|-|-|-|  
+|<xref:System.Array>|<xref:System.DateTime>|<xref:System.Int16>|<xref:System.String>|  
+|<xref:System.Collections.ArrayList>|<xref:System.Double>|<xref:System.Int32>|String|  
+|<xref:System.Boolean>|<xref:System.Enum>|null (`Nothing`)|<xref:System.String.Empty?displayProperty=nameWithType>|  
+|<xref:System.Byte>|<xref:System.Collections.Hashtable>|<xref:System.Web.UI.Pair>|<xref:System.Web.UI.Triplet>|  
+|<xref:System.Char>|<xref:System.Collections.Specialized.HybridDictionary>|<xref:System.Single>|<xref:System.Type>|  
+|<xref:System.Drawing.Color>|<xref:System.Collections.IDictionary>|||  
+  
+ 또한 변경 되지 않은 serialize 된 이진 작성기에서 및을 기존 문자열 형식 및 문자열 배열에 기록 됩니다 일부 문자열은 내부 문자열 테이블을 만들어 최적화 됩니다. 문자열을 문자열에 연결 된 이러한 테이블을 사용 하 여 가지의 <xref:System.ComponentModel.TypeConverter> 개체 또는 문자열의 인스턴스 실제로 인지를 <xref:System.Web.UI.IndexedString> 클래스.  
+  
+ 위에 나열 되지 않은 다른 종류는 이진 직렬화를 사용 하 여는 <xref:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter> 구현 개체를 <xref:System.Runtime.Serialization.ISerializable> 인터페이스 또는로 데코레이팅 되었습니다는 <xref:System.SerializableAttribute> 특성입니다. <xref:System.Web.UI.ObjectStateFormatter> 클래스는 이러한 직렬화 가능 형식에 대 한 최적화 되지 않습니다.  
+  
+ 경우는 <xref:System.Web.UI.ObjectStateFormatter> 클래스에 직렬화 되지 않은 형식을 발견 하면는 <xref:System.ArgumentException> 예외가 throw 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 클래스에서 파생 되는 방법을 보여 줍니다.는 <xref:System.Web.UI.PageStatePersister> 액세스 클래스를 <xref:System.Web.UI.PageStatePersister.StateFormatter%2A> 검색할 속성을 <xref:System.Web.UI.ObjectStateFormatter> 뷰 상태 및 컨트롤 상태를 스트림으로 serialize 하는 인스턴스. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.UI.PageStatePersister> 클래스입니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ObjectStateFormatter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ObjectStateFormatter();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Web.UI.ObjectStateFormatter" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Deserialize">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>serialize된 형식에서 개체 상태 그래프를 deserialize합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+[!INCLUDE [untrusted-data-method-note](~/includes/untrusted-data-method-note.md)]
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="Overload:System.Web.UI.ObjectStateFormatter.Serialize" />
+        <altmember cref="Overload:System.Web.UI.LosFormatter.Deserialize" />
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Deserialize">
+      <MemberSignature Language="C#" Value="public object Deserialize (System.IO.Stream inputStream);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance object Deserialize(class System.IO.Stream inputStream) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.Deserialize(System.IO.Stream)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Deserialize (inputStream As Stream) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Object ^ Deserialize(System::IO::Stream ^ inputStream);" />
+      <MemberSignature Language="F#" Value="member this.Deserialize : System.IO.Stream -&gt; obj" Usage="objectStateFormatter.Deserialize inputStream" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Runtime.Serialization.IFormatter.Deserialize(System.IO.Stream)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="inputStream" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <param name="inputStream"><see cref="T:System.IO.Stream" />에서 초기화된 <see langword="object" />로 deserialize하는 <see cref="T:System.Web.UI.ObjectStateFormatter" />입니다.</param>
+        <summary>지정한 <see cref="T:System.IO.Stream" /> 개체에 들어 있는 이진으로 serialize된 형식에서 개체 상태 그래프를 deserialize합니다.</summary>
+        <returns>deserialize된 개체 상태 그래프를 나타내는 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여 serialize 되는 모든 개체 상태 그래프를 <xref:System.Web.UI.ObjectStateFormatter.Serialize%2A> 메서드를 사용 하 여 deserialize 할 수는 <xref:System.Web.UI.ObjectStateFormatter.Deserialize%2A> 메서드. 합니다 <xref:System.Web.UI.ObjectStateFormatter.Deserialize%28System.IO.Stream%29> 메서드 복원에 저장 된 개체 상태 그래프를 사용 하는 <xref:System.IO.Stream>와 같은 <xref:System.IO.FileStream>입니다.  
+  
+[!INCLUDE [untrusted-data-method-note](~/includes/untrusted-data-method-note.md)]   
+  
+## Examples  
+ 다음 코드 예제는 클래스에서 파생 되는 방법을 보여 줍니다.는 <xref:System.Web.UI.PageStatePersister> 초기화 클래스는 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 컬렉션입니다. 이 예제에서는 합니다 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 컬렉션에 할당 된를 <xref:System.Web.UI.Pair.First> 필드를 <xref:System.Web.UI.Pair> 개체를 사용 하 여 파일 serialize를 <xref:System.Web.UI.ObjectStateFormatter> 클래스입니다. 경우는 <xref:System.Web.UI.PageStatePersister.Load%2A> 메서드가 호출 되는 <xref:System.Web.UI.LosFormatter.Deserialize%28System.IO.Stream%29> 메서드 파일에서 뷰 상태를 deserialize 하는 데 사용 됩니다 및 <xref:System.Web.UI.PageStatePersister.ViewState%2A> 속성이 초기화 됩니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.UI.PageStatePersister> 클래스입니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#2)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">지정된 <paramref name="inputStream" />는 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><see cref="T:System.IO.Stream" />을 deserialize하는 동안 예외가 발생하는 경우. 예외 메시지는 <see cref="T:System.ArgumentException" />의 메시지에 추가됩니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Deserialize">
+      <MemberSignature Language="C#" Value="public object Deserialize (string inputString);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance object Deserialize(string inputString) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.Deserialize(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Deserialize (inputString As String) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Object ^ Deserialize(System::String ^ inputString);" />
+      <MemberSignature Language="F#" Value="member this.Deserialize : string -&gt; obj" Usage="objectStateFormatter.Deserialize inputString" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Web.UI.IStateFormatter.Deserialize(System.String)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="inputString" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="inputString"><see cref="T:System.Web.UI.ObjectStateFormatter" />에서 초기화된 개체로 deserialize하는 문자열입니다.</param>
+        <summary>serialize된 Base64 인코딩된 문자열 형식에서 개체 상태 그래프를 deserialize합니다.</summary>
+        <returns>deserialize된 개체 상태 그래프를 나타내는 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여 serialize 되는 모든 개체 상태 그래프를 <xref:System.Web.UI.ObjectStateFormatter.Serialize%2A> 메서드를 사용 하 여 deserialize 할 수는 <xref:System.Web.UI.ObjectStateFormatter.Deserialize%2A> 메서드. <xref:System.Web.UI.ObjectStateFormatter.Deserialize%28System.String%29> 메서드 복원 base64로 인코딩된 문자열 형식으로 저장 하는 개체 상태 그래프를 사용 합니다.  
+  
+[!INCLUDE [untrusted-data-method-note](~/includes/untrusted-data-method-note.md)]   
+  
+## Examples  
+ 다음 코드 예제에는 base64로 인코딩된 문자열을 deserialize 하 고 반환 하는 메서드를 구현 하는 방법을 보여 줍니다.는 <xref:System.Collections.ICollection> 속성 설정의 컬렉션입니다. 이 코드 예제에서는 serialize 된 속성 설정을 사용 합니다 <xref:System.Web.UI.ObjectStateFormatter> 에 표시 된 대로 클래스는 <xref:System.Web.UI.ObjectStateFormatter.Serialize%28System.Object%29> 메서드.  
+  
+ [!code-csharp[System.Web.UI.ObjectStateFormatter_1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.ObjectStateFormatter_1/CS/objectstateformattertest.cs#2)]
+ [!code-vb[System.Web.UI.ObjectStateFormatter_1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.ObjectStateFormatter_1/VB/objectstateformattertest.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">지정한 <paramref name="inputString" />이 <see langword="null" />이거나 <see cref="P:System.String.Length" />가 0인 경우</exception>
+        <exception cref="T:System.ArgumentException">serialize된 데이터가 유효하지 않은 경우</exception>
+        <exception cref="T:System.Web.HttpException">뷰 상태를 deserialize할 때 수행된 MAC(컴퓨터 인증 코드) 유효성 검사가 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Serialize">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>개체 상태 그래프를 serialize합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Serialize">
+      <MemberSignature Language="C#" Value="public string Serialize (object stateGraph);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string Serialize(object stateGraph) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.Serialize(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Serialize (stateGraph As Object) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ Serialize(System::Object ^ stateGraph);" />
+      <MemberSignature Language="F#" Value="member this.Serialize : obj -&gt; string" Usage="objectStateFormatter.Serialize stateGraph" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Web.UI.IStateFormatter.Serialize(System.Object)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="stateGraph" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="stateGraph">serialize할 개체입니다.</param>
+        <summary>개체 상태 그래프를 base64 인코딩된 문자열로 serialize합니다.</summary>
+        <returns><paramref name="stateGraph" /> 매개 변수의 serialize된 개체 상태를 나타내는 base64 인코딩된 문자열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여 serialize 되는 모든 개체 그래프를 <xref:System.Web.UI.ObjectStateFormatter.Serialize%2A> 메서드를 사용 하 여 deserialize 할 수는 <xref:System.Web.UI.ObjectStateFormatter.Deserialize%2A> 메서드. <xref:System.Web.UI.ObjectStateFormatter.Serialize%28System.Object%29> 개체 상태 그래프를 base64로 인코딩된 문자열 형식 serialize 메서드를 사용 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제 집합을 사용 하 여 base64로 인코딩된 문자열로 컨트롤 속성의 값을 serialize 하는 방법에 설명 합니다 <xref:System.Web.UI.ObjectStateFormatter.Serialize%28System.Object%29> 메서드. 문자열을 사용 하 여 나중에 deserialize 할 수는 <xref:System.Web.UI.ObjectStateFormatter.Deserialize%28System.String%29> 메서드.  
+  
+ [!code-csharp[System.Web.UI.ObjectStateFormatter_1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.UI.ObjectStateFormatter_1/CS/objectstateformattertest.cs#1)]
+ [!code-vb[System.Web.UI.ObjectStateFormatter_1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.UI.ObjectStateFormatter_1/VB/objectstateformattertest.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Serialize">
+      <MemberSignature Language="C#" Value="public void Serialize (System.IO.Stream outputStream, object stateGraph);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Serialize(class System.IO.Stream outputStream, object stateGraph) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.Serialize(System.IO.Stream,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Serialize (outputStream As Stream, stateGraph As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Serialize(System::IO::Stream ^ outputStream, System::Object ^ stateGraph);" />
+      <MemberSignature Language="F#" Value="member this.Serialize : System.IO.Stream * obj -&gt; unit" Usage="objectStateFormatter.Serialize (outputStream, stateGraph)" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Runtime.Serialization.IFormatter.Serialize(System.IO.Stream,System.Object)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="outputStream" Type="System.IO.Stream" />
+        <Parameter Name="stateGraph" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="outputStream"><see cref="T:System.IO.Stream" />에서 지정한 개체의 상태를 serialize하는 대상 <see cref="T:System.Web.UI.ObjectStateFormatter" />입니다.</param>
+        <param name="stateGraph">serialize할 개체입니다.</param>
+        <summary>개체 상태 그래프를 지정한 <see cref="T:System.IO.Stream" /> 개체로 serialize합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여 serialize 되는 모든 개체 상태 그래프를 <xref:System.Web.UI.ObjectStateFormatter.Serialize%2A> 메서드를 사용 하 여 deserialize 할 수는 <xref:System.Web.UI.ObjectStateFormatter.Deserialize%2A> 메서드. 합니다 <xref:System.Web.UI.ObjectStateFormatter.Serialize%28System.IO.Stream%2CSystem.Object%29> 메서드는 이진 개체 상태 그래프를 serialize 하는 <xref:System.IO.Stream> 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 클래스를 검색 하는 방법을 보여 줍니다.는 <xref:System.Web.UI.ObjectStateFormatter> 뷰 상태 및 컨트롤 상태를 사용 하 여 스트림을 serialize 하는 인스턴스는 <xref:System.Web.UI.ObjectStateFormatter.Serialize%28System.IO.Stream%2CSystem.Object%29> 메서드. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.UI.PageStatePersister> 클래스입니다.  
+  
+ [!code-csharp[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/CS/textfilepagestatepersister.cs#3)]
+ [!code-vb[Samples.AspNet.Alexkr.TextFilePageStatePersister_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Samples.AspNet.Alexkr.TextFilePageStatePersister_1/VB/textfilepagestatepersister.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">지정된 <paramref name="inputStream" />는 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Runtime.Serialization.IFormatter.Binder">
+      <MemberSignature Language="C#" Value="System.Runtime.Serialization.SerializationBinder System.Runtime.Serialization.IFormatter.Binder { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Runtime.Serialization.SerializationBinder System.Runtime.Serialization.IFormatter.Binder" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.ObjectStateFormatter.System#Runtime#Serialization#IFormatter#Binder" />
+      <MemberSignature Language="VB.NET" Value=" Property Binder As SerializationBinder Implements IFormatter.Binder" />
+      <MemberSignature Language="C++ CLI" Value="property System::Runtime::Serialization::SerializationBinder ^ System::Runtime::Serialization::IFormatter::Binder { System::Runtime::Serialization::SerializationBinder ^ get(); void set(System::Runtime::Serialization::SerializationBinder ^ value); };" />
+      <MemberSignature Language="F#" Usage="System.Runtime.Serialization.IFormatter.Binder" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Runtime.Serialization.IFormatter.Binder</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Runtime.Serialization.SerializationBinder</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 멤버에 대한 설명은 <see cref="P:System.Runtime.Serialization.Formatter.Binder" />를 참조하세요.</summary>
+        <value>deserialization 중에 형식 조회를 수행하는 <see cref="T:System.Runtime.Serialization.SerializationBinder" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.Web.UI.ObjectStateFormatter> 인스턴스가 <xref:System.Runtime.Serialization.IFormatter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Runtime.Serialization.IFormatter.Context">
+      <MemberSignature Language="C#" Value="System.Runtime.Serialization.StreamingContext System.Runtime.Serialization.IFormatter.Context { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Runtime.Serialization.StreamingContext System.Runtime.Serialization.IFormatter.Context" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.ObjectStateFormatter.System#Runtime#Serialization#IFormatter#Context" />
+      <MemberSignature Language="VB.NET" Value=" Property Context As StreamingContext Implements IFormatter.Context" />
+      <MemberSignature Language="C++ CLI" Value="property System::Runtime::Serialization::StreamingContext System::Runtime::Serialization::IFormatter::Context { System::Runtime::Serialization::StreamingContext get(); void set(System::Runtime::Serialization::StreamingContext value); };" />
+      <MemberSignature Language="F#" Usage="System.Runtime.Serialization.IFormatter.Context" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Runtime.Serialization.IFormatter.Context</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Runtime.Serialization.StreamingContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 멤버에 대한 설명은 <see cref="P:System.Runtime.Serialization.IFormatter.Context" />를 참조하세요.</summary>
+        <value>serialization 및 deserialization에 사용되는 <see cref="T:System.Runtime.Serialization.StreamingContext" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.Web.UI.ObjectStateFormatter> 인스턴스가 <xref:System.Runtime.Serialization.IFormatter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Runtime.Serialization.IFormatter.Deserialize">
+      <MemberSignature Language="C#" Value="object IFormatter.Deserialize (System.IO.Stream serializationStream);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.Runtime.Serialization.IFormatter.Deserialize(class System.IO.Stream serializationStream) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.System#Runtime#Serialization#IFormatter#Deserialize(System.IO.Stream)" />
+      <MemberSignature Language="VB.NET" Value="Function Deserialize (serializationStream As Stream) As Object Implements IFormatter.Deserialize" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.Runtime.Serialization.IFormatter.Deserialize(System::IO::Stream ^ serializationStream) = System::Runtime::Serialization::IFormatter::Deserialize;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Runtime.Serialization.IFormatter.Deserialize(System.IO.Stream)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serializationStream" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <param name="serializationStream">deserialize할 데이터를 포함하는 스트림입니다.</param>
+        <summary>이 멤버에 대한 설명은 <see cref="M:System.Web.UI.ObjectStateFormatter.Deserialize(System.IO.Stream)" />를 참조하세요.</summary>
+        <returns>deserialize된 그래프의 최상위 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.Web.UI.ObjectStateFormatter> 인스턴스가 <xref:System.Runtime.Serialization.IFormatter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Runtime.Serialization.IFormatter.Serialize">
+      <MemberSignature Language="C#" Value="void IFormatter.Serialize (System.IO.Stream serializationStream, object stateGraph);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Runtime.Serialization.IFormatter.Serialize(class System.IO.Stream serializationStream, object stateGraph) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.System#Runtime#Serialization#IFormatter#Serialize(System.IO.Stream,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Sub Serialize (serializationStream As Stream, stateGraph As Object) Implements IFormatter.Serialize" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.Runtime.Serialization.IFormatter.Serialize(System::IO::Stream ^ serializationStream, System::Object ^ stateGraph) = System::Runtime::Serialization::IFormatter::Serialize;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Runtime.Serialization.IFormatter.Serialize(System.IO.Stream,System.Object)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serializationStream" Type="System.IO.Stream" />
+        <Parameter Name="stateGraph" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="serializationStream">포맷터가 serialize된 데이터를 두는 스트림입니다. 이 스트림은 파일, 네트워크, 메모리 같은 다양한 백업 저장소를 참조할 수 있습니다.</param>
+        <param name="stateGraph">serialize할 개체 그래프의 루트 또는 개체입니다. 이 루트 개체의 모든 자식 개체는 자동으로 serialize됩니다.</param>
+        <summary>이 멤버에 대한 설명은 <see cref="M:System.Web.UI.ObjectStateFormatter.Serialize(System.IO.Stream,System.Object)" />를 참조하세요.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.Web.UI.ObjectStateFormatter> 인스턴스가 <xref:System.Runtime.Serialization.IFormatter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Runtime.Serialization.IFormatter.SurrogateSelector">
+      <MemberSignature Language="C#" Value="System.Runtime.Serialization.ISurrogateSelector System.Runtime.Serialization.IFormatter.SurrogateSelector { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Runtime.Serialization.ISurrogateSelector System.Runtime.Serialization.IFormatter.SurrogateSelector" />
+      <MemberSignature Language="DocId" Value="P:System.Web.UI.ObjectStateFormatter.System#Runtime#Serialization#IFormatter#SurrogateSelector" />
+      <MemberSignature Language="VB.NET" Value=" Property SurrogateSelector As ISurrogateSelector Implements IFormatter.SurrogateSelector" />
+      <MemberSignature Language="C++ CLI" Value="property System::Runtime::Serialization::ISurrogateSelector ^ System::Runtime::Serialization::IFormatter::SurrogateSelector { System::Runtime::Serialization::ISurrogateSelector ^ get(); void set(System::Runtime::Serialization::ISurrogateSelector ^ value); };" />
+      <MemberSignature Language="F#" Usage="System.Runtime.Serialization.IFormatter.SurrogateSelector" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Runtime.Serialization.IFormatter.SurrogateSelector</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Runtime.Serialization.ISurrogateSelector</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 멤버에 대한 설명은 <see cref="T:System.Runtime.Serialization.SurrogateSelector" />를 참조하세요.</summary>
+        <value>이 포맷터가 사용하는 <see cref="T:System.Runtime.Serialization.SurrogateSelector" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.Web.UI.ObjectStateFormatter> 인스턴스가 <xref:System.Runtime.Serialization.IFormatter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Web.UI.IStateFormatter.Deserialize">
+      <MemberSignature Language="C#" Value="object IStateFormatter.Deserialize (string serializedState);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.Web.UI.IStateFormatter.Deserialize(string serializedState) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.System#Web#UI#IStateFormatter#Deserialize(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Function Deserialize (serializedState As String) As Object Implements IStateFormatter.Deserialize" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.Web.UI.IStateFormatter.Deserialize(System::String ^ serializedState) = System::Web::UI::IStateFormatter::Deserialize;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Web.UI.IStateFormatter.Deserialize(System.String)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serializedState" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="serializedState"><see cref="T:System.Web.UI.IStateFormatter" />에서 초기화된 개체로 deserialize하는 문자열입니다.</param>
+        <summary>이 멤버에 대한 설명은 <see cref="M:System.Web.UI.ObjectStateFormatter.Deserialize(System.String)" />를 참조하세요.</summary>
+        <returns>ASP.NET 서버 컨트롤의 상태를 나타내는 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.Web.UI.ObjectStateFormatter> 인스턴스가 <xref:System.Web.UI.IStateFormatter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Web.UI.IStateFormatter.Serialize">
+      <MemberSignature Language="C#" Value="string IStateFormatter.Serialize (object state);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance string System.Web.UI.IStateFormatter.Serialize(object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.UI.ObjectStateFormatter.System#Web#UI#IStateFormatter#Serialize(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Function Serialize (state As Object) As String Implements IStateFormatter.Serialize" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::String ^ System.Web.UI.IStateFormatter.Serialize(System::Object ^ state) = System::Web::UI::IStateFormatter::Serialize;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Web.UI.IStateFormatter.Serialize(System.Object)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="state">문자열 형식으로 serialize할 웹 서버 컨트롤의 뷰 상태를 나타내는 개체입니다.</param>
+        <summary>이 멤버에 대한 설명은 <see cref="M:System.Web.UI.ObjectStateFormatter.Serialize(System.Object)" />를 참조하세요.</summary>
+        <returns>웹 서버 컨트롤의 뷰 상태를 나타내는 문자열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.Web.UI.ObjectStateFormatter> 인스턴스가 <xref:System.Web.UI.IStateFormatter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

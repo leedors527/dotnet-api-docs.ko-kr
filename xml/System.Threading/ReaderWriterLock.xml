@@ -1,0 +1,1249 @@
+<Type Name="ReaderWriterLock" FullName="System.Threading.ReaderWriterLock">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="c3e44698bf9b3581837778729caf8bb923358a40" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58715592" /></Metadata><TypeSignature Language="C#" Value="public sealed class ReaderWriterLock : System.Runtime.ConstrainedExecution.CriticalFinalizerObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ReaderWriterLock extends System.Runtime.ConstrainedExecution.CriticalFinalizerObject" />
+  <TypeSignature Language="DocId" Value="T:System.Threading.ReaderWriterLock" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ReaderWriterLock&#xA;Inherits CriticalFinalizerObject" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ReaderWriterLock sealed : System::Runtime::ConstrainedExecution::CriticalFinalizerObject" />
+  <TypeSignature Language="F#" Value="type ReaderWriterLock = class&#xA;    inherit CriticalFinalizerObject" />
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Threading</AssemblyName>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Runtime.ConstrainedExecution.CriticalFinalizerObject</BaseTypeName>
+    <BaseTypeName FrameworkAlternate="netframework-1.1">System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>단일 작성기 및 다중 판독기를 지원하는 잠금을 정의합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!IMPORTANT]
+>  [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)]에는 두 개의 판독기/작성기 잠금인 <xref:System.Threading.ReaderWriterLockSlim> 및 <xref:System.Threading.ReaderWriterLock>이 있습니다. <xref:System.Threading.ReaderWriterLockSlim>은 모든 새 개발에 권장됩니다. <xref:System.Threading.ReaderWriterLockSlim>은 <xref:System.Threading.ReaderWriterLock>과 비슷하지만 재귀 및 잠금 상태 업그레이드/다운그레이드에 대한 간소화된 규칙을 포함합니다. <xref:System.Threading.ReaderWriterLockSlim>은 교착 상태가 발생할 수 있는 많은 경우를 방지합니다. 또한 <xref:System.Threading.ReaderWriterLockSlim>의 성능이 <xref:System.Threading.ReaderWriterLock>보다 훨씬 더 놓습니다.  
+  
+ <xref:System.Threading.ReaderWriterLock> 리소스에 대 한 액세스를 동기화 하는 데 사용 됩니다. 지정된 된 시간에 여러 스레드가 동시 읽기 액세스 또는 단일 스레드에 대 한 쓰기 권한을 허용합니다. 리소스를 자주 변경 되는 경우에는 `ReaderWriterLock` 와 같은 간단한 하나 타임 잠금 보다 더 나은 처리량을 제공 <xref:System.Threading.Monitor>합니다.  
+  
+ `ReaderWriterLock` 대부분의 액세스는 읽기, 쓰기는 자주 일어나지 위치 및 짧은 기간 동안 가장 잘 작동 합니다. 여러 판독기 판독기나 기록기 모두 장기간 차단 됩니다 있도록 단일 작성기를 사용 하 여 대체 합니다.  
+  
+> [!NOTE]
+>  오랜 기간에 대 한 잠금이 판독기 또는 작성기 잠금을 보유 하면 다른 스레드에서 실행할 수 없게 됩니다. 최상의 성능을 위해 쓰기의 기간을 최소화 하도록 응용 프로그램을 재구성 하는 것이 좋습니다.  
+  
+ 스레드는 잠금 또는 기록기 잠금을 하나만 동시 판독기를 포함할 수 있습니다. 판독기 잠금을 작성기 잠금을 획득 하기 위해 해제 대신 사용할 수 있습니다 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> 고 <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A>입니다.  
+  
+ 재귀 잠금 요청에서 잠금을 잠금 수를 늘립니다.  
+  
+ 판독기 및 작성기는 별도로 대기 됩니다. 해당 시점 판독기 queue에서 대기 중인 모든 스레드에 판독기 잠금이;를 부여 됩니다 스레드 기록기 잠금을 해제 하는 경우 경우 해당 판독기 잠금을 모두 릴리스된, 작성기에서 다음 스레드 대기 큐에 있는 작성기 잠금이 부여 되 면 등에입니다. 즉, `ReaderWriterLock` 기록기 및 판독기 컬렉션 간을 전환 합니다.  
+  
+ 작성기 큐에서 대기 하는 동안 활성 판독기 잠금이 해제 되기를, 새로운 판독기 잠금을 요청 하는 스레드 판독기 큐에 누적 됩니다. 해당 요청이 허가 되지에 대 한 동시 액세스 기존 판독기 잠금 소유자;를 사용 하 여 공유할 수 있지만도 이 판독기가 무한 중단에 대 한 기록기를 보호할 수 있습니다.  
+  
+ 잠금을 획득 하는 것에 대 한 대부분의 메서드는 `ReaderWriterLock` 제한 시간 값을 허용 합니다. 응용 프로그램에서 교착 상태 방지 하려면 제한 시간을 사용 합니다. 스레드 수 하나의 리소스에 대 한 기록기 잠금을 획득 하 고을 두 번째 리소스에 대 한 판독기 잠금을 요청 하는 예를 들어, 그동안 다른 스레드는 두 번째 리소스에 대 한 기록기 잠금을 획득 하 고 첫 번째 판독기 잠금을 요청할 수 있습니다. 제한 시간을 사용 하는 경우가 아니면 스레드 교착 상태가 발생 합니다.  
+  
+ 잠금 요청이 부여 되지 않은 시간 제한 간격이 만료 되 고 메서드 반환 컨트롤 호출 스레드를 throw 하 여는 <xref:System.ApplicationException>합니다. 스레드는이 예외를 catch 하 고에 수행할 동작을 확인할 수 있습니다.  
+  
+ 제한 시간 (밀리초)로 표시 됩니다. 사용 하는 경우는 <xref:System.TimeSpan?displayProperty=nameWithType> 사용 되는 값은가 나타내는 정수 밀리초의 총 제한 시간을 지정 하는 <xref:System.TimeSpan>합니다. 다음 표에서 시간 (밀리초)의 유효한 제한 시간 값을 보여 줍니다.  
+  
+|값|설명|  
+|-----------|-----------------|  
+|-1|스레드는 걸리는 시간에 관계 없이 잠금을 가져올 때까지 기다립니다. 정수 제한 시간 상수를 지정 하는 방법에 대 한 <xref:System.Threading.Timeout.Infinite> 사용할 수 있습니다.|  
+|0|스레드는 잠금을 기다리지 않습니다. 경우 잠금을 획득할 수 없는 즉시 메서드를 반환 합니다.|  
+|>0|대기하는 밀리초 수입니다.|  
+  
+ -1을 제외 하 고 음수 시간 제한 값 허용 되지 않습니다. -1 이외의 음의 정수를 지정 하는 경우 시간 제한 값이 0이 대신 사용 됩니다. (즉, 메서드는 대기 하지 않고는 잠금을 즉시 획득할 수 없는 경우) 지정 하는 경우는 <xref:System.TimeSpan> 시간 (밀리초)-1 이외의 음수를 나타내는 <xref:System.ArgumentOutOfRangeException> throw 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에 사용 하는 방법을 보여 줍니다.는 <xref:System.Threading.ReaderWriterLock> 정수값 라는 공유 리소스를 보호 하려면 `resource`, 즉 동시에 읽고 여러 스레드에서 단독으로 작성 합니다. <xref:System.Threading.ReaderWriterLock> 모든 스레드에 표시 되도록 클래스 수준에서 선언 됩니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.ReaderWriterLock#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLock#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>이 형식은 스레드로부터 안전합니다.</threadsafe>
+    <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+    <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ReaderWriterLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ReaderWriterLock();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Threading.ReaderWriterLock" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Threading.ReaderWriterLock> 클래스의 새 인스턴스를 만드는 방법을 보여 줍니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="AcquireReaderLock">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>판독기 잠금을 가져옵니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="AcquireReaderLock">
+      <MemberSignature Language="C#" Value="public void AcquireReaderLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AcquireReaderLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AcquireReaderLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AcquireReaderLock (millisecondsTimeout As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AcquireReaderLock(int millisecondsTimeout);" />
+      <MemberSignature Language="F#" Value="member this.AcquireReaderLock : int -&gt; unit" Usage="readerWriterLock.AcquireReaderLock millisecondsTimeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">제한 시간(밀리초)입니다.</param>
+        <summary>제한 시간에 <see cref="T:System.Int32" /> 값을 사용하여 판독기 잠금을 가져옵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> 다른 스레드에 작성기 잠금이 있으면 하나 이상의 스레드가 기록기 잠금으로 인해 대기 하는 경우 차단 합니다.  
+  
+> [!NOTE]
+>  현재 스레드에 작성기 잠금이 이미 있으면 판독기 잠금이 획득 됩니다. 대신, 작성기 잠금의 잠금 수가 증가 합니다. 이 스레드는 자체 기록기 잠금을 차단 방지 합니다. 결과 정확 하 게 호출할 때와 동일 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>, 및를 추가로 호출 <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> 기록기 잠금을 해제 하는 경우 필요 합니다.  
+  
+ `AcquireReaderLock` 재귀 판독기 잠금 요청을 지원합니다. 즉, 스레드 수 AcquireReaderLock를 여러 번 호출할 때마다 잠금 수가 증가 하는 합니다. 호출 해야 합니다 <xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A> 호출할 때마다 한 번씩 `AcquireReaderLock`합니다. 호출할 수 있습니다 <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 를 즉시 0으로 잠금 수를 줄일 수 있습니다.  
+  
+ 재귀 잠금 요청은 판독기 큐에 요청 스레드를 배치 하지 않고 항상 즉시 부여 됩니다. 오랜 기간에 대 한 기록기 잠금 요청을 차단 하지 않도록 주의 사용 하 여 재귀 잠금을 사용 합니다.  
+  
+ 유효한 제한 시간 값을 참조 하세요. <xref:System.Threading.ReaderWriterLock>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 판독기 잠금을 가져오고 해제 하는 방법 및 요청 시간이 초과 되 면 throw 된 예외를 처리 하는 방법을 보여 줍니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#3)]
+[!code-csharp[System.Threading.ReaderWriterLock#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#3)]
+[!code-vb[System.Threading.ReaderWriterLock#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#3)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">잠금 요청이 부여되기 전에 <paramref name="millisecondsTimeout" />이 만료된 경우</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="AcquireReaderLock">
+      <MemberSignature Language="C#" Value="public void AcquireReaderLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AcquireReaderLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AcquireReaderLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AcquireReaderLock (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AcquireReaderLock(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="member this.AcquireReaderLock : TimeSpan -&gt; unit" Usage="readerWriterLock.AcquireReaderLock timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">제한 시간을 지정하는 <see langword="TimeSpan" />입니다.</param>
+        <summary>제한 시간에 <see cref="T:System.TimeSpan" /> 값을 사용하여 판독기 잠금을 가져옵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.ReaderWriterLock.AcquireReaderLock%2A> 다른 스레드에 작성기 잠금이 있으면 하나 이상의 스레드가 기록기 잠금으로 인해 대기 하는 경우 차단 합니다.  
+  
+> [!NOTE]
+>  현재 스레드에 작성기 잠금이 이미 있으면 판독기 잠금이 획득 됩니다. 대신, 작성기 잠금의 잠금 수가 증가 합니다. 이 스레드는 자체 기록기 잠금을 차단 방지 합니다. 결과 정확 하 게 호출할 때와 동일 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>, 및를 추가로 호출 <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> 기록기 잠금을 해제 하는 경우 필요 합니다.  
+  
+ `AcquireReaderLock` 재귀 판독기 잠금 요청을 지원합니다. 즉, 스레드 수 AcquireReaderLock를 여러 번 호출할 때마다 잠금 수가 증가 하는 합니다. 호출 해야 합니다 <xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A> 호출할 때마다 한 번씩 `AcquireReaderLock`합니다. 호출할 수 있습니다 <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 를 즉시 0으로 잠금 수를 줄일 수 있습니다.  
+  
+ 재귀 잠금 요청은 판독기 큐에 요청 스레드를 배치 하지 않고 항상 즉시 부여 됩니다. 오랜 기간에 대 한 기록기 잠금 요청을 차단 하지 않도록 주의 사용 하 여 재귀 잠금을 사용 합니다.  
+  
+ 유효한 제한 시간 값을 참조 하세요. <xref:System.Threading.ReaderWriterLock>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">잠금 요청이 부여되기 전에 <paramref name="timeout" />이 만료된 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />이 -1밀리초 이외의 음수 값을 지정하는 경우</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="AcquireWriterLock">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>작성기 잠금을 가져옵니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="AcquireWriterLock">
+      <MemberSignature Language="C#" Value="public void AcquireWriterLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AcquireWriterLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AcquireWriterLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AcquireWriterLock (millisecondsTimeout As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AcquireWriterLock(int millisecondsTimeout);" />
+      <MemberSignature Language="F#" Value="member this.AcquireWriterLock : int -&gt; unit" Usage="readerWriterLock.AcquireWriterLock millisecondsTimeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">제한 시간(밀리초)입니다.</param>
+        <summary>제한 시간에 <see cref="T:System.Int32" /> 값을 사용하여 작성기 잠금을 가져옵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 다른 스레드는 판독기 잠금 또는 작성기 잠금이 있으면 차단 합니다. 여러 개의 동시 판독기 잠금을 작성기 잠금이 대체 방법에 대 한 참조를 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ 판독기 잠금을 이미 있는 스레드는 두 가지 방법 중 하나에서 기록기 잠금을 획득할 수 있습니다: 호출 하기 전에 판독기 잠금을 해제 하 여 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>를 호출 하 여 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>입니다.  
+  
+> [!CAUTION]
+>  스레드 호출 하는 경우 `AcquireWriterLock` 자체 판독기 잠금으로 프로그램이 판독기 잠금을 동안, 스레드 교착 상태가 무기한 시간 제한을 지정 된 경우. 이러한 교착 상태를 방지 하려면 사용 하 여 <xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A> 현재 스레드에 판독기 잠금이 이미에 있는지 확인할 수 있습니다.  
+  
+ `AcquireWriterLock` 재귀 기록기 잠금 요청을 지원합니다. 즉, 스레드 호출 수 `AcquireWriterLock` 여러 번 하는 잠금 수가 때마다 증가 합니다. 호출 해야 합니다 <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> 호출할 때마다 한 번씩 `AcquireWriterLock`합니다. 호출할 수 있습니다 <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 를 즉시 0으로 잠금 수를 줄일 수 있습니다.  
+  
+ 재귀 잠금 요청은 항상 작성기 큐에서 요청 스레드를 배치 하지 않고 즉시 부여 됩니다.  
+  
+ 유효한 제한 시간 값을 참조 하세요. <xref:System.Threading.ReaderWriterLock>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 기록기 잠금을 가져오고 해제 하는 방법 및 요청 시간이 초과 되 면 throw 된 예외를 처리 하는 방법을 보여 줍니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#4)]
+[!code-csharp[System.Threading.ReaderWriterLock#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#4)]
+[!code-vb[System.Threading.ReaderWriterLock#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#4)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">잠금 요청이 부여되기 전에 <paramref name="timeout" />이 만료된 경우</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="AcquireWriterLock">
+      <MemberSignature Language="C#" Value="public void AcquireWriterLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AcquireWriterLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AcquireWriterLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AcquireWriterLock (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AcquireWriterLock(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="member this.AcquireWriterLock : TimeSpan -&gt; unit" Usage="readerWriterLock.AcquireWriterLock timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">제한 시간을 지정하는 <see langword="TimeSpan" />입니다.</param>
+        <summary>제한 시간에 <see cref="T:System.TimeSpan" /> 값을 사용하여 작성기 잠금을 가져옵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 다른 스레드는 판독기 잠금 또는 작성기 잠금이 있으면 차단 합니다. 여러 개의 동시 판독기 잠금을 작성기 잠금이 대체 방법에 대 한 참조를 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ 판독기 잠금을 이미 있는 스레드는 두 가지 방법 중 하나에서 기록기 잠금을 획득할 수 있습니다: 호출 하기 전에 판독기 잠금을 해제 하 여 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>를 호출 하 여 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>입니다.  
+  
+> [!CAUTION]
+>  스레드 호출 하는 경우 `AcquireWriterLock` 자체 판독기 잠금으로 프로그램이 판독기 잠금을 동안, 스레드 교착 상태가 무기한 시간 제한을 지정 된 경우. 이러한 교착 상태를 방지 하려면 사용 하 여 <xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A> 현재 스레드에 판독기 잠금이 이미에 있는지 확인할 수 있습니다.  
+  
+ `AcquireWriterLock` 재귀 기록기 잠금 요청을 지원합니다. 즉, 스레드 호출 수 `AcquireWriterLock` 여러 번 하는 잠금 수가 때마다 증가 합니다. 호출 해야 합니다 <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> 호출할 때마다 한 번씩 `AcquireWriterLock`합니다. 호출할 수 있습니다 <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 를 즉시 0으로 잠금 수를 줄일 수 있습니다.  
+  
+ 재귀 잠금 요청은 항상 작성기 큐에서 요청 스레드를 배치 하지 않고 즉시 부여 됩니다.  
+  
+ 유효한 제한 시간 값을 참조 하세요. <xref:System.Threading.ReaderWriterLock>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">잠금 요청이 부여되기 전에 <paramref name="timeout" />이 만료된 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />이 -1밀리초 이외의 음수 값을 지정하는 경우</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="AnyWritersSince">
+      <MemberSignature Language="C#" Value="public bool AnyWritersSince (int seqNum);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool AnyWritersSince(int32 seqNum) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.AnyWritersSince(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function AnyWritersSince (seqNum As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool AnyWritersSince(int seqNum);" />
+      <MemberSignature Language="F#" Value="member this.AnyWritersSince : int -&gt; bool" Usage="readerWriterLock.AnyWritersSince seqNum" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="seqNum" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="seqNum">시퀀스 번호입니다.</param>
+        <summary>시퀀스 번호를 가져온 다음 임의의 스레드에 작성기 잠금이 부여되었는지 여부를 나타냅니다.</summary>
+        <returns>시퀀스 번호를 가져온 다음 임의의 스레드에 작성기 잠금이 부여된 경우 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용할 수 있습니다 <xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A> 고 `AnyWritersSince` 응용 프로그램 성능을 향상 시키기 위해. 예를 들어, 스레드 판독기 잠금을 보유 하는 동안 가져온 정보를 캐시할 수 있습니다. 스레드를 해제 하 고 나중에 잠금이 썼는지를 후 사용할 수 `AnyWritersSince` ; 그동안에서 다른 스레드가 리소스에 기록한 경우 여부, 캐시 된 정보를 사용할 수를 확인 하려면. 이 방법은 유용한 정보 잠금으로 보호 되는 비용이 많이 드는; 예를 들어 데이터베이스 쿼리를 실행 합니다.  
+  
+ 호출자가 보유 하 고 있어야 판독기 잠금을 또는 기록기 잠금을 유용 하 게 시퀀스 번호를 순서 대로 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다 합니다 <xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A> 메서드 및 <xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A> 다른 스레드가 현재 스레드가 이후 보호 되는 리소스에 대 한 기록기 잠금을 설정 여부를 결정 하는 속성에 마지막으로 작성기 잠금이 보유 합니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#6)]
+[!code-csharp[System.Threading.ReaderWriterLock#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLock#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#6)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="DowngradeFromWriterLock">
+      <MemberSignature Language="C#" Value="public void DowngradeFromWriterLock (ref System.Threading.LockCookie lockCookie);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DowngradeFromWriterLock(valuetype System.Threading.LockCookie&amp; lockCookie) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.DowngradeFromWriterLock(System.Threading.LockCookie@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub DowngradeFromWriterLock (ByRef lockCookie As LockCookie)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void DowngradeFromWriterLock(System::Threading::LockCookie % lockCookie);" />
+      <MemberSignature Language="F#" Value="member this.DowngradeFromWriterLock :  -&gt; unit" Usage="readerWriterLock.DowngradeFromWriterLock lockCookie" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="lockCookie" Type="System.Threading.LockCookie" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="lockCookie"><see cref="T:System.Threading.LockCookie" />에 의해 반환된 <see cref="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.Int32)" />입니다.</param>
+        <summary><see cref="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.Int32)" />을 호출하기 전에 스레드의 잠금 상태를 이전 상태로 복원합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> 재귀 잠금 횟수에 관계 없이 기록기 잠금을 해제 하 고 판독기 잠금을 작성기 잠금으로 업그레이드 하기 전에 스레드에 의해 보유 된를 복원 합니다. 판독기 잠금을 잠금 수가 복원 됩니다.  
+  
+> [!NOTE]
+>  `DowngradeFromWriterLock` 허용 된 <xref:System.Threading.LockCookie> 를 호출 하 여 얻은 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>합니다. 사용 하지 않는 한 `LockCookie` 반환한 <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>합니다.  
+  
+ 스레드에는 작성기 잠금이 해제 될 때 모든 판독기 잠금 요청 권한이 부여 되므로 기록기 잠금에서는 다른 스레드가 대기 하는 경우에 작성기 잠금을에서 다운 그레이드할 때을 차단 하지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 판독기 잠금을 요청 하 고 판독기 잠금을 작성기 잠금으로 업그레이드 판독기 잠금을 다시 다운 그레이드 하는 방법을 보여 줍니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#5](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#5)]
+[!code-csharp[System.Threading.ReaderWriterLock#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#5)]
+[!code-vb[System.Threading.ReaderWriterLock#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#5)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">스레드에 작성기 잠금이 없는 경우</exception>
+        <exception cref="T:System.NullReferenceException"><paramref name="lockCookie" />의 주소는 null 포인터입니다.</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~ReaderWriterLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!ReaderWriterLock ()" />
+      <MemberSignature Language="F#" Value="override this.Finalize : unit -&gt; unit" Usage="readerWriterLock.Finalize " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>가비지 컬렉션기에서 <see cref="T:System.Threading.ReaderWriterLock" /> 개체를 회수할 때 리소스가 해제되고 다른 정리 작업이 수행되도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 가비지 수집기가 호출 <xref:System.Threading.ReaderWriterLock.Finalize%2A> 때 현재 <xref:System.Threading.ReaderWriterLock> 개체가 종료 준비 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsReaderLockHeld">
+      <MemberSignature Language="C#" Value="public bool IsReaderLockHeld { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsReaderLockHeld" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLock.IsReaderLockHeld" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsReaderLockHeld As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsReaderLockHeld { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsReaderLockHeld : bool" Usage="System.Threading.ReaderWriterLock.IsReaderLockHeld" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>get: System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>get: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 스레드에 판독기 잠금이 있는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>현재 스레드에 판독기 잠금이 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에 사용 하는 방법을 보여 줍니다. `IsReaderLockHeld` 교착 상태 방지 하려면.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CS/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="IsWriterLockHeld">
+      <MemberSignature Language="C#" Value="public bool IsWriterLockHeld { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsWriterLockHeld" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLock.IsWriterLockHeld" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsWriterLockHeld As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsWriterLockHeld { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsWriterLockHeld : bool" Usage="System.Threading.ReaderWriterLock.IsWriterLockHeld" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>get: System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>get: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 스레드에 작성기 잠금이 있는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>현재 스레드에 작성기 잠금이 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 스레드에 작성기 잠금이 있는 판독기 잠금을 획득 하려고 시도 하는 경우 다음 코드 예제에서는 `ReaderWriterLock` 판독기 잠금 권한을 부여 하지 않습니다 하지만 대신 작성기 잠금의 잠금 횟수를 증가 시킵니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CPP/source.cpp#1)]
+ [!code-csharp[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/CS/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLock.IsWriterLockHeld#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock.IsWriterLockHeld/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseLock">
+      <MemberSignature Language="C#" Value="public System.Threading.LockCookie ReleaseLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.LockCookie ReleaseLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.ReleaseLock" />
+      <MemberSignature Language="VB.NET" Value="Public Function ReleaseLock () As LockCookie" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::LockCookie ReleaseLock();" />
+      <MemberSignature Language="F#" Value="member this.ReleaseLock : unit -&gt; System.Threading.LockCookie" Usage="readerWriterLock.ReleaseLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.LockCookie</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>스레드에서 잠금을 가져온 횟수에 관계 없이 잠금을 해제합니다.</summary>
+        <returns>해제된 잠금을 나타내는 <see cref="T:System.Threading.LockCookie" /> 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 판독기 잠금을 또는 재귀 잠금 수에 관계 없이 기록기 잠금을 해제합니다. 잠금의 잠금 횟수를 포함 하 여 상태를 복원 하려면 전달 된 <xref:System.Threading.LockCookie> 에 <xref:System.Threading.ReaderWriterLock.RestoreLock%2A>입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다는 <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 횟수에 관계 없이 잠금을 해제 하는 방법에 획득 한 스레드와 잠금 나중의 상태를 복원 하는 방법입니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#6)]
+[!code-csharp[System.Threading.ReaderWriterLock#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLock#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#6)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseReaderLock">
+      <MemberSignature Language="C#" Value="public void ReleaseReaderLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseReaderLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.ReleaseReaderLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ReleaseReaderLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ReleaseReaderLock();" />
+      <MemberSignature Language="F#" Value="member this.ReleaseReaderLock : unit -&gt; unit" Usage="readerWriterLock.ReleaseReaderLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>잠금 횟수를 줄입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.ReaderWriterLock.ReleaseReaderLock%2A> 잠금 횟수를 줄입니다. 개수가 0에 도달 하면 잠금 해제 됩니다.  
+  
+> [!NOTE]
+>  스레드에 작성기 잠금이 있으면 호출 `ReleaseReaderLock` 호출 하는 것과 동일한 효과가 <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A>합니다. 호출 스레드 잠금을 사용 하지 않는 하는 경우 `ReleaseReaderLock` throw는 <xref:System.ApplicationException>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 판독기 잠금을 가져오고 해제 하는 방법 및 요청 시간이 초과 되 면 throw 된 예외를 처리 하는 방법을 보여 줍니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#3)]
+[!code-csharp[System.Threading.ReaderWriterLock#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#3)]
+[!code-vb[System.Threading.ReaderWriterLock#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#3)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">스레드에 판독기 또는 작성기 잠금이 없는 경우</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseWriterLock">
+      <MemberSignature Language="C#" Value="public void ReleaseWriterLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReleaseWriterLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.ReleaseWriterLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ReleaseWriterLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ReleaseWriterLock();" />
+      <MemberSignature Language="F#" Value="member this.ReleaseWriterLock : unit -&gt; unit" Usage="readerWriterLock.ReleaseWriterLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>작성기 잠금의 잠금 횟수를 줄입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.ReaderWriterLock.ReleaseWriterLock%2A> 기록기 잠금 횟수를 줄입니다. 개수가 0에 도달 하면 작성기 잠금이 해제 됩니다.  
+  
+> [!NOTE]
+>  스레드에 판독기 잠금이 잠금을 사용 하지 않는 경우 호출 `ReleaseWriterLock` throw는 <xref:System.ApplicationException>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 기록기 잠금을 가져오고 해제 하는 방법 및 요청 시간이 초과 되 면 throw 된 예외를 처리 하는 방법을 보여 줍니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#4)]
+[!code-csharp[System.Threading.ReaderWriterLock#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#4)]
+[!code-vb[System.Threading.ReaderWriterLock#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#4)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">스레드에 작성기 잠금이 없는 경우</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="RestoreLock">
+      <MemberSignature Language="C#" Value="public void RestoreLock (ref System.Threading.LockCookie lockCookie);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RestoreLock(valuetype System.Threading.LockCookie&amp; lockCookie) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.RestoreLock(System.Threading.LockCookie@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RestoreLock (ByRef lockCookie As LockCookie)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RestoreLock(System::Threading::LockCookie % lockCookie);" />
+      <MemberSignature Language="F#" Value="member this.RestoreLock :  -&gt; unit" Usage="readerWriterLock.RestoreLock lockCookie" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="lockCookie" Type="System.Threading.LockCookie" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="lockCookie"><see cref="T:System.Threading.LockCookie" />에 의해 반환된 <see cref="M:System.Threading.ReaderWriterLock.ReleaseLock" />입니다.</param>
+        <summary><see cref="M:System.Threading.ReaderWriterLock.ReleaseLock" />을 호출하기 전에 스레드의 이전 잠금 상태를 복구합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하 여 복원 상태 `RestoreLock` 재귀 잠금 수를 포함 합니다.  
+  
+ 다른 스레드는 판독기 잠금 또는 기록기 잠금을 획득 한 후에 작성기 잠금을 복원 하려는 경우 또는 다른 스레드에 작성기 잠금이 획득 한 후 판독기 잠금을 복원 하려는 경우 스레드가 차단 합니다. 때문에 `RestoreLock` 제한 시간을 받아들이지 않는 가능한 교착 상태 방지 하려면 주의 해야 합니다.  
+  
+> [!CAUTION]
+>  호출 하기 전에 `RestoreLock`에 대 한 호출 이후의 획득 한 모든 잠금을 해제 했는지 확인 <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A>합니다. 예를 들어는 스레드는 교착 상태가 판독기 잠금을 획득 하 고 이전 기록기 잠금으로 복원 하려고 시도 합니다. 사용 하 여 <xref:System.Threading.ReaderWriterLock.IsReaderLockHeld%2A> 및 <xref:System.Threading.ReaderWriterLock.IsWriterLockHeld%2A> 이러한 추가 잠금을 검색 합니다.  
+  
+ 사용 하지 않는 한 <xref:System.Threading.LockCookie> 에서 반환 된 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다는 <xref:System.Threading.ReaderWriterLock.ReleaseLock%2A> 횟수에 관계 없이 잠금을 해제 하는 방법에 획득 한 스레드와 잠금 나중의 상태를 복원 하는 방법입니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#6)]
+[!code-csharp[System.Threading.ReaderWriterLock#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLock#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#6)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NullReferenceException"><paramref name="lockCookie" />의 주소는 null 포인터입니다.</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="UpgradeToWriterLock">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>판독기 잠금을 작성기 잠금으로 업그레이드합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="UpgradeToWriterLock">
+      <MemberSignature Language="C#" Value="public System.Threading.LockCookie UpgradeToWriterLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.LockCookie UpgradeToWriterLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function UpgradeToWriterLock (millisecondsTimeout As Integer) As LockCookie" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::LockCookie UpgradeToWriterLock(int millisecondsTimeout);" />
+      <MemberSignature Language="F#" Value="member this.UpgradeToWriterLock : int -&gt; System.Threading.LockCookie" Usage="readerWriterLock.UpgradeToWriterLock millisecondsTimeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.LockCookie</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">제한 시간(밀리초)입니다.</param>
+        <summary>제한 시간에 <see langword="Int32" /> 값을 사용하여 판독기 잠금을 작성기 잠금으로 업그레이드합니다.</summary>
+        <returns><see cref="T:System.Threading.LockCookie" /> 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 하면 스레드 `UpgradeToWriterLock` 잠금 횟수에 관계 없이 판독기 잠금이 해제 되 고 스레드가 기록기 잠금에 대 한 큐의 끝으로 이동 합니다. 따라서 다른 스레드의 스레드 업그레이드 작성기 잠금이 부여 요청 하기 전에 리소스를 쓸 수 있습니다.  
+  
+> [!IMPORTANT]
+>  호출한 스레드가 될 때까지 시간 초과 예외가 throw 되지 않습니다는 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> 메서드는 판독기 잠금을 다시 가져올 수 있습니다. 기록기 잠금을 대기 하는 다른 스레드에 있으면 즉시 발생 합니다. 그러나 다른 스레드에 작성기 잠금이 위해 큐에 대기, 스레드는 호출 된 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> 모든 현재 판독기가 잠금을 해제 하 고 스레드 하나에 획득 한 기록기 잠금을 해제 될 때까지 메서드는 판독기 잠금을 다시 가져올 수 없습니다. 현재 스레드의 호출 후 해당 기록기 잠금을 요청 하는 다른 스레드가 요청 하는 경우에 마찬가지입니다는 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> 메서드.  
+  
+ 잠금 상태를 복원 하려면 호출 <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> 를 사용 하는 <xref:System.Threading.LockCookie> 반환한 `UpgradeToWriterLock`합니다. 사용 하지 마세요 `LockCookie` 사용 하 여 <xref:System.Threading.ReaderWriterLock.RestoreLock%2A>입니다.  
+  
+ 스레드에 판독기 잠금이 있으면 사용 하지 마십시오 `UpgradeToWriterLock`합니다. 대신 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>를 사용하세요.  
+  
+ 유효한 제한 시간 값을 참조 하세요. <xref:System.Threading.ReaderWriterLock>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 판독기 잠금을 요청 하 고 판독기 잠금을 작성기 잠금으로 업그레이드 판독기 잠금을 다시 다운 그레이드 하는 방법을 보여 줍니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#5](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#5)]
+[!code-csharp[System.Threading.ReaderWriterLock#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#5)]
+[!code-vb[System.Threading.ReaderWriterLock#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#5)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">잠금 요청이 부여되기 전에 <paramref name="millisecondsTimeout" />이 만료된 경우</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="UpgradeToWriterLock">
+      <MemberSignature Language="C#" Value="public System.Threading.LockCookie UpgradeToWriterLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.LockCookie UpgradeToWriterLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLock.UpgradeToWriterLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Function UpgradeToWriterLock (timeout As TimeSpan) As LockCookie" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::LockCookie UpgradeToWriterLock(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="member this.UpgradeToWriterLock : TimeSpan -&gt; System.Threading.LockCookie" Usage="readerWriterLock.UpgradeToWriterLock timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.LockCookie</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">제한 시간을 지정하는 <see langword="TimeSpan" />입니다.</param>
+        <summary>제한 시간에 <see langword="TimeSpan" /> 값을 사용하여 판독기 잠금을 작성기 잠금으로 업그레이드합니다.</summary>
+        <returns><see cref="T:System.Threading.LockCookie" /> 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 하면 스레드 `UpgradeToWriterLock` 잠금 횟수에 관계 없이 판독기 잠금이 해제 되 고 스레드가 기록기 잠금에 대 한 큐의 끝으로 이동 합니다. 따라서 다른 스레드의 스레드 업그레이드 작성기 잠금이 부여 요청 하기 전에 리소스를 쓸 수 있습니다.  
+  
+> [!IMPORTANT]
+>  호출한 스레드가 될 때까지 시간 초과 예외가 throw 되지 않습니다는 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> 메서드는 판독기 잠금을 다시 가져올 수 있습니다. 기록기 잠금을 대기 하는 다른 스레드에 있으면 즉시 발생 합니다. 그러나 다른 스레드에 작성기 잠금이 위해 큐에 대기, 스레드는 호출 된 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> 모든 현재 판독기가 잠금을 해제 하 고 스레드 하나에 획득 한 기록기 잠금을 해제 될 때까지 메서드는 판독기 잠금을 다시 가져올 수 없습니다. 현재 스레드의 호출 후 해당 기록기 잠금을 요청 하는 다른 스레드가 요청 하는 경우에 마찬가지입니다는 <xref:System.Threading.ReaderWriterLock.UpgradeToWriterLock%2A> 메서드.  
+  
+ 잠금 상태를 복원 하려면 호출 <xref:System.Threading.ReaderWriterLock.DowngradeFromWriterLock%2A> 를 사용 하는 <xref:System.Threading.LockCookie> 반환한 `UpgradeToWriterLock`합니다. 사용 하지 마세요 `LockCookie` 사용 하 여 <xref:System.Threading.ReaderWriterLock.RestoreLock%2A>입니다.  
+  
+ 스레드에 판독기 잠금이 있으면 사용 하지 마십시오 `UpgradeToWriterLock`합니다. 대신 <xref:System.Threading.ReaderWriterLock.AcquireWriterLock%2A>를 사용하세요.  
+  
+ 유효한 제한 시간 값을 참조 하세요. <xref:System.Threading.ReaderWriterLock>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ApplicationException">잠금 요청이 부여되기 전에 <paramref name="timeout" />이 만료된 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />이 -1밀리초 이외의 음수 값을 지정하는 경우</exception>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+    <Member MemberName="WriterSeqNum">
+      <MemberSignature Language="C#" Value="public int WriterSeqNum { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 WriterSeqNum" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLock.WriterSeqNum" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property WriterSeqNum As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int WriterSeqNum { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.WriterSeqNum : int" Usage="System.Threading.ReaderWriterLock.WriterSeqNum" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>get: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 시퀀스 번호를 가져옵니다.</summary>
+        <value>현재 시퀀스 번호입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 시퀀스 번호가 증가 때마다 스레드 작성기 잠금을 가져옵니다. 시퀀스 번호를 저장 하 고 전달할 수 <xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A> 나중에 다른 스레드가 그동안 기록기 잠금을 획득가 있는지 여부를 확인 하려는 경우에 합니다.  
+  
+ 사용할 수 있습니다 `WriterSeqNum` 응용 프로그램 성능을 향상 시키기 위해. 예를 들어, 스레드 판독기 잠금을 보유 하는 동안 가져온 정보를 캐시할 수 있습니다. 나중에 잠금이 썼는지 있으며, 스레드를 호출 하 여 다른 스레드가 리소스를 썼는지 여부를 확인할 수 있습니다 `AnyWritersSince`캐시 된 정보를 사용할 수 없습니다, 하는 경우. 잠금에 의해 보호 된 정보를 읽는; 비용이 많이 드는 경우이 방법은 유용 합니다. 예를 들어 데이터베이스 쿼리를 실행 합니다.  
+  
+ 호출자가 보유 하 고 있어야 판독기 잠금을 또는 기록기 잠금을 유용 하 게 시퀀스 번호를 순서 대로 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다 합니다 <xref:System.Threading.ReaderWriterLock.WriterSeqNum%2A> 속성 및 <xref:System.Threading.ReaderWriterLock.AnyWritersSince%2A> 다른 스레드가 현재 스레드가 이후 보호 되는 리소스에 대 한 기록기 잠금을 설정 여부를 결정 하는 방법에는 마지막으로 작성기 잠금을 보유 합니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLock> 클래스입니다.  
+  
+ [!code-cpp[System.Threading.ReaderWriterLock#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#2)]
+ [!code-csharp[System.Threading.ReaderWriterLock#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLock#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#2)]  
+[!code-cpp[System.Threading.ReaderWriterLock#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#6)]
+[!code-csharp[System.Threading.ReaderWriterLock#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLock#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#6)]  
+[!code-cpp[System.Threading.ReaderWriterLock#7](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CPP/source.cpp#7)]
+[!code-csharp[System.Threading.ReaderWriterLock#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/CS/source.cs#7)]
+[!code-vb[System.Threading.ReaderWriterLock#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLock/VB/source.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/threading/index.md">관리되는 스레딩</related>
+        <related type="Article" href="~/docs/standard/threading/reader-writer-locks.md">ReaderWriterLock</related>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

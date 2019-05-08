@@ -1,0 +1,365 @@
+<Type Name="SrgsNameValueTag" FullName="System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="b9ef198e7104b3fbaa867e860b9b3b59888a6a17" /><Meta Name="ms.sourcegitcommit" Value="756d085f27705e86604f1bba5f2086ee23761acf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="01/30/2019" /><Meta Name="ms.locfileid" Value="55397242" /></Metadata><TypeSignature Language="C#" Value="public class SrgsNameValueTag : System.Speech.Recognition.SrgsGrammar.SrgsElement" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit SrgsNameValueTag extends System.Speech.Recognition.SrgsGrammar.SrgsElement" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" />
+  <TypeSignature Language="VB.NET" Value="Public Class SrgsNameValueTag&#xA;Inherits SrgsElement" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SrgsNameValueTag : System::Speech::Recognition::SrgsGrammar::SrgsElement" />
+  <TypeSignature Language="F#" Value="type SrgsNameValueTag = class&#xA;    inherit SrgsElement" />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Speech.Recognition.SrgsGrammar.SrgsElement</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Diagnostics.DebuggerDisplay("{DebuggerDisplayString ()}")</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>System.Serializable</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>그래머 상의 구(phrase)와 의미 값을 관련짓기 위한 요소를 표현한다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 개체는 비슷합니다는 `tag` World Wide Web Consortium (W3C)가 정의한 요소 [음성 인식 문법 Specification (SRGS) 버전 1.0.](https://go.microsoft.com/fwlink/?LinkId=201761)합니다. 그러나는 <xref:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value%2A> 이 개체의 속성에는 스크립트 일 수 없습니다. 내용의 <xref:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value%2A> 형식의 수 <xref:System.Boolean>를 <xref:System.Double>를 <xref:System.Int32>, 또는 <xref:System.String>합니다. 문자열 값은 큰따옴표로 묶어야 합니다.  
+  
+ 스크립트와 의미 체계를 추가 하려면 사용 <xref:System.Speech.Recognition.SrgsGrammar.SrgsSemanticInterpretationTag>합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 항공편에 대 한 도시를 선택 하는 것에 대 한 문법을 만듭니다. 이 예제에서는 사용 <xref:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.%23ctor%2A> 도시의 공항에 대 한 코드는 각 도시를 의미 값을 할당 합니다.  
+  
+ 이 예제에서는 두 개의 생성 <xref:System.Speech.Recognition.SrgsGrammar.SrgsRuleRef> 인스턴스를 각각 의미 키를 지정 합니다. 참조 대상 동일한 규칙 둘 다 <xref:System.Speech.Recognition.SrgsGrammar.SrgsRule> 라는 개체 `cities`, 다른 의미 체계 키를 사용 하 여 규칙 참조에서 인식 결과 태그 지정 하지만 합니다. 의미 키 출발 도시 또는 항공권 도착 시 인식할 수 있는 도시를 식별합니다. 에 대 한 처리기를 <xref:System.Speech.Recognition.SpeechRecognitionEngine.SpeechRecognized> 사용 하 여 만든 의미 값을 검색 하는 키를 사용 하는 이벤트 <xref:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.%23ctor%2A> 인식 결과에서.  
+  
+```  
+using System;  
+using System.Speech.Recognition;  
+using System.Speech.Recognition.SrgsGrammar;  
+  
+namespace SampleRecognition  
+{  
+  class Program  
+  {  
+    static void Main(string[] args)  
+  
+    // Initialize a SpeechRecognitionEngine object.  
+    {  
+      using (SpeechRecognitionEngine recognizer =  
+         new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US")))  
+      {  
+  
+        // Build a rule with a list of cities, assign a semantic value to each city.  
+        SrgsItem chi = new SrgsItem("Chicago");  
+        chi.Add(new SrgsNameValueTag("ORD"));  
+        SrgsItem bos = new SrgsItem("Boston");  
+        bos.Add(new SrgsNameValueTag("BOS"));  
+        SrgsItem mia = new SrgsItem("Miami");  
+        mia.Add(new SrgsNameValueTag("MIA"));  
+        SrgsItem dal = new SrgsItem("Dallas");  
+        dal.Add(new SrgsNameValueTag("DFW"));  
+  
+        SrgsOneOf cities = new SrgsOneOf(new SrgsItem[] { chi, bos, mia, dal });  
+        SrgsRule citiesRule = new SrgsRule("flightCities");  
+        citiesRule.Add(cities);  
+  
+        // Build the root rule, add rule references to the cities rule.  
+        SrgsRule flightBooker = new SrgsRule("bookFlight");  
+        flightBooker.Add(new SrgsItem("I want to fly from"));  
+        flightBooker.Add(new SrgsRuleRef(citiesRule, "departureCity"));  
+        flightBooker.Add(new SrgsItem("to"));  
+        flightBooker.Add(new SrgsRuleRef(citiesRule, "arrivalCity"));  
+  
+        // Build an SrgsDocument object from the flightBooker rule and add the cities rule.  
+        SrgsDocument cityChooser = new SrgsDocument(flightBooker);  
+        cityChooser.Rules.Add(citiesRule);  
+  
+        // Create a Grammar object from the SrgsDocument and load it to the recognizer.  
+        Grammar departArrive = new Grammar(cityChooser);  
+        departArrive.Name = ("Cities Grammar");  
+        recognizer.LoadGrammarAsync(departArrive);  
+  
+        // Configure recognizer input.  
+        recognizer.SetInputToDefaultAudioDevice();  
+  
+        // Attach a handler for the SpeechRecognized event.  
+        recognizer.SpeechRecognized +=  
+          new EventHandler<SpeechRecognizedEventArgs>(recognizer_SpeechRecognized);  
+  
+        // Start asynchronous recognition.  
+        recognizer.RecognizeAsync();  
+        Console.WriteLine("Starting asynchronous recognition...");  
+  
+        // Keep the console window open.  
+        Console.ReadLine();  
+      }  
+    }  
+  
+    // Handle the SpeechRecognized event.  
+    static void recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)  
+    {  
+      Console.WriteLine("Speech recognized: " + e.Result.Text);  
+      Console.WriteLine();  
+      Console.WriteLine("Semantic results:");  
+      Console.WriteLine("  The departure city is: " + e.Result.Semantics["departureCity"].Value);  
+      Console.WriteLine("  The destination city is: " + e.Result.Semantics["arrivalCity"].Value);  
+    }  
+  }  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Speech.Recognition.SrgsGrammar.SrgsDocument" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SrgsNameValueTag ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SrgsNameValueTag();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SrgsNameValueTag (object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.#ctor(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SrgsNameValueTag(System::Object ^ value);" />
+      <MemberSignature Language="F#" Value="new System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag : obj -&gt; System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" Usage="new System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag value" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="value"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value" />속성을 설정하는 데 사용되는 값입니다.</param>
+        <summary>인스턴스에 대한 값을 지정하여 <see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제에서는 항공편에 대 한 도시를 선택 하는 것에 대 한 문법을 만듭니다. 이 예제에서는 사용 <xref:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.%23ctor%2A> 도시의 공항에 대 한 코드는 각 도시를 의미 값을 할당 합니다.  
+  
+ 이 예제에서는 두 개의 생성 <xref:System.Speech.Recognition.SrgsGrammar.SrgsRuleRef> 인스턴스를 각각 의미 키를 지정 합니다. 참조 대상 동일한 규칙 둘 다 <xref:System.Speech.Recognition.SrgsGrammar.SrgsRule> 라는 개체 `cities`, 다른 의미 체계 키를 사용 하 여 규칙 참조에서 인식 결과 태그 지정 하지만 합니다. 의미 키 출발 도시 또는 항공권 도착 시 인식할 수 있는 도시를 식별합니다. 에 대 한 처리기를 <xref:System.Speech.Recognition.SpeechRecognitionEngine.SpeechRecognized> 사용 하 여 만든 의미 값을 검색 하는 키를 사용 하는 이벤트 <xref:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.%23ctor%2A> 인식 결과에서.  
+  
+```  
+using System;  
+using System.Speech.Recognition;  
+using System.Speech.Recognition.SrgsGrammar;  
+  
+namespace SampleRecognition  
+{  
+  class Program  
+  {  
+    static void Main(string[] args)  
+  
+    // Initialize a SpeechRecognitionEngine object.  
+    {  
+      using (SpeechRecognitionEngine recognizer =  
+         new SpeechRecognitionEngine(new System.Globalization.CultureInfo("en-US")))  
+      {  
+  
+        // Build a rule with a list of cities, assign a semantic value to each city.  
+        SrgsItem chi = new SrgsItem("Chicago");  
+        chi.Add(new SrgsNameValueTag("ORD"));  
+        SrgsItem bos = new SrgsItem("Boston");  
+        bos.Add(new SrgsNameValueTag("BOS"));  
+        SrgsItem mia = new SrgsItem("Miami");  
+        mia.Add(new SrgsNameValueTag("MIA"));  
+        SrgsItem dal = new SrgsItem("Dallas");  
+        dal.Add(new SrgsNameValueTag("DFW"));  
+  
+        SrgsOneOf cities = new SrgsOneOf(new SrgsItem[] { chi, bos, mia, dal });  
+        SrgsRule citiesRule = new SrgsRule("flightCities");  
+        citiesRule.Add(cities);  
+  
+        // Build the root rule, add rule references to the cities rule.  
+        SrgsRule flightBooker = new SrgsRule("bookFlight");  
+        flightBooker.Add(new SrgsItem("I want to fly from"));  
+        flightBooker.Add(new SrgsRuleRef(citiesRule, "departureCity"));  
+        flightBooker.Add(new SrgsItem("to"));  
+        flightBooker.Add(new SrgsRuleRef(citiesRule, "arrivalCity"));  
+  
+        // Build an SrgsDocument object from the flightBooker rule and add the cities rule.  
+        SrgsDocument cityChooser = new SrgsDocument(flightBooker);  
+        cityChooser.Rules.Add(citiesRule);  
+  
+        // Create a Grammar object from the SrgsDocument and load it to the recognizer.  
+        Grammar departArrive = new Grammar(cityChooser);  
+        departArrive.Name = ("Cities Grammar");  
+        recognizer.LoadGrammarAsync(departArrive);  
+  
+        // Configure recognizer input.  
+        recognizer.SetInputToDefaultAudioDevice();  
+  
+        // Attach a handler for the SpeechRecognized event.  
+        recognizer.SpeechRecognized +=  
+          new EventHandler<SpeechRecognizedEventArgs>(recognizer_SpeechRecognized);  
+  
+        // Start asynchronous recognition.  
+        recognizer.RecognizeAsync();  
+        Console.WriteLine("Starting asynchronous recognition...");  
+  
+        // Keep the console window open.  
+        Console.ReadLine();  
+      }  
+    }  
+  
+    // Handle the SpeechRecognized event.  
+    static void recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)  
+    {  
+      Console.WriteLine("Speech recognized: " + e.Result.Text);  
+      Console.WriteLine();  
+      Console.WriteLine("Semantic results:");  
+      Console.WriteLine("  The departure city is: " + e.Result.Semantics["departureCity"].Value);  
+      Console.WriteLine("  The destination city is: " + e.Result.Semantics["arrivalCity"].Value);  
+    }  
+  }  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="value" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SrgsNameValueTag (string name, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.#ctor(System.String,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SrgsNameValueTag(System::String ^ name, System::Object ^ value);" />
+      <MemberSignature Language="F#" Value="new System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag : string * obj -&gt; System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" Usage="new System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag (name, value)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="name"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Name" /> 개체에서 <see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 속성을 설정하는 데 사용되는 문자열입니다.</param>
+        <param name="value"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value" /> 개체에서 <see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 속성을 설정하는 데 사용되는 개체입니다.</param>
+        <summary>인스턴스에 대한 이름과 값을 지정하여 <see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="value" />가 <see langword="null" />인 경우  
+  
+ <paramref name="name" />가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="name" />이 빈 문자열인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Name" />
+      <MemberSignature Language="VB.NET" Value="Public Property Name As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Name { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Name : string with get, set" Usage="System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Name" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 인스턴스의 이름을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 인스턴스의 이름을 포함하는 문자열입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Name" />를 <see langword="null" />로 설정하려고 한 경우</exception>
+        <exception cref="T:System.ArgumentException"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Name" />을 공백 문자열로 설정하려고 시도한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Value">
+      <MemberSignature Language="C#" Value="public object Value { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object Value" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value" />
+      <MemberSignature Language="VB.NET" Value="Public Property Value As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ Value { System::Object ^ get(); void set(System::Object ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Value : obj with get, set" Usage="System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 인스턴스에 포함된 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag" /> 인스턴스에 포함된 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 형식은 <xref:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value%2A> 속성:  
+  
+-   <xref:System.Boolean>  
+  
+-   <xref:System.Double>  
+  
+-   <xref:System.Int32>  
+  
+-   <xref:System.String>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value" />를 <see langword="null" />로 설정하려고 한 경우</exception>
+        <exception cref="T:System.ArgumentException"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsNameValueTag.Value" />를 잘못된 형식으로 설정하려고 한 경우</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,132 @@
+<Type Name="IPolicyImportExtension" FullName="System.ServiceModel.Description.IPolicyImportExtension">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7b2646dd8a0edf1df5b3d4b4f34d07f8617625e4" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57942215" /></Metadata><TypeSignature Language="C#" Value="public interface IPolicyImportExtension" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IPolicyImportExtension" />
+  <TypeSignature Language="DocId" Value="T:System.ServiceModel.Description.IPolicyImportExtension" />
+  <TypeSignature Language="VB.NET" Value="Public Interface IPolicyImportExtension" />
+  <TypeSignature Language="C++ CLI" Value="public interface class IPolicyImportExtension" />
+  <TypeSignature Language="F#" Value="type IPolicyImportExtension = interface" />
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Docs>
+    <summary>바인딩에 대한 사용자 지정 정책 어설션을 가져오는 개체의 메서드를 정의합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 엔드포인트 기능 또는 요구 사항에 대한 사용자 지정 정책 어설션의 특정 엔드포인트에서 공개하는 WSDL 정보를 검색하려면 <xref:System.ServiceModel.Description.IPolicyImportExtension> 인터페이스를 구현합니다. 일반적으로 정책 가져오기에서는 특정 어설션을 검색한 후 어설션 요구 사항을 지원하도록 바인딩 요소를 삽입 또는 구성하거나 계약을 수정합니다.  
+  
+ 상대적인 <xref:System.ServiceModel.Description.IPolicyExportExtension>과 달리 <xref:System.ServiceModel.Description.IPolicyImportExtension>은 <xref:System.ServiceModel.Channels.BindingElement> 개체에서 반드시 구현할 필요는 없으며, 예제 부분에 나와 있는 클라이언트 구성 섹션을 사용하여 로드하거나 <xref:System.ServiceModel.Description.WsdlImporter?displayProperty=nameWithType> 생성자에 프로그래밍 방식으로 추가할 수 있습니다.  
+  
+ Windows Communication Foundation (WCF) 두 개체를 전달 합니다 <xref:System.ServiceModel.Description.IPolicyImportExtension.ImportPolicy%2A> 메서드를 <xref:System.ServiceModel.Description.MetadataImporter> 및 <xref:System.ServiceModel.Description.PolicyConversionContext>합니다. 일반적으로 <xref:System.ServiceModel.Description.PolicyConversionContext> 개체에는 각 바인딩 범위에 대한 정책 어설션이 이미 포함되어 있습니다.  
+  
+ <xref:System.ServiceModel.Description.IPolicyImportExtension> 구현에서는 다음 단계를 수행합니다.  
+  
+1.  범위에 따라 <xref:System.ServiceModel.Description.PolicyConversionContext.GetBindingAssertions%2A>, <xref:System.ServiceModel.Description.PolicyConversionContext.GetMessageBindingAssertions%2A> 또는 <xref:System.ServiceModel.Description.PolicyConversionContext.GetOperationBindingAssertions%2A> 메서드를 호출하여 해당 사용자 지정 정책 어설션을 찾습니다.  
+  
+2.  어설션 컬렉션에서 정책 어설션을 제거합니다. <xref:System.ServiceModel.Description.PolicyAssertionCollection.Remove%2A?displayProperty=nameWithType> 메서드는 어설션을 찾아서 반환하고 제거하는 과정을 한 단계로 수행합니다.  
+  
+3.  필요한 사용자 지정 <xref:System.ServiceModel.Channels.BindingElement>를 <xref:System.ServiceModel.Description.PolicyConversionContext.BindingElements%2A> 속성에 추가하거나 <xref:System.ServiceModel.Description.PolicyConversionContext.Contract%2A?displayProperty=nameWithType> 속성을 수정하여 바인딩 스택 또는 계약을 수정합니다.  
+  
+ 2단계는 중요한 단계입니다. 모든 정책 가져오기를 호출 된 후 WCF 남아 있는 정책 어설션이 있는지 확인 합니다. 있는 경우 WCF에서는 정책 가져오기가 실패 하 고 관련된 바인딩을 가져오지 않습니다 가정 합니다.  
+  
+> [!IMPORTANT]
+>  악의적인 메타데이터 공급자가 정책 가져오기를 악용하기 위해 잘못된 XML을 메타데이터의 일부로 보낼 수 있습니다. 따라서 사용자 지정 정책 가져오기는 전달될 수 있는 모든 형태의 XML을 보호할 수 있을 정도로 강력해야 합니다.  
+  
+ 사용자 지정 <xref:System.ServiceModel.Description.MetadataImporter> 구현에서는 자체 <xref:System.ServiceModel.Description.PolicyConversionContext> 개체를 구현하여 사용자 지정 메타데이터 형식에 연결된 정책 어설션을 추출해야 합니다.  
+  
+ 정책 어설션이 아닌 사용자 지정 WSDL 요소를 가져오거나 내보내려면 <xref:System.ServiceModel.Description.IWsdlExportExtension?displayProperty=nameWithType> 및 <xref:System.ServiceModel.Description.IWsdlImportExtension?displayProperty=nameWithType>을 참조하십시오.  
+  
+> [!NOTE]
+>  사용자 지정 정책 가져오기 및 내보내기를 사용할 수는 [ServiceModel Metadata 유틸리티 도구 (Svcutil.exe)](~/docs/framework/wcf/servicemodel-metadata-utility-tool-svcutil-exe.md) 구성 파일에서 동일한 구성 요소를 사용 하 여 및 `/svcutilConfig:<configFile>` 옵션입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.ServiceModel.Description.PolicyAssertionCollection.Remove%2A?displayProperty=nameWithType> 메서드를 사용하여 어설션을 찾아서 반환하고 제거하는 작업을 한 단계로 수행하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[CustomPolicySample#1](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyimporter.cs#1)]
+ [!code-vb[CustomPolicySample#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyimporter.vb#1)]  
+  
+ 다음 코드 예제에서는 <xref:System.ServiceModel.Description.MetadataResolver?displayProperty=nameWithType>가 호출될 때 사용자 지정 정책 가져오기를 로드하는 클라이언트 응용 프로그램 구성 파일을 보여 줍니다.  
+  
+ [!code-xml[CustomPolicySample#7](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/client.exe.config#7)]   
+  
+ 다음 코드 예제에서는 <xref:System.ServiceModel.Description.MetadataResolver>를 사용하여 메타데이터를 설명 개체로 다운로드하고 확인하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[CustomPolicySample#10](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/client.cs#10)]
+ [!code-vb[CustomPolicySample#10](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/client.vb#10)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="ImportPolicy">
+      <MemberSignature Language="C#" Value="public void ImportPolicy (System.ServiceModel.Description.MetadataImporter importer, System.ServiceModel.Description.PolicyConversionContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ImportPolicy(class System.ServiceModel.Description.MetadataImporter importer, class System.ServiceModel.Description.PolicyConversionContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.IPolicyImportExtension.ImportPolicy(System.ServiceModel.Description.MetadataImporter,System.ServiceModel.Description.PolicyConversionContext)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ImportPolicy (importer As MetadataImporter, context As PolicyConversionContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ImportPolicy(System::ServiceModel::Description::MetadataImporter ^ importer, System::ServiceModel::Description::PolicyConversionContext ^ context);" />
+      <MemberSignature Language="F#" Value="abstract member ImportPolicy : System.ServiceModel.Description.MetadataImporter * System.ServiceModel.Description.PolicyConversionContext -&gt; unit" Usage="iPolicyImportExtension.ImportPolicy (importer, context)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="importer" Type="System.ServiceModel.Description.MetadataImporter" Index="0" FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="context" Type="System.ServiceModel.Description.PolicyConversionContext" Index="1" FrameworkAlternate="netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="importer">사용 중인 <see cref="T:System.ServiceModel.Description.MetadataImporter" /> 개체입니다.</param>
+        <param name="context">가져올 수 있는 정책 어설션과, 구현 바인딩 요소를 추가할 수 있는 바인딩 요소 컬렉션을 모두 포함하는 <see cref="T:System.ServiceModel.Description.PolicyConversionContext" />입니다.</param>
+        <summary>사용자 지정 정책 어설션을 가져오고 구현 바인딩 요소를 추가할 수 있는 메서드를 정의합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 정책 어설션을 가져온 후 해당 어설션을 지원하도록 가져온 계약 또는 바인딩을 수정하려면 `ImportPolicy` 메서드를 구현합니다. 일반적으로 정책 가져오기는 바인딩 요소를 구성하거나 가져올 바인딩에 삽입함으로써 사용자 지정 정책 어설션 검색에 응답합니다.  
+  
+ Windows Communication Foundation (WCF) 두 개체를 전달 합니다 <xref:System.ServiceModel.Description.IPolicyImportExtension.ImportPolicy%2A> 메서드를 <xref:System.ServiceModel.Description.MetadataImporter> 및 <xref:System.ServiceModel.Description.PolicyConversionContext>합니다. 일반적으로 <xref:System.ServiceModel.Description.PolicyConversionContext> 개체에는 각 바인딩 범위에 대한 정책 어설션이 이미 포함되어 있습니다.  
+  
+ <xref:System.ServiceModel.Description.IPolicyImportExtension> 구현에서는 다음 단계를 수행합니다.  
+  
+1.  범위에 따라 <xref:System.ServiceModel.Description.PolicyConversionContext.GetBindingAssertions%2A>, <xref:System.ServiceModel.Description.PolicyConversionContext.GetMessageBindingAssertions%2A> 또는 <xref:System.ServiceModel.Description.PolicyConversionContext.GetOperationBindingAssertions%2A> 메서드를 호출하여 해당 사용자 지정 정책 어설션을 찾습니다.  
+  
+2.  어설션 컬렉션에서 정책 어설션을 제거합니다. <xref:System.ServiceModel.Description.PolicyAssertionCollection.Remove%2A?displayProperty=nameWithType> 메서드는 어설션을 찾아서 반환하고 제거하는 과정을 한 단계로 수행합니다.  
+  
+3.  필요한 사용자 지정 <xref:System.ServiceModel.Channels.BindingElement>를 <xref:System.ServiceModel.Description.PolicyConversionContext.BindingElements%2A> 속성에 추가하거나 <xref:System.ServiceModel.Description.PolicyConversionContext.Contract%2A?displayProperty=nameWithType> 속성을 수정하여 바인딩 스택 또는 계약을 수정합니다.  
+  
+ 2단계는 중요한 단계입니다. 모든 정책 가져오기를 호출 된 후 WCF 남아 있는 정책 어설션이 있는지 확인 합니다. 있는 경우 WCF에서는 정책 가져오기가 실패 하 고 관련된 바인딩을 가져오지 않습니다 가정 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.ServiceModel.Description.PolicyAssertionCollection.Remove%2A?displayProperty=nameWithType> 메서드를 사용하여 어설션을 찾아서 반환하고 제거하는 작업을 한 단계로 수행하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[CustomPolicySample#1](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/policyimporter.cs#1)]
+ [!code-vb[CustomPolicySample#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/policyimporter.vb#1)]  
+  
+ 다음 코드 예제에서는 <xref:System.ServiceModel.Description.MetadataResolver?displayProperty=nameWithType>가 호출될 때 사용자 지정 정책 가져오기를 로드하는 클라이언트 응용 프로그램 구성 파일을 보여 줍니다.  
+  
+ [!code-xml[CustomPolicySample#7](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/client.exe.config#7)]   
+  
+ 다음 코드 예제에서는 <xref:System.ServiceModel.Description.MetadataResolver>를 사용하여 메타데이터를 설명 개체로 다운로드하고 확인하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[CustomPolicySample#10](~/samples/snippets/csharp/VS_Snippets_CFX/custompolicysample/cs/client.cs#10)]
+ [!code-vb[CustomPolicySample#10](~/samples/snippets/visualbasic/VS_Snippets_CFX/custompolicysample/vb/client.vb#10)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

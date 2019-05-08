@@ -1,0 +1,2402 @@
+<Type Name="HttpRequest" FullName="System.Web.HttpRequest">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d74d266f42608ff56b88df4f54acba091ee4ce60" /><Meta Name="ms.sourcegitcommit" Value="2dd0eede6edd6dd3d2aa8f79010848658b967609" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="04/18/2019" /><Meta Name="ms.locfileid" Value="58874906" /></Metadata><TypeSignature Language="C#" Value="public sealed class HttpRequest" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit HttpRequest extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Web.HttpRequest" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class HttpRequest" />
+  <TypeSignature Language="C++ CLI" Value="public ref class HttpRequest sealed" />
+  <TypeSignature Language="F#" Value="type HttpRequest = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>웹 요청 도중 ASP.NET이 클라이언트에서 보낸 HTTP 값을 읽을 수 있도록 합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 메서드 및 속성의는 <xref:System.Web.HttpRequest> 클래스를 통해 노출 되는 `Request` 의 속성을 <xref:System.Web.HttpApplication>, <xref:System.Web.HttpContext>, <xref:System.Web.UI.Page>, 및 <xref:System.Web.UI.UserControl> 클래스.  
+  
+ 데이터에 액세스 하는 <xref:System.Web.HttpRequest.QueryString%2A>, <xref:System.Web.HttpRequest.Form%2A>, <xref:System.Web.HttpRequest.Cookies%2A>, 또는 <xref:System.Web.HttpRequest.ServerVariables%2A> 컬렉션을 작성할 수 있습니다 `Request["key"]`의 예제에 나와 있는 것 처럼는 <xref:System.Web.HttpRequest.QueryString%2A> 속성입니다.  
+  
+> [!NOTE]
+>  에 대 한 유니코드 지원 <xref:System.Web.HttpRequest> 클래스 멤버에는 IIS 버전 6.0 이상이 필요 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 액세스는 <xref:System.Web.HttpRequest> 를 사용 하 여 현재 요청에 대 한 인스턴스를 <xref:System.Web.UI.Page.Request%2A> 의 속성을 <xref:System.Web.UI.Page> 클래스.  
+  
+ 데이터 액세스를 위한 간소화 된 구문을 사용할 수 있습니다 합니다 <xref:System.Web.HttpRequest.QueryString%2A>, <xref:System.Web.HttpRequest.Form%2A>를 <xref:System.Web.HttpRequest.Cookies%2A>, 또는 <xref:System.Web.HttpRequest.ServerVariables%2A> 컬렉션입니다. 작성할 수 있습니다 `Request["key"]`합니다.  
+  
+ 첫 번째 예제에는 페이지를 로드할 때 쿼리 문자열 값을 검색 하는 방법을 보여 줍니다.  
+  
+```csharp  
+public partial class AddToCart : Page  
+{  
+    protected void Page_Load(object sender, EventArgs e)  
+    {  
+        string rawId = Request["ProductID"];  
+        int productId;  
+        if (!String.IsNullOrEmpty(rawId) && int.TryParse(rawId, out productId))  
+        {  
+            using (ShoppingCartActions usersShoppingCart = new ShoppingCartActions())  
+            {  
+                usersShoppingCart.AddToCart(productId);  
+            }  
+        }  
+        else  
+        {  
+            throw new Exception("Tried to call AddToCart.aspx without setting a ProductId.");  
+        }  
+        Response.Redirect("ShoppingCart.aspx");  
+    }  
+}  
+```  
+  
+```vb  
+Public Class AddToCart  
+    Inherits Page  
+  
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load  
+        Dim rawId = Request("ProductID")  
+        Dim productId As Integer  
+        If Not String.IsNullOrEmpty(rawId) And Integer.TryParse(rawId, productId) Then  
+            Using usersShoppingCart As New ShoppingCartActions()  
+                usersShoppingCart.AddToCart(productId)  
+            End Using  
+  
+        Else  
+            Throw New Exception("Tried to call AddToCart.aspx without setting a ProductId.")  
+        End If  
+        Response.Redirect("ShoppingCart.aspx")  
+    End Sub  
+End Class  
+```  
+  
+ 다음 예제 요청은 인증 된 경우를 확인 하 고 원시 URL을 검색 하는 방법을 보여 줍니다.  
+  
+```csharp  
+public partial class RestrictedPage : Page  
+{  
+    protected void Page_Load(object sender, EventArgs e)  
+    {  
+        if (!Request.IsAuthenticated)  
+        {  
+            var rawUrl = Request.RawUrl;  
+            Response.Redirect("/Account/Login?ru=" + Server.HtmlEncode(rawUrl));  
+        }  
+    }  
+}  
+```  
+  
+```vb  
+Public Class RestrictedPage  
+    Inherits Page  
+  
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load  
+        If Not Request.IsAuthenticated Then  
+            Dim rawUrl = Request.RawUrl  
+            Response.Redirect("/Account/Login?ru=" + Server.HtmlEncode(rawUrl))  
+        End If  
+    End Sub  
+End Class  
+```  
+  
+ 소스 코드를 사용 하 여 Visual Studio 웹 사이트 프로젝트는 다음이 항목과 함께 제공 됩니다. [다운로드](https://go.microsoft.com/fwlink/?LinkID=191455)합니다.  
+  
+ 이 예제에서는 합니다 <xref:System.IO.StreamWriter> 클래스의 여러 값을 쓸 <xref:System.Web.HttpRequest> 클래스 파일에 속성입니다. 문자열 형식 속성에 대 한 값은 HTML 파일에 쓸 때로 인코딩됩니다. 컬렉션을 나타내는 속성을 반복 하 고 파일에 포함 된 각 키/값 쌍이 기록 됩니다.  
+  
+> [!IMPORTANT]
+>  이 예제에는 사용자 입력을 허용하는 텍스트 상자가 있으므로 보안상 위험할 수 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest_Sample1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#1)]
+ [!code-aspx-vb[System.Web.HttpRequest_Sample1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HttpRequest (string filename, string url, string queryString);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string filename, string url, string queryString) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.#ctor(System.String,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (filename As String, url As String, queryString As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; HttpRequest(System::String ^ filename, System::String ^ url, System::String ^ queryString);" />
+      <MemberSignature Language="F#" Value="new System.Web.HttpRequest : string * string * string -&gt; System.Web.HttpRequest" Usage="new System.Web.HttpRequest (filename, url, queryString)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="filename" Type="System.String" />
+        <Parameter Name="url" Type="System.String" />
+        <Parameter Name="queryString" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="filename">요청과 관련된 파일의 이름입니다.</param>
+        <param name="url">현재 요청의 URL에 대한 정보입니다.</param>
+        <param name="queryString">요청과 함께 보내는 전체 쿼리 문자열입니다(<c>'?'</c> 다음에 나오는 모든 내용).</param>
+        <summary><see cref="T:System.Web.HttpRequest" /> 개체를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 고유한 인스턴스를 만들 필요가 없습니다를 <xref:System.Web.HttpRequest> 클래스입니다. 메서드 및 속성의는 <xref:System.Web.HttpRequest> 클래스를 통해 노출 되는 `Request` 의 속성을 <xref:System.Web.HttpApplication>, <xref:System.Web.HttpContext>, <xref:System.Web.UI.Page>, 및 <xref:System.Web.UI.UserControl> 클래스.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Abort">
+      <MemberSignature Language="C#" Value="public void Abort ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Abort() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.Abort" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Abort ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Abort();" />
+      <MemberSignature Language="F#" Value="member this.Abort : unit -&gt; unit" Usage="httpRequest.Abort " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>내부 TCP 연결을 강제로 종료하여 처리 중인 I/O가 실패하도록 합니다. 악성 HTTP 클라이언트에 의한 공격에 대한 응답에서 이 메서드를 사용할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 스레드로부터 안전 합니다. 모든 스레드가 언제 든 지 호출할 수 있습니다.  
+  
+ 이 메서드가 통합된 모드에서 사용할 수 있습니다. 클래식 모드에서 호출 하면 예외가 throw 됩니다. 파이프라인 모드를 확인 하려면 <xref:System.Web.HttpRuntime.UsingIntegratedPipeline%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AcceptTypes">
+      <MemberSignature Language="C#" Value="public string[] AcceptTypes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string[] AcceptTypes" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.AcceptTypes" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property AcceptTypes As String()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::String ^&gt; ^ AcceptTypes { cli::array &lt;System::String ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.AcceptTypes : string[]" Usage="System.Web.HttpRequest.AcceptTypes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트에서 지원하는 MIME 허용 형식의 문자열 배열을 가져옵니다.</summary>
+        <value>클라이언트에서 지원하는 MIME 허용 형식의 문자열 배열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서 반환 된 여러 값을 캡처하는 <xref:System.Web.HttpRequest.AcceptTypes%2A> 개체 변수에 속성 및 HTTP 출력의 별도 줄 번호와 각 값의 이름을 씁니다.  
+  
+ [!code-csharp[Classic HttpRequest.AcceptTypes Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.AcceptTypes Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.AcceptTypes Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.AcceptTypes Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AnonymousID">
+      <MemberSignature Language="C#" Value="public string AnonymousID { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string AnonymousID" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.AnonymousID" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property AnonymousID As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ AnonymousID { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.AnonymousID : string" Usage="System.Web.HttpRequest.AnonymousID" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>사용자의 익명 ID를 가져옵니다(있는 경우).</summary>
+        <value>현재 익명 사용자 ID를 나타내는 문자열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.HttpRequest.AnonymousID%2A> 속성에 데이터를 저장 하지 않고 해당 사용자에 게 프로필 속성을 할당 하거나 사용자를 추적에 사용할 수 있는 인증 되지 않은 사용자에 게 장기 고유 id를 할당 한 `Session` 개체입니다. 기본적으로 <xref:System.Web.HttpRequest.AnonymousID%2A> 속성은 쿠키를 사용 하 여 추적 됩니다 있지만 URI를 사용 하도록 설정할 수 있습니다 때를 <xref:System.Web.Configuration.SessionStateSection.Cookieless%2A> 익명 id 구성 섹션에서 특성은로 설정 합니다 <xref:System.Web.HttpCookieMode.UseUri>, <xref:System.Web.HttpCookieMode.UseDeviceProfile>, 또는 <xref:System.Web.HttpCookieMode.AutoDetect> 값입니다. 더 이상 하려는 경우 익명 사용자가 인증 하는 경우에 예를 들어 사용 가능한에 명시적으로 쿠키를 해제 해야 합니다.  
+  
+ 익명 id는 인증 되지 않은 엔터티를 식별 해야 하는 경우 및 인증이 필요한 경우 사용 됩니다. 자세한 내용은 참조 하세요. [anonymousIdentification 요소 (ASP.NET 설정 스키마)](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/91ka2e6a(v=vs.100))  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법을 보여 줍니다는 <xref:System.Web.HttpRequest.AnonymousID%2A> 처리 하 여 속성을 <xref:System.Web.Security.AnonymousIdentificationModule.Creating> Global.asax 파일에는 이벤트입니다. 이 예제에는 두 부분이 있습니다.  
+  
+-   처리 하는 Global.asax 파일의 메서드는 <xref:System.Web.Security.AnonymousIdentificationModule.Creating> 이벤트입니다.  
+  
+-   Web Forms 페이지입니다.  
+  
+ 코드 예제의 첫 번째 부분에 설정 하는 방법을 보여 줍니다는 <xref:System.Web.HttpRequest.AnonymousID%2A> 처리 하 여 속성을 <xref:System.Web.Security.AnonymousIdentificationModule.Creating> Global.asax 파일에는 이벤트입니다. 명명 된 메서드 `AnonymousIdentification_Creating` 설정의 <xref:System.Web.HttpRequest.AnonymousID%2A> 익명 ID를 만들 때 속성.  
+  
+ [!code-csharp[System.Web.HttpRequest_AnonymousID#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_AnonymousID/CS/global_asax.cs#2)]
+ [!code-vb[System.Web.HttpRequest_AnonymousID#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_AnonymousID/vb/global_asax.vb#2)]  
+  
+ 코드 예제에서는 두 번째 부분에 새 표시 하는 방법을 보여 줍니다 <xref:System.Web.HttpRequest.AnonymousID%2A> 에서 만들어진는 `AnonymousIdentification_Creating` 앞의 예제에서 이벤트 처리기입니다.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest_AnonymousID#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_AnonymousID/CS/anonid_cs.aspx#1)]
+ [!code-aspx-vb[System.Web.HttpRequest_AnonymousID#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_AnonymousID/vb/anonid_vb.aspx#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.HttpRequest.IsAuthenticated" />
+        <altmember cref="E:System.Web.Security.AnonymousIdentificationModule.Creating" />
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/91ka2e6a(v=vs.100)">anonymousIdentification 요소(ASP.NET 설정 스키마)</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ApplicationPath">
+      <MemberSignature Language="C#" Value="public string ApplicationPath { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ApplicationPath" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.ApplicationPath" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ApplicationPath As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ ApplicationPath { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ApplicationPath : string" Usage="System.Web.HttpRequest.ApplicationPath" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>ASP.NET 애플리케이션의 가상 애플리케이션 루트 경로를 서버에서 가져옵니다.</summary>
+        <value>현재 애플리케이션의 가상 경로입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성을 사용 하 여 페이지 또는 루트 디렉터리에 있지 않은 웹 사용자 정의 컨트롤에서 응용 프로그램 루트를 기준으로 URL을 생성 합니다. 이렇게 하면 다른 수준의 디렉터리 구조가 동일한 코드를 사용 하 여 응용 프로그램에서 고정 된 위치에서 리소스에 연결할 수 있는 공유 컨트롤과 페이지 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 합니다 <xref:System.IO.StreamWriter.Write%2A> HTML 인코딩해야 하는 방법 및 다음의 값을 쓰기는 <xref:System.Web.HttpRequest.ApplicationPath%2A> 텍스트 파일에 속성. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다. 있다고 가정 하는 <xref:System.IO.StreamWriter> 개체인 `sw`합니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#2)]
+ [!code-vb[System.Web.HttpRequest_Sample1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#2)]  
+  
+ 다음 예제에서는 <xref:System.Web.HttpRequest.ApplicationPath%2A> 속성을 프로그래밍 방식으로 응용 프로그램에서 고정된 된 위치에 있는 리소스에 대 한 경로 생성 합니다. 리소스를 참조 하는 페이지 리소스와 동일한 디렉터리에 있이 필요가 없습니다.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest.ApplicationPath#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest.ApplicationPath/CS/ApplicationPath.aspx#2)]
+ [!code-aspx-vb[System.Web.HttpRequest.ApplicationPath#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest.ApplicationPath/VB/ApplicationPath.aspx#2)]  
+  
+ WebSite1, 이라고 하는 웹 응용 프로그램이 예제를 실행 하는 경우 `/WebSite1` 의 값으로 표시 됩니다는 <xref:System.Web.HttpRequest.ApplicationPath%2A> 속성 및 `/WebSite1/images/Image1.gif` 이미지의 전체 경로로 표시 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AppRelativeCurrentExecutionFilePath">
+      <MemberSignature Language="C#" Value="public string AppRelativeCurrentExecutionFilePath { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string AppRelativeCurrentExecutionFilePath" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.AppRelativeCurrentExecutionFilePath" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property AppRelativeCurrentExecutionFilePath As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ AppRelativeCurrentExecutionFilePath { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.AppRelativeCurrentExecutionFilePath : string" Usage="System.Web.HttpRequest.AppRelativeCurrentExecutionFilePath" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>애플리케이션 루트의 가상 경로를 가져온 후 애플리케이션 루트를 물결표(\~)로 표시하여 "\~/page.aspx"와 같은 상대 경로로 바꿉니다.</summary>
+        <value>현재 요청에 대한 애플리케이션 루트의 가상 경로입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성을 사용 하 여 응용 프로그램 위치를 변경 하는 경우에 그대로 유지 됩니다 하는 URL 정보를 제공 합니다. 따라서 동일한 URL 매핑 코드를, 최종 배포 환경 및 테스트 환경에서 사용 되거나 다른 도메인에서 웹 응용 프로그램의 복사본에서 사용할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 합니다 <xref:System.Web.HttpRequest.AppRelativeCurrentExecutionFilePath%2A> 의 URL을 설정 하려면 속성은 <xref:System.Web.UI.WebControls.Image> 페이지와 동일한 디렉터리에서 이미지를 제어 합니다. 서로 다른 수준의 결과 확인 하려면 디렉터리 구조에서이 페이지를 실행 <xref:System.Web.HttpRequest.AppRelativeCurrentExecutionFilePath%2A> 속성 값입니다.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest.AppRelativeCurrentExecutionPath#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest.AppRelativeCurrentExecutionPath/CS/AppRelativeCurrentExecutionPathCS.aspx#1)]
+ [!code-aspx-vb[System.Web.HttpRequest.AppRelativeCurrentExecutionPath#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest.AppRelativeCurrentExecutionPath/VB/AppRelativeCurrentExecutionPathVB.aspx#1)]  
+  
+ 다음 예제에서는 <xref:System.Web.HttpRequest.AppRelativeCurrentExecutionFilePath%2A> 페이지의 현재 경로 기반으로 속성을 프로그래밍 방식으로 리소스에 경로 설정 합니다.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest.ApplicationPath#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest.ApplicationPath/CS/apprelativecurrentexecutionfilepath.aspx#1)]
+ [!code-aspx-vb[System.Web.HttpRequest.ApplicationPath#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest.ApplicationPath/VB/apprelativecurrentexecutionfilepath.aspx#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BinaryRead">
+      <MemberSignature Language="C#" Value="public byte[] BinaryRead (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] BinaryRead(int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.BinaryRead(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function BinaryRead (count As Integer) As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Byte&gt; ^ BinaryRead(int count);" />
+      <MemberSignature Language="F#" Value="member this.BinaryRead : int -&gt; byte[]" Usage="httpRequest.BinaryRead count" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">읽을 바이트 수입니다.</param>
+        <summary>현재 입력 스트림에서 지정된 바이트 수에 대한 이진 읽기를 수행합니다.</summary>
+        <returns>바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.HttpRequest.BinaryRead%2A> 메서드 ASP와의 호환성을 위해 제공 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="count" />가 0입니다.  
+  
+또는 
+ <paramref name="count" />가 사용 가능한 바이트의 수보다 큽니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Browser">
+      <MemberSignature Language="C#" Value="public System.Web.HttpBrowserCapabilities Browser { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.HttpBrowserCapabilities Browser" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Browser" />
+      <MemberSignature Language="VB.NET" Value="Public Property Browser As HttpBrowserCapabilities" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::HttpBrowserCapabilities ^ Browser { System::Web::HttpBrowserCapabilities ^ get(); void set(System::Web::HttpBrowserCapabilities ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Browser : System.Web.HttpBrowserCapabilities with get, set" Usage="System.Web.HttpRequest.Browser" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Web.HttpBrowserCapabilities</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청 클라이언트의 브라우저 기능에 대한 정보를 가져오거나 설정합니다.</summary>
+        <value>클라이언트 브라우저의 기능을 나열하는 <see cref="T:System.Web.HttpBrowserCapabilities" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제는 브라우저의 기능 목록을 HTML 페이지에서 클라이언트에 다시 보냅니다.  
+  
+ [!code-csharp[Classic HttpRequest.Browser Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.Browser Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.Browser Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.Browser Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.UI.Page.ClientTarget" />
+        <altmember cref="T:System.Web.HttpBrowserCapabilities" />
+        <altmember cref="P:System.Web.HttpRequest.UserAgent" />
+        <related type="Article" href="https://msdn.microsoft.com/library/143d14d6-9d12-4d4b-ae60-f00e0eb6938f">ASP.NET 서버 컨트롤 및 브라우저 기능</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ClientCertificate">
+      <MemberSignature Language="C#" Value="public System.Web.HttpClientCertificate ClientCertificate { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.HttpClientCertificate ClientCertificate" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.ClientCertificate" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ClientCertificate As HttpClientCertificate" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::HttpClientCertificate ^ ClientCertificate { System::Web::HttpClientCertificate ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ClientCertificate : System.Web.HttpClientCertificate" Usage="System.Web.HttpRequest.ClientCertificate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.HttpClientCertificate</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 요청의 클라이언트 보안 인증서를 가져옵니다.</summary>
+        <value>클라이언트의 보안 인증서 설정에 대한 정보가 들어 있는 <see cref="T:System.Web.HttpClientCertificate" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제는 클라이언트의 인증서 설정 HTML 페이지에서 클라이언트에 다시 보냅니다.  
+  
+ [!code-csharp[Classic HttpRequest.ClientCertificate Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.ClientCertificate Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.ClientCertificate Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.ClientCertificate Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContentEncoding">
+      <MemberSignature Language="C#" Value="public System.Text.Encoding ContentEncoding { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Text.Encoding ContentEncoding" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.ContentEncoding" />
+      <MemberSignature Language="VB.NET" Value="Public Property ContentEncoding As Encoding" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Text::Encoding ^ ContentEncoding { System::Text::Encoding ^ get(); void set(System::Text::Encoding ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ContentEncoding : System.Text.Encoding with get, set" Usage="System.Web.HttpRequest.ContentEncoding" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Text.Encoding</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>엔터티 본문의 문자 집합을 가져오거나 설정합니다.</summary>
+        <value>클라이언트의 문자 집합을 나타내는 <see cref="T:System.Text.Encoding" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 콘텐츠 인코딩을 지정할 수 있습니다 합니다 [세계화 요소 (ASP.NET 설정 스키마)](https://msdn.microsoft.com/library/e2dffc8e-ebd2-439b-a2fd-e3ac5e620da7) 구성 파일입니다. 콘텐츠 인코딩도 지정 되어 클라이언트에서 기본 구성 설정이 재정의 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 문자열 변수에 현재 HTTP 인코딩에 대 한 설명을 나타내는 값을 할당 합니다.  
+  
+ [!code-csharp[Classic HttpRequest.ContentEncoding Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.ContentEncoding Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.ContentEncoding Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.ContentEncoding Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContentLength">
+      <MemberSignature Language="C#" Value="public int ContentLength { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 ContentLength" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.ContentLength" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ContentLength As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int ContentLength { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.ContentLength : int" Usage="System.Web.HttpRequest.ContentLength" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트에서 보낸 콘텐츠의 길이를 바이트 단위로 지정합니다.</summary>
+        <value>클라이언트에서 보낸 콘텐츠의 길이(바이트 단위)입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 정수 변수를 들어오는 요청의 콘텐츠 길이 나타내는 값을 할당 합니다.  
+  
+ [!code-csharp[Classic HttpRequest.ContentLength Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.ContentLength Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.ContentLength Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.ContentLength Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContentType">
+      <MemberSignature Language="C#" Value="public string ContentType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ContentType" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.ContentType" />
+      <MemberSignature Language="VB.NET" Value="Public Property ContentType As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ ContentType { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ContentType : string with get, set" Usage="System.Web.HttpRequest.ContentType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>들어오는 요청의 MIME 콘텐츠 형식을 가져오거나 설정합니다.</summary>
+        <value>들어오는 요청의 MIME 콘텐츠 형식을 나타내는 문자열(예: "text/html")입니다. 일반적인 MIME 형식에는 추가로 "audio.wav", "image/gif" 및 "application/pdf"가 있습니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 문자열 변수를 들어오는 요청의 콘텐츠 형식을 나타내는 값을 할당 합니다.  
+  
+ [!code-csharp[Classic HttpRequest.ContentType Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.ContentType Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.ContentType Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.ContentType Example/VB/source.vb#1)]  
+  
+ 다음 예제에서는이 코드에 의해 생성 될 수 있는 출력을 보여 줍니다.  
+  
+ `GET`  
+  
+ `127.0.0.1`  
+  
+ `127.0.0.1`  
+  
+ `GET`  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Cookies">
+      <MemberSignature Language="C#" Value="public System.Web.HttpCookieCollection Cookies { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.HttpCookieCollection Cookies" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Cookies" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Cookies As HttpCookieCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::HttpCookieCollection ^ Cookies { System::Web::HttpCookieCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Cookies : System.Web.HttpCookieCollection" Usage="System.Web.HttpRequest.Cookies" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.HttpCookieCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트에서 보낸 쿠키 컬렉션을 가져옵니다.</summary>
+        <value>클라이언트의 쿠키 변수를 나타내는 <see cref="T:System.Web.HttpCookieCollection" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ ASP.NET 두 내장 쿠키 컬렉션을 포함합니다. 통해 액세스할 수 있는 컬렉션을 <xref:System.Web.HttpRequest.Cookies%2A> 의 컬렉션 <xref:System.Web.HttpRequest> 서버에 클라이언트에서 전송 된 쿠키가 들어를 `Cookie` 헤더. 통해 액세스할 수 있는 컬렉션을 <xref:System.Web.HttpResponse.Cookies%2A> 의 컬렉션 <xref:System.Web.HttpResponse> 서버에서 생성 하 고 클라이언트에 전송 된 새 쿠키를 포함는 `Set-Cookie` 헤더입니다.  
+  
+> [!NOTE]
+>  사용 하 여 쿠키를 추가한 후는 <xref:System.Web.HttpResponse.Cookies%2A?displayProperty=nameWithType> 쿠키에서 즉시 사용할 수는 컬렉션을 <xref:System.Web.HttpRequest.Cookies%2A?displayProperty=nameWithType> 응답이 클라이언트로 전송 되지 않은 경우에 컬렉션.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 클라이언트에서 보낸 모든 쿠키를 통해 반복 하 고 이름, 만료일, 보안 매개 변수 및 각 쿠키의 값을 HTTP 출력에 보냅니다.  
+  
+ [!code-csharp[Classic HttpRequest.Cookies Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.Cookies Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.Cookies Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.Cookies Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.HttpRequest.ValidateInput" />
+        <altmember cref="P:System.Web.HttpRequest.Form" />
+        <altmember cref="P:System.Web.HttpRequest.QueryString" />
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentExecutionFilePath">
+      <MemberSignature Language="C#" Value="public string CurrentExecutionFilePath { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string CurrentExecutionFilePath" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.CurrentExecutionFilePath" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CurrentExecutionFilePath As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ CurrentExecutionFilePath { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.CurrentExecutionFilePath : string" Usage="System.Web.HttpRequest.CurrentExecutionFilePath" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 요청의 가상 경로를 가져옵니다.</summary>
+        <value>현재 요청의 가상 경로입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.HttpRequest.CurrentExecutionFilePath%2A> 현재 실행 중인 페이지 처리기에 파일 경로 반환합니다. 사용 하 여 리디렉션 시나리오에 대 한 <xref:System.Web.HttpServerUtility.Execute%2A> 및 <xref:System.Web.HttpServerUtility.Transfer%2A> 즉 메서드는 <xref:System.Web.HttpRequest.CurrentExecutionFilePath%2A> 속성 페이지로 리디렉션됩니다 (자식) 페이지의 경로 반환 합니다. 그러나 클라이언트가 다른 페이지로 리디렉션 되었습니다는 <xref:System.Web.HttpRequest.FilePath%2A> 속성 원래 페이지의 경로 반환 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.CurrentExecutionFilePath%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#2)]
+ [!code-vb[System.Web.HttpRequest_Sample1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#2)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.HttpRequest.FilePath" />
+        <altmember cref="P:System.Web.HttpRequest.Path" />
+        <altmember cref="P:System.Web.HttpRequest.PathInfo" />
+        <altmember cref="M:System.Web.HttpServerUtility.Execute(System.String)" />
+        <altmember cref="M:System.Web.HttpServerUtility.Transfer(System.String,System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentExecutionFilePathExtension">
+      <MemberSignature Language="C#" Value="public string CurrentExecutionFilePathExtension { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string CurrentExecutionFilePathExtension" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.CurrentExecutionFilePathExtension" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CurrentExecutionFilePathExtension As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ CurrentExecutionFilePathExtension { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.CurrentExecutionFilePathExtension : string" Usage="System.Web.HttpRequest.CurrentExecutionFilePathExtension" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="P:System.Web.HttpRequest.CurrentExecutionFilePath" /> 속성에 지정된 파일 이름의 확장명을 가져옵니다.</summary>
+        <value><see cref="P:System.Web.HttpRequest.CurrentExecutionFilePath" /> 속성에 지정된 파일 이름의 확장명입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FilePath">
+      <MemberSignature Language="C#" Value="public string FilePath { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string FilePath" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.FilePath" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property FilePath As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ FilePath { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.FilePath : string" Usage="System.Web.HttpRequest.FilePath" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 요청의 가상 경로를 가져옵니다.</summary>
+        <value>현재 요청의 가상 경로입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.HttpRequest.FilePath%2A> 속성은 포함 하지 않습니다는 <xref:System.Web.HttpRequest.PathInfo%2A> 트레일러 합니다. URL에 대 한 예를 들어 http://www.contoso.com/virdir/page.html/tail, <xref:System.Web.HttpRequest.FilePath%2A> /virdir/page.html 가치가 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.FilePath%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#2)]
+ [!code-vb[System.Web.HttpRequest_Sample1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#2)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.HttpRequest.PathInfo" />
+        <altmember cref="P:System.Web.HttpRequest.Path" />
+      </Docs>
+    </Member>
+    <Member MemberName="Files">
+      <MemberSignature Language="C#" Value="public System.Web.HttpFileCollection Files { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.HttpFileCollection Files" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Files" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Files As HttpFileCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::HttpFileCollection ^ Files { System::Web::HttpFileCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Files : System.Web.HttpFileCollection" Usage="System.Web.HttpRequest.Files" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.HttpFileCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트에서 업로드한 파일 컬렉션을 multipart MIME 형식으로 가져옵니다.</summary>
+        <value>클라이언트에서 업로드한 파일 컬렉션을 나타내는 <see cref="T:System.Web.HttpFileCollection" /> 개체입니다. <see cref="T:System.Web.HttpFileCollection" /> 개체의 항목은 <see cref="T:System.Web.HttpPostedFile" /> 형식입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파일 컬렉션만 채워집니다 HTTP 요청 하는 경우 `Content-Type` 값은 "다중 파트/폼 데이터".  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서 모든 파일의 이름을 표시 합니다 <xref:System.Web.HttpRequest.Files%2A> 컬렉션입니다.  
+  
+ [!code-csharp[Classic HttpRequest.Files Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.Files Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.Files Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.Files Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Filter">
+      <MemberSignature Language="C#" Value="public System.IO.Stream Filter { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IO.Stream Filter" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Filter" />
+      <MemberSignature Language="VB.NET" Value="Public Property Filter As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IO::Stream ^ Filter { System::IO::Stream ^ get(); void set(System::IO::Stream ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Filter : System.IO.Stream with get, set" Usage="System.Web.HttpRequest.Filter" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 입력 스트림을 읽을 때 사용할 필터를 가져오거나 설정합니다.</summary>
+        <value>필터로 사용되는 <see cref="T:System.IO.Stream" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 두 개의 새 클래스를 만듭니다 `QQQ1` 하 고 `QQQ2` 해당 필터는 <xref:System.Web.HttpRequest.InputStream%2A>합니다. 응용 프로그램에서 모든 ASP.NET 웹 페이지에 대 한 모든 입력은 필터링 할 수 있도록 ASP.NET 응용 프로그램의 디렉터리에서 Global.asax 파일에 클래스를 배치 합니다.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest.Filter#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest.Filter/CS/systemwebhttprequestfilter.cs.aspx#1)]
+ [!code-aspx-vb[System.Web.HttpRequest.Filter#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest.Filter/VB/systemwebhttprequestfilter.vb.aspx#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException">지정한 <see cref="T:System.IO.Stream" />가 잘못된 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Form">
+      <MemberSignature Language="C#" Value="public System.Collections.Specialized.NameValueCollection Form { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Specialized.NameValueCollection Form" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Form" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Form As NameValueCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Specialized::NameValueCollection ^ Form { System::Collections::Specialized::NameValueCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Form : System.Collections.Specialized.NameValueCollection" Usage="System.Web.HttpRequest.Form" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Specialized.NameValueCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>폼 변수의 컬렉션을 가져옵니다.</summary>
+        <value>폼 변수의 컬렉션을 나타내는 <see cref="T:System.Collections.Specialized.NameValueCollection" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.HttpRequest.Form%2A> 속성은 HTTP 요청 하는 경우 `Content-Type` 값은 "application/x-www-형식-urlencoded" 또는 "다중 파트/폼 데이터".  
+  
+   
+  
+## Examples  
+ 다음 예제에는 브라우저에서 게시 되는 양식 컬렉션에서 값을 읽는 방법을 보여 줍니다. 컬렉션에서 각 이름/값 쌍 형식 및 해당 값에서 컨트롤을 나타냅니다.  
+  
+ [!code-csharp[Classic HttpRequest.Form Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.Form Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.Form Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.Form Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.HttpRequest.ValidateInput" />
+        <altmember cref="P:System.Web.HttpRequest.Cookies" />
+        <altmember cref="P:System.Web.HttpRequest.QueryString" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetBufferedInputStream">
+      <MemberSignature Language="C#" Value="public System.IO.Stream GetBufferedInputStream ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IO.Stream GetBufferedInputStream() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.GetBufferedInputStream" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetBufferedInputStream () As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IO::Stream ^ GetBufferedInputStream();" />
+      <MemberSignature Language="F#" Value="member this.GetBufferedInputStream : unit -&gt; System.IO.Stream" Usage="httpRequest.GetBufferedInputStream " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>들어오는 HTTP 엔터티 본문을 읽는 데 사용할 수 있는 <see cref="T:System.IO.Stream" /> 개체를 가져옵니다.</summary>
+        <returns>들어오는 HTTP 엔터티 본문을 읽는 데 사용할 수 있는 <see cref="T:System.IO.Stream" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 동일 <xref:System.Web.HttpRequest.GetBufferlessInputStream%2A> 읽은 바이트를 채우기 위해 ASP.NET에서 사용 되는 내부 저장소에 복사 한다는 점을 제외 하면 합니다 <xref:System.Web.HttpRequest.Form%2A>를 <xref:System.Web.HttpRequest.Files%2A>, 및 <xref:System.Web.HttpRequest.InputStream%2A> 속성입니다. 이 정보가 보존되기 때문에 ASP.NET Web Forms 페이지(.aspx 파일)와 같은 다운스트림 코드가 성공적으로 실행됩니다. 이것은 <xref:System.Web.HttpRequest.GetBufferlessInputStream%2A> 메서드의 경우가 아닙니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException">요청의 엔터티 본문이 이미 로드되거나 구문 분석되었습니다. 엔터티 본문을 로드하고 구문 분석하도록 하는 속성의 예는 다음과 같습니다. 
+-   <see cref="P:System.Web.HttpRequest.Form" /> 속성  
+  
+-   <see cref="P:System.Web.HttpRequest.Files" /> 속성  
+  
+-   <see cref="P:System.Web.HttpRequest.InputStream" /> 속성  
+  
+-   <see cref="M:System.Web.HttpRequest.GetBufferlessInputStream" /> 메서드  
+  
+이 예외가 발생하지 않도록 하려면 먼저 <see cref="P:System.Web.HttpRequest.ReadEntityBodyMode" /> 메서드를 호출합니다. 엔터티 본문을 읽는 동안 클라이언트 연결이 끊긴 경우 이 예외도 throw됩니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetBufferlessInputStream">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>들어오는 HTTP 엔터티 본문을 읽는 데 사용할 수 있는 <see cref="T:System.IO.Stream" /> 개체를 가져옵니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetBufferlessInputStream">
+      <MemberSignature Language="C#" Value="public System.IO.Stream GetBufferlessInputStream ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IO.Stream GetBufferlessInputStream() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.GetBufferlessInputStream" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetBufferlessInputStream () As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IO::Stream ^ GetBufferlessInputStream();" />
+      <MemberSignature Language="F#" Value="member this.GetBufferlessInputStream : unit -&gt; System.IO.Stream" Usage="httpRequest.GetBufferlessInputStream " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>들어오는 HTTP 엔터티 본문을 읽는 데 사용할 수 있는 <see cref="T:System.IO.Stream" /> 개체를 가져옵니다.</summary>
+        <returns>들어오는 HTTP 엔터티 본문을 읽는 데 사용할 수 있는 <see cref="T:System.IO.Stream" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 사용 하는 대신 제공 된 <xref:System.Web.HttpRequest.InputStream%2A> 속성입니다. 합니다 <xref:System.Web.HttpRequest.InputStream%2A> 속성이 반환 하기 전에 전체 요청을 받을 때까지 대기를 <xref:System.IO.Stream> 개체입니다. 반면 합니다 <xref:System.Web.HttpRequest.GetBufferlessInputStream%2A> 메서드가 반환 되는 <xref:System.IO.Stream> 개체를 즉시. 본문의 전체 내용을 받기 전에 엔터티 본문을 처리 하려면 메서드를 사용할 수 있습니다.  
+  
+ 엔터티 본문 (대부분의 것으로 요청 하 고 받은) 개체를 사용 하는 경우에 반환 됩니다와 같은 메서드를 호출 하 여 스트림의 읽을이 메서드에서 반환 되는 여 <xref:System.IO.Stream.Read%2A> 메서드. 매개 변수를 사용 하 여 <xref:System.IO.Stream.Read%2A> 읽을 엔터티 본문의 크기를 지정 하는 방법.  
+  
+ <xref:System.IO.Stream> ASP.NET이 메서드에서 반환한 개체는 동기 및 비동기 읽기 메서드를 지원 합니다. 합니다 <xref:System.IO.Stream> 둘 다 구현 하는 개체를 <xref:System.IO.Stream.BeginRead%2A> 및 <xref:System.IO.Stream.EndRead%2A> 메서드. 비동기 메서드를 통해 ASP.NET 비동기 읽기 루프의 각 반복 사이 현재 스레드를 해제 하는 동안 청크를 요청 엔터티를 비동기적으로 읽을 수 있습니다.  
+  
+ 이 메서드는 요청은 큰 파일을 업로드 하 고 업로드가 완료 되기 전에 파일 내용에 액세스 하려면 하려는 경우 유용할 수 있습니다. 그러나만이 메서드를 사용 해야이 시나리오에 대 한 엔터티 본문의 모든 처리를 가져오려는 합니다. 즉,.aspx 페이지를 사용 하는 실행 시간, 엔터티 본문은 이미 읽은 없으므로.aspx 페이지에서이 메서드는 사용할 수 없습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException">요청의 엔터티 본문이 이미 로드되거나 구문 분석되었습니다. 엔터티 본문을 로드하고 구문 분석하도록 하는 속성의 예는 다음과 같습니다. 
+-   <see cref="P:System.Web.HttpRequest.Form" />  
+  
+-   <see cref="P:System.Web.HttpRequest.InputStream" />  
+  
+-   <see cref="P:System.Web.HttpRequest.Files" />  
+  
+-   <see cref="M:System.Web.HttpRequest.GetBufferedInputStream" />  
+  
+이 예외가 발생하지 않도록 하려면 먼저 <see cref="P:System.Web.HttpRequest.ReadEntityBodyMode" /> 메서드를 호출합니다. 엔터티 본문을 읽는 동안 클라이언트 연결이 끊긴 경우 이 예외도 throw됩니다.</exception>
+        <altmember cref="M:System.Web.HttpRequest.GetBufferedInputStream" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetBufferlessInputStream">
+      <MemberSignature Language="C#" Value="public System.IO.Stream GetBufferlessInputStream (bool disableMaxRequestLength);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IO.Stream GetBufferlessInputStream(bool disableMaxRequestLength) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.GetBufferlessInputStream(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetBufferlessInputStream (disableMaxRequestLength As Boolean) As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IO::Stream ^ GetBufferlessInputStream(bool disableMaxRequestLength);" />
+      <MemberSignature Language="F#" Value="member this.GetBufferlessInputStream : bool -&gt; System.IO.Stream" Usage="httpRequest.GetBufferlessInputStream disableMaxRequestLength" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disableMaxRequestLength" Type="System.Boolean" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="disableMaxRequestLength">요청 길이 한계를 비활성화하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>들어오는 HTTP 엔터티 본문을 읽고 <see cref="T:System.IO.Stream" /> 속성에서 설정된 요청 길이 제한을 선택적으로 사용하지 않도록 설정하는 데 사용할 수 있는 <see cref="P:System.Web.Configuration.HttpRuntimeSection.MaxRequestLength" /> 개체를 가져옵니다.</summary>
+        <returns>들어오는 HTTP 엔터티 본문을 읽는 데 사용할 수 있는 <see cref="T:System.IO.Stream" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드에 대 한 자세한 내용은 참조는 <xref:System.Web.HttpRequest.GetBufferlessInputStream> 오버 로드 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException">요청의 엔터티 본문이 이미 로드되거나 구문 분석되었습니다. 엔터티 본문을 로드하고 구문 분석하도록 하는 속성의 예는 다음과 같습니다. 
+-   <see cref="P:System.Web.HttpRequest.Form" /> 속성  
+  
+-   <see cref="P:System.Web.HttpRequest.Files" /> 속성  
+  
+-   <see cref="P:System.Web.HttpRequest.InputStream" /> 속성  
+  
+-   <see cref="M:System.Web.HttpRequest.GetBufferedInputStream" /> 메서드  
+  
+이 예외가 발생하지 않도록 하려면 먼저 <see cref="P:System.Web.HttpRequest.ReadEntityBodyMode" /> 메서드를 호출합니다. 엔터티 본문을 읽는 동안 클라이언트 연결이 끊긴 경우 이 예외도 throw됩니다.</exception>
+        <altmember cref="M:System.Web.HttpRequest.GetBufferedInputStream" />
+      </Docs>
+    </Member>
+    <Member MemberName="Headers">
+      <MemberSignature Language="C#" Value="public System.Collections.Specialized.NameValueCollection Headers { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Specialized.NameValueCollection Headers" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Headers" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Headers As NameValueCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Specialized::NameValueCollection ^ Headers { System::Collections::Specialized::NameValueCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Headers : System.Collections.Specialized.NameValueCollection" Usage="System.Web.HttpRequest.Headers" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Specialized.NameValueCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>HTTP 헤더의 컬렉션을 가져옵니다.</summary>
+        <value>헤더의 <see cref="T:System.Collections.Specialized.NameValueCollection" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 모든 가능한 헤더의 나열을 참조 하세요 [요청 헤더 필드](https://go.microsoft.com/fwlink/?LinkId=73147) W3C 웹 사이트입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 HTTP 요청에서 이름 및 모든 헤더의 값을 표시합니다.  
+  
+ [!code-csharp[Classic HttpRequest.Headers Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.Headers Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.Headers Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.Headers Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HttpChannelBinding">
+      <MemberSignature Language="C#" Value="public System.Security.Authentication.ExtendedProtection.ChannelBinding HttpChannelBinding { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Authentication.ExtendedProtection.ChannelBinding HttpChannelBinding" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.HttpChannelBinding" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property HttpChannelBinding As ChannelBinding" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Authentication::ExtendedProtection::ChannelBinding ^ HttpChannelBinding { System::Security::Authentication::ExtendedProtection::ChannelBinding ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.HttpChannelBinding : System.Security.Authentication.ExtendedProtection.ChannelBinding" Usage="System.Web.HttpRequest.HttpChannelBinding" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Authentication.ExtendedProtection.ChannelBinding</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.Authentication.ExtendedProtection.ChannelBinding" /> 인스턴스의 <see cref="T:System.Web.HttpWorkerRequest" /> 개체를 가져옵니다.</summary>
+        <value>현재 <see cref="T:System.Security.Authentication.ExtendedProtection.ChannelBinding" /> 인스턴스의 <see cref="T:System.Web.HttpWorkerRequest" /> 개체입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.PlatformNotSupportedException">현재 <see cref="T:System.Web.HttpWorkerRequest" /> 개체는 <see langword="System.Web.Hosting.IIS7WorkerRequest" /> 개체 또는 <see langword="System.Web.Hosting.ISAPIWorkerRequestInProc" /> 개체가 아닙니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="HttpMethod">
+      <MemberSignature Language="C#" Value="public string HttpMethod { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string HttpMethod" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.HttpMethod" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property HttpMethod As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ HttpMethod { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.HttpMethod : string" Usage="System.Web.HttpRequest.HttpMethod" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트에서 사용하는 HTTP 데이터 전송 메서드(예: <see langword="GET" />, <see langword="POST" /> 또는 <see langword="HEAD" />)를 가져옵니다.</summary>
+        <value>클라이언트에서 사용하는 HTTP 데이터 전송 메서드입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.HttpMethod%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#7](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#7)]
+ [!code-vb[System.Web.HttpRequest_Sample1#7](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#7)]  
+  
+ 다음 예제에서는이 코드에 의해 생성 된 출력을 보여 줍니다.  
+  
+ `GET`  
+  
+ `127.0.0.1`  
+  
+ `127.0.0.1`  
+  
+ `GET`  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputStream">
+      <MemberSignature Language="C#" Value="public System.IO.Stream InputStream { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IO.Stream InputStream" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.InputStream" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property InputStream As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IO::Stream ^ InputStream { System::IO::Stream ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.InputStream : System.IO.Stream" Usage="System.Web.HttpRequest.InputStream" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>들어오는 HTTP 엔터티 본문의 콘텐츠를 가져옵니다.</summary>
+        <value>들어오는 HTTP 콘텐츠 본문의 콘텐츠를 나타내는 <see cref="T:System.IO.Stream" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 콘텐츠를 복사 하는 다음 코드 예제는 <xref:System.Web.HttpRequest.InputStream%2A> 문자열로 합니다.  
+  
+ [!code-csharp[Classic HttpRequest.InputStream Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.InputStream Example/cs/source.aspx#1)]
+ [!code-vb[Classic HttpRequest.InputStream Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.InputStream Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="InsertEntityBody">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>HTTP 요청 엔터티 본문을 메모리에 삽입하는 IIS 메서드에 대해 관리되는 래퍼를 제공합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.HttpRequest.InsertEntityBody%2A> IIS 7을 관리 되는 액세스를 제공 하는 메서드 오버 로드 `IHttpRequest::InsertEntityBody` 메서드. IIS 메서드는 메모리에 HTTP 요청 엔터티 본문 (클라이언트에서 게시 되는 데이터)를 삽입 합니다. IIS에서 읽은 후 요청 엔터티의 복사본을 유지 하지는 때문에 유용 합니다. <xref:System.Web.HttpRequest.InsertEntityBody%2A> 메서드 HTTP 요청 엔터티 데이터의 복사본을 만들고 사용할 수 있도록 IIS에 대 한 사용자 지정 처리 기능을 추가 합니다.  
+  
+> [!NOTE]
+>  <xref:System.Web.HttpRequest.InsertEntityBody%2A> 때문에 메서드 작업 IIS 7.0 이상 에서만, 오버 로드는 `IHttpRequest::InsertEntityBody` 메서드 IIS 7.0에서 추가 되었습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="InsertEntityBody">
+      <MemberSignature Language="C#" Value="public void InsertEntityBody ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InsertEntityBody() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.InsertEntityBody" />
+      <MemberSignature Language="VB.NET" Value="Public Sub InsertEntityBody ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void InsertEntityBody();" />
+      <MemberSignature Language="F#" Value="member this.InsertEntityBody : unit -&gt; unit" Usage="httpRequest.InsertEntityBody " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>IIS에 HTTP 요청 엔터티 본문의 사본을 제공합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ IIS에서 읽은 후 요청의 복사본을 유지 하지 않습니다. 따라서 HTTP 요청에 대 한 처리기만 요청 엔터티를 읽어 보아야 하는 것이 좋습니다.  
+  
+ <xref:System.Web.HttpRequest.InsertEntityBody%2A?displayProperty=nameWithType> ASP.NET에서 이전에 읽은 경우 메서드 오버 로드 요청 엔터티의 복사본을 사용 하 여 IIS를 제공 합니다. 이 메서드 오버 로드는 ASP.NET에 엔터티 요청을 읽고 기존 요청 데이터를 다시 사용 하려는 경우에 유용 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.PlatformNotSupportedException">IIS 7.0 이전 버전의 IIS에서 메서드가 호출되었습니다.</exception>
+        <permission cref="T:System.Web.AspNetHostingPermission">에 호스트 된 환경에서 작동 합니다. 보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다. 연결 된 열거형: <see cref="F:System.Web.AspNetHostingPermissionLevel.High" /></permission>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertEntityBody">
+      <MemberSignature Language="C#" Value="public void InsertEntityBody (byte[] buffer, int offset, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InsertEntityBody(unsigned int8[] buffer, int32 offset, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.InsertEntityBody(System.Byte[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub InsertEntityBody (buffer As Byte(), offset As Integer, count As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void InsertEntityBody(cli::array &lt;System::Byte&gt; ^ buffer, int offset, int count);" />
+      <MemberSignature Language="F#" Value="member this.InsertEntityBody : byte[] * int * int -&gt; unit" Usage="httpRequest.InsertEntityBody (buffer, offset, count)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="buffer" Type="System.Byte[]" Index="0" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="offset" Type="System.Int32" Index="1" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="count" Type="System.Int32" Index="2" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="buffer">요청 엔터티 데이터가 들어 있는 배열입니다.</param>
+        <param name="offset">요청 엔터티 데이터 저장을 시작할 <paramref name="buffer" />의 위치(0부터 시작)입니다.</param>
+        <param name="count"><paramref name="buffer" /> 배열로 읽어 들일 바이트 수입니다.</param>
+        <summary>IIS에 HTTP 요청 엔터티 본문의 사본 및 요청 엔터티 개체에 대한 정보를 제공합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ IIS에서 읽은 후 요청의 복사본을 유지 하지 않습니다. 따라서 HTTP 요청에 대 한 처리기만 요청 엔터티를 읽어 보아야 하는 것이 좋습니다.  
+  
+ <xref:System.Web.HttpRequest.InsertEntityBody%2A?displayProperty=nameWithType> 메서드 오버 로드는 다른 엔터티 본문을 메모리에 삽입 하는 등의 사용자 지정 처리를 수행 하려는 경우에 유용 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.PlatformNotSupportedException">IIS 7.0 이전 버전의 IIS에서 메서드가 호출되었습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="buffer" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> 또는 <paramref name="count" />는 음수 값입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="count" />의 항목 수는 값이 <paramref name="buffer" />인 <paramref name="offset" />의 사용 가능한 공간보다 큽니다.</exception>
+        <permission cref="T:System.Web.AspNetHostingPermission">호스팅된 환경에서 작업하는 데 필요한 권한입니다. 보안 동작: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />합니다. 연결 된 열거형: <see cref="F:System.Web.AspNetHostingPermissionLevel.High" /></permission>
+      </Docs>
+    </Member>
+    <Member MemberName="IsAuthenticated">
+      <MemberSignature Language="C#" Value="public bool IsAuthenticated { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsAuthenticated" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.IsAuthenticated" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsAuthenticated As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsAuthenticated { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsAuthenticated : bool" Usage="System.Web.HttpRequest.IsAuthenticated" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청이 인증되었는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>요청이 인증되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpRequest.IsAuthenticated%2A> 현재 요청이 인증 되었는지 여부를 결정 하는 속성입니다. 이 인증 되지 않은, 경우는 요청은 사용자가 웹 응용 프로그램에 자격 증명을 입력할 수 있는 다른 페이지로 리디렉션됩니다. 이것이 응용 프로그램에 대 한 기본 페이지에서 사용 하는 일반적인 기술입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample3#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample3/CS/isauthenticatedcs.aspx#1)]
+ [!code-vb[System.Web.HttpRequest_Sample3#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample3/VB/isauthenticatedvb.aspx#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsLocal">
+      <MemberSignature Language="C#" Value="public bool IsLocal { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsLocal" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.IsLocal" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsLocal As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsLocal { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsLocal : bool" Usage="System.Web.HttpRequest.IsLocal" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청을 로컬 컴퓨터에서 보냈는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>로컬 컴퓨터에서 보낸 요청이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.HttpRequest.IsLocal%2A> 속성이 반환 `true` 요청 발신자의 IP 주소 127.0.0.1 되었는지 또는 요청의 IP 주소는 서버의 IP 주소와 동일 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsSecureConnection">
+      <MemberSignature Language="C#" Value="public bool IsSecureConnection { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsSecureConnection" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.IsSecureConnection" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsSecureConnection As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsSecureConnection { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsSecureConnection : bool" Usage="System.Web.HttpRequest.IsSecureConnection" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>HTTP 연결에서 보안 소켓, 즉 HTTPS를 사용하는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>연결이 SSL 연결이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 확인 하는지 여부를 <xref:System.Web.HttpRequest.IsSecureConnection%2A> 속성이 false로 설정 됩니다. 이 경우는 <xref:System.Web.HttpResponse.SuppressContent%2A> 전송에서 응답을 중지 하려면 true로 설정 합니다.  
+  
+ [!code-csharp[System.Web.HttpResponse_Sample5#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpResponse_Sample5/CS/httpresponsesuppresscontentcs.aspx#3)]
+ [!code-vb[System.Web.HttpResponse_Sample5#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpResponse_Sample5/VB/httpresponsesuppresscontentvb.aspx#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public string this[string key] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Item(string)" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Item(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Default Public ReadOnly Property Item(key As String) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ default[System::String ^] { System::String ^ get(System::String ^ key); };" />
+      <MemberSignature Language="F#" Value="member this.Item(string) : string" Usage="System.Web.HttpRequest.Item" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="key" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="key">가져올 컬렉션 멤버의 이름입니다.</param>
+        <summary>지정한 개체를 <see cref="P:System.Web.HttpRequest.QueryString" />, <see cref="P:System.Web.HttpRequest.Form" />, <see cref="P:System.Web.HttpRequest.Cookies" /> 또는 <see cref="P:System.Web.HttpRequest.ServerVariables" /> 컬렉션에서 가져옵니다.</summary>
+        <value><paramref name="key" /> 매개 변수에 지정된 <see cref="P:System.Web.HttpRequest.QueryString" />, <see cref="P:System.Web.HttpRequest.Form" />, <see cref="P:System.Web.HttpRequest.Cookies" /> 또는 <see cref="P:System.Web.HttpRequest.ServerVariables" /> 컬렉션 멤버입니다. 지정된 <paramref name="key" />가 없으면 <see langword="null" />이 반환됩니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LogonUserIdentity">
+      <MemberSignature Language="C#" Value="public System.Security.Principal.WindowsIdentity LogonUserIdentity { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Principal.WindowsIdentity LogonUserIdentity" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.LogonUserIdentity" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property LogonUserIdentity As WindowsIdentity" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Principal::WindowsIdentity ^ LogonUserIdentity { System::Security::Principal::WindowsIdentity ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.LogonUserIdentity : System.Security.Principal.WindowsIdentity" Usage="System.Web.HttpRequest.LogonUserIdentity" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Principal.WindowsIdentity</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 사용자의 <see cref="T:System.Security.Principal.WindowsIdentity" /> 형식을 가져옵니다.</summary>
+        <value>현재 Microsoft IIS(인터넷 정보 서비스) 인증 설정의 <see cref="T:System.Security.Principal.WindowsIdentity" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.HttpRequest.LogonUserIdentity%2A> 속성은 속성 및 메서드를 노출 합니다 <xref:System.Security.Principal.WindowsIdentity> Microsoft 인터넷 정보 서비스 (IIS)에 현재 연결 된 사용자에 대 한 개체입니다. 인스턴스를 <xref:System.Security.Principal.WindowsIdentity> 클래스에서 노출 되는 <xref:System.Web.HttpRequest.LogonUserIdentity%2A> IIS 요청 토큰을 추적 하 고 ASP.NET 내부에서 처리 되는 현재 HTTP 요청에 대 한이 토큰에 대 한 쉬운 액세스를 제공 합니다. 인스턴스는 <xref:System.Security.Principal.WindowsIdentity> 클래스는 자동으로 만들어지므로 해당 메서드 및 속성에 대 한 액세스 권한을 얻으려면를 생성할 필요가 없습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 검색 하는 방법을 보여 줍니다는 <xref:System.Web.HttpRequest.LogonUserIdentity%2A> 속성은 현재 사용자와 쓰기를 텍스트 파일의 각 항목의 값입니다. 폼에서 참조 하는 ASP.NET 페이지에이 코드를 배치 `ACTION` 특성입니다.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest_LogonUserIdentity#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_LogonUserIdentity/CS/logonuseridentity_cs.aspx#1)]
+ [!code-aspx-vb[System.Web.HttpRequest_LogonUserIdentity#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_LogonUserIdentity/VB/logonuseridentity_vb.aspx#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">웹 애플리케이션은 IIS 7 통합 모드로 실행되고 있으며 <see cref="E:System.Web.HttpApplication.PostAuthenticateRequest" /> 이벤트가 아직 발생하지 않았습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="MapImageCoordinates">
+      <MemberSignature Language="C#" Value="public int[] MapImageCoordinates (string imageFieldName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32[] MapImageCoordinates(string imageFieldName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.MapImageCoordinates(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function MapImageCoordinates (imageFieldName As String) As Integer()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;int&gt; ^ MapImageCoordinates(System::String ^ imageFieldName);" />
+      <MemberSignature Language="F#" Value="member this.MapImageCoordinates : string -&gt; int[]" Usage="httpRequest.MapImageCoordinates imageFieldName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="imageFieldName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="imageFieldName">폼 이미지 맵의 이름입니다.</param>
+        <summary>들어오는 이미지 필드 폼 매개 변수를 적절한 x 좌표와 y 좌표 값에 매핑합니다.</summary>
+        <returns>정수의 2차원 배열입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="MapPath">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>요청된 URL의 가상 경로를 현재 요청에 대한 서버의 실제 경로에 매핑합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="MapPath">
+      <MemberSignature Language="C#" Value="public string MapPath (string virtualPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string MapPath(string virtualPath) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.MapPath(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function MapPath (virtualPath As String) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ MapPath(System::String ^ virtualPath);" />
+      <MemberSignature Language="F#" Value="member this.MapPath : string -&gt; string" Usage="httpRequest.MapPath virtualPath" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="virtualPath" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="virtualPath">현재 요청의 가상 경로(절대 또는 상대)입니다.</param>
+        <summary>지정된 가상 경로를 실제 경로에 매핑합니다.</summary>
+        <returns><paramref name="virtualPath" />에서 지정한 서버 상의 실제 경로입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!CAUTION]
+>  <xref:System.Web.HttpRequest.MapPath%2A> 호스팅 환경에 대 한 중요 한 정보를 잠재적으로 포함 하는 속성입니다. 반환 값은 사용자에 게 표시 되지 해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpRequest.MapPath%2A> 서버의 정규화 된 실제 경로에 가상 경로 변환 하는 방법입니다. 이 예제에는 두 부분이 있습니다.  
+  
+-   .Aspx 페이지 경로 맵 파일을 읽고 읽기 작업의 결과 표시 합니다.  
+  
+-   클래스인 `UpperCaseFilterStream`, 대문자를 통과 하는 모든 문자를 변경 하는 합니다.  
+  
+ 예제의 첫 번째 부분은 가상 경로 사용 하 여 정규화 된 실제 경로를 변환 하는 방법을 보여 줍니다는 <xref:System.Web.HttpRequest.MapPath%2A> 메서드. 이 실제 경로 전달 되어를 <xref:System.IO.StreamReader> 개체 파일의 내용을 가져옵니다. <xref:System.Web.HttpResponse.Write%2A> 다음 메서드는 페이지에 있는 파일의 콘텐츠를 표시 합니다. <xref:System.Web.HttpResponse.Filter%2A> 속성 모두 대문자 페이지에 표시 되는 텍스트는 응답 스트림에 필터를 연결 하는 데 사용 됩니다.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest_Samples2#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Samples2/CS/requestsamples2cs.aspx#1)]
+ [!code-aspx-vb[System.Web.HttpRequest_Samples2#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Samples2/VB/requestsamples2vb.aspx#1)]  
+  
+ 이 예제에서는 두 번째 부분에서 상속 되는 클래스를 보여 줍니다. <xref:System.IO.Stream> 및 스트림의 모든 문자를 대문자로 변환 합니다. 이 코드를 배치 합니다 `App_Code` 응용 프로그램에 대 한 폴더입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Samples2#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Samples2/CS/responsefilter.cs#2)]
+ [!code-vb[System.Web.HttpRequest_Samples2#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Samples2/VB/responsefilter.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException">요청에 대해 <see cref="T:System.Web.HttpContext" /> 개체가 정의되지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="MapPath">
+      <MemberSignature Language="C#" Value="public string MapPath (string virtualPath, string baseVirtualDir, bool allowCrossAppMapping);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string MapPath(string virtualPath, string baseVirtualDir, bool allowCrossAppMapping) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.MapPath(System.String,System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Function MapPath (virtualPath As String, baseVirtualDir As String, allowCrossAppMapping As Boolean) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ MapPath(System::String ^ virtualPath, System::String ^ baseVirtualDir, bool allowCrossAppMapping);" />
+      <MemberSignature Language="F#" Value="member this.MapPath : string * string * bool -&gt; string" Usage="httpRequest.MapPath (virtualPath, baseVirtualDir, allowCrossAppMapping)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="virtualPath" Type="System.String" />
+        <Parameter Name="baseVirtualDir" Type="System.String" />
+        <Parameter Name="allowCrossAppMapping" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="virtualPath">현재 요청의 가상 경로(절대 또는 상대)입니다.</param>
+        <param name="baseVirtualDir">상대 주소 확인에 사용되는 가상 기본 디렉터리 경로입니다.</param>
+        <param name="allowCrossAppMapping"><paramref name="virtualPath" />가 다른 응용 프로그램에 해당될 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>지정된 가상 경로를 실제 경로에 매핑합니다.</summary>
+        <returns>서버 상의 실제 경로입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!CAUTION]
+>  <xref:System.Web.HttpRequest.MapPath%2A> 호스팅 환경에 대 한 중요 한 정보를 잠재적으로 포함 하는 속성입니다. 반환 값은 사용자에 게 표시 되지 해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException"><paramref name="allowCrossMapping" />이 <see langword="false" />이고 <paramref name="virtualPath" />가 다른 응용 프로그램에 속해 있는 경우
+
+또는 
+요청에 대해 <see cref="T:System.Web.HttpContext" /> 개체가 정의되지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="MapRawImageCoordinates">
+      <MemberSignature Language="C#" Value="public double[] MapRawImageCoordinates (string imageFieldName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance float64[] MapRawImageCoordinates(string imageFieldName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.MapRawImageCoordinates(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function MapRawImageCoordinates (imageFieldName As String) As Double()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;double&gt; ^ MapRawImageCoordinates(System::String ^ imageFieldName);" />
+      <MemberSignature Language="F#" Value="member this.MapRawImageCoordinates : string -&gt; double[]" Usage="httpRequest.MapRawImageCoordinates imageFieldName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="imageFieldName" Type="System.String" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="imageFieldName">이미지 필드의 이름입니다.</param>
+        <summary>들어오는 이미지 필드 폼 매개 변수를 적절한 x 좌표와 y 좌표 값에 매핑합니다.</summary>
+        <returns>X 좌표 및 Y 좌표 값입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Params">
+      <MemberSignature Language="C#" Value="public System.Collections.Specialized.NameValueCollection Params { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Specialized.NameValueCollection Params" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Params" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Params As NameValueCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Specialized::NameValueCollection ^ Params { System::Collections::Specialized::NameValueCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Params : System.Collections.Specialized.NameValueCollection" Usage="System.Web.HttpRequest.Params" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Specialized.NameValueCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="P:System.Web.HttpRequest.QueryString" />, <see cref="P:System.Web.HttpRequest.Form" />, <see cref="P:System.Web.HttpRequest.Cookies" /> 및 <see cref="P:System.Web.HttpRequest.ServerVariables" /> 항목의 조합 컬렉션을 가져옵니다.</summary>
+        <value><see cref="T:System.Collections.Specialized.NameValueCollection" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이름-값 쌍은 다음 순서로 컬렉션에 추가 됩니다.  
+  
+1.  쿼리 문자열 매개 변수입니다.  
+  
+2.  필드를 형성 합니다.  
+  
+3.  쿠키입니다.  
+  
+4.  서버 변수입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에 반복 하는 방법을 보여 줍니다는 <xref:System.Web.HttpRequest.Params%2A> 페이지 및 각 키/값 쌍을 표시 하는 방법에 대 한 속성입니다.  
+  
+ [!code-aspx-csharp[System.Web.HttpRequest.Params#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest.Params/CS/requestparamscs.aspx#1)]
+ [!code-aspx-vb[System.Web.HttpRequest.Params#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest.Params/VB/requestparamsvb.aspx#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Path">
+      <MemberSignature Language="C#" Value="public string Path { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Path" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Path" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Path As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Path { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Path : string" Usage="System.Web.HttpRequest.Path" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 요청의 가상 경로를 가져옵니다.</summary>
+        <value>현재 요청의 가상 경로입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.HttpRequest.Path%2A> 가 연결 된 합니다 <xref:System.Web.HttpRequest.FilePath%2A> 및 <xref:System.Web.HttpRequest.PathInfo%2A> 트레일러 합니다. URL에 대 한 예를 들어 http://www.contoso.com/virdir/page.html/tail, <xref:System.Web.HttpRequest.Path%2A> /virdir/page.html/tail 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.Path%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#2)]
+ [!code-vb[System.Web.HttpRequest_Sample1#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#2)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.HttpRequest.FilePath" />
+        <altmember cref="P:System.Web.HttpRequest.PathInfo" />
+      </Docs>
+    </Member>
+    <Member MemberName="PathInfo">
+      <MemberSignature Language="C#" Value="public string PathInfo { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string PathInfo" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.PathInfo" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property PathInfo As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ PathInfo { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.PathInfo : string" Usage="System.Web.HttpRequest.PathInfo" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>URL 확장이 있는 리소스에 대한 추가 경로 정보를 가져옵니다.</summary>
+        <value>리소스에 대한 추가 경로 정보입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ URL에 대 한 Http://www.contoso.com/virdir/page.html/tail, <xref:System.Web.HttpRequest.PathInfo%2A> 값은 /tail입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 확인 하는지 여부를 <xref:System.Web.HttpRequest.PathInfo%2A> 속성이 빈 문자열을 포함 합니다. 이 경우는 <xref:System.IO.StreamWriter.Write%2A> 메서드는 파일에이 나타내는 문자열을 씁니다. 하지 않는 경우는 <xref:System.Web.HttpUtility.HtmlEncode%2A> 의 값을 HTML로 인코딩하고 메서드는 <xref:System.Web.HttpRequest.PathInfo%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 메서드 파일로 인코딩된 값을 씁니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#4)]
+ [!code-vb[System.Web.HttpRequest_Sample1#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#4)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.HttpRequest.Path" />
+        <altmember cref="P:System.Web.HttpRequest.FilePath" />
+      </Docs>
+    </Member>
+    <Member MemberName="PhysicalApplicationPath">
+      <MemberSignature Language="C#" Value="public string PhysicalApplicationPath { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string PhysicalApplicationPath" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.PhysicalApplicationPath" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property PhysicalApplicationPath As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ PhysicalApplicationPath { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.PhysicalApplicationPath : string" Usage="System.Web.HttpRequest.PhysicalApplicationPath" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 실행 중인 서버 응용 프로그램의 루트 디렉터리에 대한 실제 파일 시스템 경로를 가져옵니다.</summary>
+        <value>현재 응용 프로그램의 루트 디렉터리에 대한 파일 시스템 경로입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.PhysicalApplicationPath%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#5)]
+ [!code-vb[System.Web.HttpRequest_Sample1#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#5)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PhysicalPath">
+      <MemberSignature Language="C#" Value="public string PhysicalPath { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string PhysicalPath" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.PhysicalPath" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property PhysicalPath As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ PhysicalPath { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.PhysicalPath : string" Usage="System.Web.HttpRequest.PhysicalPath" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청된 URL에 해당하는 실제 파일 시스템 경로를 가져옵니다.</summary>
+        <value>현재 요청의 파일 시스템 경로입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 리디렉션 시나리오를 사용 하 여 <xref:System.Web.HttpServerUtility.Execute%2A> 하 고 <xref:System.Web.HttpServerUtility.Transfer%2A>, <xref:System.Web.HttpRequest.PhysicalPath%2A> 속성 원래 페이지의 경로 반환 합니다. 현재 실행 중인 페이지의 실제 경로 찾으려면 합니다 <xref:System.Web.HttpRequest.MapPath%2A> 입력된 인수를 사용 하 여 메서드로는 <xref:System.Web.HttpRequest.CurrentExecutionFilePath%2A> 속성.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.PhysicalPath%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#5)]
+ [!code-vb[System.Web.HttpRequest_Sample1#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#5)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.HttpRequest.MapPath(System.String)" />
+        <altmember cref="P:System.Web.HttpRequest.CurrentExecutionFilePath" />
+      </Docs>
+    </Member>
+    <Member MemberName="QueryString">
+      <MemberSignature Language="C#" Value="public System.Collections.Specialized.NameValueCollection QueryString { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Specialized.NameValueCollection QueryString" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.QueryString" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property QueryString As NameValueCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Specialized::NameValueCollection ^ QueryString { System::Collections::Specialized::NameValueCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.QueryString : System.Collections.Specialized.NameValueCollection" Usage="System.Web.HttpRequest.QueryString" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Specialized.NameValueCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>HTTP 쿼리 문자열 변수의 컬렉션을 가져옵니다.</summary>
+        <value>클라이언트에서 보낸 쿼리 문자열 변수입니다. 키와 값은 URL로 디코딩됩니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에 "fullname" 라는 쿼리 문자열 변수의 값을 가져오는 두 가지 방법을 보여 줍니다. 각각의 경우 URL이 `http://www.contoso.com/default.aspx?fullname=Fadi%20Fakhouri`, 때문에 반환 되는 값은 "Fadi Fakhouri"는 `%20` 는 공백 문자를 URL로 디코딩됩니다. URL이 없는 경우에 `fullname` 문자열 ID를 쿼리, 반환 값 `null`합니다.  
+  
+ 쿼리 문자열 에서만에서 "fullname" 키에 대 한 코드의 첫 번째 줄은 두 번째 줄은 "fullname" 모든 HTTP 요청 컬렉션에 키를 찾습니다. 두 번째 줄에 대 한 자세한 내용은 참조 하세요. <xref:System.Web.HttpRequest.Item%2A>합니다.  
+  
+```csharp  
+string fullname1 = Request.QueryString["fullname"];  
+string fullname2 = Request["fullname"];  
+  
+```  
+  
+```vb  
+Dim fullname1 As String = Request.QueryString("fullname")  
+Dim fullname2 As String = Request("fullname")  
+```  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Web.HttpRequest.ValidateInput" />
+        <altmember cref="P:System.Web.HttpRequest.Form" />
+        <altmember cref="P:System.Web.HttpRequest.Cookies" />
+      </Docs>
+    </Member>
+    <Member MemberName="RawUrl">
+      <MemberSignature Language="C#" Value="public string RawUrl { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string RawUrl" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.RawUrl" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RawUrl As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ RawUrl { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.RawUrl : string" Usage="System.Web.HttpRequest.RawUrl" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 요청의 원시 URL을 가져옵니다.</summary>
+        <value>현재 요청의 원시 URL입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 원시 URL 도메인 정보를 다음 URL의 일부로 정의 됩니다. URL 문자열에 http://www.contoso.com/articles/recent.aspx, 원시 URL은 /articles/recent.aspx 합니다. 있는 경우 원시 URL 쿼리 문자열을 포함 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.RawUrl%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#5)]
+ [!code-vb[System.Web.HttpRequest_Sample1#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#5)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReadEntityBodyMode">
+      <MemberSignature Language="C#" Value="public System.Web.ReadEntityBodyMode ReadEntityBodyMode { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Web.ReadEntityBodyMode ReadEntityBodyMode" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.ReadEntityBodyMode" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ReadEntityBodyMode As ReadEntityBodyMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::ReadEntityBodyMode ReadEntityBodyMode { System::Web::ReadEntityBodyMode get(); };" />
+      <MemberSignature Language="F#" Value="member this.ReadEntityBodyMode : System.Web.ReadEntityBodyMode" Usage="System.Web.HttpRequest.ReadEntityBodyMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.ReadEntityBodyMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청 엔터티 본문을 읽었는지 여부와 읽은 경우 읽은 방법을 나타내는 값을 가져옵니다.</summary>
+        <value>요청 엔터티 주체를 읽어들인 방법을 나타내거나 읽지 않았음을 나타내는 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 엔터티 본문은 이미 읽은 및 호환 되지 않는 메서드를 사용 하 여 읽을 하려고 시도 하는 경우 throw 되는 예외를 방지 하기에 사용 됩니다. 엔터티 본문을 읽는 메서드 및 속성에는 다음과 같습니다.  
+  
+-   <xref:System.Web.HttpRequest.Form%2A> 속성  
+  
+-   <xref:System.Web.HttpRequest.Files%2A> 속성  
+  
+-   <xref:System.Web.HttpRequest.InputStream%2A> 속성  
+  
+-   <xref:System.Web.HttpRequest.GetBufferedInputStream%2A> 메서드  
+  
+-   <xref:System.Web.HttpRequest.GetBufferlessInputStream%2A> 메서드  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestContext">
+      <MemberSignature Language="C#" Value="public System.Web.Routing.RequestContext RequestContext { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Routing.RequestContext RequestContext" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.RequestContext" />
+      <MemberSignature Language="VB.NET" Value="Public Property RequestContext As RequestContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Routing::RequestContext ^ RequestContext { System::Web::Routing::RequestContext ^ get(); void set(System::Web::Routing::RequestContext ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.RequestContext : System.Web.Routing.RequestContext with get, set" Usage="System.Web.HttpRequest.RequestContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Web.Routing.RequestContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 요청의 <see cref="T:System.Web.Routing.RequestContext" /> 인스턴스를 가져옵니다.</summary>
+        <value>현재 요청의 <see cref="T:System.Web.Routing.RequestContext" /> 인스턴스입니다. 라우팅되지 않는 요청의 경우 반환되는 <see cref="T:System.Web.Routing.RequestContext" /> 개체가 비어 있습니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성에 대 한 액세스를 제공 합니다 <xref:System.Web.Routing.RouteData> 현재 요청에 대 한 개체입니다. ASP.NET 라우팅에 대 한 자세한 내용은 다음을 참조 하세요. [ASP.NET 라우팅에서](https://msdn.microsoft.com/library/892441af-8f1d-483e-ab5f-b82c23576f5a)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/b2decba4-2400-491c-8907-89a7b9e0874c">연습: ASP.NET Web Forms 응용 프로그램에서 라우팅 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/dc88e6ba-470c-4b20-b644-35874cfd781d">방법: 라우트된 페이지에서 액세스 URL 매개 변수</related>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestType">
+      <MemberSignature Language="C#" Value="public string RequestType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string RequestType" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.RequestType" />
+      <MemberSignature Language="VB.NET" Value="Public Property RequestType As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ RequestType { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.RequestType : string with get, set" Usage="System.Web.HttpRequest.RequestType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트에서 사용하는 HTTP 데이터 전송 메서드(예: <see langword="GET" /> 또는 <see langword="POST" />)를 가져오거나 설정합니다.</summary>
+        <value>클라이언트에서 보낸 HTTP 호출 형식을 나타내는 문자열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.RequestType%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#7](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#7)]
+ [!code-vb[System.Web.HttpRequest_Sample1#7](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveAs">
+      <MemberSignature Language="C#" Value="public void SaveAs (string filename, bool includeHeaders);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SaveAs(string filename, bool includeHeaders) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.SaveAs(System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SaveAs (filename As String, includeHeaders As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SaveAs(System::String ^ filename, bool includeHeaders);" />
+      <MemberSignature Language="F#" Value="member this.SaveAs : string * bool -&gt; unit" Usage="httpRequest.SaveAs (filename, includeHeaders)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="filename" Type="System.String" />
+        <Parameter Name="includeHeaders" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="filename">실제 드라이브 경로입니다.</param>
+        <param name="includeHeaders">HTTP 헤더를 디스크에 저장할지 여부를 지정하는 부울 값입니다.</param>
+        <summary>HTTP 요청을 디스크에 저장합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 디스크에 요청 컨텍스트를 저장 하는 것은 디버깅에 유용할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서 호출 된 <xref:System.Web.HttpRequest.SaveAs%2A> 메서드는 페이지가 로드 되 면 합니다. 호출 된 요청이 ASP.NET 프로세스 id에 대 한 쓰기 권한이 및 요청에 포함 된 모든 헤더 정보를 파일에 포함 되어 있는지 부여 된 디렉터리에 텍스트 파일로 저장 하도록 지정 합니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample6#1](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample6/cs/requestsample6cs.aspx#1)]
+ [!code-vb[System.Web.HttpRequest_Sample6#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample6/vb/requestsample6vb.aspx#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException"><see cref="P:System.Web.Configuration.HttpRuntimeSection.RequireRootedSaveAsPath" />의 <see cref="T:System.Web.Configuration.HttpRuntimeSection" /> 속성이 <see langword="true" />로 설정되어 있지만 <paramref name="filename" />이 절대 경로가 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ServerVariables">
+      <MemberSignature Language="C#" Value="public System.Collections.Specialized.NameValueCollection ServerVariables { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Specialized.NameValueCollection ServerVariables" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.ServerVariables" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ServerVariables As NameValueCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Specialized::NameValueCollection ^ ServerVariables { System::Collections::Specialized::NameValueCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ServerVariables : System.Collections.Specialized.NameValueCollection" Usage="System.Web.HttpRequest.ServerVariables" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Specialized.NameValueCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>웹 서버 변수의 컬렉션을 가져옵니다.</summary>
+        <value>서버 변수의 <see cref="T:System.Collections.Specialized.NameValueCollection" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ IIS에서 지 원하는 서버 변수 목록을 참조 하세요 [IIS 서버 변수](https://go.microsoft.com/fwlink/?LinkId=52471)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 이름 및 모든 명명 된 서버 변수의 값을 표시합니다.  
+  
+ [!code-csharp[Classic HttpRequest.ServerVariables Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.ServerVariables Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.ServerVariables Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.ServerVariables Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TimedOutToken">
+      <MemberSignature Language="C#" Value="public System.Threading.CancellationToken TimedOutToken { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Threading.CancellationToken TimedOutToken" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.TimedOutToken" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property TimedOutToken As CancellationToken" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Threading::CancellationToken TimedOutToken { System::Threading::CancellationToken get(); };" />
+      <MemberSignature Language="F#" Value="member this.TimedOutToken : System.Threading.CancellationToken" Usage="System.Web.HttpRequest.TimedOutToken" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.CancellationToken</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청 시간이 초과한 경우, 작동한 <see cref="T:System.Threading.CancellationToken" /> 개체를 가져옵니다.</summary>
+        <value>취소 토큰입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Web.config 파일에서 시간 제한 기간을 지정할 수 있습니다 (참조 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A?displayProperty=nameWithType>) 또는 프로그래밍 방식으로 (참조 <xref:System.Web.HttpServerUtility.ScriptTimeout%2A?displayProperty=nameWithType>). 제한 시간을 요청이 들어오면 시간부터 측정 됩니다. 110 초 기본 시간 제한을 적용 되는 경우 취소 토큰 요청 처리가 시작 된 후 110 초 보다 더 이전에 발생 됩니다. 변경할 수는 <xref:System.Web.HttpServerUtility.ScriptTimeout%2A?displayProperty=nameWithType> 속성 값 및 새 제한 시간 값이이 토큰에 긴 아직 발생 하지 않은, 하는 대로 적용 됩니다.  
+  
+ 현재 토큰을 제공할 뿐 15 초 단위, 즉 제한 시간 값은 110 초 토큰 110 ~ 125 초 요청 처리가 시작 된 후 사이 잠시 끊긴, 작동 됩니다. 세분성은 나중에 변경할 수 있습니다.  
+  
+ 이 속성은 스레드로부터 안전한, 경우에 용도에 제한이 있습니다. 자세한 내용은 <xref:System.Web.HttpResponse.ClientDisconnectedToken%2A?displayProperty=nameWithType>를 참조하십시오.  
+  
+ 이 속성은 Websocket 요청 처리가 시작 하는 경우에 의미가 없습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TlsTokenBindingInfo">
+      <MemberSignature Language="C#" Value="public System.Web.ITlsTokenBindingInfo TlsTokenBindingInfo { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.ITlsTokenBindingInfo TlsTokenBindingInfo" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.TlsTokenBindingInfo" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property TlsTokenBindingInfo As ITlsTokenBindingInfo" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::ITlsTokenBindingInfo ^ TlsTokenBindingInfo { System::Web::ITlsTokenBindingInfo ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.TlsTokenBindingInfo : System.Web.ITlsTokenBindingInfo" Usage="System.Web.HttpRequest.TlsTokenBindingInfo" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.ITlsTokenBindingInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>TLS 토큰 바인딩 정보를 가져옵니다. 이 속성을 사용하면 애플리케이션이 향상된 인증을 위해 들어오는 HTTP 요청에서 토큰 정보를 검색할 수 있습니다.</summary>
+        <value>현재 연결에 대한 바인딩 토큰입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성은 반환 `null` windows10 아닌 플랫폼에서 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TotalBytes">
+      <MemberSignature Language="C#" Value="public int TotalBytes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 TotalBytes" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.TotalBytes" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property TotalBytes As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int TotalBytes { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.TotalBytes : int" Usage="System.Web.HttpRequest.TotalBytes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 입력 스트림의 바이트 수를 가져옵니다.</summary>
+        <value>입력 스트림의 바이트 수입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 확인 하는지 여부를 <xref:System.Web.HttpRequest.TotalBytes%2A> 속성 값 1000 바이트 보다 크면 및 파일에 해당 정보를 씁니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#6](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#6)]
+ [!code-vb[System.Web.HttpRequest_Sample1#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#6)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unvalidated">
+      <MemberSignature Language="C#" Value="public System.Web.UnvalidatedRequestValues Unvalidated { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.UnvalidatedRequestValues Unvalidated" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Unvalidated" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Unvalidated As UnvalidatedRequestValues" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::UnvalidatedRequestValues ^ Unvalidated { System::Web::UnvalidatedRequestValues ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Unvalidated : System.Web.UnvalidatedRequestValues" Usage="System.Web.HttpRequest.Unvalidated" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.UnvalidatedRequestValues</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청 유효성 검사를 트리거하지 않고 HTTP 요청 값을 가져옵니다.</summary>
+        <value>요청 유효성 검사를 사용하여 확인되지 않은 HTTP 요청 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ HTML 태그 및 잠재적인 교차 사이트 스크립팅 공격을 나타낼 수 있는 스크립트에 대 한 유효성 검사를 요청 합니다. 요청 유효성 검사를 사용 하 여 모든 값은 검사 하는 기본적으로 및 ASP.NET에서 모든 값에서 태그 또는 스크립트에 포함 하는 경우는 <xref:System.Web.HttpRequestValidationException> 예외입니다. 예상 요청은 태그를 포함 하는 경우이 메서드를 사용 하 여 (예를 들어 태그가 포함 된 콘텐츠를 게시 하려면 사용자 허용) 요청의 원시 값을 얻으려면 하려는 합니다.  
+  
+> [!IMPORTANT]
+>  이 속성을 사용 하는 경우 잠재적인 교차 사이트 스크립팅 공격에 대 한 데이터를 수동으로 확인 해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Web.UnvalidatedRequestValues" />
+      </Docs>
+    </Member>
+    <Member MemberName="Url">
+      <MemberSignature Language="C#" Value="public Uri Url { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Uri Url" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.Url" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Url As Uri" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Uri ^ Url { Uri ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Url : Uri" Usage="System.Web.HttpRequest.Url" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Uri</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 요청의 URL에 대한 정보를 가져옵니다.</summary>
+        <value>현재 요청의 URL이 포함된 <see cref="T:System.Uri" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 할당 된 <xref:System.Uri> 현재 요청의 개체 변수를 표시 하는 URL의 두 속성의 값을 HTTP 출력 개체는 개체입니다.  
+  
+ [!code-csharp[Classic HttpRequest.Url Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.Url Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.Url Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.Url Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Uri" />
+        <altmember cref="P:System.Web.HttpRequest.RawUrl" />
+      </Docs>
+    </Member>
+    <Member MemberName="UrlReferrer">
+      <MemberSignature Language="C#" Value="public Uri UrlReferrer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Uri UrlReferrer" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.UrlReferrer" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property UrlReferrer As Uri" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Uri ^ UrlReferrer { Uri ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.UrlReferrer : Uri" Usage="System.Web.HttpRequest.UrlReferrer" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Uri</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 URL에 연결된 클라이언트의 이전 요청 URL에 대한 정보를 가져옵니다.</summary>
+        <value><see cref="T:System.Uri" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제는 클라이언트가 현재 응용 프로그램 참조 하는 URL의 두 속성의 값을 표시 합니다.  
+  
+ [!code-csharp[Classic HttpRequest.UrlReferrer Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.UrlReferrer Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.UrlReferrer Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.UrlReferrer Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.UriFormatException">HTTP <see langword="Referer" /> 요청 헤더가 잘못되었으며 <see cref="T:System.Uri" /> 개체로 변환할 수 없습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="UserAgent">
+      <MemberSignature Language="C#" Value="public string UserAgent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string UserAgent" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.UserAgent" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property UserAgent As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ UserAgent { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.UserAgent : string" Usage="System.Web.HttpRequest.UserAgent" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>제공된 클라이언트 브라우저의 원시 사용자 문자열을 가져옵니다. null일 수도 있다고 적어두세요.</summary>
+        <value>클라이언트 브라우저의 원시 사용자 에이전트 문자열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 문자열 변수를 요청 하는 브라우저의 형식 id를 할당합니다.  
+  
+ [!code-csharp[Classic HttpRequest.UserAgent Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.UserAgent Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.UserAgent Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.UserAgent Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Web.UI.Page.ClientTarget" />
+        <altmember cref="T:System.Web.HttpBrowserCapabilities" />
+        <altmember cref="P:System.Web.HttpRequest.Browser" />
+        <related type="Article" href="https://msdn.microsoft.com/library/143d14d6-9d12-4d4b-ae60-f00e0eb6938f">ASP.NET 서버 컨트롤 및 브라우저 기능</related>
+      </Docs>
+    </Member>
+    <Member MemberName="UserHostAddress">
+      <MemberSignature Language="C#" Value="public string UserHostAddress { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string UserHostAddress" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.UserHostAddress" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property UserHostAddress As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ UserHostAddress { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.UserHostAddress : string" Usage="System.Web.HttpRequest.UserHostAddress" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>원격 클라이언트의 IP 호스트 주소를 가져옵니다.</summary>
+        <value>원격 클라이언트의 IP 호스트 주소입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.UserHostAddress%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#7](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#7)]
+ [!code-vb[System.Web.HttpRequest_Sample1#7](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UserHostName">
+      <MemberSignature Language="C#" Value="public string UserHostName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string UserHostName" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.UserHostName" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property UserHostName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ UserHostName { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.UserHostName : string" Usage="System.Web.HttpRequest.UserHostName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>원격 클라이언트의 DNS 이름을 가져옵니다.</summary>
+        <value>원격 클라이언트의 DNS 이름입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Web.HttpUtility.HtmlEncode%2A> HTML 인코딩해야 하는 방법의 값을 <xref:System.Web.HttpRequest.UserHostName%2A> 속성 및 <xref:System.IO.TextWriter.WriteLine%2A> 파일로 인코딩된 값을 작성 하는 방법. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.HttpRequest> 클래스입니다.  
+  
+ [!code-csharp[System.Web.HttpRequest_Sample1#7](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/CS/requestdetailscs.aspx#7)]
+ [!code-vb[System.Web.HttpRequest_Sample1#7](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.HttpRequest_Sample1/VB/requestdetailsvb.aspx#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UserLanguages">
+      <MemberSignature Language="C#" Value="public string[] UserLanguages { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string[] UserLanguages" />
+      <MemberSignature Language="DocId" Value="P:System.Web.HttpRequest.UserLanguages" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property UserLanguages As String()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::String ^&gt; ^ UserLanguages { cli::array &lt;System::String ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.UserLanguages : string[]" Usage="System.Web.HttpRequest.UserLanguages" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트 언어 기본 설정의 정렬된 문자열 배열을 가져옵니다.</summary>
+        <value>클라이언트 언어 기본 설정의 정렬된 문자열 배열 또는 <see langword="null" />(비어 있는 경우)입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서 반환 된 여러 값을 캡처하는 <xref:System.Web.HttpRequest.UserLanguages%2A> 문자열 배열 및 HTTP 출력의 별도 줄에 각 언어 이름을 쓰기 속성입니다.  
+  
+ 브라우저에서 제공 하는 언어 이름 및 모든 가능한 코드의 명확한 목록이 없습니다.  일반적으로 이러한 구성의 언어, 하이픈 및 문화권에 대해 두 문자 코드는 두 문자 코드와 같은 "en-우리" 미국 영어 및에 "fr-ca" 프랑스어 (캐나다)입니다.  
+  
+ [!code-csharp[Classic HttpRequest.UserLanguages Example#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Classic HttpRequest.UserLanguages Example/CS/source.cs#1)]
+ [!code-vb[Classic HttpRequest.UserLanguages Example#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Classic HttpRequest.UserLanguages Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ValidateInput">
+      <MemberSignature Language="C#" Value="public void ValidateInput ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ValidateInput() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.HttpRequest.ValidateInput" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ValidateInput ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ValidateInput();" />
+      <MemberSignature Language="F#" Value="member this.ValidateInput : unit -&gt; unit" Usage="httpRequest.ValidateInput " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="P:System.Web.HttpRequest.Cookies" />, <see cref="P:System.Web.HttpRequest.Form" /> 및 <see cref="P:System.Web.HttpRequest.QueryString" /> 속성을 통해 액세스되는 컬렉션에 대해 유효성 검사가 수행되도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.HttpRequest> 클래스를 통해 액세스 되는 요청 컬렉션에 유효성 검사를 수행할지 여부를 추적 하기 위해 입력된 유효성 검사 플래그를 사용 합니다 <xref:System.Web.HttpRequest.Cookies%2A>, <xref:System.Web.HttpRequest.Form%2A>, 및 <xref:System.Web.HttpRequest.QueryString%2A> 속성입니다. 합니다 <xref:System.Web.HttpRequest.ValidateInput%2A> 메서드 이러한 플래그를 설정 하도록 때에 대 한 get 접근자를 <xref:System.Web.HttpRequest.Cookies%2A>, <xref:System.Web.HttpRequest.Form%2A>, 또는 <xref:System.Web.HttpRequest.QueryString%2A> 속성은 호출, 입력된 유효성 검사가 수행 됩니다. 유효성 검사는 잠재적으로 위험한 데이터 하드 코드 된 목록에 대 한 모든 입력된 데이터를 확인 하 여 작동 합니다.  
+  
+ 유효성 검사 기능 페이지 지시문 또는 구성을 통해을 사용 하는 경우이 메서드는 페이지의 `ProcessRequest` 처리 단계입니다. <xref:System.Web.HttpRequest.ValidateInput%2A> 유효성 검사 기능을 사용 하지 않는 경우 코드에서 메서드를 호출할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpRequestValidationException">클라이언트에서 위험할 수 있는 데이터가 수신된 경우</exception>
+        <altmember cref="P:System.Web.HttpRequest.Cookies" />
+        <altmember cref="P:System.Web.HttpRequest.Form" />
+        <altmember cref="P:System.Web.HttpRequest.QueryString" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

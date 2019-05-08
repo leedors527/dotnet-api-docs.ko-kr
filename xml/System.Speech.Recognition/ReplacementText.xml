@@ -1,0 +1,639 @@
+<Type Name="ReplacementText" FullName="System.Speech.Recognition.ReplacementText">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="ab30c09504df90c4e00f13118a3e741e6783798e" /><Meta Name="ms.sourcegitcommit" Value="756d085f27705e86604f1bba5f2086ee23761acf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="01/30/2019" /><Meta Name="ms.locfileid" Value="55373537" /></Metadata><TypeSignature Language="C#" Value="public class ReplacementText" />
+  <TypeSignature Language="ILAsm" Value=".class public sequential ansi serializable beforefieldinit ReplacementText extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Recognition.ReplacementText" />
+  <TypeSignature Language="VB.NET" Value="Public Class ReplacementText" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ReplacementText" />
+  <TypeSignature Language="F#" Value="type ReplacementText = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Serializable</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>인식 결과에 대해 수행된 음성 정규화 절차에 대한 정보를 포함합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 음성 표준화는 특수 구문 또는 기호에에서 음성 express를 사용 합니다.  
+  
+ 예를 들어,이 인식 된 텍스트:  
+  
+ "12 30 하나 오후 7 월 4 구입한 fish의 한 지점 6 킬로그램 14 달러 6 센트에 대 한, 시애틀에 시장 자리를 봤다는 군요에 워싱턴 9 8 하나 두 두"  
+  
+ 정규화 후 동일한 텍스트입니다.  
+  
+ "7 월 4 일 오후 12 시 31 분 구입한 fish의 1.6 kg $14.06에 대 한, WA 98122 시애틀에에서 시장 자리를 봤다는 군요에"  
+  
+ 이 예제는 각각의 인스턴스에 의해 설명할 수는 5 개의 대체 즉, <xref:System.Speech.Recognition.ReplacementText>합니다.  
+  
+ 사용 하는 <xref:System.Speech.Recognition.ReplacementText> 개체, 애플리케이션에서 확인할 수 있습니다.  
+  
+-   위치 및 정규화 하 여 대체 단어 수입니다. 자세한 내용은 <xref:System.Speech.Recognition.ReplacementText.FirstWordIndex%2A> 또는 <xref:System.Speech.Recognition.ReplacementText.CountOfWords%2A>를 참조하세요.  
+  
+-   대체 텍스트와 해당 표시 특성입니다. 자세한 내용은 <xref:System.Speech.Recognition.ReplacementText.Text%2A>, 및 <xref:System.Speech.Recognition.ReplacementText.DisplayAttributes%2A>합니다.  
+  
+ 인스턴스의 <xref:System.Speech.Recognition.ReplacementText> 의 구성원으로 가져온 일반적으로 <xref:System.Collections.ObjectModel.Collection%601> 에서 반환 된 개체를 <xref:System.Speech.Recognition.RecognizedPhrase.ReplacementWordUnits%2A> 속성을 <xref:System.Speech.Recognition.RecognizedPhrase> (또는 클래스에서 상속 되는 <xref:System.Speech.Recognition.RecognizedPhrase>, 같은 <xref:System.Speech.Recognition.RecognitionResult>) 반환 되는 텍스트 된 시기 정규화 합니다.  
+  
+   
+  
+## Examples  
+ 아래 예제에 대 한 사용자 인터페이스에 대 한 정보를 표시 한 <xref:System.Speech.Recognition.RecognizedPhrase> 인식 엔진에 의해 반환 되는 개체입니다.  
+  
+```csharp  
+internal static void DisplayBasicPhraseInfo(  
+        Label label,   
+        RecognizedPhrase result,   
+        SpeechRecognizer rec)   
+{  
+  if (result != null && label != null)   
+  {  
+    // Blank  
+    if (rec != null)   
+    {   
+      // Clear  
+      label.Text += String.Format(  
+                             "  Recognizer currently at:   {0} mSec\n" +  
+                             "  Audio Device currently at: {1} mSec\n",  
+                             rec.RecognizerAudioPosition.TotalMilliseconds,  
+                             rec.AudioPosition.TotalMilliseconds);  
+    }  
+  
+    if (result != null)   
+    { // Clear  
+      RecognitionResult recResult = result as RecognitionResult;  
+      if (recResult != null)   
+      {  
+        RecognizedAudio resultAudio = recResult.Audio;  
+        if (resultAudio == null)   
+        {  
+          label.Text += String.Format("  Emulated input\n");  
+        }   
+        else   
+        {  
+          label.Text += String.Format(  
+                               "  Candidate Phrase at:       {0} mSec\n" +  
+                               "  Phrase Length:             {1} mSec\n" +  
+                               "  Input State Time:          {2}\n" +  
+                               "  Input Format:              {3}\n",  
+                               resultAudio.AudioPosition.TotalMilliseconds,  
+                               resultAudio.Duration.TotalMilliseconds,  
+                               resultAudio.StartTime.ToShortTimeString(),  
+                               resultAudio.Format.EncodingFormat.ToString());  
+        }  
+      }  
+  
+      label.Text += String.Format("  Confidence Level:          {0}\n", result.Confidence);  
+      if (result.Grammar != null)   
+      {  
+        label.Text += String.Format(  
+                            "  Recognizing Grammar:       {0}\n" +  
+                            "  Recognizing Rule:          {1}\n",  
+                            ((result.Grammar.Name != null) ? (result.Grammar.Name) : "None"),  
+                            ((result.Grammar.RuleName != null) ? (result.Grammar.RuleName) : "None"));  
+      }  
+  
+      if  (result.ReplacementWordUnits.Count !=  0)    
+      {  
+        label.Text += String.Format("  Replacement text:\n");  
+        foreach (ReplacementText rep in result.ReplacementWordUnits)    
+        {  
+          string repText = rep.Text;  
+          // Add trailing spaces  
+  
+          if ((rep.DisplayAttributes & DisplayAttributes.OneTrailingSpace) !=  0)    
+          {  
+            repText += " ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.TwoTrailingSpaces) !=  0)    
+          {  
+            repText += "  ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ConsumeLeadingSpaces) != 0)    
+          {  
+            repText=repText.TrimStart();  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ZeroTrailingSpaces) != 0)   
+          {  
+            repText = repText.TrimEnd();  
+          }  
+          label.Text += String.Format(  
+                           "      At index {0} for {1} words. Text: \"{2}\"\n",  
+                           rep.FirstWordIndex,  rep.CountOfWords, repText);  
+  
+        }  
+        label.Text += String.Format("\n\n");  
+      }  
+    }  
+  }    
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="CountOfWords">
+      <MemberSignature Language="C#" Value="public int CountOfWords { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CountOfWords" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Recognition.ReplacementText.CountOfWords" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CountOfWords As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int CountOfWords { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.CountOfWords : int" Usage="System.Speech.Recognition.ReplacementText.CountOfWords" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성 표준화 절차에서 교체된 인식된 단어 수를 가져옵니다.</summary>
+        <value>음성 표준화 절차에서 교체된 인식된 단어 수를 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 아래 예제에 대 한 사용자 인터페이스에 대 한 정보를 표시 한 <xref:System.Speech.Recognition.RecognizedPhrase> 인식 엔진에 의해 반환 되는 개체입니다.  
+  
+```csharp  
+internal static void DisplayBasicPhraseInfo(  
+        Label label,   
+        RecognizedPhrase result,   
+        SpeechRecognizer rec)   
+{  
+  if (result != null && label != null)   
+  {  
+    // Blank  
+    if (rec != null)   
+    {   
+      // Clear  
+      label.Text += String.Format(  
+                             "  Recognizer currently at:   {0} mSec\n" +  
+                             "  Audio Device currently at: {1} mSec\n",  
+                             rec.RecognizerAudioPosition.TotalMilliseconds,  
+                             rec.AudioPosition.TotalMilliseconds);  
+    }  
+  
+    if (result != null)   
+    { // Clear  
+      RecognitionResult recResult = result as RecognitionResult;  
+      if (recResult != null)   
+      {  
+        RecognizedAudio resultAudio = recResult.Audio;  
+        if (resultAudio == null)   
+        {  
+          label.Text += String.Format("  Emulated input\n");  
+        }   
+        else   
+        {  
+          label.Text += String.Format(  
+                               "  Candidate Phrase at:       {0} mSec\n" +  
+                               "  Phrase Length:             {1} mSec\n" +  
+                               "  Input State Time:          {2}\n" +  
+                               "  Input Format:              {3}\n",  
+                               resultAudio.AudioPosition.TotalMilliseconds,  
+                               resultAudio.Duration.TotalMilliseconds,  
+                               resultAudio.StartTime.ToShortTimeString(),  
+                               resultAudio.Format.EncodingFormat.ToString());  
+        }  
+      }  
+  
+      label.Text += String.Format("  Confidence Level:          {0}\n", result.Confidence);  
+      if (result.Grammar != null)   
+      {  
+        label.Text += String.Format(  
+                            "  Recognizing Grammar:       {0}\n" +  
+                            "  Recognizing Rule:          {1}\n",  
+                            ((result.Grammar.Name != null) ? (result.Grammar.Name) : "None"),  
+                            ((result.Grammar.RuleName != null) ? (result.Grammar.RuleName) : "None"));  
+      }  
+  
+      if  (result.ReplacementWordUnits.Count !=  0)    
+      {  
+        label.Text += String.Format("  Replacement text:\n");  
+        foreach (ReplacementText rep in result.ReplacementWordUnits)    
+        {  
+          string repText = rep.Text;  
+          // Add trailing spaces  
+  
+          if ((rep.DisplayAttributes & DisplayAttributes.OneTrailingSpace) !=  0)    
+          {  
+            repText += " ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.TwoTrailingSpaces) !=  0)    
+          {  
+            repText += "  ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ConsumeLeadingSpaces) != 0)    
+          {  
+            repText=repText.TrimStart();  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ZeroTrailingSpaces) != 0)   
+          {  
+            repText = repText.TrimEnd();  
+          }  
+          label.Text += String.Format(  
+                           "      At index {0} for {1} words. Text: \"{2}\"\n",  
+                           rep.FirstWordIndex,  rep.CountOfWords, repText);  
+  
+        }  
+        label.Text += String.Format("\n\n");  
+      }  
+    }  
+  }    
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisplayAttributes">
+      <MemberSignature Language="C#" Value="public System.Speech.Recognition.DisplayAttributes DisplayAttributes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Speech.Recognition.DisplayAttributes DisplayAttributes" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Recognition.ReplacementText.DisplayAttributes" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DisplayAttributes As DisplayAttributes" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Speech::Recognition::DisplayAttributes DisplayAttributes { System::Speech::Recognition::DisplayAttributes get(); };" />
+      <MemberSignature Language="F#" Value="member this.DisplayAttributes : System.Speech.Recognition.DisplayAttributes" Usage="System.Speech.Recognition.ReplacementText.DisplayAttributes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Speech.Recognition.DisplayAttributes</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성 표준화 절차로 대체되는 텍스트의 선행 및 후행 공백에 대한 정보를 가져옵니다.</summary>
+        <value>정규화하여 대체된 텍스트를 표시하는 공백의 사용을 지정하는 <see cref="T:System.Speech.Recognition.DisplayAttributes" /> 개체를 반환됩니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 아래 예제에 대 한 사용자 인터페이스에 대 한 정보를 표시 한 <xref:System.Speech.Recognition.RecognizedPhrase> 인식 엔진에 의해 반환 되는 개체입니다.  
+  
+```csharp  
+internal static void DisplayBasicPhraseInfo(  
+        Label label,   
+        RecognizedPhrase result,   
+        SpeechRecognizer rec)   
+{  
+  if (result != null && label != null)   
+  {  
+    // Blank  
+    if (rec != null)   
+    {   
+      // Clear  
+      label.Text += String.Format(  
+                             "  Recognizer currently at:   {0} mSec\n" +  
+                             "  Audio Device currently at: {1} mSec\n",  
+                             rec.RecognizerAudioPosition.TotalMilliseconds,  
+                             rec.AudioPosition.TotalMilliseconds);  
+    }  
+  
+    if (result != null)   
+    { // Clear  
+      RecognitionResult recResult = result as RecognitionResult;  
+      if (recResult != null)   
+      {  
+        RecognizedAudio resultAudio = recResult.Audio;  
+        if (resultAudio == null)   
+        {  
+          label.Text += String.Format("  Emulated input\n");  
+        }   
+        else   
+        {  
+          label.Text += String.Format(  
+                               "  Candidate Phrase at:       {0} mSec\n" +  
+                               "  Phrase Length:             {1} mSec\n" +  
+                               "  Input State Time:          {2}\n" +  
+                               "  Input Format:              {3}\n",  
+                               resultAudio.AudioPosition.TotalMilliseconds,  
+                               resultAudio.Duration.TotalMilliseconds,  
+                               resultAudio.StartTime.ToShortTimeString(),  
+                               resultAudio.Format.EncodingFormat.ToString());  
+        }  
+      }  
+  
+      label.Text += String.Format("  Confidence Level:          {0}\n", result.Confidence);  
+      if (result.Grammar != null)   
+      {  
+        label.Text += String.Format(  
+                            "  Recognizing Grammar:       {0}\n" +  
+                            "  Recognizing Rule:          {1}\n",  
+                            ((result.Grammar.Name != null) ? (result.Grammar.Name) : "None"),  
+                            ((result.Grammar.RuleName != null) ? (result.Grammar.RuleName) : "None"));  
+      }  
+  
+      if  (result.ReplacementWordUnits.Count !=  0)    
+      {  
+        label.Text += String.Format("  Replacement text:\n");  
+        foreach (ReplacementText rep in result.ReplacementWordUnits)    
+        {  
+          string repText = rep.Text;  
+          // Add trailing spaces  
+  
+          if ((rep.DisplayAttributes & DisplayAttributes.OneTrailingSpace) !=  0)    
+          {  
+            repText += " ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.TwoTrailingSpaces) !=  0)    
+          {  
+            repText += "  ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ConsumeLeadingSpaces) != 0)    
+          {  
+            repText=repText.TrimStart();  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ZeroTrailingSpaces) != 0)   
+          {  
+            repText = repText.TrimEnd();  
+          }  
+          label.Text += String.Format(  
+                           "      At index {0} for {1} words. Text: \"{2}\"\n",  
+                           rep.FirstWordIndex,  rep.CountOfWords, repText);  
+  
+        }  
+        label.Text += String.Format("\n\n");  
+      }  
+    }  
+  }    
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FirstWordIndex">
+      <MemberSignature Language="C#" Value="public int FirstWordIndex { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 FirstWordIndex" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Recognition.ReplacementText.FirstWordIndex" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property FirstWordIndex As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int FirstWordIndex { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.FirstWordIndex : int" Usage="System.Speech.Recognition.ReplacementText.FirstWordIndex" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성 표준화 절차에서 교체된 첫 번째로 인식된 단어의 위치를 가져옵니다.</summary>
+        <value>음성 표준화 절차에서 교체된 첫 번째로 인식된 단어의 위치를 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제에 대 한 정보에는 <xref:System.Speech.Recognition.RecognizedPhrase> 인식 엔진에 의해 반환 된 개체는 사용자 인터페이스에 표시 됩니다.  
+  
+```csharp  
+internal static void DisplayBasicPhraseInfo(  
+        Label label,   
+        RecognizedPhrase result,   
+        SpeechRecognizer rec)   
+{  
+  if (result != null && label != null)   
+  {  
+    // Blank  
+    if (rec != null)   
+    {   
+      // Clear  
+      label.Text += String.Format(  
+                             "  Recognizer currently at:   {0} mSec\n" +  
+                             "  Audio Device currently at: {1} mSec\n",  
+                             rec.RecognizerAudioPosition.TotalMilliseconds,  
+                             rec.AudioPosition.TotalMilliseconds);  
+    }  
+  
+    if (result != null)   
+    { // Clear  
+      RecognitionResult recResult = result as RecognitionResult;  
+      if (recResult != null)   
+      {  
+        RecognizedAudio resultAudio = recResult.Audio;  
+        if (resultAudio == null)   
+        {  
+          label.Text += String.Format("  Emulated input\n");  
+        }   
+        else   
+        {  
+          label.Text += String.Format(  
+                               "  Candidate Phrase at:       {0} mSec\n" +  
+                               "  Phrase Length:             {1} mSec\n" +  
+                               "  Input State Time:          {2}\n" +  
+                               "  Input Format:              {3}\n",  
+                               resultAudio.AudioPosition.TotalMilliseconds,  
+                               resultAudio.Duration.TotalMilliseconds,  
+                               resultAudio.StartTime.ToShortTimeString(),  
+                               resultAudio.Format.EncodingFormat.ToString());  
+        }  
+      }  
+  
+      label.Text += String.Format("  Confidence Level:          {0}\n", result.Confidence);  
+      if (result.Grammar != null)   
+      {  
+        label.Text += String.Format(  
+                            "  Recognizing Grammar:       {0}\n" +  
+                            "  Recognizing Rule:          {1}\n",  
+                            ((result.Grammar.Name != null) ? (result.Grammar.Name) : "None"),  
+                            ((result.Grammar.RuleName != null) ? (result.Grammar.RuleName) : "None"));  
+      }  
+  
+      if  (result.ReplacementWordUnits.Count !=  0)    
+      {  
+        label.Text += String.Format("  Replacement text:\n");  
+        foreach (ReplacementText rep in result.ReplacementWordUnits)    
+        {  
+          string repText = rep.Text;  
+          // Add trailing spaces  
+  
+          if ((rep.DisplayAttributes & DisplayAttributes.OneTrailingSpace) !=  0)    
+          {  
+            repText += " ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.TwoTrailingSpaces) !=  0)    
+          {  
+            repText += "  ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ConsumeLeadingSpaces) != 0)    
+          {  
+            repText=repText.TrimStart();  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ZeroTrailingSpaces) != 0)   
+          {  
+            repText = repText.TrimEnd();  
+          }  
+          label.Text += String.Format(  
+                           "      At index {0} for {1} words. Text: \"{2}\"\n",  
+                           rep.FirstWordIndex,  rep.CountOfWords, repText);  
+  
+        }  
+        label.Text += String.Format("\n\n");  
+      }  
+    }  
+  }    
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Text">
+      <MemberSignature Language="C#" Value="public string Text { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Text" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Recognition.ReplacementText.Text" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Text As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Text { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Text : string" Usage="System.Speech.Recognition.ReplacementText.Text" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성 표준화 절차에서 교체된 인식된 텍스트를 가져옵니다.</summary>
+        <value>음성 표준화 절차에서 교체된 인식된 텍스트를 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 아래 예제에 대 한 사용자 인터페이스에 대 한 정보를 표시 한 <xref:System.Speech.Recognition.RecognizedPhrase> 인식 엔진에 의해 반환 되는 개체입니다.  
+  
+```csharp  
+internal static void DisplayBasicPhraseInfo(  
+        Label label,   
+        RecognizedPhrase result,   
+        SpeechRecognizer rec)   
+{  
+  if (result != null && label != null)   
+  {  
+    // Blank  
+    if (rec != null)   
+    {   
+      // Clear  
+      label.Text += String.Format(  
+                             "  Recognizer currently at:   {0} mSec\n" +  
+                             "  Audio Device currently at: {1} mSec\n",  
+                             rec.RecognizerAudioPosition.TotalMilliseconds,  
+                             rec.AudioPosition.TotalMilliseconds);  
+    }  
+  
+    if (result != null)   
+    { // Clear  
+      RecognitionResult recResult = result as RecognitionResult;  
+      if (recResult != null)   
+      {  
+        RecognizedAudio resultAudio = recResult.Audio;  
+        if (resultAudio == null)   
+        {  
+          label.Text += String.Format("  Emulated input\n");  
+        }   
+        else   
+        {  
+          label.Text += String.Format(  
+                               "  Candidate Phrase at:       {0} mSec\n" +  
+                               "  Phrase Length:             {1} mSec\n" +  
+                               "  Input State Time:          {2}\n" +  
+                               "  Input Format:              {3}\n",  
+                               resultAudio.AudioPosition.TotalMilliseconds,  
+                               resultAudio.Duration.TotalMilliseconds,  
+                               resultAudio.StartTime.ToShortTimeString(),  
+                               resultAudio.Format.EncodingFormat.ToString());  
+        }  
+      }  
+  
+      label.Text += String.Format("  Confidence Level:          {0}\n", result.Confidence);  
+      if (result.Grammar != null)   
+      {  
+        label.Text += String.Format(  
+                            "  Recognizing Grammar:       {0}\n" +  
+                            "  Recognizing Rule:          {1}\n",  
+                            ((result.Grammar.Name != null) ? (result.Grammar.Name) : "None"),  
+                            ((result.Grammar.RuleName != null) ? (result.Grammar.RuleName) : "None"));  
+      }  
+  
+      if  (result.ReplacementWordUnits.Count !=  0)    
+      {  
+        label.Text += String.Format("  Replacement text:\n");  
+        foreach (ReplacementText rep in result.ReplacementWordUnits)    
+        {  
+          string repText = rep.Text;  
+          // Add trailing spaces  
+  
+          if ((rep.DisplayAttributes & DisplayAttributes.OneTrailingSpace) !=  0)    
+          {  
+            repText += " ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.TwoTrailingSpaces) !=  0)    
+          {  
+            repText += "  ";  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ConsumeLeadingSpaces) != 0)    
+          {  
+            repText=repText.TrimStart();  
+          }  
+          if ((rep.DisplayAttributes & DisplayAttributes.ZeroTrailingSpaces) != 0)   
+          {  
+            repText = repText.TrimEnd();  
+          }  
+          label.Text += String.Format(  
+                           "      At index {0} for {1} words. Text: \"{2}\"\n",  
+                           rep.FirstWordIndex,  rep.CountOfWords, repText);  
+  
+        }  
+        label.Text += String.Format("\n\n");  
+      }  
+    }  
+  }    
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

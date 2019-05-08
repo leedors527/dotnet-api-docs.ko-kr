@@ -1,0 +1,168 @@
+<Type Name="PropertyKind" FullName="System.Data.Metadata.Edm.PropertyKind">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="54c34d442594568560314c76897f7af0602d0272" /><Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="11/17/2018" /><Meta Name="ms.locfileid" Value="51938539" /></Metadata><TypeSignature Language="C#" Value="public enum PropertyKind" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed PropertyKind extends System.Enum" />
+  <TypeSignature Language="DocId" Value="T:System.Data.Metadata.Edm.PropertyKind" />
+  <TypeSignature Language="VB.NET" Value="Public Enum PropertyKind" />
+  <TypeSignature Language="C++ CLI" Value="public enum class PropertyKind" />
+  <TypeSignature Language="F#" Value="type PropertyKind = " />
+  <AssemblyInfo>
+    <AssemblyName>System.Data.Entity</AssemblyName>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Enum</BaseTypeName>
+  </Base>
+  <Docs>
+    <summary>개념적 모델의 항목 특성 종류를 지정합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 자세한 내용은 [확장 속성 (CSDL)](https://msdn.microsoft.com/library/697e2fb1-8977-4aa6-a1ef-236950e91fd1)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 샘플에서는 연결에서 메타데이터 작업 영역을 가져온 다음 이 메타데이터 작업 영역을 사용하여 지정된 데이터 모델의 확장 속성에 대한 정보를 검색하는 방법을 보여 줍니다. 메타데이터 작업 영역은 메타데이터 검색을 지원하는 런타임 서비스 구성 요소입니다.  
+  
+ 코드 샘플에서는 <xref:System.Data.Metadata.Edm.DataSpace.CSpace>를 사용하여 모델을 지정합니다. <xref:System.Data.Metadata.Edm.DataSpace.CSpace>는 개념적 모델의 기본 이름을 나타냅니다. 코드 샘플에서 제공 되는 AdventureWorks 모델을 사용 합니다 [AdventureWorks 모델 (EDM)](https://msdn.microsoft.com/library/da87d29e-8c89-4310-bbac-5cbd062930a7) 항목입니다. 애플리케이션 구성 파일의 예제를 보려면 [애플리케이션 (EDM)에서 AdventureWorks 개체 모델](https://msdn.microsoft.com/library/84c01270-90ba-467b-ad24-df10c1ca8f45)합니다.  
+  
+```csharp  
+using System;  
+using System.Data;  
+using System.Data.EntityClient;  
+using System.Collections.ObjectModel;  
+using System.Data.Metadata.Edm;  
+  
+class UsePropertyKindExample  
+{  
+   static void Main(string[] args)  
+   {  
+     try  
+     {  
+       // Establish a connection to the underlying data provider by   
+       // using the connection string specified in the config file.  
+       using (EntityConnection connection =  
+           new EntityConnection("Name=AdventureworksContext"))  
+       {  
+          // Open the connection.  
+          connection.Open();  
+  
+          // Access the metadata workspace.  
+          MetadataWorkspace workspace =   
+             connection.GetMetadataWorkspace();  
+  
+          // Display the extended properties in the conceptual model.  
+          DisplayProperties(workspace, DataSpace.CSpace);  
+       }  
+     }  
+     catch (MetadataException exceptionMetadata)  
+     {  
+         Console.WriteLine("MetadataException: {0}",  
+                         exceptionMetadata.Message);  
+     }  
+     catch (System.Data.MappingException exceptionMapping)  
+     {  
+         Console.WriteLine("MappingException: {0}",  
+                          exceptionMapping.Message);  
+     }  
+   }  
+  
+   public static void DisplayProperties(  
+        MetadataWorkspace workspace, DataSpace model)  
+   {  
+      // Get a collection of the entity containers.  
+      ReadOnlyCollection<EntityContainer> containers =  
+          workspace.GetItems<EntityContainer>(model);  
+  
+      // Iterate through the collection to get each entity container.  
+      foreach (EntityContainer container in containers)  
+      {  
+          // Display the extended properties for the entity container.  
+          DisplayExtendedProperties(container);  
+  
+          // Iterate through the collection to get each entity set.  
+          foreach (EntitySetBase baseSet in container.BaseEntitySets)  
+          {  
+              // Check whether this instance is an EntitySet.  
+              if (baseSet is EntitySet)  
+              {  
+                 // Display the extended properties for the entity set.  
+                 DisplayExtendedProperties(baseSet);  
+              }  
+          }  
+      }  
+  
+      // Get a collection of the entity types.  
+      ReadOnlyCollection<EntityType> entities =   
+             workspace.GetItems<EntityType>(model);  
+  
+      // Iterate through the collection to get each entity type.  
+      foreach (EntityType entity in entities)  
+      {  
+         // Display the extended properties for the entity type.  
+         DisplayExtendedProperties(entity);  
+      }  
+   }  
+  
+   private static void DisplayExtendedProperties(MetadataItem item)  
+   {  
+     foreach (MetadataProperty property in item.MetadataProperties)  
+     {  
+         if (property.PropertyKind == PropertyKind.Extended)  
+           Console.WriteLine(string.Format("\t{0}\t{1}\t{2}",   
+             item.GetType().Name, property.Name, property.Value));  
+     }  
+   }  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="Extended">
+      <MemberSignature Language="C#" Value="Extended" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.Metadata.Edm.PropertyKind Extended = int32(1)" />
+      <MemberSignature Language="DocId" Value="F:System.Data.Metadata.Edm.PropertyKind.Extended" />
+      <MemberSignature Language="VB.NET" Value="Extended" />
+      <MemberSignature Language="C++ CLI" Value="Extended" />
+      <MemberSignature Language="F#" Value="Extended = 1" Usage="System.Data.Metadata.Edm.PropertyKind.Extended" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.Metadata.Edm.PropertyKind</ReturnType>
+      </ReturnValue>
+      <MemberValue>1</MemberValue>
+      <Docs>
+        <summary>항목 특성이 <c>Extended</c>임을 나타내는 열거형 멤버입니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="System">
+      <MemberSignature Language="C#" Value="System" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.Metadata.Edm.PropertyKind System = int32(0)" />
+      <MemberSignature Language="DocId" Value="F:System.Data.Metadata.Edm.PropertyKind.System" />
+      <MemberSignature Language="VB.NET" Value="System" />
+      <MemberSignature Language="C++ CLI" Value="System" />
+      <MemberSignature Language="F#" Value="System = 0" Usage="System.Data.Metadata.Edm.PropertyKind.System" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.Metadata.Edm.PropertyKind</ReturnType>
+      </ReturnValue>
+      <MemberValue>0</MemberValue>
+      <Docs>
+        <summary>항목 특성이 <c>System</c>임을 나타내는 열거형 멤버입니다.</summary>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

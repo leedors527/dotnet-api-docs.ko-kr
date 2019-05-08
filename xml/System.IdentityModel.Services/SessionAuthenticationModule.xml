@@ -1,0 +1,963 @@
+<Type Name="SessionAuthenticationModule" FullName="System.IdentityModel.Services.SessionAuthenticationModule">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="2d441744d767364bdffab273e7f3015b391f5d0f" /><Meta Name="ms.sourcegitcommit" Value="9802d4c6745a8ae514b26f144fb3969265b224ba" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/22/2018" /><Meta Name="ms.locfileid" Value="53750129" /></Metadata><TypeSignature Language="C#" Value="public class SessionAuthenticationModule : System.IdentityModel.Services.HttpModuleBase" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SessionAuthenticationModule extends System.IdentityModel.Services.HttpModuleBase" />
+  <TypeSignature Language="DocId" Value="T:System.IdentityModel.Services.SessionAuthenticationModule" />
+  <TypeSignature Language="VB.NET" Value="Public Class SessionAuthenticationModule&#xA;Inherits HttpModuleBase" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SessionAuthenticationModule : System::IdentityModel::Services::HttpModuleBase" />
+  <TypeSignature Language="F#" Value="type SessionAuthenticationModule = class&#xA;    inherit HttpModuleBase" />
+  <AssemblyInfo>
+    <AssemblyName>System.IdentityModel.Services</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.IdentityModel.Services.HttpModuleBase</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>WS-Federation 시나리오에서 세션 쿠키를 처리하는 ASP.NET 모듈을 구현합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ ASP.NET 파이프라인에 있는 경우는 <xref:System.IdentityModel.Services.SessionAuthenticationModule> (SAM)는 WS-페더레이션 시나리오에서 세션 쿠키를 처리 합니다. 지정 된 쿠키 처리기를 사용 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A> HTTP 요청에서 원시 세션 쿠키를 읽고 HTTP 응답에 쓸 속성입니다. 사용 된 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> 에 원시 세션 쿠키를 역직렬화 할 애플리케이션에 대해 구성 된 <xref:System.IdentityModel.Tokens.SessionSecurityToken> 개체입니다. 세션 보안 토큰을 클레임을 포함 (<xref:System.Security.Claims.Claim>) 및 주체 (<xref:System.Security.Claims.ClaimsPrincipal>) 요청이 처리 되는 엔터티와 연결 합니다.  
+  
+ SAM 추가 해당 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 이벤트 처리기는 <xref:System.Web.HttpApplication.AuthenticateRequest?displayProperty=nameWithType> ASP.NET 파이프라인에는 이벤트입니다. 이 처리기 로그인 요청을 가로채서, 세션 토큰을 deserialize 하 고 설정 하면 세션 쿠키가 있으면 합니다 <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType> 및 <xref:System.Web.HttpContext.User%2A?displayProperty=nameWithType> 세션 토큰에 포함 된 클레임 보안 주체에는 속성입니다. 다양 한이 프로세스 중 SAM에서 노출 되는 다른 메서드를 호출 합니다.  
+  
+ <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> (예를 들어 SignOut.aspx.cs 코드 숨김 파일)에 세션에서 사용자 로그인 메서드를 호출할 수 있습니다.  
+  
+ SAM 해당 처리 파이프라인에 대 한 액세스를 제공 하는 여러 이벤트를 노출 합니다. 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenReceived> 고 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenCreated> 이벤트를 통해 쿠키에서 읽은 되거나 처리 중에 생성 되는 세션 토큰을 수정할 수 있습니다. 일반적으로 추가, 제거 또는 토큰의 클레임을 변환 하거나 만료 시간에 맞게 수행 됩니다. 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SigningOut>, <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignedOut>, 및 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOutError> 이벤트를 로그 아웃 요청을 처리 하는 후크를 제공 합니다. 많은 시나리오에서 global.asax.cs 파일에 종종 이러한 이벤트에 대 한 처리기를 추가 하기만 하면 됩니다.  
+  
+ 더 복잡 한 시나리오에서 파생할 수 있습니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 사용자 지정 SAM을 구현 합니다. 이 위해 하는 동안 호출 되는 메서드의 대부분 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 고 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 세션 처리 수명 주기의 특정 단계에서 사용자 지정 동작을 제공할 수 있도록 노출 됩니다.  
+  
+ 아래에서 HTTP 모듈에 추가 하 여 구성 파일의 ASP.NET 파이프라인에 SAM을 추가할 수 있습니다는 `<system.webServer>` 또는 IIS 7 이상 버전에 대 한 요소는 `<system.web>` IIS 7 이전 버전에 대 한 요소입니다. SAM에서 사용 하는 쿠키 처리기를 사용 하 여 구성할 수 있습니다 합니다 [ &lt;cookieHandler&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) 요소입니다.  
+  
+   
+  
+## Examples  
+ [!code-csharp[WifSAM#1](~/samples/snippets/csharp/VS_Snippets_Misc/wifsam/cs/webapplication1/global.asax.cs#1)]  
+  
+ 다음 XML에는 SAM ASP.NET 파이프라인에서 구성 하는 방법을 보여 줍니다. 일반적인 구성에 있는 여러 가지 요소는 간단한 설명을 위해 여기 생략 됩니다.  
+  
+```xml  
+<configuration>  
+  <system.webServer>  
+    <modules>  
+      <!--WIF 4.5 modules -->  
+      <add name="SessionAuthenticationModule" type="System.IdentityModel.Services.SessionAuthenticationModule, System.IdentityModel.Services, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>  
+      <add name="WsFederationAuthenticationModule" type="System.IdentityModel.Services.WSFederationAuthenticationModule, System.IdentityModel.Services, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>  
+    </modules>  
+  </system.webServer>  
+</configuration>  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SessionAuthenticationModule ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SessionAuthenticationModule();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.IdentityModel.Services.SessionAuthenticationModule" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IdentityModel.Services.SessionAuthenticationModule.IsReferenceMode%2A> 속성이로 설정 되어 `false` 하며 <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A> 속성은의 기본 인스턴스를 초기화는 <xref:System.IdentityModel.Services.CookieHandlerElement.ChunkedCookieHandler%2A> 클래스.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AuthenticateSessionSecurityToken">
+      <MemberSignature Language="C#" Value="public virtual void AuthenticateSessionSecurityToken (System.IdentityModel.Tokens.SessionSecurityToken sessionToken, bool writeCookie);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void AuthenticateSessionSecurityToken(class System.IdentityModel.Tokens.SessionSecurityToken sessionToken, bool writeCookie) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.AuthenticateSessionSecurityToken(System.IdentityModel.Tokens.SessionSecurityToken,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub AuthenticateSessionSecurityToken (sessionToken As SessionSecurityToken, writeCookie As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void AuthenticateSessionSecurityToken(System::IdentityModel::Tokens::SessionSecurityToken ^ sessionToken, bool writeCookie);" />
+      <MemberSignature Language="F#" Value="abstract member AuthenticateSessionSecurityToken : System.IdentityModel.Tokens.SessionSecurityToken * bool -&gt; unit&#xA;override this.AuthenticateSessionSecurityToken : System.IdentityModel.Tokens.SessionSecurityToken * bool -&gt; unit" Usage="sessionAuthenticationModule.AuthenticateSessionSecurityToken (sessionToken, writeCookie)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sessionToken" Type="System.IdentityModel.Tokens.SessionSecurityToken" />
+        <Parameter Name="writeCookie" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="sessionToken">들어오는 HTTP 요청을 인증하는 데 사용할 세션 보안 토큰입니다.</param>
+        <param name="writeCookie">세션 쿠키를 작성하려면 <see langword="true" />이고, 그러지 않으면 <see langword="false" />입니다.</param>
+        <summary>들어오는 세션 토큰의 유효성을 검사하여 들어오는 요청을 인증합니다. 성공적인 검증 결과에 따라 현재 HTTP 컨텍스트 및 스레드 보안 주체를 지정된 업데이트 <see cref="T:System.IdentityModel.Tokens.SessionSecurityToken" />로 업데이트합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.AuthenticateSessionSecurityToken%2A> 에서 메서드를 호출 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 메서드. 호출 된 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SetPrincipalFromSessionToken%2A> 업데이트와 들어오는 토큰의 유효성을 검사 하는 방법의 <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType> 및 <xref:System.Web.HttpContext.User%2A?displayProperty=nameWithType> 속성. 경우는 `writeCookie` 매개 변수가 `true`, <xref:System.IdentityModel.Services.SessionAuthenticationModule.WriteSessionTokenToCookie%2A> 쿠키에 세션 토큰을 쓸 메서드가 실행 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContainsSessionTokenCookie">
+      <MemberSignature Language="C#" Value="public bool ContainsSessionTokenCookie (System.Web.HttpCookieCollection httpCookieCollection);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ContainsSessionTokenCookie(class System.Web.HttpCookieCollection httpCookieCollection) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.ContainsSessionTokenCookie(System.Web.HttpCookieCollection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool ContainsSessionTokenCookie(System::Web::HttpCookieCollection ^ httpCookieCollection);" />
+      <MemberSignature Language="F#" Value="member this.ContainsSessionTokenCookie : System.Web.HttpCookieCollection -&gt; bool" Usage="sessionAuthenticationModule.ContainsSessionTokenCookie httpCookieCollection" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="httpCookieCollection" Type="System.Web.HttpCookieCollection" />
+      </Parameters>
+      <Docs>
+        <param name="httpCookieCollection">검색할 쿠키 컬렉션입니다.</param>
+        <summary>지정된 쿠키 컬렉션에 있는 세션 쿠키인지 여부를 확인합니다.</summary>
+        <returns>세션 쿠키가 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="httpCookieCollection" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ContextSessionSecurityToken">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Tokens.SessionSecurityToken ContextSessionSecurityToken { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IdentityModel.Tokens.SessionSecurityToken ContextSessionSecurityToken" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.SessionAuthenticationModule.ContextSessionSecurityToken" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property ContextSessionSecurityToken As SessionSecurityToken" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::IdentityModel::Tokens::SessionSecurityToken ^ ContextSessionSecurityToken { System::IdentityModel::Tokens::SessionSecurityToken ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ContextSessionSecurityToken : System.IdentityModel.Tokens.SessionSecurityToken" Usage="System.IdentityModel.Services.SessionAuthenticationModule.ContextSessionSecurityToken" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.SessionSecurityToken</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.IdentityModel.Tokens.SessionSecurityToken" />에 대한 활성 <see cref="T:System.Web.HttpContext" />을 가져옵니다.</summary>
+        <value>활성 세션 보안 토큰입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CookieHandler">
+      <MemberSignature Language="C#" Value="public System.IdentityModel.Services.CookieHandler CookieHandler { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IdentityModel.Services.CookieHandler CookieHandler" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler" />
+      <MemberSignature Language="VB.NET" Value="Public Property CookieHandler As CookieHandler" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IdentityModel::Services::CookieHandler ^ CookieHandler { System::IdentityModel::Services::CookieHandler ^ get(); void set(System::IdentityModel::Services::CookieHandler ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.CookieHandler : System.IdentityModel.Services.CookieHandler with get, set" Usage="System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Services.CookieHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>세션 쿠키를 읽고 쓰고 삭제하는 데 사용되는 쿠키 처리기를 가져옵니다.</summary>
+        <value>쿠키 처리기입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A> 속성에서 초기화 되는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.InitializePropertiesFromConfiguration%2A> 메서드. 에 지정 된 쿠키 처리기에 따라 속성을 초기화 하는이 메서드는 <xref:System.IdentityModel.Services.Configuration.FederationConfiguration> 에 설정 된 개체는 <xref:System.IdentityModel.Services.FederatedAuthentication.FederationConfiguration%2A?displayProperty=nameWithType> 속성입니다. 쿠키 처리기를 통해 구성 파일에서 설정할 수는 [ &lt;cookieHandler&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) 요소입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie" />
+        <altmember cref="M:System.IdentityModel.Services.SessionAuthenticationModule.TryReadSessionTokenFromCookie(System.IdentityModel.Tokens.SessionSecurityToken@)" />
+        <altmember cref="M:System.IdentityModel.Services.SessionAuthenticationModule.WriteSessionTokenToCookie(System.IdentityModel.Tokens.SessionSecurityToken)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateSessionSecurityToken">
+      <MemberSignature Language="C#" Value="public System.IdentityModel.Tokens.SessionSecurityToken CreateSessionSecurityToken (System.Security.Claims.ClaimsPrincipal principal, string context, DateTime validFrom, DateTime validTo, bool isPersistent);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IdentityModel.Tokens.SessionSecurityToken CreateSessionSecurityToken(class System.Security.Claims.ClaimsPrincipal principal, string context, valuetype System.DateTime validFrom, valuetype System.DateTime validTo, bool isPersistent) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.CreateSessionSecurityToken(System.Security.Claims.ClaimsPrincipal,System.String,System.DateTime,System.DateTime,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CreateSessionSecurityToken (principal As ClaimsPrincipal, context As String, validFrom As DateTime, validTo As DateTime, isPersistent As Boolean) As SessionSecurityToken" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IdentityModel::Tokens::SessionSecurityToken ^ CreateSessionSecurityToken(System::Security::Claims::ClaimsPrincipal ^ principal, System::String ^ context, DateTime validFrom, DateTime validTo, bool isPersistent);" />
+      <MemberSignature Language="F#" Value="member this.CreateSessionSecurityToken : System.Security.Claims.ClaimsPrincipal * string * DateTime * DateTime * bool -&gt; System.IdentityModel.Tokens.SessionSecurityToken" Usage="sessionAuthenticationModule.CreateSessionSecurityToken (principal, context, validFrom, validTo, isPersistent)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.SessionSecurityToken</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="context" Type="System.String" />
+        <Parameter Name="validFrom" Type="System.DateTime" />
+        <Parameter Name="validTo" Type="System.DateTime" />
+        <Parameter Name="isPersistent" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰에서 캡처해야 하는 보안 주체입니다.</param>
+        <param name="context">애플리케이션 정의 컨텍스트 문자열입니다.</param>
+        <param name="validFrom">이 토큰이 유효한 첫 번째 인스턴트입니다.</param>
+        <param name="validTo">이 토큰이 유효한 마지막 인스턴트입니다.</param>
+        <param name="isPersistent">사용자 에이전트에서 값을 지속해야 하는 경우 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>구성된 세션 토큰 처리기를 사용하여 지정된 매개 변수에서 <see cref="T:System.IdentityModel.Tokens.SessionSecurityToken" />을 만듭니다.</summary>
+        <returns>세션 토큰입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">유효한 세션 토큰 처리기 구성되지 않았습니다. (<see cref="T:System.IdentityModel.Tokens.SessionSecurityTokenHandler" /> 속성에서 <see cref="P:System.IdentityModel.Configuration.IdentityConfiguration.SecurityTokenHandlers" />가 구성되지 않았습니다.)</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteSessionTokenCookie">
+      <MemberSignature Language="C#" Value="public void DeleteSessionTokenCookie ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DeleteSessionTokenCookie() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie" />
+      <MemberSignature Language="VB.NET" Value="Public Sub DeleteSessionTokenCookie ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void DeleteSessionTokenCookie();" />
+      <MemberSignature Language="F#" Value="member this.DeleteSessionTokenCookie : unit -&gt; unit" Usage="sessionAuthenticationModule.DeleteSessionTokenCookie " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>세션 쿠키를 삭제하고 캐시에서 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 지정 된 쿠키 처리기를 사용 하 여 세션 쿠키를 삭제 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A> 속성입니다. 이 메서드는에서 로그 아웃을 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeModule">
+      <MemberSignature Language="C#" Value="protected override void InitializeModule (System.Web.HttpApplication context);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void InitializeModule(class System.Web.HttpApplication context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.InitializeModule(System.Web.HttpApplication)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub InitializeModule (context As HttpApplication)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void InitializeModule(System::Web::HttpApplication ^ context);" />
+      <MemberSignature Language="F#" Value="override this.InitializeModule : System.Web.HttpApplication -&gt; unit" Usage="sessionAuthenticationModule.InitializeModule context" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpApplication" />
+      </Parameters>
+      <Docs>
+        <param name="context">이 모듈을 포함하는 HTTP 애플리케이션 개체입니다.</param>
+        <summary>모듈을 초기화하고 모듈의 [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 애플리케이션 개체에서 이벤트를 처리할 수 있도록 준비합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 추가 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 및 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnPostAuthenticateRequest%2A> 처리기를를 <xref:System.Web.HttpApplication.AuthenticateRequest?displayProperty=nameWithType> 및 <xref:System.Web.HttpApplication.PostAuthenticateRequest?displayProperty=nameWithType> 로 지정 된 애플리케이션 개체 이벤트를 `context` 매개 변수입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializePropertiesFromConfiguration">
+      <MemberSignature Language="C#" Value="protected override void InitializePropertiesFromConfiguration ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void InitializePropertiesFromConfiguration() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.InitializePropertiesFromConfiguration" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub InitializePropertiesFromConfiguration ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void InitializePropertiesFromConfiguration();" />
+      <MemberSignature Language="F#" Value="override this.InitializePropertiesFromConfiguration : unit -&gt; unit" Usage="sessionAuthenticationModule.InitializePropertiesFromConfiguration " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>구성 파일의 정의를 기준으로 모듈 속성을 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 초기화를 <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A> 속성을 구성 하 여 지정 된 처리기는 <xref:System.IdentityModel.Services.Configuration.FederationConfiguration?displayProperty=nameWithType> 에 설정 된 개체를 <xref:System.IdentityModel.Services.FederatedAuthentication.FederationConfiguration%2A?displayProperty=nameWithType> 속성. 쿠키 처리기를 통해 구성 파일에서 지정할 수 있습니다 합니다 [ &lt;cookieHandler&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/cookiehandler.md) 요소입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsReferenceMode">
+      <MemberSignature Language="C#" Value="public bool IsReferenceMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsReferenceMode" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.SessionAuthenticationModule.IsReferenceMode" />
+      <MemberSignature Language="VB.NET" Value="Public Property IsReferenceMode As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsReferenceMode { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.IsReferenceMode : bool with get, set" Usage="System.IdentityModel.Services.SessionAuthenticationModule.IsReferenceMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>세션 정보(클레임 값 등)가 세션 쿠키에 저장되어야 하는지 여부나 세션 콘텐츠가 서버쪽에 저장되고 쿠키를 사용하여 참조만 저장해야 하는지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>발급된 쿠키가 참조 모드에 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="false" />이고, 발급된 쿠키가 참조 모드에 없음을 나타냅니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 참조 모드에는 <xref:System.IdentityModel.Tokens.SessionSecurityToken> 서버 쪽 캐시에 저장 됩니다 (개체에서 파생 되는 <xref:System.IdentityModel.Tokens.SessionSecurityTokenCache>). 발급 된 쿠키 캐시에서 토큰을 검색 하는 데 사용 되는 컨텍스트 식별자를만 포함 되어 있습니다.  
+  
+> [!IMPORTANT]
+>  제공 하는 것이 좋습니다 참조 모드로 작동 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated?displayProperty=nameWithType> global.asax.cs 파일 설정에서 이벤트를 <xref:System.IdentityModel.Tokens.SessionSecurityToken.IsReferenceMode%2A?displayProperty=nameWithType> 전달 된 토큰에 대 한 속성을 <xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.SessionToken%2A?displayProperty=nameWithType> 속성입니다. 이렇게 하면 세션 토큰이 모든 요청에 대해 참조 모드로 작동 하 고 단순히 설정 보다 우선 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.IsReferenceMode%2A?displayProperty=nameWithType> 세션 인증 모듈의 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAuthenticateRequest">
+      <MemberSignature Language="C#" Value="protected virtual void OnAuthenticateRequest (object sender, EventArgs eventArgs);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAuthenticateRequest(object sender, class System.EventArgs eventArgs) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest(System.Object,System.EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAuthenticateRequest(System::Object ^ sender, EventArgs ^ eventArgs);" />
+      <MemberSignature Language="F#" Value="abstract member OnAuthenticateRequest : obj * EventArgs -&gt; unit&#xA;override this.OnAuthenticateRequest : obj * EventArgs -&gt; unit" Usage="sessionAuthenticationModule.OnAuthenticateRequest (sender, eventArgs)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sender" Type="System.Object" />
+        <Parameter Name="eventArgs" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="sender">이벤트에 대한 소스입니다. <see cref="T:System.Web.HttpApplication" /> 개체가 됩니다.</param>
+        <param name="eventArgs">이벤트 데이터입니다.</param>
+        <summary>[!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 파이프라인에서 <see cref="E:System.Web.HttpApplication.AuthenticateRequest" /> 이벤트를 처리합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 다음을 수행 합니다.  
+  
+1.  호출 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.TryReadSessionTokenFromCookie%2A> 읽을 메서드는 <xref:System.IdentityModel.Tokens.SessionSecurityToken> 없는 경우에 세션 쿠키에서.  
+  
+2.  보안 토큰 일 수 없습니다 세션 인 경우 읽기 (가능성이 세션 설정 되지 않았습니다)를 반환 합니다.  
+  
+3.  호출 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnSessionSecurityTokenReceived%2A> 발생 하는 방법의 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenReceived> 이벤트입니다. 이 수정할 쿠키에서 읽은 토큰이 또는 요청을 취소할 수 있습니다. 처리기는 토큰은 발급을 설정 하 여 지정할 수도 있습니다는 <xref:System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs.ReissueCookie%2A?displayProperty=nameWithType> 속성입니다.  
+  
+4.  토큰 발급 하려는 경우, 캐시에서 제거 하 고 호출 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnSessionSecurityTokenCreated%2A> 발생 하는 방법의 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenCreated> 이벤트입니다. 이 토큰을 다시 수정 될 수 있는 기회를 제공 합니다. 다시 실행 동작을 설정 하 여 수정할 수도 있습니다는 <xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.WriteSessionCookie%2A?displayProperty=nameWithType> 이벤트 처리기의 속성입니다.  
+  
+5.  호출 하 여 <xref:System.IdentityModel.Services.SessionAuthenticationModule.AuthenticateSessionSecurityToken%2A> 사용자를 인증 하는 방법입니다. 성공 하면이 있는지 설정의 효과 <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType> 속성에 포함 된 보안 주체에는 <xref:System.IdentityModel.Tokens.SessionSecurityToken.ClaimsPrincipal%2A?displayProperty=nameWithType> 들어오는 토큰의 속성입니다.  
+  
+6.  세션이 만료 된 경우 호출 하 여 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 메서드.  
+  
+ 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 메서드가 대 한 처리기에 추가 됩니다 합니다 <xref:System.Web.HttpApplication.AuthenticateRequest?displayProperty=nameWithType> 이벤트에는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.InitializeModule%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">유효한 세션 토큰 처리기 구성되지 않았습니다. (<see cref="T:System.IdentityModel.Tokens.SessionSecurityTokenHandler" /> 속성에서 <see cref="P:System.IdentityModel.Configuration.IdentityConfiguration.SecurityTokenHandlers" />가 구성되지 않았습니다.)</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPostAuthenticateRequest">
+      <MemberSignature Language="C#" Value="protected virtual void OnPostAuthenticateRequest (object sender, EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPostAuthenticateRequest(object sender, class System.EventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.OnPostAuthenticateRequest(System.Object,System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnPostAuthenticateRequest (sender As Object, e As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnPostAuthenticateRequest(System::Object ^ sender, EventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnPostAuthenticateRequest : obj * EventArgs -&gt; unit&#xA;override this.OnPostAuthenticateRequest : obj * EventArgs -&gt; unit" Usage="sessionAuthenticationModule.OnPostAuthenticateRequest (sender, e)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sender" Type="System.Object" />
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="sender">이벤트에 대한 소스입니다. <see cref="T:System.Web.HttpApplication" /> 개체가 됩니다.</param>
+        <param name="e">이벤트 데이터입니다.</param>
+        <summary>[!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 파이프라인에서 <see cref="E:System.Web.HttpApplication.PostAuthenticateRequest" /> 이벤트를 처리합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현에서는 비어 있습니다.  
+  
+ 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnPostAuthenticateRequest%2A> 처리기에 대 한 처리기에 추가 되는 <xref:System.Web.HttpApplication.PostAuthenticateRequest?displayProperty=nameWithType> 이벤트에는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.InitializeModule%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSessionSecurityTokenCreated">
+      <MemberSignature Language="C#" Value="protected virtual void OnSessionSecurityTokenCreated (System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSessionSecurityTokenCreated(class System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.OnSessionSecurityTokenCreated(System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSessionSecurityTokenCreated (args As SessionSecurityTokenCreatedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSessionSecurityTokenCreated(System::IdentityModel::Services::SessionSecurityTokenCreatedEventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnSessionSecurityTokenCreated : System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs -&gt; unit&#xA;override this.OnSessionSecurityTokenCreated : System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs -&gt; unit" Usage="sessionAuthenticationModule.OnSessionSecurityTokenCreated args" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenCreated" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 된 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSessionSecurityTokenReceived">
+      <MemberSignature Language="C#" Value="protected virtual void OnSessionSecurityTokenReceived (System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSessionSecurityTokenReceived(class System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.OnSessionSecurityTokenReceived(System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSessionSecurityTokenReceived (args As SessionSecurityTokenReceivedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSessionSecurityTokenReceived(System::IdentityModel::Services::SessionSecurityTokenReceivedEventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnSessionSecurityTokenReceived : System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs -&gt; unit&#xA;override this.OnSessionSecurityTokenReceived : System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs -&gt; unit" Usage="sessionAuthenticationModule.OnSessionSecurityTokenReceived args" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenReceived" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 된 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSignedOut">
+      <MemberSignature Language="C#" Value="protected virtual void OnSignedOut (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSignedOut(class System.EventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.OnSignedOut(System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSignedOut (e As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSignedOut(EventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnSignedOut : EventArgs -&gt; unit&#xA;override this.OnSignedOut : EventArgs -&gt; unit" Usage="sessionAuthenticationModule.OnSignedOut e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.SessionAuthenticationModule.SignedOut" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드가 호출 되는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 메서드는 로그 아웃을 수행한 후 세션 쿠키를 삭제 했습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSigningOut">
+      <MemberSignature Language="C#" Value="protected virtual void OnSigningOut (System.IdentityModel.Services.SigningOutEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSigningOut(class System.IdentityModel.Services.SigningOutEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.OnSigningOut(System.IdentityModel.Services.SigningOutEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSigningOut (e As SigningOutEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSigningOut(System::IdentityModel::Services::SigningOutEventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnSigningOut : System.IdentityModel.Services.SigningOutEventArgs -&gt; unit&#xA;override this.OnSigningOut : System.IdentityModel.Services.SigningOutEventArgs -&gt; unit" Usage="sessionAuthenticationModule.OnSigningOut e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.IdentityModel.Services.SigningOutEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.SessionAuthenticationModule.SigningOut" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드가 호출 되는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 로그 아웃을 수행 하는 방법입니다. 세션 쿠키를 삭제 하기 전에 호출 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSignOutError">
+      <MemberSignature Language="C#" Value="protected virtual void OnSignOutError (System.IdentityModel.Services.ErrorEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSignOutError(class System.IdentityModel.Services.ErrorEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.OnSignOutError(System.IdentityModel.Services.ErrorEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSignOutError (e As ErrorEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSignOutError(System::IdentityModel::Services::ErrorEventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnSignOutError : System.IdentityModel.Services.ErrorEventArgs -&gt; unit&#xA;override this.OnSignOutError : System.IdentityModel.Services.ErrorEventArgs -&gt; unit" Usage="sessionAuthenticationModule.OnSignOutError e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.IdentityModel.Services.ErrorEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.SessionAuthenticationModule.SignOutError" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드가 호출 되는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 로그 아웃 하는 동안 오류가 발생 하면 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReadSessionTokenFromCookie">
+      <MemberSignature Language="C#" Value="public System.IdentityModel.Tokens.SessionSecurityToken ReadSessionTokenFromCookie (byte[] sessionCookie);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IdentityModel.Tokens.SessionSecurityToken ReadSessionTokenFromCookie(unsigned int8[] sessionCookie) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.ReadSessionTokenFromCookie(System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public Function ReadSessionTokenFromCookie (sessionCookie As Byte()) As SessionSecurityToken" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IdentityModel::Tokens::SessionSecurityToken ^ ReadSessionTokenFromCookie(cli::array &lt;System::Byte&gt; ^ sessionCookie);" />
+      <MemberSignature Language="F#" Value="member this.ReadSessionTokenFromCookie : byte[] -&gt; System.IdentityModel.Tokens.SessionSecurityToken" Usage="sessionAuthenticationModule.ReadSessionTokenFromCookie sessionCookie" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.SessionSecurityToken</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sessionCookie" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="sessionCookie">세션 토큰을 포함하는 원시 형태의 쿠키입니다.</param>
+        <summary>지정된 세션 쿠키에서 <see cref="T:System.IdentityModel.Tokens.SessionSecurityToken" />을 읽습니다.</summary>
+        <returns>쿠키에서 읽은 세션 토큰입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">유효한 세션 토큰 처리기 구성되지 않았습니다. (<see cref="T:System.IdentityModel.Tokens.SessionSecurityTokenHandler" /> 속성에서 <see cref="P:System.IdentityModel.Configuration.IdentityConfiguration.SecurityTokenHandlers" />가 구성되지 않았습니다.)</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SessionSecurityTokenCreated">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt; SessionSecurityTokenCreated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt; SessionSecurityTokenCreated" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenCreated" />
+      <MemberSignature Language="VB.NET" Value="Public Event SessionSecurityTokenCreated As EventHandler(Of SessionSecurityTokenCreatedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::SessionSecurityTokenCreatedEventArgs ^&gt; ^ SessionSecurityTokenCreated;" />
+      <MemberSignature Language="F#" Value="member this.SessionSecurityTokenCreated : EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt; " Usage="member this.SessionSecurityTokenCreated : System.EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>세션 보안 토큰이 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 쿠키에 기록 되기 전에 세션 보안 토큰을 수정 하려면이 이벤트를 사용할 수 있습니다.  
+  
+ <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenCreated> 내에서 이벤트가 발생 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 세션 토큰 메서드 (<xref:System.IdentityModel.Tokens.SessionSecurityToken>) 만들었습니다. 이 경우, 예를 들어,에 대 한 이벤트 처리기는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenReceived> 이벤트 토큰을 수정 합니다.  
+  
+ 추가 파이프라인을 통해 전달 되 고 엔터티 (사용자) 요청을 인증에 사용 되는 세션 토큰의 속성을 수정 하려면이 이벤트를 사용할 수 있습니다.  
+  
+ 이벤트 처리기를 통해 토큰 액세스할 수 있습니다는 <xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.SessionToken%2A?displayProperty=nameWithType> 속성입니다. 토큰을 수정한 후 확실히를 쓸 때 다시 쿠키를 설정 하 여 합니다 <xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.WriteSessionCookie%2A?displayProperty=nameWithType> 속성을 `true`입니다. 와 달리, 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenCreated> 이벤트를 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenCreated> 은 취소할 수 있는 이벤트가 아닙니다.  
+  
+   
+  
+## Examples  
+ 다음 코드에 대 한 처리기를 보여 줍니다.는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenCreated> ASP.NET 웹 애플리케이션의 global.asax.cs 파일에서 구현 하는 이벤트입니다. 또한 이벤트 처리기를 추가 해야 합니다. 보다 완전 한 예제에 표시 됩니다는 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 개요 항목입니다.  
+  
+ [!code-csharp[WifSAM#6](~/samples/snippets/csharp/VS_Snippets_Misc/wifsam/cs/webapplication1/global.asax.cs#6)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SessionSecurityTokenReceived">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs&gt; SessionSecurityTokenReceived;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs&gt; SessionSecurityTokenReceived" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenReceived" />
+      <MemberSignature Language="VB.NET" Value="Public Event SessionSecurityTokenReceived As EventHandler(Of SessionSecurityTokenReceivedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::SessionSecurityTokenReceivedEventArgs ^&gt; ^ SessionSecurityTokenReceived;" />
+      <MemberSignature Language="F#" Value="member this.SessionSecurityTokenReceived : EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs&gt; " Usage="member this.SessionSecurityTokenReceived : System.EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>쿠키에서 세션 보안 토큰을 읽으면 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenReceived> 내에서 이벤트가 발생 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnAuthenticateRequest%2A> 세션 토큰 메서드 (<xref:System.IdentityModel.Tokens.SessionSecurityToken>) 세션 쿠키에서 성공적으로 읽은 합니다.  
+  
+ 추가 파이프라인을 통해 전달 되 고 엔터티 (사용자) 요청을 인증에 사용 되는 세션 토큰의 속성을 수정 하려면이 이벤트를 사용할 수 있습니다. 가장 일반적인 시나리오 중 하나는 세션 만료 시간을 수정 (통해 액세스할 수는 <xref:System.IdentityModel.Tokens.SessionSecurityToken.ValidTo%2A?displayProperty=nameWithType> 속성)를 통해 구성에 설정 된 세션 만료 시간을 재정의 하는 `lifetime` 특성은 [ &lt;sessionTokenRequirement&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/sessiontokenrequirement.md) 요소입니다. 각 요청에는이 속성을 수정 하 여 상대 (sliding) 세션에 구현할 수 있습니다. 즉,는 수명을 확장 되어 각 세션 사이트가 사용자 액세스를 시간입니다.  
+  
+ 이벤트 처리기를 통해 토큰 액세스할 수 있습니다는 <xref:System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs.SessionToken%2A?displayProperty=nameWithType> 속성입니다. 토큰을 수정한 후 확실히를 쓸 때 다시 쿠키를 설정 하 여 합니다 <xref:System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs.ReissueCookie%2A?displayProperty=nameWithType> 에 `true`입니다. 마지막으로 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenReceived> 이벤트는 취소할 수 있는 이벤트 및 설정할 수 있습니다를 <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> 속성을는 <xref:System.IdentityModel.Services.SessionSecurityTokenReceivedEventArgs> 추가 요청 처리를 중단 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드에 대 한 처리기를 보여 줍니다.는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SessionSecurityTokenReceived> ASP.NET 웹 애플리케이션의 global.asax.cs 파일에서 구현 하는 이벤트입니다. 또한 이벤트 처리기를 추가 해야 합니다. 보다 완전 한 예제에 표시 됩니다는 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 개요 항목입니다.  
+  
+ [!code-csharp[WifSAM#5](~/samples/snippets/csharp/VS_Snippets_Misc/wifsam/cs/webapplication1/global.asax.cs#5)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPrincipalFromSessionToken">
+      <MemberSignature Language="C#" Value="protected virtual void SetPrincipalFromSessionToken (System.IdentityModel.Tokens.SessionSecurityToken sessionSecurityToken);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void SetPrincipalFromSessionToken(class System.IdentityModel.Tokens.SessionSecurityToken sessionSecurityToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.SetPrincipalFromSessionToken(System.IdentityModel.Tokens.SessionSecurityToken)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void SetPrincipalFromSessionToken(System::IdentityModel::Tokens::SessionSecurityToken ^ sessionSecurityToken);" />
+      <MemberSignature Language="F#" Value="abstract member SetPrincipalFromSessionToken : System.IdentityModel.Tokens.SessionSecurityToken -&gt; unit&#xA;override this.SetPrincipalFromSessionToken : System.IdentityModel.Tokens.SessionSecurityToken -&gt; unit" Usage="sessionAuthenticationModule.SetPrincipalFromSessionToken sessionSecurityToken" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sessionSecurityToken" Type="System.IdentityModel.Tokens.SessionSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="sessionSecurityToken">보안 주체를 설정할 세션 토큰입니다.</param>
+        <summary><see cref="T:System.Web.HttpContext" /> 및 <see cref="T:System.Threading.Thread" />의 주체를 지정한 세션 토큰에 포함된 주체로 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.ValidateSessionToken%2A> 메서드 집합과 합니다 <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType> 속성 및 <xref:System.Web.HttpContext.User%2A?displayProperty=nameWithType> 속성을 <xref:System.Web.HttpContext.Current%2A?displayProperty=nameWithType> 반환 되는 id를 사용 하 여 합니다.  
+  
+ 이 메서드는 호출 된 <xref:System.IdentityModel.Services.SessionAuthenticationModule.AuthenticateSessionSecurityToken%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignedOut">
+      <MemberSignature Language="C#" Value="public event EventHandler SignedOut;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SignedOut" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.SessionAuthenticationModule.SignedOut" />
+      <MemberSignature Language="VB.NET" Value="Public Event SignedOut As EventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler ^ SignedOut;" />
+      <MemberSignature Language="F#" Value="member this.SignedOut : EventHandler " Usage="member this.SignedOut : System.EventHandler " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>사용자가 로그아웃한 후에 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 발생 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 메서드 바로 뒤의 <xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A> 메서드가 호출 됩니다.  
+  
+ 이 이벤트는 모든 세션에 대해 호출 되는 보장 되지 않습니다. 클라이언트 쪽에서 쿠키를 삭제할 수 있습니다 예를 들어 세션을 삭제 하는 것에 대 한 서버 쪽 지지 있기 때문에이 이벤트를 발생 하지 않습니다는 경우.  
+  
+   
+  
+## Examples  
+ 다음 코드에 대 한 처리기를 보여 줍니다.는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignedOut> ASP.NET 웹 애플리케이션의 global.asax.cs 파일에서 구현 하는 이벤트입니다. 또한 이벤트 처리기를 추가 해야 합니다. 보다 완전 한 예제에 표시 됩니다는 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 개요 항목입니다.  
+  
+ [!code-csharp[WifSAM#3](~/samples/snippets/csharp/VS_Snippets_Misc/wifsam/cs/webapplication1/global.asax.cs#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SigningOut">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.SigningOutEventArgs&gt; SigningOut;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.SigningOutEventArgs&gt; SigningOut" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.SessionAuthenticationModule.SigningOut" />
+      <MemberSignature Language="VB.NET" Value="Public Event SigningOut As EventHandler(Of SigningOutEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::SigningOutEventArgs ^&gt; ^ SigningOut;" />
+      <MemberSignature Language="F#" Value="member this.SigningOut : EventHandler&lt;System.IdentityModel.Services.SigningOutEventArgs&gt; " Usage="member this.SigningOut : System.EventHandler&lt;System.IdentityModel.Services.SigningOutEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.SigningOutEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>로그인 세션을 삭제하기 전에 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 발생 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 메서드 직전는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A> 메서드가 실행 됩니다.  
+  
+ 이 이벤트는 모든 세션에 대해 호출 되는 보장 되지 않습니다. 클라이언트 쪽에서 쿠키를 삭제할 수 있습니다 예를 들어 세션을 삭제 하는 것에 대 한 서버 쪽 지지 있기 때문에이 이벤트를 발생 하지 않습니다는 경우.  
+  
+   
+  
+## Examples  
+ 다음 코드에 대 한 처리기를 보여 줍니다.는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SigningOut> ASP.NET 웹 애플리케이션의 global.asax.cs 파일에서 구현 하는 이벤트입니다. 또한 이벤트 처리기를 추가 해야 합니다. 보다 완전 한 예제에 표시 됩니다는 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 개요 항목입니다.  
+  
+ [!code-csharp[WifSAM#4](~/samples/snippets/csharp/VS_Snippets_Misc/wifsam/cs/webapplication1/global.asax.cs#4)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignOut">
+      <MemberSignature Language="C#" Value="public virtual void SignOut ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SignOut() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.SignOut" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub SignOut ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SignOut();" />
+      <MemberSignature Language="F#" Value="abstract member SignOut : unit -&gt; unit&#xA;override this.SignOut : unit -&gt; unit" Usage="sessionAuthenticationModule.SignOut " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 사용자를 로그아웃하고 관련 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnSigningOut%2A>, <xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A>, 및 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnSignedOut%2A> 로그 아웃을 수행 하는 방법입니다. 예외가 발생 하는 경우는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.OnSignOutError%2A> 시키려면 메서드가 호출 되는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOutError> 이벤트입니다. 설정할 수 있습니다 합니다 <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> 의 속성을 <xref:System.IdentityModel.Services.ErrorEventArgs> 개체가이 이벤트는 로그 아웃을 취소 하 고를 클라이언트에 전파 되는 예외를 방지에 대 한 이벤트 처리기에 전달 합니다.  
+  
+ 애플리케이션별 동작을 추가 하려면이 메서드를 재정의할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드에서는 호출에 대 한 코드는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> SignOut.aspx 페이지 (SignOut.aspx.cs) ASP.NET 웹 애플리케이션에서 메서드. 보다 완전 한 예제에 표시 됩니다는 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 개요 항목입니다.  
+  
+ [!code-csharp[WifSAM#7](~/samples/snippets/csharp/VS_Snippets_Misc/wifsam/cs/webapplication1/global.asax.cs#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignOutError">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; SignOutError;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.ErrorEventArgs&gt; SignOutError" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.SessionAuthenticationModule.SignOutError" />
+      <MemberSignature Language="VB.NET" Value="Public Event SignOutError As EventHandler(Of ErrorEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::ErrorEventArgs ^&gt; ^ SignOutError;" />
+      <MemberSignature Language="F#" Value="member this.SignOutError : EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; " Usage="member this.SignOutError : System.EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>로그아웃 중 오류가 있으면 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 발생 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOut%2A> 메서드 로그 아웃 하는 동안 오류가 발생 합니다.  
+  
+ 이벤트 처리기에서 예외를 발생 시킨 이벤트의 발생을 가져올 수 있습니다는 <xref:System.IdentityModel.Services.ErrorEventArgs.Exception%2A?displayProperty=nameWithType> 속성입니다. 예외를 설정 하 여 클라이언트에 예외를 전파 하지 결과 더 이상 처리할 작업을 취소할 수 있습니다는 <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> 의 속성을 <xref:System.IdentityModel.Services.ErrorEventArgs> 에 `true`합니다.  
+  
+ 이 이벤트는 모든 세션에 대해 호출 되는 보장 되지 않습니다. 클라이언트 쪽에서 쿠키를 삭제할 수 있습니다 예를 들어 세션을 삭제 하는 것에 대 한 서버 쪽 지지 있기 때문에이 이벤트를 발생 하지 않습니다는 경우.  
+  
+   
+  
+## Examples  
+ 다음 코드에 대 한 처리기를 보여 줍니다.는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.SignOutError> ASP.NET 웹 애플리케이션의 global.asax.cs 파일에서 구현 하는 이벤트입니다. 또한 이벤트 처리기를 추가 해야 합니다. 보다 완전 한 예제에 표시 됩니다는 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 개요 항목입니다.  
+  
+ [!code-csharp[WifSAM#2](~/samples/snippets/csharp/VS_Snippets_Misc/wifsam/cs/webapplication1/global.asax.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryReadSessionTokenFromCookie">
+      <MemberSignature Language="C#" Value="public bool TryReadSessionTokenFromCookie (out System.IdentityModel.Tokens.SessionSecurityToken sessionToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryReadSessionTokenFromCookie([out] class System.IdentityModel.Tokens.SessionSecurityToken&amp; sessionToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.TryReadSessionTokenFromCookie(System.IdentityModel.Tokens.SessionSecurityToken@)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryReadSessionTokenFromCookie (ByRef sessionToken As SessionSecurityToken) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryReadSessionTokenFromCookie([Runtime::InteropServices::Out] System::IdentityModel::Tokens::SessionSecurityToken ^ % sessionToken);" />
+      <MemberSignature Language="F#" Value="member this.TryReadSessionTokenFromCookie :  -&gt; bool" Usage="sessionAuthenticationModule.TryReadSessionTokenFromCookie sessionToken" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sessionToken" Type="System.IdentityModel.Tokens.SessionSecurityToken" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="sessionToken">이 메서드가 반환될 때 세션 쿠키에서 읽은 세션 보안 토큰을 포함합니다.</param>
+        <summary>세션 쿠키에서 <see cref="T:System.IdentityModel.Tokens.SessionSecurityToken" />을 읽으려고 시도하고 세션 쿠키를 성공적으로 읽었는지 여부를 나타내는 값을 반환합니다.</summary>
+        <returns>요청에서 세션 쿠키를 읽었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 구성 된 쿠키 처리기를 사용 하 여 쿠키를 읽습니다 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A> 속성 호출을 <xref:System.IdentityModel.Services.SessionAuthenticationModule.ReadSessionTokenFromCookie%2A> 쿠키에서 토큰을 읽도록 하는 방법입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ValidateSessionToken">
+      <MemberSignature Language="C#" Value="protected System.Collections.ObjectModel.ReadOnlyCollection&lt;System.Security.Claims.ClaimsIdentity&gt; ValidateSessionToken (System.IdentityModel.Tokens.SessionSecurityToken sessionSecurityToken);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance class System.Collections.ObjectModel.ReadOnlyCollection`1&lt;class System.Security.Claims.ClaimsIdentity&gt; ValidateSessionToken(class System.IdentityModel.Tokens.SessionSecurityToken sessionSecurityToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.ValidateSessionToken(System.IdentityModel.Tokens.SessionSecurityToken)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; System::Collections::ObjectModel::ReadOnlyCollection&lt;System::Security::Claims::ClaimsIdentity ^&gt; ^ ValidateSessionToken(System::IdentityModel::Tokens::SessionSecurityToken ^ sessionSecurityToken);" />
+      <MemberSignature Language="F#" Value="member this.ValidateSessionToken : System.IdentityModel.Tokens.SessionSecurityToken -&gt; System.Collections.ObjectModel.ReadOnlyCollection&lt;System.Security.Claims.ClaimsIdentity&gt;" Usage="sessionAuthenticationModule.ValidateSessionToken sessionSecurityToken" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ObjectModel.ReadOnlyCollection&lt;System.Security.Claims.ClaimsIdentity&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sessionSecurityToken" Type="System.IdentityModel.Tokens.SessionSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="sessionSecurityToken">유효성을 검사할 토큰입니다.</param>
+        <summary>지정된 <see cref="T:System.IdentityModel.Tokens.SessionSecurityToken" />의 유효성을 검사하고 ID를 반환합니다.</summary>
+        <returns>토큰에 포함되어 있는 ID의 컬렉션입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 호출 된 <xref:System.IdentityModel.Services.SessionAuthenticationModule.AuthenticateSessionSecurityToken%2A> 메서드. 호출 된 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler.ValidateToken%2A?displayProperty=nameWithType> 토큰의 유효성을 검사 하 고 해당 id를 추출 합니다. 구성 된 세션 토큰 처리기의 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IdentityModel.Services.FederatedSessionExpiredException">토큰이 만료된 경우</exception>
+        <exception cref="T:System.IdentityModel.Services.FederationException">토큰 시작 시간이 아직 유효하지 않습니다.</exception>
+        <exception cref="T:System.InvalidOperationException">유효한 세션 토큰 처리기 구성되지 않았습니다. (<see cref="T:System.IdentityModel.Tokens.SessionSecurityTokenHandler" /> 속성에서 <see cref="P:System.IdentityModel.Configuration.IdentityConfiguration.SecurityTokenHandlers" />가 구성되지 않았습니다.)</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteSessionTokenToCookie">
+      <MemberSignature Language="C#" Value="public void WriteSessionTokenToCookie (System.IdentityModel.Tokens.SessionSecurityToken sessionToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void WriteSessionTokenToCookie(class System.IdentityModel.Tokens.SessionSecurityToken sessionToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.SessionAuthenticationModule.WriteSessionTokenToCookie(System.IdentityModel.Tokens.SessionSecurityToken)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub WriteSessionTokenToCookie (sessionToken As SessionSecurityToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void WriteSessionTokenToCookie(System::IdentityModel::Tokens::SessionSecurityToken ^ sessionToken);" />
+      <MemberSignature Language="F#" Value="member this.WriteSessionTokenToCookie : System.IdentityModel.Tokens.SessionSecurityToken -&gt; unit" Usage="sessionAuthenticationModule.WriteSessionTokenToCookie sessionToken" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sessionToken" Type="System.IdentityModel.Tokens.SessionSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="sessionToken">쓸 세션 보안 토큰입니다.</param>
+        <summary>지정된 <see cref="T:System.IdentityModel.Tokens.SessionSecurityToken" />을 세션 쿠키에 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 구성 된 쿠키 처리기를 사용 하 여 쿠키를 작성 합니다 <xref:System.IdentityModel.Services.SessionAuthenticationModule.CookieHandler%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="sessionToken" />가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">유효한 세션 토큰 처리기 구성되지 않았습니다. (<see cref="T:System.IdentityModel.Tokens.SessionSecurityTokenHandler" /> 속성에서 <see cref="P:System.IdentityModel.Configuration.IdentityConfiguration.SecurityTokenHandlers" />가 구성되지 않았습니다.)</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

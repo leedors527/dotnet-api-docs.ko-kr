@@ -1,0 +1,2248 @@
+<Type Name="EncryptedXml" FullName="System.Security.Cryptography.Xml.EncryptedXml">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0c2b3a95d2d59ff0558acd62fa092a5df0863ff0" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56784428" /></Metadata><TypeSignature Language="C#" Value="public class EncryptedXml" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit EncryptedXml extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.Xml.EncryptedXml" />
+  <TypeSignature Language="VB.NET" Value="Public Class EncryptedXml" />
+  <TypeSignature Language="C++ CLI" Value="public ref class EncryptedXml" />
+  <TypeSignature Language="F#" Value="type EncryptedXml = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Security</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+    <AssemblyVersion>4.0.2.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>XML 암호화 구현 프로세스 모델을 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.EncryptedXml> 클래스는.NET Framework의 XML 암호화에 사용 되는 기본 클래스입니다. XML 암호화 표준 기반 이며 상호 운용 가능한 방식으로 XML 문서 또는 기타 임의 데이터의 일부나 전부를 암호화 하는입니다. .NET Framework XML 암호화 클래스는 World Wide Web Consortium (W3C) 구현 [XML 암호화 구문 및 처리 버전 1.1](https://www.w3.org/TR/xmlenc-core/) 사양입니다.  
+  
+ 사용 된 <xref:System.Security.Cryptography.Xml.EncryptedXml> 표준 방식으로 애플리케이션 또는 조직 간에 암호화 된 XML 데이터를 공유 해야 할 경우 클래스입니다. XML 암호화에 대 한 W3C 사양 구현 하 여이 클래스를 사용 하 여 암호화 된 모든 데이터를 해독할 수 있습니다.  
+  
+ XML 암호화는 모든 일반 텍스트 XML 요소 또는 사용 하 여 문서를 `<EncryptedData>` 암호화 포함 (또는 암호화 텍스트)를 제공 하는 요소를 일반 텍스트 XML 표현 또는 기타 임의 데이터입니다. `<EncryptedData>` 요소 ciphertext를 해독 하는 키를 찾을 수 있는 위치에 대 한 정보를 포함할 수도 있습니다 암호화 알고리즘은 일반 텍스트를 암호화 하는 데 사용 되었습니다.  
+  
+ `<EncryptedKey>` 요소는 비슷합니다는 `<EncryptedData>` 스타일 및 사용 현황의 값을 해독 하는 키를 암호화할 수 있다는 점을 제외 하 고 요소는 `<EncryptedData>` 요소입니다. 합니다 `<EncryptedKey>` 요소 및 `<EncryptedData>` 요소는 암호화 되지 않은 키 포함 하지 않습니다.  
+  
+ 다음 방법 중 하나를 사용 하 여 키 정보를 교환 합니다.  
+  
+-   키 정보를 포함 하지 마십시오. 이 옵션을 선택 하는 경우 암호화 된 데이터를 교환 하기 전에 두 당사자는 알고리즘 및 키에 동의 해야 합니다.  
+  
+-   리소스 URI (Uniform Identifier) 특성에서 키의 위치를 포함 합니다 `<RetrievalMethod>` 요소입니다. 양 당사자 사전에 키 위치에 동의 해야 하 고이 위치는 기밀로 유지 되어야 합니다.  
+  
+-   키에 매핑되는 문자열 이름을 `<KeyName>` 요소입니다. 양 당사자는 암호화 된 데이터를 교환 하기 전에이 매핑을 비밀로 유지 되어야 키 이름 매핑에 대 동의 해야 합니다.  
+  
+-   암호화 된 키를 포함 합니다 `<EncryptedKey>` 요소입니다. 양 당사자는 암호화 된 데이터를 교환 하기 전에 암호화 된 키의 암호를 해독 하는 키에 동의 해야 합니다. 이름 또는 키를 해독 하는 키의 위치를 포함할 수도 있습니다는 `<EncryptedKey>` 요소입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에 사용 하는 간단한 유틸리티 클래스를 만드는 방법을 보여 줍니다는 <xref:System.Security.Cryptography.TripleDES> XML 문서를 암호화 하는 알고리즘입니다.  
+  
+ [!code-cpp[Cryptography.XML.MainXMLEncDecryptDataOOP#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.MainXMLEncDecryptDataOOP/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.MainXMLEncDecryptDataOOP#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.MainXMLEncDecryptDataOOP/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.MainXMLEncDecryptDataOOP#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.MainXMLEncDecryptDataOOP/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 적절 한 암호 해독 키를 검색할 암호 해독 메서드를 사용 하는 암호화 된 XML 문서에서 키 이름을 포함 합니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CPP/Cryptography.XML.XMLEncMapKey.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 X.509 인증서를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 X.509 인증서를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CPP/Cryptography.XML.XMLEncMapKeyX509.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/VB/sample.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 적절 한 암호 해독 키를 검색할 암호 해독 메서드를 사용 하는 암호화 된 XML 문서에서 키 이름을 포함 합니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CPP/Cryptography.XML.XMLEncMapKey.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 X.509 인증서를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 X.509 인증서를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CPP/Cryptography.XML.XMLEncMapKeyX509.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EncryptedXml ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; EncryptedXml();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이.NET Framework의 XML 암호화에 대 한 기본 클래스에 대 한 기본 생성자입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 적절 한 암호 해독 키를 검색할 암호 해독 메서드를 사용 하는 암호화 된 XML 문서에서 키 이름을 포함 합니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CPP/Cryptography.XML.XMLEncMapKey.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 X.509 인증서를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 X.509 인증서를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CPP/Cryptography.XML.XMLEncMapKeyX509.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EncryptedXml (System.Xml.XmlDocument document);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xml.XmlDocument document) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.#ctor(System.Xml.XmlDocument)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (document As XmlDocument)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; EncryptedXml(System::Xml::XmlDocument ^ document);" />
+      <MemberSignature Language="F#" Value="new System.Security.Cryptography.Xml.EncryptedXml : System.Xml.XmlDocument -&gt; System.Security.Cryptography.Xml.EncryptedXml" Usage="new System.Security.Cryptography.Xml.EncryptedXml document" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="document" Type="System.Xml.XmlDocument" />
+      </Parameters>
+      <Docs>
+        <param name="document"><see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 개체를 초기화하는 데 사용되는 <see cref="T:System.Xml.XmlDocument" /> 개체입니다.</param>
+        <summary>지정된 XML 문서를 사용하여 <see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자를 사용 하는 <xref:System.Security.Cryptography.Xml.EncryptedXml> XML 문서를 암호화를 지정 하려는 경우 개체입니다. `document` 매개 변수는 나중에 암호화 된 XML을 형성 하는 XML 요소를 구성 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 적절 한 암호 해독 키를 검색할 암호 해독 메서드를 사용 하는 암호화 된 XML 문서에서 키 이름을 포함 합니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CPP/Cryptography.XML.XMLEncMapKey.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public EncryptedXml (System.Xml.XmlDocument document, System.Security.Policy.Evidence evidence);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xml.XmlDocument document, class System.Security.Policy.Evidence evidence) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.#ctor(System.Xml.XmlDocument,System.Security.Policy.Evidence)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; EncryptedXml(System::Xml::XmlDocument ^ document, System::Security::Policy::Evidence ^ evidence);" />
+      <MemberSignature Language="F#" Value="new System.Security.Cryptography.Xml.EncryptedXml : System.Xml.XmlDocument * System.Security.Policy.Evidence -&gt; System.Security.Cryptography.Xml.EncryptedXml" Usage="new System.Security.Cryptography.Xml.EncryptedXml (document, evidence)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="document" Type="System.Xml.XmlDocument" />
+        <Parameter Name="evidence" Type="System.Security.Policy.Evidence" />
+      </Parameters>
+      <Docs>
+        <param name="document"><see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 개체를 초기화하는 데 사용되는 <see cref="T:System.Xml.XmlDocument" /> 개체입니다.</param>
+        <param name="evidence"><see cref="T:System.Xml.XmlDocument" /> 개체와 관련된 <see cref="T:System.Security.Policy.Evidence" /> 개체입니다.</param>
+        <summary>지정된 XML 문서와 증명 정보를 사용하여 <see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자를 사용 하는 <xref:System.Security.Cryptography.Xml.EncryptedXml> XML 문서를 암호화 하 고 보안 증명 정보를 제공할 지정 하려는 경우 개체입니다. `document` 매개 변수는 나중에 암호화 된 XML을 형성 하는 XML 요소를 구성 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddKeyNameMapping">
+      <MemberSignature Language="C#" Value="public void AddKeyNameMapping (string keyName, object keyObject);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddKeyNameMapping(string keyName, object keyObject) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.AddKeyNameMapping(System.String,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AddKeyNameMapping (keyName As String, keyObject As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AddKeyNameMapping(System::String ^ keyName, System::Object ^ keyObject);" />
+      <MemberSignature Language="F#" Value="member this.AddKeyNameMapping : string * obj -&gt; unit" Usage="encryptedXml.AddKeyNameMapping (keyName, keyObject)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyName" Type="System.String" />
+        <Parameter Name="keyObject" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="keyName"><paramref name="keyObject" />에 매핑할 이름입니다.</param>
+        <param name="keyObject"><paramref name="keyName" />에 매핑할 대칭 키입니다.</param>
+        <summary>대칭 키나 비대칭 키와 키 이름 간의 매핑을 정의합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.EncryptedXml.AddKeyNameMapping%2A> 메서드 문자열 이름에 대칭 키나 비대칭 키를 매핑할 수 있습니다. 이 메서드는 값을 추가 합니다 `keyName` 및 `keyObject` 유효한 키 테이블에 대 한 매개 변수 이름 매핑.  
+  
+ 사용 된 <xref:System.Security.Cryptography.Xml.EncryptedXml.ClearKeyNameMappings%2A> 키 이름 매핑 테이블의 선택을 취소 하는 방법입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 적절 한 암호 해독 키를 검색할 암호 해독 메서드를 사용 하는 암호화 된 XML 문서에서 키 이름을 포함 합니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/CPP/Cryptography.XML.XMLEncMinimalDecrypt.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="keyName" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="keyObject" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="keyObject" /> 매개 변수의 값이 RSA 알고리즘이나 대칭 키가 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ClearKeyNameMappings">
+      <MemberSignature Language="C#" Value="public void ClearKeyNameMappings ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ClearKeyNameMappings() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.ClearKeyNameMappings" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ClearKeyNameMappings ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ClearKeyNameMappings();" />
+      <MemberSignature Language="F#" Value="member this.ClearKeyNameMappings : unit -&gt; unit" Usage="encryptedXml.ClearKeyNameMappings " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>모든 키 이름 매핑을 다시 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 사용 하 여 사용 하 여 설정 된 모든 키 이름 매핑을 선택을 취소 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.AddKeyNameMapping%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DecryptData">
+      <MemberSignature Language="C#" Value="public byte[] DecryptData (System.Security.Cryptography.Xml.EncryptedData encryptedData, System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] DecryptData(class System.Security.Cryptography.Xml.EncryptedData encryptedData, class System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Byte&gt; ^ DecryptData(System::Security::Cryptography::Xml::EncryptedData ^ encryptedData, System::Security::Cryptography::SymmetricAlgorithm ^ symmetricAlgorithm);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public byte[] DecryptData (System.Security.Cryptography.Xml.EncryptedData encryptedData, System.Security.Cryptography.SymmetricAlgorithm symAlg);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] DecryptData(class System.Security.Cryptography.Xml.EncryptedData encryptedData, class System.Security.Cryptography.SymmetricAlgorithm symAlg) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Byte&gt; ^ DecryptData(System::Security::Cryptography::Xml::EncryptedData ^ encryptedData, System::Security::Cryptography::SymmetricAlgorithm ^ symAlg);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.DecryptData(System.Security.Cryptography.Xml.EncryptedData,System.Security.Cryptography.SymmetricAlgorithm)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.DecryptData : System.Security.Cryptography.Xml.EncryptedData * System.Security.Cryptography.SymmetricAlgorithm -&gt; byte[]" Usage="encryptedXml.DecryptData (encryptedData, symAlg)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.DecryptData(System.Security.Cryptography.Xml.EncryptedData,System.Security.Cryptography.SymmetricAlgorithm)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.DecryptData : System.Security.Cryptography.Xml.EncryptedData * System.Security.Cryptography.SymmetricAlgorithm -&gt; byte[]" Usage="encryptedXml.DecryptData (encryptedData, symAlg)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encryptedData" Type="System.Security.Cryptography.Xml.EncryptedData" Index="0" />
+        <Parameter Name="symmetricAlgorithm" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="symAlg" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="encryptedData">해독할 데이터입니다.</param>
+        <param name="symmetricAlgorithm"><paramref name="encryptedData" />을 해독하는 데 사용되는 대칭 키입니다.</param>
+        <param name="symAlg">To be added.</param>
+        <summary>지정된 대칭 알고리즘을 사용하여 <see langword="&lt;EncryptedData&gt;" /> 요소를 해독합니다.</summary>
+        <returns>해독된 원시 일반 텍스트가 들어 있는 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptData%2A> 암호를 해독 하는 메서드는 <xref:System.Security.Cryptography.Xml.EncryptedData> 대칭 키를 사용 하 여 요소.  
+  
+ 유의 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptData%2A> 메서드를만 최상위 해독 <`EncryptedData`> 태그입니다. 경우에는 하나 이상의 <`EncryptedData`> 태그 암호화 되어 있고 더 높은 수준 내에 포함 된 <`EncryptedData`> 태그를 호출할 수 있습니다는 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptDocument%2A> 메서드 각각에 대해 개별적으로 합니다. 참조 된 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptDocument%2A> 메서드 코드 예제입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="encryptedData" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="symmetricAlgorithm" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DecryptDocument">
+      <MemberSignature Language="C#" Value="public void DecryptDocument ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DecryptDocument() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.DecryptDocument" />
+      <MemberSignature Language="VB.NET" Value="Public Sub DecryptDocument ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void DecryptDocument();" />
+      <MemberSignature Language="F#" Value="member this.DecryptDocument : unit -&gt; unit" Usage="encryptedXml.DecryptDocument " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 클래스를 초기화하는 동안 지정된 XML 문서의 모든 <see langword="&lt;EncryptedData&gt;" /> 요소를 해독합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptDocument%2A> 메서드를 모두 해독 `<EncryptedData>` 초기화 하는 동안 XML 문서의 요소를 로드 합니다. 이 메서드를 호출한 후 모든 `<EncryptedData>` 문서의 요소에에서 일반 텍스트 버전으로 바뀝니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptDocument%2A> 메서드를 최상위 해독 `<EncryptedData>` 요소입니다. 호출 해야 합니다 (한 번 암호화 된 문서)을 슈퍼로 암호화 된 문서를 해독 하는 경우는 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptDocument%2A> 모든 때까지 반복적으로 메서드는 `<EncryptedData>` 있는 요소를 암호 해독 합니다.  
+  
+> [!NOTE]
+>  <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptDocument%2A> 메서드는 유효한 XML 데이터를 해독 합니다. 임의의 데이터를 암호 해독에 사용 된 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptData%2A> 메서드.  
+  
+ X.509 인증서를 사용 하 여 XML 암호화를 사용 하는 Microsoft Enhanced Cryptographic Provider 설치 되어 있어야 하며 X.509 인증서에 향상 된 공급자를 사용 해야 합니다. Microsoft Enhanced Cryptographic Provider 설치 되어 있지 않은 경우 X.509 인증서에 향상 된 공급자를 사용 하지 않습니다는 <xref:System.Security.Cryptography.CryptographicException> "알 수 없는 오류"를 사용 하 여이 throw 됩니다 XML 문서를 해독 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 X.509 인증서를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 X.509 인증서를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CPP/Cryptography.XML.XMLEncMapKeyX509.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 상위 수준 암호를 해독 하는 방법을 보여 줍니다. <`EncryptedData`> 다른 암호화를 포함 하는 태그 <`EncryptedData`> 태그입니다.  
+  
+ [!code-csharp[Cryptography.XML.EncryptedDocument.DecryptDocument-SuperEncryption#1](~/samples/snippets/csharp/VS_Snippets_Misc/Cryptography.XML.EncryptedDocument.DecryptDocument-SuperEncryption/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.EncryptedDocument.DecryptDocument-SuperEncryption#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/Cryptography.XML.EncryptedDocument.DecryptDocument-SuperEncryption/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">문서를 해독하는 데 사용된 암호화 키를 찾을 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DecryptEncryptedKey">
+      <MemberSignature Language="C#" Value="public virtual byte[] DecryptEncryptedKey (System.Security.Cryptography.Xml.EncryptedKey encryptedKey);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance unsigned int8[] DecryptEncryptedKey(class System.Security.Cryptography.Xml.EncryptedKey encryptedKey) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.DecryptEncryptedKey(System.Security.Cryptography.Xml.EncryptedKey)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual cli::array &lt;System::Byte&gt; ^ DecryptEncryptedKey(System::Security::Cryptography::Xml::EncryptedKey ^ encryptedKey);" />
+      <MemberSignature Language="F#" Value="abstract member DecryptEncryptedKey : System.Security.Cryptography.Xml.EncryptedKey -&gt; byte[]&#xA;override this.DecryptEncryptedKey : System.Security.Cryptography.Xml.EncryptedKey -&gt; byte[]" Usage="encryptedXml.DecryptEncryptedKey encryptedKey" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encryptedKey" Type="System.Security.Cryptography.Xml.EncryptedKey" />
+      </Parameters>
+      <Docs>
+        <param name="encryptedKey">검색할 키가 들어 있는 <see cref="T:System.Security.Cryptography.Xml.EncryptedKey" /> 개체입니다.</param>
+        <summary><see cref="T:System.Security.Cryptography.Xml.EncryptedKey" /> 요소로 표시되는 키를 확인합니다.</summary>
+        <returns>키가 들어 있는 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptEncryptedKey%2A> 메서드 내에 포함 된 암호화 된 키를 해독 합니다 `<EncryptedKey>` XML 문서의 요소입니다.  
+  
+ 이 재귀 메서드 나타내는 키를 찾습니다는 <xref:System.Security.Cryptography.Xml.EncryptedKey> 개체입니다. <xref:System.Security.Cryptography.Xml.EncryptedKey> 다른 개체가 포함 될 수 있습니다 <xref:System.Security.Cryptography.Xml.EncryptedKey> 지정 하는 개체는 <xref:System.Security.Cryptography.Xml.KeyInfo> 값입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="encryptedKey" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="encryptedKey" /> 매개 변수의 값이 3DES(Triple DES) 키 랩 알고리즘이나 Rijndael이라고도 하는 AES(고급 암호화 표준) 키 랩 알고리즘이 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="DecryptKey">
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see langword="&lt;EncryptedKey&gt;" /> 요소를 해독합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여는 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptKey%2A> 암호를 해독 하는 메서드는 `<EncryptedKey>` 요소 및 해당 요소를 암호 해독 하는 데 키를 검색 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="DecryptKey">
+      <MemberSignature Language="C#" Value="public static byte[] DecryptKey (byte[] keyData, System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] DecryptKey(unsigned int8[] keyData, class System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ DecryptKey(cli::array &lt;System::Byte&gt; ^ keyData, System::Security::Cryptography::SymmetricAlgorithm ^ symmetricAlgorithm);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public static byte[] DecryptKey (byte[] keyData, System.Security.Cryptography.SymmetricAlgorithm symAlg);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] DecryptKey(unsigned int8[] keyData, class System.Security.Cryptography.SymmetricAlgorithm symAlg) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function DecryptKey (keyData As Byte(), symAlg As SymmetricAlgorithm) As Byte()" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ DecryptKey(cli::array &lt;System::Byte&gt; ^ keyData, System::Security::Cryptography::SymmetricAlgorithm ^ symAlg);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function DecryptKey (keyData As Byte(), symAlg As SymmetricAlgorithm) As Byte()" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.DecryptKey(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member DecryptKey : byte[] * System.Security.Cryptography.SymmetricAlgorithm -&gt; byte[]" Usage="System.Security.Cryptography.Xml.EncryptedXml.DecryptKey (keyData, symAlg)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.DecryptKey(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member DecryptKey : byte[] * System.Security.Cryptography.SymmetricAlgorithm -&gt; byte[]" Usage="System.Security.Cryptography.Xml.EncryptedXml.DecryptKey (keyData, symAlg)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyData" Type="System.Byte[]" Index="0" />
+        <Parameter Name="symmetricAlgorithm" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="symAlg" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="keyData">암호화된 <see langword="&lt;EncryptedKey&gt;" /> 요소를 나타내는 바이트 배열입니다.</param>
+        <param name="symmetricAlgorithm"><paramref name="keyData" />을 해독하는 데 사용되는 대칭 키입니다.</param>
+        <param name="symAlg">To be added.</param>
+        <summary>대칭 알고리즘을 사용하여 <see langword="&lt;EncryptedKey&gt;" /> 요소를 해독합니다.</summary>
+        <returns>일반 텍스트 키가 들어 있는 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptKey%2A> 메서드 내에 포함 된 암호화 된 키를 해독 합니다 `<EncryptedKey>` XML 문서의 요소입니다. 이 메서드는 값은 `symmetricAlgorithm` Triple DES 알고리즘 또는 AES 키 래핑 알고리즘 (Rijndael이 라고도 함)을 나타내는 매개 변수입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="keyData" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="symmetricAlgorithm" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="symmetricAlgorithm" /> 요소의 값이 3DES(Triple DES) 키 랩알고리즘이나 Rijndael이라고도 하는 AES(고급 암호화 표준) 키 랩 알고리즘이 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DecryptKey">
+      <MemberSignature Language="C#" Value="public static byte[] DecryptKey (byte[] keyData, System.Security.Cryptography.RSA rsa, bool useOAEP);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] DecryptKey(unsigned int8[] keyData, class System.Security.Cryptography.RSA rsa, bool useOAEP) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ DecryptKey(cli::array &lt;System::Byte&gt; ^ keyData, System::Security::Cryptography::RSA ^ rsa, bool useOAEP);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public static byte[] DecryptKey (byte[] keyData, System.Security.Cryptography.RSA rsa, bool fOAEP);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] DecryptKey(unsigned int8[] keyData, class System.Security.Cryptography.RSA rsa, bool fOAEP) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ DecryptKey(cli::array &lt;System::Byte&gt; ^ keyData, System::Security::Cryptography::RSA ^ rsa, bool fOAEP);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.DecryptKey(System.Byte[],System.Security.Cryptography.RSA,System.Boolean)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member DecryptKey : byte[] * System.Security.Cryptography.RSA * bool -&gt; byte[]" Usage="System.Security.Cryptography.Xml.EncryptedXml.DecryptKey (keyData, rsa, fOAEP)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.DecryptKey(System.Byte[],System.Security.Cryptography.RSA,System.Boolean)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member DecryptKey : byte[] * System.Security.Cryptography.RSA * bool -&gt; byte[]" Usage="System.Security.Cryptography.Xml.EncryptedXml.DecryptKey (keyData, rsa, fOAEP)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyData" Type="System.Byte[]" Index="0" />
+        <Parameter Name="rsa" Type="System.Security.Cryptography.RSA" Index="1" />
+        <Parameter Name="useOAEP" Type="System.Boolean" Index="2" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="fOAEP" Type="System.Boolean" Index="2" FrameworkAlternate="xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="keyData">암호화된 <see langword="&lt;EncryptedKey&gt;" /> 요소를 나타내는 바이트 배열입니다.</param>
+        <param name="rsa"><paramref name="keyData" />을 해독하는 데 사용되는 비대칭 키입니다.</param>
+        <param name="useOAEP">OAEP(Optimal Asymmetric Encryption Padding)의 사용 여부를 지정하는 값입니다.</param>
+        <param name="fOAEP">To be added.</param>
+        <summary>비대칭 알고리즘을 사용하여 <see langword="&lt;EncryptedKey&gt;" /> 요소를 해독합니다.</summary>
+        <returns>일반 텍스트 키가 들어 있는 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.DecryptKey%2A> 메서드 내에 포함 된 암호화 된 키를 해독 합니다 `<EncryptedKey>` XML 문서의 요소입니다. 이 메서드는 값은 `rsa` RSA PKCS 1 v1.5 알고리즘 또는 PKCS #1 RSA 형식 2 알고리즘 (OAEP 안쪽 여백 라고도 함)을 나타내는 매개 변수입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="keyData" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="rsa" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DocumentEvidence">
+      <MemberSignature Language="C#" Value="public System.Security.Policy.Evidence DocumentEvidence { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Policy.Evidence DocumentEvidence" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.EncryptedXml.DocumentEvidence" />
+      <MemberSignature Language="VB.NET" Value="Public Property DocumentEvidence As Evidence" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Policy::Evidence ^ DocumentEvidence { System::Security::Policy::Evidence ^ get(); void set(System::Security::Policy::Evidence ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.DocumentEvidence : System.Security.Policy.Evidence with get, set" Usage="System.Security.Cryptography.Xml.EncryptedXml.DocumentEvidence" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Policy.Evidence</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Xml.XmlDocument" /> 개체가 생성되는 <see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 개체의 증명 정보를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Security.Policy.Evidence" /> 개체</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ XML 문서를 만드는 데 사용 하는 경우는 <xref:System.Security.Cryptography.Xml.EncryptedXml> 개체에 보안 증명 정보, 증명 정보를 추가 해야 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.DocumentEvidence%2A> 속성입니다. 연결 된이 속성을 설정 하지 않으면 <xref:System.Security.Cryptography.Xml.CipherReference> 개체는 부여 되지 것입니다 필수 사용 권한 집합을 하기 때문에 역참조 해서는 안 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Encoding">
+      <MemberSignature Language="C#" Value="public System.Text.Encoding Encoding { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Text.Encoding Encoding" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.EncryptedXml.Encoding" />
+      <MemberSignature Language="VB.NET" Value="Public Property Encoding As Encoding" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Text::Encoding ^ Encoding { System::Text::Encoding ^ get(); void set(System::Text::Encoding ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Encoding : System.Text.Encoding with get, set" Usage="System.Security.Cryptography.Xml.EncryptedXml.Encoding" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Text.Encoding</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 암호화에 사용되는 인코딩을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Text.Encoding" /> 개체</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ U t F-8 인코딩이 기본 XML 암호화에 대 한 인코딩입니다. 다른 유형의에서 인코딩을 지정 하려면이 속성을 사용할 수는 <xref:System.Text.Encoding> u t F-16 또는 ASCII와 같은 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Encrypt">
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>키 매핑 테이블의 지정된 인증서나 키를 사용하여 요소의 외부 XML을 암호화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/CPP/Cryptography.XML.XMLEncMinimalDecrypt.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 X.509 인증서를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 X.509 인증서를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CPP/Cryptography.XML.XMLEncMapKeyX509.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Encrypt">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.Xml.EncryptedData Encrypt (System.Xml.XmlElement inputElement, System.Security.Cryptography.X509Certificates.X509Certificate2 certificate);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Security.Cryptography.Xml.EncryptedData Encrypt(class System.Xml.XmlElement inputElement, class System.Security.Cryptography.X509Certificates.X509Certificate2 certificate) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.Encrypt(System.Xml.XmlElement,System.Security.Cryptography.X509Certificates.X509Certificate2)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Encrypt (inputElement As XmlElement, certificate As X509Certificate2) As EncryptedData" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Security::Cryptography::Xml::EncryptedData ^ Encrypt(System::Xml::XmlElement ^ inputElement, System::Security::Cryptography::X509Certificates::X509Certificate2 ^ certificate);" />
+      <MemberSignature Language="F#" Value="member this.Encrypt : System.Xml.XmlElement * System.Security.Cryptography.X509Certificates.X509Certificate2 -&gt; System.Security.Cryptography.Xml.EncryptedData" Usage="encryptedXml.Encrypt (inputElement, certificate)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.Xml.EncryptedData</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="inputElement" Type="System.Xml.XmlElement" />
+        <Parameter Name="certificate" Type="System.Security.Cryptography.X509Certificates.X509Certificate2" />
+      </Parameters>
+      <Docs>
+        <param name="inputElement">암호화할 XML 요소입니다.</param>
+        <param name="certificate">암호화에 사용할 X.509 인증서입니다.</param>
+        <summary>지정된 X.509 인증서를 사용하여 요소의 외부 XML을 암호화합니다.</summary>
+        <returns>암호화된 XML 데이터를 나타내는 <see cref="T:System.Security.Cryptography.Xml.EncryptedData" /> 요소입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.EncryptedXml.Encrypt%2A> 메서드는 인증서를 사용 하 여 요소의 외부 XML을 암호화 하는 편리한 방법입니다. 이 메서드는 XML 요소를 암호화 하는 256 비트 표준 AES (고급 암호화) 세션 키를 생성 한 다음 암호화 하 고 사용 하 여 AES 키 서명 된 <xref:System.Security.Cryptography.X509Certificates.X509Certificate2> 개체입니다. 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.Encrypt%2A> 메서드가 반환 됩니다. 결과 XML을 <xref:System.Security.Cryptography.Xml.EncryptedData> 요소입니다.  
+  
+ 암호화를 통해 더 많은 제어를 해야 하므로 배치할 수 있습니다에 암호화 된 정보를는 `<CipherReference>` 요소 전체 XML 요소 또는 내용만 되어야 하는지 여부를 지정 하거나 사용 하 여 암호화를 <xref:System.Security.Cryptography.Xml.EncryptedXml.EncryptData%2A> 메서드 오버 로드 합니다.  
+  
+ X.509 인증서를 사용 하 여 XML 암호화를 사용 하는 Microsoft Enhanced Cryptographic Provider 설치 되어 있어야 하며 X.509 인증서에 향상 된 공급자를 사용 해야 합니다. Microsoft Enhanced Cryptographic Provider 설치 되어 있지 않은 경우 X.509 인증서에 향상 된 공급자를 사용 하지 않습니다는 <xref:System.Security.Cryptography.CryptographicException> "알 수 없는 오류"를 사용 하 여이 throw 됩니다 XML 문서를 해독 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 X.509 인증서를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 X.509 인증서를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CPP/Cryptography.XML.XMLEncMapKeyX509.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKeyX509#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKeyX509/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="inputElement" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="certificate" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.NotSupportedException"><paramref name="certificate" /> 매개 변수의 값이 RSA 키 알고리즘을 나타내지 않는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Encrypt">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.Xml.EncryptedData Encrypt (System.Xml.XmlElement inputElement, string keyName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Security.Cryptography.Xml.EncryptedData Encrypt(class System.Xml.XmlElement inputElement, string keyName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.Encrypt(System.Xml.XmlElement,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Encrypt (inputElement As XmlElement, keyName As String) As EncryptedData" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Security::Cryptography::Xml::EncryptedData ^ Encrypt(System::Xml::XmlElement ^ inputElement, System::String ^ keyName);" />
+      <MemberSignature Language="F#" Value="member this.Encrypt : System.Xml.XmlElement * string -&gt; System.Security.Cryptography.Xml.EncryptedData" Usage="encryptedXml.Encrypt (inputElement, keyName)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.Xml.EncryptedData</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="inputElement" Type="System.Xml.XmlElement" />
+        <Parameter Name="keyName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="inputElement">암호화할 XML 요소입니다.</param>
+        <param name="keyName">키 매핑 테이블에서 찾을 수 있는 키 이름입니다.</param>
+        <summary>키 매핑 테이블의 지정된 키를 사용하여 요소의 외부 XML을 암호화합니다.</summary>
+        <returns>암호화된 XML 데이터를 나타내는 <see cref="T:System.Security.Cryptography.Xml.EncryptedData" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 키 이름을 사용 하 여 요소의 외부 XML을 암호화 하는 편리한 방법입니다. 암호화를 통해 더 많은 제어를 해야 하므로 배치할 수 있습니다에 암호화 된 정보를는 `<CipherReference>` 요소 전체 XML 요소 또는 내용만 되어야 하는지 여부를 지정 하거나 사용 하 여 암호화를 <xref:System.Security.Cryptography.Xml.EncryptedXml.EncryptData%2A> 메서드 오버 로드 합니다.  
+  
+ 목록은 모든 지원 되는 알고리즘 목록은 연관 된 상수 필드는 <xref:System.Security.Cryptography.Xml.EncryptedXml> 클래스입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/CPP/Cryptography.XML.XMLEncMinimalDecrypt.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecrypt#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecrypt/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="inputElement" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="keyName" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="keyName" /> 매개 변수의 값이 등록된 키 이름 쌍과 일치하지 않는 경우  
+  
+또는 
+<paramref name="keyName" /> 매개 변수에 설명된 암호화 키가 지원되지 않는 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="EncryptData">
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>대칭 알고리즘을 사용하여 XML 데이터를 암호화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 적절 한 암호 해독 키를 검색할 암호 해독 메서드를 사용 하는 암호화 된 XML 문서에서 키 이름을 포함 합니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CPP/Cryptography.XML.XMLEncMapKey.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="EncryptData">
+      <MemberSignature Language="C#" Value="public byte[] EncryptData (byte[] plaintext, System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] EncryptData(unsigned int8[] plaintext, class System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Byte&gt; ^ EncryptData(cli::array &lt;System::Byte&gt; ^ plaintext, System::Security::Cryptography::SymmetricAlgorithm ^ symmetricAlgorithm);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public byte[] EncryptData (byte[] plainText, System.Security.Cryptography.SymmetricAlgorithm symAlg);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] EncryptData(unsigned int8[] plainText, class System.Security.Cryptography.SymmetricAlgorithm symAlg) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Function EncryptData (plainText As Byte(), symAlg As SymmetricAlgorithm) As Byte()" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Byte&gt; ^ EncryptData(cli::array &lt;System::Byte&gt; ^ plainText, System::Security::Cryptography::SymmetricAlgorithm ^ symAlg);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Function EncryptData (plainText As Byte(), symAlg As SymmetricAlgorithm) As Byte()" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.EncryptData(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.EncryptData : byte[] * System.Security.Cryptography.SymmetricAlgorithm -&gt; byte[]" Usage="encryptedXml.EncryptData (plainText, symAlg)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.EncryptData(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.EncryptData : byte[] * System.Security.Cryptography.SymmetricAlgorithm -&gt; byte[]" Usage="encryptedXml.EncryptData (plainText, symAlg)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="plaintext" Type="System.Byte[]" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="plainText" Type="System.Byte[]" Index="0" FrameworkAlternate="xamarinmac-3.0" />
+        <Parameter Name="symmetricAlgorithm" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="symAlg" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="plaintext">암호화할 데이터입니다.</param>
+        <param name="plainText">To be added.</param>
+        <param name="symmetricAlgorithm">암호화에 사용할 대칭 알고리즘입니다.</param>
+        <param name="symAlg">To be added.</param>
+        <summary>지정된 대칭 알고리즘을 사용하여 지정된 바이트 배열의 데이터를 암호화합니다.</summary>
+        <returns>암호화된 데이터의 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 반환된 된 바이트 배열에 배치할 수는 `<CipherValue>` 요소입니다. 이 메서드는 데이터에 지정 된 것으로 가정 합니다 `plaintext` 매개 변수는 XML 데이터를 포함 하는 바이트 배열입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 적절 한 암호 해독 키를 검색할 암호 해독 메서드를 사용 하는 암호화 된 XML 문서에서 키 이름을 포함 합니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CPP/Cryptography.XML.XMLEncMapKey.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMapKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMapKey/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="plaintext" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="symmetricAlgorithm" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">지정된 매개 변수를 사용하여 데이터를 암호화할 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EncryptData">
+      <MemberSignature Language="C#" Value="public byte[] EncryptData (System.Xml.XmlElement inputElement, System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm, bool content);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] EncryptData(class System.Xml.XmlElement inputElement, class System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm, bool content) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Byte&gt; ^ EncryptData(System::Xml::XmlElement ^ inputElement, System::Security::Cryptography::SymmetricAlgorithm ^ symmetricAlgorithm, bool content);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public byte[] EncryptData (System.Xml.XmlElement inputElement, System.Security.Cryptography.SymmetricAlgorithm symAlg, bool content);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] EncryptData(class System.Xml.XmlElement inputElement, class System.Security.Cryptography.SymmetricAlgorithm symAlg, bool content) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Function EncryptData (inputElement As XmlElement, symAlg As SymmetricAlgorithm, content As Boolean) As Byte()" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Byte&gt; ^ EncryptData(System::Xml::XmlElement ^ inputElement, System::Security::Cryptography::SymmetricAlgorithm ^ symAlg, bool content);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Function EncryptData (inputElement As XmlElement, symAlg As SymmetricAlgorithm, content As Boolean) As Byte()" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.EncryptData(System.Xml.XmlElement,System.Security.Cryptography.SymmetricAlgorithm,System.Boolean)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.EncryptData : System.Xml.XmlElement * System.Security.Cryptography.SymmetricAlgorithm * bool -&gt; byte[]" Usage="encryptedXml.EncryptData (inputElement, symAlg, content)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.EncryptData(System.Xml.XmlElement,System.Security.Cryptography.SymmetricAlgorithm,System.Boolean)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.EncryptData : System.Xml.XmlElement * System.Security.Cryptography.SymmetricAlgorithm * bool -&gt; byte[]" Usage="encryptedXml.EncryptData (inputElement, symAlg, content)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="inputElement" Type="System.Xml.XmlElement" Index="0" />
+        <Parameter Name="symmetricAlgorithm" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="symAlg" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="xamarinmac-3.0" />
+        <Parameter Name="content" Type="System.Boolean" Index="2" />
+      </Parameters>
+      <Docs>
+        <param name="inputElement">암호화할 요소나 요소의 내용입니다.</param>
+        <param name="symmetricAlgorithm">암호화에 사용할 대칭 알고리즘입니다.</param>
+        <param name="symAlg">To be added.</param>
+        <param name="content">요소의 내용만 암호화하면 <see langword="true" />이고, 전체 요소를 암호화하면 <see langword="false" />입니다.</param>
+        <summary>지정된 대칭 알고리즘을 사용하여 지정된 요소나 요소의 내용을 암호화합니다.</summary>
+        <returns>암호화된 데이터가 들어 있는 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 반환 된 바이트 배열 데이터의 값인는 `<CipherValue>` 요소입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="inputElement" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="symmetricAlgorithm" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="EncryptKey">
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>수신자가 <see langword="&lt;EncryptedData&gt;" /> 요소를 해독하기 위해 사용할 키를 암호화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.EncryptKey%2A> 받는 사람 암호를 해독 하는 데 사용 하는 키를 암호화 하는 메서드는 `<EncryptedData>` 요소입니다. 이 메서드 내에서 암호화 된 키를 배치는 `<EncryptedKey>` 요소입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="EncryptKey">
+      <MemberSignature Language="C#" Value="public static byte[] EncryptKey (byte[] keyData, System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] EncryptKey(unsigned int8[] keyData, class System.Security.Cryptography.SymmetricAlgorithm symmetricAlgorithm) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ EncryptKey(cli::array &lt;System::Byte&gt; ^ keyData, System::Security::Cryptography::SymmetricAlgorithm ^ symmetricAlgorithm);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public static byte[] EncryptKey (byte[] keyData, System.Security.Cryptography.SymmetricAlgorithm symAlg);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] EncryptKey(unsigned int8[] keyData, class System.Security.Cryptography.SymmetricAlgorithm symAlg) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function EncryptKey (keyData As Byte(), symAlg As SymmetricAlgorithm) As Byte()" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ EncryptKey(cli::array &lt;System::Byte&gt; ^ keyData, System::Security::Cryptography::SymmetricAlgorithm ^ symAlg);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function EncryptKey (keyData As Byte(), symAlg As SymmetricAlgorithm) As Byte()" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.EncryptKey(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member EncryptKey : byte[] * System.Security.Cryptography.SymmetricAlgorithm -&gt; byte[]" Usage="System.Security.Cryptography.Xml.EncryptedXml.EncryptKey (keyData, symAlg)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.EncryptKey(System.Byte[],System.Security.Cryptography.SymmetricAlgorithm)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member EncryptKey : byte[] * System.Security.Cryptography.SymmetricAlgorithm -&gt; byte[]" Usage="System.Security.Cryptography.Xml.EncryptedXml.EncryptKey (keyData, symAlg)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyData" Type="System.Byte[]" Index="0" />
+        <Parameter Name="symmetricAlgorithm" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="symAlg" Type="System.Security.Cryptography.SymmetricAlgorithm" Index="1" FrameworkAlternate="xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="keyData">암호화할 키입니다.</param>
+        <param name="symmetricAlgorithm"><paramref name="keyData" />을 암호화하는 데 사용되는 대칭 키입니다.</param>
+        <param name="symAlg">To be added.</param>
+        <summary>수신자가 <see langword="&lt;EncryptedData&gt;" /> 요소를 해독하기 위해 사용할 키를 대칭 알고리즘을 사용하여 암호화합니다.</summary>
+        <returns><paramref name="keyData" /> 매개 변수의 암호화된 값을 나타내는 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.EncryptKey%2A> 받는 사람 암호를 해독 하는 데 사용 하는 키를 암호화 하는 메서드는 `<EncryptedData>` 요소입니다. 이 메서드는 값은 `symmetricAlgorithm` Triple DES 알고리즘 또는 AES 키 래핑 알고리즘 (Rijndael이 라고도 함)을 나타내는 매개 변수입니다.  
+  
+ 이 메서드가 자동으로 내에서 암호화 된 키를 설정 하 고 하지 않으며 확인을 `<EncryptedKey>` 요소입니다. 수동으로 만들어야 합니다를 `<EncryptedKey>` 문서 내의 요소입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="keyData" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="symmetricAlgorithm" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="symmetricAlgorithm" /> 매개 변수의 값이 3DES(Triple DES) 키 랩 알고리즘이나 Rijndael이라고도 하는 AES(고급 암호화 표준) 키 랩 알고리즘이 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EncryptKey">
+      <MemberSignature Language="C#" Value="public static byte[] EncryptKey (byte[] keyData, System.Security.Cryptography.RSA rsa, bool useOAEP);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] EncryptKey(unsigned int8[] keyData, class System.Security.Cryptography.RSA rsa, bool useOAEP) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ EncryptKey(cli::array &lt;System::Byte&gt; ^ keyData, System::Security::Cryptography::RSA ^ rsa, bool useOAEP);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public static byte[] EncryptKey (byte[] keyData, System.Security.Cryptography.RSA rsa, bool fOAEP);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig unsigned int8[] EncryptKey(unsigned int8[] keyData, class System.Security.Cryptography.RSA rsa, bool fOAEP) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Byte&gt; ^ EncryptKey(cli::array &lt;System::Byte&gt; ^ keyData, System::Security::Cryptography::RSA ^ rsa, bool fOAEP);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.EncryptKey(System.Byte[],System.Security.Cryptography.RSA,System.Boolean)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member EncryptKey : byte[] * System.Security.Cryptography.RSA * bool -&gt; byte[]" Usage="System.Security.Cryptography.Xml.EncryptedXml.EncryptKey (keyData, rsa, fOAEP)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.EncryptKey(System.Byte[],System.Security.Cryptography.RSA,System.Boolean)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="static member EncryptKey : byte[] * System.Security.Cryptography.RSA * bool -&gt; byte[]" Usage="System.Security.Cryptography.Xml.EncryptedXml.EncryptKey (keyData, rsa, fOAEP)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keyData" Type="System.Byte[]" Index="0" />
+        <Parameter Name="rsa" Type="System.Security.Cryptography.RSA" Index="1" />
+        <Parameter Name="useOAEP" Type="System.Boolean" Index="2" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="fOAEP" Type="System.Boolean" Index="2" FrameworkAlternate="xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="keyData">암호화할 키입니다.</param>
+        <param name="rsa"><paramref name="keyData" />를 암호화하는 데 사용되는 비대칭 키입니다.</param>
+        <param name="useOAEP">OAEP(Optimal Asymmetric Encryption Padding)의 사용 여부를 지정하는 값입니다.</param>
+        <param name="fOAEP">To be added.</param>
+        <summary>수신자가 <see langword="&lt;EncryptedData&gt;" /> 요소를 해독하기 위해 사용할 키를 암호화합니다.</summary>
+        <returns><paramref name="keyData" /> 매개 변수의 암호화된 값을 나타내는 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml.EncryptKey%2A> 받는 사람 암호를 해독 하는 데 사용 하는 키를 암호화 하는 메서드는 `<EncryptedData>` 요소입니다. 이 메서드는 값 `rsa` RSA PKCS 1 v1.5 알고리즘 또는 PKCS #1 RSA 형식 2 알고리즘 (OAEP 라고도 함)를 나타내는입니다.  
+  
+ 이 메서드가 자동으로 내에서 암호화 된 키를 설정 하 고 하지 않으며 확인을 `<EncryptedKey>` 요소입니다. 수동으로 만들어야 합니다를 `<EncryptedKey>` 문서 내의 요소입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="keyData" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="rsa" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDecryptionIV">
+      <MemberSignature Language="C#" Value="public virtual byte[] GetDecryptionIV (System.Security.Cryptography.Xml.EncryptedData encryptedData, string symmetricAlgorithmUri);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance unsigned int8[] GetDecryptionIV(class System.Security.Cryptography.Xml.EncryptedData encryptedData, string symmetricAlgorithmUri) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual cli::array &lt;System::Byte&gt; ^ GetDecryptionIV(System::Security::Cryptography::Xml::EncryptedData ^ encryptedData, System::String ^ symmetricAlgorithmUri);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public virtual byte[] GetDecryptionIV (System.Security.Cryptography.Xml.EncryptedData encryptedData, string symAlgUri);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance unsigned int8[] GetDecryptionIV(class System.Security.Cryptography.Xml.EncryptedData encryptedData, string symAlgUri) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual cli::array &lt;System::Byte&gt; ^ GetDecryptionIV(System::Security::Cryptography::Xml::EncryptedData ^ encryptedData, System::String ^ symAlgUri);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.GetDecryptionIV(System.Security.Cryptography.Xml.EncryptedData,System.String)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="abstract member GetDecryptionIV : System.Security.Cryptography.Xml.EncryptedData * string -&gt; byte[]&#xA;override this.GetDecryptionIV : System.Security.Cryptography.Xml.EncryptedData * string -&gt; byte[]" Usage="encryptedXml.GetDecryptionIV (encryptedData, symAlgUri)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.GetDecryptionIV(System.Security.Cryptography.Xml.EncryptedData,System.String)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="abstract member GetDecryptionIV : System.Security.Cryptography.Xml.EncryptedData * string -&gt; byte[]&#xA;override this.GetDecryptionIV : System.Security.Cryptography.Xml.EncryptedData * string -&gt; byte[]" Usage="encryptedXml.GetDecryptionIV (encryptedData, symAlgUri)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encryptedData" Type="System.Security.Cryptography.Xml.EncryptedData" Index="0" />
+        <Parameter Name="symmetricAlgorithmUri" Type="System.String" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="symAlgUri" Type="System.String" Index="1" FrameworkAlternate="xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="encryptedData">검색할 IV(초기화 벡터)가 들어 있는 <see cref="T:System.Security.Cryptography.Xml.EncryptedData" /> 개체입니다.</param>
+        <param name="symmetricAlgorithmUri"><paramref name="encryptedData" /> 값과 관련된 암호화 알고리즘을 설명하는 URI(Uniform Resource Identifier)입니다.</param>
+        <param name="symAlgUri">To be added.</param>
+        <summary>암호 해독 IV(초기화 벡터)를 <see cref="T:System.Security.Cryptography.Xml.EncryptedData" /> 개체에서 검색합니다.</summary>
+        <returns>암호 해독 IV(초기화 벡터)가 들어 있는 바이트 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 지정 된는 <xref:System.Security.Cryptography.Xml.EncryptedData> 개체를이 메서드는 암호 해독 IV (초기화 벡터)를 검색 합니다. 첫 번째 바이트로 IV를 검색 하는 기본 동작을 <xref:System.Security.Cryptography.Xml.CipherData.CipherValue%2A> 바이트 배열입니다.  
+  
+ 지 원하는 리소스 URI (Uniform Identifier) 값의 목록은 합니다 `symmetricAlgorithmUri` 매개 변수, 상수 필드 목록은 연결 된 참조는 <xref:System.Security.Cryptography.Xml.EncryptedXml> 클래스.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="encryptedData" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="encryptedData" /> 매개 변수의 값에 null인 <see cref="P:System.Security.Cryptography.Xml.EncryptedType.EncryptionMethod" /> 속성이 있습니다.  
+  
+또는 
+<paramref name="symmetricAlgorithmUrisymAlgUri" /> 매개 변수의 값이 지원되는 알고리즘이 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDecryptionKey">
+      <MemberSignature Language="C#" Value="public virtual System.Security.Cryptography.SymmetricAlgorithm GetDecryptionKey (System.Security.Cryptography.Xml.EncryptedData encryptedData, string symmetricAlgorithmUri);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Cryptography.SymmetricAlgorithm GetDecryptionKey(class System.Security.Cryptography.Xml.EncryptedData encryptedData, string symmetricAlgorithmUri) cil managed" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Security::Cryptography::SymmetricAlgorithm ^ GetDecryptionKey(System::Security::Cryptography::Xml::EncryptedData ^ encryptedData, System::String ^ symmetricAlgorithmUri);" FrameworkAlternate="netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netcore-2.1;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.2;netcore-3.0;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="public virtual System.Security.Cryptography.SymmetricAlgorithm GetDecryptionKey (System.Security.Cryptography.Xml.EncryptedData encryptedData, string symAlgUri);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Cryptography.SymmetricAlgorithm GetDecryptionKey(class System.Security.Cryptography.Xml.EncryptedData encryptedData, string symAlgUri) cil managed" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Security::Cryptography::SymmetricAlgorithm ^ GetDecryptionKey(System::Security::Cryptography::Xml::EncryptedData ^ encryptedData, System::String ^ symAlgUri);" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.GetDecryptionKey(System.Security.Cryptography.Xml.EncryptedData,System.String)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="abstract member GetDecryptionKey : System.Security.Cryptography.Xml.EncryptedData * string -&gt; System.Security.Cryptography.SymmetricAlgorithm&#xA;override this.GetDecryptionKey : System.Security.Cryptography.Xml.EncryptedData * string -&gt; System.Security.Cryptography.SymmetricAlgorithm" Usage="encryptedXml.GetDecryptionKey (encryptedData, symAlgUri)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.GetDecryptionKey(System.Security.Cryptography.Xml.EncryptedData,System.String)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="abstract member GetDecryptionKey : System.Security.Cryptography.Xml.EncryptedData * string -&gt; System.Security.Cryptography.SymmetricAlgorithm&#xA;override this.GetDecryptionKey : System.Security.Cryptography.Xml.EncryptedData * string -&gt; System.Security.Cryptography.SymmetricAlgorithm" Usage="encryptedXml.GetDecryptionKey (encryptedData, symAlgUri)" FrameworkAlternate="xamarinmac-3.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.SymmetricAlgorithm</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="encryptedData" Type="System.Security.Cryptography.Xml.EncryptedData" Index="0" />
+        <Parameter Name="symmetricAlgorithmUri" Type="System.String" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="symAlgUri" Type="System.String" Index="1" FrameworkAlternate="xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="encryptedData">검색할 암호 해독 키가 들어 있는 <see cref="T:System.Security.Cryptography.Xml.EncryptedData" /> 개체입니다.</param>
+        <param name="symmetricAlgorithmUri">검색할 암호 해독 키의 크기입니다.</param>
+        <param name="symAlgUri">To be added.</param>
+        <summary>지정된 <see cref="T:System.Security.Cryptography.Xml.EncryptedData" /> 개체에서 암호 해독 키를 검색합니다.</summary>
+        <returns>암호 해독 키와 관련된 <see cref="T:System.Security.Cryptography.SymmetricAlgorithm" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 지정 된 <xref:System.Security.Cryptography.Xml.EncryptedData> 개체를이 메서드는 일반 텍스트 데이터를 검색할 수 있는 암호 해독 키를 찾습니다. 키 이름을 지정 하는 경우 대칭 알고리즘 또는 키 이름 매핑을에 정의 된 대로 키 이름으로 연결 된 비대칭 알고리즘에 대 한 메서드를 찾습니다. 이 고, 그렇지 경우 검색 방법 또는 <xref:System.Security.Cryptography.Xml.EncryptedKey> 지정 된 경우 메서드를 로드 합니다 <xref:System.Security.Cryptography.Xml.EncryptedKey> 개체와 호출은 <xref:System.Security.Cryptography.Xml.EncryptedXml.GetDecryptionKey%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="encryptedData" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">encryptedData 매개 변수에 null인 <see cref="P:System.Security.Cryptography.Xml.EncryptedType.EncryptionMethod" /> 속성이 있는 경우  
+  
+또는 
+지정된 매개 변수를 사용하여 암호화된 키를 검색할 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIdElement">
+      <MemberSignature Language="C#" Value="public virtual System.Xml.XmlElement GetIdElement (System.Xml.XmlDocument document, string idValue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Xml.XmlElement GetIdElement(class System.Xml.XmlDocument document, string idValue) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.GetIdElement(System.Xml.XmlDocument,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetIdElement (document As XmlDocument, idValue As String) As XmlElement" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Xml::XmlElement ^ GetIdElement(System::Xml::XmlDocument ^ document, System::String ^ idValue);" />
+      <MemberSignature Language="F#" Value="abstract member GetIdElement : System.Xml.XmlDocument * string -&gt; System.Xml.XmlElement&#xA;override this.GetIdElement : System.Xml.XmlDocument * string -&gt; System.Xml.XmlElement" Usage="encryptedXml.GetIdElement (document, idValue)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.XmlElement</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="document" Type="System.Xml.XmlDocument" />
+        <Parameter Name="idValue" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="document">ID 값을 가진 요소가 들어 있는 <see cref="T:System.Xml.XmlDocument" /> 개체입니다.</param>
+        <param name="idValue">ID 값을 나타내는 문자열입니다.</param>
+        <summary>내부 URI(Uniform Resource Identifier) 참조를 확인하는 방법을 결정합니다.</summary>
+        <returns>내부 URI(Uniform Resource Identifier)의 확인 방법을 나타내는 ID가 들어 있는 <see cref="T:System.Xml.XmlElement" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.EncryptedXml.GetIdElement%2A> 메서드 내부 Uniform Resource Identifier (Uri)를 해결 하는 방법을 결정 합니다. 지정된 된 값을 사용 하 여 요소 또는 지정 된 값이 있는 ID 특성을 가진 요소를 찾습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Mode">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.CipherMode Mode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Security.Cryptography.CipherMode Mode" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.EncryptedXml.Mode" />
+      <MemberSignature Language="VB.NET" Value="Public Property Mode As CipherMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::CipherMode Mode { System::Security::Cryptography::CipherMode get(); void set(System::Security::Cryptography::CipherMode value); };" />
+      <MemberSignature Language="F#" Value="member this.Mode : System.Security.Cryptography.CipherMode with get, set" Usage="System.Security.Cryptography.Xml.EncryptedXml.Mode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.CipherMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 암호화에 사용되는 암호화 모드를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Security.Cryptography.CipherMode" /> 값 중 하나입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 암호화 블록 CBC (체인) 모드는 XML 암호화에 대 한 기본 암호화 모드입니다. 다른 암호화 모드를 지정 하려면이 속성을 사용할 수는 <xref:System.Security.Cryptography.CipherMode> Cipher Feedback (CFB) 모드와 같은 열거형입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Padding">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.PaddingMode Padding { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Security.Cryptography.PaddingMode Padding" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.EncryptedXml.Padding" />
+      <MemberSignature Language="VB.NET" Value="Public Property Padding As PaddingMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::PaddingMode Padding { System::Security::Cryptography::PaddingMode get(); void set(System::Security::Cryptography::PaddingMode value); };" />
+      <MemberSignature Language="F#" Value="member this.Padding : System.Security.Cryptography.PaddingMode with get, set" Usage="System.Security.Cryptography.Xml.EncryptedXml.Padding" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.PaddingMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 암호화에 사용되는 패딩 모드를 가져오거나 설정합니다.</summary>
+        <value>암호화에 사용되는 패딩 형식을 지정하는 <see cref="T:System.Security.Cryptography.PaddingMode" /> 값 중 하나입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Iso-10126 안쪽 여백은 XML 암호화에 대 한 기본 패딩 모드입니다. 다른 패딩 모드를 지정 하려면이 속성을 사용할 수는 <xref:System.Security.Cryptography.PaddingMode> ANSI X9.23 PKCS #5 등의 열거형입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Recipient">
+      <MemberSignature Language="C#" Value="public string Recipient { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Recipient" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.EncryptedXml.Recipient" />
+      <MemberSignature Language="VB.NET" Value="Public Property Recipient As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Recipient { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Recipient : string with get, set" Usage="System.Security.Cryptography.Xml.EncryptedXml.Recipient" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>암호화된 키 정보의 수신자를 가져오거나 설정합니다.</summary>
+        <value>암호화된 키 정보의 수신자입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 액세스할 수 있습니다 합니다 <xref:System.Security.Cryptography.Xml.EncryptedXml> 검사 하 여 키 이름으로 참조 하는 개체는 <xref:System.Security.Cryptography.Xml.EncryptedKey.CarriedKeyName%2A> 속성입니다.  
+  
+ 사용 하 여는 <xref:System.Security.Cryptography.Xml.EncryptedXml.Recipient%2A> 식별 하는 속성을 <xref:System.Security.Cryptography.Xml.EncryptedXml> 현재 수신자를 암호 해독 키를 검색할 해독할 수 있는 요소입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReplaceData">
+      <MemberSignature Language="C#" Value="public void ReplaceData (System.Xml.XmlElement inputElement, byte[] decryptedData);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ReplaceData(class System.Xml.XmlElement inputElement, unsigned int8[] decryptedData) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.ReplaceData(System.Xml.XmlElement,System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ReplaceData (inputElement As XmlElement, decryptedData As Byte())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ReplaceData(System::Xml::XmlElement ^ inputElement, cli::array &lt;System::Byte&gt; ^ decryptedData);" />
+      <MemberSignature Language="F#" Value="member this.ReplaceData : System.Xml.XmlElement * byte[] -&gt; unit" Usage="encryptedXml.ReplaceData (inputElement, decryptedData)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="inputElement" Type="System.Xml.XmlElement" />
+        <Parameter Name="decryptedData" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="inputElement">바꿀 <see langword="&lt;EncryptedData&gt;" /> 요소입니다.</param>
+        <param name="decryptedData"><paramref name="inputElement" />와 바꿀 해독된 데이터입니다.</param>
+        <summary><see langword="&lt;EncryptedData&gt;" /> 요소를 지정한 해독된 바이트 시퀀스로 바꿉니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.EncryptedXml.ReplaceData%2A> 대체 메서드는 `<EncryptedData>` 의 값을 가진 요소가 `decryptedData` 매개 변수입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="inputElement" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="decryptedData" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ReplaceElement">
+      <MemberSignature Language="C#" Value="public static void ReplaceElement (System.Xml.XmlElement inputElement, System.Security.Cryptography.Xml.EncryptedData encryptedData, bool content);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void ReplaceElement(class System.Xml.XmlElement inputElement, class System.Security.Cryptography.Xml.EncryptedData encryptedData, bool content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.EncryptedXml.ReplaceElement(System.Xml.XmlElement,System.Security.Cryptography.Xml.EncryptedData,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void ReplaceElement(System::Xml::XmlElement ^ inputElement, System::Security::Cryptography::Xml::EncryptedData ^ encryptedData, bool content);" />
+      <MemberSignature Language="F#" Value="static member ReplaceElement : System.Xml.XmlElement * System.Security.Cryptography.Xml.EncryptedData * bool -&gt; unit" Usage="System.Security.Cryptography.Xml.EncryptedXml.ReplaceElement (inputElement, encryptedData, content)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="inputElement" Type="System.Xml.XmlElement" />
+        <Parameter Name="encryptedData" Type="System.Security.Cryptography.Xml.EncryptedData" />
+        <Parameter Name="content" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="inputElement"><see langword="&lt;EncryptedData&gt;" /> 요소와 바꿀 요소입니다.</param>
+        <param name="encryptedData"><paramref name="inputElement" /> 매개 변수와 바꿀 <see cref="T:System.Security.Cryptography.Xml.EncryptedData" /> 개체입니다.</param>
+        <param name="content">요소의 내용만 바꾸면 <see langword="true" />이고, 전체 요소를 바꾸면 <see langword="false" />입니다.</param>
+        <summary>지정된 요소를 지정된 <see cref="T:System.Security.Cryptography.Xml.EncryptedData" /> 개체와 바꿉니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.EncryptedXml.ReplaceElement%2A> 메서드 대체 합니다 `inputElement` 에 지정 된 값을 사용 하 여 매개 변수는 `encryptedData` 매개 변수.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="inputElement" /> 매개 변수의 값이 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="encryptedData" /> 매개 변수의 값이 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Resolver">
+      <MemberSignature Language="C#" Value="public System.Xml.XmlResolver Resolver { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xml.XmlResolver Resolver" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.EncryptedXml.Resolver" />
+      <MemberSignature Language="VB.NET" Value="Public Property Resolver As XmlResolver" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xml::XmlResolver ^ Resolver { System::Xml::XmlResolver ^ get(); void set(System::Xml::XmlResolver ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Resolver : System.Xml.XmlResolver with get, set" Usage="System.Security.Cryptography.Xml.EncryptedXml.Resolver" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.XmlResolver</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>DOM(문서 개체 모델)에서 외부 XML 참조를 확인하는 데 사용되는 <see cref="T:System.Xml.XmlResolver" /> 개체를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Xml.XmlResolver" /> 개체</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성을 포함 한 <xref:System.Xml.XmlResolver> 엔터티, 문서 형식 정의 (Dtd) 또는 스키마와 같은 외부 XML 리소스를 확인 하는 데 사용 되는 개체입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDSigSearchDepth">
+      <MemberSignature Language="C#" Value="public int XmlDSigSearchDepth { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 XmlDSigSearchDepth" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.EncryptedXml.XmlDSigSearchDepth" />
+      <MemberSignature Language="VB.NET" Value="Public Property XmlDSigSearchDepth As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int XmlDSigSearchDepth { int get(); void set(int value); };" />
+      <MemberSignature Language="F#" Value="member this.XmlDSigSearchDepth : int with get, set" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlDSigSearchDepth" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>무한 재귀 및 스택 오버플로를 방지하기 위해 XML 디지털 서명 재귀 깊이를 가져오거나 설정합니다. 이는 디지털 서명 XML에 원래 XML을 다시 가리키는 URI를 포함하는 경우에 발생할 수 있습니다.</summary>
+        <value><see cref="T:System.Int32" />를 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncAES128KeyWrapUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncAES128KeyWrapUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncAES128KeyWrapUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES128KeyWrapUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncAES128KeyWrapUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncAES128KeyWrapUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncAES128KeyWrapUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES128KeyWrapUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Rijndael 키 랩 알고리즘이라고도 하는 128비트 AES(Advanced Encryption Standard) 키 랩 알고리즘의 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES128KeyWrapUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#kw-aes128)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncAES128Url">
+      <MemberSignature Language="C#" Value="public const string XmlEncAES128Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncAES128Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES128Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncAES128Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncAES128Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncAES128Url : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES128Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Rijndael 알고리즘이라고도 하는 128비트AES(Advanced Encryption Standard) 알고리즘의 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES128Url> 필드는 `http://www.w3.org/(2001/04/xmlenc#aes128-cbc)`합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncAES192KeyWrapUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncAES192KeyWrapUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncAES192KeyWrapUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES192KeyWrapUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncAES192KeyWrapUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncAES192KeyWrapUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncAES192KeyWrapUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES192KeyWrapUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Rijndael 키 랩 알고리즘이라고도 하는 192비트 AES(Advanced Encryption Standard) 키 랩 알고리즘의 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES192KeyWrapUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#kw-aes192)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncAES192Url">
+      <MemberSignature Language="C#" Value="public const string XmlEncAES192Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncAES192Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES192Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncAES192Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncAES192Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncAES192Url : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES192Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Rijndael 알고리즘이라고도 하는 192비트 AES(Advanced Encryption Standard) 알고리즘의 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES192Url> 필드는 `http://www.w3.org/(2001/04/xmlenc#aes192-cbc)`합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncAES256KeyWrapUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncAES256KeyWrapUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncAES256KeyWrapUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES256KeyWrapUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncAES256KeyWrapUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncAES256KeyWrapUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncAES256KeyWrapUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES256KeyWrapUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Rijndael 키 랩 알고리즘이라고도 하는 256비트 AES(Advanced Encryption Standard) 키 랩 알고리즘의 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES256KeyWrapUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#kw-aes256)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncAES256Url">
+      <MemberSignature Language="C#" Value="public const string XmlEncAES256Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncAES256Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES256Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncAES256Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncAES256Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncAES256Url : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES256Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Rijndael 알고리즘이라고도 하는 256비트 AES(Advanced Encryption Standard) 알고리즘의 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncAES256Url> 필드는 `http://www.w3.org/(2001/04/xmlenc#aes256-cbc)`합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncDESUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncDESUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncDESUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncDESUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncDESUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncDESUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncDESUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncDESUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>DES(디지털 암호화 표준) 알고리즘에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncDESUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#des-cbc)`합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncElementContentUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncElementContentUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncElementContentUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncElementContentUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncElementContentUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncElementContentUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncElementContentUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncElementContentUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 암호화 요소 내용에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncElementContentUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#Content)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncElementUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncElementUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncElementUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncElementUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncElementUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncElementUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncElementUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncElementUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 암호화 요소에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncElementUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#Element)`합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncEncryptedKeyUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncEncryptedKeyUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncEncryptedKeyUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncEncryptedKeyUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncEncryptedKeyUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncEncryptedKeyUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncEncryptedKeyUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncEncryptedKeyUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 암호화 <see langword="&lt;EncryptedKey&gt;" /> 요소에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncEncryptedKeyUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#EncryptedKey)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncNamespaceUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncNamespaceUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncNamespaceUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncNamespaceUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncNamespaceUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncNamespaceUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncNamespaceUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncNamespaceUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 암호화 구문 및 처리에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncNamespaceUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncRSA15Url">
+      <MemberSignature Language="C#" Value="public const string XmlEncRSA15Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncRSA15Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncRSA15Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncRSA15Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncRSA15Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncRSA15Url : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncRSA15Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>RSA PKCS(공개 키 암호화 표준) 버전 1.5 알고리즘에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncRSA15Url> 필드는 `http://www.w3.org/(2001/04/xmlenc#rsa-1_5)`합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 문서를 암호화 한 대칭 세션 키를 만들고 비대칭 키를 사용 하 여 XML 문서에 세션 키의 암호화 된 버전을 포함 하는이 예제입니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncImbedKey#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncImbedKey/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncRSAOAEPUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncRSAOAEPUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncRSAOAEPUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncRSAOAEPUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncRSAOAEPUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncRSAOAEPUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncRSAOAEPUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncRSAOAEPUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>RSA OAEP(Optimal Asymmetric Encryption Padding) 암호화 알고리즘에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncRSAOAEPUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#rsa-oaep-mgf1p)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncSHA256Url">
+      <MemberSignature Language="C#" Value="public const string XmlEncSHA256Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncSHA256Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncSHA256Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncSHA256Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncSHA256Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncSHA256Url : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncSHA256Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>SHA-256 알고리즘에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncSHA256Url> 필드는 `http://www.w3.org/(2001/04/xmlenc#sha256)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncSHA512Url">
+      <MemberSignature Language="C#" Value="public const string XmlEncSHA512Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncSHA512Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncSHA512Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncSHA512Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncSHA512Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncSHA512Url : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncSHA512Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>SHA-512 알고리즘에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncSHA512Url> 필드는 `http://www.w3.org/(2001/04/xmlenc#sha512)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncTripleDESKeyWrapUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncTripleDESKeyWrapUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncTripleDESKeyWrapUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncTripleDESKeyWrapUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncTripleDESKeyWrapUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncTripleDESKeyWrapUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncTripleDESKeyWrapUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncTripleDESKeyWrapUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>TRIPLEDES 키 랩 알고리즘에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncTripleDESKeyWrapUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#kw-tripledes)`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlEncTripleDESUrl">
+      <MemberSignature Language="C#" Value="public const string XmlEncTripleDESUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlEncTripleDESUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.EncryptedXml.XmlEncTripleDESUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlEncTripleDESUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlEncTripleDESUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlEncTripleDESUrl : string" Usage="System.Security.Cryptography.Xml.EncryptedXml.XmlEncTripleDESUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>3DES(Triple DES) 알고리즘에 대한 네임스페이스 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.EncryptedXml.XmlEncTripleDESUrl> 필드는 `http://www.w3.org/(2001/04/xmlenc#tripledes-cbc)`합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 대칭 키를 사용 하 여 XML 문서를 암호화 하는 방법을 보여 줍니다. 이 예제에서는 암호화 된 XML 문서에서 키 정보를 포함 되지 않습니다.  
+  
+ [!code-cpp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CPP/Cryptography.XML.XMLEncMinimalDecryptData.cpp#1)]
+ [!code-csharp[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.XMLEncMinimalDecryptData#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XMLEncMinimalDecryptData/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

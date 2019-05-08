@@ -1,0 +1,593 @@
+<Type Name="ModelItem" FullName="System.Activities.Presentation.Model.ModelItem">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7a39b35f6b07e39f9c88049e2f4ef710c02000f8" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57951372" /></Metadata><TypeSignature Language="C#" Value="public abstract class ModelItem : System.ComponentModel.INotifyPropertyChanged" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ModelItem extends System.Object implements class System.ComponentModel.INotifyPropertyChanged" />
+  <TypeSignature Language="DocId" Value="T:System.Activities.Presentation.Model.ModelItem" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ModelItem&#xA;Implements INotifyPropertyChanged" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ModelItem abstract : System::ComponentModel::INotifyPropertyChanged" />
+  <TypeSignature Language="F#" Value="type ModelItem = class&#xA;    interface INotifyPropertyChanged" />
+  <AssemblyInfo>
+    <AssemblyName>System.Activities.Presentation</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.ComponentModel.INotifyPropertyChanged</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>편집 모델의 단일 항목을 나타냅니다. 항목은 복잡한 데이터 구조에서 색 또는 정수에 이르기까지의 임의 항목일 수 있습니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 항목의 속성을 통해 액세스할 수 있습니다 해당 <xref:System.Activities.Presentation.Model.ModelItem.Properties%2A> 컬렉션을 변경할 속성의 값입니다.  
+  
+ <xref:System.Activities.Presentation.Model.ModelItem>은 디자이너의 기본 데이터 모델을 중심으로 래핑됩니다. <xref:System.Activities.Presentation.Model.ModelItem.GetCurrentValue%2A> 메서드를 통해 기본 모델에 액세스할 수 있습니다.  
+  
+> [!NOTE]
+>  <xref:System.Activities.Presentation.Model.ModelItem.GetCurrentValue%2A> 메서드에서 반환된 개체의 변경 내용은 디자이너의 serialization 및 실행 취소 시스템에 반영되지 않습니다.  
+  
+   
+  
+## Examples  
+ <xref:System.Activities.Presentation.Model.ModelItem>은 이 매개 변수가 가리키는 개체에 대한 씬 프록시로 간주될 수 있습니다. 먼저 간단한 `Animal` 개체를 정의합니다.  
+  
+```csharp  
+  
+public class Animal  
+{  
+    // simple property  
+    public string Name { get; set; }  
+    // complex property   
+    public Location Residence { get; set; }   
+    // list   
+    public List<Animal> CloseRelatives { get; set; }  
+    // dictionary  
+    public Dictionary<string, object> Features { get; set; }   
+}  
+  
+public class Location  
+{  
+    public string StreetAddress { get; set; }  
+    public string City { get; set; }  
+    public string State { get; set; }   
+}  
+  
+```  
+  
+ 다음으로 `Animal` 인스턴스 및 해당 인스턴스의 프록시인 <xref:System.Activities.Presentation.Model.ModelItem>을 만듭니다. <xref:System.Activities.Presentation.Model.ModelItem.GetCurrentValue%2A>를 호출하여 개체를 검색할 수 있습니다. 또한 다음 코드에서는 <xref:System.Activities.Presentation.Model.ModelItem>이 정의한 기타 속성을 사용하는 방법을 보여 줍니다.  
+  
+```csharp  
+  
+EditingContext ec = new EditingContext();  
+var companion1 = new Animal { Name = "Houdini the parakeet" };  
+var companion2 = new Animal { Name = "Groucho the fish" };  
+var animal = new Animal   
+   {  
+      Name = "Sasha the pug",  
+      Residence = new Location   
+      {  
+         StreetAddress = "123 Main Street",  
+         City = "AnyTown",  
+         State = "Washington"  
+      },  
+      Features = new Dictionary<string, object> {   
+         {"noise", "snort" },  
+         {"MeanTimeUntilNaps", TimeSpan.FromMinutes(15) }  
+      },  
+      CloseRelatives = new List<Animal> { companion1, companion2 }   
+   };  
+ModelTreeManager mtm = new ModelTreeManager(ec);  mtm.Load(animal);  
+ModelItem mi = mtm.Root;  
+  
+//Testing other properties of the class  
+ModelItem root = mtm.Root;  
+Assert.IsTrue(root.GetCurrentValue() == animal, "GetCurrentValue() returns same object");  
+Assert.IsTrue(root.ItemType == typeof(Animal),"ItemType describes the item");  
+Assert.IsTrue(root.Parent == null,"root parent is null");  
+Assert.IsTrue(root.Source == null, "root source is null");  
+Assert.IsTrue(((List<Animal>)root.Properties["CloseRelatives"].ComputedValue)[0] == companion1,   
+   "ComputedValue of prop == actual object");  
+Assert.IsFalse(((List<Animal>)root.Properties["CloseRelatives"].ComputedValue)[0] == companion2,   
+   "ComputedValue of prop == actual object");  
+Assert.AreEqual(root.Properties["Residence"].  
+   Value.  
+   Properties["StreetAddress"].  
+   Value.GetCurrentValue(), "123 Main Street", "get actual value back out");  
+Assert.AreEqual(root, root.Properties["Residence"].Parent, "property points to owner");  
+ModelItem location = root.Properties["Residence"].Value;  
+Assert.AreEqual(root.Properties["Residence"], location.Source, "sources point to the right place");  
+  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ModelItem ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.Model.ModelItem.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ModelItem();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Activities.Presentation.Model.ModelItem" /> 클래스의 새 인스턴스를 만듭니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Attributes">
+      <MemberSignature Language="C#" Value="public abstract System.ComponentModel.AttributeCollection Attributes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.AttributeCollection Attributes" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Attributes" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Attributes As AttributeCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::ComponentModel::AttributeCollection ^ Attributes { System::ComponentModel::AttributeCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Attributes : System.ComponentModel.AttributeCollection" Usage="System.Activities.Presentation.Model.ModelItem.Attributes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.AttributeCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 항목에서 선언된 특성을 가져옵니다.</summary>
+        <value>항목의 특성을 포함하는 컬렉션입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="BeginEdit">
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>디자이너의 편집 범위를 엽니다.</summary>
+        <altmember cref="T:System.Activities.Presentation.Model.ModelEditingScope" />
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="BeginEdit">
+      <MemberSignature Language="C#" Value="public abstract System.Activities.Presentation.Model.ModelEditingScope BeginEdit ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Activities.Presentation.Model.ModelEditingScope BeginEdit() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.Model.ModelItem.BeginEdit" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function BeginEdit () As ModelEditingScope" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Activities::Presentation::Model::ModelEditingScope ^ BeginEdit();" />
+      <MemberSignature Language="F#" Value="abstract member BeginEdit : unit -&gt; System.Activities.Presentation.Model.ModelEditingScope" Usage="modelItem.BeginEdit " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelEditingScope</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>디자이너의 편집 범위를 엽니다. 편집 범위를 연 후에는 트랜잭션을 완료하거나 되돌릴 때까지 모든 개체의 변경 내용이 모두 범위에 저장됩니다. 편집 범위는 중첩할 수 있지만 순서대로 커밋해야 합니다.</summary>
+        <returns>완료하거나 되돌려야 하는 <see cref="T:System.Activities.Presentation.Model.ModelEditingScope" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 편집 범위를 사용하면 모델의 여러 변경 내용을 단일 트랜잭션으로 적용할 수 있습니다. 트랜잭션이 완료되기 전에 언제든지 편집 범위 내의 모든 변경 내용을 되돌릴 수 있습니다.  
+  
+ 편집 범위는 디자이너 전체에 적용됩니다. 디자이너에서 임의의 항목에 대해 편집 범위를 만들 수 있으며, 변경 중인 특정 항목에 대해 편집 범위를 만들 필요는 없습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginEdit">
+      <MemberSignature Language="C#" Value="public virtual System.Activities.Presentation.Model.ModelEditingScope BeginEdit (bool shouldApplyChangesImmediately);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Activities.Presentation.Model.ModelEditingScope BeginEdit(bool shouldApplyChangesImmediately) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.Model.ModelItem.BeginEdit(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BeginEdit (shouldApplyChangesImmediately As Boolean) As ModelEditingScope" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Activities::Presentation::Model::ModelEditingScope ^ BeginEdit(bool shouldApplyChangesImmediately);" />
+      <MemberSignature Language="F#" Value="abstract member BeginEdit : bool -&gt; System.Activities.Presentation.Model.ModelEditingScope&#xA;override this.BeginEdit : bool -&gt; System.Activities.Presentation.Model.ModelEditingScope" Usage="modelItem.BeginEdit shouldApplyChangesImmediately" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelEditingScope</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="shouldApplyChangesImmediately" Type="System.Boolean" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="shouldApplyChangesImmediately">변경을 즉시 적용해야 함을 나타내려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>디자이너의 편집 범위를 엽니다.</summary>
+        <returns>완료하거나 되돌려야 하는 <see cref="T:System.Activities.Presentation.Model.ModelEditingScope" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginEdit">
+      <MemberSignature Language="C#" Value="public abstract System.Activities.Presentation.Model.ModelEditingScope BeginEdit (string description);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Activities.Presentation.Model.ModelEditingScope BeginEdit(string description) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.Model.ModelItem.BeginEdit(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function BeginEdit (description As String) As ModelEditingScope" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Activities::Presentation::Model::ModelEditingScope ^ BeginEdit(System::String ^ description);" />
+      <MemberSignature Language="F#" Value="abstract member BeginEdit : string -&gt; System.Activities.Presentation.Model.ModelEditingScope" Usage="modelItem.BeginEdit description" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelEditingScope</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="description" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="description">변경 내용에 대한 선택적 설명입니다. 이는 편집 범위의 <see cref="P:System.Activities.Presentation.Model.ModelEditingScope.Description" /> 속성으로 설정됩니다.</param>
+        <summary>디자이너의 편집 범위를 엽니다. 편집 범위를 연 후에는 트랜잭션을 완료하거나 되돌릴 때까지 모든 개체의 변경 내용이 모두 범위에 저장됩니다. 편집 범위는 중첩할 수 있지만 순서대로 커밋해야 합니다.</summary>
+        <returns>완료하거나 되돌려야 하는 <see cref="T:System.Activities.Presentation.Model.ModelEditingScope" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 편집 범위를 사용하면 모델의 여러 변경 내용을 단일 트랜잭션으로 적용할 수 있습니다. 트랜잭션이 완료되기 전에 언제든지 편집 범위 내의 모든 변경 내용을 되돌릴 수 있습니다.  
+  
+ 편집 범위는 디자이너 전체에 적용됩니다. 디자이너에서 임의의 항목에 대해 편집 범위를 만들 수 있으며, 변경 중인 특정 항목에 대해 편집 범위를 만들 필요는 없습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginEdit">
+      <MemberSignature Language="C#" Value="public virtual System.Activities.Presentation.Model.ModelEditingScope BeginEdit (string description, bool shouldApplyChangesImmediately);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Activities.Presentation.Model.ModelEditingScope BeginEdit(string description, bool shouldApplyChangesImmediately) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.Model.ModelItem.BeginEdit(System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BeginEdit (description As String, shouldApplyChangesImmediately As Boolean) As ModelEditingScope" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Activities::Presentation::Model::ModelEditingScope ^ BeginEdit(System::String ^ description, bool shouldApplyChangesImmediately);" />
+      <MemberSignature Language="F#" Value="abstract member BeginEdit : string * bool -&gt; System.Activities.Presentation.Model.ModelEditingScope&#xA;override this.BeginEdit : string * bool -&gt; System.Activities.Presentation.Model.ModelEditingScope" Usage="modelItem.BeginEdit (description, shouldApplyChangesImmediately)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelEditingScope</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="description" Type="System.String" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="shouldApplyChangesImmediately" Type="System.Boolean" Index="1" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="description">변경 내용에 대한 선택적 설명입니다. 이는 편집 범위의 <see cref="P:System.Activities.Presentation.Model.ModelEditingScope.Description" /> 속성으로 설정됩니다.</param>
+        <param name="shouldApplyChangesImmediately">변경을 즉시 적용해야 함을 나타내려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>디자이너의 편집 범위를 엽니다.</summary>
+        <returns>완료하거나 되돌려야 하는 <see cref="T:System.Activities.Presentation.Model.ModelEditingScope" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Content">
+      <MemberSignature Language="C#" Value="public abstract System.Activities.Presentation.Model.ModelProperty Content { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Activities.Presentation.Model.ModelProperty Content" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Content" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Content As ModelProperty" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Activities::Presentation::Model::ModelProperty ^ Content { System::Activities::Presentation::Model::ModelProperty ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Content : System.Activities.Presentation.Model.ModelProperty" Usage="System.Activities.Presentation.Model.ModelItem.Content" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelProperty</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>항목의 <see langword="ContentPropertyAttribute" />를 가져오거나, 그렇지 않으면 <see langword="null" />입니다.</summary>
+        <value><see cref="T:System.Activities.Presentation.Model.ModelProperty" />로서의 항목의 <see langword="ContentPropertyAttribute" />입니다. 이 항목의 <see cref="P:System.Activities.Presentation.Model.ModelItem.ItemType" />에서 <see langword="ContentPropertyAttribute" />를 선언하지 않은 경우 <see cref="P:System.Activities.Presentation.Model.ModelItem.Content" />가 <see langword="null" />을 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetCurrentValue">
+      <MemberSignature Language="C#" Value="public abstract object GetCurrentValue ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance object GetCurrentValue() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.Model.ModelItem.GetCurrentValue" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function GetCurrentValue () As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Object ^ GetCurrentValue();" />
+      <MemberSignature Language="F#" Value="abstract member GetCurrentValue : unit -&gt; obj" Usage="modelItem.GetCurrentValue " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Activities.Presentation.Model.ModelItem" />이 래핑하는 기본 모델 개체의 현재 값을 반환합니다.</summary>
+        <returns><see cref="T:System.Activities.Presentation.Model.ModelItem" />이<see cref="T:System.Object" />로 래핑하는 기본 모델 개체의 현재 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 개체를 검사할 수 있지만 변경해서는 안 됩니다. 반환된 개체의 변경 내용은 디자이너에 통합되지 않습니다. <xref:System.Activities.Presentation.Model.ModelItem.GetCurrentValue%2A> 메서드는 개체의 기존 인스턴스나 복제된 새 인스턴스를 반환할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ItemType">
+      <MemberSignature Language="C#" Value="public abstract Type ItemType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Type ItemType" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.ItemType" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property ItemType As Type" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property Type ^ ItemType { Type ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ItemType : Type" Usage="System.Activities.Presentation.Model.ModelItem.ItemType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>항목이 나타내는 개체의 형식을 가져옵니다.</summary>
+        <value>항목이 나타내는 개체의 형식입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public abstract string Name { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Name" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Property Name As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::String ^ Name { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Name : string with get, set" Usage="System.Activities.Presentation.Model.ModelItem.Name" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>항목의 이름 또는 ID를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.String" />인 항목의 이름 또는 ID입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 일부 항목을 이름이 없으므로이 반환할 수 있습니다 해야 `null`합니다. 항목 형식과 계층 구조에서의 위치에 따라 항목의 <xref:System.Activities.Presentation.Model.ModelItem.Name%2A> 설정이 항상 유효하지는 않습니다. 경우는 <xref:System.Activities.Presentation.Model.ModelItem.ItemType%2A> 이 항목의 선언를 `RuntimeNamePropertyAttribute`는 <xref:System.Activities.Presentation.Model.ModelItem.Name%2A> 속성은 해당 특성에 따라 속성에 직접 매핑.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Parent">
+      <MemberSignature Language="C#" Value="public abstract System.Activities.Presentation.Model.ModelItem Parent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Activities.Presentation.Model.ModelItem Parent" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Parent" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Parent As ModelItem" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Activities::Presentation::Model::ModelItem ^ Parent { System::Activities::Presentation::Model::ModelItem ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Parent : System.Activities.Presentation.Model.ModelItem" Usage="System.Activities.Presentation.Model.ModelItem.Parent" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelItem</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 항목의 부모인 항목을 가져옵니다.</summary>
+        <value>이 항목의 부모를 나타내는 <see cref="T:System.Activities.Presentation.Model.ModelItem" />입니다. 항목이 컬렉션 또는 사전에 포함되어 있으면 해당 컬렉션 또는 사전을 소유하는 개체가 대신 반환됩니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Parents">
+      <MemberSignature Language="C#" Value="public abstract System.Collections.Generic.IEnumerable&lt;System.Activities.Presentation.Model.ModelItem&gt; Parents { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.IEnumerable`1&lt;class System.Activities.Presentation.Model.ModelItem&gt; Parents" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Parents" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Parents As IEnumerable(Of ModelItem)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Collections::Generic::IEnumerable&lt;System::Activities::Presentation::Model::ModelItem ^&gt; ^ Parents { System::Collections::Generic::IEnumerable&lt;System::Activities::Presentation::Model::ModelItem ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Parents : seq&lt;System.Activities.Presentation.Model.ModelItem&gt;" Usage="System.Activities.Presentation.Model.ModelItem.Parents" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IEnumerable&lt;System.Activities.Presentation.Model.ModelItem&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 항목의 모든 부모를 가져옵니다.</summary>
+        <value>이 항목의 부모입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Properties">
+      <MemberSignature Language="C#" Value="public abstract System.Activities.Presentation.Model.ModelPropertyCollection Properties { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Activities.Presentation.Model.ModelPropertyCollection Properties" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Properties" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Properties As ModelPropertyCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Activities::Presentation::Model::ModelPropertyCollection ^ Properties { System::Activities::Presentation::Model::ModelPropertyCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Properties : System.Activities.Presentation.Model.ModelPropertyCollection" Usage="System.Activities.Presentation.Model.ModelItem.Properties" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelPropertyCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 항목의 공용 속성을 가져옵니다.</summary>
+        <value>이 항목의 공용 속성이 포함된 <see cref="T:System.Activities.Presentation.Model.ModelItemCollection" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 반환되는 속성 집합은 연결된 속성이나 편집 범위 변경을 기준으로 변경될 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PropertyChanged">
+      <MemberSignature Language="C#" Value="public abstract event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.ComponentModel.PropertyChangedEventHandler PropertyChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Activities.Presentation.Model.ModelItem.PropertyChanged" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Event PropertyChanged As PropertyChangedEventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract event System::ComponentModel::PropertyChangedEventHandler ^ PropertyChanged;" />
+      <MemberSignature Language="F#" Value="member this.PropertyChanged : System.ComponentModel.PropertyChangedEventHandler " Usage="member this.PropertyChanged : System.ComponentModel.PropertyChangedEventHandler " />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.PropertyChangedEventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see langword="INotifyPropertyChanged" /> 구현 이 이벤트를 사용하여 모델 변경 내용을 수신할 수 있습니다. 이 매개 변수는 WPF의 데이터 바인딩 기능에서도 사용됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 항목 사용을 마쳤으면 항목에서 이벤트 연결을 끊습니다. 그렇지 않으면 가비지 컬렉션기에서 더 이상 사용하지 않는 항목을 삭제하지 못할 수도 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Root">
+      <MemberSignature Language="C#" Value="public abstract System.Activities.Presentation.Model.ModelItem Root { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Activities.Presentation.Model.ModelItem Root" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Root" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Root As ModelItem" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Activities::Presentation::Model::ModelItem ^ Root { System::Activities::Presentation::Model::ModelItem ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Root : System.Activities.Presentation.Model.ModelItem" Usage="System.Activities.Presentation.Model.ModelItem.Root" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelItem</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 트리의 루트인 항목을 가져옵니다.</summary>
+        <value>이 트리의 루트인 <see cref="T:System.Activities.Presentation.Model.ModelItem" /> 또는 이 항목이 트리의 일부가 아닌 경우 <see langword="null" />을 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Source">
+      <MemberSignature Language="C#" Value="public abstract System.Activities.Presentation.Model.ModelProperty Source { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Activities.Presentation.Model.ModelProperty Source" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Source" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Source As ModelProperty" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Activities::Presentation::Model::ModelProperty ^ Source { System::Activities::Presentation::Model::ModelProperty ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Source : System.Activities.Presentation.Model.ModelProperty" Usage="System.Activities.Presentation.Model.ModelItem.Source" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Presentation.Model.ModelProperty</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 값을 제공한 속성을 가져옵니다.</summary>
+        <value>이 값의 소스를 나타내는 <see cref="T:System.Activities.Presentation.Model.ModelProperty" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우 항목이 개체 그래프의 루트를 나타내는 반환 `null`합니다. 항목이 컬렉션 또는 사전의 멤버인 경우 Source에서 반환되는 속성은 해당 컬렉션 또는 사전이 제공한 의사 속성입니다. 다른 값의 경우 Source 속성은 값이 실제로 설정된 속성을 반환합니다. 따라서 값이 상속되는 경우 Source를 통해 원래 값을 제공한 사람을 확인할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Sources">
+      <MemberSignature Language="C#" Value="public abstract System.Collections.Generic.IEnumerable&lt;System.Activities.Presentation.Model.ModelProperty&gt; Sources { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.IEnumerable`1&lt;class System.Activities.Presentation.Model.ModelProperty&gt; Sources" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.Sources" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Sources As IEnumerable(Of ModelProperty)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Collections::Generic::IEnumerable&lt;System::Activities::Presentation::Model::ModelProperty ^&gt; ^ Sources { System::Collections::Generic::IEnumerable&lt;System::Activities::Presentation::Model::ModelProperty ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Sources : seq&lt;System.Activities.Presentation.Model.ModelProperty&gt;" Usage="System.Activities.Presentation.Model.ModelItem.Sources" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IEnumerable&lt;System.Activities.Presentation.Model.ModelProperty&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 값을 보유하는 모든 속성을 가져옵니다.</summary>
+        <value>이 값의 소스입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Presentation.Model.ModelItem.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberSignature Language="F#" Value="override this.ToString : unit -&gt; string" Usage="modelItem.ToString " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 모델 항목에 포함된 기본 모델 개체의 문자열 표현을 반환합니다.</summary>
+        <returns>이 모델 항목에 포함된 기본 모델 개체의 문자열 표현입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="View">
+      <MemberSignature Language="C#" Value="public abstract System.Windows.DependencyObject View { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.DependencyObject View" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Presentation.Model.ModelItem.View" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property View As DependencyObject" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Windows::DependencyObject ^ View { System::Windows::DependencyObject ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.View : System.Windows.DependencyObject" Usage="System.Activities.Presentation.Model.ModelItem.View" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities.Presentation</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 항목을 그래픽으로 나타내는 <see cref="T:System.Windows.DependencyObject" />를 가져옵니다.</summary>
+        <value>이 항목을 그래픽으로 나타내는 <see cref="T:System.Windows.DependencyObject" /> 또는 이러한 표현이 없는 경우 <see langword="null" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

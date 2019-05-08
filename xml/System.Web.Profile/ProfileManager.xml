@@ -1,0 +1,1176 @@
+<Type Name="ProfileManager" FullName="System.Web.Profile.ProfileManager">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0e6a313b843ea04f7bfbd3c8a8fa8fd935cfad48" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58554180" /></Metadata><TypeSignature Language="C#" Value="public static class ProfileManager" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit ProfileManager extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Web.Profile.ProfileManager" />
+  <TypeSignature Language="VB.NET" Value="Public Class ProfileManager" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ProfileManager abstract sealed" />
+  <TypeSignature Language="F#" Value="type ProfileManager = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>사용자 프로필 데이터와 설정을 관리합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ ASP.NET 프로필 저장 및 검색 데이터베이스와 같은 데이터 원본에서 사용자 설정이 됩니다. 사용 하 여 사용자 프로필에 액세스 합니다 <xref:System.Web.HttpContext.Profile%2A> 속성이 현재 <xref:System.Web.HttpContext>합니다. 프로필 정보 및 속성 값은 프로필 공급자를 사용 하 여 관리 됩니다.  
+  
+ <xref:System.Web.Profile.ProfileManager> 클래스를 프로필 설정을 관리 하 고, 사용자 프로필을 검색 하 고, 더 이상 사용에서 되지 않는 사용자 프로필을 삭제 하는 데 사용 됩니다. <xref:System.Web.Profile.ProfileManager> 클래스는 정적 메서드 및 속성을 참조 하 여 액세스할 수 있는 제공 된 <xref:System.Web.Profile.ProfileManager> 응용 프로그램 코드에서 클래스. 예를 들어이 항목의 예제 섹션 및 추가 예제 참조 항목에서의 멤버에 대해는 <xref:System.Web.Profile.ProfileManager> 클래스입니다.  
+  
+ 기본적으로 사용자 프로필은 모든 ASP.NET 응용 프로그램에 대 한 비활성화 됩니다. 사용자 프로필을 설정 합니다 `enabled` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) true 이면 다음 예에서 같이 구성 요소입니다.  
+  
+```  
+<configuration>  
+  <system.web>  
+    <profile enabled="true" />  
+  </system.web>  
+</configuration>  
+```  
+  
+ 사용자 프로필에 대 한 자세한 내용은 참조 하세요. [ASP.NET Profile Properties Overview](https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d)합니다.  
+  
+ 프로필 공급자를 저장 하 고 사용자 프로필에 대 한 속성 검색에 사용 됩니다. .NET Framework에는 <xref:System.Web.Profile.SqlProfileProvider> SQL Server 데이터베이스에 사용자 프로필 속성을 저장 하는 클래스입니다. A <xref:System.Web.Profile.SqlProfileProvider> 명명 된 인스턴스 `AspNetSqlProvider` 기본 프로필 공급자도 컴퓨터 구성에서 지정 합니다. `AspNetSqlProvider` 인스턴스는 로컬 웹 서버에서 SQL Server 데이터베이스에 연결 합니다. 지정할 수 있습니다는 <xref:System.Web.Profile.SqlProfileProvider> 연결 하는 다른 SQL Server로의 기본 프로필 공급자를 사용 하 여는 [공급자](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164654(v%3dvs.100)) 구성 요소 및 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 다음 예제에서와 같이 구성 요소입니다.  
+  
+```  
+<configuration>  
+  <connectionStrings>  
+    <add name="SqlServices" connectionString=  
+      "Data Source=MySqlServer;Integrated Security=SSPI;Initial Catalog=aspnetdb;" />  
+  </connectionStrings>  
+  <system.web>  
+    <profile defaultProvider="SqlProvider">  
+      <providers>  
+        <clear />  
+        <add name="SqlProvider"  
+          type="System.Web.Profile.SqlProfileProvider"  
+          connectionStringName="SqlServices"  
+          applicationName="MyApplication" />  
+      </providers>  
+    </profile>  
+  </system.web>  
+</configuration>  
+```  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 ASP.NET 페이지를 보여 줍니다.는 <xref:System.Web.Profile.ProfileManager> 비활성 프로필을 관리 하는 클래스입니다.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/DeleteInactiveProfilescs.aspx#4)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/DeleteInactiveProfilesvb.aspx#4)]  
+  
+ ]]></format>
+    </remarks>
+    <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+  </Docs>
+  <Members>
+    <Member MemberName="AddDynamicProfileProperty">
+      <MemberSignature Language="C#" Value="public static void AddDynamicProfileProperty (System.Web.Configuration.ProfilePropertySettings property);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void AddDynamicProfileProperty(class System.Web.Configuration.ProfilePropertySettings property) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.AddDynamicProfileProperty(System.Web.Configuration.ProfilePropertySettings)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub AddDynamicProfileProperty (property As ProfilePropertySettings)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void AddDynamicProfileProperty(System::Web::Configuration::ProfilePropertySettings ^ property);" />
+      <MemberSignature Language="F#" Value="static member AddDynamicProfileProperty : System.Web.Configuration.ProfilePropertySettings -&gt; unit" Usage="System.Web.Profile.ProfileManager.AddDynamicProfileProperty property" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="property" Type="System.Web.Configuration.ProfilePropertySettings" Index="0" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="property">추가될 속성 설정입니다.</param>
+        <summary>프로필 속성을 프로그래밍 방식으로 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 속성을 추가 하는 기능적는 `profile` 구성 파일의 섹션입니다. 로 표시 된 메서드에서 호출을 확인 해야 하는 프로필 속성을 추가 하려면이 메서드를 호출 하 여 <xref:System.Web.PreApplicationStartMethodAttribute> 특성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ApplicationName">
+      <MemberSignature Language="C#" Value="public static string ApplicationName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property string ApplicationName" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Profile.ProfileManager.ApplicationName" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Property ApplicationName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::String ^ ApplicationName { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ApplicationName : string with get, set" Usage="System.Web.Profile.ProfileManager.ApplicationName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>프로필 정보를 저장하고 검색할 응용 프로그램의 이름을 가져오거나 설정합니다.</summary>
+        <value>프로필 정보를 저장하고 검색할 응용 프로그램의 이름입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager> 사용 하는 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 서로 다른 응용 프로그램을 사용 하 여 프로필 정보를 연결 하는 속성입니다. 이 통해 여러 응용 프로그램이 같은 데이터베이스를 사용 하 여 중복 된 사용자 간의 충돌을 일으키지 않고 사용자 정보를 저장 합니다. 여러 ASP.NET 응용 프로그램에서 동일한 값을 지정 하 여 동일한 사용자 데이터베이스를 사용할 수는 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성입니다. 합니다 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성을 프로그래밍 방식으로 설정할 수 있습니다. 또는 사용 하 여 웹 응용 프로그램 구성 파일에서 선언적으로 설정할 수 있습니다는 `applicationName` 특성입니다.  
+  
+ 에 대 한 값을 지정 하지 않으면 합니다 `applicationName` .NET Framework에 포함 된 프로필 공급자를 사용 하 여 웹 응용 프로그램 구성 파일에서 특성을 <xref:System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath%2A> ASP.NET 응용 프로그램에 대 한 속성 값입니다. ASP.NET 이외의 응용 프로그램의 경우 기본값은는 <xref:System.Diagnostics.ProcessModule.ModuleName%2A> 파일 확장명 없이 속성 값입니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성을 노출 합니다 <xref:System.Configuration.SettingsProvider.ApplicationName%2A?displayProperty=nameWithType> 기본 프로필 공급자의 속성입니다. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 되는 속성에 있으면 다른 응용 프로그램 이름으로 구성 될 수 있습니다. 기본 공급자가 아닌 프로필 공급자의 응용 프로그램 이름에 액세스 하려면 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성 및 액세스는 <xref:System.Configuration.SettingsProvider.ApplicationName%2A> 직접 공급자의 속성입니다.  
+  
+> [!CAUTION]
+>  하나의 기본 프로필 공급자 인스턴스를 모든 제공한 요청에 대 한 사용 되기 때문에 <xref:System.Web.HttpApplication> 개체를 여러 요청이 동시에 실행을 설정 하려고 할 수 있습니다는 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성 값입니다. 합니다 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성은 여러 쓰기 작업에 대해 안전 하 고 변경 하는 스레드는 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성 값은 응용 프로그램의 여러 사용자에 대 한 예기치 않은 동작이 발생할 수 있습니다. 사용자가 설정할 수 있는 코드를 작성 하지 않는 것이 좋습니다는 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성이 필요 하지 않으면. 응용 프로그램의 예로 설정 하는 경우는 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성 해야 할 수 있습니다 여러 응용 프로그램에 대 한 프로필 데이터를 관리 하는 관리 응용 프로그램입니다. 단일 사용자 응용 프로그램 및 웹 응용 프로그램이 아닙니다. 이러한 응용 프로그램 이어야 합니다.  
+  
+   
+  
+## Examples  
+ 인용한 다음 구성 파일을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 요소에는 [system.web](~/docs/framework/configure-apps/file-schema/web/system-web-element-web-settings.md) ASP.NET 응용 프로그램에 대 한 Web.config 파일의 섹션입니다. 응용 프로그램의 기본 프로필 공급자를 설정를 <xref:System.Web.Profile.SqlProfileProvider> 집합과 인스턴스를 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 에 `MyApplication`입니다.  
+  
+```  
+<profile enabled="true" defaultProvider="SqlProvider">  
+  <providers>  
+  <add name="SqlProvider"  
+    type="System.Web.Profile.SqlProfileProvider"  
+    connectionStringName="SqlServices"  
+    applicationName="MyApplication" />  
+  </providers>  
+</profile>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="AutomaticSaveEnabled">
+      <MemberSignature Language="C#" Value="public static bool AutomaticSaveEnabled { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property bool AutomaticSaveEnabled" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Profile.ProfileManager.AutomaticSaveEnabled" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property AutomaticSaveEnabled As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property bool AutomaticSaveEnabled { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.AutomaticSaveEnabled : bool" Usage="System.Web.Profile.ProfileManager.AutomaticSaveEnabled" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>사용자 프로필이 ASP.NET 페이지의 실행이 끝날 때 자동으로 저장되는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>사용자 프로필이 ASP.NET 페이지의 실행이 끝날 때 자동으로 저장되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="true" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.AutomaticSaveEnabled%2A> 속성 응용 프로그램에 대 한 사용자 프로필의 자동 저장을 사용 하는지 여부를 나타냅니다. 자동 저장을 사용 하는 경우는 <xref:System.Web.Profile.ProfileModule> 발생 시키는 개체를 <xref:System.Web.Profile.ProfileModule.ProfileAutoSaving> 이벤트 및 호출 합니다 <xref:System.Web.Profile.ProfileBase.Save%2A> 메서드 중를 <xref:System.Web.HttpApplication.EndRequest> ASP.NET 페이지의 실행이 끝날 때 이벤트입니다.  
+  
+ <xref:System.Web.Profile.ProfileManager.AutomaticSaveEnabled%2A> 속성은 `automaticSaveEnabled` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) ASP.NET 응용 프로그램에 대 한 Web.config 파일의 요소입니다.  
+  
+   
+  
+## Examples  
+ 인용한 다음 구성 파일을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 요소에는 [system.web](~/docs/framework/configure-apps/file-schema/web/system-web-element-web-settings.md) ASP.NET 응용 프로그램에 대 한 Web.config 파일의 섹션입니다. 응용 프로그램의 기본 프로필 공급자를 지정는 <xref:System.Web.Profile.SqlProfileProvider> 집합과 인스턴스를 `automaticSaveEnabled` 특성을 `true`입니다.  
+  
+```  
+<profile enabled="true"  
+  automaticSaveEnabled="true"  
+  defaultProvider="SqlProvider">  
+  <providers>  
+    <add name="SqlProvider"  
+      type="System.Web.Profile.SqlProfileProvider"  
+      connectionStringName="SqlServices"  
+      applicationName="MyApplication" />  
+  </providers>  
+</profile>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException">최소한 <see cref="P:System.Web.Profile.ProfileManager.AutomaticSaveEnabled" /> 권한 없이 <see cref="F:System.Web.AspNetHostingPermissionLevel.Medium" /> 속성 값을 가져오려고 한 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteInactiveProfiles">
+      <MemberSignature Language="C#" Value="public static int DeleteInactiveProfiles (System.Web.Profile.ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig int32 DeleteInactiveProfiles(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, valuetype System.DateTime userInactiveSinceDate) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.DeleteInactiveProfiles(System.Web.Profile.ProfileAuthenticationOption,System.DateTime)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function DeleteInactiveProfiles (authenticationOption As ProfileAuthenticationOption, userInactiveSinceDate As DateTime) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static int DeleteInactiveProfiles(System::Web::Profile::ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="F#" Value="static member DeleteInactiveProfiles : System.Web.Profile.ProfileAuthenticationOption * DateTime -&gt; int" Usage="System.Web.Profile.ProfileManager.DeleteInactiveProfiles (authenticationOption, userInactiveSinceDate)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="userInactiveSinceDate" Type="System.DateTime" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 삭제되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="userInactiveSinceDate">사용자 프로필이 비활성 상태인지 식별하는 <see cref="T:System.DateTime" />입니다. 사용자 프로필의 <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate" />가 이 일시이거나 그 이전인 경우 해당 프로필은 비활성으로 간주됩니다.</param>
+        <summary>마지막 작업 날짜와 시간이 지정된 날짜와 시간 이전인 사용자 프로필 데이터를 삭제합니다.</summary>
+        <returns>데이터 소스에서 삭제된 프로필 수입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.Profile.ProfileManager.DeleteInactiveProfiles%2A> 메서드를 사용 하 여 지정 된 응용 프로그램에 대 한 데이터 원본에서 사용 되지 않는 프로필 데이터를 제거 하는 `applicationName` 구성 파일에는 특성입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다. 검색된 된 프로필을 사용 하 여 프로필을 <xref:System.Web.Profile.ProfileInfo.LastActivityDate%2A> 같거나 지정 된 이전에 발생 하는 `userInactiveSinceDate` 매개 변수 값을 삭제 합니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.DeleteInactiveProfiles%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.DeleteInactiveProfiles%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 속성을 포함 하는 사용자 프로필, 프로필 정보를 다른 데이터 소스에서 삭제 되지 않습니다. 기본 공급자가 아닌 프로필 공급자가 관리 하는 비활성 프로필을 삭제 하려면 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.DeleteInactiveProfiles%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비활성 프로필을 관리 하는 ASP.NET 페이지를 보여 줍니다. 지정 된 기간 (일)에 대 한 사용 되지 않은 비활성으로 간주 되므로 모든 프로필을 삭제 하는 단추가 제공 됩니다.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/DeleteInactiveProfilescs.aspx#4)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/DeleteInactiveProfilesvb.aspx#4)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteProfile">
+      <MemberSignature Language="C#" Value="public static bool DeleteProfile (string username);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool DeleteProfile(string username) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.DeleteProfile(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function DeleteProfile (username As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool DeleteProfile(System::String ^ username);" />
+      <MemberSignature Language="F#" Value="static member DeleteProfile : string -&gt; bool" Usage="System.Web.Profile.ProfileManager.DeleteProfile username" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="username" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="username">삭제할 프로필의 사용자 이름입니다.</param>
+        <summary>지정된 사용자 이름의 프로필을 데이터 소스에서 삭제합니다.</summary>
+        <returns>사용자 프로필을 찾아 삭제했으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.Profile.ProfileManager.DeleteProfile%2A> 메서드는 지정 된 사용자 프로필에 대 한 모든 속성과 프로필 정보 삭제 `username` 지정 된 데이터 원본의 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A>합니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.DeleteProfile%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.DeleteProfiles%2A> 삭제 작업을 수행 하는 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 있으면 삭제 되지 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 프로필 속성을 삭제 하려면 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.DeleteProfiles%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비활성 프로필을 관리 하는 ASP.NET 페이지를 보여 줍니다. <xref:System.Web.Profile.ProfileManager.DeleteProfile%2A> 메서드 삭제할 단일 프로필을 선택한 경우 호출 됩니다. 에 지정 된 날짜 기반 프로필 비활성 간주 되는지 여부를 `userInactiveSinceDate` 에 전달 된 매개 변수 값을 <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A> 메서드.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#10](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/DeleteProfilecs.aspx#10)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#10](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/DeleteProfilevb.aspx#10)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="username" />이 빈 문자열("")이거나 쉼표를 포함하는 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="username" />가 <see langword="null" />입니다.</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="DeleteProfiles">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>제공된 프로필 목록의 프로필 속성과 정보를 데이터 소스에서 삭제합니다.</summary>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="DeleteProfiles">
+      <MemberSignature Language="C#" Value="public static int DeleteProfiles (string[] usernames);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig int32 DeleteProfiles(string[] usernames) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.DeleteProfiles(System.String[])" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function DeleteProfiles (usernames As String()) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static int DeleteProfiles(cli::array &lt;System::String ^&gt; ^ usernames);" />
+      <MemberSignature Language="F#" Value="static member DeleteProfiles : string[] -&gt; int" Usage="System.Web.Profile.ProfileManager.DeleteProfiles usernames" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="usernames" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="usernames">삭제될 프로필의 사용자 이름으로 이루어진 문자열 배열입니다.</param>
+        <summary>제공된 사용자 이름 목록의 프로필 속성과 정보를 삭제합니다.</summary>
+        <returns>데이터 소스에서 삭제된 프로필 수입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.Profile.ProfileManager.DeleteProfiles%2A> 에서 지정한 응용 프로그램에 대 한 데이터 소스에서 지정 된 프로필에 대 한 모든 속성과 프로필 정보를 삭제 하는 메서드는 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성입니다. 삭제 하려면 프로필 목록에는 사용자 이름의 문자열 배열로 지정 됩니다. 프로필 속성 정보와 사용자 이름에 대 한 데이터 원본에 존재 하는 경우는 `usernames` 매개 변수를 삭제 됩니다.  
+  
+ 반환 값의 지정 된 배열의 길이에서 달라질 `usernames`합니다. 이 나타내는 지정된 된 배열에서 프로필의 일부 `usernames` 데이터 저장소에서 이미 삭제 되었습니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.DeleteProfiles%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.DeleteProfiles%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 있으면 삭제 되지 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 프로필 속성을 삭제 하려면 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.DeleteProfiles%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비활성 프로필을 관리 하는 ASP.NET 페이지를 보여 줍니다. <xref:System.Web.UI.WebControls.GridView> 컨트롤이 반환 된 비활성 프로필을 표시 합니다. 각 행을 <xref:System.Web.UI.WebControls.GridView> 컨트롤에 대 한 호출을 사용 하 여 데이터 원본에서 해당 행에 대 한 프로필을 삭제 하는 단추가 포함 됩니다는 <xref:System.Web.Profile.ProfileManager.DeleteProfiles%2A> 메서드.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/DeleteInactiveProfilescs.aspx#4)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/DeleteInactiveProfilesvb.aspx#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="usernames" />의 길이가 0입니다.  
+  
+또는 
+<paramref name="usernames" />의 항목 중 하나가 빈 문자열("")이거나 쉼표를 포함하는 경우  
+  
+또는 
+<paramref name="usernames" />의 항목 중 둘 이상의 값이 같은 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="usernames" />가 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="usernames" />의 항목 중 하나가 <see langword="null" />인 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteProfiles">
+      <MemberSignature Language="C#" Value="public static int DeleteProfiles (System.Web.Profile.ProfileInfoCollection profiles);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig int32 DeleteProfiles(class System.Web.Profile.ProfileInfoCollection profiles) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.DeleteProfiles(System.Web.Profile.ProfileInfoCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function DeleteProfiles (profiles As ProfileInfoCollection) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static int DeleteProfiles(System::Web::Profile::ProfileInfoCollection ^ profiles);" />
+      <MemberSignature Language="F#" Value="static member DeleteProfiles : System.Web.Profile.ProfileInfoCollection -&gt; int" Usage="System.Web.Profile.ProfileManager.DeleteProfiles profiles" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="profiles" Type="System.Web.Profile.ProfileInfoCollection" />
+      </Parameters>
+      <Docs>
+        <param name="profiles">삭제할 프로필의 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</param>
+        <summary>제공된 프로필 목록의 프로필 속성과 정보를 데이터 소스에서 삭제합니다.</summary>
+        <returns>데이터 소스에서 삭제된 프로필 수입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.Profile.ProfileManager.DeleteProfiles%2A> 에서 지정한 응용 프로그램에 대 한 데이터 소스에서 지정 된 프로필에 대 한 모든 속성과 프로필 정보를 삭제 하는 메서드는 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성입니다. 삭제할 프로필의 목록을 사용 하 여 지정 된 <xref:System.Web.Profile.ProfileInfoCollection> 로 전달 되는 `profiles` 매개 변수. A <xref:System.Web.Profile.ProfileInfoCollection> 에서 반환 될 수는 <xref:System.Web.Profile.ProfileManager.GetAllProfiles%2A>를 <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A>, <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A>, 및 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 메서드.  
+  
+ 반환 값에서 다를 수 있는 참고 합니다 <xref:System.Web.Profile.ProfileInfoCollection.Count%2A> 제공 된 값 <xref:System.Web.Profile.ProfileInfoCollection>합니다. 이 나타내는 지정 된 프로필의 일부 <xref:System.Web.Profile.ProfileInfoCollection> 데이터 저장소에서 이미 삭제 되었습니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.DeleteProfiles%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.DeleteProfiles%2A?displayProperty=nameWithType> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 있으면 삭제 되지 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 프로필 속성을 삭제 하려면 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.DeleteProfiles%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하 여 프로필을 검색할 사용자를 허용 합니다 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 및 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 메서드. 사용자에 대 한 호출을 사용 하 여 반환 된 프로필을 삭제할 수는 <xref:System.Web.Profile.ProfileManager.DeleteProfiles%2A> 메서드.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/FindProfilesByUserNamecs.aspx#5)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/FindProfilesByUserNamevb.aspx#5)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="profiles" />의 <see cref="P:System.Web.Profile.ProfileInfoCollection.Count" /> 값이 0인 경우  
+  
+또는 
+<paramref name="profiles" />의 <see cref="T:System.Web.Profile.ProfileInfo" /> 개체 중 하나에 빈 문자열("")이거나 쉼표를 포함하는 <see cref="P:System.Web.Profile.ProfileInfo.UserName" />이 있는 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="profiles" />가 <see langword="null" />입니다.  
+  
+또는 
+<paramref name="profiles" />의 <see cref="T:System.Web.Profile.ProfileInfo" /> 개체 중 하나에 <see langword="null" />인 <see cref="P:System.Web.Profile.ProfileInfo.UserName" />이 있는 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Enabled">
+      <MemberSignature Language="C#" Value="public static bool Enabled { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property bool Enabled" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Profile.ProfileManager.Enabled" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property Enabled As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property bool Enabled { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.Enabled : bool" Usage="System.Web.Profile.ProfileManager.Enabled" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>사용자 프로필이 응용 프로그램에 사용되는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>사용자 프로필이 사용되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 응용 프로그램에 대 한 사용자 프로필을 사용 하도록 설정할지를 `enabled` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 요소에는 [system.web](~/docs/framework/configure-apps/file-schema/web/system-web-element-web-settings.md) 사용자 프로필에 사용 되는 ASP.NET 응용 프로그램에 대 한 Web.config 파일의 섹션입니다.  
+  
+```  
+<profile enabled="true" defaultProvider="SqlProvider">  
+  <providers>  
+    <add name="SqlProvider"  
+      type="System.Web.Profile.SqlProfileProvider"  
+      connectionStringName="SqlServices"  
+      applicationName="MyApplication" />  
+  </providers>  
+</profile>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="FindInactiveProfilesByUserName">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>마지막 작업 날짜가 지정된 날짜와 시간이거나 그 이전이고 프로필의 사용자 이름이 지정된 이름과 일치하는 프로필의 프로필 정보를 검색합니다.</summary>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="FindInactiveProfilesByUserName">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileInfoCollection FindInactiveProfilesByUserName (System.Web.Profile.ProfileAuthenticationOption authenticationOption, string usernameToMatch, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Web.Profile.ProfileInfoCollection FindInactiveProfilesByUserName(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, string usernameToMatch, valuetype System.DateTime userInactiveSinceDate) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName(System.Web.Profile.ProfileAuthenticationOption,System.String,System.DateTime)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function FindInactiveProfilesByUserName (authenticationOption As ProfileAuthenticationOption, usernameToMatch As String, userInactiveSinceDate As DateTime) As ProfileInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Web::Profile::ProfileInfoCollection ^ FindInactiveProfilesByUserName(System::Web::Profile::ProfileAuthenticationOption authenticationOption, System::String ^ usernameToMatch, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="F#" Value="static member FindInactiveProfilesByUserName : System.Web.Profile.ProfileAuthenticationOption * string * DateTime -&gt; System.Web.Profile.ProfileInfoCollection" Usage="System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName (authenticationOption, usernameToMatch, userInactiveSinceDate)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="usernameToMatch" Type="System.String" />
+        <Parameter Name="userInactiveSinceDate" Type="System.DateTime" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="usernameToMatch">검색할 사용자 이름입니다.</param>
+        <param name="userInactiveSinceDate">사용자 프로필이 비활성 상태인지 식별하는 <see cref="T:System.DateTime" />입니다. 사용자 프로필의 <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate" />가 이 일시이거나 그 이전인 경우 해당 프로필은 비활성으로 간주됩니다.</param>
+        <summary>마지막 작업 날짜가 지정된 날짜와 시간이거나 그 이전이고 프로필의 사용자 이름이 지정된 이름과 일치하는 모든 프로필의 프로필 정보를 검색합니다.</summary>
+        <returns>사용자 이름이 제공된 <paramref name="usernameToMatch" /> 매개 변수와 일치하는 비활성 프로필에 대한 사용자 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 메서드는 지정 된 응용 프로그램에 대 한 모든 사용 되지 않는 사용자 프로필에 대 한 프로필 정보를 검색할 데는 `applicationName` 구성 파일에서 특성입니다. 이 메서드는 프로필 사용자 이름을 일치 하는 제공 된 프로필만 검색 `usernameToMatch` 매개 변수 값입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다. 검색된 된 프로필을 사용 하 여 프로필을 <xref:System.Web.Profile.ProfileInfo.LastActivityDate%2A> 같거나 지정 된 이전에 발생 하는 `userInactiveSinceDate` 매개 변수 값이 반환 됩니다.  
+  
+ 에 대 한 오버 로드를 사용 하 여 데이터의 페이지에서이 정보를 검색할 수는 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%28System.Web.Profile.ProfileAuthenticationOption%2CSystem.String%2CSystem.DateTime%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%40%29> 추가로 사용 하는 메서드 `pageIndex` 및 `pageSize` 매개 변수입니다.  
+  
+> [!NOTE]
+>  프로필 공급자에는 와일드 카드 문자를 지원할 수 있습니다는 `usernameToMatch` 매개 변수입니다. 예를 들어,를 <xref:System.Web.Profile.SqlProfileProvider.FindInactiveProfilesByUserName%2A> 메서드를 <xref:System.Web.Profile.SqlProfileProvider> 클래스에서 와일드 카드 문자를 지원 합니다 `usernameToMatch` 매개 변수.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.FindInactiveProfilesByUserName%2A?displayProperty=nameWithType> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 들어 있는 다른 프로필 공급자에 대 한 데이터 원본 검색 되지는 않습니다. 기본 공급자가 아닌 프로필 공급자가 관리 하는 비활성 프로필을 찾으려면를 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.FindInactiveProfilesByUserName%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 제공 사용자는 `usernameToMatch` 값 및 <xref:System.Web.Profile.ProfileAuthenticationOption> 열거형 값 및 검색 프로필 일치 하는 프로필에 대 한 정보입니다. 샘플 사용자를 비활성 프로필을 반환할 것인지를 지정할 수 있습니다. 비활성 프로필에만 지정 된 경우는 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 방법이 고, 그렇지 않으면 호출을 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 메서드가 호출 됩니다.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#8](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/FindProfilesByUserName2cs.aspx#8)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#8](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/FindProfilesByUserName2vb.aspx#8)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="usernameToMatch" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="usernameToMatch" />가 빈 문자열("")인 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="FindInactiveProfilesByUserName">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileInfoCollection FindInactiveProfilesByUserName (System.Web.Profile.ProfileAuthenticationOption authenticationOption, string usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Web.Profile.ProfileInfoCollection FindInactiveProfilesByUserName(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, string usernameToMatch, valuetype System.DateTime userInactiveSinceDate, int32 pageIndex, int32 pageSize, [out] int32&amp; totalRecords) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName(System.Web.Profile.ProfileAuthenticationOption,System.String,System.DateTime,System.Int32,System.Int32,System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function FindInactiveProfilesByUserName (authenticationOption As ProfileAuthenticationOption, usernameToMatch As String, userInactiveSinceDate As DateTime, pageIndex As Integer, pageSize As Integer, ByRef totalRecords As Integer) As ProfileInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Web::Profile::ProfileInfoCollection ^ FindInactiveProfilesByUserName(System::Web::Profile::ProfileAuthenticationOption authenticationOption, System::String ^ usernameToMatch, DateTime userInactiveSinceDate, int pageIndex, int pageSize, [Runtime::InteropServices::Out] int % totalRecords);" />
+      <MemberSignature Language="F#" Value="static member FindInactiveProfilesByUserName : System.Web.Profile.ProfileAuthenticationOption * string * DateTime * int * int *  -&gt; System.Web.Profile.ProfileInfoCollection" Usage="System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName (authenticationOption, usernameToMatch, userInactiveSinceDate, pageIndex, pageSize, totalRecords)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="usernameToMatch" Type="System.String" />
+        <Parameter Name="userInactiveSinceDate" Type="System.DateTime" />
+        <Parameter Name="pageIndex" Type="System.Int32" />
+        <Parameter Name="pageSize" Type="System.Int32" />
+        <Parameter Name="totalRecords" Type="System.Int32" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="usernameToMatch">검색할 사용자 이름입니다.</param>
+        <param name="userInactiveSinceDate">사용자 프로필이 비활성 상태인지 식별하는 <see cref="T:System.DateTime" />입니다. 사용자 프로필의 <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate" />가 이 일시이거나 그 이전인 경우 해당 프로필은 비활성으로 간주됩니다.</param>
+        <param name="pageIndex">반환할 결과 페이지의 인덱스입니다. <paramref name="pageIndex" />는 0부터 시작합니다.</param>
+        <param name="pageSize">반환할 결과 페이지의 크기입니다.</param>
+        <param name="totalRecords">이 메서드가 반환될 때 전체 프로필 수를 식별하는 정수가 포함됩니다. 이 매개 변수는 초기화되지 않은 상태로 전달됩니다.</param>
+        <summary>마지막 작업 날짜가 지정된 날짜와 시간이거나 그 이전이고 프로필의 사용자 이름이 지정된 이름과 일치하는 프로필의 프로필 정보를 데이터 페이지에서 검색합니다.</summary>
+        <returns>사용자 이름이 제공된 <paramref name="usernameToMatch" /> 매개 변수와 일치하는 비활성 프로필에 대한 사용자 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 메서드는 지정 된 응용 프로그램에 대 한 사용 되지 않는 사용자 프로필에 대 한 프로필 정보를 검색할 데는 `applicationName` 구성 파일에서 특성입니다. 이 메서드는 사용자 이름이 제공 된 일치 하는 프로필만 검색 `usernameToMatch` 매개 변수 값입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다. 검색된 된 프로필의 모든 프로필에는 반환 되는 <xref:System.Web.Profile.ProfileInfo.LastActivityDate%2A> 같거나 지정 된 이전에 발생 하는 `userInactiveSinceDate` 매개 변수 값입니다.  
+  
+ 반환한 결과 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 에 의해 제한 됩니다 합니다 `pageIndex` 및 `pageSize` 매개 변수입니다. 합니다 `pageSize` 의 최대 수를 식별 하는 매개 변수 <xref:System.Web.Profile.ProfileInfo> 에서 반환 하는 개체는 <xref:System.Web.Profile.ProfileInfoCollection> 컬렉션입니다. `pageIndex` 반환할 결과 페이지를 식별 하는 매개 변수; 첫 번째 페이지를 식별 하는 0입니다. `totalRecords` 매개 변수는는 `out` 구성 된 비활성 사용자 프로필의 총 수로 설정 된 매개 변수 `applicationName`기반으로 합니다 `authenticationOption` 및 `userInactiveSinceDate` 매개 변수입니다. 예를 들어 13 명의 사용자가 구성 된 경우 `applicationName`, 및 `pageIndex` 값이 1을 `pageSize` 5는 <xref:System.Web.Profile.ProfileInfoCollection> 반환 된 6 번째부터 10 번째까지의 비활성 프로필을 포함 합니다. `totalRecords` 매개 변수를 13으로 설정 됩니다.  
+  
+ 프로필 공급자에 와일드 카드 문자는 지원 될 수 있습니다는 `usernameToMatch` 매개 변수입니다. 예를 들어,를 <xref:System.Web.Profile.SqlProfileProvider.FindInactiveProfilesByUserName%2A> 메서드를 <xref:System.Web.Profile.SqlProfileProvider> 클래스에서 와일드 카드 문자를 지원 합니다 `usernameToMatch` 매개 변수.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.FindInactiveProfilesByUserName%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 들어 있는 다른 프로필 공급자에 대 한 데이터 원본 검색 되지는 않습니다. 기본 공급자가 아닌 프로필 공급자가 관리 하는 비활성 프로필을 찾으려면를 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.FindInactiveProfilesByUserName%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 제공 사용자는 `usernameToMatch` 값 및 <xref:System.Web.Profile.ProfileAuthenticationOption> 값 및 일치 하는 프로필에 대 한 프로필 정보를 검색 합니다. 이 예제에서는 비활성 프로필에만 반환할 것인지를 지정할 수 있습니다. 비활성 프로필에만 지정 된 경우는 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 방법이 고, 그렇지 않으면 호출을 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 메서드가 호출 됩니다.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/FindProfilesByUserNamecs.aspx#5)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/FindProfilesByUserNamevb.aspx#5)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="usernameToMatch" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="usernameToMatch" />가 빈 문자열("")인 경우  
+  
+또는 
+ <paramref name="pageIndex" />가 0보다 작은 경우  
+  
+또는 
+ <paramref name="pageSize" />가 1보다 작습니다.  
+  
+또는 
+ <paramref name="pageIndex" />와 <paramref name="pageSize" />의 곱이 <see cref="F:System.Int32.MaxValue" />보다 큰 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="FindProfilesByUserName">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>사용자 이름이 지정된 이름과 일치하는 프로필에 대한 프로필 정보를 검색합니다.</summary>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="FindProfilesByUserName">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileInfoCollection FindProfilesByUserName (System.Web.Profile.ProfileAuthenticationOption authenticationOption, string usernameToMatch);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Web.Profile.ProfileInfoCollection FindProfilesByUserName(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, string usernameToMatch) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.FindProfilesByUserName(System.Web.Profile.ProfileAuthenticationOption,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function FindProfilesByUserName (authenticationOption As ProfileAuthenticationOption, usernameToMatch As String) As ProfileInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Web::Profile::ProfileInfoCollection ^ FindProfilesByUserName(System::Web::Profile::ProfileAuthenticationOption authenticationOption, System::String ^ usernameToMatch);" />
+      <MemberSignature Language="F#" Value="static member FindProfilesByUserName : System.Web.Profile.ProfileAuthenticationOption * string -&gt; System.Web.Profile.ProfileInfoCollection" Usage="System.Web.Profile.ProfileManager.FindProfilesByUserName (authenticationOption, usernameToMatch)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="usernameToMatch" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="usernameToMatch">검색할 사용자 이름입니다.</param>
+        <summary>사용자 이름이 지정된 이름과 일치하는 프로필에 대한 모든 프로필 정보를 검색합니다.</summary>
+        <returns>사용자 이름이 제공된 <paramref name="usernameToMatch" /> 매개 변수와 일치하는 프로필에 대한 사용자 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 메서드는 사용자 이름이 모든 프로필에 대 한 정보는 제공 된 일치 목록을 반환 `usernameToMatch` 구성 된 매개 변수 값 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A> 속성 값입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다.  
+  
+ 사용자 프로필에 대 한 오버 로드를 사용 하 여 데이터의 페이지에 대 한 프로필 정보를 검색할 수 있습니다 합니다 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 추가로 사용 하는 메서드 `pageIndex` 및 `pageSize` 매개 변수입니다.  
+  
+ 프로필 공급자에 와일드 카드 문자는 지원 될 수 있습니다는 `usernameToMatch` 매개 변수입니다. 예를 들어,를 <xref:System.Web.Profile.SqlProfileProvider.FindProfilesByUserName%2A> 메서드를 <xref:System.Web.Profile.SqlProfileProvider> 클래스에서 와일드 카드 문자를 지원 합니다 `usernameToMatch` 매개 변수.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.FindProfilesByUserName%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 들어 있는 다른 프로필 공급자에 대 한 데이터 원본 검색 되지는 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 프로필을 찾으려면를 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.FindProfilesByUserName%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 제공 사용자는 `usernameToMatch` 값 및 <xref:System.Web.Profile.ProfileAuthenticationOption> 열거형 값 및 검색 프로필 일치 하는 프로필에 대 한 정보입니다. 이 예제에서는 비활성 프로필에만 반환할 것인지를 지정할 수 있습니다. 비활성 프로필에만 지정 된 경우는 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 방법이 고, 그렇지 않으면 호출을 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 메서드가 호출 됩니다.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#8](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/FindProfilesByUserName2cs.aspx#8)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#8](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/FindProfilesByUserName2vb.aspx#8)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="usernameToMatch" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="usernameToMatch" />가 빈 문자열("")인 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="FindProfilesByUserName">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileInfoCollection FindProfilesByUserName (System.Web.Profile.ProfileAuthenticationOption authenticationOption, string usernameToMatch, int pageIndex, int pageSize, out int totalRecords);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Web.Profile.ProfileInfoCollection FindProfilesByUserName(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, string usernameToMatch, int32 pageIndex, int32 pageSize, [out] int32&amp; totalRecords) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.FindProfilesByUserName(System.Web.Profile.ProfileAuthenticationOption,System.String,System.Int32,System.Int32,System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function FindProfilesByUserName (authenticationOption As ProfileAuthenticationOption, usernameToMatch As String, pageIndex As Integer, pageSize As Integer, ByRef totalRecords As Integer) As ProfileInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Web::Profile::ProfileInfoCollection ^ FindProfilesByUserName(System::Web::Profile::ProfileAuthenticationOption authenticationOption, System::String ^ usernameToMatch, int pageIndex, int pageSize, [Runtime::InteropServices::Out] int % totalRecords);" />
+      <MemberSignature Language="F#" Value="static member FindProfilesByUserName : System.Web.Profile.ProfileAuthenticationOption * string * int * int *  -&gt; System.Web.Profile.ProfileInfoCollection" Usage="System.Web.Profile.ProfileManager.FindProfilesByUserName (authenticationOption, usernameToMatch, pageIndex, pageSize, totalRecords)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="usernameToMatch" Type="System.String" />
+        <Parameter Name="pageIndex" Type="System.Int32" />
+        <Parameter Name="pageSize" Type="System.Int32" />
+        <Parameter Name="totalRecords" Type="System.Int32" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="usernameToMatch">검색할 사용자 이름입니다.</param>
+        <param name="pageIndex">반환할 결과 페이지의 인덱스입니다. <paramref name="pageIndex" />는 0부터 시작합니다.</param>
+        <param name="pageSize">반환할 결과 페이지의 크기입니다.</param>
+        <param name="totalRecords">이 메서드가 반환될 때 전체 프로필 수를 식별하는 정수가 포함됩니다. 이 매개 변수는 초기화되지 않은 상태로 전달됩니다.</param>
+        <summary>사용자 이름이 지정된 이름과 일치하는 프로필에 대한 프로필 정보를 데이터 페이지에서 검색합니다.</summary>
+        <returns>사용자 이름이 제공된 <paramref name="usernameToMatch" /> 매개 변수와 일치하는 프로필에 대한 사용자 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 메서드는 프로필 사용자 이름이 일치 하는 제공 된 프로필 정보 목록을 반환 `usernameToMatch` 구성 된 매개 변수 값 <xref:System.Web.Profile.ProfileManager.ApplicationName%2A>합니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다.  
+  
+ 프로필 공급자에 와일드 카드 문자는 지원 될 수 있습니다는 `usernameToMatch` 매개 변수입니다. 예를 들어,를 <xref:System.Web.Profile.SqlProfileProvider.FindProfilesByUserName%2A> 메서드를 <xref:System.Web.Profile.SqlProfileProvider> 클래스에서 와일드 카드 문자를 지원 합니다 `usernameToMatch` 매개 변수.  
+  
+ 반환한 결과 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 에 의해 제한 됩니다 합니다 `pageIndex` 및 `pageSize` 매개 변수입니다. 합니다 `pageSize` 의 최대 수를 식별 하는 매개 변수 <xref:System.Web.Profile.ProfileInfo> 에서 반환 하는 개체는 <xref:System.Web.Profile.ProfileInfoCollection>합니다. `pageIndex` ; 반환할 결과 페이지를 식별 하는 매개 변수 0은 첫 번째 페이지를 식별 합니다. 합니다 `totalRecords` 매개 변수는는 `out` 비활성 사용자 프로필에서 지정한 응용 프로그램에 대 한 총 수로 설정 된 매개 변수를 `applicationName` 구성 파일에서 특성을 기반으로 제공 된 `authenticationOption`합니다. 예를 들어 13 명의 사용자가 구성 된 경우 `applicationName`, 및 `pageIndex` 값이 1을 `pageSize` 5는 <xref:System.Web.Profile.ProfileInfoCollection> 반환 된 6 번째부터 10 번째까지의 프로필이 포함 합니다. `totalRecords` 매개 변수를 13으로 설정 됩니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.FindInactiveProfilesByUserName%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 들어 있는 다른 프로필 공급자에 대 한 데이터 원본 검색 되지는 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 프로필을 찾으려면를 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.FindInactiveProfilesByUserName%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 제공할 수 있습니다는 `usernameToMatch` 값 및 <xref:System.Web.Profile.ProfileAuthenticationOption> 프로필 일치 하는 프로필에 대 한 정보를 검색 하 고 있습니다. 이 예제에서는 비활성 프로필에만 반환할 것인지를 지정할 수 있습니다. 비활성 프로필에만 지정 된 경우는 <xref:System.Web.Profile.ProfileManager.FindInactiveProfilesByUserName%2A> 방법이 고, 그렇지 않으면 호출을 <xref:System.Web.Profile.ProfileManager.FindProfilesByUserName%2A> 메서드가 호출 됩니다.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/FindProfilesByUserNamecs.aspx#5)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/FindProfilesByUserNamevb.aspx#5)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="usernameToMatch" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="usernameToMatch" />가 빈 문자열("")인 경우  
+  
+또는 
+ <paramref name="pageIndex" />가 0보다 작은 경우  
+  
+또는 
+ <paramref name="pageSize" />가 1보다 작습니다.  
+  
+또는 
+ <paramref name="pageIndex" />와 <paramref name="pageSize" />의 곱이 <see cref="F:System.Int32.MaxValue" />보다 큰 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetAllInactiveProfiles">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>마지막 작업 날짜가 지정된 날짜와 시간 이전인 프로필의 사용자 프로필 데이터를 검색합니다.</summary>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetAllInactiveProfiles">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileInfoCollection GetAllInactiveProfiles (System.Web.Profile.ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Web.Profile.ProfileInfoCollection GetAllInactiveProfiles(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, valuetype System.DateTime userInactiveSinceDate) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.GetAllInactiveProfiles(System.Web.Profile.ProfileAuthenticationOption,System.DateTime)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetAllInactiveProfiles (authenticationOption As ProfileAuthenticationOption, userInactiveSinceDate As DateTime) As ProfileInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Web::Profile::ProfileInfoCollection ^ GetAllInactiveProfiles(System::Web::Profile::ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="F#" Value="static member GetAllInactiveProfiles : System.Web.Profile.ProfileAuthenticationOption * DateTime -&gt; System.Web.Profile.ProfileInfoCollection" Usage="System.Web.Profile.ProfileManager.GetAllInactiveProfiles (authenticationOption, userInactiveSinceDate)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="userInactiveSinceDate" Type="System.DateTime" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="userInactiveSinceDate">사용자 프로필이 비활성 상태인지 식별하는 <see cref="T:System.DateTime" />입니다. 사용자 프로필의 <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate" />가 이 일시이거나 그 이전인 경우 해당 프로필은 비활성으로 간주됩니다.</param>
+        <summary>마지막 작업 날짜가 지정된 날짜와 시간 이전인 프로필의 모든 사용자 프로필 데이터를 검색합니다.</summary>
+        <returns>비활성 프로필에 대한 사용자 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A> 메서드는 지정 된 응용 프로그램에 대 한 모든 사용 되지 않는 사용자 프로필에 대 한 데이터 소스에서 프로필 정보를 검색할 데는 `applicationName` 구성 파일에서 특성입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다. 검색된 된 프로필의 모든 프로필에는 반환 되는 <xref:System.Web.Profile.ProfileInfo.LastActivityDate%2A> 같거나 지정 된 이전에 발생 하는 `userInactiveSinceDate` 매개 변수 값입니다.  
+  
+ 비활성 사용자 프로필에 대 한 오버 로드를 사용 하 여 데이터의 페이지에 대 한 프로필 정보를 검색할 수 있습니다 합니다 <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A> 추가로 사용 하는 메서드 `pageIndex` 및 `pageSize` 매개 변수입니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.GetAllInactiveProfiles%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 들어 있는 다른 프로필 공급자에 대 한 데이터 원본 검색 되지는 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 사용 되지 않는 프로필을 찾으려면를 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.GetAllInactiveProfiles%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비활성 프로필을 관리 하는 ASP.NET 페이지를 보여 줍니다. 모든 비활성 프로필을 삭제 하는 단추가 제공 됩니다. 에 지정 된 날짜 기반 프로필 비활성 간주 되는지 여부를 `userInactiveSinceDate` 매개 변수입니다.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#7](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/DeleteInactiveProfiles2cs.aspx#7)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#7](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/DeleteInactiveProfiles2vb.aspx#7)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAllInactiveProfiles">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileInfoCollection GetAllInactiveProfiles (System.Web.Profile.ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate, int pageIndex, int pageSize, out int totalRecords);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Web.Profile.ProfileInfoCollection GetAllInactiveProfiles(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, valuetype System.DateTime userInactiveSinceDate, int32 pageIndex, int32 pageSize, [out] int32&amp; totalRecords) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.GetAllInactiveProfiles(System.Web.Profile.ProfileAuthenticationOption,System.DateTime,System.Int32,System.Int32,System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetAllInactiveProfiles (authenticationOption As ProfileAuthenticationOption, userInactiveSinceDate As DateTime, pageIndex As Integer, pageSize As Integer, ByRef totalRecords As Integer) As ProfileInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Web::Profile::ProfileInfoCollection ^ GetAllInactiveProfiles(System::Web::Profile::ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate, int pageIndex, int pageSize, [Runtime::InteropServices::Out] int % totalRecords);" />
+      <MemberSignature Language="F#" Value="static member GetAllInactiveProfiles : System.Web.Profile.ProfileAuthenticationOption * DateTime * int * int *  -&gt; System.Web.Profile.ProfileInfoCollection" Usage="System.Web.Profile.ProfileManager.GetAllInactiveProfiles (authenticationOption, userInactiveSinceDate, pageIndex, pageSize, totalRecords)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="userInactiveSinceDate" Type="System.DateTime" />
+        <Parameter Name="pageIndex" Type="System.Int32" />
+        <Parameter Name="pageSize" Type="System.Int32" />
+        <Parameter Name="totalRecords" Type="System.Int32" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="userInactiveSinceDate">사용자 프로필이 비활성 상태인지 식별하는 <see cref="T:System.DateTime" />입니다. 사용자 프로필의 <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate" />가 이 일시이거나 그 이전인 경우 해당 프로필은 비활성으로 간주됩니다.</param>
+        <param name="pageIndex">반환할 결과 페이지의 인덱스입니다. <paramref name="pageIndex" />는 0부터 시작합니다.</param>
+        <param name="pageSize">반환할 결과 페이지의 크기입니다.</param>
+        <param name="totalRecords">이 메서드가 반환될 때 전체 프로필 수를 식별하는 정수가 포함됩니다. 이 매개 변수는 초기화되지 않은 상태로 전달됩니다.</param>
+        <summary>마지막 작업 날짜가 지정된 날짜와 시간이거나 그 이전인 사용자 프로필에 대한 <see cref="T:System.Web.Profile.ProfileInfo" /> 개체의 페이지를 검색합니다.</summary>
+        <returns>비활성 프로필에 대한 사용자 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A> 메서드를 사용 하지 않는 사용자 프로필에서 지정한 응용 프로그램에 대 한 데이터 소스에서 프로필 정보를 검색 하는 `applicationName` 구성 파일에는 특성입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다. 검색된 된 프로필의 모든 프로필에는 반환 되는 <xref:System.Web.Profile.ProfileInfo.LastActivityDate%2A> 된 전에 발생 하는 `userInactiveSinceDate` 매개 변수 값입니다.  
+  
+ 반환한 결과 <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A> 에 의해 제한 됩니다 합니다 `pageIndex` 및 `pageSize` 매개 변수입니다. 합니다 `pageSize` 의 최대 수를 식별 하는 매개 변수 <xref:System.Web.Profile.ProfileInfo> 에서 반환 하는 개체는 <xref:System.Web.Profile.ProfileInfoCollection>합니다. `pageIndex` ; 반환할 결과 페이지를 식별 하는 매개 변수 0은 첫 번째 페이지를 식별 합니다. `totalRecords` 매개 변수는는 `out` 구성 된 비활성 사용자 프로필의 총 수로 설정 된 매개 변수 `applicationName`기반으로 합니다 `authenticationOption` 및 `userInactiveSinceDate` 매개 변수입니다. 예를 들어 13 명의 사용자가 구성 된 경우 `applicationName`, 및 `pageIndex` 값이 1을 `pageSize` 5는 <xref:System.Web.Profile.ProfileInfoCollection> 반환 된 6 번째부터 10 번째까지의 비활성 프로필을 포함 합니다. `totalRecords` 매개 변수를 13으로 설정 됩니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.GetAllInactiveProfiles%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 들어 있는 다른 프로필 공급자에 대 한 데이터 원본 검색 되지는 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 프로필을 찾으려면를 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.GetAllInactiveProfiles%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 비활성 프로필을 관리 하는 ASP.NET 웹 페이지를 보여 줍니다. 모든 비활성 프로필을 삭제 하는 단추가 제공 됩니다. 에 지정 된 날짜 기반 프로필 비활성 간주 되는지 여부를 `userInactiveSinceDate` 매개 변수입니다.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#4](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/DeleteInactiveProfilescs.aspx#4)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/DeleteInactiveProfilesvb.aspx#4)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetAllProfiles">
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>데이터 소스에서 프로필에 대한 사용자 프로필 데이터를 검색합니다.</summary>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetAllProfiles">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileInfoCollection GetAllProfiles (System.Web.Profile.ProfileAuthenticationOption authenticationOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Web.Profile.ProfileInfoCollection GetAllProfiles(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.GetAllProfiles(System.Web.Profile.ProfileAuthenticationOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetAllProfiles (authenticationOption As ProfileAuthenticationOption) As ProfileInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Web::Profile::ProfileInfoCollection ^ GetAllProfiles(System::Web::Profile::ProfileAuthenticationOption authenticationOption);" />
+      <MemberSignature Language="F#" Value="static member GetAllProfiles : System.Web.Profile.ProfileAuthenticationOption -&gt; System.Web.Profile.ProfileInfoCollection" Usage="System.Web.Profile.ProfileManager.GetAllProfiles authenticationOption" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <summary>데이터 소스에서 프로필에 대한 사용자 프로필 데이터를 검색합니다.</summary>
+        <returns>데이터 소스에 있는 모든 프로필에 대한 사용자 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.GetAllProfiles%2A> 메서드는 지정 된 응용 프로그램에 대 한 데이터 소스에서 프로필 정보를 검색할 데는 `applicationName` 구성 파일에서 특성입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다.  
+  
+ 페이지를 검색할 수 있습니다 <xref:System.Web.Profile.ProfileInfo> 에 대 한 오버 로드를 사용 하 여 사용자 프로필에 대 한 개체를 <xref:System.Web.Profile.ProfileManager.GetAllProfiles%2A> 추가로 사용 하는 메서드 `pageIndex` 및 `pageSize` 매개 변수입니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.GetAllProfiles%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.GetAllProfiles%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 들어 있는 다른 프로필 공급자에 대 한 데이터 원본 검색 되지는 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 프로필을 찾으려면를 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.GetAllProfiles%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 모든 구성 된 프로필에 대 한 프로필 정보를 표시 하는 다음 코드 예제에서는 `applicationName`합니다.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#6](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/ShowProfiles2cs.aspx#6)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/ShowProfiles2vb.aspx#6)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAllProfiles">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileInfoCollection GetAllProfiles (System.Web.Profile.ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, out int totalRecords);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Web.Profile.ProfileInfoCollection GetAllProfiles(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, int32 pageIndex, int32 pageSize, [out] int32&amp; totalRecords) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.GetAllProfiles(System.Web.Profile.ProfileAuthenticationOption,System.Int32,System.Int32,System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetAllProfiles (authenticationOption As ProfileAuthenticationOption, pageIndex As Integer, pageSize As Integer, ByRef totalRecords As Integer) As ProfileInfoCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Web::Profile::ProfileInfoCollection ^ GetAllProfiles(System::Web::Profile::ProfileAuthenticationOption authenticationOption, int pageIndex, int pageSize, [Runtime::InteropServices::Out] int % totalRecords);" />
+      <MemberSignature Language="F#" Value="static member GetAllProfiles : System.Web.Profile.ProfileAuthenticationOption * int * int *  -&gt; System.Web.Profile.ProfileInfoCollection" Usage="System.Web.Profile.ProfileManager.GetAllProfiles (authenticationOption, pageIndex, pageSize, totalRecords)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileInfoCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="pageIndex" Type="System.Int32" />
+        <Parameter Name="pageSize" Type="System.Int32" />
+        <Parameter Name="totalRecords" Type="System.Int32" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="pageIndex">반환할 결과 페이지의 인덱스입니다. <paramref name="pageIndex" />는 0부터 시작합니다.</param>
+        <param name="pageSize">반환할 결과 페이지의 크기입니다.</param>
+        <param name="totalRecords">이 메서드가 반환될 때 전체 프로필 수를 식별하는 정수가 포함됩니다. 이 매개 변수는 초기화되지 않은 상태로 전달됩니다.</param>
+        <summary>사용자 프로필 데이터의 페이지를 검색합니다.</summary>
+        <returns>데이터 소스에 있는 모든 프로필에 대한 사용자 프로필 정보가 포함된 <see cref="T:System.Web.Profile.ProfileInfoCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.GetAllProfiles%2A> 메서드는 지정 된 응용 프로그램에 대 한 데이터 소스에서 프로필 정보를 검색할 데는 `applicationName` 구성 파일에서 특성입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다.  
+  
+ 반환한 결과 <xref:System.Web.Profile.ProfileManager.GetAllInactiveProfiles%2A> 에 의해 제한 됩니다 합니다 `pageIndex` 및 `pageSize` 매개 변수입니다. 합니다 `pageSize` 의 최대 수를 식별 하는 매개 변수 <xref:System.Web.Profile.ProfileInfo> 에서 반환 하는 개체는 <xref:System.Web.Profile.ProfileInfoCollection>합니다. `pageIndex` ; 반환할 결과 페이지를 식별 하는 매개 변수 0은 첫 번째 페이지를 식별 합니다. 합니다 `totalRecords` 매개 변수는는 `out` 구성 된 비활성 사용자 프로필의 총 수로 설정 된 매개 변수 `applicationName`기반으로 제공 된 `authenticationOption`합니다. 예를 들어 13 명의 사용자가 구성 된 경우 `applicationName`, 및 `pageIndex` 값이 1을 `pageSize` 5는 <xref:System.Web.Profile.ProfileInfoCollection> 반환 된 6 번째부터 10 번째까지의 프로필이 포함 합니다. `totalRecords` 매개 변수를 13으로 설정 됩니다.  
+  
+ 합니다 <xref:System.Web.Profile.ProfileManager.GetAllProfiles%2A> 메서드 호출을 <xref:System.Web.Profile.ProfileProvider.GetAllProfiles%2A> 기본 프로필 공급자의 메서드. 기본 프로필 공급자를 사용 하 여 지정 합니다 `defaultProvider` 특성을 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 요소. 사용자 프로필의 기본 공급자가 아닌 프로필 공급자가 관리 하는 속성이 들어 있는 다른 프로필 공급자에 대 한 데이터 원본 검색 되지는 않습니다. 기본 공급자가 아닌 프로필 공급자를 통해 관리 되는 프로필을 찾으려면를 사용 하 여 프로필 공급자에 대 한 참조를 가져올는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 속성과 호출을 <xref:System.Web.Profile.ProfileProvider.GetAllProfiles%2A> 직접 공급자의입니다.  
+  
+   
+  
+## Examples  
+ 모든 구성 된 프로필에 대 한 프로필 정보를 표시 하는 다음 코드 예제에서는 `applicationName` 데이터 페이지에 있습니다.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#3](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/ShowProfilescs.aspx#3)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/ShowProfilesvb.aspx#3)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNumberOfInactiveProfiles">
+      <MemberSignature Language="C#" Value="public static int GetNumberOfInactiveProfiles (System.Web.Profile.ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig int32 GetNumberOfInactiveProfiles(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption, valuetype System.DateTime userInactiveSinceDate) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.GetNumberOfInactiveProfiles(System.Web.Profile.ProfileAuthenticationOption,System.DateTime)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetNumberOfInactiveProfiles (authenticationOption As ProfileAuthenticationOption, userInactiveSinceDate As DateTime) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static int GetNumberOfInactiveProfiles(System::Web::Profile::ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate);" />
+      <MemberSignature Language="F#" Value="static member GetNumberOfInactiveProfiles : System.Web.Profile.ProfileAuthenticationOption * DateTime -&gt; int" Usage="System.Web.Profile.ProfileManager.GetNumberOfInactiveProfiles (authenticationOption, userInactiveSinceDate)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+        <Parameter Name="userInactiveSinceDate" Type="System.DateTime" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <param name="userInactiveSinceDate">사용자 프로필이 비활성 상태인지 식별하는 <see cref="T:System.DateTime" /> 개체입니다. 사용자 프로필의 <see cref="P:System.Web.Profile.ProfileInfo.LastActivityDate" />가 이 일시이거나 그 이전인 경우 해당 프로필은 비활성으로 간주됩니다.</param>
+        <summary>마지막 작업 날짜가 지정된 날짜이거나 그 이전인 프로필의 수를 가져옵니다.</summary>
+        <returns>마지막 작업 날짜가 지정된 날짜와 시간 이전인 데이터 소스의 프로필 수입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.GetNumberOfInactiveProfiles%2A> 메서드를 지정 된 응용 프로그램에 대 한 데이터 원본에서 모든 사용 되지 않는 사용자 프로필의 수를 검색 하는 `applicationName` 구성 파일에는 특성입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다. 검색된 된 프로필의 모든 프로필 계산 되는 한 <xref:System.Web.Profile.ProfileInfo.LastActivityDate%2A> 같거나 지정 된 이전에 발생 하는 `userInactiveSinceDate` 매개 변수 값입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 사용자를를 보고 검색 조건에 따라 활성 및 비활성 프로필에 대 한 정보를 삭제할 수 있습니다. 비활성 프로필의 수의 결과 사용 하 여 표시 되는 <xref:System.Web.Profile.ProfileManager.GetNumberOfInactiveProfiles%2A> 메서드.  
+  
+> [!IMPORTANT]
+>  이 예제에서는 잠재적 보안 위협을 사용자 입력을 허용 하는 텍스트 상자가 포함 되어 있습니다. 기본적으로 ASP.NET 웹 페이지는 사용자 입력 내용에 스크립트 또는 HTML 요소가 포함되어 있지 않은지 확인합니다. 자세한 내용은 [Script Exploits Overview](https://msdn.microsoft.com/library/772c7312-211a-4eb3-8d6e-eec0aa1dcc07)를 참조하세요.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#5](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/FindProfilesByUserNamecs.aspx#5)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#5](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/FindProfilesByUserNamevb.aspx#5)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNumberOfProfiles">
+      <MemberSignature Language="C#" Value="public static int GetNumberOfProfiles (System.Web.Profile.ProfileAuthenticationOption authenticationOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig int32 GetNumberOfProfiles(valuetype System.Web.Profile.ProfileAuthenticationOption authenticationOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.Profile.ProfileManager.GetNumberOfProfiles(System.Web.Profile.ProfileAuthenticationOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetNumberOfProfiles (authenticationOption As ProfileAuthenticationOption) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static int GetNumberOfProfiles(System::Web::Profile::ProfileAuthenticationOption authenticationOption);" />
+      <MemberSignature Language="F#" Value="static member GetNumberOfProfiles : System.Web.Profile.ProfileAuthenticationOption -&gt; int" Usage="System.Web.Profile.ProfileManager.GetNumberOfProfiles authenticationOption" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="authenticationOption" Type="System.Web.Profile.ProfileAuthenticationOption" />
+      </Parameters>
+      <Docs>
+        <param name="authenticationOption"><see cref="T:System.Web.Profile.ProfileAuthenticationOption" /> 열거형 값 중 하나로, 반환되는 프로필이 익명인지, 인증되었는지 또는 두 형식 모두인지를 지정합니다.</param>
+        <summary>데이터 소스의 프로필 수를 가져옵니다.</summary>
+        <returns>데이터 소스의 프로필 수입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.GetNumberOfProfiles%2A> 메서드를 지정 된 응용 프로그램에 대 한 데이터 원본의 모든 사용자 프로필의 수를 검색 하는 `applicationName` 구성 파일의 특성입니다. 사용 된 `authenticationOption` 익명 프로필에 있는지 여부를 지정 하려면 매개 변수는 프로필 또는를 검색할 수 있는 모든 프로필에만 인증 합니다.  
+  
+   
+  
+## Examples  
+ 모든 구성 된 프로필에 대 한 프로필 정보를 표시 하는 다음 코드 예제에서는 `applicationName` 프로필의 수를 반환 합니다.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#6](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/ShowProfiles2cs.aspx#6)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#6](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/ShowProfiles2vb.aspx#6)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Provider">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileProvider Provider { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class System.Web.Profile.ProfileProvider Provider" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Profile.ProfileManager.Provider" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property Provider As ProfileProvider" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::Web::Profile::ProfileProvider ^ Provider { System::Web::Profile::ProfileProvider ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Provider : System.Web.Profile.ProfileProvider" Usage="System.Web.Profile.ProfileManager.Provider" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>응용 프로그램의 기본 프로필 공급자에 대한 참조를 가져옵니다.</summary>
+        <value>응용 프로그램의 기본 프로필 공급자입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.Provider%2A> 속성을 사용 하면 응용 프로그램에 대 한 기본 프로필 공급자를 직접 참조할 수 있습니다. 이 일반적으로 사용 되지 않는 프로필 공급자의 사용자 지정 멤버에 액세스의 일부는 <xref:System.Web.Profile.ProfileProvider> 추상 기본 클래스입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 기본 프로필 공급자의 속성을 나열 합니다.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#2](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/Providercs.aspx#2)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#2](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/Providervb.aspx#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException">최소한 <see cref="P:System.Web.Profile.ProfileManager.Provider" /> 권한 없이 <see cref="F:System.Web.AspNetHostingPermissionLevel.Medium" /> 속성 값을 가져오려고 한 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Providers">
+      <MemberSignature Language="C#" Value="public static System.Web.Profile.ProfileProviderCollection Providers { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class System.Web.Profile.ProfileProviderCollection Providers" />
+      <MemberSignature Language="DocId" Value="P:System.Web.Profile.ProfileManager.Providers" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property Providers As ProfileProviderCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::Web::Profile::ProfileProviderCollection ^ Providers { System::Web::Profile::ProfileProviderCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Providers : System.Web.Profile.ProfileProviderCollection" Usage="System.Web.Profile.ProfileManager.Providers" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Profile.ProfileProviderCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>ASP.NET 응용 프로그램의 프로필 공급자 컬렉션을 가져옵니다.</summary>
+        <value>ASP.NET 응용 프로그램에 대해 구성된 프로필 공급자의 <see cref="T:System.Web.Profile.ProfileProviderCollection" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.Profile.ProfileManager.Providers%2A> 컴퓨터 구성에 추가 공급자를 포함 하 여 속성 참조 모든 응용 프로그램에 사용 되는 프로필 공급자 및 공급자 모든 Web.config 파일에 추가 합니다. 프로필 공급자를 사용 하 여 응용 프로그램에 사용할 수 있는 제어할 수 있습니다.는 [공급자](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164654(v%3dvs.100)) 의 요소를 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 구성 파일의 섹션입니다. 다음 Web.config 파일에서는 상위 구성 파일에 지정 된 프로필 공급자를 제거 하 고 추가 하는 예를 들어, 한 <xref:System.Web.Profile.SqlProfileProvider> 인스턴스로 응용 프로그램에 대 한 프로필 공급자입니다.  
+  
+```  
+<configuration>  
+  <connectionStrings>  
+    <add name="SqlServices" connectionString=  
+      "Data Source=MySqlServer;Integrated Security=SSPI;Initial Catalog=aspnetdb;" />  
+  </connectionStrings>  
+  <system.web>  
+    <profile enabled="true" defaultProvider="SqlProvider">  
+      <providers>  
+        <clear />  
+        <add name="SqlProvider"  
+          type="System.Web.Profile.SqlProfileProvider"  
+          connectionStringName="SqlServices"  
+          applicationName="MyApplication" />  
+      </providers>  
+    </profile>  
+  </system.web>  
+</configuration>  
+```  
+  
+ 지정 하는 경우는 [프로필](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ms164644(v%3dvs.100)) 섹션을 설정 하 여 기본 공급자를 지정 해야 합니다는 `defaultProvider` 특성입니다. Web.config 파일의 섹션을 지정 하지 않으면 컴퓨터 구성에서 값이 사용 되 고 <xref:System.Web.Profile.SqlProfileProvider> AspNetSqlProvider 명명 된 인스턴스는 기본 공급자로 설정 됩니다.  
+  
+ 공급자에 대 한 강력한 형식의 참조를 가져올 수는 <xref:System.Web.Profile.ProfileManager.Providers%2A> 프로필 공급자 이름으로 인덱싱 및 원하는 형식으로 캐스팅 하 여 컬렉션입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 응용 프로그램 및 해당 유형이 사용 되는 공급자를 나열 합니다.  
+  
+ [!code-aspx-csharp[System.Web.Profile.ProfileManager#9](~/samples/snippets/csharp/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/CS/Providerscs.aspx#9)]
+ [!code-aspx-vb[System.Web.Profile.ProfileManager#9](~/samples/snippets/visualbasic/VS_Snippets_WebNet/System.Web.Profile.ProfileManager/VB/Providersvb.aspx#9)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Web.HttpException">최소한 <see cref="P:System.Web.Profile.ProfileManager.Providers" /> 권한 없이 <see cref="F:System.Web.AspNetHostingPermissionLevel.Medium" /> 속성 값을 가져오려고 한 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/89439440-92ea-48c3-a4bd-dea40307899d">ASP.NET Profile Properties Overview</related>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

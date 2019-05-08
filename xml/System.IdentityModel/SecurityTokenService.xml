@@ -1,0 +1,1186 @@
+<Type Name="SecurityTokenService" FullName="System.IdentityModel.SecurityTokenService">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="49a0ab5f150cc09113681aed718c286d237b6643" /><Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="11/29/2018" /><Meta Name="ms.locfileid" Value="52603584" /></Metadata><TypeSignature Language="C#" Value="public abstract class SecurityTokenService" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit SecurityTokenService extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.IdentityModel.SecurityTokenService" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class SecurityTokenService" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SecurityTokenService abstract" />
+  <TypeSignature Language="F#" Value="type SecurityTokenService = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.IdentityModel</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>STS(보안 토큰 서비스)의 메서드와 속성을 정의하는 추상 기본 클래스입니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 되어야 하는 STS를 만들려면를 <xref:System.IdentityModel.SecurityTokenService> 클래스입니다. 사용자 지정 클래스에서를 최소한 재정의 해야 합니다 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 및 <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> 메서드. 이러한 재정의 사용 하 여 기본 구현의 클래스에 정의 된 다른 모든 메서드를 사용 하 여 만든 STS는 토큰 요청 (RST) 보안에 대 한 응답에서 보안 토큰을 발급 수 있습니다. 즉, Ws-trust 사양에 정의 된 Issue 바인딩에 구현 됩니다. 이 바인딩은에서 구현 되는 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드. Default case에서 구현 되는 다른 Ws-trust 바인딩이 (갱신, 취소 및 유효성 검사) 및 이러한 바인딩 중 하나에 해당 하는 RST 발견 되 면 호출자에 게 적절 한 오류가 반환 됩니다. 물론 적절 한 메서드를 재정의할 수 있습니다 (<xref:System.IdentityModel.SecurityTokenService.Renew%2A>, <xref:System.IdentityModel.SecurityTokenService.Cancel%2A>, 및 <xref:System.IdentityModel.SecurityTokenService.Validate%2A>) STS의 이러한 바인딩을 구현 합니다.  
+  
+> [!IMPORTANT]
+>  신중 하 게 계획 하 고 이러한 서비스를 노출 하는의 본질적인 잠재적 보안 위험을 완화 하기 위해 상당한 리소스를 수반 프로덕션이 준비 된 STS를 구현 합니다. Windows Identity Foundation (WIF)를 사용 하 여 대부분의 개발자는 id 관리를 STS로 아웃소싱하는 애플리케이션 개발 되지 않고 자체 STS를 개발 합니다. WIF는 개발자가 개발 환경에서 솔루션을 테스트할 수 있도록 Id 및 액세스 도구 Visual Studio 2012 용 Visual Studio 확장을 제공 합니다. 이 도구에는 STS `LocalSTS`는 개발 중인 애플리케이션에 특정 클레임을 제공 하도록 구성할 수 있습니다. Id 및 액세스 도구에 대 한 자세한 내용은 참조 하세요. [Id 및 액세스 도구 Visual Studio 2012 용](~/docs/framework/security/identity-and-access-tool-for-vs.md)합니다. 일부 시나리오에서는 `LocalSTS` 적절 하 게 애플리케이션을 테스트 하는 데 필요한 기능을 제공 하지 않을 수 있습니다; 예를 들어 포함 된 경우 애플리케이션에서 사용 하기 위해 사용자 지정 토큰 처리기를 개발 합니다. 이러한 경우에서 파생할 수 있습니다 <xref:System.IdentityModel.SecurityTokenService> 개발 환경에서 배포할 수 있는 하 고 애플리케이션에서 이러한 기능을 테스트 하려면 사용할 수 있는 같은 하나 이상의 간단한 Sts를 만들려고 합니다. 이 섹션의 나머지 부분에서 노출 하는 방법에 중점을 둡니다는 <xref:System.IdentityModel.SecurityTokenService> 간단한 STS를 구현 하 고 토큰 발급 파이프라인을 확장할 수 있도록 하는 클래스입니다.  
+  
+ 다음은 테스트 또는 개발 환경에서 사용 하기 위해 개발자에 게 가장 중요 방법의 간략 한 개요를 제공합니다.  
+  
+-   <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 메서드 이 메서드는 반환 된 <xref:System.IdentityModel.Scope> RP에 대 한 정보를 포함 하는 개체입니다. 이 개체 토큰 발급 파이프라인의 나머지 부분에서 사용 되 고 응답에서 사용 하는 서명 및 암호화 자격 증명에 대 한 정보도 뿐만 `AppliesTo` 고 `ReplyTo` (필요한 경우) 주소입니다. 이 메서드를 재정의 해야 합니다.  
+  
+-   <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> 메서드 이 메서드가 반환을 <xref:System.Security.Claims.ClaimsIdentity> RP로 반환에 대 한 클레임을 포함 하는 개체입니다. 이 메서드를 재정의 해야 합니다.  
+  
+-   <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드 이 메서드는 들어오는 보안 토큰 요청 (RST)을 처리 하 고 RP를 사용 하 여 인증을 사용할 수 있는 토큰을 포함 하는 호출자에 게 응답 (RSTR)을 반환 하는 토큰 요청 파이프라인을 구현 합니다. 에 정의 된 다른 메서드 중 대부분은 <xref:System.IdentityModel.SecurityTokenService> 클래스는이 메서드에서 호출 됩니다 포함 하 여는 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 및 <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> 메서드. 이 메서드를 재정의할 필요는 없지만 구현 토큰 요청 파이프라인의 이해에 도움이 될 수 있습니다.  
+  
+ STS를 통해 구성 되는 <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration> 클래스입니다.  
+  
+   
+  
+## Examples  
+ 에 사용 되는 코드 예제는 <xref:System.IdentityModel.SecurityTokenService> 항목에서 수행 되는 `Custom Token` 샘플. 이 샘플에서는 간단한 웹 토큰 (SWT)의 처리를 사용 하도록 설정 하는 사용자 지정 클래스를 제공 하 고 SWT 토큰 서비스를 제공할 수 있는 패시브 STS 구현의 포함 되어 있습니다. 액티브 STS를 구현 하는 방법의 예 참조는 `Federation Metadata` 샘플입니다. 이러한 샘플 및 다른 샘플을 제공 하는 방법에 대 한 WIF에 대 한 다운로드 위치에 대 한, 참조 [WIF 코드 샘플 인덱스](~/docs/framework/security/wif-code-sample-index.md)합니다. 다음 코드에서는 사용 하 여 패시브 STS 구현의 <xref:System.IdentityModel.SecurityTokenService> 클래스입니다.  
+  
+ [!code-csharp[WIFCustomTokenSTS#3](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#3)]  
+  
+ 다음 코드를 호출 하 여 Ws-federation 요청을 처리 하는 사용자 지정 패시브 STS를 호출 하는 방법을 보여 줍니다 합니다 <xref:System.IdentityModel.Services.FederatedPassiveSecurityTokenServiceOperations.ProcessRequest%28System.Web.HttpRequest%2CSystem.Security.Claims.ClaimsPrincipal%2CSystem.IdentityModel.SecurityTokenService%2CSystem.Web.HttpResponse%29?displayProperty=nameWithType> 뒤의 코드에서 메서드를 `default.aspx.cs` 파일입니다.  
+  
+ [!code-csharp[WIFCustomTokenSTS#1](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/default.aspx.cs#1)]  
+  
+ ]]></format>
+    </remarks>
+    <block subset="none" type="overrides"><para>모두를 재정의 해야 합니다 <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> 하며 <see cref="M:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" /> 메서드.</para></block>
+    <altmember cref="T:System.IdentityModel.Scope" />
+    <altmember cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" />
+    <altmember cref="T:System.IdentityModel.Services.FederatedPassiveSecurityTokenServiceOperations" />
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected SecurityTokenService (System.IdentityModel.Configuration.SecurityTokenServiceConfiguration securityTokenServiceConfiguration);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class System.IdentityModel.Configuration.SecurityTokenServiceConfiguration securityTokenServiceConfiguration) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.#ctor(System.IdentityModel.Configuration.SecurityTokenServiceConfiguration)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; SecurityTokenService(System::IdentityModel::Configuration::SecurityTokenServiceConfiguration ^ securityTokenServiceConfiguration);" />
+      <MemberSignature Language="F#" Value="new System.IdentityModel.SecurityTokenService : System.IdentityModel.Configuration.SecurityTokenServiceConfiguration -&gt; System.IdentityModel.SecurityTokenService" Usage="new System.IdentityModel.SecurityTokenService securityTokenServiceConfiguration" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="securityTokenServiceConfiguration" Type="System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" />
+      </Parameters>
+      <Docs>
+        <param name="securityTokenServiceConfiguration">STS에 대한 설정이 들어 있는 <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" />입니다.</param>
+        <summary>지정된 구성 설정을 사용하여 <see cref="T:System.IdentityModel.SecurityTokenService" /> 클래스를 초기화하기 위해 파생된 클래스에서 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자를 사용 하 여 범위 공급자 및 토큰 발급자 인증서를 초기화 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="securityTokenServiceConfiguration" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginCancel">
+      <MemberSignature Language="C#" Value="public virtual IAsyncResult BeginCancel (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IAsyncResult BeginCancel(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.BeginCancel(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BeginCancel (principal As ClaimsPrincipal, request As RequestSecurityToken, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual IAsyncResult ^ BeginCancel(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginCancel : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginCancel : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult" Usage="securityTokenService.BeginCancel (principal, request, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <param name="callback">비동기 취소 작업의 완료에 대한 알림을 수신하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">비동기 취소 작업과 관련된 상태 정보가 포함된 개체입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 비동기 WS-Trust Cancel 요청을 시작합니다.</summary>
+        <returns>비동기 취소 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginGetOutputClaimsIdentity">
+      <MemberSignature Language="C#" Value="protected virtual IAsyncResult BeginGetOutputClaimsIdentity (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, System.IdentityModel.Scope scope, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IAsyncResult BeginGetOutputClaimsIdentity(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.IdentityModel.Scope scope, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual IAsyncResult ^ BeginGetOutputClaimsIdentity(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, System::IdentityModel::Scope ^ scope, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginGetOutputClaimsIdentity : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Scope * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginGetOutputClaimsIdentity : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Scope * AsyncCallback * obj -&gt; IAsyncResult" Usage="securityTokenService.BeginGetOutputClaimsIdentity (principal, request, scope, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="scope" Type="System.IdentityModel.Scope" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <param name="scope">요청과 연결된 신뢰 당사자에 대한 정보가 포함된 <see cref="T:System.IdentityModel.Scope" />입니다.</param>
+        <param name="callback">비동기 작업의 완료에 대한 알림을 수신하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">비동기 작업과 관련된 상태 정보가 포함된 개체입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 <see cref="M:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" /> 메서드에 대한 비동기 호출을 시작합니다.</summary>
+        <returns>비동기 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw를 <xref:System.NotImplementedException>입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginGetScope">
+      <MemberSignature Language="C#" Value="protected virtual IAsyncResult BeginGetScope (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IAsyncResult BeginGetScope(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function BeginGetScope (principal As ClaimsPrincipal, request As RequestSecurityToken, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual IAsyncResult ^ BeginGetScope(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginGetScope : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginGetScope : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult" Usage="securityTokenService.BeginGetScope (principal, request, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <param name="callback">비동기 작업의 완료에 대한 알림을 수신하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">비동기 작업과 관련된 상태 정보가 포함된 개체입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> 메서드에 대한 비동기 호출을 시작합니다.</summary>
+        <returns>비동기 취소 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw를 <xref:System.NotImplementedException>입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginIssue">
+      <MemberSignature Language="C#" Value="public virtual IAsyncResult BeginIssue (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IAsyncResult BeginIssue(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.BeginIssue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BeginIssue (principal As ClaimsPrincipal, request As RequestSecurityToken, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual IAsyncResult ^ BeginIssue(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginIssue : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginIssue : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult" Usage="securityTokenService.BeginIssue (principal, request, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <param name="callback">비동기 발급 작업의 완료에 대한 알림을 수신하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">비동기 문제 작업과 관련된 상태 정보가 포함된 개체입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 비동기 WS-Trust Issue 요청을 시작합니다.</summary>
+        <returns>비동기 발급 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginRenew">
+      <MemberSignature Language="C#" Value="public virtual IAsyncResult BeginRenew (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IAsyncResult BeginRenew(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.BeginRenew(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BeginRenew (principal As ClaimsPrincipal, request As RequestSecurityToken, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual IAsyncResult ^ BeginRenew(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginRenew : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginRenew : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult" Usage="securityTokenService.BeginRenew (principal, request, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <param name="callback">비동기 갱신 작업의 완료에 대한 알림을 수신하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">비동기 갱신 작업과 관련된 상태 정보가 포함된 개체입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 비동기 WS-Trust Renew 요청을 시작합니다.</summary>
+        <returns>비동기 갱신 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginValidate">
+      <MemberSignature Language="C#" Value="public virtual IAsyncResult BeginValidate (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IAsyncResult BeginValidate(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.BeginValidate(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BeginValidate (principal As ClaimsPrincipal, request As RequestSecurityToken, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual IAsyncResult ^ BeginValidate(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginValidate : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginValidate : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * AsyncCallback * obj -&gt; IAsyncResult" Usage="securityTokenService.BeginValidate (principal, request, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <param name="callback">비동기 유효성 검사 작업의 완료에 대한 알림을 수신하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">비동기 유효성 검사 작업과 관련된 상태 정보가 포함된 개체입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 비동기 WS-Trust Validate 요청을 시작합니다.</summary>
+        <returns>비동기 유효성 검사 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Cancel">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse Cancel (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse Cancel(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.Cancel(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function Cancel (principal As ClaimsPrincipal, request As RequestSecurityToken) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ Cancel(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member Cancel : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.Cancel : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.Cancel (principal, request)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 WS-Trust Cancel 요청을 처리합니다.</summary>
+        <returns>호출자에게 반환할 RSTR을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateSecurityTokenDescriptor">
+      <MemberSignature Language="C#" Value="protected virtual System.IdentityModel.Tokens.SecurityTokenDescriptor CreateSecurityTokenDescriptor (System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, System.IdentityModel.Scope scope);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IdentityModel.Tokens.SecurityTokenDescriptor CreateSecurityTokenDescriptor(class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.IdentityModel.Scope scope) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.CreateSecurityTokenDescriptor(System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::IdentityModel::Tokens::SecurityTokenDescriptor ^ CreateSecurityTokenDescriptor(System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, System::IdentityModel::Scope ^ scope);" />
+      <MemberSignature Language="F#" Value="abstract member CreateSecurityTokenDescriptor : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Scope -&gt; System.IdentityModel.Tokens.SecurityTokenDescriptor&#xA;override this.CreateSecurityTokenDescriptor : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Scope -&gt; System.IdentityModel.Tokens.SecurityTokenDescriptor" Usage="securityTokenService.CreateSecurityTokenDescriptor (request, scope)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.SecurityTokenDescriptor</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="scope" Type="System.IdentityModel.Scope" />
+      </Parameters>
+      <Docs>
+        <param name="request">들어오는 토큰 요청입니다.</param>
+        <param name="scope"><see cref="P:System.IdentityModel.SecurityTokenService.Scope" />에서 반환하는 <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> 개체입니다.</param>
+        <summary><see cref="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />의 인스턴스를 만듭니다.</summary>
+        <returns><see cref="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" /></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 후 토큰 발급 중 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />인 경우  
+  
+또는 
+ <paramref name="scope" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EndCancel">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse EndCancel (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse EndCancel(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.EndCancel(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function EndCancel (result As IAsyncResult) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ EndCancel(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member EndCancel : IAsyncResult -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.EndCancel : IAsyncResult -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.EndCancel result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출할 때 반환되는 <see cref="M:System.IdentityModel.SecurityTokenService.BeginCancel(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 비동기 WS-Trust Cancel 요청을 완료합니다.</summary>
+        <returns>호출자에게 반환할 RSTR을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndGetOutputClaimsIdentity">
+      <MemberSignature Language="C#" Value="protected virtual System.Security.Claims.ClaimsIdentity EndGetOutputClaimsIdentity (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Security.Claims.ClaimsIdentity EndGetOutputClaimsIdentity(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.EndGetOutputClaimsIdentity(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function EndGetOutputClaimsIdentity (result As IAsyncResult) As ClaimsIdentity" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Security::Claims::ClaimsIdentity ^ EndGetOutputClaimsIdentity(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member EndGetOutputClaimsIdentity : IAsyncResult -&gt; System.Security.Claims.ClaimsIdentity&#xA;override this.EndGetOutputClaimsIdentity : IAsyncResult -&gt; System.Security.Claims.ClaimsIdentity" Usage="securityTokenService.EndGetOutputClaimsIdentity result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Claims.ClaimsIdentity</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출할 때 반환되는 <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" /> 메서드에 대한 비동기 호출을 완료합니다.</summary>
+        <returns>발급된 보안 토큰에 배치될 클레임의 컬렉션을 포함하는 <see cref="T:System.Security.Claims.ClaimsIdentity" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw를 <xref:System.NotImplementedException>입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndGetScope">
+      <MemberSignature Language="C#" Value="protected virtual System.IdentityModel.Scope EndGetScope (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IdentityModel.Scope EndGetScope(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.EndGetScope(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function EndGetScope (result As IAsyncResult) As Scope" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::IdentityModel::Scope ^ EndGetScope(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member EndGetScope : IAsyncResult -&gt; System.IdentityModel.Scope&#xA;override this.EndGetScope : IAsyncResult -&gt; System.IdentityModel.Scope" Usage="securityTokenService.EndGetScope result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Scope</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출할 때 반환되는 <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> 메서드에 대한 비동기 호출을 완료합니다.</summary>
+        <returns><see cref="T:System.IdentityModel.Scope" /> 메서드 호출에 지정된 요청(RST)과 연결된 RP(신뢰 당사자) 정보를 캡슐화하는 <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw를 <xref:System.NotImplementedException>입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndIssue">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse EndIssue (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse EndIssue(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.EndIssue(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function EndIssue (result As IAsyncResult) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ EndIssue(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member EndIssue : IAsyncResult -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.EndIssue : IAsyncResult -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.EndIssue result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출할 때 반환되는 <see cref="M:System.IdentityModel.SecurityTokenService.BeginIssue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 비동기 WS-Trust Issue 요청을 완료합니다.</summary>
+        <returns>호출자에게 반환할 RSTR을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndRenew">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse EndRenew (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse EndRenew(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.EndRenew(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function EndRenew (result As IAsyncResult) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ EndRenew(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member EndRenew : IAsyncResult -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.EndRenew : IAsyncResult -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.EndRenew result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출할 때 반환되는 <see cref="M:System.IdentityModel.SecurityTokenService.BeginRenew(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 비동기 WS-Trust Renew 요청을 완료합니다.</summary>
+        <returns>호출자에게 반환할 RSTR을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndValidate">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse EndValidate (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse EndValidate(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.EndValidate(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function EndValidate (result As IAsyncResult) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ EndValidate(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member EndValidate : IAsyncResult -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.EndValidate : IAsyncResult -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.EndValidate result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출할 때 반환되는 <see cref="M:System.IdentityModel.SecurityTokenService.BeginValidate(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 비동기 WS-Trust Validate 요청을 완료합니다.</summary>
+        <returns>호출자에게 반환할 RSTR을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIssuerName">
+      <MemberSignature Language="C#" Value="protected virtual string GetIssuerName ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string GetIssuerName() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.GetIssuerName" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetIssuerName () As String" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::String ^ GetIssuerName();" />
+      <MemberSignature Language="F#" Value="abstract member GetIssuerName : unit -&gt; string&#xA;override this.GetIssuerName : unit -&gt; string" Usage="securityTokenService.GetIssuerName " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>STS(보안 토큰 서비스)의 이름을 가져옵니다.</summary>
+        <returns>발급자 이름입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 기본 토큰 발급 파이프라인 구현에서 호출 된 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드.  
+  
+ 기본 구현은 반환 합니다 <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.TokenIssuerName%2A> 를 통해 액세스 하는 구성에서 속성을 <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> 속성.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetOutputClaimsIdentity">
+      <MemberSignature Language="C#" Value="protected abstract System.Security.Claims.ClaimsIdentity GetOutputClaimsIdentity (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, System.IdentityModel.Scope scope);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Security.Claims.ClaimsIdentity GetOutputClaimsIdentity(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.IdentityModel.Scope scope) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract System::Security::Claims::ClaimsIdentity ^ GetOutputClaimsIdentity(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, System::IdentityModel::Scope ^ scope);" />
+      <MemberSignature Language="F#" Value="abstract member GetOutputClaimsIdentity : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Scope -&gt; System.Security.Claims.ClaimsIdentity" Usage="securityTokenService.GetOutputClaimsIdentity (principal, request, scope)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Claims.ClaimsIdentity</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="scope" Type="System.IdentityModel.Scope" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <param name="scope">요청과 연결된 신뢰 당사자에 대한 정보가 포함된 <see cref="T:System.IdentityModel.Scope" />입니다. <see cref="T:System.IdentityModel.Scope" /> 메서드에서 반환된 <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> 개체입니다.</param>
+        <summary>파생된 클래스에서 재정의된 경우 이 메서드는 발급된 토큰에 포함될 출력 주제 컬렉션을 반환합니다.</summary>
+        <returns>발급된 보안 토큰에 배치될 클레임의 컬렉션을 포함하는 <see cref="T:System.Security.Claims.ClaimsIdentity" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> 에서 구현 하는 토큰 발급 파이프라인에서 메서드를 호출 합니다 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드. 반환 합니다는 <xref:System.Security.Claims.ClaimsIdentity> 기반으로 토큰 요청자에 게 발급 된 보안 토큰에 포함할 클레임을 포함 하는 (합니다 `principal` 매개 변수), 들어오는 RST (는 `request` 매개 변수)는 토큰은 신뢰 당사자 (하며 `scope` 매개 변수). 이 메서드의 논리는 다음 질문에 대답 보장과 관련:  
+  
+-   **클레임 유형을 위한는 RP에 따라 응답에 포함 되어야?** 일반적으로이 요청 별로 또는 각 RP에 필요한 클레임 형식 목록에서 RP 당 기준에 의해 결정 검사는 <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.Claims%2A> 요청의 속성입니다. 그러나 논리 및 응답에 포함할 클레임을 결정 하는 것에 대 한 세부 정보에 게 달려 완전히 구현 합니다.  
+  
+-   **응답의 클레임에는 클레임 값을 할당 해야?** Id 공급자 (IP-STS)에 대 한 일반적으로 즉, 하나 이상의 클레임 요청자에서 사용 하 여 <xref:System.Security.Claims.ClaimsPrincipal> (제공한를 `principal` 매개 변수) 필요한 클레임 형식에 대 한 값을 반환 하는 저장소 (또는 다른 엔터티)에 액세스할 수 있습니다. 페더레이션 공급자 (R STS)에 대 한 일반적으로 즉; 요청을 처리 하는 요청자의 들어오는 클레임에 일종의 처리를 수행 합니다. 아마도 일부 클레임 요청자에 의해 수정 되지 않은 다른 사용자가를 통해 전달 하는 동안에 필터링 또는 변환을 수행 합니다. 물론, 응답에 포함할 클레임을 결정 하는 경우와 같이 세부 정보 및 이러한 클레임의 값을 결정 하는 방법의 논리에 게 달려 구현 합니다.  
+  
+   
+  
+## Examples  
+ 이 항목에 사용 되는 코드 예제에서 가져온 것은 `Custom Token` 샘플입니다. 이 샘플에서는 간단한 웹 토큰 (SWT)의 처리를 사용 하도록 설정 하는 사용자 지정 클래스를 제공 하 고 SWT 토큰 서비스를 제공할 수 있는 패시브 STS 구현의 포함 되어 있습니다. 액티브 STS를 구현 하는 방법의 예 참조는 `Federation Metadata` 샘플입니다. 이러한 샘플 및 다른 샘플을 제공 하는 방법에 대 한 WIF에 대 한 다운로드 위치에 대 한, 참조 [WIF 코드 샘플 인덱스](~/docs/framework/security/wif-code-sample-index.md)합니다. 다음 코드를 재정의 하는 방법을 보여 줍니다는 <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> STS에 대 한 클레임을 반환 하는 방법입니다. 이 예제에서는 요청 보안 토큰 (RST) 메시지는 무시 하 고 STS에서 인증 된 것으로 사용자를 기반으로 하는 클레임의 컬렉션 반환 됩니다.  
+  
+ [!code-csharp[WIFCustomTokenSTS#6](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#6)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para><see cref="T:System.IdentityModel.SecurityTokenService" /> 클래스의 구현에서 이 메서드를 재정의해야 합니다.</para></block>
+        <altmember cref="T:System.IdentityModel.Scope" />
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetProofToken">
+      <MemberSignature Language="C#" Value="protected virtual System.IdentityModel.Tokens.ProofDescriptor GetProofToken (System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, System.IdentityModel.Scope scope);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IdentityModel.Tokens.ProofDescriptor GetProofToken(class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.IdentityModel.Scope scope) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.GetProofToken(System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::IdentityModel::Tokens::ProofDescriptor ^ GetProofToken(System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, System::IdentityModel::Scope ^ scope);" />
+      <MemberSignature Language="F#" Value="abstract member GetProofToken : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Scope -&gt; System.IdentityModel.Tokens.ProofDescriptor&#xA;override this.GetProofToken : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Scope -&gt; System.IdentityModel.Tokens.ProofDescriptor" Usage="securityTokenService.GetProofToken (request, scope)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.ProofDescriptor</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="scope" Type="System.IdentityModel.Scope" />
+      </Parameters>
+      <Docs>
+        <param name="request">들어오는 토큰 요청(RST)을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다.</param>
+        <param name="scope">신뢰 당사자에 대한 정보를 캡슐화하는 <see cref="T:System.IdentityModel.Scope" /> 인스턴스입니다.</param>
+        <summary>응답(RSTR)에 포함될 수 있는 증명 토큰을 가져옵니다.</summary>
+        <returns>새로 만든 개념 설명자를 나타내는 <see cref="T:System.IdentityModel.Tokens.ProofDescriptor" />입니다. 증명 설명자는 비대칭 증명 설명자, 대칭 증명 설명자가 되며, bearer 토큰의 경우 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 기본 토큰 발급 파이프라인 구현에서 호출 된 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드.  
+  
+ 기본 구현 증명 설명자를 반환 하거나 적절 한 예외를 throw 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />인 경우  
+  
+또는 
+ <paramref name="scope" />가 <see langword="null" />인 경우</exception>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetRequestorProofEncryptingCredentials">
+      <MemberSignature Language="C#" Value="protected virtual System.IdentityModel.Tokens.EncryptingCredentials GetRequestorProofEncryptingCredentials (System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IdentityModel.Tokens.EncryptingCredentials GetRequestorProofEncryptingCredentials(class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.GetRequestorProofEncryptingCredentials(System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetRequestorProofEncryptingCredentials (request As RequestSecurityToken) As EncryptingCredentials" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::IdentityModel::Tokens::EncryptingCredentials ^ GetRequestorProofEncryptingCredentials(System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member GetRequestorProofEncryptingCredentials : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Tokens.EncryptingCredentials&#xA;override this.GetRequestorProofEncryptingCredentials : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Tokens.EncryptingCredentials" Usage="securityTokenService.GetRequestorProofEncryptingCredentials request" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.EncryptingCredentials</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="request">들어오는 토큰 요청(RST)을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다.</param>
+        <summary>요청자의 증명 암호화 자격 증명을 가져옵니다.</summary>
+        <returns>요청자의 암호화 자격 증명을 나타내는 <see cref="T:System.IdentityModel.Tokens.EncryptingCredentials" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 호출 된 <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> 메서드.  
+  
+ 기본 구현에서는 다음 작업을 수행 합니다. 반환 `null` 요청에 지정 된 암호화 토큰이 없는 경우 (합니다 <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.ProofEncryption%2A?displayProperty=nameWithType> 속성은 `null`). 그렇지 않고 토큰을 가져올 수는 <xref:System.IdentityModel.Tokens.X509SecurityToken>, 해당 토큰을 기반으로 하는 자격 증명을 반환 합니다. 토큰으로 확인할 수 없는 경우는 <xref:System.IdentityModel.Tokens.X509SecurityToken>, <xref:System.IdentityModel.RequestFailedException> throw 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetResponse">
+      <MemberSignature Language="C#" Value="protected virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse GetResponse (System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, System.IdentityModel.Tokens.SecurityTokenDescriptor tokenDescriptor);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse GetResponse(class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request, class System.IdentityModel.Tokens.SecurityTokenDescriptor tokenDescriptor) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.GetResponse(System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Tokens.SecurityTokenDescriptor)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetResponse (request As RequestSecurityToken, tokenDescriptor As SecurityTokenDescriptor) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ GetResponse(System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request, System::IdentityModel::Tokens::SecurityTokenDescriptor ^ tokenDescriptor);" />
+      <MemberSignature Language="F#" Value="abstract member GetResponse : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Tokens.SecurityTokenDescriptor -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.GetResponse : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken * System.IdentityModel.Tokens.SecurityTokenDescriptor -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.GetResponse (request, tokenDescriptor)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+        <Parameter Name="tokenDescriptor" Type="System.IdentityModel.Tokens.SecurityTokenDescriptor" />
+      </Parameters>
+      <Docs>
+        <param name="request">토큰 요청을 포함하는 RST입니다.</param>
+        <param name="tokenDescriptor">발급된 토큰에 사용할 정보가 포함된 토큰 설명자입니다.</param>
+        <summary>지정된 요청(RST)과 보안 토큰 설명자를 사용하여 발급된 토큰이 들어 있는 응답(RSTR)을 만듭니다.</summary>
+        <returns>지정된 요청 및 토큰 설명자에서 응답을 만들 수 없는 경우 응답(RSTR) 또는 <see langword="null" />입니다. <paramref name="tokenDescriptor" /> 매개 변수가 <see langword="null" />인 경우 기본 구현에서 <see langword="null" />을 반환합니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> 에서 구현 하는 토큰 발급 파이프라인에서 마지막 단계로 메서드를 호출 합니다 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드. 만들고 원래 들어오는 요청 (RST) 및 토큰 발급 파이프라인의 단계를 수행 하는 동안 구축 하는 토큰 설명자를 사용 하 여 응답 (RSTR)을 반환 합니다.  
+  
+ 기본 구현에 대해 요청 매개 변수에 지정 된 RST를 전달 하 여 RSTR을 만듭니다는 <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse.%23ctor%28System.IdentityModel.Protocols.WSTrust.WSTrustMessage%29?displayProperty=nameWithType> 생성자를 호출 합니다 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.ApplyTo%2A?displayProperty=nameWithType> 에 전달 된 토큰 설명자에서 메서드 <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> 해당 속성을 적용 하는 새로 설정 RSTR을 생성 합니다 <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.AppliesTo%2A> 를 사용 하 여 RSTR의 속성을 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A> 토큰 설명자의 속성 마지막으로 설정 하 고는 <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> 다음 표에 따라 RSTR의 속성:  
+  
+|`RST.ReplyTo` 속성|<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A?displayProperty=nameWithType> 속성.|`RSTR.ReplyTo` 속성|  
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------|  
+|Set|설정 되지 않았습니다|설정 되지 않았습니다|  
+|Set|Set|<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A?displayProperty=nameWithType>|  
+|설정 되지 않았습니다|Set|설정 되지 않았습니다|  
+|설정 되지 않았습니다|설정 되지 않았습니다|설정 되지 않았습니다|  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetScope">
+      <MemberSignature Language="C#" Value="protected abstract System.IdentityModel.Scope GetScope (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IdentityModel.Scope GetScope(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Function GetScope (principal As ClaimsPrincipal, request As RequestSecurityToken) As Scope" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract System::IdentityModel::Scope ^ GetScope(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member GetScope : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Scope" Usage="securityTokenService.GetScope (principal, request)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Scope</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="principal">페이지를 요청하는 클라이언트를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">들어오는 요청(RST)을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다.</param>
+        <summary>지정된 요청(RST)과 연결된 RP(신뢰 당사자)에 대한 정보를 포함하는 <see cref="T:System.IdentityModel.Scope" /> 개체를 가져옵니다. <see cref="T:System.IdentityModel.SecurityTokenService" /> 클래스의 구현에서 이 메서드를 재정의해야 합니다.</summary>
+        <returns>요청과 연결된 RP 정보를 캡슐화하는 <see cref="T:System.IdentityModel.Scope" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 후 토큰 발급 파이프라인에서 메서드를 호출 합니다 <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> 메서드를 반환를 <xref:System.IdentityModel.Scope> 들어오는 요청에 대 한 구성 개체. (토큰 발급 파이프라인에서 구현 되는 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드.) <xref:System.IdentityModel.Scope> 개체는 보안 토큰 요청 (RST)와 연결 된 RP에 대 한 정보를 캡슐화 합니다. RP 및 모든 발급 된 토큰 및/또는 응답에서 대칭 키를 암호화할 것인지 여부와 함께 사용 될 암호화 및 서명 자격 증명에 대 한 정보가 포함 됩니다. 수행 하는 몇 가지 일반적인 작업을 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 메서드:  
+  
+-   토큰을 위한 RP 인식된 RP 되는지 확인 합니다. 이렇게 하는 방법을 구현에 따라 달라 집니다. 의도 한 RP이이 STS에 대 한 유효한 RP 없는 경우 메서드가 throw 해야는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+-   응답 (RSTR)에서 사용 되 고 설정 하는 서명 자격 증명을 확인 합니다 <xref:System.IdentityModel.Scope.SigningCredentials%2A> 속성 적절 하 게 합니다.  
+  
+-   응답 및/또는 포함 된 모든 대칭 키를 암호화 해야 하는지 여부 및 암호화에 사용할 자격 증명을 확인 합니다. 설정 된 <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A>, <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A>, 및 <xref:System.IdentityModel.Scope.EncryptingCredentials%2A> 속성 적절 하 게 합니다.  
+  
+    > [!IMPORTANT]
+    >  기본적으로 <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A> 및 <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A> 속성이 설정 되어 `true` STS는 안전 하지 않은 토큰을 발급 하지 못하도록 합니다. 이러한 속성을으로 설정 하지는 것이 좋습니다. `false` 프로덕션 환경에서.  
+  
+-   응답은 반환할 주소를 확인 합니다. 설정 된 <xref:System.IdentityModel.Scope.AppliesToAddress%2A> 또는 <xref:System.IdentityModel.Scope.ReplyToAddress%2A> 속성 적절 하 게 합니다.  
+  
+   
+  
+## Examples  
+ 이 항목에 사용 되는 코드 예제에서 가져온 것은 `Custom Token` 샘플입니다. 이 샘플에서는 간단한 웹 토큰 (SWT)의 처리를 사용 하도록 설정 하는 사용자 지정 클래스를 제공 하 고 SWT 토큰 서비스를 제공할 수 있는 패시브 STS 구현의 포함 되어 있습니다. 액티브 STS를 구현 하는 방법의 예 참조는 `Federation Metadata` 샘플입니다. 이러한 샘플 및 다른 샘플을 제공 하는 방법에 대 한 WIF에 대 한 다운로드 위치에 대 한, 참조 [WIF 코드 샘플 인덱스](~/docs/framework/security/wif-code-sample-index.md)합니다.  
+  
+ 다음 코드 예제에서는 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 메서드를 구현하는 방법을 보여 줍니다. 이 구현은 확인 RP가 인식 하는 STS의 유효성을 검사 합니다 <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> 요청 및 집합에 주소를 <xref:System.IdentityModel.Scope.ReplyToAddress%2A?displayProperty=nameWithType> 속성 따라서는 인증서를 기반으로 RP를 사용 하 여 서명 및 암호화 자격 증명 집합 파일에 하드 코드 됩니다.  
+  
+ [!code-csharp[WIFCustomTokenSTS#4](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#4)]  
+[!code-csharp[WIFCustomTokenSTS#5](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#5)]  
+[!code-csharp[WIFCustomTokenSTS#7](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#7)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para><see cref="T:System.IdentityModel.SecurityTokenService" /> 클래스의 구현에서 이 메서드를 재정의해야 합니다.</para></block>
+        <altmember cref="T:System.IdentityModel.Scope" />
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSecurityTokenHandler">
+      <MemberSignature Language="C#" Value="protected virtual System.IdentityModel.Tokens.SecurityTokenHandler GetSecurityTokenHandler (string requestedTokenType);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IdentityModel.Tokens.SecurityTokenHandler GetSecurityTokenHandler(string requestedTokenType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.GetSecurityTokenHandler(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetSecurityTokenHandler (requestedTokenType As String) As SecurityTokenHandler" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::IdentityModel::Tokens::SecurityTokenHandler ^ GetSecurityTokenHandler(System::String ^ requestedTokenType);" />
+      <MemberSignature Language="F#" Value="abstract member GetSecurityTokenHandler : string -&gt; System.IdentityModel.Tokens.SecurityTokenHandler&#xA;override this.GetSecurityTokenHandler : string -&gt; System.IdentityModel.Tokens.SecurityTokenHandler" Usage="securityTokenService.GetSecurityTokenHandler requestedTokenType" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.SecurityTokenHandler</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestedTokenType" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestedTokenType">요청된 토큰 형식 URI가 들어 있는 문자열입니다.</param>
+        <summary>지정된 형식의 보안 토큰을 발급하는 적절한 보안 토큰 처리기를 가져옵니다.</summary>
+        <returns>발급된 보안 토큰을 만드는 데 사용할 토큰 처리기를 나타내는 <see cref="T:System.IdentityModel.Tokens.SecurityTokenHandler" />입니다. 요청된 토큰 형식이 지원되지 않는 경우 <see langword="null" />을 반환합니다(지정된 토큰 형식에 대해 구성된 핸들러가 없음).</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현에서 경우 `requestedTokenType` 는 `null` 이거나 빈 문자열인 경우 기본 구성에서 토큰 유형이 사용 됩니다. 이것은 <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenType%2A> 를 통해 액세스 하는 STS 구성 개체의 속성을 <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> 속성입니다.  
+  
+ 이 메서드는 기본 토큰 발급 파이프라인 구현에서 호출 된 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetTokenLifetime">
+      <MemberSignature Language="C#" Value="protected virtual System.IdentityModel.Protocols.WSTrust.Lifetime GetTokenLifetime (System.IdentityModel.Protocols.WSTrust.Lifetime requestLifetime);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.Lifetime GetTokenLifetime(class System.IdentityModel.Protocols.WSTrust.Lifetime requestLifetime) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.GetTokenLifetime(System.IdentityModel.Protocols.WSTrust.Lifetime)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetTokenLifetime (requestLifetime As Lifetime) As Lifetime" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::IdentityModel::Protocols::WSTrust::Lifetime ^ GetTokenLifetime(System::IdentityModel::Protocols::WSTrust::Lifetime ^ requestLifetime);" />
+      <MemberSignature Language="F#" Value="abstract member GetTokenLifetime : System.IdentityModel.Protocols.WSTrust.Lifetime -&gt; System.IdentityModel.Protocols.WSTrust.Lifetime&#xA;override this.GetTokenLifetime : System.IdentityModel.Protocols.WSTrust.Lifetime -&gt; System.IdentityModel.Protocols.WSTrust.Lifetime" Usage="securityTokenService.GetTokenLifetime requestLifetime" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.Lifetime</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestLifetime" Type="System.IdentityModel.Protocols.WSTrust.Lifetime" />
+      </Parameters>
+      <Docs>
+        <param name="requestLifetime">요청된 수명을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" />입니다.</param>
+        <summary>발행된 토큰의 수명을 가져옵니다.</summary>
+        <returns>부여된 수명을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 RST에 도착 하는 수명 정상적으로 호출 됩니다. 기본 구현에서 토큰 수명은 다음 표에 따라 계산 됩니다.  
+  
+|(In) 생성|만료 (in)|(In) 생성|(Out) 만료|  
+|--------------------|--------------------|--------------------|---------------------|  
+|`null`|`null`|<xref:System.DateTime.UtcNow%2A?displayProperty=nameWithType>|<xref:System.DateTime.UtcNow%2A?displayProperty=nameWithType> + <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenLifetime%2A?displayProperty=nameWithType>|  
+|C|`null`|C|C + <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenLifetime%2A?displayProperty=nameWithType>|  
+|`null`|E|<xref:System.DateTime.UtcNow%2A?displayProperty=nameWithType>|E|  
+|C|E|C|E|  
+  
+ 이 메서드는 기본 토큰 발급 파이프라인 구현에서 호출 된 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      </Docs>
+    </Member>
+    <Member MemberName="Issue">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse Issue (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse Issue(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function Issue (principal As ClaimsPrincipal, request As RequestSecurityToken) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ Issue(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member Issue : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.Issue : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.Issue (principal, request)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <summary>보안 토큰을 발급합니다.</summary>
+        <returns>발급된 보안 토큰을 포함하는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 Ws-trust 사양에 정의 된 Issue 바인딩에 구현 합니다. 기본 구현 된 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드 토큰 발급 (클레임 발급) 파이프라인을 통해 들어오는 요청 (RST)을 처리 하 고 응답을 반환 하거나 (RSTR) 인증에 대 한 적절 한 클레임을 사용 하 여 보안 토큰을 포함 하는 RP 또는 적절 한 예외를 사용 하 여 요청자에 게 합니다. 다음 방법에 대 한 호출의 기본 구현에서 토큰 발급 파이프라인으로 구성 됩니다 (의 <xref:System.IdentityModel.SecurityTokenService> 클래스).  
+  
+1.  <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> 요청 (RST)의 유효성을 검사 하는 방법입니다.  
+  
+2.  <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 메서드를 한 <xref:System.IdentityModel.Scope> 요청과 연결 된 신뢰 당사자 (RP)에 대 한 정보를 포함 하는 개체입니다. 이 메서드를 재정의 해야 합니다. 하는 경우 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 반환 `null`, <xref:System.InvalidOperationException> throw 됩니다.  
+  
+3.  합니다 <xref:System.IdentityModel.SecurityTokenService.CreateSecurityTokenDescriptor%2A> RST를 기반으로 보안 토큰 설명자를 반환 하는 방법 및 <xref:System.IdentityModel.Scope> 이전 단계에서 개체를 반환 합니다. 보안 토큰 설명자 (<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor>) 토큰 처리기를 사용할 수 있는 형태로 요청에 대 한 정보를 포함 합니다. <xref:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor%2A?displayProperty=nameWithType> 호출에 의해 반환 된 설명자를 설정 합니다. 하는 경우 `null` 반환 됩니다 또는 경우에는 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.SigningCredentials%2A> 설명자의 속성은 `null`, <xref:System.InvalidOperationException> throw 됩니다. 경우에 예외가 throw 됩니다는 <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A?displayProperty=nameWithType> 속성은 `true` 되지만 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.EncryptingCredentials%2A> 반환 된 설명자에 속성이 `null`합니다.  
+  
+4.  <xref:System.IdentityModel.SecurityTokenService.GetSecurityTokenHandler%2A> 적절 한 토큰 처리기를 가져오기 위한 메서드를 요청 하는 토큰의 종류에 따라 합니다. 하는 경우 `null` 가 반환 되는 <xref:System.NotImplementedException> throw 됩니다.  
+  
+5.  <xref:System.IdentityModel.SecurityTokenService.GetIssuerName%2A> 메서드를 토큰의 발급자 이름을 가져옵니다. Throw를 <xref:System.InvalidOperationException> 이름이 `null` 빈 상태, 그렇지 않으면 설정 또는 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.TokenIssuerName%2A> 설명자에는 속성입니다.  
+  
+6.  <xref:System.IdentityModel.SecurityTokenService.GetTokenLifetime%2A> 집합과 토큰의 수명을 가져오기 위한 메서드를 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Lifetime%2A> 속성 설명자에 합니다.  
+  
+7.  <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> 집합과 발급 된 토큰에 포함할 수 있는 증명 토큰을 가져오기 위한 메서드를 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Proof%2A> 속성 설명자에 합니다.  
+  
+8.  합니다 <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> 집합과 발급 된 토큰에 포함할 클레임을 가져와야 하는 메서드는 <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Subject%2A> 속성 설명자에 합니다. 이 메서드를 재정의 해야 합니다.  
+  
+9. <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> 발급된 된 토큰을 포함 하는 응답 (RSTR)을 만드는 방법.  
+  
+ 하지만 재정의할 수 있습니다 합니다 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 사용자 지정 토큰 발급 파이프라인을 구현 하는 메서드를 일반적으로 필요 하지 않습니다는 대부분의 사용자 지정 구현에 대 한 개발 및 테스트 환경에서의 <xref:System.IdentityModel.SecurityTokenService> 클래스는 합니다. 재정의 이러한 경우는 <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> 및 <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> 메서드 및 필요에 따라 재정의 <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> 사용자 환경에 대 한 실용적인 STS를 제공 하는 방법. 추가 사용자 지정이 필요한 경우 기본 위에 나열 된 토큰 발급 파이프라인의 각 단계를 구현 하는 메서드를 재정의 하 여 자주 제공할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Principal">
+      <MemberSignature Language="C#" Value="public System.Security.Claims.ClaimsPrincipal Principal { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Claims.ClaimsPrincipal Principal" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.SecurityTokenService.Principal" />
+      <MemberSignature Language="VB.NET" Value="Public Property Principal As ClaimsPrincipal" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Claims::ClaimsPrincipal ^ Principal { System::Security::Claims::ClaimsPrincipal ^ get(); void set(System::Security::Claims::ClaimsPrincipal ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Principal : System.Security.Claims.ClaimsPrincipal with get, set" Usage="System.IdentityModel.SecurityTokenService.Principal" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Claims.ClaimsPrincipal</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 인스턴스와 연결된 보안 주체를 가져오거나 설정합니다.</summary>
+        <value>현재 주제를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Renew">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse Renew (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse Renew(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.Renew(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function Renew (principal As ClaimsPrincipal, request As RequestSecurityToken) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ Renew(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member Renew : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.Renew : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.Renew (principal, request)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 WS-Trust Renew 요청을 처리합니다.</summary>
+        <returns>호출자에게 반환할 RSTR을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Request">
+      <MemberSignature Language="C#" Value="public System.IdentityModel.Protocols.WSTrust.RequestSecurityToken Request { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken Request" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.SecurityTokenService.Request" />
+      <MemberSignature Language="VB.NET" Value="Public Property Request As RequestSecurityToken" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ Request { System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ get(); void set(System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Request : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken with get, set" Usage="System.IdentityModel.SecurityTokenService.Request" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityToken</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 인스턴스와 연결된 RST(보안 토큰 요청)을 가져오거나 설정합니다.</summary>
+        <value>요청을 포함하는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Scope">
+      <MemberSignature Language="C#" Value="public System.IdentityModel.Scope Scope { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IdentityModel.Scope Scope" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.SecurityTokenService.Scope" />
+      <MemberSignature Language="VB.NET" Value="Public Property Scope As Scope" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IdentityModel::Scope ^ Scope { System::IdentityModel::Scope ^ get(); void set(System::IdentityModel::Scope ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Scope : System.IdentityModel.Scope with get, set" Usage="System.IdentityModel.SecurityTokenService.Scope" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Scope</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 인스턴스와 연결된 범위를 가져오거나 설정합니다.</summary>
+        <value>토큰 발급 요청에 대한 구성을 나타내는 <see cref="T:System.IdentityModel.Scope" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecurityTokenDescriptor">
+      <MemberSignature Language="C#" Value="protected System.IdentityModel.Tokens.SecurityTokenDescriptor SecurityTokenDescriptor { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IdentityModel.Tokens.SecurityTokenDescriptor SecurityTokenDescriptor" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />
+      <MemberSignature Language="VB.NET" Value="Protected Property SecurityTokenDescriptor As SecurityTokenDescriptor" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::IdentityModel::Tokens::SecurityTokenDescriptor ^ SecurityTokenDescriptor { System::IdentityModel::Tokens::SecurityTokenDescriptor ^ get(); void set(System::IdentityModel::Tokens::SecurityTokenDescriptor ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SecurityTokenDescriptor : System.IdentityModel.Tokens.SecurityTokenDescriptor with get, set" Usage="System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.SecurityTokenDescriptor</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 인스턴스와 연결된 <see cref="T:System.IdentityModel.Tokens.SecurityTokenDescriptor" />를 가져오거나 설정합니다.</summary>
+        <value>현재 인스턴스와 연결된 보안 토큰 설명자입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">속성을 <see langword="null" />로 설정하려고 한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SecurityTokenServiceConfiguration">
+      <MemberSignature Language="C#" Value="public System.IdentityModel.Configuration.SecurityTokenServiceConfiguration SecurityTokenServiceConfiguration { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.IdentityModel.Configuration.SecurityTokenServiceConfiguration SecurityTokenServiceConfiguration" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SecurityTokenServiceConfiguration As SecurityTokenServiceConfiguration" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::IdentityModel::Configuration::SecurityTokenServiceConfiguration ^ SecurityTokenServiceConfiguration { System::IdentityModel::Configuration::SecurityTokenServiceConfiguration ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SecurityTokenServiceConfiguration : System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" Usage="System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Configuration.SecurityTokenServiceConfiguration</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>소유자 구성 인스턴스를 가져옵니다.</summary>
+        <value>현재 인스턴스의 캡션을 포함하는 <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Validate">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse Validate (System.Security.Claims.ClaimsPrincipal principal, System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse Validate(class System.Security.Claims.ClaimsPrincipal principal, class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.Validate(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function Validate (principal As ClaimsPrincipal, request As RequestSecurityToken) As RequestSecurityTokenResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Protocols::WSTrust::RequestSecurityTokenResponse ^ Validate(System::Security::Claims::ClaimsPrincipal ^ principal, System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member Validate : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse&#xA;override this.Validate : System.Security.Claims.ClaimsPrincipal * System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" Usage="securityTokenService.Validate (principal, request)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="principal" Type="System.Security.Claims.ClaimsPrincipal" />
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="principal">토큰 요청자의 ID를 나타내는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />입니다.</param>
+        <param name="request">보안 토큰 요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다. 여기에는 요청 메시지 뿐만 아니라 권한 부여 컨텍스트 등의 기타 클라이언트 관련 정보가 포함되어 있습니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 WS-Trust Validate 요청을 처리합니다.</summary>
+        <returns>호출자에게 반환할 RSTR을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 throw는 <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ValidateRequest">
+      <MemberSignature Language="C#" Value="protected virtual void ValidateRequest (System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void ValidateRequest(class System.IdentityModel.Protocols.WSTrust.RequestSecurityToken request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.SecurityTokenService.ValidateRequest(System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub ValidateRequest (request As RequestSecurityToken)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void ValidateRequest(System::IdentityModel::Protocols::WSTrust::RequestSecurityToken ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member ValidateRequest : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; unit&#xA;override this.ValidateRequest : System.IdentityModel.Protocols.WSTrust.RequestSecurityToken -&gt; unit" Usage="securityTokenService.ValidateRequest request" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
+      </Parameters>
+      <Docs>
+        <param name="request">요청을 나타내는 <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />입니다.</param>
+        <summary>이 인스턴스에 의해 캡슐화되는 보안 토큰 요청(RST)의 유효성을 검사합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> 토큰 발급 파이프라인에서 호출 됩니다 (의 <xref:System.IdentityModel.SecurityTokenService.Issue%2A> 메서드) 들어오는 RST의 유효성을 검사 하 합니다. RST는 STS의 (정책) 요구 사항에 대해 유효성을 검사 하 고 유효 하지 않은 경우 적절 한 예외가 throw 됩니다.  
+  
+ 기본 구현을 합니다 <xref:System.IdentityModel.SecurityTokenService> 클래스는 RST RSTR 패턴만 및 Ws-trust 사양의 Issue 바인딩에 지원 (합니다 <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType%2A> 요청의 속성 설정 해야 합니다 <xref:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue?displayProperty=nameWithType>). 이 메서드의 기본 구현은 이러한 요구 사항을 적용 합니다 (및 예외 섹션에서 설명한 다른). 사용자 지정 STS에 대 한 다른 유효성 검사 요구 사항을 적용 해야 하는 경우이 메서드를 재정의할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IdentityModel.Protocols.WSTrust.InvalidRequestException"><paramref name="request" />가 <see langword="null" />인 경우  
+  
+또는 
+요청의 <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType" /> 속성이 <see cref="F:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue" />로 설정되어 있지 않습니다.  
+  
+또는 
+요청의 <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> 속성은 <see langword="null" />이 아니며 <see cref="T:System.IdentityModel.Protocols.WSTrust.KeyTypes" /> 클래스에 정의된 상수 중 하나입니다.  
+  
+또는 
+요청의 <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" />은 <see cref="F:System.IdentityModel.Protocols.WSTrust.KeyTypes.Bearer" />이며 <see langword="KeySize" /> 요소가 있지만 값은 0과 같지 않습니다.</exception>
+        <exception cref="T:System.IdentityModel.UnsupportedTokenTypeBadRequestException">STS는 요청의 <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.TokenType" /> 속성 값에 기반을 둔 요청 토큰 형식을 지원하지 않습니다.</exception>
+        <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

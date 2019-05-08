@@ -1,0 +1,1762 @@
+<Type Name="ReaderWriterLockSlim" FullName="System.Threading.ReaderWriterLockSlim">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0fee7c4885e8d1b579011bb73bd7952ec0ae6dc1" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58696278" /></Metadata><TypeSignature Language="C#" Value="public class ReaderWriterLockSlim : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ReaderWriterLockSlim extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Threading.ReaderWriterLockSlim" />
+  <TypeSignature Language="VB.NET" Value="Public Class ReaderWriterLockSlim&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ReaderWriterLockSlim : IDisposable" />
+  <TypeSignature Language="F#" Value="type ReaderWriterLockSlim = class&#xA;    interface IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Threading</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.10.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Core</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>여러 스레드에서 읽을 수 있도록 허용하거나 쓰기를 위한 단독 액세스를 허용하여 리소스에 대한 액세스를 관리하는 데 사용되는 잠금을 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여 <xref:System.Threading.ReaderWriterLockSlim> 여러 스레드가 읽고 한 번에 하나의 스레드에 의해에 기록 하는 리소스를 보호 합니다. <xref:System.Threading.ReaderWriterLockSlim> 여러 스레드에서 읽기 모드에 있을 수 있습니다, 그리고 스레드와 잠금을 단독 소유권을 사용 하 여 쓰기 모드에 있을 수 있고, 스레드 것을 포기 하지 않고도 쓰기 모드를 업그레이드할 수는 업그레이드 가능한 읽기 모드에 대 한 읽기 권한이 있는 스레드 하나 가는 리소스에 대 한 액세스를 읽습니다.  
+  
+> [!NOTE]
+>  <xref:System.Threading.ReaderWriterLockSlim>은 <xref:System.Threading.ReaderWriterLock>과 비슷하지만 재귀 및 잠금 상태 업그레이드/다운그레이드에 대한 간소화된 규칙을 포함합니다. <xref:System.Threading.ReaderWriterLockSlim>은 교착 상태가 발생할 수 있는 많은 경우를 방지합니다. 또한 <xref:System.Threading.ReaderWriterLockSlim>의 성능이 <xref:System.Threading.ReaderWriterLock>보다 훨씬 더 놓습니다. <xref:System.Threading.ReaderWriterLockSlim>은 모든 새 개발에 권장됩니다.  
+  
+ 기본적으로 새 인스턴스의 <xref:System.Threading.ReaderWriterLockSlim> 사용 하 여 만들어진는 <xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType> 플래그 및 재귀를 허용 하지 않습니다. 이 기본 정책은 재귀 불필요 한 복잡성을 소개 하 고 하면 코드를 교착 상태 발생 가능성이 있으므로 모든 새 개발에 권장 됩니다. 기존 마이그레이션을 간소화 하기 위해 사용 하는 프로젝트 <xref:System.Threading.Monitor> 또는 <xref:System.Threading.ReaderWriterLock>를 사용할 수 있습니다를 <xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType> 플래그의 인스턴스를 만들 <xref:System.Threading.ReaderWriterLockSlim> 재귀 수 있도록 합니다.  
+  
+ 스레드 세 가지 모드로 잠금을 시작 수 있습니다: 모드를 읽고 쓰기 모드를 하 고 업그레이드 가능한 읽기 모드입니다. (이 항목의 나머지 부분에서는 "업그레이드 가능한 읽기 모드" 라고 "업그레이드 가능 모드"로 "입력 `x` 모드" 긴 구 보다 우선적으로 사용 하는 "에서 잠금에 진입 `x` 모드"입니다.)  
+  
+ 재귀 정책에 관계 없이 언제 든 지 하나의 스레드만 쓰기 모드로 수 있습니다. 스레드에서 쓰기 모드에 있으면 다른 스레드에서 모든 모드로 잠금을 시작할 수 있습니다. 하나의 스레드는 언제 든 지 업그레이드 가능 모드로 수 있습니다. 읽기 모드에서는 여러 스레드 수 되며 있을 수 있습니다 스레드와 업그레이드 가능 모드에서 다른 스레드가 읽기 모드 동안.  
+  
+> [!IMPORTANT]
+>  이 형식이 구현 하는 <xref:System.IDisposable> 인터페이스입니다. 형식을 사용 하 여 마쳤으면 직접 또는 간접적으로의 삭제 해야 있습니다. 직접 형식의 dispose 호출 해당 <xref:System.IDisposable.Dispose%2A> 의 메서드를 `try` / `catch` 블록입니다. 삭제 하지 직접, 언어 구문 같은 사용 `using` (C#에서) 또는 `Using` (Visual Basic에서는). 자세한 내용은 "를 사용 하는 개체는 구현 IDisposable" 섹션을 참조 하세요.를 <xref:System.IDisposable> 인터페이스 항목입니다.  
+  
+ <xref:System.Threading.ReaderWriterLockSlim> 에서는 관리 스레드 선호도 있습니다. 즉, 각 <xref:System.Threading.Thread> 개체 자체 메서드 호출을 입력 하 고 잠금 모드를 종료 해야 합니다. 스레드가 없습니다 다른 스레드의 모드를 변경할 수 있습니다.  
+  
+ 경우는 <xref:System.Threading.ReaderWriterLockSlim> 재귀에서는 여러 가지 이유로 잠금을 시작 하려고 시도 차단할 수 있는 스레드를 허용 하지 않습니다.  
+  
+-   쓰기 모드 또는 쓰기 모드에는 단일 스레드 있는지 입력을 대기 중인 스레드가 없으면 읽기 모드 블록을 입력 하려고 하는 스레드입니다.  
+  
+    > [!NOTE]
+    >  새 판독기를 차단 하 여 대기 중인 경우는 기록기를 우선 하는 잠금 공정성 정책입니다. 현재의 관리 정책에는 공정성 가장 일반적인 시나리오에서 처리량을 높일 수는 판독기와 기록기를 분산 합니다. 이후 버전의 [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] 새로운 관리 정책이 도입 될 수 있습니다.  
+  
+-   이미 있으면 스레드에서 업그레이드 가능 모드로 쓰기 모드를 시작 하려고 대기 중인 스레드가 있는 경우 또는 쓰기 모드에는 단일 스레드 있으면 업그레이드 가능 모드 블록을 입력 하려고 하는 스레드입니다.  
+  
+-   세 가지 모드 중 하나에서 스레드가 없는 경우 쓰기 모드 블록을 입력 하려고 하는 스레드입니다.  
+  
+## <a name="upgrading-and-downgrading-locks"></a>업그레이드 / 다운 그레이드 잠금  
+ 업그레이드 가능 모드는 스레드가 일반적으로 보호 된 리소스에서 읽는 경우를 위한 일부 조건이 충족 될 경우 쓰기를 수행 해야 합니다. 가 입력 한 스레드를 <xref:System.Threading.ReaderWriterLockSlim> 업그레이드 가능 모드에 보호 된 리소스에 대 한 읽기 및 쓰기 모드를 호출 하 여 업그레이드할 수는 <xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A> 또는 <xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A> 메서드. 수 있기 때문에 하나의 스레드만 업그레이드 가능 모드에서 한 번에, 쓰기 모드를 업그레이드 없을 때 교착 상태에 기본 정책에는 재귀는 허용 되지 않습니다.  
+  
+> [!IMPORTANT]
+>  재귀 정책에 관계 없이 처음에 시작한 스레드는 해당 패턴은 교착 상태가 발생할 가능성이 매우 때문에 업그레이드 가능 모드 또는 쓰기 모드를로 업그레이드 모드가 허용 되지 않습니다 읽습니다. 예를 들어 입력 하려고 시도 하는 읽기 모드에 두 개의 스레드 모드를 작성 하는 경우 이러한 교착 상태가 됩니다. 업그레이드 가능 모드는 이러한 교착 상태를 방지 하도록 설계 되었습니다.  
+  
+ 읽기 모드에서는 요소를 업그레이드 하는 스레드가 다른 스레드가 없으면입니다. 스레드가 차단 되는 동안 읽기 모드를 시작 하려고 하는 다른 스레드가 차단 됩니다. 읽기 모드에서 모든 스레드가 종료, 하는 경우 업그레이드 차단 된 스레드 쓰기 모드가 시작 됩니다. 가 대기 중인 다른 스레드가 쓰기 모드 상태로 유지 됩니다 차단 업그레이드 가능 모드에 있는 단일 스레드가 리소스에 단독으로 액세스 하지 못하도록 방지 합니다.  
+  
+ 쓰기 모드를 종료 하는 업그레이드 가능 모드에서 스레드를 대기 중인 스레드가 쓰기 모드 없는 따라서 읽기 모드를 시작 하려고 대기 중인 다른 스레드가 가능 합니다. 스레드에서 업그레이드 가능 모드로 업그레이드 하 고 해당 스레드를 보호 된 리소스에 쓰는 것으로 무기한으로 다운 그레이드할 수 있습니다.  
+  
+> [!IMPORTANT]
+>  입력에 여러 스레드를 허용 하는 경우 쓰기 모드 또는 가능 모드가 시작 되었으면 스레드와 업그레이드 가능 모드를 독점할 수 없도록 해야 합니다. 이 고, 그렇지 입력 하려고 하는 스레드 작성 모드 직접 차단 됩니다 무기한으로 차단 되는 동안 다른 스레드가 없게 됩니다 읽기 모드를 시작 합니다.  
+  
+ 스레드에서 업그레이드 가능 모드에서 첫 번째 호출 하 여 읽기 모드로 다운 그레이드할 수는 <xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A> 메서드를 호출한 다음는 <xref:System.Threading.ReaderWriterLockSlim.ExitUpgradeableReadLock%2A> 메서드. 이 다운 그레이드 패턴 모든 잠금 재귀 정책에 허용 <xref:System.Threading.LockRecursionPolicy.NoRecursion>합니다.  
+  
+ 읽기 모드도 다운 그레이드 스레드를 다시 시작 가능 모드가 시작 되었으면 읽기 모드를 종료 해야 합니다.  
+  
+## <a name="entering-the-lock-recursively"></a>잠금을 재귀적으로 입력합니다.  
+ 만들 수 있습니다는 <xref:System.Threading.ReaderWriterLockSlim> 를 사용 하 여 재귀 잠금 항목을 지는 <xref:System.Threading.ReaderWriterLockSlim.%23ctor%28System.Threading.LockRecursionPolicy%29> 잠금 정책과 지정 지정 하는 생성자 <xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType>합니다.  
+  
+> [!NOTE]
+>  재귀를 사용 하 여 불필요 한 복잡성을 소개 하 고 하면 코드를 교착 상태 발생 가능성이 있기 때문에 새로운 개발에 권장 되지 않습니다.  
+  
+ 에 대 한는 <xref:System.Threading.ReaderWriterLockSlim> 재귀를 허용 하는 스레드를 입력할 수 모드에 대 한 다음 한다고 할 수 있습니다.  
+  
+-   읽기 모드에 있는 스레드에서 읽기 모드를 재귀적으로 입력할 수 있지만 쓰기 모드 또는 업그레이드 가능 모드를 입력할 수 없습니다. 이 작업을 수행 하려는 경우는 <xref:System.Threading.LockRecursionException> throw 됩니다. 입력 읽거나 모드와 입력 한 다음 쓰기 모드 업그레이드 가능 모드 이므로 강력한 교착 상태 확률이 패턴을 사용할 수 없습니다. 앞에서 설명한 대로 업그레이드 가능 모드로 잠금을 업그레이드 해야 하는 경우 제공 됩니다.  
+  
+-   업그레이드 가능 모드로 스레드에서 쓰기 모드 및/또는 읽기 모드를 입력할 수 있고, 세 가지 모드 재귀적으로 입력할 수 있습니다. 그러나 시작 하려는 시도가 다른 스레드에서 읽기 모드에 있는 경우 쓰기 모드 차단 합니다.  
+  
+-   쓰기 모드로 스레드에서 읽기 모드 및/또는 업그레이드 가능 모드를 입력할 수 있고, 세 가지 모드 재귀적으로 입력할 수 있습니다.  
+  
+-   스레드 잠금을 시작 하지는 모든 모드를 입력할 수 있습니다. 비재귀적 잠금에 진입 하려고와 같은 이유로이 시도 차단할 수 있습니다.  
+  
+ 스레드 모드가 해당 횟수 만큼 정확 하 게 각 모드를 종료 하는 것으로 순서에 관계 없이 입력이 모드를 종료할 수 있습니다. 스레드 시작 하지 않았으면 모드를 종료 하거나 종료 모드를 너무 많이 시도 하는 경우는 <xref:System.Threading.SynchronizationLockException> throw 됩니다.  
+  
+## <a name="lock-states"></a>잠금 상태  
+ 잠금의 상태 측면에서 생각 하는 것이 유용할 수 있습니다. <xref:System.Threading.ReaderWriterLockSlim> 네 가지 상태 중 하나일 수 있습니다: 업그레이드를 입력 하지 읽기 및 쓰기입니다.  
+  
+-   입력 되지 않습니다. 이 상태에서 스레드가 잠금을 시작한 (또는 모든 스레드가 잠금을 종료).  
+  
+-   읽기: 이 상태에서는 하나 이상의 스레드는 보호 된 리소스에 대 한 읽기 액세스에 대 한 잠금을 입력 했습니다.  
+  
+    > [!NOTE]
+    >  스레드를 사용 하 여 읽기 모드로 잠금을 입력할 수는 <xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A> 또는 <xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A> 메서드 또는 업그레이드 가능 모드에서 다운 그레이드 하 여 합니다.  
+  
+-   업그레이드: 이 상태에서 한 스레드가 잠금에 진입한 쓰기 액세스로 업그레이드 하는 옵션을 사용 하 여 읽기 액세스용 (즉,에서 업그레이드 가능 모드) 0 개 이상의 스레드가 읽기 액세스를 위해 잠금의 입력 합니다. 한 번에 둘 이상의 스레드가; 업그레이드 하는 옵션을 사용 하 여 잠금을 입력할 수 있습니다. 업그레이드 가능 모드를 시작 하려고 하는 추가 스레드가 차단 됩니다.  
+  
+-   쓰기: 이 상태에서 하나의 스레드는 보호 된 리소스에 대 한 쓰기 액세스를 잠금을 입력 했습니다. 해당 스레드가 단독으로 잠금 소유 합니다. 어떤 이유로 잠금에 진입 하려고 하는 다른 스레드가 차단 됩니다.  
+  
+ 다음 표에서 재귀 때 스레드를 허용 하지 않는 잠금에 대 한 잠금 상태 전환을 `t` 맨 왼쪽 열에 설명 된 작업을 수행 합니다. 작업에 걸리는 시간에 `t` 모드가 없습니다. (특별 한 경우 여기서 `t` 중인 업그레이드 가능 모드 표의 각주에 설명 되어 있습니다.) 맨 위 행 잠금의 시작 상태를 설명합니다. 셀에는 잠금 상태 변경에 괄호 안에 표시 및 스레드 되나요 설명 합니다.  
+  
+||입력된 되지 않습니다 (N)|Read (R)|업그레이드 (U)|쓰기 (W)|  
+|-|-----------------------|----------------|-------------------|-----------------|  
+|`t` 읽기 모드로 전환|`t` (R)을 입력합니다.|`t` 블록 스레드에서 쓰기 모드에 대 한 대기 중인 경우 그렇지 않으면 `t` 입력 합니다.|`t` 블록 스레드에서 쓰기 모드에 대 한 대기 중인 경우 그렇지 않으면 `t` 를 입력 합니다.<sup> 1</sup>|`t` 차단 합니다.|  
+|`t` 업그레이드 가능 모드가 시작|`t` (U)을 입력합니다.|`t` 스레드가 서로 대기 하는 경우 블록 쓰기 모드 또는 업그레이드 모드 그렇지 않으면 `t` (U)을 입력 합니다.|`t` 차단 합니다.|`t` 차단 합니다.|  
+|`t` 쓰기 모드로 전환|`t` 입력 (W).|`t` 차단 합니다.|`t` 차단 합니다. <sup>2</sup>|`t` 차단 합니다.|  
+  
+ <sup>1</sup> 경우 `t` 시작 축소 가능 모드에서 읽기 모드가 있습니다. 이 작업을 하지 차단합니다. 잠금 상태를 변경 하지 않습니다. (스레드에서 업그레이드 가능 모드를 종료 하 여 읽기 모드로 다운 그레이드를 완료할 수 있습니다.)  
+  
+ <sup>2</sup> 경우 `t` 읽기 모드로 스레드가 있으면 차단 업그레이드 가능 모드로 시작 합니다. 그렇지 않으면 쓰기 모드를 업그레이드 합니다. 잠금 상태 변경에 쓰기 (W). 경우 `t` 읽기 모드로 중인 스레드가 있으므로 차단 마지막 스레드에서 읽기 모드를 종료 하는 즉시 쓰기 모드가 시작, 경우에 대기 중인 스레드가 쓰기 모드입니다.  
+  
+ 상태 변경이 발생 하는 스레드가 잠금을 종료 때문에 설정을 선택 해제 하는 다음 스레드에서 다음과 같이 선택 됩니다.  
+  
+-   먼저 대기 중인 스레드가 쓰기 모드 및 이미 업그레이드 가능 모드 (있을 수 있습니다 최대 이러한 스레드와).  
+  
+-   쓰기 모드에 대 한 대기 중인 스레드가 실패 합니다.  
+  
+-   업그레이드 가능 모드에 대 한 대기 중인 스레드가 실패 합니다.  
+  
+-   읽기 모드에 대 한 대기 중인 모든 스레드는 실패 합니다.  
+  
+ 후속 잠금 상태가 항상 쓰기 (W)는 첫 번째 두 사례와 업그레이드 (U) 세 번째 경우 기존 스레드는 상태 변경이 트리거될 때 잠금 상태에 관계 없이 합니다. 마지막 경우에서 잠금 상태 업그레이드 (U) 없는 경우은 스레드에서 업그레이드 가능 모드로 Read (R) 상태 변경 후이 고, 그렇지 이전 상태에 관계 없이 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 정수 키를 사용 하 여 문자열을 포함 하는 간단한 동기화 된 캐시를 보여 줍니다. 인스턴스의 <xref:System.Threading.ReaderWriterLockSlim> 에 대 한 액세스를 동기화 하는 데 사용 되는 <xref:System.Collections.Generic.Dictionary%602> 내부 캐시는 역할을 합니다.  
+  
+ 이 예제에서는 간단한 방법, 캐시에 추가 하 고, 캐시에서 삭제 하 고, 캐시에서 읽기를 포함 합니다. 제한 시간을 보여 주기 위해 예제에는 지정한 시간 제한 내에서 수행할 수 있는 경우에 캐시에 추가 하는 메서드가 포함 됩니다.  
+  
+ 업그레이드 가능 모드를 보여 주기 위해 예제는 키와 연결 된 값을 검색 하는 메서드를 포함 하 고 새 값과 비교 합니다. 값이 변경 된 경우 메서드는 변경 되지 않았음을 나타내는 상태를 반환 합니다. 키에 대 한 값이 없는 없으면 키/값 쌍이 삽입 됩니다. 값을 변경 하는 경우 업데이트 됩니다. 업그레이드 가능 모드 스레드가 교착 상태는 위험 없이 필요에 따라 쓰기 액세스에 대 한 읽기 액세스를 업그레이드할 수 있습니다.  
+  
+ 이 예제에서는 업그레이드 가능 모드를 보여 주는 메서드의 반환 값을 지정 하는 중첩 된 열거형을 포함 합니다.  
+  
+ 이 예제에서는 잠금에 만들어 재귀 허용 되지 않습니다 기본 생성자를 사용 합니다. 프로그래밍의 <xref:System.Threading.ReaderWriterLockSlim> 잠금을 재귀를 허용 하지 않으면 더 간단 하 고 오류가 발생할 가능성이 감소 합니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#11)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#11)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#12)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#12)]  
+  
+ 다음 코드에서는 다음을 `SynchronizedCache` vegetable 이름의 사전을 저장할 개체입니다. 세 가지 작업을 만듭니다. 첫 번째의 야채 그림을 배열에 저장 된 이름을 작성 한 `SynchronizedCache` 인스턴스. 두 번째 및 세 번째 작업의 야채 그림 오름차순 (낮은 인덱스 높은 인덱스), 두 번째 내림차순 첫 번째 이름을 표시 합니다. 마지막 작업 "cucumber" 문자열을 검색 하 고, 호출을 찾으면를 <xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A> "녹색 bean" 문자열을 대체 하는 방법입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#11)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#11)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#13](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#13)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#13](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#13)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>이 형식은 스레드로부터 안전합니다.</threadsafe>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Threading.ReaderWriterLockSlim" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ReaderWriterLockSlim ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ReaderWriterLockSlim();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>기본 속성 값으로 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.ReaderWriterLockSlim> 이 사용 하 여 초기화 된 생성자는 재귀를 허용 하지 않습니다. 즉, <xref:System.Threading.ReaderWriterLockSlim.RecursionPolicy%2A> 속성이 <xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>를 반환합니다.  
+  
+ 재귀 정책 및 그 영향에 대 한 자세한 내용은 참조는 <xref:System.Threading.LockRecursionPolicy> 열거형 및 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 정수 키를 사용 하 여 문자열을 포함 하는 간단한 동기화 된 캐시를 보여 줍니다. 인스턴스의 <xref:System.Threading.ReaderWriterLockSlim> 에 대 한 액세스를 동기화 하는 데 사용 되는 <xref:System.Collections.Generic.Dictionary%602> 내부 캐시는 역할을 합니다. 잠금을 만들려면 매개 변수가 없는 생성자 사용 됩니다.  
+  
+ 이 예제에서는 간단한 방법, 캐시에 추가 하 고, 캐시에서 삭제 하 고, 캐시에서 읽기를 포함 합니다. 제한 시간을 보여 주기 위해 예제에는 지정한 시간 제한 내에서 수행할 수 있는 경우에 캐시에 추가 하는 메서드가 포함 됩니다.  
+  
+ 업그레이드 가능 모드를 보여 주기 위해 예제는 키와 연결 된 값을 검색 하는 메서드를 포함 하 고 새 값과 비교 합니다. 값이 변경 된 경우 메서드는 변경 되지 않았음을 나타내는 상태를 반환 합니다. 키 값이 없는 찾으면, 키/값 쌍이 삽입 됩니다. 값을 변경 하는 경우 업데이트 됩니다. 업그레이드 가능 모드 스레드가 교착 상태는 위험 없이 필요에 따라 쓰기 액세스에 대 한 읽기 액세스를 업그레이드할 수 있습니다.  
+  
+ 이 예제에서는 업그레이드 가능 모드를 보여 주는 메서드의 반환 값을 지정 하는 중첩 된 열거형을 포함 합니다.  
+  
+ 이 예제에서는 잠금에 만들어 재귀 허용 되지 않습니다 기본 생성자를 사용 합니다. 프로그래밍의 <xref:System.Threading.ReaderWriterLockSlim> 잠금을 재귀를 허용 하지 않으면 더 간단 하 고 오류가 발생할 가능성이 감소 합니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#11)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#11)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#12)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#12)]  
+  
+ 다음 코드에서는 다음을 `SynchronizedCache` vegetable 이름의 사전을 저장할 개체입니다. 세 가지 작업을 만듭니다. 첫 번째의 야채 그림을 배열에 저장 된 이름을 작성 한 `SynchronizedCache` 인스턴스. 두 번째 및 세 번째 작업의 야채 그림 오름차순 (낮은 인덱스 높은 인덱스), 두 번째 내림차순 첫 번째 이름을 표시 합니다. 마지막 작업 "cucumber" 문자열을 검색 하 고, 호출을 찾으면를 <xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A> "녹색 bean" 문자열을 대체 하는 방법입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#11)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#11)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#13](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/classexample1.cs#13)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#13](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/classexample1.vb#13)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Threading.LockRecursionPolicy" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ReaderWriterLockSlim (System.Threading.LockRecursionPolicy recursionPolicy);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Threading.LockRecursionPolicy recursionPolicy) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.#ctor(System.Threading.LockRecursionPolicy)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (recursionPolicy As LockRecursionPolicy)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ReaderWriterLockSlim(System::Threading::LockRecursionPolicy recursionPolicy);" />
+      <MemberSignature Language="F#" Value="new System.Threading.ReaderWriterLockSlim : System.Threading.LockRecursionPolicy -&gt; System.Threading.ReaderWriterLockSlim" Usage="new System.Threading.ReaderWriterLockSlim recursionPolicy" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="recursionPolicy" Type="System.Threading.LockRecursionPolicy" />
+      </Parameters>
+      <Docs>
+        <param name="recursionPolicy">잠금 재귀 정책을 지정하는 열거형 값 중 하나입니다.</param>
+        <summary>잠금 재귀 정책을 지정하여 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 재귀 정책을 두 번 이상 잠금에 진입 하는 스레드에서 제한을 결정 합니다. 예를 들어 잠금을 사용 하 여 만든 <xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType> 스레드에서 읽기 모드로 잠금을 시작 및 <xref:System.Threading.LockRecursionException> 스레드가 다시 읽기 모드로 잠금을 시작 하려고 하면 throw 됩니다. 마찬가지로 스레드가 쓰기 모드로 잠금을 시작한 경우 <xref:System.Threading.LockRecursionException> 스레드 다시 모든 모드로 잠금을 시작 하려고 하면 throw 됩니다.  
+  
+> [!NOTE]
+>  업그레이드 가능 모드에서 스레드가 쓰기 모드를 업그레이드 하거나 읽기 잠금 재귀 정책 설정에 관계 없이 모드로 다운 그레이드할 수 있습니다.  
+  
+ 재귀 정책에 관계 없이 처음에 시작한 스레드는 해당 패턴은 교착 상태가 발생할 가능성이 매우 때문에 업그레이드 가능 모드 또는 쓰기 모드를로 업그레이드 모드가 허용 되지 않습니다 읽습니다.  
+  
+ 재귀 정책 및 그 영향에 대 한 자세한 내용은 참조는 <xref:System.Threading.LockRecursionPolicy> 열거형 및 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 종속 된 하나 두 예외 시나리오는 <xref:System.Threading.LockRecursionPolicy> 설정과 하지 않는 합니다.  
+  
+ 첫 번째 시나리오에서는 스레드 읽기 모드를 시작한 다음 재귀적으로 읽기 모드를 시작 하려고 합니다. 경우는 <xref:System.Threading.ReaderWriterLockSlim> 재귀 정책을 설정 하는 기본 생성자를 사용 하 여 만들어집니다 <xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType>, 예외가 throw 됩니다. 하는 경우 <xref:System.Threading.LockRecursionPolicy.SupportsRecursion?displayProperty=nameWithType> 만드는 데 사용 되는 <xref:System.Threading.ReaderWriterLockSlim>, 예외가 throw 되지 않습니다.  
+  
+ 두 번째 시나리오에서는 스레드에서 읽기 모드를 시작 하 고 입력 하려고 쓰기 모드입니다. <xref:System.Threading.LockRecursionException> 잠금 재귀 정책을 관계 없이 throw 됩니다.  
+  
+[!code-csharp[System.Threading.LockRecursionPolicy#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/cs/ClassExample1.cs#11)] 
+[!code-vb[System.Threading.LockRecursionPolicy#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/vb/ClassExample1.vb#11)]   
+[!code-csharp[System.Threading.LockRecursionPolicy#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/cs/ClassExample1.cs#12)] 
+[!code-vb[System.Threading.LockRecursionPolicy#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/vb/ClassExample1.vb#12)]  
+  
+ 다음 코드에서는 다음을 `SynchronizedCache` vegetable 이름의 사전을 저장할 개체입니다. 세 가지 작업을 만듭니다. 첫 번째의 야채 그림을 배열에 저장 된 이름을 작성 한 `SynchronizedCache` 인스턴스. 두 번째 및 세 번째 작업의 야채 그림 오름차순 (낮은 인덱스 높은 인덱스), 두 번째 내림차순 첫 번째 이름을 표시 합니다. 마지막 작업 "cucumber" 문자열을 검색 하 고, 호출을 찾으면를 <xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A> "녹색 bean" 문자열을 대체 하는 방법입니다.  
+  
+[!code-csharp[System.Threading.LockRecursionPolicy#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/cs/ClassExample1.cs#11)] 
+[!code-vb[System.Threading.LockRecursionPolicy#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/vb/ClassExample1.vb#11)]   
+[!code-csharp[System.Threading.LockRecursionPolicy#13](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/cs/ClassExample1.cs#13)] 
+[!code-vb[System.Threading.LockRecursionPolicy#13](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.LockRecursionPolicy/vb/ClassExample1.vb#13)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Threading.LockRecursionPolicy" />
+        <altmember cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" />
+      </Docs>
+    </Member>
+    <Member MemberName="CurrentReadCount">
+      <MemberSignature Language="C#" Value="public int CurrentReadCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 CurrentReadCount" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.CurrentReadCount" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CurrentReadCount As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int CurrentReadCount { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.CurrentReadCount : int" Usage="System.Threading.ReaderWriterLockSlim.CurrentReadCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>읽기 모드로 잠금을 시작한 고유 스레드의 총 개수를 가져옵니다.</summary>
+        <value>읽기 모드로 잠금을 시작한 고유 스레드의 총 개수입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 스레드가 한 번만 계산 됩니다. 따라서 재귀 및 스레드 잠금을 허용 하는 경우에가 읽기 모드를 여러 번 입력할 합니다.  
+  
+ 알고리즘의 동작을 제어할 필요가 및 디버깅, 프로 파일링 및 로깅에서는 경우에이 속성을 사용 합니다. 결과 계산 된 즉시 변경할 수 있습니다. 따라서이 속성을 기반으로 결정을 내릴 수 안전 하지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.CurrentReadCount%2A> 읽기 모드의 스레드 수가 임계값을 초과할 경우 이벤트 로그 엔트리를 생성 하는 속성입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#2)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Aux#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#2)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#11)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Aux#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#11)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="readerWriterLockSlim.Dispose " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Threading.ReaderWriterLockSlim" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.ReaderWriterLockSlim.Dispose%2A> 사용을 마치면 <xref:System.Threading.ReaderWriterLockSlim>를 호출합니다. <xref:System.Threading.ReaderWriterLockSlim.Dispose%2A> 메서드를 사용하면 <xref:System.Threading.ReaderWriterLockSlim>를 사용할 수 없게 됩니다. 호출한 후 <xref:System.Threading.ReaderWriterLockSlim.Dispose%2A>에 대 한 모든 참조를 해제 해야 합니다 <xref:System.Threading.ReaderWriterLockSlim> 가비지 수집기에서 메모리를 회수할 수 있도록 하는 <xref:System.Threading.ReaderWriterLockSlim> 차지한 합니다. 자세한 내용은 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md) 하 고 [Dispose 메서드 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.  
+  
+> [!NOTE]
+>  항상 호출 <xref:System.Threading.ReaderWriterLockSlim.Dispose%2A> 에 대 한 마지막 참조를 해제 하기 전에 <xref:System.Threading.ReaderWriterLockSlim> 개체입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.SynchronizationLockException"><see cref="P:System.Threading.ReaderWriterLockSlim.WaitingReadCount" />가 0보다 큽니다.  
+  
+또는 
+ <see cref="P:System.Threading.ReaderWriterLockSlim.WaitingUpgradeCount" />가 0보다 큽니다.  
+  
+또는 
+ <see cref="P:System.Threading.ReaderWriterLockSlim.WaitingWriteCount" />가 0보다 큽니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EnterReadLock">
+      <MemberSignature Language="C#" Value="public void EnterReadLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void EnterReadLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.EnterReadLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub EnterReadLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void EnterReadLock();" />
+      <MemberSignature Language="F#" Value="member this.EnterReadLock : unit -&gt; unit" Usage="readerWriterLockSlim.EnterReadLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>읽기 모드로 잠금을 시작하려고 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드 차단 호출 스레드가 잠금에를 입력 하 고 따라서 되지 않을 수도 있습니다 될 때까지 반환 합니다. 사용 된 <xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A> 해당 간격 동안 읽기 모드를 지정된 된 간격에 대 한 차단 호출 스레드가 시작 되지 않은 경우 반환 하는 메서드.  
+  
+ 여러 스레드에서 동시에 읽기 모드를 시작할 수 있습니다.  
+  
+ 쓰기 모드를 시작 하려고 대기 중인 하나 이상의 스레드가 스레드는 호출 된 <xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A> 이러한 스레드에서 될 때까지 쓰기 모드가 시작 및 시작 된 다음 종료 시간이 초과 되었습니다.  
+  
+> [!NOTE]
+>  잠금 재귀에서는 읽기 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 읽기 모드를 재귀적으로를 입력 합니다.  
+  
+ 최대 하나의 스레드가 다른 스레드가 읽기 모드 동안 업그레이드 가능 모드로 수 있습니다. 추가 스레드에서 업그레이드 가능 모드에서 대기 중인 쓰기 모드를 시작 하려고 대기 하는 스레드가 없는 경우 해당 호출 스레드를 <xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A> 메서드 즉시 읽기 모드를 입력 하 고 차단 하지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A> 읽기 모드로 잠금을 시작 하는 방법입니다. 예제와 같이 메서드는 키와 연결 된 값을 검색 합니다. 키가 없는 경우, 내부에서 throw 한 예외 <xref:System.Collections.Generic.Dictionary%602> 메서드를 종료할 수 있습니다. A `finally` 블록은 실행 하는 데는 <xref:System.Threading.ReaderWriterLockSlim.ExitReadLock%2A> 메서드를 호출자가 읽기 모드를 종료할 수 있도록 합니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#3)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 읽기 잠금을 보유하고 있는 상황에서 읽기 잠금을 가져오려고 시도한 경우  
+  
+또는 
+<see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 쓰기 잠금을 보유하고 있는 상황에서 읽기 잠금을 가져오려고 시도한 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 애플리케이션에서 이 예외가 발생하지 않을 정도로 매우 큽니다.</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EnterUpgradeableReadLock">
+      <MemberSignature Language="C#" Value="public void EnterUpgradeableReadLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void EnterUpgradeableReadLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub EnterUpgradeableReadLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void EnterUpgradeableReadLock();" />
+      <MemberSignature Language="F#" Value="member this.EnterUpgradeableReadLock : unit -&gt; unit" Usage="readerWriterLockSlim.EnterUpgradeableReadLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>업그레이드 가능 모드로 잠금을 시작하려고 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드 차단 호출 스레드가 잠금에를 입력 하 고 따라서 되지 않을 수도 있습니다 될 때까지 반환 합니다. 사용 된 <xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A> 메서드를 지정된 된 간격에 대 한 차단 호출 스레드가 해당 간격 동안 업그레이드 가능 모드가 시작 되지 않은 경우를 반환 합니다.  
+  
+ 스레드 일반적으로 보호 되는 리소스에 액세스 하는 경우 업그레이드 가능 모드를 사용 하 여는 <xref:System.Threading.ReaderWriterLockSlim> 의 모드를 읽지만 특정 조건이 충족 되 면 쓰기 모드를 시작 해야 할 수 있습니다. 업그레이드 가능 모드에서 스레드 읽기 모드로 다운 그레이드 하거나 쓰기 모드를 업그레이드할 수 있습니다.  
+  
+ 하나만 스레드는 언제 든 지 업그레이드 가능 모드를 시작할 수 있습니다. 스레드에서 업그레이드 가능 모드에 있고 쓰기 모드를 시작 하려고 대기 하는 스레드가 없는 하는 경우에 임의 개수의 다른 스레드에서 업그레이드 가능 모드 대기 중인 스레드가 있는 경우에 읽기 모드에 입력할 수 있습니다.  
+  
+ 쓰기 모드를 시작 하려고 대기 중인 하나 이상의 스레드가 스레드는 호출 된 <xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A> 이러한 스레드에서 될 때까지 쓰기 모드가 시작 및 시작 된 다음 종료 시간이 초과 되었습니다.  
+  
+> [!NOTE]
+>  잠금 재귀에서는 업그레이드 가능 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 재귀적으로 업그레이드 가능 모드를 입력 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.EnterUpgradeableReadLock%2A> 업그레이드 가능 모드로 잠금을 시작 하는 방법입니다. A `finally` 블록은 실행 하는 데는 <xref:System.Threading.ReaderWriterLockSlim.ExitUpgradeableReadLock%2A> 메서드를 호출자가 업그레이드 가능 모드를 종료할 수 있도록 합니다.  
+  
+ 예제와 같이 메서드는 키와 연결 된 값을 검색 하 고 새 값과 비교. 값이 변경 된 경우 메서드는 변경 되지 않았음을 나타내는 상태를 반환 합니다. 키 값이 없는 찾으면, 키/값 쌍이 삽입 됩니다. 값을 변경 하는 경우 업데이트 됩니다. 업그레이드 가능 모드 스레드가 교착 상태가 발생할 위험 없이 필요에 따라 읽기 잠금을 업그레이드 될 수 있습니다.  
+  
+ 이 예제에서는 잠금에 만들어 재귀 허용 되지 않습니다 기본 생성자를 사용 합니다. 프로그래밍의 <xref:System.Threading.ReaderWriterLockSlim> 잠금을 재귀를 허용 하지 않으면 더 간단 하 고 오류가 발생할 가능성이 감소 합니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#6)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#10)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#10)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 모드에 관계없이 잠금을 시작한 경우  
+  
+또는 
+현재 스레드에서 읽기 모드를 시작했으므로 업그레이드 가능 모드를 시작하려고 하면 교착 상태가 발생할 수 있는 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 매우 크므로 일반적으로 응용 프로그램에서 초과되지 않아야 합니다.</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EnterWriteLock">
+      <MemberSignature Language="C#" Value="public void EnterWriteLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void EnterWriteLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.EnterWriteLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub EnterWriteLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void EnterWriteLock();" />
+      <MemberSignature Language="F#" Value="member this.EnterWriteLock : unit -&gt; unit" Usage="readerWriterLockSlim.EnterWriteLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>쓰기 모드로 잠금을 시작하려고 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드 차단 호출 스레드가 잠금에를 입력 하 고 따라서 되지 않을 수도 있습니다 될 때까지 반환 합니다. 사용 된 <xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A> 메서드를 지정된 된 간격에 대 한 차단 호출 스레드가 해당 간격 동안 쓰기 모드가 시작 되지 않은 경우를 반환 합니다.  
+  
+ 다른 스레드에서 읽기 모드로 잠금을 시작한 경우 호출 하는 스레드가 <xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A> 해당 스레드가 종료 될 때까지 읽기 모드입니다. 쓰기 모드를 시작 하려고 대기 하는 스레드가 쓰기 모드를 시작 하려고 대기 하는 모든 스레드에서 읽기 모드 또는 업그레이드 가능 모드 블록을 시작 하려고 하는 추가 스레드 시간 초과 쓰기 모드가 시작 및 시작 된 다음 종료 합니다.  
+  
+> [!NOTE]
+>  재귀 잠금을 허용 하는 경우 쓰기 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 재귀적으로 쓰기 모드를 입력 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A> 쓰기 모드로 잠금을 시작 하는 방법입니다. 예제와 같이 메서드 동기화 캐시에 새 키/값 쌍을 추가 합니다. 키 캐시, 내부에서 throw 한 예외에에서 이미 있으면 <xref:System.Collections.Generic.Dictionary%602> 메서드를 종료할 수 있습니다. A `finally` 블록은 실행 하는 데는 <xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A> 메서드를 호출자가 쓰기 모드를 종료할 수 있도록 합니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#4)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 모드에 관계없이 잠금을 시작한 경우  
+  
+또는 
+현재 스레드에서 읽기 모드를 시작했고 아직 쓰기 잠금을 시작하지 않아 쓰기 모드로 잠금을 시작하려고 하면 교착 상태가 발생할 수 있는 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 매우 크므로 일반적으로 응용 프로그램에서 초과되지 않아야 합니다.</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ExitReadLock">
+      <MemberSignature Language="C#" Value="public void ExitReadLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ExitReadLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.ExitReadLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ExitReadLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ExitReadLock();" />
+      <MemberSignature Language="F#" Value="member this.ExitReadLock : unit -&gt; unit" Usage="readerWriterLockSlim.ExitReadLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>읽기 모드의 재귀 횟수를 줄이고, 결과 횟수가 0이 되면 읽기 모드를 종료합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 재귀 순서는 중요 없습니다. 예를 들어, 스레드에서 업그레이드 가능 모드로 잠금을 시작한 다음 읽기 모드로 잠금을 시작한 경우 스레드 종료는 두 가지 모드는 순서는 중요 하지 않습니다. 잠금 재귀를 허용 하는 경우 스레드 수 쓰기 모드로 잠금을 시작 한 후 입력 재귀적으로 읽기 모드로; 스레드를 종료 하는 순서 모드 읽고 모드는 중요 하지 않습니다.  
+  
+ 잠금을 끝내기 다른 대기 스레드가 신호를 보낼 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법을 보여 줍니다는 `finally` 블록을 실행 합니다 <xref:System.Threading.ReaderWriterLockSlim.ExitReadLock%2A> 메서드를 호출자가 읽기 모드를 종료할 수 있도록 합니다. 예제와 같이 메서드는 키와 연결 된 값을 검색 합니다. 키가 없는 경우, 내부에서 throw 한 예외 <xref:System.Collections.Generic.Dictionary%602> 메서드를 종료할 수 있습니다. <xref:System.Threading.ReaderWriterLockSlim.EnterReadLock%2A> 메서드 입력 읽기 모드를 사용 합니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#3)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.SynchronizationLockException">현재 스레드에서 읽기 모드로 잠금을 시작하지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ExitUpgradeableReadLock">
+      <MemberSignature Language="C#" Value="public void ExitUpgradeableReadLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ExitUpgradeableReadLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.ExitUpgradeableReadLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ExitUpgradeableReadLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ExitUpgradeableReadLock();" />
+      <MemberSignature Language="F#" Value="member this.ExitUpgradeableReadLock : unit -&gt; unit" Usage="readerWriterLockSlim.ExitUpgradeableReadLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>업그레이드 가능 모드의 재귀 횟수를 줄이고, 결과 횟수가 0이 되면 업그레이드 가능 모드를 종료합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 재귀 순서는 중요 없습니다. 예를 들어, 스레드에서 업그레이드 가능 모드로 잠금을 시작한 다음 쓰기 모드로 잠금을 시작한 경우 스레드 종료는 두 가지 모드는 순서는 중요 하지 않습니다. 잠금 재귀를 허용 하는 경우 스레드 수 쓰기 모드로 잠금을 시작 한 후 입력 재귀적으로 업그레이드 가능 모드로; 스레드에서 업그레이드 가능 모드 및 쓰기 모드를 종료 하는 순서는 중요 하지 않습니다.  
+  
+ 잠금을 끝내기 다른 대기 스레드가 신호를 보낼 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법을 보여 줍니다는 `finally` 블록을 실행 합니다 <xref:System.Threading.ReaderWriterLockSlim.ExitUpgradeableReadLock%2A> 메서드를 호출자가 업그레이드 가능 모드를 종료할 수 있도록 합니다.  
+  
+ 예제와 같이 메서드는 키와 연결 된 값을 검색 하 고 새 값과 비교. 값이 변경 된 경우 메서드는 변경 되지 않았음을 나타내는 상태를 반환 합니다. 키 값이 없는 찾으면, 키/값 쌍이 삽입 됩니다. 값을 변경 하는 경우 업데이트 됩니다. 업그레이드 가능 모드 스레드가 교착 상태가 발생할 위험 없이 필요에 따라 읽기 잠금을 업그레이드 될 수 있습니다.  
+  
+ 이 예제에서는 잠금에 만들어 재귀 허용 되지 않습니다 기본 생성자를 사용 합니다. 프로그래밍의 <xref:System.Threading.ReaderWriterLockSlim> 잠금을 재귀를 허용 하지 않으면 더 간단 하 고 오류가 발생할 가능성이 감소 합니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#6)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#6)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#10)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#10)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.SynchronizationLockException">현재 스레드에서 업그레이드 가능 모드로 잠금을 시작하지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ExitWriteLock">
+      <MemberSignature Language="C#" Value="public void ExitWriteLock ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ExitWriteLock() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.ExitWriteLock" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ExitWriteLock ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ExitWriteLock();" />
+      <MemberSignature Language="F#" Value="member this.ExitWriteLock : unit -&gt; unit" Usage="readerWriterLockSlim.ExitWriteLock " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>쓰기 모드의 재귀 횟수를 줄이고, 결과 횟수가 0이 되면 쓰기 모드를 종료합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 재귀 순서는 중요 없습니다. 예를 들어, 스레드에서 업그레이드 가능 모드로 잠금을 시작한 다음 쓰기 모드로 잠금을 시작한 경우 스레드 종료는 두 가지 모드는 순서는 중요 하지 않습니다. 잠금 재귀를 허용 하는 경우 스레드 수 쓰기 모드로 잠금을 시작 한 후 입력 재귀적으로 읽기 모드로; 스레드를 종료 하는 순서 모드 읽고 모드는 중요 하지 않습니다.  
+  
+ 잠금을 끝내기 다른 대기 스레드가 신호를 보낼 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법을 보여 줍니다는 `finally` 블록을 실행 합니다 <xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A> 메서드를 호출자가 쓰기 모드를 종료할 수 있도록 합니다. 예제와 같이 메서드 동기화 캐시에 새 키/값 쌍을 추가 합니다. 키 캐시, 내부에서 throw 한 예외에에서 이미 있으면 <xref:System.Collections.Generic.Dictionary%602> 메서드를 종료할 수 있습니다. <xref:System.Threading.ReaderWriterLockSlim.EnterWriteLock%2A> 메서드는 쓰기 모드로 잠금을 시작 하는 데 사용 됩니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#4)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.SynchronizationLockException">현재 스레드에서 쓰기 모드로 잠금을 시작하지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="IsReadLockHeld">
+      <MemberSignature Language="C#" Value="public bool IsReadLockHeld { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsReadLockHeld" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.IsReadLockHeld" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsReadLockHeld As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsReadLockHeld { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsReadLockHeld : bool" Usage="System.Threading.ReaderWriterLockSlim.IsReadLockHeld" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 스레드에서 읽기 모드로 잠금을 시작했는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>현재 스레드에서 읽기 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성에서 사용 하 여 어설션 또는 다른 디버깅 목적을 위한 것입니다. 프로그램 실행의 흐름 제어를 사용 하지 마세요.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.IsReadLockHeld%2A> 예기치 않게 현재 스레드에서 시작 되었으면 어설션을 생성 하는 속성 읽기 모드입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#21](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#21)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Aux#21](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#21)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsUpgradeableReadLockHeld">
+      <MemberSignature Language="C#" Value="public bool IsUpgradeableReadLockHeld { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsUpgradeableReadLockHeld" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.IsUpgradeableReadLockHeld" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsUpgradeableReadLockHeld As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsUpgradeableReadLockHeld { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsUpgradeableReadLockHeld : bool" Usage="System.Threading.ReaderWriterLockSlim.IsUpgradeableReadLockHeld" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 스레드에서 업그레이드 가능 모드로 잠금을 시작했는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>현재 스레드에서 업그레이드 가능 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성에서 사용 하 여 어설션 또는 다른 디버깅 목적을 위한 것입니다. 프로그램 실행의 흐름 제어를 사용 하지 마세요.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.IsUpgradeableReadLockHeld%2A> 현재 스레드에서 업그레이드 가능 모드를 예기치 않게 시작 되었으면 어설션을 생성 하는 속성입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#22](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#22)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Aux#22](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#22)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsWriteLockHeld">
+      <MemberSignature Language="C#" Value="public bool IsWriteLockHeld { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsWriteLockHeld" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.IsWriteLockHeld" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsWriteLockHeld As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsWriteLockHeld { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsWriteLockHeld : bool" Usage="System.Threading.ReaderWriterLockSlim.IsWriteLockHeld" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 스레드에서 쓰기 모드로 잠금을 시작했는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>현재 스레드에서 쓰기 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성에서 사용 하 여 어설션 또는 다른 디버깅 목적을 위한 것입니다. 프로그램 실행의 흐름 제어를 사용 하지 마세요.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.IsWriteLockHeld%2A> 현재 스레드에서 쓰기 모드를 예기치 않게 시작 되었으면 어설션을 생성 하는 속성입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#23](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#23)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Aux#23](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#23)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RecursionPolicy">
+      <MemberSignature Language="C#" Value="public System.Threading.LockRecursionPolicy RecursionPolicy { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Threading.LockRecursionPolicy RecursionPolicy" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RecursionPolicy As LockRecursionPolicy" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Threading::LockRecursionPolicy RecursionPolicy { System::Threading::LockRecursionPolicy get(); };" />
+      <MemberSignature Language="F#" Value="member this.RecursionPolicy : System.Threading.LockRecursionPolicy" Usage="System.Threading.ReaderWriterLockSlim.RecursionPolicy" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.LockRecursionPolicy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체에 대한 재귀 정책을 나타내는 값을 가져옵니다.</summary>
+        <value>잠금 재귀 정책을 지정하는 열거형 값 중 하나입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 재귀 정책을 두 번 이상 잠금에 진입 하는 스레드에서 제한을 결정 합니다. 예를 들어 잠금을 사용 하 여 만든 <xref:System.Threading.LockRecursionPolicy.NoRecursion?displayProperty=nameWithType> 스레드에서 읽기 모드로 잠금을 시작 및 <xref:System.Threading.LockRecursionException> 스레드가 다시 읽기 모드로 잠금을 시작 하려고 하면 throw 됩니다.  
+  
+> [!NOTE]
+>  업그레이드 가능 모드에서 스레드가 쓰기 모드를 업그레이드 하거나 읽기 잠금 재귀 정책 설정에 관계 없이 모드로 다운 그레이드할 수 있습니다.  
+  
+ 재귀 정책에 관계 없이 처음에 시작한 스레드는 해당 패턴은 교착 상태가 발생할 가능성이 매우 때문에 업그레이드 가능 모드 또는 쓰기 모드를로 업그레이드 모드가 허용 되지 않습니다 읽습니다.  
+  
+ 재귀 정책 및 그 영향에 대 한 자세한 내용은 참조는 <xref:System.Threading.LockRecursionPolicy> 열거형 및 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Threading.LockRecursionException" />
+      </Docs>
+    </Member>
+    <Member MemberName="RecursiveReadCount">
+      <MemberSignature Language="C#" Value="public int RecursiveReadCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 RecursiveReadCount" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.RecursiveReadCount" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RecursiveReadCount As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int RecursiveReadCount { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.RecursiveReadCount : int" Usage="System.Threading.ReaderWriterLockSlim.RecursiveReadCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>재귀를 확인하기 위해 현재 스레드에서 읽기 모드로 잠금을 시작한 횟수를 가져옵니다.</summary>
+        <value>읽기 모드를 현재 스레드에서 시작 하지 않은 경우 0 (영), 스레드에서 읽기 모드가 시작 되었으면 되지 않은 경우 1 재귀적으로 또는 *n* 스레드에서 잠금을 재귀적으로 시작 되었으면 *n* -1 회.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 알고리즘의 동작을 제어할 필요가 및 디버깅, 프로 파일링 및 로깅에서는 경우에이 속성을 사용 합니다. 결과 계산 된 즉시 변경할 수 있습니다. 따라서이 속성을 기반으로 결정을 내릴 수 안전 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RecursiveUpgradeCount">
+      <MemberSignature Language="C#" Value="public int RecursiveUpgradeCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 RecursiveUpgradeCount" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.RecursiveUpgradeCount" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RecursiveUpgradeCount As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int RecursiveUpgradeCount { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.RecursiveUpgradeCount : int" Usage="System.Threading.ReaderWriterLockSlim.RecursiveUpgradeCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>재귀를 확인하기 위해 현재 스레드에서 업그레이드 가능 모드로 잠금을 시작한 횟수를 가져옵니다.</summary>
+        <value>현재 스레드에서 업그레이드 가능 모드, 스레드에서 업그레이드 가능 모드가 시작 되었으면 하지만 하지 않았으면이 재귀적으로 시작 하는 경우 1을 사용 하지 않았으면 하는 경우에 0 또는 *n* 스레드에서 업그레이드 가능 모드를 재귀적 *n* -1 시간입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 알고리즘의 동작을 제어할 필요가 및 디버깅, 프로 파일링 및 로깅에서는 경우에이 속성을 사용 합니다. 결과 계산 된 즉시 변경할 수 있습니다. 따라서이 속성을 기반으로 결정을 내릴 수 안전 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RecursiveWriteCount">
+      <MemberSignature Language="C#" Value="public int RecursiveWriteCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 RecursiveWriteCount" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.RecursiveWriteCount" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RecursiveWriteCount As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int RecursiveWriteCount { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.RecursiveWriteCount : int" Usage="System.Threading.ReaderWriterLockSlim.RecursiveWriteCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>재귀를 확인하기 위해 현재 스레드에서 쓰기 모드로 잠금을 시작한 횟수를 가져옵니다.</summary>
+        <value>현재 스레드에서 시작 하지 않은 경우에 0 쓰기 모드를 1 스레드에서 쓰기 모드가 시작 되었으면 되지 않은 경우 재귀적으로 또는 *n* 스레드에서 재귀적으로 쓰기 모드 *n* -1 회.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 알고리즘의 동작을 제어할 필요가 및 디버깅, 프로 파일링 및 로깅에서는 경우에이 속성을 사용 합니다. 결과 계산 된 즉시 변경할 수 있습니다. 따라서이 속성을 기반으로 결정을 내릴 수 안전 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TryEnterReadLock">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>제한 시간을 선택적으로 적용하여 읽기 모드로 잠금을 시작하려고 합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TryEnterReadLock">
+      <MemberSignature Language="C#" Value="public bool TryEnterReadLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryEnterReadLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.TryEnterReadLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryEnterReadLock (millisecondsTimeout As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryEnterReadLock(int millisecondsTimeout);" />
+      <MemberSignature Language="F#" Value="member this.TryEnterReadLock : int -&gt; bool" Usage="readerWriterLockSlim.TryEnterReadLock millisecondsTimeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">대기할 시간(밀리초)이거나, 무기한 대기하려는 경우 -1(<see cref="F:System.Threading.Timeout.Infinite" />)입니다.</param>
+        <summary>제한 시간(정수)을 선택적으로 적용하여 읽기 모드로 잠금을 시작하려고 합니다.</summary>
+        <returns>호출하는 스레드에서 읽기 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하는 경우 `millisecondsTimeout` 가 0 (영),이 메서드는 잠금 상태를 확인 하 고 반환 `false` 원하는 상태를 사용할 수 없는 경우에 즉시 합니다.  
+  
+ 여러 스레드에서 동시에 읽기 모드를 시작할 수 있습니다.  
+  
+ 쓰기 모드를 시작 하려고 대기 중인 하나 이상의 스레드가 스레드는 호출을 <xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A> 메서드 또는 이러한 스레드 중 시간 초과 또는 쓰기 모드가 시작 있고에서 시작 된 다음 종료 될 때까지 호출 스레드 자체의 시간 제한 간격이 만료 될 때까지 차단 합니다.  
+  
+> [!NOTE]
+>  잠금 재귀에서는 읽기 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 읽기 모드를 재귀적으로를 입력 합니다.  
+  
+ 한 스레드가 다른 스레드가 읽기 모드 동안 업그레이드 가능 모드로 수 있습니다. 추가 스레드에서 업그레이드 가능 모드에서 대기 중인 쓰기 모드를 시작 하려고 대기 하는 스레드가 없는 경우 해당 호출 스레드를 <xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A> 메서드 즉시 읽기 모드를 입력 하 고 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 잠금을 시작한 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 매우 크므로 일반적으로 응용 프로그램에서 초과되지 않아야 합니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />의 값이 음수이지만 유일하게 허용되는 음수 값인 <see cref="F:System.Threading.Timeout.Infinite" />(-1)이 아닌 경우</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TryEnterReadLock">
+      <MemberSignature Language="C#" Value="public bool TryEnterReadLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryEnterReadLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.TryEnterReadLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryEnterReadLock (timeout As TimeSpan) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryEnterReadLock(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="member this.TryEnterReadLock : TimeSpan -&gt; bool" Usage="readerWriterLockSlim.TryEnterReadLock timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">대기할 간격이거나, 무기한 대기하려는 경우 -1밀리초입니다.</param>
+        <summary>제한 시간을 선택적으로 적용하여 읽기 모드로 잠금을 시작하려고 합니다.</summary>
+        <returns>호출하는 스레드에서 읽기 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하는 경우 `timeout` 가 0 (영),이 메서드는 잠금 상태를 확인 하 고 반환 `false` 원하는 상태를 사용할 수 없는 경우에 즉시 합니다.  
+  
+ 여러 스레드에서 동시에 읽기 모드로 잠금을 시작할 수 있습니다.  
+  
+ 하나 이상의 스레드가 쓰기 모드에 대기 중이면를 호출 하는 스레드가 <xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A> 메서드 또는 이러한 스레드 중 시간 초과 또는 쓰기 모드가 시작 있고에서 시작 된 다음 종료 될 때까지 호출 스레드 자체의 시간 제한 간격이 만료 될 때까지 차단 합니다.  
+  
+> [!NOTE]
+>  잠금 재귀에서는 읽기 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 읽기 모드를 재귀적으로를 입력 합니다.  
+  
+ 한 스레드가 다른 스레드가 읽기 모드 동안 업그레이드 가능 모드로 수 있습니다. 추가 스레드에서 업그레이드 가능 모드에서 대기 중인 쓰기 모드를 시작 하려고 대기 하는 스레드가 없는 경우 해당 호출 스레드를 <xref:System.Threading.ReaderWriterLockSlim.TryEnterReadLock%2A> 메서드 즉시 읽기 모드를 입력 하 고 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 잠금을 시작한 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 매우 크므로 일반적으로 응용 프로그램에서 초과되지 않아야 합니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />의 값이 음수이지만 유일하게 허용되는 음수 값인 -1밀리초가 아닌 경우  
+  
+또는 
+<paramref name="timeout" />의 값이 <see cref="F:System.Int32.MaxValue" />밀리초보다 큰 경우</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TryEnterUpgradeableReadLock">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>제한 시간을 선택적으로 적용하여 업그레이드 가능 모드로 잠금을 시작하려고 합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TryEnterUpgradeableReadLock">
+      <MemberSignature Language="C#" Value="public bool TryEnterUpgradeableReadLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryEnterUpgradeableReadLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryEnterUpgradeableReadLock (millisecondsTimeout As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryEnterUpgradeableReadLock(int millisecondsTimeout);" />
+      <MemberSignature Language="F#" Value="member this.TryEnterUpgradeableReadLock : int -&gt; bool" Usage="readerWriterLockSlim.TryEnterUpgradeableReadLock millisecondsTimeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">대기할 시간(밀리초)이거나, 무기한 대기하려는 경우 -1(<see cref="F:System.Threading.Timeout.Infinite" />)입니다.</param>
+        <summary>제한 시간을 선택적으로 적용하여 업그레이드 가능 모드로 잠금을 시작하려고 합니다.</summary>
+        <returns>호출하는 스레드에서 업그레이드 가능 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하는 경우 `millisecondsTimeout` 가 0 (영),이 메서드는 잠금 상태를 확인 하 고 반환 `false` 원하는 상태를 사용할 수 없는 경우에 즉시 합니다.  
+  
+ 스레드 일반적으로 보호 되는 리소스에 액세스 하는 경우 업그레이드 가능 모드를 사용 하 여는 <xref:System.Threading.ReaderWriterLockSlim> 의 모드를 읽지만 특정 조건이 충족 되 면 쓰기 모드를 시작 해야 할 수 있습니다. 업그레이드 가능 모드에 있는 스레드에서 쓰기 모드로 업그레이드 하거나 읽기 모드로 다운 그레이드할 수 있습니다.  
+  
+ 하나만 스레드는 언제 든 지 업그레이드 가능 모드로 잠금을 시작할 수 있습니다. 스레드에서 업그레이드 가능 모드에 있고 쓰기 모드를 시작 하려고 대기 하는 스레드가 없는 하는 경우에 임의 개수의 다른 스레드에서 업그레이드 가능 모드 대기 중인 스레드가 있는 경우에 읽기 모드에 입력할 수 있습니다.  
+  
+ 쓰기 모드를 시작 하려고 대기 중인 하나 이상의 스레드가 스레드는 호출을 <xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A> 메서드 또는 이러한 스레드 중 시간 초과 또는 쓰기 모드가 시작 있고에서 시작 된 다음 종료 될 때까지 호출 스레드 자체의 시간 제한 간격이 만료 될 때까지 차단 합니다.  
+  
+> [!NOTE]
+>  잠금 재귀에서는 업그레이드 가능 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 재귀적으로 업그레이드 가능 모드를 입력 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 잠금을 시작한 경우  
+  
+또는 
+현재 스레드에서 초기에 읽기 모드로 잠금을 시작했으므로 업그레이드 가능 모드를 시작하려고 하면 교착 상태가 발생할 수 있는 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 매우 크므로 일반적으로 응용 프로그램에서 초과되지 않아야 합니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />의 값이 음수이지만 유일하게 허용되는 음수 값인 <see cref="F:System.Threading.Timeout.Infinite" />(-1)이 아닌 경우</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TryEnterUpgradeableReadLock">
+      <MemberSignature Language="C#" Value="public bool TryEnterUpgradeableReadLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryEnterUpgradeableReadLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryEnterUpgradeableReadLock (timeout As TimeSpan) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryEnterUpgradeableReadLock(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="member this.TryEnterUpgradeableReadLock : TimeSpan -&gt; bool" Usage="readerWriterLockSlim.TryEnterUpgradeableReadLock timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">대기할 간격이거나, 무기한 대기하려는 경우 -1밀리초입니다.</param>
+        <summary>제한 시간을 선택적으로 적용하여 업그레이드 가능 모드로 잠금을 시작하려고 합니다.</summary>
+        <returns>호출하는 스레드에서 업그레이드 가능 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하는 경우 `timeout` 가 0 (영),이 메서드는 잠금 상태를 확인 하 고 반환 `false` 원하는 상태를 사용할 수 없는 경우에 즉시 합니다.  
+  
+ 스레드에는 일반적으로 하 여 보호 되는 리소스에 액세스 하는 경우 업그레이드 가능 모드를 사용 하 여는 <xref:System.Threading.ReaderWriterLockSlim> 의 모드를 읽지만 특정 조건이 충족 되 면 쓰기 모드를 시작 해야 할 수 있습니다. 업그레이드 가능 모드에 있는 스레드에서 쓰기 모드로 업그레이드 하거나 읽기 모드로 다운 그레이드할 수 있습니다.  
+  
+ 하나만 스레드는 언제 든 지 업그레이드 가능 모드로 잠금을 시작할 수 있습니다. 스레드에서 업그레이드 가능 모드에 있고 쓰기 모드를 시작 하려고 대기 하는 스레드가 없는 하는 경우에 임의 개수의 다른 스레드에서 업그레이드 가능 모드 대기 중인 스레드가 있는 경우에 읽기 모드에 입력할 수 있습니다.  
+  
+ 쓰기 모드를 시작 하려고 대기 중인 하나 이상의 스레드가 스레드는 호출을 <xref:System.Threading.ReaderWriterLockSlim.TryEnterUpgradeableReadLock%2A> 메서드 또는 이러한 스레드 중 시간 초과 또는 쓰기 모드가 시작 있고에서 시작 된 다음 종료 될 때까지 호출 스레드 자체의 시간 제한 간격이 만료 될 때까지 차단 합니다.  
+  
+> [!NOTE]
+>  잠금 재귀에서는 업그레이드 가능 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 재귀적으로 업그레이드 가능 모드를 입력 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 잠금을 시작한 경우  
+  
+또는 
+현재 스레드에서 초기에 읽기 모드로 잠금을 시작했으므로 업그레이드 가능 모드를 시작하려고 하면 교착 상태가 발생할 수 있는 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 매우 크므로 일반적으로 응용 프로그램에서 초과되지 않아야 합니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />의 값이 음수이지만 유일하게 허용되는 음수 값인 -1밀리초가 아닌 경우  
+  
+또는 
+<paramref name="timeout" />의 값이 <see cref="F:System.Int32.MaxValue" />밀리초보다 큰 경우</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TryEnterWriteLock">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>제한 시간을 선택적으로 적용하여 쓰기 모드로 잠금을 시작하려고 합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TryEnterWriteLock">
+      <MemberSignature Language="C#" Value="public bool TryEnterWriteLock (int millisecondsTimeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryEnterWriteLock(int32 millisecondsTimeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryEnterWriteLock (millisecondsTimeout As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryEnterWriteLock(int millisecondsTimeout);" />
+      <MemberSignature Language="F#" Value="member this.TryEnterWriteLock : int -&gt; bool" Usage="readerWriterLockSlim.TryEnterWriteLock millisecondsTimeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">대기할 시간(밀리초)이거나, 무기한 대기하려는 경우 -1(<see cref="F:System.Threading.Timeout.Infinite" />)입니다.</param>
+        <summary>제한 시간을 선택적으로 적용하여 쓰기 모드로 잠금을 시작하려고 합니다.</summary>
+        <returns>호출하는 스레드에서 쓰기 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하는 경우 `millisecondsTimeout` 가 0 (영),이 메서드는 잠금 상태를 확인 하 고 반환 `false` 원하는 상태를 사용할 수 없는 경우에 즉시 합니다.  
+  
+ 다른 스레드에서 읽기 모드로 잠금을 시작한 경우 호출 하는 스레드가 <xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A> 메서드가 이러한 스레드에서 읽기 모드를 종료 될 때까지 또는 시간 제한 간격이 경과할 때까지 차단 합니다. 쓰기 모드를 시작 하려고 대기 중인 스레드가 차단 하는 동안 읽기 모드 또는 업그레이드 가능 모드를 시작 하려고 하는 추가 스레드는 대기 중인 모든 스레드가 쓰기 모드를가 하거나 시간 초과 또는 쓰기 모드가 시작 하 고 시작 된 다음 종료 될 때까지 차단 합니다.  
+  
+> [!NOTE]
+>  재귀 잠금을 허용 하는 경우 쓰기 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 재귀적으로 쓰기 모드를 입력 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A> 제한 시간을 사용 하 여 쓰기 모드로 잠금을 시작 하는 방법입니다. 예제와 같이 메서드 동기화 캐시에 새 키/값 쌍을 추가 합니다. 메서드가 반환 하는 경우 지정한 시간 제한 간격이 경과 스레드가 잠금을 들어가기 전에 `false`입니다. 메서드는 반환 `true` 키/값 쌍을 추가 합니다.  
+  
+ 키 캐시, 내부에서 throw 한 예외에에서 이미 있으면 <xref:System.Collections.Generic.Dictionary%602> 메서드를 종료할 수 있습니다. A `finally` 블록은 실행 하는 데는 <xref:System.Threading.ReaderWriterLockSlim.ExitWriteLock%2A> 메서드를 호출자가 잠금을 종료할 수 있도록 합니다.  
+  
+ 이 코드는에 대해 제공 된 큰 예제의 일부는 <xref:System.Threading.ReaderWriterLockSlim> 클래스입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#2)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#2)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Shadow#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/cs/source.cs#5)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Shadow#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Shadow/vb/source.vb#5)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 잠금을 시작한 경우  
+  
+또는 
+현재 스레드에서 초기에 읽기 모드로 잠금을 시작했으므로 쓰기 모드를 시작하려고 하면 교착 상태가 발생할 수 있는 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 매우 크므로 일반적으로 응용 프로그램에서 초과되지 않아야 합니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />의 값이 음수이지만 유일하게 허용되는 음수 값인 <see cref="F:System.Threading.Timeout.Infinite" />(-1)이 아닌 경우</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TryEnterWriteLock">
+      <MemberSignature Language="C#" Value="public bool TryEnterWriteLock (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryEnterWriteLock(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryEnterWriteLock (timeout As TimeSpan) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryEnterWriteLock(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="member this.TryEnterWriteLock : TimeSpan -&gt; bool" Usage="readerWriterLockSlim.TryEnterWriteLock timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">대기할 간격이거나, 무기한 대기하려는 경우 -1밀리초입니다.</param>
+        <summary>제한 시간을 선택적으로 적용하여 쓰기 모드로 잠금을 시작하려고 합니다.</summary>
+        <returns>호출하는 스레드에서 쓰기 모드가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하는 경우 `timeout` 가 0 (영),이 메서드는 잠금 상태를 확인 하 고 반환 `false` 원하는 상태를 사용할 수 없는 경우에 즉시 합니다.  
+  
+ 다른 스레드에서 읽기 모드로 잠금을 시작한 경우 호출 하는 스레드가 <xref:System.Threading.ReaderWriterLockSlim.TryEnterWriteLock%2A> 메서드가 이러한 스레드에서 읽기 모드를 종료 될 때까지 또는 시간 제한 간격이 경과할 때까지 차단 합니다. 쓰기 모드를 시작 하려고 대기 중인 스레드가 차단 하는 동안 읽기 모드 또는 업그레이드 가능 모드를 시작 하려고 하는 추가 스레드는 대기 중인 모든 스레드가 쓰기 모드를가 하거나 시간 초과 또는 쓰기 모드가 시작 하 고 시작 된 다음 종료 될 때까지 차단 합니다.  
+  
+> [!NOTE]
+>  재귀 잠금을 허용 하는 경우 쓰기 모드로 잠금을 시작 하는 스레드 수 다른 스레드에서 쓰기 모드를 시작 하려고 대기 중인 경우에 재귀적으로 쓰기 모드를 입력 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.LockRecursionException"><see cref="P:System.Threading.ReaderWriterLockSlim.RecursionPolicy" /> 속성이 <see cref="F:System.Threading.LockRecursionPolicy.NoRecursion" />이고 현재 스레드에서 이미 잠금을 시작한 경우  
+  
+또는 
+현재 스레드에서 초기에 읽기 모드로 잠금을 시작했으므로 쓰기 모드를 시작하려고 하면 교착 상태가 발생할 수 있는 경우  
+  
+또는 
+재귀 횟수가 카운터 용량을 초과하는 경우. 이 제한은 매우 크므로 일반적으로 응용 프로그램에서 초과되지 않아야 합니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />의 값이 음수이지만 유일하게 허용되는 음수 값인 -1밀리초가 아닌 경우  
+  
+또는 
+<paramref name="timeout" />의 값이 <see cref="F:System.Int32.MaxValue" />밀리초보다 큰 경우</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.ReaderWriterLockSlim" /> 개체가 삭제되었습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WaitingReadCount">
+      <MemberSignature Language="C#" Value="public int WaitingReadCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 WaitingReadCount" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.WaitingReadCount" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property WaitingReadCount As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int WaitingReadCount { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.WaitingReadCount : int" Usage="System.Threading.ReaderWriterLockSlim.WaitingReadCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>읽기 모드로 잠금을 시작하려고 대기 중인 스레드의 총 개수를 가져옵니다.</summary>
+        <value>읽기 모드를 시작하려고 대기 중인 스레드의 총 개수입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 알고리즘의 동작을 제어할 필요가 및 디버깅, 프로 파일링 및 로깅에서는 경우에이 속성을 사용 합니다. 결과 계산 된 즉시 변경할 수 있습니다. 따라서이 속성을 기반으로 결정을 내릴 수 안전 하지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.WaitingReadCount%2A> 차단 되 면 읽기 모드를 시작 하려고 대기 하는 스레드 수가 임계값을 초과할 경우 이벤트 로그 엔트리를 생성 하는 속성입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#31](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#31)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Aux#31](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#31)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WaitingUpgradeCount">
+      <MemberSignature Language="C#" Value="public int WaitingUpgradeCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 WaitingUpgradeCount" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.WaitingUpgradeCount" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property WaitingUpgradeCount As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int WaitingUpgradeCount { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.WaitingUpgradeCount : int" Usage="System.Threading.ReaderWriterLockSlim.WaitingUpgradeCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>업그레이드 가능 모드로 잠금을 시작하려고 대기 중인 스레드의 총 개수를 가져옵니다.</summary>
+        <value>업그레이드 가능 모드를 시작하려고 대기 중인 스레드의 총 개수입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 알고리즘의 동작을 제어할 필요가 및 디버깅, 프로 파일링 및 로깅에서는 경우에이 속성을 사용 합니다. 결과 계산 된 즉시 변경할 수 있습니다. 따라서이 속성을 기반으로 결정을 내릴 수 안전 하지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.WaitingUpgradeCount%2A> 차단 되 면 업그레이드 가능 모드를 시작 하려고 대기 하는 스레드 수가 임계값을 초과할 경우 이벤트 로그 엔트리를 생성 하는 속성입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#33](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#33)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Aux#33](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#33)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WaitingWriteCount">
+      <MemberSignature Language="C#" Value="public int WaitingWriteCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 WaitingWriteCount" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.ReaderWriterLockSlim.WaitingWriteCount" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property WaitingWriteCount As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int WaitingWriteCount { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.WaitingWriteCount : int" Usage="System.Threading.ReaderWriterLockSlim.WaitingWriteCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>쓰기 모드로 잠금을 시작하려고 대기 중인 스레드의 총 개수를 가져옵니다.</summary>
+        <value>쓰기 모드를 시작하려고 대기 중인 스레드의 총 개수입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 알고리즘의 동작을 제어할 필요가 및 디버깅, 프로 파일링 및 로깅에서는 경우에이 속성을 사용 합니다. 결과 계산 된 즉시 변경할 수 있습니다. 따라서이 속성을 기반으로 결정을 내릴 수 안전 하지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Threading.ReaderWriterLockSlim.WaitingWriteCount%2A> 차단 되 면 쓰기 모드를 시작 하려고 대기 하는 스레드 수가 임계값을 초과할 경우 이벤트 로그 엔트리를 생성 하는 속성입니다.  
+  
+ [!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#1)]
+ [!code-vb[System.Threading.ReaderWriterLockSlim_Aux#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#1)]  
+[!code-csharp[System.Threading.ReaderWriterLockSlim_Aux#32](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/cs/source.cs#32)]
+[!code-vb[System.Threading.ReaderWriterLockSlim_Aux#32](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Threading.ReaderWriterLockSlim_Aux/vb/source.vb#32)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

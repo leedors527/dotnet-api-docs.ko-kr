@@ -1,0 +1,1258 @@
+<Type Name="DesignerSerializationManager" FullName="System.ComponentModel.Design.Serialization.DesignerSerializationManager">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="c1135a7ba5c032d6e04b80321f469ae2b78b18dd" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57923877" /></Metadata><TypeSignature Language="C#" Value="public class DesignerSerializationManager : IServiceProvider, System.ComponentModel.Design.Serialization.IDesignerSerializationManager" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DesignerSerializationManager extends System.Object implements class System.ComponentModel.Design.Serialization.IDesignerSerializationManager, class System.IServiceProvider" />
+  <TypeSignature Language="DocId" Value="T:System.ComponentModel.Design.Serialization.DesignerSerializationManager" />
+  <TypeSignature Language="VB.NET" Value="Public Class DesignerSerializationManager&#xA;Implements IDesignerSerializationManager, IServiceProvider" />
+  <TypeSignature Language="C++ CLI" Value="public ref class DesignerSerializationManager : IServiceProvider, System::ComponentModel::Design::Serialization::IDesignerSerializationManager" />
+  <TypeSignature Language="F#" Value="type DesignerSerializationManager = class&#xA;    interface IDesignerSerializationManager&#xA;    interface IServiceProvider" />
+  <AssemblyInfo>
+    <AssemblyName>System.Design</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.ComponentModel.Design.Serialization.IDesignerSerializationManager</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IServiceProvider</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary><see cref="T:System.ComponentModel.Design.Serialization.IDesignerSerializationManager" /> 인터페이스의 구현을 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager> 인터페이스는 serialization을 제어 하는 개체를 형식 독립적 인터페이스를 하도록 설계 되었습니다. 기본적으로 실제로 deserialization을 수행 하는 직렬 변환기에 컨텍스트와 서비스를 제공 합니다. <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager> 개체는 추적 하 여 deserialization 프로세스를 지원 합니다. 이 방법에서 비슷합니다는 <xref:System.ComponentModel.Design.IDesignerHost> 인터페이스: 디자이너 사용자 인터페이스 (UI)를 실제로 제공 및 <xref:System.ComponentModel.Design.IDesignerHost> 으로 함께 작동 하도록 다양 한 디자이너를 허용 하는 연결을 제공 합니다.  
+  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager> 클래스는 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager>을 구현합니다. Deserialization과 같은 런타임 serializer와 비슷한 제네릭 형식을 제공 하도록 설계 되었습니다는 <xref:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter>합니다.  
+  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager> 클래스는 세 가지 목표를 달성 합니다.  
+  
+-   다양 한 형식 deserialize 하는 데 사용할 수 있는 간단 하 고 턴키 개체입니다.  
+  
+-   일반 및 특정 형식에 국한 되지 않으므로 됩니다. CodeDOM 역직렬화 뿐만 아니라 태그 deserialization에 대 한 동일 하 게 사용할 수 있습니다.  
+  
+-   확장 가능 하 고 복사/붙여넣기 및 실행 취소/다시 실행 시나리오에서 사용 되는 다른 serialization 메서드를 지원 합니다.  
+  
+ 디자인 타임 serialization에는 런타임 개체 serialization에서 다음과 같은 차이점이 있습니다.  
+  
+-   Serialization을 수행 하는 개체는 런타임 개체에서 일반적으로 별도 되므로 구성 요소에서 디자인 타임 논리를 제거할 수 있습니다.  
+  
+-   Serialization 체계를 완전히 초기화 된 개체를 만들 수는 가정 하 고 deserialization 동안 속성 및 메서드 호출을 통해 다음 수정 합니다.  
+  
+-   (속성 기본값을 포함 하는 데 사용) 개체에 설정 되지 않은 값이 있는 개체의 속성을 serialize 되지 않습니다. 반대로 deserialization stream에 구멍이 있을 수 있습니다.  
+  
+-   개체의 전체 serialization 대신 serialization 스트림 내에서 콘텐츠의 품질에 강조 사항이 됩니다. 이 즉, 정의 된 개체를 serialize 할 수 없습니다 있으면 해당 개체는 건너뛸 수 있습니다 보다는 예외를 throw 합니다. Serialization 엔진 추론 여기는 오류를 무시할 수를 결정 하 고는 복구할 수 없는 제공할 수 있습니다.  
+  
+-   Serialization 스트림에 deserialization에 필요한 것 보다 더 많은 데이터가 있을 수 있습니다. 예를 들어, 소스 코드 serialization에는 개체 그래프를 deserialize 하는 데 필요한 코드를 혼합 된 사용자 코드에 있습니다. 이 사용자 코드 deserialization 시 무시 하 고 serialization에 유지 해야 합니다.  
+  
+ 이러한 차이점으로 인해 다른 serialization 모델을 디자인 타임 serialization에 적용 됩니다. 이 모델에서 serialize 되 고 각 데이터 형식에 대 한 별도 직렬 변환기 개체를 사용 합니다. 각 serializer는 문제를 전체적으로 작은 기여를 제공합니다. 이러한 serializer 모두 일반적인 serialization 관리자를 통해 조정 됩니다. Serialization 관리자는 이러한 다른 serializer 간의 상태를 유지 하는 일을 담당 합니다. 예를 들어, 다음 클래스를 고려 합니다.  
+  
+ [!code-csharp[System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject#2](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject/CS/Program.cs#2)]
+ [!code-vb[System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject#2](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject/VB/Program.vb#2)]  
+  
+ 이 클래스의 인스턴스는 세 가지 다른 직렬 변환기를 활용: 프로그램용 `SampleObject`, 문자열 및 정수입니다. Serializer `SampleObject` 때문에 루트 serializer가 라고 `SampleObject` serialization 그래프의 루트입니다. 더 복잡 한 개체 그래프도 만들 수 있습니다. 예를 들어, 어떤 상황이 발생 하는 경우 `SampleObject` 다음과 같이 변경 되었습니다.  
+  
+ [!code-csharp[System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject#11](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject/CS/SampleObject.cs#11)]
+ [!code-vb[System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject#11](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject/VB/SampleObject.vb#11)]  
+  
+ 따라서 `SampleObject` 자체의 다른 인스턴스임을 자식이 있어야 합니다. 다음 코드는 개체 그래프를 채웁니다.  
+  
+ [!code-csharp[System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject#12](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject/CS/SampleObject.cs#12)]
+ [!code-vb[System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject#12](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.Design.Serialization.DesignerSerializationManager.SampleObject/VB/SampleObject.vb#12)]  
+  
+ 때 `root` serialize 될 네 가지 serializer가 사용 됩니다: 하나의 루트 serializer가, 자식에 대 한 하나의 serializer `SampleObject`에 대 한 하나의 serializer `int`, 및 하나의 serializer에 대 한 `string`합니다. Serializer의 각 인스턴스에 대 한 serializer를 만들지 않아도 되므로 형식에 따라 캐시 됩니다 `SampleObject`합니다.  
+  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager> 클래스 serialization 세션의 개념을 기반으로 합니다. 세션에는 다양 한 직렬 변환기에서 액세스할 수 있는 상태를 유지 관리 합니다. 세션이 삭제 될 때이 상태가 삭제 됩니다. 이렇게 하면 serializer는 주로 상태 비저장 상태로 유지 하 고 손상 되었을 수 있는 serializer를 정리 하는 데 도움이 됩니다. 다음 표에서에 세션 간 상태에서 관리 하는 방법에 대해 설명 합니다.  
+  
+## <a name="global-state"></a>전역 상태  
+ 이 상태가 소유 하는 serialization 관리자 개체 이지만 현재 serialization 세션 무관 합니다.  
+  
+|개체|사용법|  
+|------------|-----------|  
+|Serialization 공급자|개체는 사용자 지정 serialization 공급자 자체를 추가할 수 있습니다. 이러한 공급자는 직렬 변환기를 찾는 데 사용 됩니다, 때문에 이러한 보다 수명이 길 serialization 세션.|  
+  
+## <a name="session-owned-state"></a>세션 소유 상태  
+ 이 상태는 소유 세션 하 고 세션 소멸 될 때 소멸 됩니다. 따라서 모든 속성 또는 메서드는이 상태를 조작 하는 액세스 serialization 관리자에 활성 세션이 없는 경우 예외가 throw 됩니다.  
+  
+|개체|사용법|  
+|------------|-----------|  
+|<xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName> 이벤트|<xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName> 이벤트 이름의 추가 확인을 제공 하는 직렬 변환기가 연결 되어 있습니다. 모든 처리기는 세션이 종료 될 때이 이벤트에서 분리 됩니다.|  
+|<xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SerializationComplete> 이벤트|<xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SerializationComplete> 세션이 삭제 될 직전 이벤트가 발생 합니다. 그런 다음 모든 처리기는이 이벤트에서 분리 됩니다.|  
+|이름 테이블|Serialization 관리자에는 개체와 해당 이름 간의 매핑하는 테이블을 유지 관리 합니다. Serializer는 쉽게 식별할 수 있도록에 대 한 개체 이름을 제공할 수 있습니다. 세션이 종료 될 때이 이름을 테이블이 지워집니다.|  
+|직렬 변환기 캐시|Serialization 관리자 제공에 요청 된 serializer의 캐시를 유지 관리 합니다. 이 캐시는 세션이 종료 될 때 지워집니다. 공용 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetSerializer%2A> 메서드는 언제 든 지 안전 하 게 호출 될 수 있지만 세션 내에서 호출 될 경우에 값이 캐시 됩니다.|  
+|컨텍스트 스택|Serialization 관리자를 사용 하 여 액세스할 수 있는 컨텍스트 스택의 라는 개체를 유지 관리는 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Context%2A> 속성입니다. Serializer가 다른 serializer에 사용할 수 있는 추가 정보를 저장할이 스택을 사용할 수 있습니다. 예를 들어 속성 값을 직렬화 되는 직렬 변환기를 serialize 할 값을 요청 하기 전에 직렬화 스택에 속성 이름을 푸시할 수 있습니다. 이 스택 세션이 종료 될 때 지워집니다.|  
+|오류 목록|Serialization 관리자에는 serialization 중에 발생 한 오류의 목록을 유지 관리 합니다. 이 목록을 통해 액세스할 수 있는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.Errors%2A> 속성인 세션이 종료 될 때 지워집니다. 액세스는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.Errors%2A> 세션 간에 속성 예외가 발생 합니다.|  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.ComponentModel.Design.Serialization.IDesignerSerializationManager" />
+    <altmember cref="T:System.ComponentModel.Design.IDesignerHost" />
+    <altmember cref="T:System.ComponentModel.Design.Serialization.ContextStack" />
+    <altmember cref="T:System.IServiceProvider" />
+    <altmember cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.ComponentModel.Design.Serialization.DesignerSerializationManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DesignerSerializationManager ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DesignerSerializationManager();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.ComponentModel.Design.Serialization.DesignerSerializationManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자를 설정 합니다 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PreserveNames%2A> 하 고 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes%2A> 속성을 `true`입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PreserveNames" />
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public DesignerSerializationManager (IServiceProvider provider);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.IServiceProvider provider) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.#ctor(System.IServiceProvider)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (provider As IServiceProvider)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; DesignerSerializationManager(IServiceProvider ^ provider);" />
+      <MemberSignature Language="F#" Value="new System.ComponentModel.Design.Serialization.DesignerSerializationManager : IServiceProvider -&gt; System.ComponentModel.Design.Serialization.DesignerSerializationManager" Usage="new System.ComponentModel.Design.Serialization.DesignerSerializationManager provider" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="provider" Type="System.IServiceProvider" />
+      </Parameters>
+      <Docs>
+        <param name="provider"><see cref="T:System.IServiceProvider" />입니다.</param>
+        <summary>지정된 서비스 공급자를 사용하여 <see cref="T:System.ComponentModel.Design.Serialization.DesignerSerializationManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현은 이러한 요청을 전달할 직렬 변환기를 serialization 관리자에 의해 충족 될 수 없는 서비스를 요청 하는 경우는 `provider` 매개 변수입니다.  
+  
+ 이 생성자를 설정 합니다 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PreserveNames%2A> 하 고 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes%2A> 속성을 `true`입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="provider" />가 <see langword="null" />입니다.</exception>
+        <altmember cref="T:System.IServiceProvider" />
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PreserveNames" />
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes" />
+      </Docs>
+    </Member>
+    <Member MemberName="Container">
+      <MemberSignature Language="C#" Value="public System.ComponentModel.IContainer Container { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.IContainer Container" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.Container" />
+      <MemberSignature Language="VB.NET" Value="Public Property Container As IContainer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ComponentModel::IContainer ^ Container { System::ComponentModel::IContainer ^ get(); void set(System::ComponentModel::IContainer ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Container : System.ComponentModel.IContainer with get, set" Usage="System.ComponentModel.Design.Serialization.DesignerSerializationManager.Container" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.IContainer</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 serialization 관리자에 대한 컨테이너를 가져오거나 설정합니다.</summary>
+        <value>serialization 관리자가 구성 요소를 추가할 <see cref="T:System.ComponentModel.IContainer" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 컨테이너가 존재 하는 경우 모든 구성 요소를 serialization 관리자에서 만든 컨테이너에 추가 됩니다. 이 속성의 기본 구현에 대 한 서비스 공급자를 검색 합니다는 <xref:System.ComponentModel.Design.IDesignerHost> 디자이너 호스트에서 제공 하는 컨테이너를 사용 하 여, 하나 있어야 합니다. 이 속성은 반환 하는 고, 그렇지 `null` 구성 요소가 없습니다. 컨테이너에 추가 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">serialization 관리자에 활성 serialization 세션이 있는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateInstance">
+      <MemberSignature Language="C#" Value="protected virtual object CreateInstance (Type type, System.Collections.ICollection arguments, string name, bool addToContainer);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance object CreateInstance(class System.Type type, class System.Collections.ICollection arguments, string name, bool addToContainer) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Object ^ CreateInstance(Type ^ type, System::Collections::ICollection ^ arguments, System::String ^ name, bool addToContainer);" />
+      <MemberSignature Language="F#" Value="abstract member CreateInstance : Type * System.Collections.ICollection * string * bool -&gt; obj&#xA;override this.CreateInstance : Type * System.Collections.ICollection * string * bool -&gt; obj" Usage="designerSerializationManager.CreateInstance (type, arguments, name, addToContainer)" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.Type" />
+        <Parameter Name="arguments" Type="System.Collections.ICollection" />
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="addToContainer" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="type">인스턴스를 만들 형식입니다.</param>
+        <param name="arguments">형식 생성자의 매개 변수입니다. 기본 생성자를 호출하려면 <see langword="null" />이거나 빈 컬렉션이 될 수 있습니다.</param>
+        <param name="name">개체에 지정할 이름입니다. <see langword="null" />이면, 개체가 컨테이너에 추가되고 이 컨테이너가 개체에 이름을 제공하지 않을 경우 개체에 이름이 지정되지 않습니다.</param>
+        <param name="addToContainer">개체가 <see cref="T:System.ComponentModel.IComponent" />를 구현할 경우 컨테이너에 개체를 추가하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>형식의 인스턴스를 만듭니다.</summary>
+        <returns><paramref name="type" />에 의해 지정된 형식의 새 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 형식의 인스턴스를 만들 하려고 할 때 serializer에서 호출 됩니다. 기본 구현은 형식의 새 인스턴스를 만들거나 값에 따라 기존 인스턴스를 반환할 수도 있습니다는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PreserveNames%2A> 고 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances%2A> 속성입니다. 합니다 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.CreateInstance%2A> 메서드는 리플렉션을 사용 하 여 인스턴스를 만들 하 고 몇 가지 일반적인 수행 <xref:System.IConvertible> 일치 하는 생성자를 찾으려면 매개 변수에서 변환 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Runtime.Serialization.SerializationException"><paramref name="type" />에 포함된 매개 변수를 가져오는 생성자가 <paramref name="arguments" />에 없는 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateSession" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetInstance(System.String)" />
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances" />
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes" />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateSession">
+      <MemberSignature Language="C#" Value="public IDisposable CreateSession ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IDisposable CreateSession() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateSession" />
+      <MemberSignature Language="VB.NET" Value="Public Function CreateSession () As IDisposable" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; IDisposable ^ CreateSession();" />
+      <MemberSignature Language="F#" Value="member this.CreateSession : unit -&gt; IDisposable" Usage="designerSerializationManager.CreateSession " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IDisposable</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>새 serialization 세션을 만듭니다.</summary>
+        <returns>새 serialization 세션을 나타내는 <see cref="T:System.IDisposable" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Serialization 관리자 내에서 대부분의 데이터는 일시적 이며 serialization 세션의 수명 동안에 존재 합니다. 세션이 삭제 될 때 serialization 완료로 간주 됩니다 하 고이 일시적인 상태 지워집니다. 이렇게 하면 여러 개체 트리를 serialize 하는 데 사용할 serialization 관리자의 단일 인스턴스. 서비스 공급자를 serialization 관리자에 추가 된 모든 사용자 지정 serialization 공급자를 비롯 하 여 일부 상태를 세션에 걸쳐 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">serialization 관리자가 이미 세션에 있는 경우. <see cref="T:System.ComponentModel.Design.Serialization.DesignerSerializationManager" />의 이 버전은 동시 세션을 지원하지 않습니다.</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionCreated(System.EventArgs)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionDisposed(System.EventArgs)" />
+      </Docs>
+    </Member>
+    <Member MemberName="Errors">
+      <MemberSignature Language="C#" Value="public System.Collections.IList Errors { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.IList Errors" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.Errors" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Errors As IList" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::IList ^ Errors { System::Collections::IList ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Errors : System.Collections.IList" Usage="System.ComponentModel.Design.Serialization.DesignerSerializationManager.Errors" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.IList</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>serialization 또는 deserialization 도중 발생한 오류의 목록을 가져옵니다.</summary>
+        <value>serialization 또는 deserialization 도중 발생한 오류의 목록입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Serialization 세션을 활성 상태인 동안에 오류 목록을 읽을 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이 속성이 serialization 세션 밖에서 액세스된 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetRuntimeType">
+      <MemberSignature Language="C#" Value="public Type GetRuntimeType (string typeName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Type GetRuntimeType(string typeName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetRuntimeType(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetRuntimeType (typeName As String) As Type" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Type ^ GetRuntimeType(System::String ^ typeName);" />
+      <MemberSignature Language="F#" Value="member this.GetRuntimeType : string -&gt; Type" Usage="designerSerializationManager.GetRuntimeType typeName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="typeName" Type="System.String" Index="0" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="typeName">가져올 형식의 이름입니다.</param>
+        <summary>지정된 형식 이름에 해당하는 형식을 가져옵니다.</summary>
+        <returns>지정된 형식입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSerializer">
+      <MemberSignature Language="C#" Value="public object GetSerializer (Type objectType, Type serializerType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance object GetSerializer(class System.Type objectType, class System.Type serializerType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetSerializer(System.Type,System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetSerializer (objectType As Type, serializerType As Type) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Object ^ GetSerializer(Type ^ objectType, Type ^ serializerType);" />
+      <MemberSignature Language="F#" Value="member this.GetSerializer : Type * Type -&gt; obj" Usage="designerSerializationManager.GetSerializer (objectType, serializerType)" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer(System.Type,System.Type)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectType" Type="System.Type" />
+        <Parameter Name="serializerType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="objectType">serializer를 검색할 개체의 형식입니다.</param>
+        <param name="serializerType">검색할 serializer의 형식입니다.</param>
+        <summary>지정된 개체 형식에 대한 serializer를 가져옵니다.</summary>
+        <returns><paramref name="objectType" />에 대한 serializer이거나, 해당 serializer가 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 원하는 serializer의 형식을 요청할 수 있습니다. 이 메서드가 반환 `null` 요청 된 형식의 지정된 된 개체 형식에 대 한 직렬 변환기가 없는 경우.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="objectType" /> 또는 <paramref name="serializerType" />가 <see langword="null" />인 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#AddSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#RemoveSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetService">
+      <MemberSignature Language="C#" Value="protected virtual object GetService (Type serviceType);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance object GetService(class System.Type serviceType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetService(System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetService (serviceType As Type) As Object" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Object ^ GetService(Type ^ serviceType);" />
+      <MemberSignature Language="F#" Value="abstract member GetService : Type -&gt; obj&#xA;override this.GetService : Type -&gt; obj" Usage="designerSerializationManager.GetService serviceType" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IServiceProvider.GetService(System.Type)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serviceType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="serviceType">검색할 서비스의 형식입니다.</param>
+        <summary>요청한 서비스를 가져옵니다.</summary>
+        <returns>요청된 서비스이거나, 해당 서비스를 확인할 수 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetService%2A> 메서드는 생성자에서 설정 된 서비스 공급자를 기본 컨테이너에 대 한 액세스를 제공 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetType">
+      <MemberSignature Language="C#" Value="protected virtual Type GetType (string typeName);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Type GetType(string typeName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetType(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetType (typeName As String) As Type" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual Type ^ GetType(System::String ^ typeName);" />
+      <MemberSignature Language="F#" Value="override this.GetType : string -&gt; Type" Usage="designerSerializationManager.GetType typeName" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetType(System.String)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="typeName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="typeName">검색할 형식의 이름입니다.</param>
+        <summary>요청된 형식을 가져옵니다.</summary>
+        <returns>요청된 형식이거나, 해당 형식을 확인할 수 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetType%2A> 메서드는 검색에 대 한 서비스 공급자는 <xref:System.ComponentModel.Design.ITypeResolutionService> 사용 가능한 경우이 서비스에 위임할 해당 형식을 확인 하 고 있습니다. 경우는 <xref:System.ComponentModel.Design.ITypeResolutionService> 를 사용할 수 없는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetType%2A> 호출을 <xref:System.Object.GetType%2A?displayProperty=nameWithType> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnResolveName">
+      <MemberSignature Language="C#" Value="protected virtual void OnResolveName (System.ComponentModel.Design.Serialization.ResolveNameEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnResolveName(class System.ComponentModel.Design.Serialization.ResolveNameEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnResolveName(System.ComponentModel.Design.Serialization.ResolveNameEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnResolveName (e As ResolveNameEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnResolveName(System::ComponentModel::Design::Serialization::ResolveNameEventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnResolveName : System.ComponentModel.Design.Serialization.ResolveNameEventArgs -&gt; unit&#xA;override this.OnResolveName : System.ComponentModel.Design.Serialization.ResolveNameEventArgs -&gt; unit" Usage="designerSerializationManager.OnResolveName e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.ComponentModel.Design.Serialization.ResolveNameEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">이벤트 데이터를 포함하는 <see cref="T:System.ComponentModel.Design.Serialization.ResolveNameEventArgs" />입니다.</param>
+        <summary><see cref="E:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이벤트가 발생하면 대리자를 통해 이벤트 처리기가 호출됩니다. 자세한 내용은 [이벤트 처리 및 발생](~/docs/standard/events/index.md)합니다.  
+  
+ 또한 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnResolveName%2A> 메서드를 사용하면 파생 클래스가 대리자를 연결하지 않고도 이벤트를 처리할 수 있습니다. 이는 파생 클래스에서 이벤트를 처리하는 기본 방법입니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>재정의 하는 경우 <see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnResolveName(System.ComponentModel.Design.Serialization.ResolveNameEventArgs)" /> 파생된 클래스에서 호출 해야 기본 클래스 <see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnResolveName(System.ComponentModel.Design.Serialization.ResolveNameEventArgs)" /> 메서드 등록 된 대리자가 이벤트를 받도록 합니다.</para></block>
+        <altmember cref="E:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetName(System.Object)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#SetName(System.Object,System.String)" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSessionCreated">
+      <MemberSignature Language="C#" Value="protected virtual void OnSessionCreated (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSessionCreated(class System.EventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionCreated(System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSessionCreated (e As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSessionCreated(EventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnSessionCreated : EventArgs -&gt; unit&#xA;override this.OnSessionCreated : EventArgs -&gt; unit" Usage="designerSerializationManager.OnSessionCreated e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">이벤트 데이터를 포함하는 <see cref="T:System.EventArgs" />입니다.</param>
+        <summary><see cref="E:System.ComponentModel.Design.Serialization.DesignerSerializationManager.SessionCreated" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이벤트가 발생하면 대리자를 통해 이벤트 처리기가 호출됩니다. 자세한 내용은 [이벤트 처리 및 발생](~/docs/standard/events/index.md)합니다.  
+  
+ 또한 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionCreated%2A> 메서드를 사용하면 파생 클래스가 대리자를 연결하지 않고도 이벤트를 처리할 수 있습니다. 이는 파생 클래스에서 이벤트를 처리하는 기본 방법입니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>재정의 하는 경우 <see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionCreated(System.EventArgs)" /> 파생된 클래스에서 호출 해야 기본 클래스 <see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionCreated(System.EventArgs)" /> 메서드 등록 된 대리자가 이벤트를 받도록 합니다.</para></block>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateSession" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionDisposed(System.EventArgs)" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSessionDisposed">
+      <MemberSignature Language="C#" Value="protected virtual void OnSessionDisposed (EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSessionDisposed(class System.EventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionDisposed(System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSessionDisposed (e As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSessionDisposed(EventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnSessionDisposed : EventArgs -&gt; unit&#xA;override this.OnSessionDisposed : EventArgs -&gt; unit" Usage="designerSerializationManager.OnSessionDisposed e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">이벤트 데이터를 포함하는 <see cref="T:System.EventArgs" />입니다.</param>
+        <summary><see cref="E:System.ComponentModel.Design.Serialization.DesignerSerializationManager.SessionDisposed" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이벤트가 발생하면 대리자를 통해 이벤트 처리기가 호출됩니다. 자세한 내용은 [이벤트 처리 및 발생](~/docs/standard/events/index.md)합니다.  
+  
+ 또한 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionDisposed%2A> 메서드를 사용하면 파생 클래스가 대리자를 연결하지 않고도 이벤트를 처리할 수 있습니다. 이는 파생 클래스에서 이벤트를 처리하는 기본 방법입니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>재정의 하는 경우 <see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionDisposed(System.EventArgs)" /> 파생된 클래스에서 호출 해야 기본 클래스 <see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionDisposed(System.EventArgs)" /> 메서드 등록 된 대리자가 이벤트를 받도록 합니다.</para></block>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateSession" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnSessionCreated(System.EventArgs)" />
+      </Docs>
+    </Member>
+    <Member MemberName="PreserveNames">
+      <MemberSignature Language="C#" Value="public bool PreserveNames { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PreserveNames" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PreserveNames" />
+      <MemberSignature Language="VB.NET" Value="Public Property PreserveNames As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool PreserveNames { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.PreserveNames : bool with get, set" Usage="System.ComponentModel.Design.Serialization.DesignerSerializationManager.PreserveNames" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" /> 메서드가 컨테이너에 특정 이름이 존재하는지 확인할지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />가 특정 구성 요소 이름을 전달하면 <see langword="true" />이고, <see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />가 컨테이너에 특정 이름이 존재하는지 확인하면 <see langword="false" />입니다. 기본값은 <see langword="true" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PreserveNames%2A> 속성의 동작을 결정 합니다 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 메서드. 하는 경우 `true`, <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 지정 된 구성 요소 이름을 전달 합니다. 하는 경우 `false`, <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 컨테이너에 특정 이름이 존재 하는지 확인 됩니다. 컨테이너에 이름이 없으면 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 지정 된 이름이 사용 됩니다. 컨테이너에 이름이 없으면 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 있으므로 이름을 지정 하 고 새 컨테이너에 추가 하는 경우 구성 요소의 이름으로 null 값을 전달 합니다. 이 두 번째 변형 해당 개체가 존재 하지 않는 것으로 가정 하는 것이 아니라 항상 개체를 복제 하는 serializer를 구현 하는 데 유용 합니다. 붙여넣기 명령을 종종이 형식의 serializer 사용합니다.  
+  
+ Serialization 세션에 없는 경우에이 속성을 변경할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이 속성이 serialization 세션 내에서 변경된 경우</exception>
+        <altmember cref="Overload:System.ComponentModel.Design.Serialization.DesignerSerializationManager.#ctor" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="PropertyProvider">
+      <MemberSignature Language="C#" Value="public object PropertyProvider { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object PropertyProvider" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PropertyProvider" />
+      <MemberSignature Language="VB.NET" Value="Public Property PropertyProvider As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Object ^ PropertyProvider { System::Object ^ get(); void set(System::Object ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.PropertyProvider : obj with get, set" Usage="System.ComponentModel.Design.Serialization.DesignerSerializationManager.PropertyProvider" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>serialization 관리자의 <see cref="P:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Properties" /> 속성에 속성을 제공하는 데 사용할 개체를 가져옵니다.</summary>
+        <value>serialization 관리자의 <see cref="P:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Properties" /> 속성에 속성을 제공하는 데 사용할 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.PropertyProvider%2A> 속성은 serialization 관리자 직렬 변환기의 동작을 안내 하는 데 사용할 수 있는 serialization 속성 집합을 제공 하는 방법을 제공 합니다.  
+  
+ 이 개체의 공용 속성 검사 되며 serialization 관리자의 대상 개체를 포함 하는 새 속성 설명자에 래핑됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RecycleInstances">
+      <MemberSignature Language="C#" Value="public bool RecycleInstances { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool RecycleInstances" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances" />
+      <MemberSignature Language="VB.NET" Value="Public Property RecycleInstances As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool RecycleInstances { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.RecycleInstances : bool with get, set" Usage="System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />가 항상 형식의 새 인스턴스를 만들지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />가 기존 인스턴스를 반환하면 <see langword="true" />이고, <see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />가 형식의 새 인스턴스를 만들면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances%2A> 속성은 `false`, <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 메서드는 항상 형식의 새 인스턴스를 만듭니다. 하는 경우 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances%2A> 됩니다 `true`, <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 이름 테이블과 동일한 이름 가진 개체에 대 한 컨테이너를 먼저 검색 됩니다. 이러한 개체가 존재 하 고 동일한 형식의 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 기존 인스턴스를 반환 합니다. 이 두 번째 변형 항상 새 트리를 만드는 대신 기존 집합 개체의 serialization 상태를 적용 하는 serializer를 구현 하는 데 유용 합니다. 합니다 **실행 취소** 명령은 자주 사용 하 여이 형식의 serializer입니다.  
+  
+ 경우에서 위치는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances%2A> 속성은 `true`, <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes%2A> 속성의 동작을 수정 추가 됩니다 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 두 개체의 형식에 따라 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">serialization 관리자에 활성 serialization 세션이 있는 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes" />
+      </Docs>
+    </Member>
+    <Member MemberName="SessionCreated">
+      <MemberSignature Language="C#" Value="public event EventHandler SessionCreated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SessionCreated" />
+      <MemberSignature Language="DocId" Value="E:System.ComponentModel.Design.Serialization.DesignerSerializationManager.SessionCreated" />
+      <MemberSignature Language="VB.NET" Value="Public Custom Event SessionCreated As EventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler ^ SessionCreated;" />
+      <MemberSignature Language="F#" Value="member this.SessionCreated : EventHandler " Usage="member this.SessionCreated : System.EventHandler " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>세션이 만들어질 때 발생합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SessionDisposed">
+      <MemberSignature Language="C#" Value="public event EventHandler SessionDisposed;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SessionDisposed" />
+      <MemberSignature Language="DocId" Value="E:System.ComponentModel.Design.Serialization.DesignerSerializationManager.SessionDisposed" />
+      <MemberSignature Language="VB.NET" Value="Public Custom Event SessionDisposed As EventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler ^ SessionDisposed;" />
+      <MemberSignature Language="F#" Value="member this.SessionDisposed : EventHandler " Usage="member this.SessionDisposed : System.EventHandler " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>세션이 삭제될 때 발생합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.AddSerializationProvider">
+      <MemberSignature Language="C#" Value="void IDesignerSerializationManager.AddSerializationProvider (System.ComponentModel.Design.Serialization.IDesignerSerializationProvider provider);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.Serialization.IDesignerSerializationManager.AddSerializationProvider(class System.ComponentModel.Design.Serialization.IDesignerSerializationProvider provider) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#AddSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider)" />
+      <MemberSignature Language="VB.NET" Value="Sub AddSerializationProvider (provider As IDesignerSerializationProvider) Implements IDesignerSerializationManager.AddSerializationProvider" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.Serialization.IDesignerSerializationManager.AddSerializationProvider(System::ComponentModel::Design::Serialization::IDesignerSerializationProvider ^ provider) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::AddSerializationProvider;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.AddSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="provider" Type="System.ComponentModel.Design.Serialization.IDesignerSerializationProvider" />
+      </Parameters>
+      <Docs>
+        <param name="provider">추가할 serialization 공급자입니다.</param>
+        <summary>사용자 지정 serialization 공급자를 serialization 관리자에 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetSerializer%2A> 메서드는 serialization 공급자를 요청 하는, serialization 관리자를 먼저 전에 원하는 형식의 메타 데이터에 적절 한 직렬 변환기에 대 한 사용자 지정 serialization 공급자를 쿼리 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetSerializer(System.Type,System.Type)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#RemoveSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider)" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Context">
+      <MemberSignature Language="C#" Value="System.ComponentModel.Design.Serialization.ContextStack System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Context { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.Design.Serialization.ContextStack System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Context" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#Context" />
+      <MemberSignature Language="VB.NET" Value=" ReadOnly Property Context As ContextStack Implements IDesignerSerializationManager.Context" />
+      <MemberSignature Language="C++ CLI" Value="property System::ComponentModel::Design::Serialization::ContextStack ^ System::ComponentModel::Design::Serialization::IDesignerSerializationManager::Context { System::ComponentModel::Design::Serialization::ContextStack ^ get(); };" />
+      <MemberSignature Language="F#" Usage="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Context" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Context</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.Design.Serialization.ContextStack</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 serialization 세션을 위한 컨텍스트 스택을 가져옵니다.</summary>
+        <value>데이터를 저장하는 <see cref="T:System.ComponentModel.Design.Serialization.ContextStack" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 컨텍스트 스택을 스택으로 구현 되는 사용자 정의 저장소 영역을 제공 합니다. 이 저장소 영역의 serializer 간에 통신을 제공 하는 유용한 방법은 serialization 프로세스를 일반적으로 계층 표시 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이 속성이 serialization 세션 밖에서 액세스된 경우</exception>
+        <altmember cref="T:System.ComponentModel.Design.Serialization.ContextStack" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateSession" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.CreateInstance">
+      <MemberSignature Language="C#" Value="object IDesignerSerializationManager.CreateInstance (Type type, System.Collections.ICollection arguments, string name, bool addToContainer);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.ComponentModel.Design.Serialization.IDesignerSerializationManager.CreateInstance(class System.Type type, class System.Collections.ICollection arguments, string name, bool addToContainer) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.ComponentModel.Design.Serialization.IDesignerSerializationManager.CreateInstance(Type ^ type, System::Collections::ICollection ^ arguments, System::String ^ name, bool addToContainer) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::CreateInstance;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.Type" />
+        <Parameter Name="arguments" Type="System.Collections.ICollection" />
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="addToContainer" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="type">만들 데이터 형식입니다.</param>
+        <param name="arguments">이 형식에 대한 생성자에 전달할 인수입니다.</param>
+        <param name="name">개체의 이름입니다. 이 이름은 나중에 <see cref="M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetInstance(System.String)" />를 통해 개체에 액세스하는 데 사용할 수 있습니다. <see langword="null" />이 전달되면 개체는 계속 만들어지지만 이름을 통해 개체에 액세스할 수는 없습니다.</param>
+        <param name="addToContainer">이 개체를 디자인 컨테이너에 추가하려면 <see langword="true" />입니다. 개체에서는 영향을 줄 수 있도록 이에 대한 <see cref="T:System.ComponentModel.IComponent" />를 구현해야 합니다.</param>
+        <summary><see cref="M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" /> 메서드를 구현합니다.</summary>
+        <returns>새로 만들어진 개체 인스턴스입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetInstance">
+      <MemberSignature Language="C#" Value="object IDesignerSerializationManager.GetInstance (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetInstance(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetInstance(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Function GetInstance (name As String) As Object Implements IDesignerSerializationManager.GetInstance" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetInstance(System::String ^ name) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::GetInstance;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetInstance(System.String)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">검색할 개체의 이름입니다.</param>
+        <summary>지정된 이름을 가진 생성된 개체의 인스턴스를 검색합니다.</summary>
+        <returns>지정된 이름의 개체 인스턴스이거나, 해당 이름의 개체를 찾을 수 없으면 <see langword="null" />입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.InvalidOperationException">이 속성이 serialization 세션 밖에서 액세스된 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetName(System.Object)" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetName">
+      <MemberSignature Language="C#" Value="string IDesignerSerializationManager.GetName (object value);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance string System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetName(object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetName(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Function GetName (value As Object) As String Implements IDesignerSerializationManager.GetName" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::String ^ System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetName(System::Object ^ value) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::GetName;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetName(System.Object)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="value">이름을 검색할 개체입니다.</param>
+        <summary>지정된 개체의 이름을 검색합니다.</summary>
+        <returns>개체의 이름이거나, 개체에 이름이 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System%23ComponentModel%23Design%23Serialization%23IDesignerSerializationManager%23GetName%2A> 메서드는 해당 이름을 찾을 수 없습니다는 `value` 발생 매개 변수를 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName> 이벤트를 반환 하기 전에 `null`입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="value" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.InvalidOperationException">이 속성이 serialization 세션 밖에서 액세스된 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetInstance(System.String)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#SetName(System.Object,System.String)" />
+        <altmember cref="E:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer">
+      <MemberSignature Language="C#" Value="object IDesignerSerializationManager.GetSerializer (Type objectType, Type serializerType);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer(class System.Type objectType, class System.Type serializerType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetSerializer(System.Type,System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Function GetSerializer (objectType As Type, serializerType As Type) As Object Implements IDesignerSerializationManager.GetSerializer" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer(Type ^ objectType, Type ^ serializerType) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::GetSerializer;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetSerializer(System.Type,System.Type)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="objectType" Type="System.Type" />
+        <Parameter Name="serializerType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="objectType">serializer를 가져올 개체의 형식입니다.</param>
+        <param name="serializerType">검색할 serializer의 형식입니다.</param>
+        <summary>지정된 개체 형식에 대한 요청된 형식의 serializer를 가져옵니다.</summary>
+        <returns>요청된 serializer의 인스턴스이거나, 적절한 serializer를 찾을 수 없으면 <see langword="null" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetType">
+      <MemberSignature Language="C#" Value="Type IDesignerSerializationManager.GetType (string typeName);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance class System.Type System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetType(string typeName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetType(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Function GetType (typeName As String) As Type Implements IDesignerSerializationManager.GetType" />
+      <MemberSignature Language="C++ CLI" Value=" virtual Type ^ System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetType(System::String ^ typeName) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::GetType;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.GetType(System.String)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="typeName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="typeName">로드할 형식의 정규화된 이름입니다.</param>
+        <summary>지정된 이름의 형식을 가져옵니다.</summary>
+        <returns>형식의 인스턴스이거나, 형식이 로드될 수 없으면 <see langword="null" />입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">이 속성이 serialization 세션 밖에서 액세스된 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Properties">
+      <MemberSignature Language="C#" Value="System.ComponentModel.PropertyDescriptorCollection System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Properties { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.PropertyDescriptorCollection System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Properties" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#Properties" />
+      <MemberSignature Language="VB.NET" Value=" ReadOnly Property Properties As PropertyDescriptorCollection Implements IDesignerSerializationManager.Properties" />
+      <MemberSignature Language="C++ CLI" Value="property System::ComponentModel::PropertyDescriptorCollection ^ System::ComponentModel::Design::Serialization::IDesignerSerializationManager::Properties { System::ComponentModel::PropertyDescriptorCollection ^ get(); };" />
+      <MemberSignature Language="F#" Usage="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Properties" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Properties</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.PropertyDescriptorCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="P:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Properties" /> 속성을 구현합니다.</summary>
+        <value>serialize될 속성이 들어 있는 <see cref="T:System.ComponentModel.PropertyDescriptorCollection" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.RemoveSerializationProvider">
+      <MemberSignature Language="C#" Value="void IDesignerSerializationManager.RemoveSerializationProvider (System.ComponentModel.Design.Serialization.IDesignerSerializationProvider provider);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.Serialization.IDesignerSerializationManager.RemoveSerializationProvider(class System.ComponentModel.Design.Serialization.IDesignerSerializationProvider provider) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#RemoveSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider)" />
+      <MemberSignature Language="VB.NET" Value="Sub RemoveSerializationProvider (provider As IDesignerSerializationProvider) Implements IDesignerSerializationManager.RemoveSerializationProvider" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.Serialization.IDesignerSerializationManager.RemoveSerializationProvider(System::ComponentModel::Design::Serialization::IDesignerSerializationProvider ^ provider) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::RemoveSerializationProvider;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.RemoveSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="provider" Type="System.ComponentModel.Design.Serialization.IDesignerSerializationProvider" />
+      </Parameters>
+      <Docs>
+        <param name="provider">제거할 <see cref="T:System.ComponentModel.Design.Serialization.IDesignerSerializationProvider" />입니다.</param>
+        <summary>이전에 추가한 serialization 공급자를 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System%23ComponentModel%23Design%23Serialization%23IDesignerSerializationManager%23RemoveSerializationProvider%2A> 메서드를 호출 하 여 이전에 추가 된 사용자 지정 serialization 공급자를 제거 합니다 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System%23ComponentModel%23Design%23Serialization%23IDesignerSerializationManager%23AddSerializationProvider%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetSerializer(System.Type,System.Type)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#AddSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider)" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ReportError">
+      <MemberSignature Language="C#" Value="void IDesignerSerializationManager.ReportError (object errorInformation);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ReportError(object errorInformation) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#ReportError(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Sub ReportError (errorInformation As Object) Implements IDesignerSerializationManager.ReportError" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ReportError(System::Object ^ errorInformation) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::ReportError;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ReportError(System.Object)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="errorInformation" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="errorInformation">오류 정보를 포함하는 개체로서 대개 <see cref="T:System.String" /> 또는 <see cref="T:System.Exception" /> 형식입니다.</param>
+        <summary>serialization에서 발생한 복구 가능 오류를 보고하는 데 사용됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Serializer를 호출 하 여 복구할 수 있는 오류를 정상적으로 처리에 쓸 수는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System%23ComponentModel%23Design%23Serialization%23IDesignerSerializationManager%23ReportError%2A> 오류 정보를 사용 하 여 메서드. Serialization 관리자가 완료 되 면이 메서드에서 예외를 throw 하 고 serialization 프로세스를 중단할 수 있습니다 또는 후 오류 목록을 보고 기능을 지원할 수 있습니다. Serializer는이 함수를 호출한 후 계속 해야 합니다.  
+  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System%23ComponentModel%23Design%23Serialization%23IDesignerSerializationManager%23ReportError%2A> 추가 합니다 `errorInformation` 매개 변수는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.Errors%2A> 컬렉션입니다. 하는 경우 `errorInformation` 는 `null`, 아무 작업도 수행 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이 속성이 serialization 세션 밖에서 액세스된 경우</exception>
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.Errors" />
+        <altmember cref="M:System.Collections.ArrayList.Add(System.Object)" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName">
+      <MemberSignature Language="C#" Value="event System.ComponentModel.Design.Serialization.ResolveNameEventHandler System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.ComponentModel.Design.Serialization.ResolveNameEventHandler System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName" />
+      <MemberSignature Language="DocId" Value="E:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#ResolveName" />
+      <MemberSignature Language="VB.NET" Value="Custom Event ResolveName As ResolveNameEventHandler Implements System.ComponentModel.Design.Serialization.IDesignerSerializationManager" />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.ResolveName</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.Design.Serialization.ResolveNameEventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetName(System.Object)" />이 지정된 이름을 serialization 관리자의 이름 테이블에서 찾을 수 없을 때 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+합니다 `ResolveName` 이벤트는 때를 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System%23ComponentModel%23Design%23Serialization%23IDesignerSerializationManager%23GetName%2A> 메서드를 호출 했지만 serialization 관리자의 이름 테이블에서 지정 된 이름을 찾는 데 실패 합니다.
+
+이 이벤트에는 요청-만들어 개체 serializer 종속성 순서 개체 만들기에 제공 받지 않은 serializer는 방법을 제공 합니다. 이 대리자는 serialization 후 즉시 제거 됩니다 또는 deserialization이 완료 합니다.
+
+]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">serialization 관리자에 활성 serialization 세션이 없는 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.OnResolveName(System.ComponentModel.Design.Serialization.ResolveNameEventArgs)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetName(System.Object)" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SerializationComplete">
+      <MemberSignature Language="C#" Value="event EventHandler System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SerializationComplete;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SerializationComplete" />
+      <MemberSignature Language="DocId" Value="E:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#SerializationComplete" />
+      <MemberSignature Language="VB.NET" Value="Custom Event SerializationComplete As EventHandler Implements System.ComponentModel.Design.Serialization.IDesignerSerializationManager" />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SerializationComplete</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>serialization이 완료되었을 때 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+일반적으로 serialization 프로세스는 단일 스레드 및 상태 비저장 이어야 합니다. 이러한 특성이 true 인 경우는 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SerializationComplete> 이벤트 프로세스를 구성 하는 데 사용할 수 있습니다. Serializer는이 이벤트는 serialization 프로세스 완료 된 것입니다를 추적할 수 있습니다.
+
+예를 들어 serializer 때때로 리소스 파일과 같은 다른 파일에 쓸 수 있습니다. 이러한 경우에이 비효율적 개체 그래프 serialization은 일반적으로 몇 가지 serializer가; 필요 하기 때문에 완료 되 면 파일을 닫을 직렬 변환기를 디자인 하려면 따라서 리소스 파일은 열고 닫을 수 횟수입니다. 대신, 추적 되는 개체를 통해 리소스 파일에 액세스할 수 없습니다는 <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SerializationComplete> 이벤트 및 해당 개체 직렬화의 끝에 리소스 파일을 닫을 수 없습니다.
+
+이와 관련된 하 여에서이 이벤트는 serialization 관리자에 설치 된 임시 서비스를 제거 하려면 사용할 수 있습니다.
+
+]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">serialization 관리자에 활성 serialization 세션이 없는 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.GetSerializer(System.Type,System.Type)" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SetName">
+      <MemberSignature Language="C#" Value="void IDesignerSerializationManager.SetName (object instance, string name);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SetName(object instance, string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#SetName(System.Object,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Sub SetName (instance As Object, name As String) Implements IDesignerSerializationManager.SetName" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SetName(System::Object ^ instance, System::String ^ name) = System::ComponentModel::Design::Serialization::IDesignerSerializationManager::SetName;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.SetName(System.Object,System.String)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="instance" Type="System.Object" />
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="instance">이름을 설정할 개체입니다.</param>
+        <param name="name">개체 이름으로 사용되는 <see cref="T:System.String" />입니다.</param>
+        <summary>지정된 개체의 이름을 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System%23ComponentModel%23Design%23Serialization%23IDesignerSerializationManager%23SetName%2A> 메서드는 기존 개체의 이름을 설정 하는 방법을 제공 합니다. 이렇게 하면 호출을 통해 개체의 인스턴스를 만들 수 있습니다.는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System%23ComponentModel%23Design%23Serialization%23IDesignerSerializationManager%23GetInstance%2A> 메서드를 오버 헤드를 피하기는 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">매개 변수 중 하나 또는 둘 다가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException">인스턴스에 의해 지정된 개체가 이미 이름을 가지고 있거나, 명명된 다른 개체가 이미 <paramref name="name" />을 사용하는 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이 속성이 serialization 세션 밖에서 액세스된 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetName(System.Object)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#ComponentModel#Design#Serialization#IDesignerSerializationManager#GetInstance(System.String)" />
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="System.IServiceProvider.GetService">
+      <MemberSignature Language="C#" Value="object IServiceProvider.GetService (Type serviceType);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.IServiceProvider.GetService(class System.Type serviceType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.System#IServiceProvider#GetService(System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Function GetService (serviceType As Type) As Object Implements IServiceProvider.GetService" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.IServiceProvider.GetService(Type ^ serviceType) = IServiceProvider::GetService;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IServiceProvider.GetService(System.Type)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serviceType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="serviceType">가져올 서비스 개체의 형식을 지정하는 개체입니다.</param>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="M:System.IServiceProvider.GetService(System.Type)" /> 메서드를 참조하세요.</summary>
+        <returns><paramref name="serviceType" /> 형식의 서비스 개체입니다.  
+  
+또는 
+ <paramref name="serviceType" /> 형식의 서비스 개체가 없는 경우 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager> 인스턴스가 <xref:System.IServiceProvider> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ValidateRecycledTypes">
+      <MemberSignature Language="C#" Value="public bool ValidateRecycledTypes { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ValidateRecycledTypes" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes" />
+      <MemberSignature Language="VB.NET" Value="Public Property ValidateRecycledTypes As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool ValidateRecycledTypes { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.ValidateRecycledTypes : bool with get, set" Usage="System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" /> 메서드가 일치하는 이름이 동일한 형식을 참조하는지를 확인하는지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />가 형식을 확인하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="true" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes%2A> 속성의 동작을 수정 합니다 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance%2A> 메서드 때를 <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances%2A> 속성이 `true`다음 표에 설명 된 대로, 합니다.  
+  
+|`RecycleInstances`|`ValidateRecycledTypes`|동작 `CreateInstance`|  
+|------------------------|-----------------------------|----------------------------------|  
+|`false`|`true` 또는 `false`|항상 지정 된 형식의 새 인스턴스를 만들으십시오|  
+|`true`|`false`|해당 형식에 관계 없이 일치 하는 인스턴스를 찾을 수는 경우 반환 됩니다.|  
+|`true`|`true`|일치 하는 인스턴스를 찾은 경우 메서드 호출에 지정 된 대로 동일한 형식인 경우에 반환 됩니다.|  
+  
+ <xref:System.ComponentModel.Design.Serialization.DesignerSerializationManager.ValidateRecycledTypes%2A> 비슷한 속성을가지고 있지만 인터페이스 없거나 공통 부모를 공유 하는 경우 한 가지 유형의 개체를 다른 모핑 유용 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">serialization 관리자에 활성 serialization 세션이 있는 경우</exception>
+        <altmember cref="M:System.ComponentModel.Design.Serialization.DesignerSerializationManager.CreateInstance(System.Type,System.Collections.ICollection,System.String,System.Boolean)" />
+        <altmember cref="P:System.ComponentModel.Design.Serialization.DesignerSerializationManager.RecycleInstances" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

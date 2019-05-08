@@ -1,0 +1,126 @@
+<Type Name="HostNameComparisonMode" FullName="System.ServiceModel.HostNameComparisonMode">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="15c32bdc79225698d1736e9209235effff62372a" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="37612997" /></Metadata><TypeSignature Language="C#" Value="public enum HostNameComparisonMode" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed HostNameComparisonMode extends System.Enum" />
+  <TypeSignature Language="DocId" Value="T:System.ServiceModel.HostNameComparisonMode" />
+  <TypeSignature Language="VB.NET" Value="Public Enum HostNameComparisonMode" />
+  <TypeSignature Language="C++ CLI" Value="public enum class HostNameComparisonMode" />
+  <TypeSignature Language="F#" Value="type HostNameComparisonMode = " />
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Enum</BaseTypeName>
+  </Base>
+  <Docs>
+    <summary>들어오는 메시지를 서비스 엔드포인트에 디스패치할 때 URI 비교에 호스트 이름을 사용하는 방법을 지정합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 값은 들어오는 메시지를 디스패치할 때 HTTP, Net.Tcp 및 Net.Pipe 같은 전송에서 사용하는 URI 일치 규칙을 지정하는 데 사용됩니다. <xref:System.ServiceModel.HostNameComparisonMode> 같은 위의 전송 중 하나와 해당 <xref:System.ServiceModel.BasicHttpBinding> 속성을 사용하여 표준 바인딩의 <xref:System.ServiceModel.HttpBindingBase.HostNameComparisonMode%2A> 값을 구성합니다. <xref:System.ServiceModel.HostNameComparisonMode> 같은 위의 전송 중 하나와 해당 <xref:System.ServiceModel.Channels.HttpTransportBindingElement> 속성을 사용하여 바인딩 요소의 <xref:System.ServiceModel.Channels.HttpTransportBindingElement.HostNameComparisonMode%2A> 값을 구성합니다.  
+  
+ 각 <xref:System.ServiceModel.HostNameComparisonMode> 값은 일치하는 규칙의 특정 형식에 해당합니다. 일치하는 규칙이 시도되는 순서는 항상 다음과 같습니다.  
+  
+1.  StrongWildcard  
+  
+2.  Exact  
+  
+3.  WeakWildcard  
+  
+ StrongWildcard, 첫 번째 값을 일치 시킬 때 호스트 이름을 무시 하며 세 가지 다른 일치 모드 중 가장 높은 우선 순위입니다. WCF 시스템 제공 바인딩 또는 바인딩 요소에 대 한 기본 값입니다. 유효한 호스트 이름을 사용하여 서비스 엔드포인트에 도달할 수 있음을 나타냅니다. 예를 사용 하 여 MyService를 호스팅하는 경우 http://localhost/MyService를 사용 하 여 계속 연결할 수 http://www.adatum.com/MyService 때문에 유효한 호스트 이름, "adatum.com"는 무시 됩니다. 여기서 포트는 와일드카드입니다.  
+  
+ 두 번째 값을 정확한 수치, 하는 정확한 일치 하는 강력한 일치 항목이 없는 경우 호스트 이름을 포함 하 여, 지정 된 URI를 사용 하 여 필요 합니다. 예를 들어 이 모드에서는 짧은 호스트 이름과 정규화된 도메인 이름이 같은지 확인 작업을 수행하지 않습니다. 따라서 하나의 IP 주소에 여러 개의 호스트가 할당되어 있어 같은 컴퓨터에서 고유한 엔드포인트를 사용하여 여러 서비스를 호스팅할 수 있는 경우 호스트 이름을 일치 조건으로 사용할 수 있습니다. 여기서 포트는 와일드카드입니다.  
+  
+ WeakWildcard, 세 번째 값을 찾을 수 없는 강력한 나 정확한 일치 하는 경우 호스트 이름을 무시 하 여 일치 합니다. 동작 동일 StrongWildcard 일치 하는 순서를 제외 합니다: 강력한 바인딩이나 정확한 바인딩이 시도 된 후 실행 합니다.  
+  
+> [!NOTE]
+>  IIS(인터넷 정보 서비스)나 WAS(Windows Process Activation Service) 호스팅 환경 내에서 사용되는 경우에는 이러한 값이 적용되지 않습니다. 이러한 경우 WCF는 모든 호스트 이름 비교 모드는 제공 된 IIS 웹 사이트에서 WCF 서비스를 호스트를 사용 합니다.  
+  
+   
+  
+## Examples  
+ 다음은 서비스의 구성 파일에서 StrongWildcard 값을 설정 하는 방법의 예입니다.  
+  
+  
+  
+ 다음은 앞의 구성 파일을 사용하는 기본 서비스 및 클라이언트입니다.  
+  
+ [!code-csharp[S_UEHostnameComparisonMode#2](~/samples/snippets/csharp/VS_Snippets_CFX/s_uehostnamecomparisonmode/cs/service.cs#2)]  
+  
+ [!code-csharp[S_UEHostnameComparisonMode#3](~/samples/snippets/csharp/VS_Snippets_CFX/s_uehostnamecomparisonmode/cs/snippets.cs#3)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="Exact">
+      <MemberSignature Language="C#" Value="Exact" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.ServiceModel.HostNameComparisonMode Exact = int32(1)" />
+      <MemberSignature Language="DocId" Value="F:System.ServiceModel.HostNameComparisonMode.Exact" />
+      <MemberSignature Language="VB.NET" Value="Exact" />
+      <MemberSignature Language="C++ CLI" Value="Exact" />
+      <MemberSignature Language="F#" Value="Exact = 1" Usage="System.ServiceModel.HostNameComparisonMode.Exact" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.HostNameComparisonMode</ReturnType>
+      </ReturnValue>
+      <MemberValue>1</MemberValue>
+      <Docs>
+        <summary>강력한 일치 항목이 없는 경우 들어오는 메시지를 이 엔드포인트로 디스패치할 때 호스트 이름을 사용합니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="StrongWildcard">
+      <MemberSignature Language="C#" Value="StrongWildcard" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.ServiceModel.HostNameComparisonMode StrongWildcard = int32(0)" />
+      <MemberSignature Language="DocId" Value="F:System.ServiceModel.HostNameComparisonMode.StrongWildcard" />
+      <MemberSignature Language="VB.NET" Value="StrongWildcard" />
+      <MemberSignature Language="C++ CLI" Value="StrongWildcard" />
+      <MemberSignature Language="F#" Value="StrongWildcard = 0" Usage="System.ServiceModel.HostNameComparisonMode.StrongWildcard" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.HostNameComparisonMode</ReturnType>
+      </ReturnValue>
+      <MemberValue>0</MemberValue>
+      <Docs>
+        <summary>들어오는 메시지를 이 엔드포인트로 디스패치할 때 호스트 이름을 무시합니다. 기본값입니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="WeakWildcard">
+      <MemberSignature Language="C#" Value="WeakWildcard" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.ServiceModel.HostNameComparisonMode WeakWildcard = int32(2)" />
+      <MemberSignature Language="DocId" Value="F:System.ServiceModel.HostNameComparisonMode.WeakWildcard" />
+      <MemberSignature Language="VB.NET" Value="WeakWildcard" />
+      <MemberSignature Language="C++ CLI" Value="WeakWildcard" />
+      <MemberSignature Language="F#" Value="WeakWildcard = 2" Usage="System.ServiceModel.HostNameComparisonMode.WeakWildcard" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.HostNameComparisonMode</ReturnType>
+      </ReturnValue>
+      <MemberValue>2</MemberValue>
+      <Docs>
+        <summary>강력한 일치 항목이나 정확한 일치 항목이 없는 경우 일치할 때 경우 호스트 이름을 무시합니다.</summary>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

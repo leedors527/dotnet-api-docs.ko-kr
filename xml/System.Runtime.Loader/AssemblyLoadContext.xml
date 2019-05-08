@@ -1,0 +1,761 @@
+<Type Name="AssemblyLoadContext" FullName="System.Runtime.Loader.AssemblyLoadContext">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="61c24ec247d290cbe2304803244d0a11c8717eae" /><Meta Name="ms.sourcegitcommit" Value="9fde55ecc35aa9df4967f3522d7e9ce113f5147c" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="04/16/2019" /><Meta Name="ms.locfileid" Value="59615028" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit AssemblyLoadContext extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Runtime.Loader.AssemblyLoadContext" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class AssemblyLoadContext" />
+  <TypeSignature Language="C++ CLI" Value="public ref class AssemblyLoadContext abstract" />
+  <TypeSignature Language="F#" Value="type AssemblyLoadContext = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime.Loader</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.2.0</AssemblyVersion>
+    <AssemblyVersion>4.0.3.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>바인딩에 대한 범위의 런타임 개념을 나타냅니다. 이 클래스는 추상 클래스입니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[
+
+## Remarks
+ <xref:System.Runtime.Loader.AssemblyLoadContext> 로드 컨텍스트를 나타냅니다. 개념적으로 로드 컨텍스트에 어셈블리의 집합을 잠재적으로 언로드 및 로드, 확인, 범위를 만듭니다.
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext>는 추상 클래스입니다. <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType> 구체적 클래스를 만드는 구현 해야 합니다.
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext> 어셈블리 바인딩 격리를 제공 하기 위해 주로 존재 합니다. 단일 프로세스 내에서 로드 되도록 동일한 어셈블리의 여러 버전이 있습니다. 여러 제공 하는 격리 메커니즘 대체 <xref:System.AppDomain> .NET Framework의 인스턴스.
+ 
+ > [!NOTE]
+ > <xref:System.Runtime.Loader.AssemblyLoadContext> 모든 보안 기능을 제공 하지 않습니다. 모든 코드에는 프로세스의 전체 권한이 있습니다.
+
+### <a name="usage-in-the-runtime"></a>런타임 사용
+ 런타임은 두 어셈블리 로드 컨텍스트를 구현합니다.
+ * <xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType> 응용 프로그램 주 어셈블리 및 해당 정적 종속성에 사용 되는 런타임의 기본 바인딩 컨텍스트를 나타냅니다.
+ * 합니다 <xref:System.Reflection.Assembly.LoadFile(System.String)?displayProperty=nameWithType> 메서드가 가장 기본적인 인스턴스화하여 로드 하는 어셈블리를 격리 <xref:System.Runtime.Loader.AssemblyLoadContext>합니다. 자체의 각 어셈블리를 로드 하는 간단한 격리 구성표 있기 <xref:System.Runtime.Loader.AssemblyLoadContext> 종속성 해결 되지 않습니다.
+ 
+### <a name="application-usage"></a>응용 프로그램 사용
+ 응용 프로그램을 만들 수는 자체 <xref:System.Runtime.Loader.AssemblyLoadContext> 고급 바인딩 시나리오에 대 한 사용자 지정 솔루션을 만들려고 합니다. 사용자 지정 종속성 해결 메커니즘을 정의에 중점을 둡니다.
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext> 는 관리 되는 어셈블리 확인을 구현 하려면 두 개의 확장 지점을 제공 합니다.
+ 1. 합니다 <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType> 에 대 한 첫 번째 기회를 제공 합니다 <xref:System.Runtime.Loader.AssemblyLoadContext> 어셈블리를 해결 하려면 로드 하 고 반환 합니다. 경우는 <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType> 반환 `null`, 로더 어셈블리를 로드 하려고 합니다.는 <xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType>합니다.
+ 2. 경우는 <xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType> 원래 어셈블리를 확인할 수 없는 <xref:System.Runtime.Loader.AssemblyLoadContext> 어셈블리를 해결 하려면 두 번째 기회를 가져옵니다. 런타임에서 발생 시키는 <xref:System.Runtime.Loader.AssemblyLoadContext.Resolving> 이벤트입니다.
+ 
+ 또한는 <xref:System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)?displayProperty=nameWithType> 가상 메서드는 관리 되지 않는 기본 어셈블리 해상도의 사용자 지정을 허용 합니다. 기본 구현은 반환 `null`, 대부분의 시나리오에 대 한 충분 한 인 기본 검색 정책을 사용 하 여 런타임 검색 하면 됩니다.
+
+### <a name="technical-challenges"></a>기술적인 문제
+ * 여러 버전의 단일 프로세스에서 런타임 로드 하는 것이 불가능 합니다.
+     > [!CAUTION]
+     > 여러 복사본 또는 다른 버전의 프레임 워크 어셈블리 로드 문제를 진단 하기가 어렵고 예기치 않은 발생할 수 있습니다.
+     
+     > [!TIP]
+     > 이 격리 문제를 해결 하려면 원격 및/또는 프로세스 간 통신을 사용 하 여 프로세스 경계를 사용 합니다.
+ 
+ * 어셈블리 로드의 타이밍 어렵게 만들 수 있습니다 테스트 및 디버깅 합니다. 어셈블리 확인 즉시 해당 종속성이 없는 일반적으로 로드 됩니다. 종속성은 필요에 따라 로드 됩니다.
+     * 종속 어셈블리가 나뉩니다 코드입니다.
+     * 경우 코드는 리소스를 로드 합니다.
+     * 때 코드 어셈블리를 명시적으로 로드 합니다.
+ 
+ * 구현의 <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType> 있으려면 다른 버전을 허용 하도록 격리 되어야 할 수 있는 새 종속성을 추가할 수 있습니다. 가장 일반적인 구현은 기본 컨텍스트에서 이러한 종속성을 배치 합니다. 신중 하 게 디자인 새 종속성을 격리할 수 있습니다.
+ 
+ * 바인딩 격리 프로세스를 사용 하는 형식 이름이 같은 여러 종류를 만듭니다.
+     * 혼란 스러운 오류 메시지 해도, 예를 들어 "Foo.Foo 형식 캐스팅할 수 없는 Foo.Foo를 입력 합니다."
+     * 격리 경계를 넘어 마샬링 trivial이 아닌 경우 일반적인 솔루션만 기본 로드 컨텍스트에 로드 된 어셈블리에 정의 된 인터페이스를 사용 하는 것입니다.
+ 
+ ]]></format>
+    </remarks>
+    <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/assemblyloadcontext.md">AssemblyLoadContext CoreCLR 디자인 문서</related>
+    <related type="Article" href="/en-us/dotnet/standard/assembly/unloadability-howto">.NET Core에서 디버그 어셈블리 unloadability 및 사용 방법</related>
+    <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/unloadability.md">AssemblyLoadContext unloadability 디자인 문서</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AssemblyLoadContext ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; AssemblyLoadContext();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
+이 생성자는 보호되어 있습니다. 에서만 호출할 수는 <xref:System.Runtime.Loader.AssemblyLoadContext> 클래스 또는 해당 파생된 클래스입니다.
+
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected AssemblyLoadContext (bool isCollectible);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(bool isCollectible) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.#ctor(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New (isCollectible As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; AssemblyLoadContext(bool isCollectible);" />
+      <MemberSignature Language="F#" Value="new System.Runtime.Loader.AssemblyLoadContext : bool -&gt; System.Runtime.Loader.AssemblyLoadContext" Usage="new System.Runtime.Loader.AssemblyLoadContext isCollectible" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="isCollectible" Type="System.Boolean" Index="0" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="isCollectible">가비지 수집을 사용하도록 설정하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>가비지 수집 사용 여부를 나타내는 값을 사용하여 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Default">
+      <MemberSignature Language="C#" Value="public static System.Runtime.Loader.AssemblyLoadContext Default { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property class System.Runtime.Loader.AssemblyLoadContext Default" />
+      <MemberSignature Language="DocId" Value="P:System.Runtime.Loader.AssemblyLoadContext.Default" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property Default As AssemblyLoadContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::Runtime::Loader::AssemblyLoadContext ^ Default { System::Runtime::Loader::AssemblyLoadContext ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Default : System.Runtime.Loader.AssemblyLoadContext" Usage="System.Runtime.Loader.AssemblyLoadContext.Default" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Runtime.Loader.AssemblyLoadContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>기본 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />를 가져옵니다. 기본 컨텍스트에는 주 애플리케이션 어셈블리 및 해당 정적 종속성이 포함됩니다.</summary>
+        <value>기본 어셈블리 로드 컨텍스트입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAssemblyName">
+      <MemberSignature Language="C#" Value="public static System.Reflection.AssemblyName GetAssemblyName (string assemblyPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Reflection.AssemblyName GetAssemblyName(string assemblyPath) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetAssemblyName (assemblyPath As String) As AssemblyName" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Reflection::AssemblyName ^ GetAssemblyName(System::String ^ assemblyPath);" />
+      <MemberSignature Language="F#" Value="static member GetAssemblyName : string -&gt; System.Reflection.AssemblyName" Usage="System.Runtime.Loader.AssemblyLoadContext.GetAssemblyName assemblyPath" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.AssemblyName</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="assemblyPath" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="assemblyPath">어셈블리에 대한 경로입니다.</param>
+        <summary>어셈블리 경로에 대한 <see cref="T:System.Reflection.AssemblyName" />을 가져옵니다.</summary>
+        <returns><paramref name="assemblyPath" />에서 어셈블리에 대해 완전히 구문 분석된 어셈블리 이름을 포함하는 개체입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyPath" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.IO.FileNotFoundException">어셈블리를 찾을 수 없습니다.</exception>
+        <exception cref="T:System.BadImageFormatException">어셈블리는 유효한 어셈블리가 아닙니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLoadContext">
+      <MemberSignature Language="C#" Value="public static System.Runtime.Loader.AssemblyLoadContext GetLoadContext (System.Reflection.Assembly assembly);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Runtime.Loader.AssemblyLoadContext GetLoadContext(class System.Reflection.Assembly assembly) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(System.Reflection.Assembly)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Runtime::Loader::AssemblyLoadContext ^ GetLoadContext(System::Reflection::Assembly ^ assembly);" />
+      <MemberSignature Language="F#" Value="static member GetLoadContext : System.Reflection.Assembly -&gt; System.Runtime.Loader.AssemblyLoadContext" Usage="System.Runtime.Loader.AssemblyLoadContext.GetLoadContext assembly" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Runtime.Loader.AssemblyLoadContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="assembly" Type="System.Reflection.Assembly" />
+      </Parameters>
+      <Docs>
+        <param name="assembly">어셈블리입니다.</param>
+        <summary>지정된 <see cref="T:System.Reflection.Assembly" />를 포함하는 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />입니다.</summary>
+        <returns><paramref name="assembly" />를 포함하는 어셈블리 로드 컨텍스트입니다. 런타임에서 <paramref name="assembly" />를 제공하지 않으면 이 메서드는 null을 반환합니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="IsCollectible">
+      <MemberSignature Language="C#" Value="public bool IsCollectible { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsCollectible" />
+      <MemberSignature Language="DocId" Value="P:System.Runtime.Loader.AssemblyLoadContext.IsCollectible" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsCollectible As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsCollectible { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsCollectible : bool" Usage="System.Runtime.Loader.AssemblyLoadContext.IsCollectible" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />가 수집 가능한지를 나타내는 값을 가져옵니다.</summary>
+        <value><see langword="true" /> 이 경우 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> 이 고, 그렇지 않으면 수집 가능한 <see langword="false" />합니다. 생성자에서 값을 지정 하지 않으면이 값은 <see langword="false" />합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ 자세한 내용은 참조 <see href="/en-us/dotnet/standard/assembly/unloadability-howto">사용 하 여.NET Core에서 unloadability 어셈블리를 디버그 하는 방법을</see>합니다.
+
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Load">
+      <MemberSignature Language="C#" Value="protected abstract System.Reflection.Assembly Load (System.Reflection.AssemblyName assemblyName);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Reflection.Assembly Load(class System.Reflection.AssemblyName assemblyName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract System::Reflection::Assembly ^ Load(System::Reflection::AssemblyName ^ assemblyName);" />
+      <MemberSignature Language="F#" Value="abstract member Load : System.Reflection.AssemblyName -&gt; System.Reflection.Assembly" Usage="assemblyLoadContext.Load assemblyName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.Assembly</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="assemblyName" Type="System.Reflection.AssemblyName" />
+      </Parameters>
+      <Docs>
+        <param name="assemblyName">로드될 어셈블리를 설명하는 개체입니다.</param>
+        <summary>파생된 클래스에서 재정의될 때 해당 <see cref="T:System.Reflection.AssemblyName" />에 따라 어셈블리를 확인하고 로드할 수 있습니다.</summary>
+        <returns>로드된 어셈블리 또는 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+ 
+## Remarks
+ 어셈블리 확인 동안는 <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)> 메서드가 첫 번째 로드 된 어셈블리에서 어셈블리 이름을 확인할 수 있습니다. 어셈블리를 로드 하거나 반환 하기 `null`합니다. 반환 하는 경우 `null`, 확인 프로세스를 계속 합니다. 참조 <xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)> 전체 프로세스가 설명 합니다.
+ 
+ > [!IMPORTANT]
+ > 재귀 스택 오버플로 방지 하려면이 인스턴스의 호출 하지 마십시오 <xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)> 이 메서드에서 메서드.
+ 
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadFromAssemblyName">
+      <MemberSignature Language="C#" Value="public System.Reflection.Assembly LoadFromAssemblyName (System.Reflection.AssemblyName assemblyName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Reflection.Assembly LoadFromAssemblyName(class System.Reflection.AssemblyName assemblyName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Reflection::Assembly ^ LoadFromAssemblyName(System::Reflection::AssemblyName ^ assemblyName);" />
+      <MemberSignature Language="F#" Value="member this.LoadFromAssemblyName : System.Reflection.AssemblyName -&gt; System.Reflection.Assembly" Usage="assemblyLoadContext.LoadFromAssemblyName assemblyName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.Assembly</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="assemblyName" Type="System.Reflection.AssemblyName" />
+      </Parameters>
+      <Docs>
+        <param name="assemblyName">로드할 어셈블리를 설명하는 개체입니다.</param>
+        <summary>해당 <see cref="T:System.Reflection.AssemblyName" />이 지정된 어셈블리를 확인하고 로드합니다.</summary>
+        <returns>로드된 어셈블리 또는 throw입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ <xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName%2A> 확인 하 여 어셈블리를 로드 합니다 <xref:System.Reflection.AssemblyName>합니다. 이렇게 하면 전체 해상도 트리거됩니다. 해상도 대체 시퀀스는이 프로세스를 따릅니다. 1. 메서드 호출 <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)>합니다.
+         > [!IMPORTANT]
+         > <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)> must not call this method to prevent recursive stack overflow.
+     2. Unless the assembly is loaded or an exception is thrown, the method attempts to load the assembly in the default <xref:System.Runtime.Loader.AssemblyLoadContext>.
+     3. Unless the assembly is loaded or an exception is thrown, the method fires the <xref:System.Runtime.Loader.AssemblyLoadContext.Resolving> event.
+     4. Unless the assembly is loaded or an exception is thrown, the method fires the <xref:System.AppDomain.AssemblyResolve> event.
+ 
+ > [!NOTE]
+ > <xref:System.IO.FileLoadException> 이 throw `assemblyRef` 전체 어셈블리 이름 및 간단한 이름과 일치 하는 첫 번째 어셈블리에 호환 되지 않는 버전 또는 문화권을 지정 합니다. 로더는 간단한 이름과 일치 하는 다른 어셈블리에 대 한 검색을 계속 되지 않습니다.
+ 
+ 각 <xref:System.Runtime.Loader.AssemblyLoadContext> 만 로드할 수 있습니다. *를 실행 하는 어셈블리의 버전입니다.
+* 각 문화권에 대 한 위성 어셈블리의 버전 하나입니다.
+ 
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyName" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.IO.FileNotFoundException"><paramref name="assemblyName" />가 없는 경우</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyName" />는 유효한 어셈블리가 아닙니다.</exception>
+        <exception cref="T:System.IO.FileLoadException"><paramref name="assemblyName" />과 일치하지 않는 어셈블리 또는 모듈이 로드되었습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadFromAssemblyPath">
+      <MemberSignature Language="C#" Value="public System.Reflection.Assembly LoadFromAssemblyPath (string assemblyPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Reflection.Assembly LoadFromAssemblyPath(string assemblyPath) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyPath(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function LoadFromAssemblyPath (assemblyPath As String) As Assembly" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Reflection::Assembly ^ LoadFromAssemblyPath(System::String ^ assemblyPath);" />
+      <MemberSignature Language="F#" Value="member this.LoadFromAssemblyPath : string -&gt; System.Reflection.Assembly" Usage="assemblyLoadContext.LoadFromAssemblyPath assemblyPath" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.Assembly</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="assemblyPath" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="assemblyPath">로드할 파일의 정규화된 경로입니다.</param>
+        <summary>지정된 경로에 있는 어셈블리 파일의 내용을 로드합니다.</summary>
+        <returns>로드된 어셈블리입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="assemblyPath" /> 인수가 절대 경로가 아닙니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyPath" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.IO.FileLoadException">찾은 파일을 로드할 수 없습니다.</exception>
+        <exception cref="T:System.IO.FileNotFoundException"><paramref name="assemblyPath" /> 매개 변수가 빈 문자열("")이거나 없습니다.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyPath" />는 유효한 어셈블리가 아닙니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadFromNativeImagePath">
+      <MemberSignature Language="C#" Value="public System.Reflection.Assembly LoadFromNativeImagePath (string nativeImagePath, string assemblyPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Reflection.Assembly LoadFromNativeImagePath(string nativeImagePath, string assemblyPath) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.LoadFromNativeImagePath(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function LoadFromNativeImagePath (nativeImagePath As String, assemblyPath As String) As Assembly" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Reflection::Assembly ^ LoadFromNativeImagePath(System::String ^ nativeImagePath, System::String ^ assemblyPath);" />
+      <MemberSignature Language="F#" Value="member this.LoadFromNativeImagePath : string * string -&gt; System.Reflection.Assembly" Usage="assemblyLoadContext.LoadFromNativeImagePath (nativeImagePath, assemblyPath)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.Assembly</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="nativeImagePath" Type="System.String" />
+        <Parameter Name="assemblyPath" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="nativeImagePath">로드할 파일의 정규화된 경로입니다.</param>
+        <param name="assemblyPath">로드할 IL 버전 파일의 정규화된 경로 또는 <see langword="null" />입니다.</param>
+        <summary>지정된 경로에서 관리 어셈블리 파일의 네이티브 이미지 콘텐츠를 로드합니다.</summary>
+        <returns>로드된 어셈블리입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ 관리 되는 어셈블리의 네이티브 이미지는 특정 플랫폼에서 실행을 최적화 하도록 prejit입니다.
+ 
+ 어셈블리 경로 어셈블리의 IL 버전에 대 한 경로 가리킵니다. IL은 일반적으로 네이티브 이미지에 포함 된 형태로 선택적 인수를입니다. 이 경우 사용할 수 있습니다 런타임에서 대체 방법으로 네이티브 이미지를 찾을 수 없습니다.
+ 
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="nativeImagePath" /> 인수가 절대 경로가 아닙니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="assemblyPath" /> 인수가 절대 경로가 아닙니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="nativeImagePath" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.IO.FileLoadException">찾은 파일을 로드할 수 없습니다.</exception>
+        <exception cref="T:System.IO.FileNotFoundException"><paramref name="nativeImagePath" /> 매개 변수가 빈 문자열("")이거나 없습니다.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyPath" />는 유효한 어셈블리가 아닙니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadFromStream">
+      <MemberSignature Language="C#" Value="public System.Reflection.Assembly LoadFromStream (System.IO.Stream assembly);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Reflection.Assembly LoadFromStream(class System.IO.Stream assembly) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Reflection::Assembly ^ LoadFromStream(System::IO::Stream ^ assembly);" />
+      <MemberSignature Language="F#" Value="member this.LoadFromStream : System.IO.Stream -&gt; System.Reflection.Assembly" Usage="assemblyLoadContext.LoadFromStream assembly" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.Assembly</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="assembly" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <param name="assembly">관리 어셈블리가 포함된 COFF 기반 이미지인 바이트 배열입니다.</param>
+        <summary>관리 어셈블리가 포함된 COFF(공용 개체 파일 형식) 기반 이미지를 사용하여 어셈블리를 로드합니다.</summary>
+        <returns>로드된 어셈블리입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assembly" />는 유효한 어셈블리가 아닙니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadFromStream">
+      <MemberSignature Language="C#" Value="public System.Reflection.Assembly LoadFromStream (System.IO.Stream assembly, System.IO.Stream assemblySymbols);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Reflection.Assembly LoadFromStream(class System.IO.Stream assembly, class System.IO.Stream assemblySymbols) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IO.Stream,System.IO.Stream)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Reflection::Assembly ^ LoadFromStream(System::IO::Stream ^ assembly, System::IO::Stream ^ assemblySymbols);" />
+      <MemberSignature Language="F#" Value="member this.LoadFromStream : System.IO.Stream * System.IO.Stream -&gt; System.Reflection.Assembly" Usage="assemblyLoadContext.LoadFromStream (assembly, assemblySymbols)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.Assembly</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="assembly" Type="System.IO.Stream" />
+        <Parameter Name="assemblySymbols" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <param name="assembly">관리 어셈블리가 포함된 COFF 기반 이미지인 바이트 배열입니다.</param>
+        <param name="assemblySymbols">어셈블리의 기호를 나타내는 원시 바이트가 포함된 바이트 배열입니다.</param>
+        <summary>관리 어셈블리가 포함되고 경우에 따라 어셈블리에 대한 기호가 포함되는 COFF(공용 개체 파일 형식) 기반 이미지를 사용하여 어셈블리를 로드합니다.</summary>
+        <returns>로드된 어셈블리입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assembly" />는 유효한 어셈블리가 아닙니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadUnmanagedDll">
+      <MemberSignature Language="C#" Value="protected virtual IntPtr LoadUnmanagedDll (string unmanagedDllName);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance native int LoadUnmanagedDll(string unmanagedDllName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LoadUnmanagedDll (unmanagedDllName As String) As IntPtr" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual IntPtr LoadUnmanagedDll(System::String ^ unmanagedDllName);" />
+      <MemberSignature Language="F#" Value="abstract member LoadUnmanagedDll : string -&gt; nativeint&#xA;override this.LoadUnmanagedDll : string -&gt; nativeint" Usage="assemblyLoadContext.LoadUnmanagedDll unmanagedDllName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="unmanagedDllName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="unmanagedDllName">관리되지 않는 라이브러리의 이름입니다. 일반적으로 해당 경로 또는 확장명이 없는 파일 이름입니다.</param>
+        <summary>파생된 클래스가 이름별로 관리되지 않는 라이브러리를 로드할 수 있습니다.</summary>
+        <returns>로드된 라이브러리에 대한 핸들 또는 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ 기본 구현은 항상 반환 `null`합니다. 때 `null` 반환 되 면 런타임에서 기본 정책 사용 하 여 라이브러리를 로드 합니다.
+ 
+ 관리 되지 않는 라이브러리 검색 알고리즘을 사용자 지정 하려면이 가상 메서드를 재정의할 수 있습니다. 재정의 된 경우 해당 라이브러리를 식별 하는 이름을 사용할 수 있습니다. 로드 된 라이브러리는 요청 된 일치 하지 않아도 이름은 같지만 필요에 따라 변환할 수 있습니다. 이 플랫폼 특정 명명에 대 한 이름을 조정 포함 될 수 있습니다.
+ 
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadUnmanagedDllFromPath">
+      <MemberSignature Language="C#" Value="protected IntPtr LoadUnmanagedDllFromPath (string unmanagedDllPath);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance native int LoadUnmanagedDllFromPath(string unmanagedDllPath) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDllFromPath(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Function LoadUnmanagedDllFromPath (unmanagedDllPath As String) As IntPtr" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; IntPtr LoadUnmanagedDllFromPath(System::String ^ unmanagedDllPath);" />
+      <MemberSignature Language="F#" Value="member this.LoadUnmanagedDllFromPath : string -&gt; nativeint" Usage="assemblyLoadContext.LoadUnmanagedDllFromPath unmanagedDllPath" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IntPtr</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="unmanagedDllPath" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="unmanagedDllPath">관리되지 않는 라이브러리의 경로입니다.</param>
+        <summary>지정된 경로에서 관리되지 않는 라이브러리를 로드합니다.</summary>
+        <returns>로드된 라이브러리에 대한 핸들입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="unmanagedDllPath" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="unmanagedDllPath" /> 인수가 절대 경로가 아닙니다.</exception>
+        <exception cref="T:System.IO.FileNotFoundException">관리되지 않는 라이브러리를 찾을 수 없습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Resolving">
+      <MemberSignature Language="C#" Value="public event Func&lt;System.Runtime.Loader.AssemblyLoadContext,System.Reflection.AssemblyName,System.Reflection.Assembly&gt; Resolving;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.Func`3&lt;class System.Runtime.Loader.AssemblyLoadContext, class System.Reflection.AssemblyName, class System.Reflection.Assembly&gt; Resolving" />
+      <MemberSignature Language="DocId" Value="E:System.Runtime.Loader.AssemblyLoadContext.Resolving" />
+      <MemberSignature Language="VB.NET" Value="Public Custom Event Resolving As Func(Of AssemblyLoadContext, AssemblyName, Assembly) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event Func&lt;System::Runtime::Loader::AssemblyLoadContext ^, System::Reflection::AssemblyName ^, System::Reflection::Assembly ^&gt; ^ Resolving;" />
+      <MemberSignature Language="F#" Value="member this.Resolving : Func&lt;System.Runtime.Loader.AssemblyLoadContext, System.Reflection.AssemblyName, System.Reflection.Assembly&gt; " Usage="member this.Resolving : System.Func&lt;System.Runtime.Loader.AssemblyLoadContext, System.Reflection.AssemblyName, System.Reflection.Assembly&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Func&lt;System.Runtime.Loader.AssemblyLoadContext,System.Reflection.AssemblyName,System.Reflection.Assembly&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 어셈블리 로드 컨텍스트에 로드하려고 할 때 어셈블리를 확인하는 데 실패하는 경우 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ 지정 된 어셈블리를 반환 하거나 반환 하려면이 이벤트 처리기의 책임이 `null` 어셈블리 인식 되지 않는 경우.
+ 
+ > [!IMPORTANT]
+ >  둘 이상의 이벤트 처리기는이 이벤트에 대 한 등록 되 면 이벤트 처리기를 이벤트 처리기에 없는 값 반환 될 때까지 순서 대로 호출 됩니다 `null`합니다. 후속 이벤트 처리기는 무시 됩니다.
+ 
+ 이벤트 처리에 대한 자세한 내용은 [이벤트 처리 및 발생](~/docs/standard/events/index.md) 을 참조하십시오.
+ 
+ 이 이벤트에 대 한 처리기를 추가할 수는 주목할 만한 것 <xref:System.Runtime.Loader.AssemblyLoadContext>, 기본 컨텍스트를 포함 합니다.
+ 
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResolvingUnmanagedDll">
+      <MemberSignature Language="C#" Value="public event Func&lt;System.Reflection.Assembly,string,IntPtr&gt; ResolvingUnmanagedDll;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.Func`3&lt;class System.Reflection.Assembly, string, native int&gt; ResolvingUnmanagedDll" />
+      <MemberSignature Language="DocId" Value="E:System.Runtime.Loader.AssemblyLoadContext.ResolvingUnmanagedDll" />
+      <MemberSignature Language="VB.NET" Value="Public Event ResolvingUnmanagedDll As Func(Of Assembly, String, IntPtr) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event Func&lt;System::Reflection::Assembly ^, System::String ^, IntPtr&gt; ^ ResolvingUnmanagedDll;" />
+      <MemberSignature Language="F#" Value="member this.ResolvingUnmanagedDll : Func&lt;System.Reflection.Assembly, string, nativeint&gt; " Usage="member this.ResolvingUnmanagedDll : System.Func&lt;System.Reflection.Assembly, System.string, System.nativeint&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Func&lt;System.Reflection.Assembly,System.String,System.IntPtr&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetProfileOptimizationRoot">
+      <MemberSignature Language="C#" Value="public void SetProfileOptimizationRoot (string directoryPath);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetProfileOptimizationRoot(string directoryPath) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.SetProfileOptimizationRoot(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetProfileOptimizationRoot (directoryPath As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetProfileOptimizationRoot(System::String ^ directoryPath);" />
+      <MemberSignature Language="F#" Value="member this.SetProfileOptimizationRoot : string -&gt; unit" Usage="assemblyLoadContext.SetProfileOptimizationRoot directoryPath" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="directoryPath" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="directoryPath">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StartProfileOptimization">
+      <MemberSignature Language="C#" Value="public void StartProfileOptimization (string profile);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void StartProfileOptimization(string profile) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.StartProfileOptimization(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub StartProfileOptimization (profile As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void StartProfileOptimization(System::String ^ profile);" />
+      <MemberSignature Language="F#" Value="member this.StartProfileOptimization : string -&gt; unit" Usage="assemblyLoadContext.StartProfileOptimization profile" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="profile" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="profile">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Unload">
+      <MemberSignature Language="C#" Value="public void Unload ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Unload() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Loader.AssemblyLoadContext.Unload" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Unload ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Unload();" />
+      <MemberSignature Language="F#" Value="member this.Unload : unit -&gt; unit" Usage="assemblyLoadContext.Unload " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />의 언로드를 시작합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
++ AssemblyLoadContext만 언로드할 수 수집 가능한 경우.
++ 언로드 비동기적으로 수행 됩니다.
++ 언로드를 AssemblyLoadContext에 대 한 참조가 하는 동안 발생 하지 않습니다.
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">언로드가 허용되지 않습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Unloading">
+      <MemberSignature Language="C#" Value="public event Action&lt;System.Runtime.Loader.AssemblyLoadContext&gt; Unloading;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.Action`1&lt;class System.Runtime.Loader.AssemblyLoadContext&gt; Unloading" />
+      <MemberSignature Language="DocId" Value="E:System.Runtime.Loader.AssemblyLoadContext.Unloading" />
+      <MemberSignature Language="VB.NET" Value="Public Custom Event Unloading As Action(Of AssemblyLoadContext) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event Action&lt;System::Runtime::Loader::AssemblyLoadContext ^&gt; ^ Unloading;" />
+      <MemberSignature Language="F#" Value="member this.Unloading : Action&lt;System.Runtime.Loader.AssemblyLoadContext&gt; " Usage="member this.Unloading : System.Action&lt;System.Runtime.Loader.AssemblyLoadContext&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Loader</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Action&lt;System.Runtime.Loader.AssemblyLoadContext&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Runtime.Loader.AssemblyLoadContext" />를 언로드하는 경우 발생합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

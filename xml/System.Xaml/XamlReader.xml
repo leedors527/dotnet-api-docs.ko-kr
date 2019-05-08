@@ -1,0 +1,485 @@
+<Type Name="XamlReader" FullName="System.Xaml.XamlReader">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="849d2e0c9bee513161cca5e65badec4967daf83c" /><Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="11/17/2018" /><Meta Name="ms.locfileid" Value="51864283" /></Metadata><TypeSignature Language="C#" Value="public abstract class XamlReader : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit XamlReader extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Xaml.XamlReader" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class XamlReader&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class XamlReader abstract : IDisposable" />
+  <TypeSignature Language="F#" Value="type XamlReader = class&#xA;    interface IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Xaml</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>XAML 입력을 소비하고 XAML 노드 스트림을 만드는 클래스에 대한 기본 정의를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Xaml.XamlReader> 추상 클래스 이며 구현이 나 모든 멤버에 대 한 작업 결과 정의 제공 하지 않습니다. 멤버의 구현을 않은 <xref:System.Xaml.XamlReader> 해당 멤버에 대 한 설명에 표시 됩니다. 특히 <xref:System.Xaml.XamlReader> 를 구현 해야 하는 여러 추상 멤버 및 여러 가상 멤버를 포함 합니다.  
+  
+ 가상 멤버 <xref:System.Xaml.XamlReader.ReadSubtree%2A> 및 <xref:System.Xaml.XamlReader.Skip%2A> 각 대부분의 경우에 적절 한 기본 구현을 제공 합니다. 그러나를 <xref:System.Xaml.XamlReader.ReadSubtree%2A> 하 고 <xref:System.Xaml.XamlReader.Skip%2A> 기본 구현은 구현 XAML 판독기의 예상 되는 다른 동작에 의존 하므로 특히;는 <xref:System.Xaml.XamlReader.Read%2A> 재정의 합니다. <xref:System.Xaml.XamlReader.Dispose%2A> 기본 구현이 작동 하는 가상 멤버 이기도 합니다.  
+  
+ 다음 두 클래스는.NET Framework XAML 서비스 및 System.Xaml 어셈블리에서 가장 적절 하 고 실제로 파생된 클래스:  
+  
+-   <xref:System.Xaml.XamlObjectReader>을 런타임 시 응용 프로그램의 활성 개체 그래프와 같은 개체 그래프를 읽습니다.  
+  
+-   <xref:System.Xaml.XamlXmlReader>를 일반을 사용 하 여 읽는 XML 텍스트 파일 형태로 XAML <xref:System.Xml.XmlReader> 중간 도우미 클래스로 파일을 로드 하는 합니다.  
+  
+ 다른 프레임 워크에서 다른 XAML 판독기 포함 <xref:System.Windows.Baml2006.Baml2006Reader> 고 <xref:System.Activities.Debugger.XamlDebuggerXmlReader>입니다.  
+  
+ <xref:System.Xaml.XamlReader> 다른 [!INCLUDE[TLA#tla_xmldom](~/includes/tlasharptla-xmldom-md.md)] 하 고 <xref:System.Xml.XmlReader> 때문에 디자인 원칙 <xref:System.Xaml.XamlReader> 되지 않은 `Create` 기본 기본 XAML 판독기 구현을 반환 하는 방법. 대신 해당 생성자 또는 다른 클래스 관련 도우미 Api 호출 하 여 특정 파생된 XAML 판독기 클래스를 인스턴스화해야 합니다.  
+  
+## <a name="subtree-readers"></a>하위 트리에서 판독기  
+ 호출 하는 대부분의 경우 <xref:System.Xaml.XamlReader> 컨텍스트에서 특정 XAML 판독기 클래스에서 파생 되는 API <xref:System.Xaml.XamlReader>합니다. 그러나 특정 한 경우, 액세스할 <xref:System.Xaml.XamlReader> 공용 및에서 파생 되지 없는 실제 XAML 판독기 인스턴스에 대 한 API <xref:System.Xaml.XamlObjectReader> 또는 <xref:System.Xaml.XamlXmlReader>합니다. 이 경우 호출 하는 경우 <xref:System.Xaml.XamlReader.ReadSubtree%2A>를 반환 하는 한 <xref:System.Xaml.XamlReader> 인스턴스. 기본 구현에서는 <xref:System.Xaml.XamlReader> 즉이 API에서 반환 되는 내부 클래스입니다.  
+  
+ <xref:System.Xaml.XamlReader> 와 같은 하위 트리를 읽어에서는 Api에 대 한 유효한 작업에 대 한 가져온 <xref:System.Xaml.XamlReader.Read%2A> 및 <xref:System.Xaml.XamlReader.NodeType%2A>를 상위 판독기 클래스를 기반으로 하는 이러한 작업 및 합니다. 이렇게이 디자인 하면 하위 트리 입력 프레임 수준을 추적 내부 클래스입니다. 활성 하위 트리 <xref:System.Xaml.XamlReader> 하면 하위 트리의 경계를 벗어나 현재 노드 위치를 이동 하는 경우 특정 하위 트리에서 판독기를 보고 하는 파일의 끝 또는 `null` 현재 노드에서 합니다.  
+  
+ 특정 하위 트리에서 판독기 사용에 대 한 정보는 포함 된 <xref:System.Xaml.XamlReader> Api.  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Xaml.XamlObjectReader" />
+    <altmember cref="T:System.Xaml.XamlXmlReader" />
+    <altmember cref="T:System.Xaml.XamlReaderSettings" />
+    <related type="Article" href="https://msdn.microsoft.com/library/7c11abec-1075-474c-9d9b-778e5dab21c3">XAML 노드 스트림 구조 및 개념 이해</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected XamlReader ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlReader.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; XamlReader();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Xaml.XamlReader" /> 클래스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Close">
+      <MemberSignature Language="C#" Value="public void Close ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Close() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlReader.Close" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Close ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Close();" />
+      <MemberSignature Language="F#" Value="member this.Close : unit -&gt; unit" Usage="xamlReader.Close " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>XAML 노드 스트림을 닫습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현에서 호출 <xref:System.Xaml.XamlReader.Close%2A> 호출 <xref:System.Xaml.XamlReader.Dispose%2A> 사용 하 여 합니다 `isDisposing` 매개 변수에 `true`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlReader.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : bool -&gt; unit&#xA;override this.Dispose : bool -&gt; unit" Usage="xamlReader.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">관리되는 리소스를 해제하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary><see cref="T:System.Xaml.XamlReader" />에서 사용하는 관리되지 않는 리소스를 해제하고, 관리되는 리소스를 선택적으로 해제할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 가져오려는 기본 클래스를 호출 해야 합니다 <xref:System.Xaml.XamlReader.IsDisposed%2A>  =  `true`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsDisposed">
+      <MemberSignature Language="C#" Value="protected bool IsDisposed { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsDisposed" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlReader.IsDisposed" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property IsDisposed As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property bool IsDisposed { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsDisposed : bool" Usage="System.Xaml.XamlReader.IsDisposed" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="M:System.Xaml.XamlReader.Dispose(System.Boolean)" />가 호출되었는지 여부를 가져옵니다.</summary>
+        <value><see cref="M:System.Xaml.XamlReader.Dispose(System.Boolean)" />가 호출되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsEof">
+      <MemberSignature Language="C#" Value="public abstract bool IsEof { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsEof" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlReader.IsEof" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property IsEof As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property bool IsEof { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsEof : bool" Usage="System.Xaml.XamlReader.IsEof" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파생 클래스에서 구현되는 경우 판독기 위치가 파일의 끝에 있는지 여부를 보고하는 값을 가져옵니다.</summary>
+        <value>위치가 XAML 노드 스트림의 개념상 파일 끝에 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하위 트리에서 판독기를 호출할 수 <xref:System.Xaml.XamlReader.IsEof%2A>를 잘못 입력 한 하위 범위를 반영 하는 동작을 사용 하 여 합니다. 자세한 내용은의 "하위 트리에서 판독기" 섹션을 참조 하세요 <xref:System.Xaml.XamlReader>, 참조 또는 <xref:System.Xaml.XamlReader.ReadSubtree%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlObjectReader.IsEof" />
+        <altmember cref="P:System.Xaml.XamlXmlReader.IsEof" />
+      </Docs>
+    </Member>
+    <Member MemberName="Member">
+      <MemberSignature Language="C#" Value="public abstract System.Xaml.XamlMember Member { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.XamlMember Member" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlReader.Member" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Member As XamlMember" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Xaml::XamlMember ^ Member { System::Xaml::XamlMember ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Member : System.Xaml.XamlMember" Usage="System.Xaml.XamlReader.Member" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlMember</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파생 클래스에서 구현되는 경우 판독기 위치가 <see cref="F:System.Xaml.XamlNodeType.StartMember" />에 있으면 판독기 위치에 있는 현재 멤버를 가져옵니다.</summary>
+        <value>현재 멤버이며, 판독기 위치가 멤버에 없는 경우 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하위 트리에서 판독기를 호출할 수 <xref:System.Xaml.XamlReader.Member%2A>, 동작이 제한 합니다. 자세한 내용은의 "하위 트리에서 판독기" 섹션을 참조 하세요 <xref:System.Xaml.XamlReader>, 참조 또는 <xref:System.Xaml.XamlReader.ReadSubtree%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlObjectReader.Member" />
+        <altmember cref="P:System.Xaml.XamlXmlReader.Member" />
+        <altmember cref="T:System.Xaml.XamlMember" />
+      </Docs>
+    </Member>
+    <Member MemberName="Namespace">
+      <MemberSignature Language="C#" Value="public abstract System.Xaml.NamespaceDeclaration Namespace { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.NamespaceDeclaration Namespace" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlReader.Namespace" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Namespace As NamespaceDeclaration" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Xaml::NamespaceDeclaration ^ Namespace { System::Xaml::NamespaceDeclaration ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Namespace : System.Xaml.NamespaceDeclaration" Usage="System.Xaml.XamlReader.Namespace" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.NamespaceDeclaration</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파생 클래스에서 구현된 경우 현재 노드에서 XAML 네임스페이스 정보를 가져옵니다.</summary>
+        <value>사용할 수 있으면 XAML 네임스페이스 정보이고, 그렇지 않으면 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 의도 한 디자인이이 API의 경우에만 null이 아닌 결과 반환 하는 것은 <xref:System.Xaml.XamlReader.NodeType%2A> 는 현재 노드의 <xref:System.Xaml.XamlNodeType.NamespaceDeclaration>입니다. 속성은 XAML 스키마 컨텍스트에서 해석 일반적인 범위 내에 있는 개체 또는 멤버에 적용 되는 XAML 네임 스페이스를 보고 하지 않습니다. 애플리케이션을 역할에 대 한 정보를 캐시 하는 수단을 제공 해야 하므로 XAML 네임 스페이스 XAML 스키마 컨텍스트를 기록기에 것으로 보고 되는 방법 외에 해당 정보가 필요한 경우 XAML 노드를 통과 합니다. 참조 <xref:System.Xaml.XamlXmlReader.Namespace%2A> 참조 구현에 대 한 참고 사항에 대 한 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlObjectReader.Namespace" />
+        <altmember cref="P:System.Xaml.XamlXmlReader.Namespace" />
+      </Docs>
+    </Member>
+    <Member MemberName="NodeType">
+      <MemberSignature Language="C#" Value="public abstract System.Xaml.XamlNodeType NodeType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Xaml.XamlNodeType NodeType" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlReader.NodeType" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property NodeType As XamlNodeType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Xaml::XamlNodeType NodeType { System::Xaml::XamlNodeType get(); };" />
+      <MemberSignature Language="F#" Value="member this.NodeType : System.Xaml.XamlNodeType" Usage="System.Xaml.XamlReader.NodeType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlNodeType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파생 클래스에서 구현되는 경우 현재 노드의 형식을 가져옵니다.</summary>
+        <value><see cref="T:System.Xaml.XamlNodeType" /> 열거형의 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하위 트리에서 판독기를 호출할 수 <xref:System.Xaml.XamlReader.NodeType%2A>, 동작이 제한 합니다. 자세한 내용은의 "하위 트리에서 판독기" 섹션을 참조 하세요 <xref:System.Xaml.XamlReader>, 참조 또는 <xref:System.Xaml.XamlReader.ReadSubtree%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlObjectReader.NodeType" />
+        <altmember cref="P:System.Xaml.XamlXmlReader.NodeType" />
+      </Docs>
+    </Member>
+    <Member MemberName="Read">
+      <MemberSignature Language="C#" Value="public abstract bool Read ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Read() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlReader.Read" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function Read () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract bool Read();" />
+      <MemberSignature Language="F#" Value="abstract member Read : unit -&gt; bool" Usage="xamlReader.Read " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 구현될 때 노드를 사용할 수 있는 경우 소스에서 다음 XAML 노드를 제공합니다.</summary>
+        <returns>노드를 사용할 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하위 트리에서 판독기를 호출할 수 <xref:System.Xaml.XamlReader.Read%2A>, 동작이 제한 합니다. 자세한 내용은의 "하위 트리에서 판독기" 섹션을 참조 하세요 <xref:System.Xaml.XamlReader>, 참조 또는 <xref:System.Xaml.XamlReader.ReadSubtree%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Xaml.XamlXmlReader.Read" />
+        <altmember cref="M:System.Xaml.XamlObjectReader.Read" />
+      </Docs>
+    </Member>
+    <Member MemberName="ReadSubtree">
+      <MemberSignature Language="C#" Value="public virtual System.Xaml.XamlReader ReadSubtree ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Xaml.XamlReader ReadSubtree() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlReader.ReadSubtree" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function ReadSubtree () As XamlReader" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Xaml::XamlReader ^ ReadSubtree();" />
+      <MemberSignature Language="F#" Value="abstract member ReadSubtree : unit -&gt; System.Xaml.XamlReader&#xA;override this.ReadSubtree : unit -&gt; System.Xaml.XamlReader" Usage="xamlReader.ReadSubtree " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlReader</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 <see cref="T:System.Xaml.XamlReader" />를 기반으로 하는 <see cref="T:System.Xaml.XamlReader" />를 반환합니다. 반환된 <see cref="T:System.Xaml.XamlReader" />는 XAML 노드 구조의 하위 트리에서 반복하는 데 사용됩니다.</summary>
+        <returns>하위 트리의 새 XAML 판독기 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 기본 구현이 고 유효한 <xref:System.Xaml.XamlReader>합니다. 반환 된 <xref:System.Xaml.XamlReader> 특정 제한 하는 내부 클래스 이며 <xref:System.Xaml.XamlReader> 작업 합니다. 제한은 차원이 지정 된 하위 트리만 읽고 XAML 노드 집합의 경우 더 큰 원본 및 파일의 끝을 반환 하기 위한 목적으로 일관 된 또는 `null` 하위 트리 종료 될 때 현재 노드에서 합니다.  
+  
+ 초기에서 현재 노드를 확인 해야 하는 일반적으로 <xref:System.Xaml.XamlReader.Read%2A> 하위 트리에서 판독기를 사용 해야 하는지 여부를 확인 하려면. 이 확인 하는 방법은 구현 별; 될 수 있습니다. 그러나 모든 하위 트리에 대해 여러 하위 트리에서 판독기를 만들지 마세요. 또한 특정 노드의 사례에 대 한 하위 트리에서 판독기를 호출 하지 않습니다 (예: <xref:System.Xaml.XamlNodeType.NamespaceDeclaration>) 노드의 하위 트리를 포함할 수 없는 합니다.  
+  
+ 하위 트리에서 판독기를 얻은 후 호출 해야 합니다 <xref:System.Xaml.XamlReader.Read%2A> 를 현재 노드를 가져옵니다 (호출 또는 <xref:System.Xaml.XamlReader.Skip%2A> 다음 노드를 가져오려면). 자동으로 가져오지 초기 노드 위치를 하위 트리에서 판독기를 만들 때.  
+  
+ 호출 하 여 사용 하는 판독기 <xref:System.Xaml.XamlReader.ReadSubtree%2A> 이 기본값에서 구현 되는 내부 클래스입니다. 내부 클래스 동작을 기반으로 합니다 <xref:System.Xaml.XamlReader> 구현 되는 때 사용 되는 <xref:System.Xaml.XamlReader.ReadSubtree%2A> 라고 합니다. 내부 클래스의 목적은를 래핑하는 <xref:System.Xaml.XamlReader.Read%2A> 및 일반 이동 동작 합니다. 순회 추적 하 여 의도 한 하위 트리 내에 머물게 <xref:System.Xaml.XamlNodeType.StartMember> / <xref:System.Xaml.XamlNodeType.EndMember> 쌍 또는 <xref:System.Xaml.XamlNodeType.StartObject> / <xref:System.Xaml.XamlNodeType.EndObject> 쌍입니다. 또한 올바르게 반환 `false` 에 대 한 <xref:System.Xaml.XamlReader.Read%2A> 하 고 `true` 에 대 한 <xref:System.Xaml.XamlReader.IsEof%2A> 때 판독기가 끝에는 하위 트리의 진입점에 의해 정의 된 대로 합니다. 일반적으로 가정 하는 모든 <xref:System.Xaml.XamlReader> 하위 트리에서 판독기에서 호출 하는 API는 전체로 동일 하 게 구현 <xref:System.Xaml.XamlReader> 동작 경계 순회를 제외 하 고 있습니다.  
+  
+ 그러나 <xref:System.Xaml.XamlReader.ReadSubtree%2A> 가상이 아닙니다. 따라서 특정 <xref:System.Xaml.XamlReader> 구현에서 다른 동작을 제공할 수는 <xref:System.Xaml.XamlReader> 내부 래퍼 동작으로 <xref:System.Xaml.XamlReader> 구현을 반환 하 여 하위 트리에서 판독기 기능을 비활성화할 수도 있습니다 <xref:System.NotImplementedException> 또는 기타 예외입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SchemaContext">
+      <MemberSignature Language="C#" Value="public abstract System.Xaml.XamlSchemaContext SchemaContext { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.XamlSchemaContext SchemaContext" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlReader.SchemaContext" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property SchemaContext As XamlSchemaContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Xaml::XamlSchemaContext ^ SchemaContext { System::Xaml::XamlSchemaContext ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SchemaContext : System.Xaml.XamlSchemaContext" Usage="System.Xaml.XamlReader.SchemaContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlSchemaContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파생 클래스에서 구현된 경우 정보 집합에 대한 XAML 스키마 컨텍스트 정보를 제공하는 개체를 가져옵니다.</summary>
+        <value>정보 집합에 대한 XAML 스키마 컨텍스트 정보를 제공하는 개체입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Xaml.XamlObjectReader.SchemaContext" />
+        <altmember cref="P:System.Xaml.XamlXmlReader.SchemaContext" />
+      </Docs>
+    </Member>
+    <Member MemberName="Skip">
+      <MemberSignature Language="C#" Value="public virtual void Skip ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Skip() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlReader.Skip" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub Skip ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Skip();" />
+      <MemberSignature Language="F#" Value="abstract member Skip : unit -&gt; unit&#xA;override this.Skip : unit -&gt; unit" Usage="xamlReader.Skip " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 노드를 건너뛰고 판독기 위치를 다음 노드로 이동합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 건너뛴 후 <xref:System.Xaml.XamlReader.Read%2A> 는 기본적으로 라고 <xref:System.Xaml.XamlReader.Skip%2A> 구현 합니다. 일반적으로 호출 하지 않으면 <xref:System.Xaml.XamlReader.Skip%2A> 고 <xref:System.Xaml.XamlReader.Read%2A> 순서로 합니다.  
+  
+ 기본에서 <xref:System.Xaml.XamlReader.Skip%2A> 구현에서 다른 조치를 따라 <xref:System.Xaml.XamlReader.NodeType%2A> 가 현재 판독기 위치입니다. 가 현재 판독기 위치 하는 경우는 <xref:System.Xaml.XamlNodeType.StartMember> 또는 <xref:System.Xaml.XamlNodeType.StartObject>, 멤버 또는 개체를 건너뜁니다. 다른 <xref:System.Xaml.XamlReader.NodeType%2A> 값에 아무 작업도 호출 이외의 <xref:System.Xaml.XamlReader.Read%2A> 현재 위치에서.  
+  
+ 하위 트리에서 판독기를 호출할 수 <xref:System.Xaml.XamlReader.Skip%2A>, 동작이 제한 합니다. 자세한 내용은의 "하위 트리에서 판독기" 섹션을 참조 하세요 <xref:System.Xaml.XamlReader>, 참조 또는 <xref:System.Xaml.XamlReader.ReadSubtree%2A>합니다.  
+  
+ 노드 트리 동작 <xref:System.Xaml.XamlReader.Skip%2A?displayProperty=nameWithType> 동등 XML 메시지를 기반으로 <xref:System.Xml.XmlReader.Skip%2A?displayProperty=nameWithType>입니다. 기반으로 합니다 <xref:System.Xml.XmlReader.Skip%2A?displayProperty=nameWithType> 동작 동등성 <xref:System.Xaml.XamlReader.Skip%2A?displayProperty=nameWithType> 노드와 해당 하위 트리를 뿐 아니라 단일 항목 노드를 건너뜁니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.IDisposable.Dispose">
+      <MemberSignature Language="C#" Value="void IDisposable.Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.IDisposable.Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlReader.System#IDisposable#Dispose" />
+      <MemberSignature Language="VB.NET" Value="Sub Dispose () Implements IDisposable.Dispose" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.IDisposable.Dispose() = IDisposable::Dispose;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Xaml.XamlReader" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Type">
+      <MemberSignature Language="C#" Value="public abstract System.Xaml.XamlType Type { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.XamlType Type" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlReader.Type" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Type As XamlType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Xaml::XamlType ^ Type { System::Xaml::XamlType ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Type : System.Xaml.XamlType" Usage="System.Xaml.XamlReader.Type" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파생 클래스에서 구현된 경우 현재 노드의 <see cref="T:System.Xaml.XamlType" />을 가져옵니다.</summary>
+        <value>현재 노드의 <see cref="T:System.Xaml.XamlType" />이거나, 현재 판독기 위치가 개체에 없으면 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하위 트리에서 판독기를 호출할 수 <xref:System.Xaml.XamlReader.Type%2A>, 동작이 제한 합니다. 자세한 내용은의 "하위 트리에서 판독기" 섹션을 참조 하세요 <xref:System.Xaml.XamlReader>, 참조 또는 <xref:System.Xaml.XamlReader.ReadSubtree%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlObjectReader.Type" />
+        <altmember cref="P:System.Xaml.XamlXmlReader.Type" />
+      </Docs>
+    </Member>
+    <Member MemberName="Value">
+      <MemberSignature Language="C#" Value="public abstract object Value { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object Value" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlReader.Value" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Value As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::Object ^ Value { System::Object ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Value : obj" Usage="System.Xaml.XamlReader.Value" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파생 클래스에서 구현되는 경우 현재 노드의 값을 가져옵니다.</summary>
+        <value>현재 노드의 값이거나, 현재 판독기 위치가 <see cref="F:System.Xaml.XamlNodeType.Value" /> 노드 형식에 없으면 <see langword="null" />입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Xaml.XamlObjectReader.Value" />
+        <altmember cref="P:System.Xaml.XamlXmlReader.Value" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

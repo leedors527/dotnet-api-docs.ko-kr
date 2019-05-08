@@ -1,0 +1,659 @@
+<Type Name="SessionStateStoreProviderBase" FullName="System.Web.SessionState.SessionStateStoreProviderBase">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="1841436a6479c0b1c33c26794c28ee86cb78e78f" /><Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="11/17/2018" /><Meta Name="ms.locfileid" Value="51936017" /></Metadata><TypeSignature Language="C#" Value="public abstract class SessionStateStoreProviderBase : System.Configuration.Provider.ProviderBase" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit SessionStateStoreProviderBase extends System.Configuration.Provider.ProviderBase" />
+  <TypeSignature Language="DocId" Value="T:System.Web.SessionState.SessionStateStoreProviderBase" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class SessionStateStoreProviderBase&#xA;Inherits ProviderBase" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SessionStateStoreProviderBase abstract : System::Configuration::Provider::ProviderBase" />
+  <TypeSignature Language="F#" Value="type SessionStateStoreProviderBase = class&#xA;    inherit ProviderBase" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Configuration.Provider.ProviderBase</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>데이터 저장소에 대한 세션 상태 공급자의 필수 멤버를 정의합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ ASP.NET 세션 상태를 읽고에서 세션 상태를 사용 하 여 데이터 저장소로 세션 데이터 저장소 공급자를 기록 합니다. 세션 상태 저장소 공급자는 상속 된 클래스는 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 데이터에 특정 된 구현 사용 하 여 해당 멤버를 저장 하는 추상 클래스 및 재정의 합니다. ASP.NET 페이지를 처리하는 동안 세션 상태 저장소 공급자는 <xref:System.Web.SessionState.SessionStateModule> 클래스에 의해 호출되어 세션 변수 및 시간 제한 값과 같은 관련 세션 정보를 저장하고 검색하기 위해 스토리지용 데이터 저장소와 통신합니다.  
+  
+ 각 ASP.NET 애플리케이션 내 세션 데이터는 각각에 대해 개별적으로 저장 됩니다 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 속성입니다. ASP.NET 애플리케이션에서 세션 데이터를 공유 하지 않습니다.  
+  
+ 사용자 지정을 지정할 수 있습니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 설정 하 여 ASP.NET 애플리케이션에 대 한 구현을 합니다 `mode` 특성을 `sessionState` 구성 요소를 <xref:System.Web.SessionState.SessionStateMode.Custom> 및 `customProvider` 으로 특성을 사용자 지정 공급자의 이름 이 항목의 예제에 나와 있습니다.  
+  
+## <a name="locking-session-store-data"></a>세션 저장소 데이터 잠금  
+ 있기 때문에 ASP.NET 애플리케이션은 동시 요청에 응답을 지원 하기 위해 다중 스레드, 동시 요청 수 같은 세션 정보에 액세스 하려고 할 수 있습니다. 여기서 모든 프레임셋에서 다중 프레임 동일한 애플리케이션을 액세스 하는 시나리오를 고려 합니다. 여러 스레드에서 동시에 웹 서버의 프레임셋의 각 프레임에 대 한 별도 요청을 실행할 수 있습니다. 세션 상태 변수에 액세스 하는 각 프레임 원본에 대 한 ASP.NET 페이지, 세션 저장소를 동시에 액세스 하는 여러 스레드가 있을 수 있습니다.  
+  
+ 예기치 않은 세션 상태 동작을 확인 하 고 세션 저장소에서 데이터 충돌을 방지 하려면 합니다 <xref:System.Web.SessionState.SessionStateModule> 및 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 을 단독으로 기간에 대 한 특정 세션에 대 한 세션 저장소 항목을 잠그는 잠금 기능을 포함 하는 클래스를 ASP.NET 페이지의 실행 합니다. 경우에도 확인 합니다 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> 특성으로 표시 되어 `ReadOnly`, 동일한 애플리케이션의 다른 ASP.NET 페이지는 저장소의에서 데이터를 여전히 생길 수에 대 한 대기 중인 읽기 전용 세션에 대 한 요청을 잠글 데이터가 될 수 있도록 세션 저장소에 쓸 수 있습니다 해제 합니다.  
+  
+ 세션 저장소 데이터 요청에 대 한 호출의 시작 부분에 잠금이 설정 된 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드. 호출 하는 동안에 잠금이 해제 되는 요청이 완료 되 면를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> 메서드.  
+  
+ 경우는 <xref:System.Web.SessionState.SessionStateModule> 개체를 호출 하는 동안 잠긴된 세션 데이터를 발생 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 또는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 메서드를 다시 요청 세션 데이터를 0.5 초 간격으로 잠금이 해제 되 되거나 크기는 시간까지 세션 데이터를 잠 궜 습니다의 값을 초과 합니다 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> 속성입니다. 실행 제한 시간 초과 되 면 합니다 <xref:System.Web.SessionState.SessionStateModule> 개체를 호출 합니다는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 메서드를 세션 저장소 데이터를 해제 하 고 해당 시점에 세션 저장소 데이터를 요청 합니다.  
+  
+ 세션 저장소 잠겨 있으므로 데이터를 호출 하 여 해제할 수는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 메서드를 호출 하기 전에 별도 스레드에서 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> 현재 응답에 대 한 메서드를 설정 하 고 있는 데이터를 세션 상태 저장소 해제 시도가 수행 수 이미 해제 되어 다른 세션에서 수정 합니다. 이 상황을 방지 하려면 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 및 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드 잠금 식별자를 반환 합니다. 이 잠금 식별자 잠긴된 세션 저장소 데이터를 수정 하는 각 요청에 포함 해야 합니다. 세션 저장소 데이터 저장소에서 잠금 식별자가 제공한 잠금 식별자와 일치 하는 경우에 데이터가 수정 되는 <xref:System.Web.SessionState.SessionStateModule>합니다.  
+  
+## <a name="deleting-expired-session-store-data"></a>만료 된 세션 저장소 데이터를 삭제합니다.  
+ 경우는 <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> 메서드는 특정 세션을 사용 하 여 데이터 저장소에서 해당 세션에 대 한 데이터가 삭제 됩니다는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> 메서드를 세션에 대 한 데이터를 이후 요청을 처리 하려면 세션 데이터 저장소에 유지 하는 고, 그렇지 합니다. 것은 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 만료 된 세션 데이터를 삭제 하려면 구현 합니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ 다음 코드 예제에서는 사용자 지정 세션 상태 저장소 공급자를 사용 하도록 구성 된 ASP.NET 애플리케이션에 대 한 Web.config 파일을 보여줍니다.  
+  
+```  
+<configuration>  
+  <connectionStrings>  
+    <add name="OdbcSessionServices" connectionString="DSN=SessionState;" />  
+  </connectionStrings>  
+  
+  <system.web>  
+    <sessionState   
+      mode="Custom"  
+      customProvider="OdbcSessionProvider">  
+      <providers>  
+        <add name="OdbcSessionProvider"  
+             type="Samples.AspNet.Session.OdbcSessionStateStore"  
+             connectionStringName="OdbcSessionServices" />  
+      </providers>  
+    </sessionState>  
+  </system.web>  
+</configuration>  
+```  
+  
+ ]]></format>
+    </remarks>
+    <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected SessionStateStoreProviderBase ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; SessionStateStoreProviderBase();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 상속 된 클래스에 대 한 생성자를 구현할 필요가 없습니다를 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 추상 클래스입니다. 초기화에 대 한 값을 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 구현에 전달 되는 <xref:System.Configuration.Provider.ProviderBase.Initialize%2A> 메서드 구현 합니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateNewStoreData">
+      <MemberSignature Language="C#" Value="public abstract System.Web.SessionState.SessionStateStoreData CreateNewStoreData (System.Web.HttpContext context, int timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SessionState.SessionStateStoreData CreateNewStoreData(class System.Web.HttpContext context, int32 timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData(System.Web.HttpContext,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function CreateNewStoreData (context As HttpContext, timeout As Integer) As SessionStateStoreData" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Web::SessionState::SessionStateStoreData ^ CreateNewStoreData(System::Web::HttpContext ^ context, int timeout);" />
+      <MemberSignature Language="F#" Value="abstract member CreateNewStoreData : System.Web.HttpContext * int -&gt; System.Web.SessionState.SessionStateStoreData" Usage="sessionStateStoreProviderBase.CreateNewStoreData (context, timeout)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SessionState.SessionStateStoreData</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="timeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <param name="timeout">새 <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" />의 세션 상태 <see cref="T:System.Web.SessionState.SessionStateStoreData" /> 값입니다.</param>
+        <summary>현재 요청에 사용할 새 <see cref="T:System.Web.SessionState.SessionStateStoreData" /> 개체를 만듭니다.</summary>
+        <returns>현재 요청에 대한 새 <see cref="T:System.Web.SessionState.SessionStateStoreData" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.SessionState.SessionStateModule> 호출 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> ASP.NET 페이지에 대 한 요청을 시작할 때 메서드 중는 <xref:System.Web.HttpApplication.AcquireRequestState> 이벤트입니다. <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> 경우 메서드가 호출 됩니다.  
+  
+-   들어오는 요청에는 세션 ID 또는  
+  
+-   들어오는 요청에 세션 ID가 있지만 세션 데이터 저장소에 없습니다.  
+  
+ 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> 메서드를 만듭니다 <xref:System.Web.SessionState.SessionStateStoreData> 빈 개체 <xref:System.Web.SessionState.ISessionStateItemCollection> 개체를 <xref:System.Web.HttpStaticObjectsCollection> 컬렉션 및 지정 된 `timeout` 값입니다. 합니다 <xref:System.Web.HttpStaticObjectsCollection> 를 사용 하 여 ASP.NET 애플리케이션에 대 한 컬렉션을 검색할 수 있습니다는 <xref:System.Web.SessionState.SessionStateUtility.GetSessionStaticObjects%2A> 메서드.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateUninitializedItem">
+      <MemberSignature Language="C#" Value="public abstract void CreateUninitializedItem (System.Web.HttpContext context, string id, int timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void CreateUninitializedItem(class System.Web.HttpContext context, string id, int32 timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem(System.Web.HttpContext,System.String,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub CreateUninitializedItem (context As HttpContext, id As String, timeout As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void CreateUninitializedItem(System::Web::HttpContext ^ context, System::String ^ id, int timeout);" />
+      <MemberSignature Language="F#" Value="abstract member CreateUninitializedItem : System.Web.HttpContext * string * int -&gt; unit" Usage="sessionStateStoreProviderBase.CreateUninitializedItem (context, id, timeout)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="id" Type="System.String" />
+        <Parameter Name="timeout" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <param name="id">현재 요청에 대한 <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" />입니다.</param>
+        <param name="timeout">현재 요청에 대한 세션 <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" />입니다.</param>
+        <summary>데이터 저장소에 새 세션 상태 항목을 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> 세션을 사용 하 여 메서드를 사용 하는 경우는 `cookieless` 및 `regenerateExpiredSessionId` 특성은 모두 `true`합니다. 필요는 `regenerateExpiredSessionId attribute` 로 설정 `true` 하면를 <xref:System.Web.SessionState.SessionStateModule> 생성할 새 개체 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 만료 된 경우 값 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 값이 발견 합니다.  
+  
+ 새로 생성 하는 과정 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 값에 새로 생성 된 포함 된 URL로 브라우저를 리디렉션하여 필요 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 값입니다. 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> 메서드는 초기 요청 만료를 포함 하는 동안 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 값입니다. 후는 <xref:System.Web.SessionState.SessionStateModule> 개체를 새로 획득 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 만료 값을 바꿀 값, 호출을 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> 세션 상태 데이터 저장소에 초기화 되지 않은 항목을 추가 하는 방법. 브라우저는 다음 새로 생성 된 포함 하는 URL로 리디렉션됩니다 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 값입니다. 세션 데이터 저장소에서 초기화 되지 않은 항목의 존재 하면 새로 생성 된 포함 된 리디렉션된 요청 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 값은 만료 된 세션에 대 한 요청에 대해 잘못 인식 되지 않습니다 및 인 대신 새로운 세션으로 처리 됩니다.  
+  
+ 세션 데이터 저장소의 초기화 되지 않은 항목은 새로 생성 된 연관 <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> 값 및 기본 값만 포함, 만료 날짜 및 시간에 해당 하는 값을 포함 하는 `actionFlags` 매개 변수를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>및 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드. 세션 상태 저장소의 초기화 되지 않은 항목이 포함 되어야를 `actionFlags` 와 같은 값을 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> 열거형 값입니다. 이 값이 전달를 <xref:System.Web.SessionState.SessionStateModule> 하 여 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 및 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드를 알리는 <xref:System.Web.SessionState.SessionStateModule> 세션을 초기화 되지 않은 새 않지만 현재 세션 개체. 합니다 <xref:System.Web.SessionState.SessionStateModule> 개체는 새 세션을 초기화 하 고 발생 하지 않습니다는 `Session_OnStart` 이벤트입니다.  
+  
+ 쿠키 없는 세션에 대 한 자세한 내용은 참조는 <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> 속성입니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public abstract void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit" Usage="sessionStateStoreProviderBase.Dispose " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> 구현에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.Dispose%2A?displayProperty=nameWithType> 메서드를 호출한 경우는 <xref:System.Web.SessionState.SessionStateModule.Dispose%2A?displayProperty=nameWithType> 애플리케이션 도메인을 닫을 때 메서드를 실행 합니다. 상속 된 클래스는 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 클래스 사용에 더 이상 리소스를 해제 하려면이 메서드를 사용할 수 없습니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="EndRequest">
+      <MemberSignature Language="C#" Value="public abstract void EndRequest (System.Web.HttpContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EndRequest(class System.Web.HttpContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest(System.Web.HttpContext)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub EndRequest (context As HttpContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void EndRequest(System::Web::HttpContext ^ context);" />
+      <MemberSignature Language="F#" Value="abstract member EndRequest : System.Web.HttpContext -&gt; unit" Usage="sessionStateStoreProviderBase.EndRequest context" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <summary>요청이 끝날 때 <see cref="T:System.Web.SessionState.SessionStateModule" /> 개체에 의해 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.SessionState.SessionStateModule> 호출 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> ASP.NET 페이지에 대 한 요청의 끝 메서드 중는 <xref:System.Web.HttpApplication.EndRequest> 이벤트입니다. 사용할 수는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> 세션 상태 저장소 공급자에 필요한 요청 정리 작업을 수행 하는 방법입니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetItem">
+      <MemberSignature Language="C#" Value="public abstract System.Web.SessionState.SessionStateStoreData GetItem (System.Web.HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out System.Web.SessionState.SessionStateActions actions);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SessionState.SessionStateStoreData GetItem(class System.Web.HttpContext context, string id, [out] bool&amp; locked, [out] valuetype System.TimeSpan&amp; lockAge, [out] object&amp; lockId, [out] valuetype System.Web.SessionState.SessionStateActions&amp; actions) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.GetItem(System.Web.HttpContext,System.String,System.Boolean@,System.TimeSpan@,System.Object@,System.Web.SessionState.SessionStateActions@)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function GetItem (context As HttpContext, id As String, ByRef locked As Boolean, ByRef lockAge As TimeSpan, ByRef lockId As Object, ByRef actions As SessionStateActions) As SessionStateStoreData" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Web::SessionState::SessionStateStoreData ^ GetItem(System::Web::HttpContext ^ context, System::String ^ id, [Runtime::InteropServices::Out] bool % locked, [Runtime::InteropServices::Out] TimeSpan % lockAge, [Runtime::InteropServices::Out] System::Object ^ % lockId, [Runtime::InteropServices::Out] System::Web::SessionState::SessionStateActions % actions);" />
+      <MemberSignature Language="F#" Value="abstract member GetItem : System.Web.HttpContext * string *  *  *  *  -&gt; System.Web.SessionState.SessionStateStoreData" Usage="sessionStateStoreProviderBase.GetItem (context, id, locked, lockAge, lockId, actions)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SessionState.SessionStateStoreData</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="id" Type="System.String" />
+        <Parameter Name="locked" Type="System.Boolean" RefType="out" />
+        <Parameter Name="lockAge" Type="System.TimeSpan" RefType="out" />
+        <Parameter Name="lockId" Type="System.Object" RefType="out" />
+        <Parameter Name="actions" Type="System.Web.SessionState.SessionStateActions" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <param name="id">현재 요청에 대한 <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" />입니다.</param>
+        <param name="locked">이 메서드가 반환될 때 요청된 세션 항목이 세션 데이터 저장소에서 잠겨 있으면 <see langword="true" />로 설정된 부울 값이 포함되고, 그렇지 않으면 <see langword="false" />로 설정된 부울 값이 포함됩니다.</param>
+        <param name="lockAge">이 메서드가 반환될 때 세션 데이터 저장소의 항목이 잠겨 있는 시간으로 설정된 <see cref="T:System.TimeSpan" /> 개체가 포함됩니다.</param>
+        <param name="lockId">이 메서드가 반환될 때 현재 요청에 대한 잠금 식별자로 설정된 개체가 포함됩니다. 잠금 식별자에 대한 자세한 내용은 <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> 클래스 요약에서 "세션 저장소 데이터 잠금"을 참조하십시오.</param>
+        <param name="actions">이 메서드가 반환될 때 현재 세션이 초기화되지 않은 쿠키 없는 세션인지 여부를 나타내는 <see cref="T:System.Web.SessionState.SessionStateActions" /> 값 중 하나가 포함됩니다.</param>
+        <summary>세션 데이터 저장소에서 읽기 전용 세션 상태 데이터를 반환합니다.</summary>
+        <returns>세션 데이터 저장소의 세션 값과 정보로 채워진 <see cref="T:System.Web.SessionState.SessionStateStoreData" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SessionState.SessionStateModule> 호출 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 요청의 시작 부분에는 메서드 중를 <xref:System.Web.HttpApplication.AcquireRequestState> 이벤트 때를 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> 특성이로 설정 된 `ReadOnly`. 경우는 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> 특성이로 설정 된 `true`의 <xref:System.Web.SessionState.SessionStateModule> 개체를 대신 호출을 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드.  
+  
+ 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 메서드가 반환 되는 <xref:System.Web.SessionState.SessionStateStoreData> 개체 데이터 저장소에서 세션 정보로 채워진 및 세션 데이터의 만료 날짜를 업데이트 합니다. 데이터 저장소에 세션 항목 데이터가 없는 경우는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 메서드 집합을 `locked` `out` 매개 변수를 `false` 반환 `null`합니다. 이 인해 합니다 <xref:System.Web.SessionState.SessionStateModule> 를 호출 하는 개체는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> 데이터 저장소에서 새 세션 항목을 만드는 방법.  
+  
+ 경우 세션 항목 데이터 저장소에서 데이터를 찾을 수 있지만 데이터 잠겨를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 메서드 집합을 `locked` `out` 매개 변수를 `true`를 설정 합니다 `lockAge` `out` 매개 변수는 현재 날짜 및 시간을 뺀 날짜를 및에서 항목을 잠근 경우 시간 (데이터 저장소에서 검색 되는)을 설정 하는 `lockId` `out` 잠금 식별자로 매개 변수 검색 데이터 저장소를 반환 합니다 `null`. 이 인해 합니다 <xref:System.Web.SessionState.SessionStateModule> 를 호출 하는 개체는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 세션 항목 정보를 검색 하려고 하는 0.5 초 간격 후에 다시 메서드.  
+  
+ 경우 값은를 `lockAge` `out` 초과 매개 변수 설정를 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> 값을 해당 <xref:System.Web.SessionState.SessionStateModule> 호출 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 세션 항목 데이터 및 다음 호출에 대 한 잠금을 해제 하는 방법을 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 메서드를 다시.  
+  
+ `actionFlags` 매개 변수를 사용 하면 모두를 `cookieless` 및 `regenerateExpiredSessionId` 특성으로 설정 됩니다 `true`. `actionFlags` 값으로 설정 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> 초기화 작업을 수행 하는 새 세션 항목이 세션 데이터 저장소에 임을 나타냅니다. 호출 하 여 세션 데이터 저장소에서 초기화 되지 않은 항목이 만들어집니다는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> 메서드. 세션 데이터 저장소에서 항목을 초기화 되지 않은 항목에 없는 경우는 `actionFlags` 매개 변수를 0으로 설정 됩니다.  
+  
+ 쿠키 없는 세션을 지 원하는 사용자 지정 세션 상태 저장소 구현자로 설정 해야 합니다 `actionFlags` `out` 현재 항목에 대 한 세션 데이터 저장소에서 반환 된 매개 변수 값입니다. 경우는 `actionFlags` 항목 같은 요청된 된 세션 저장소에 대 한 매개 변수 값을 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> 열거형 값을 해당 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 메서드를 0으로 설정한 후 데이터 저장소에서 값을 설정 해야 합니다 `actionFlags` `out` 매개 변수.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetItemExclusive">
+      <MemberSignature Language="C#" Value="public abstract System.Web.SessionState.SessionStateStoreData GetItemExclusive (System.Web.HttpContext context, string id, out bool locked, out TimeSpan lockAge, out object lockId, out System.Web.SessionState.SessionStateActions actions);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SessionState.SessionStateStoreData GetItemExclusive(class System.Web.HttpContext context, string id, [out] bool&amp; locked, [out] valuetype System.TimeSpan&amp; lockAge, [out] object&amp; lockId, [out] valuetype System.Web.SessionState.SessionStateActions&amp; actions) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive(System.Web.HttpContext,System.String,System.Boolean@,System.TimeSpan@,System.Object@,System.Web.SessionState.SessionStateActions@)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function GetItemExclusive (context As HttpContext, id As String, ByRef locked As Boolean, ByRef lockAge As TimeSpan, ByRef lockId As Object, ByRef actions As SessionStateActions) As SessionStateStoreData" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Web::SessionState::SessionStateStoreData ^ GetItemExclusive(System::Web::HttpContext ^ context, System::String ^ id, [Runtime::InteropServices::Out] bool % locked, [Runtime::InteropServices::Out] TimeSpan % lockAge, [Runtime::InteropServices::Out] System::Object ^ % lockId, [Runtime::InteropServices::Out] System::Web::SessionState::SessionStateActions % actions);" />
+      <MemberSignature Language="F#" Value="abstract member GetItemExclusive : System.Web.HttpContext * string *  *  *  *  -&gt; System.Web.SessionState.SessionStateStoreData" Usage="sessionStateStoreProviderBase.GetItemExclusive (context, id, locked, lockAge, lockId, actions)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SessionState.SessionStateStoreData</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="id" Type="System.String" />
+        <Parameter Name="locked" Type="System.Boolean" RefType="out" />
+        <Parameter Name="lockAge" Type="System.TimeSpan" RefType="out" />
+        <Parameter Name="lockId" Type="System.Object" RefType="out" />
+        <Parameter Name="actions" Type="System.Web.SessionState.SessionStateActions" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <param name="id">현재 요청에 대한 <see cref="P:System.Web.SessionState.HttpSessionState.SessionID" />입니다.</param>
+        <param name="locked">이 메서드가 반환될 때 성공적으로 잠기면 <see langword="true" />로 설정된 부울 값이 포함되고, 그렇지 않으면 <see langword="false" />로 설정된 부울 값이 포함됩니다.</param>
+        <param name="lockAge">이 메서드가 반환될 때 세션 데이터 저장소의 항목이 잠겨 있는 시간으로 설정된 <see cref="T:System.TimeSpan" /> 개체가 포함됩니다.</param>
+        <param name="lockId">이 메서드가 반환될 때 현재 요청에 대한 잠금 식별자로 설정된 개체가 포함됩니다. 잠금 식별자에 대한 자세한 내용은 <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> 클래스 요약에서 "세션 저장소 데이터 잠금"을 참조하십시오.</param>
+        <param name="actions">이 메서드가 반환될 때 현재 세션이 초기화되지 않은 쿠키 없는 세션인지 여부를 나타내는 <see cref="T:System.Web.SessionState.SessionStateActions" /> 값 중 하나가 포함됩니다.</param>
+        <summary>세션 데이터 저장소에서 읽기 전용 세션 상태 데이터를 반환합니다.</summary>
+        <returns>세션 데이터 저장소의 세션 값과 정보로 채워진 <see cref="T:System.Web.SessionState.SessionStateStoreData" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SessionState.SessionStateModule> 호출 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드 요청을 시작 부분에 중를 <xref:System.Web.HttpApplication.AcquireRequestState> 이벤트는 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> 특성이로 설정 된 `true`, 기본값. 경우는 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> 특성이로 설정 된 `ReadOnly`의 <xref:System.Web.SessionState.SessionStateModule> 개체를 대신 호출을 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> 메서드.  
+  
+ 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드가 반환 되는 <xref:System.Web.SessionState.SessionStateStoreData> 데이터 저장소에서 세션 정보로 채워진 개체는 저장된 된 데이터의 만료 날짜를 업데이트 하 고 요청 기간에 대 한 데이터 저장소에서 세션 항목 데이터를 잠급니다. 데이터 저장소에 세션 항목 데이터가 없는 경우는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드 집합을 `locked` `out` 매개 변수를 `false` 반환 `null`합니다. 이 인해 합니다 <xref:System.Web.SessionState.SessionStateModule> 를 호출 하는 개체는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> 데이터 저장소에서 새 세션 항목을 만드는 방법. 경우 세션 항목 데이터 저장소에서 데이터를 찾을 수 있지만 데이터 잠겨를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드 집합을 `locked` `out` 매개 변수를 `true`를 설정 합니다 `lockAge` `out` 매개 변수는 현재 날짜 및 시간을 뺀 날짜를 및에서 항목을 잠근 경우 시간 (데이터 저장소에서 검색 되는)을 설정 하는 `lockId` `out` 잠금 식별자로 매개 변수 검색 데이터 저장소를 반환 합니다 `null`. 이 인해 합니다 <xref:System.Web.SessionState.SessionStateModule> 를 호출 하는 개체는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 세션 항목 정보를 검색 하 고 데이터에 대 한 잠금을 획득 하려고 하는 0.5 초 간격 후에 다시 메서드. 경우 값은를 `lockAge` `out` 매개 변수를 초과는 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> 값을 해당 <xref:System.Web.SessionState.SessionStateModule> 호출을 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 세션 항목 데이터 및 다음 호출에 대 한 잠금을 해제 하는 방법을 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드를 다시.  
+  
+ `actionFlags` 매개 변수를 사용 하면를 `cookieless` 및 `regenerateExpiredSessionId` 특성은 모두로 설정 됩니다 `true`합니다. `actionFlags` 값으로 설정 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> 초기화 작업을 수행 하는 새 세션 항목이 세션 데이터 저장소에 임을 나타냅니다. 호출 하 여 세션 데이터 저장소에서 초기화 되지 않은 항목이 만들어집니다는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> 메서드. 세션 데이터 저장소에서 항목을 초기화 되지 않은 항목에 없는 경우는 `actionFlags` 매개 변수를 0으로 설정 됩니다.  
+  
+ 쿠키 없는 세션을 지 원하는 사용자 지정 세션 상태 저장소 구현자로 설정 해야 합니다 `actionFlags` `out` 현재 항목에 대 한 세션 데이터 저장소에서 반환 된 매개 변수 값입니다. 경우는 `actionFlags` 항목 같은 요청된 된 세션 저장소에 대 한 매개 변수 값을 <xref:System.Web.SessionState.SessionStateActions.InitializeItem> 열거형 값을 해당 <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> 메서드를 0으로 설정한 후 데이터 저장소에서 값을 설정 해야 합니다 `actionFlags` `out` 매개 변수.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeRequest">
+      <MemberSignature Language="C#" Value="public abstract void InitializeRequest (System.Web.HttpContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InitializeRequest(class System.Web.HttpContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest(System.Web.HttpContext)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub InitializeRequest (context As HttpContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void InitializeRequest(System::Web::HttpContext ^ context);" />
+      <MemberSignature Language="F#" Value="abstract member InitializeRequest : System.Web.HttpContext -&gt; unit" Usage="sessionStateStoreProviderBase.InitializeRequest context" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <summary>요청별 초기화를 위해 <see cref="T:System.Web.SessionState.SessionStateModule" /> 개체에 의해 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.SessionState.SessionStateModule> 호출 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> 메서드를 다른 호출 하기 전에 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 메서드. 사용할 수는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> 세션 상태 저장소 공급자에 필요한 모든 요청별 초기화를 수행 하는 방법입니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseItemExclusive">
+      <MemberSignature Language="C#" Value="public abstract void ReleaseItemExclusive (System.Web.HttpContext context, string id, object lockId);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ReleaseItemExclusive(class System.Web.HttpContext context, string id, object lockId) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive(System.Web.HttpContext,System.String,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub ReleaseItemExclusive (context As HttpContext, id As String, lockId As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void ReleaseItemExclusive(System::Web::HttpContext ^ context, System::String ^ id, System::Object ^ lockId);" />
+      <MemberSignature Language="F#" Value="abstract member ReleaseItemExclusive : System.Web.HttpContext * string * obj -&gt; unit" Usage="sessionStateStoreProviderBase.ReleaseItemExclusive (context, id, lockId)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="id" Type="System.String" />
+        <Parameter Name="lockId" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <param name="id">현재 요청에 대한 세션 식별자입니다.</param>
+        <param name="lockId">현재 요청에 대한 잠금 식별자입니다.</param>
+        <summary>세션 데이터 저장소의 항목에 대한 잠금을 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.SessionState.SessionStateModule> 호출 개체는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 만료 날짜를 업데이트 하 고 세션 데이터 저장소에서 해당 항목의 잠금을 해제할 방법입니다. 동안 요청의 끝에 호출 되는 <xref:System.Web.HttpApplication.ReleaseRequestState> 세션 값이 변경 되지 않은 경우 이벤트입니다. 세션 값을 수정한 경우 합니다 <xref:System.Web.SessionState.SessionStateModule> 개체를 대신 호출 된 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> 메서드.  
+  
+ <xref:System.Web.SessionState.SessionStateModule> 개체도 호출 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 세션 데이터 저장소에 있는 항목에 대 한 잠금을 초과할 경우 메서드는 <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> 값. "세션 저장소 데이터 잠금" 잠금에 대 한 자세한 내용은 잠금 식별자에 대 한 세부 정보에 대 한 참조를 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 클래스 개요입니다.  
+  
+ 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 메서드는 제공 된 세션을 일치 하는 현재 애플리케이션에 대 한 세션 데이터 저장소의 항목에서 잠금을 제거 `id` 고 `lockId` 값입니다. 경우는 `lockId` 데이터 저장소에 있는 일치 하지 않습니다는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 메서드는 아무 작업도 수행 하지 않습니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveItem">
+      <MemberSignature Language="C#" Value="public abstract void RemoveItem (System.Web.HttpContext context, string id, object lockId, System.Web.SessionState.SessionStateStoreData item);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RemoveItem(class System.Web.HttpContext context, string id, object lockId, class System.Web.SessionState.SessionStateStoreData item) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem(System.Web.HttpContext,System.String,System.Object,System.Web.SessionState.SessionStateStoreData)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub RemoveItem (context As HttpContext, id As String, lockId As Object, item As SessionStateStoreData)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void RemoveItem(System::Web::HttpContext ^ context, System::String ^ id, System::Object ^ lockId, System::Web::SessionState::SessionStateStoreData ^ item);" />
+      <MemberSignature Language="F#" Value="abstract member RemoveItem : System.Web.HttpContext * string * obj * System.Web.SessionState.SessionStateStoreData -&gt; unit" Usage="sessionStateStoreProviderBase.RemoveItem (context, id, lockId, item)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="id" Type="System.String" />
+        <Parameter Name="lockId" Type="System.Object" />
+        <Parameter Name="item" Type="System.Web.SessionState.SessionStateStoreData" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <param name="id">현재 요청에 대한 세션 식별자입니다.</param>
+        <param name="lockId">현재 요청에 대한 잠금 식별자입니다.</param>
+        <param name="item">데이터 저장소에서 삭제할 항목을 나타내는 <see cref="T:System.Web.SessionState.SessionStateStoreData" />입니다.</param>
+        <summary>세션 데이터 저장소에서 항목 데이터를 삭제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SessionState.SessionStateModule> 호출 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> 요청의 끝 메서드 중를 <xref:System.Web.HttpApplication.ReleaseRequestState> 경우 세션 데이터 저장소에서 항목을 세션에 대 한 데이터를 삭제 하는 경우는 <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> 메서드를 호출한 합니다. 제공된 된 세션을 일치 하는 현재 애플리케이션에 대 한 세션 데이터만 `id` 고 `lockId` 값 삭제 됩니다. "세션 저장소 데이터 잠금" 잠금에 대 한 자세한 내용은 잠금 식별자에 대 한 세부 정보에 대 한 참조를 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 클래스 개요입니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetItemTimeout">
+      <MemberSignature Language="C#" Value="public abstract void ResetItemTimeout (System.Web.HttpContext context, string id);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ResetItemTimeout(class System.Web.HttpContext context, string id) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout(System.Web.HttpContext,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub ResetItemTimeout (context As HttpContext, id As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void ResetItemTimeout(System::Web::HttpContext ^ context, System::String ^ id);" />
+      <MemberSignature Language="F#" Value="abstract member ResetItemTimeout : System.Web.HttpContext * string -&gt; unit" Usage="sessionStateStoreProviderBase.ResetItemTimeout (context, id)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="id" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <param name="id">현재 요청에 대한 세션 식별자입니다.</param>
+        <summary>세션 데이터 저장소에 있는 항목의 만료 날짜와 시간을 업데이트합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SessionState.SessionStateModule> 호출 개체의 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> 메서드는 현재 날짜와 시간 및 세션을 만료 날짜 및 시간을 세션에 대 한 업데이트를 <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> 값 중 하나:  
+  
+-   합니다 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> 특성은 `true`, 또는  
+  
+-   요청이 발생 하지 않았습니다 합니다 <xref:System.Web.HttpApplication.AcquireRequestState> 및 <xref:System.Web.HttpApplication.ReleaseRequestState> 오류로 인해 이벤트입니다.  
+  
+ ASP.NET 페이지가 요청 될 경우 및 <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> 특성이로 설정 된 `false`는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> 여전히 메서드는 만료 날짜 및 시간 세션 데이터 저장소의 데이터를 업데이트 합니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="SetAndReleaseItemExclusive">
+      <MemberSignature Language="C#" Value="public abstract void SetAndReleaseItemExclusive (System.Web.HttpContext context, string id, System.Web.SessionState.SessionStateStoreData item, object lockId, bool newItem);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetAndReleaseItemExclusive(class System.Web.HttpContext context, string id, class System.Web.SessionState.SessionStateStoreData item, object lockId, bool newItem) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive(System.Web.HttpContext,System.String,System.Web.SessionState.SessionStateStoreData,System.Object,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub SetAndReleaseItemExclusive (context As HttpContext, id As String, item As SessionStateStoreData, lockId As Object, newItem As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void SetAndReleaseItemExclusive(System::Web::HttpContext ^ context, System::String ^ id, System::Web::SessionState::SessionStateStoreData ^ item, System::Object ^ lockId, bool newItem);" />
+      <MemberSignature Language="F#" Value="abstract member SetAndReleaseItemExclusive : System.Web.HttpContext * string * System.Web.SessionState.SessionStateStoreData * obj * bool -&gt; unit" Usage="sessionStateStoreProviderBase.SetAndReleaseItemExclusive (context, id, item, lockId, newItem)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpContext" />
+        <Parameter Name="id" Type="System.String" />
+        <Parameter Name="item" Type="System.Web.SessionState.SessionStateStoreData" />
+        <Parameter Name="lockId" Type="System.Object" />
+        <Parameter Name="newItem" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="context">현재 요청에 대한 <see cref="T:System.Web.HttpContext" />입니다.</param>
+        <param name="id">현재 요청에 대한 세션 식별자입니다.</param>
+        <param name="item">저장할 현재 세션 값이 포함된 <see cref="T:System.Web.SessionState.SessionStateStoreData" /> 개체입니다.</param>
+        <param name="lockId">현재 요청에 대한 잠금 식별자입니다.</param>
+        <param name="newItem">세션 항목이 새 항목임을 확인하면 <see langword="true" />이고, 세션 항목이 기존 항목임을 확인하면 <see langword="false" />입니다.</param>
+        <summary>세션 상태 데이터 저장소의 세션 항목 정보를 현재 요청의 값으로 업데이트하고 데이터에 대한 잠금을 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SessionState.SessionStateModule> 호출 개체의 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> 요청의 끝 메서드 중는 <xref:System.Web.HttpApplication.ReleaseRequestState> 데이터 저장소에 현재 세션 항목 정보를 삽입 하거나 현재 값을 사용 하 여 데이터 저장소에서 기존 세션 항목 정보를 업데이트 하는 경우 항목에 대 한 만료 시간을 업데이트 및 데이터에 대 한 잠금을 해제 합니다. 제공된 된 세션을 일치 하는 현재 애플리케이션에 대 한 세션 데이터만 `id` 고 `lockId` 값이 업데이트 됩니다. 잠금에 대 한 자세한 내용은 "세션 저장소 데이터 잠금"에서 참조 된 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 클래스 개요입니다.  
+  
+ 현재 요청에 대 한 세션 값을 수정 되지 않은 경우는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> 메서드가 호출 되지 않습니다. 대신는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> 메서드가 호출 됩니다.  
+  
+ 경우는 <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> 메서드를 호출 합니다 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> 메서드가 호출 되지 않습니다. 대신 합니다 <xref:System.Web.SessionState.SessionStateModule> 호출 개체는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> 데이터 원본의 세션 항목 데이터를 삭제 하는 방법입니다.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+    <Member MemberName="SetItemExpireCallback">
+      <MemberSignature Language="C#" Value="public abstract bool SetItemExpireCallback (System.Web.SessionState.SessionStateItemExpireCallback expireCallback);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool SetItemExpireCallback(class System.Web.SessionState.SessionStateItemExpireCallback expireCallback) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback(System.Web.SessionState.SessionStateItemExpireCallback)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function SetItemExpireCallback (expireCallback As SessionStateItemExpireCallback) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract bool SetItemExpireCallback(System::Web::SessionState::SessionStateItemExpireCallback ^ expireCallback);" />
+      <MemberSignature Language="F#" Value="abstract member SetItemExpireCallback : System.Web.SessionState.SessionStateItemExpireCallback -&gt; bool" Usage="sessionStateStoreProviderBase.SetItemExpireCallback expireCallback" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="expireCallback" Type="System.Web.SessionState.SessionStateItemExpireCallback" />
+      </Parameters>
+      <Docs>
+        <param name="expireCallback">Global.asax 파일에 정의된 <see langword="Session_OnEnd" /> 이벤트의 <see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> 대리자입니다.</param>
+        <summary>Global.asax 파일에 정의된 <see langword="Session_OnEnd" /> 이벤트의 <see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> 대리자에 대한 참조를 설정합니다.</summary>
+        <returns>세션 상태 저장소 공급자가 <see langword="true" /> 이벤트의 호출을 지원하면 <see langword="Session_OnEnd" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SessionState.SessionStateModule> 호출 개체를 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> 메서드를 결정 하는 모듈을 초기화 하는 경우 여부를 호출는 `Session_OnEnd` 이벤트에서 지 원하는 <xref:System.Web.SessionState.SessionStateStoreProviderBase> 구현 및 연결할를 <xref:System.Web.SessionState.SessionStateItemExpireCallback> 를사용하여대리자`Session_OnEnd` 이벤트입니다.  
+  
+ 사용자 지정 세션 상태 저장소 공급자 구현자 사용 해야는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> 메서드를를 <xref:System.Web.SessionState.SessionStateModule> 개체 여부를 호출 합니다 `Session_OnEnd` 이벤트 지원 됩니다 한 로컬 참조를 설정 하 고를 <xref:System.Web.SessionState.SessionStateItemExpireCallback> 는에서제공하는대리자`expireCallback` 매개 변수입니다. 사용자 지정 구현 시기를 결정 해야 로컬 <xref:System.Web.SessionState.SessionStateItemExpireCallback> 호출 될 대리자입니다. 예를 들어, 호출 하는 동안 대리자를 호출할 수 없습니다는 <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> 세션이 중단 될 때 호출 되는 메서드.  
+  
+   
+  
+## Examples  
+ 세션 상태 저장소 공급자 구현 예제를 보려면 [세션 상태 저장소 공급자 구현](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">ASP.NET 세션 상태 개요</related>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

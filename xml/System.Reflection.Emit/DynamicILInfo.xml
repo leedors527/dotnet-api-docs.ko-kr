@@ -1,0 +1,774 @@
+<Type Name="DynamicILInfo" FullName="System.Reflection.Emit.DynamicILInfo">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="4562a69502ee6fdb17162cef484eba4697f46242" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58722811" /></Metadata><TypeSignature Language="C#" Value="public class DynamicILInfo" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DynamicILInfo extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Reflection.Emit.DynamicILInfo" />
+  <TypeSignature Language="VB.NET" Value="Public Class DynamicILInfo" />
+  <TypeSignature Language="C++ CLI" Value="public ref class DynamicILInfo" />
+  <TypeSignature Language="F#" Value="type DynamicILInfo = class" />
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+    <AssemblyVersion>4.0.3.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinmac-3.0;netframework-4.8">
+      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>토큰을 만들고 코드, 예외 처리 및 지역 변수 시그니처 blob을 삽입하는 메서드 등의 동적 메서드에 대한 MSIL(Microsoft Intermediate Language)과 메타데이터를 생성할 수 있는 다른 방법을 지원합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Reflection.Emit.DynamicILInfo> 클래스를 사용 하면 개발자를 사용 하는 대신 MSIL 생성기를 직접 작성할 <xref:System.Reflection.Emit.ILGenerator>합니다.  
+  
+ 다른 형식의 인스턴스를 만드는 메서드를 호출 하는 등, MSIL 생성 하면 해당 엔터티에 대 한 토큰 포함 되어야 합니다. <xref:System.Reflection.Emit.DynamicILInfo> 클래스는 여러 오버 로드를 제공 합니다 <xref:System.Reflection.Emit.DynamicILInfo.GetTokenFor%2A> 메서드를 현재 범위에서 유효한 토큰을 반환 하는 <xref:System.Reflection.Emit.DynamicILInfo>합니다. 예를 들어 오버 로드를 호출 해야 합니다 <xref:System.Console.WriteLine%2A?displayProperty=nameWithType> 메서드를 얻을 수 있습니다를 <xref:System.RuntimeMethodHandle> 오버 로드 하 고 전달에 대 한를 <xref:System.Reflection.Emit.DynamicILInfo.GetTokenFor%2A> 에 MSIL에 포함 하는 토큰을 얻는 메서드를 합니다.  
+  
+ 만들었으면 <xref:System.Byte> 지역 변수 시그니처, 예외 및 코드 본문 배열을 사용할 수는 <xref:System.Reflection.Emit.DynamicILInfo.SetCode%2A>, <xref:System.Reflection.Emit.DynamicILInfo.SetExceptions%2A>, 및 <xref:System.Reflection.Emit.DynamicILInfo.SetLocalSignature%2A> 에 삽입 하는 메서드를 <xref:System.Reflection.Emit.DynamicMethod> 연관 프로그램 <xref:System.Reflection.Emit.DynamicILInfo> 개체입니다.  
+  
+ 사용자 고유의 메타 데이터 및 MSIL 생성 지식이 필요 인프라 CLI (공용 언어) 문서, 특히 "파티션 II: 메타데이터 정의 및 의미 체계" "파티션 III: CIL 명령 집합"을 참조하세요. 이 설명서는 온라인으로 제공됩니다. MSDN의 [ECMA C# 및 공용 언어 인프라 표준](https://go.microsoft.com/fwlink/?LinkID=99212) 및 Ecma International 웹 사이트의 [표준 ECMA-335 - CLI(공용 언어 인프라)](https://go.microsoft.com/fwlink/?LinkID=65552)를 참조하세요.  
+  
+> [!NOTE]
+>  사용 하지 않는 <xref:System.Reflection.Emit.DynamicILInfo> 대리자 생성자를 직접 호출 하 여 다른 동적 메서드에 대리자를 만드는 코드를 생성 합니다. 대신는 <xref:System.Reflection.Emit.DynamicMethod.CreateDelegate%2A> 메서드를 대리자를 만듭니다. 대리자 생성자를 사용 하 여 만든 대리자 대상 동적 메서드에 대 한 참조가 없습니다. 동적 메서드가 대리자 사용 되는 동안 가비지 수집에 의해 회수 될 수 있습니다.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="DynamicMethod">
+      <MemberSignature Language="C#" Value="public System.Reflection.Emit.DynamicMethod DynamicMethod { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Reflection.Emit.DynamicMethod DynamicMethod" />
+      <MemberSignature Language="DocId" Value="P:System.Reflection.Emit.DynamicILInfo.DynamicMethod" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DynamicMethod As DynamicMethod" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Reflection::Emit::DynamicMethod ^ DynamicMethod { System::Reflection::Emit::DynamicMethod ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.DynamicMethod : System.Reflection.Emit.DynamicMethod" Usage="System.Reflection.Emit.DynamicILInfo.DynamicMethod" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.Emit.DynamicMethod</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 인스턴스를 통해 본문이 생성되는 동적 메서드를 가져옵니다.</summary>
+        <value>현재 <see cref="T:System.Reflection.Emit.DynamicMethod" /> 개체가 생성하는 코드의 대상인 동적 메서드를 나타내는 <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Reflection.Emit.DynamicILInfo> 개체는 항상 동적 메서드를 사용 하 여 연결 합니다. 용도 <xref:System.Reflection.Emit.DynamicILInfo> 클래스를 사용 하지 않고 MSIL을 생성 하는 개발자에 대 한 또 다른 방법은 동적 메서드의 MSIL 스트림, 예외 처리 및 지역 변수 시그니처 삽입를 제공 하는 것을 <xref:System.Reflection.Emit.ILGenerator> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetTokenFor">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 연결된 동적 메서드의 MSIL 스트림에 있는 문자열, 필드, 메서드, 형식 또는 시그니처를 나타내는 토큰을 가져옵니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetTokenFor">
+      <MemberSignature Language="C#" Value="public int GetTokenFor (byte[] signature);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTokenFor(unsigned int8[] signature) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.GetTokenFor(System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTokenFor (signature As Byte()) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTokenFor(cli::array &lt;System::Byte&gt; ^ signature);" />
+      <MemberSignature Language="F#" Value="member this.GetTokenFor : byte[] -&gt; int" Usage="dynamicILInfo.GetTokenFor signature" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="signature" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="signature">시그니처를 포함하는 배열입니다.</param>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 연결된 동적 메서드의 시그니처를 나타내는 토큰을 가져옵니다.</summary>
+        <returns>연결된 동적 메서드의 MSIL 스트림과 메타데이터에 포함할 수 있는 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 서명 blob에 대 한 자세한 내용은 설명서를 참조 하십시오는 공용 언어 인프라 (CLI), 특히 "파티션 II: 메타 데이터 정 및 의미 체계 "입니다. 이 설명서는 온라인으로 제공됩니다. MSDN의 [ECMA C# 및 공용 언어 인프라 표준](https://go.microsoft.com/fwlink/?LinkID=99212) 및 Ecma International 웹 사이트의 [표준 ECMA-335 - CLI(공용 언어 인프라)](https://go.microsoft.com/fwlink/?LinkID=65552)를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTokenFor">
+      <MemberSignature Language="C#" Value="public int GetTokenFor (System.Reflection.Emit.DynamicMethod method);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTokenFor(class System.Reflection.Emit.DynamicMethod method) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.GetTokenFor(System.Reflection.Emit.DynamicMethod)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTokenFor (method As DynamicMethod) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTokenFor(System::Reflection::Emit::DynamicMethod ^ method);" />
+      <MemberSignature Language="F#" Value="member this.GetTokenFor : System.Reflection.Emit.DynamicMethod -&gt; int" Usage="dynamicILInfo.GetTokenFor method" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="method" Type="System.Reflection.Emit.DynamicMethod" />
+      </Parameters>
+      <Docs>
+        <param name="method">호출할 동적 메서드입니다.</param>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 연결된 메서드에서 호출할 동적 메서드를 나타내는 토큰을 가져옵니다.</summary>
+        <returns>연결된 동적 메서드의 MSIL 스트림에 MSIL 명령의 대상으로 포함할 수 있는 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드 오버 로드에 의해 반환 된 토큰을 사용 하면 현재 연결 된 동적 메서드에서 동적 메서드를 호출할 수 있도록 <xref:System.Reflection.Emit.DynamicILInfo> 개체입니다. 연결 된 동적 메서드를 재귀적으로 호출 하려면 값을 전달 합니다 <xref:System.Reflection.Emit.DynamicILInfo.DynamicMethod%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTokenFor">
+      <MemberSignature Language="C#" Value="public int GetTokenFor (RuntimeFieldHandle field);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTokenFor(valuetype System.RuntimeFieldHandle field) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.GetTokenFor(System.RuntimeFieldHandle)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTokenFor (field As RuntimeFieldHandle) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTokenFor(RuntimeFieldHandle field);" />
+      <MemberSignature Language="F#" Value="member this.GetTokenFor : RuntimeFieldHandle -&gt; int" Usage="dynamicILInfo.GetTokenFor field" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.RuntimeFieldHandle" />
+      </Parameters>
+      <Docs>
+        <param name="field">액세스할 필드입니다.</param>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 연결된 동적 메서드에서 액세스할 필드를 나타내는 토큰을 가져옵니다.</summary>
+        <returns>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 개체의 범위 내에 있고, 필드에 액세스하는 MSIL 명령의 피연산자로 사용할 수 있는 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 연결 된 동적 메서드에서 액세스할 수 있는 모든 필드에 대 한 토큰을 얻어야 합니다 <xref:System.Reflection.Emit.DynamicILInfo> 개체입니다. 사용 하 여는 <xref:System.Type.GetField%2A?displayProperty=nameWithType> 메서드를를 <xref:System.Reflection.FieldInfo> 에 액세스 하려는 필드를 사용 하 여를 <xref:System.Reflection.FieldInfo.FieldHandle%2A> 가져올 속성은 <xref:System.RuntimeFieldHandle>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTokenFor">
+      <MemberSignature Language="C#" Value="public int GetTokenFor (RuntimeMethodHandle method);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTokenFor(valuetype System.RuntimeMethodHandle method) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.GetTokenFor(System.RuntimeMethodHandle)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTokenFor (method As RuntimeMethodHandle) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTokenFor(RuntimeMethodHandle method);" />
+      <MemberSignature Language="F#" Value="member this.GetTokenFor : RuntimeMethodHandle -&gt; int" Usage="dynamicILInfo.GetTokenFor method" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="method" Type="System.RuntimeMethodHandle" />
+      </Parameters>
+      <Docs>
+        <param name="method">액세스할 메서드입니다.</param>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 연결된 동적 메서드에서 액세스할 메서드를 나타내는 토큰을 가져옵니다.</summary>
+        <returns>현재 <see cref="F:System.Reflection.Emit.OpCodes.Call" /> 개체의 범위 내에 있고, <see cref="F:System.Reflection.Emit.OpCodes.Ldtoken" /> 또는 <see cref="T:System.Reflection.Emit.DynamicILInfo" />과 같이 메서드에 액세스하는 MSIL 명령의 피연산자로 사용할 수 있는 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 연결 된 동적 메서드에서 액세스할 수 있는 모든 메서드에 대 한 토큰을 얻어야 합니다 <xref:System.Reflection.Emit.DynamicILInfo> 개체입니다. 사용 하 여는 <xref:System.Type.GetMethod%2A?displayProperty=nameWithType> 메서드를를 <xref:System.Reflection.MethodInfo> 에 액세스 하 고 사용 하 여 메서드에 대 한를 <xref:System.Reflection.MethodBase.MethodHandle%2A> 가져올 속성을 <xref:System.RuntimeMethodHandle>.  
+  
+> [!NOTE]
+>  제네릭 형식에 속하는 메서드를 사용 합니다 <xref:System.Reflection.Emit.DynamicILInfo.GetTokenFor%28System.RuntimeMethodHandle%2CSystem.RuntimeTypeHandle%29> 메서드 오버 로드 하 고 지정을 <xref:System.RuntimeTypeHandle> 제네릭 형식에 대 한 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTokenFor">
+      <MemberSignature Language="C#" Value="public int GetTokenFor (RuntimeTypeHandle type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTokenFor(valuetype System.RuntimeTypeHandle type) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.GetTokenFor(System.RuntimeTypeHandle)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTokenFor (type As RuntimeTypeHandle) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTokenFor(RuntimeTypeHandle type);" />
+      <MemberSignature Language="F#" Value="member this.GetTokenFor : RuntimeTypeHandle -&gt; int" Usage="dynamicILInfo.GetTokenFor type" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="type" Type="System.RuntimeTypeHandle" />
+      </Parameters>
+      <Docs>
+        <param name="type">사용할 형식입니다.</param>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 연결된 동적 메서드에서 사용할 형식을 나타내는 토큰을 가져옵니다.</summary>
+        <returns>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 개체의 범위 내에 있고, 형식이 필요한 MSIL 명령의 피연산자로 사용할 수 있는 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드 오버 로드에 의해 반환 된 토큰을 사용 하면 로컬 변수 형식을 정의 하 여 인스턴스를 만들 형식의 현재 연결 된 동적 메서드의 msil <xref:System.Reflection.Emit.DynamicILInfo> 개체입니다.  
+  
+ 가져올는 <xref:System.RuntimeTypeHandle> 형식을 나타내는 사용 하 여는 <xref:System.Type.TypeHandle%2A?displayProperty=nameWithType> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTokenFor">
+      <MemberSignature Language="C#" Value="public int GetTokenFor (string literal);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTokenFor(string literal) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.GetTokenFor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTokenFor (literal As String) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTokenFor(System::String ^ literal);" />
+      <MemberSignature Language="F#" Value="member this.GetTokenFor : string -&gt; int" Usage="dynamicILInfo.GetTokenFor literal" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="literal" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="literal">사용할 문자열입니다.</param>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 연결된 동적 메서드에서 사용할 문자열 리터럴을 나타내는 토큰을 가져옵니다.</summary>
+        <returns>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 개체의 범위 내에 있고, 문자열이 필요한 MSIL 명령의 피연산자로 사용할 수 있는 토큰입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTokenFor">
+      <MemberSignature Language="C#" Value="public int GetTokenFor (RuntimeFieldHandle field, RuntimeTypeHandle contextType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTokenFor(valuetype System.RuntimeFieldHandle field, valuetype System.RuntimeTypeHandle contextType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.GetTokenFor(System.RuntimeFieldHandle,System.RuntimeTypeHandle)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTokenFor (field As RuntimeFieldHandle, contextType As RuntimeTypeHandle) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTokenFor(RuntimeFieldHandle field, RuntimeTypeHandle contextType);" />
+      <MemberSignature Language="F#" Value="member this.GetTokenFor : RuntimeFieldHandle * RuntimeTypeHandle -&gt; int" Usage="dynamicILInfo.GetTokenFor (field, contextType)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="field" Type="System.RuntimeFieldHandle" Index="0" FrameworkAlternate="netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.1;xamarinandroid-7.1;xamarinmac-3.0" />
+        <Parameter Name="contextType" Type="System.RuntimeTypeHandle" Index="1" FrameworkAlternate="netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.1;xamarinandroid-7.1;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="field">액세스할 필드입니다.</param>
+        <param name="contextType">필드가 속한 제네릭 형식입니다.</param>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 연결된 동적 메서드에서 액세스할 필드를 나타내는 토큰을 가져옵니다. 해당 필드는 지정된 제네릭 형식에 있습니다.</summary>
+        <returns>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" /> 개체의 범위 내에 있고, 필드에 액세스하는 MSIL 명령의 피연산자로 사용할 수 있는 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 연결 된 동적 메서드에서 액세스할 수 있는 모든 필드에 대 한 토큰을 얻어야 합니다 <xref:System.Reflection.Emit.DynamicILInfo> 개체입니다. 사용 하 여는 <xref:System.Type.GetField%2A?displayProperty=nameWithType> 메서드를를 <xref:System.Reflection.FieldInfo> 에 액세스 하 고 사용 하 여 필드에 대 한 합니다 <xref:System.Reflection.FieldInfo.FieldHandle%2A> 가져올 속성은 <xref:System.RuntimeFieldHandle>.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetTokenFor">
+      <MemberSignature Language="C#" Value="public int GetTokenFor (RuntimeMethodHandle method, RuntimeTypeHandle contextType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTokenFor(valuetype System.RuntimeMethodHandle method, valuetype System.RuntimeTypeHandle contextType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.GetTokenFor(System.RuntimeMethodHandle,System.RuntimeTypeHandle)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTokenFor (method As RuntimeMethodHandle, contextType As RuntimeTypeHandle) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTokenFor(RuntimeMethodHandle method, RuntimeTypeHandle contextType);" />
+      <MemberSignature Language="F#" Value="member this.GetTokenFor : RuntimeMethodHandle * RuntimeTypeHandle -&gt; int" Usage="dynamicILInfo.GetTokenFor (method, contextType)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="method" Type="System.RuntimeMethodHandle" />
+        <Parameter Name="contextType" Type="System.RuntimeTypeHandle" />
+      </Parameters>
+      <Docs>
+        <param name="method">메서드입니다.</param>
+        <param name="contextType">메서드가 속한 제네릭 형식입니다.</param>
+        <summary>현재 <see cref="T:System.Reflection.Emit.DynamicILInfo" />의 범위 내에 있고, 제네릭 형식에 대한 메서드를 나타내는 토큰을 가져옵니다.</summary>
+        <returns>현재 <see cref="F:System.Reflection.Emit.OpCodes.Call" /> 개체의 범위 내에 있고, <see cref="F:System.Reflection.Emit.OpCodes.Ldtoken" /> 또는 <see cref="T:System.Reflection.Emit.DynamicILInfo" />과 같이 메서드에 액세스하는 MSIL 명령의 피연산자로 사용할 수 있는 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 연결 된 동적 메서드에서 호출 되는 모든 메서드에 대 한 토큰을 얻어야 합니다 <xref:System.Reflection.Emit.DynamicILInfo> 개체입니다. 사용 하 여는 <xref:System.Type.GetMethod%2A?displayProperty=nameWithType> 메서드를를 <xref:System.Reflection.MethodInfo> 를 호출 하 고 사용 하 여 메서드에 대 한 합니다 <xref:System.Reflection.MethodBase.MethodHandle%2A> 가져올 속성은 <xref:System.RuntimeMethodHandle>.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="SetCode">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>연결된 동적 메서드의 코드 본문을 설정합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="SetCode">
+      <MemberSignature Language="C#" Value="public void SetCode (byte[] code, int maxStackSize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetCode(unsigned int8[] code, int32 maxStackSize) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.SetCode(System.Byte[],System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetCode (code As Byte(), maxStackSize As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetCode(cli::array &lt;System::Byte&gt; ^ code, int maxStackSize);" />
+      <MemberSignature Language="F#" Value="member this.SetCode : byte[] * int -&gt; unit" Usage="dynamicILInfo.SetCode (code, maxStackSize)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="code" Type="System.Byte[]" />
+        <Parameter Name="maxStackSize" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="code">MSIL 스트림이 들어 있는 배열입니다.</param>
+        <param name="maxStackSize">메서드를 실행 중일 때 피연산자 스택에 있는 최대 항목 수입니다.</param>
+        <summary>연결된 동적 메서드의 코드 본문을 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 유효성 확인 MSIL 스트림에서 수행 됩니다.  
+  
+ 첫 번째 MSIL 스트림에 두 번째 바꿉니다를 두 번째로이 메서드를 호출 합니다.  
+  
+ 사용자 고유의 메타 데이터 및 MSIL 생성 지식이 필요 인프라 CLI (공용 언어) 문서, 특히 "파티션 II: 메타데이터 정의 및 의미 체계" "파티션 III: CIL 명령 집합"을 참조하세요. 이 설명서는 온라인으로 제공됩니다. MSDN의 [ECMA C# 및 공용 언어 인프라 표준](https://go.microsoft.com/fwlink/?LinkID=99212) 및 Ecma International 웹 사이트의 [표준 ECMA-335 - CLI(공용 언어 인프라)](https://go.microsoft.com/fwlink/?LinkID=65552)를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetCode">
+      <MemberSignature Language="C#" Value="public void SetCode (byte* code, int codeSize, int maxStackSize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetCode(unsigned int8* code, int32 codeSize, int32 maxStackSize) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.SetCode(System.Byte*,System.Int32,System.Int32)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetCode(System::Byte* code, int codeSize, int maxStackSize);" />
+      <MemberSignature Language="F#" Value="member this.SetCode : nativeptr&lt;byte&gt; * int * int -&gt; unit" Usage="dynamicILInfo.SetCode (code, codeSize, maxStackSize)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinmac-3.0;netframework-4.8;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.CLSCompliant(false)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="code" Type="System.Byte*" />
+        <Parameter Name="codeSize" Type="System.Int32" />
+        <Parameter Name="maxStackSize" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="code">MSIL 스트림이 포함된 바이트 배열에 대한 포인터입니다.</param>
+        <param name="codeSize">MSIL 스트림의 바이트 수입니다.</param>
+        <param name="maxStackSize">메서드를 실행 중일 때 피연산자 스택에 있는 최대 항목 수입니다.</param>
+        <summary>연결된 동적 메서드의 코드 본문을 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 유효성 확인 MSIL 스트림에서 수행 됩니다.  
+  
+ 첫 번째 MSIL 스트림에 두 번째 바꿉니다를 두 번째로이 메서드를 호출 합니다.  
+  
+ 사용자 고유의 메타 데이터 및 MSIL 생성 지식이 필요 인프라 CLI (공용 언어) 문서, 특히 "파티션 II: 메타데이터 정의 및 의미 체계" "파티션 III: CIL 명령 집합입니다. " 이 설명서는 온라인으로 제공됩니다. MSDN의 [ECMA C# 및 공용 언어 인프라 표준](https://go.microsoft.com/fwlink/?LinkID=99212) 및 Ecma International 웹 사이트의 [표준 ECMA-335 - CLI(공용 언어 인프라)](https://go.microsoft.com/fwlink/?LinkID=65552)를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+        <altCompliant cref="M:System.Reflection.Emit.DynamicILInfo.SetCode(System.Byte[],System.Int32)" />
+        <exception cref="T:System.ArgumentNullException"><paramref name="code" />는 <see langword="null" />이고 <paramref name="codeSize" />가 0보다 큽니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="codeSize" />가 0보다 작은 경우</exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">직접 실행 호출자에 대 한 완전 신뢰가 필요 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 또는 투명 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="SetExceptions">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>연결된 동적 메서드의 예외 메타데이터를 설정합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="SetExceptions">
+      <MemberSignature Language="C#" Value="public void SetExceptions (byte[] exceptions);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetExceptions(unsigned int8[] exceptions) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.SetExceptions(System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetExceptions (exceptions As Byte())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetExceptions(cli::array &lt;System::Byte&gt; ^ exceptions);" />
+      <MemberSignature Language="F#" Value="member this.SetExceptions : byte[] -&gt; unit" Usage="dynamicILInfo.SetExceptions exceptions" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="exceptions" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="exceptions">예외 메타데이터가 들어 있는 배열입니다.</param>
+        <summary>연결된 동적 메서드의 예외 메타데이터를 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 모든 크기와 위치를 정의 하는 메서드에 대 한 예외 메타 데이터가 `try`, `catch`, `finally`, 필터 및 fault 블록입니다. 이 메타 데이터의 레이아웃에 정보를 공용 언어 인프라 (CLI) 설명서를 특히 참조 "파티션 II: 메타 데이터 정 및 의미 체계 "입니다. 이 설명서는 온라인으로 제공됩니다. MSDN의 [ECMA C# 및 공용 언어 인프라 표준](https://go.microsoft.com/fwlink/?LinkID=99212) 및 Ecma International 웹 사이트의 [표준 ECMA-335 - CLI(공용 언어 인프라)](https://go.microsoft.com/fwlink/?LinkID=65552)를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetExceptions">
+      <MemberSignature Language="C#" Value="public void SetExceptions (byte* exceptions, int exceptionsSize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetExceptions(unsigned int8* exceptions, int32 exceptionsSize) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.SetExceptions(System.Byte*,System.Int32)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetExceptions(System::Byte* exceptions, int exceptionsSize);" />
+      <MemberSignature Language="F#" Value="member this.SetExceptions : nativeptr&lt;byte&gt; * int -&gt; unit" Usage="dynamicILInfo.SetExceptions (exceptions, exceptionsSize)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinmac-3.0;netframework-4.8;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.CLSCompliant(false)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="exceptions" Type="System.Byte*" />
+        <Parameter Name="exceptionsSize" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="exceptions">예외 메타데이터가 포함된 바이트 배열에 대한 포인터입니다.</param>
+        <param name="exceptionsSize">예외 메타데이터의 바이트 수입니다.</param>
+        <summary>연결된 동적 메서드의 예외 메타데이터를 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 모든 크기와 위치를 정의 하는 메서드에 대 한 예외 메타 데이터가 `try`, `catch`, `finally`, 필터 및 fault 블록입니다. 이 메타 데이터의 레이아웃에 정보를 공용 언어 인프라 (CLI) 설명서를 특히 참조 "파티션 II: 메타데이터 정의 및 의미 체계" "파티션 III: CIL 명령 집합"을 참조하세요. 이 설명서는 온라인으로 제공됩니다. MSDN의 [ECMA C# 및 공용 언어 인프라 표준](https://go.microsoft.com/fwlink/?LinkID=99212) 및 Ecma International 웹 사이트의 [표준 ECMA-335 - CLI(공용 언어 인프라)](https://go.microsoft.com/fwlink/?LinkID=65552)를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+        <altCompliant cref="M:System.Reflection.Emit.DynamicILInfo.SetExceptions(System.Byte[])" />
+        <exception cref="T:System.ArgumentNullException"><paramref name="exceptions" />는 <see langword="null" />이고 <paramref name="exceptionSize" />가 0보다 큽니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="exceptionSize" />가 0보다 작은 경우</exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">직접 실행 호출자에 대 한 완전 신뢰가 필요 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 또는 투명 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="SetLocalSignature">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>연결된 동적 메서드의 지역 변수 레이아웃을 설명하는 지역 변수 시그니처를 설정합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="SetLocalSignature">
+      <MemberSignature Language="C#" Value="public void SetLocalSignature (byte[] localSignature);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetLocalSignature(unsigned int8[] localSignature) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.SetLocalSignature(System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetLocalSignature (localSignature As Byte())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetLocalSignature(cli::array &lt;System::Byte&gt; ^ localSignature);" />
+      <MemberSignature Language="F#" Value="member this.SetLocalSignature : byte[] -&gt; unit" Usage="dynamicILInfo.SetLocalSignature localSignature" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="localSignature" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="localSignature">연결된 <see cref="T:System.Reflection.Emit.DynamicMethod" />의 지역 변수 레이아웃이 들어 있는 배열입니다.</param>
+        <summary>연결된 동적 메서드의 지역 변수 레이아웃을 설명하는 지역 변수 시그니처를 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 메서드의 로컬 변수 레이아웃을 설명 하는 지역 변수 시그니처입니다. 로컬 변수 서명의 생성을 간소화 하려면 사용 합니다 `static` (`Shared` Visual Basic의) <xref:System.Reflection.Emit.SignatureHelper.GetLocalVarSigHelper%2A?displayProperty=nameWithType> 메서드를를 <xref:System.Reflection.Emit.SignatureHelper> 로컬 서명에 대 한 합니다.  
+  
+ 로컬 변수 서명에 대 한 자세한 내용은 설명서를 참조 하십시오는 공용 언어 인프라 (CLI), 특히 "파티션 II: 메타 데이터 정 및 의미 체계 "입니다. 이 설명서는 온라인으로 제공됩니다. MSDN의 [ECMA C# 및 공용 언어 인프라 표준](https://go.microsoft.com/fwlink/?LinkID=99212) 및 Ecma International 웹 사이트의 [표준 ECMA-335 - CLI(공용 언어 인프라)](https://go.microsoft.com/fwlink/?LinkID=65552)를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetLocalSignature">
+      <MemberSignature Language="C#" Value="public void SetLocalSignature (byte* localSignature, int signatureSize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetLocalSignature(unsigned int8* localSignature, int32 signatureSize) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Reflection.Emit.DynamicILInfo.SetLocalSignature(System.Byte*,System.Int32)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetLocalSignature(System::Byte* localSignature, int signatureSize);" />
+      <MemberSignature Language="F#" Value="member this.SetLocalSignature : nativeptr&lt;byte&gt; * int -&gt; unit" Usage="dynamicILInfo.SetLocalSignature (localSignature, signatureSize)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Reflection.Emit.Lightweight</AssemblyName>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinmac-3.0;netframework-4.8;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.CLSCompliant(false)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="localSignature" Type="System.Byte*" />
+        <Parameter Name="signatureSize" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="localSignature">연결된 <see cref="T:System.Reflection.Emit.DynamicMethod" />의 지역 변수 레이아웃이 들어 있는 배열입니다.</param>
+        <param name="signatureSize">시그니처의 바이트 수입니다.</param>
+        <summary>연결된 동적 메서드의 지역 변수 레이아웃을 설명하는 지역 변수 시그니처를 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 메서드의 로컬 변수 레이아웃을 설명 하는 지역 변수 시그니처입니다. 로컬 변수 서명의 생성을 간소화 하려면 사용 합니다 `static` (`Shared` Visual Basic의) <xref:System.Reflection.Emit.SignatureHelper.GetLocalVarSigHelper%2A?displayProperty=nameWithType> 메서드를를 <xref:System.Reflection.Emit.SignatureHelper> 로컬 서명에 대 한 합니다.  
+  
+ 로컬 변수 서명에 대 한 자세한 내용은 설명서를 참조 하십시오는 공용 언어 인프라 (CLI), 특히 "파티션 II: 메타 데이터 정 및 의미 체계 "입니다. 이 설명서는 온라인으로 제공됩니다. MSDN의 [ECMA C# 및 공용 언어 인프라 표준](https://go.microsoft.com/fwlink/?LinkID=99212) 및 Ecma International 웹 사이트의 [표준 ECMA-335 - CLI(공용 언어 인프라)](https://go.microsoft.com/fwlink/?LinkID=65552)를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+        <altCompliant cref="M:System.Reflection.Emit.DynamicILInfo.SetLocalSignature(System.Byte[])" />
+        <exception cref="T:System.ArgumentNullException"><paramref name="localSignature" />는 <see langword="null" />이고 <paramref name="signatureSize" />가 0보다 큽니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="signatureSize" />가 0보다 작은 경우</exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">직접 실행 호출자에 대 한 완전 신뢰가 필요 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 또는 투명 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

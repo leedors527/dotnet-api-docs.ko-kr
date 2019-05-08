@@ -1,0 +1,2379 @@
+<Type Name="WSFederationAuthenticationModule" FullName="System.IdentityModel.Services.WSFederationAuthenticationModule">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0905b13de01b677d6acc1b90aba8e7904efd4601" /><Meta Name="ms.sourcegitcommit" Value="2dd0eede6edd6dd3d2aa8f79010848658b967609" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="04/18/2019" /><Meta Name="ms.locfileid" Value="59355581" /></Metadata><TypeSignature Language="C#" Value="public class WSFederationAuthenticationModule : System.IdentityModel.Services.HttpModuleBase" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit WSFederationAuthenticationModule extends System.IdentityModel.Services.HttpModuleBase" />
+  <TypeSignature Language="DocId" Value="T:System.IdentityModel.Services.WSFederationAuthenticationModule" />
+  <TypeSignature Language="VB.NET" Value="Public Class WSFederationAuthenticationModule&#xA;Inherits HttpModuleBase" />
+  <TypeSignature Language="C++ CLI" Value="public ref class WSFederationAuthenticationModule : System::IdentityModel::Services::HttpModuleBase" />
+  <TypeSignature Language="F#" Value="type WSFederationAuthenticationModule = class&#xA;    inherit HttpModuleBase" />
+  <AssemblyInfo>
+    <AssemblyName>System.IdentityModel.Services</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.IdentityModel.Services.HttpModuleBase</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary><see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" />은 수신 요청에 대한 페더레이션 인증 설정을 적용하여 ASP.NET 애플리케이션의 보안에 사용되는 HTTP 모듈입니다. <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" />은 ASP.NET 애플리케이션 내 클레임 기반 ID 액세스를 처리하기 위해 WIF에서 즉시 제공하는 기본 모듈입니다.  
+  
+<see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" />은 여러 이벤트를 발생시키는데, ASP.NET 개발자는 이러한 이벤트를 통해 인증 및 클레임 처리가 어떻게 수행되는 지에 대한 세부 정보를 제어하고 기본 동작을 변경할 수 있습니다. <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" /> 기능은 작업별 메서드로 나뉩니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule> 클래스에는 Ws-federation 인증 모듈 (WSFAM)로 알려진 HTTP 모듈을 구현 합니다. WSFAM은 Windows Identity Foundation (WIF)에서 기본적으로 구현 됩니다. WSFAM은 web.config 파일에 입력 하 여 ASP.NET 파이프라인에 추가 됩니다. 파생 되므로 <xref:System.IdentityModel.Services.HttpModuleBase>를 구현 하는 <xref:System.Web.IHttpModule>합니다. 에 대 한 수신 대기 하도록 ASP.NET 런타임에 등록 합니다 <xref:System.Web.HttpApplication.EndRequest> 및 <xref:System.Web.HttpApplication.AuthenticateRequest> 이벤트입니다. 수신 대기 하는 <xref:System.Web.HttpApplication.EndRequest> 이벤트, 보안 토큰 서비스 (STS) 요청된 된 리소스에서 권한 부여에 실패 하는 경우 보안 토큰을 가져오려면 클라이언트 리디렉션 WSFAM를 사용 합니다. 수신 대기 하는 <xref:System.Web.HttpApplication.AuthenticateRequest> 이벤트를 사용 하면 WSFAM STS에서 요청된 된 토큰을 포함 하는 응답에 대 한 HTTP 요청을 모니터링 합니다. 인스턴스를 만들고 연속 토큰이 있고 유효한 경우 <xref:System.Security.Claims.ClaimsPrincipal> 토큰에 있는 클레임을 사용 하 여 인증된 된 사용자에 대 한 합니다.  
+  
+ 세션 관리 인스턴스는 세션 인증 모듈 (SAM) 제공한 WSFAM를 사용할 때의 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 에서 파생 된 클래스 또는 클래스. SAM은 구성 파일의 ASP.NET 파이프라인에도 추가 됩니다. SAM (세션) 인증 쿠키에 대 한 요청을 모니터링합니다. 모듈 추출 이러한 쿠키 존재 하 고 유효한 경우는 <xref:System.Security.Claims.ClaimsPrincipal> 에서 인증 된 사용자에 대 한는 <xref:System.IdentityModel.Tokens.SessionSecurityToken> 설정 합니다 <xref:System.Web.HttpContext.User%2A?displayProperty=nameWithType> 속성 및 스레드 보안 주체 <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType> 속성.  
+  
+ WSFAM은:  
+  
+-   Ws-federation 프로토콜을 사용 하 여 보안 토큰 서비스 (STS) 인증을 아웃소싱하는 데 ASP.NET 응용 프로그램에 대 한 기능입니다. Id는 하나 이상의 identity 영역에 걸쳐 연합 할 수 있습니다 및 여러 Sts를 포함 합니다.  
+  
+-   ASP.NET 응용 프로그램에 대 한 클레임 기반 id입니다. 인증 하는 동안 WSFAM STS에서 전송 되는 보안 토큰의 클레임에서 보안 주체를 작성 하 고 스레드 보안 주체와이 클레임 보안 주체를 설정 합니다. 그런 다음 추가 권한 부여, 프레젠테이션 및 하도록 나타내는 사용자에 대 한 의사 결정 논리 코드에서이 보안 주체를 사용할 수 있습니다.  
+  
+ WSFAM 기본 WS-페더레이션 로그인 및 로그 아웃 요청에 사용할 메시지 매개 변수를 제공 하는 몇 가지 속성을 표시 합니다. 이러한 속성에서 일반적으로 초기화 되는 [ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md) 구성 파일의 요소입니다. 이러한 속성 중 가장 중요 한 것 같습니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> WS-페더레이션 로그인 및 로그 아웃 요청을 전송 하는 보안 토큰 서비스 (STS)의 주소를 지정 하는 속성입니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm%2A> Ws-federation 로그인 요청에 사용할 wtrealm 매개 변수를 지정 하는 속성입니다. Wtrealm 매개 변수는 STS 신뢰 당사자 (RP) 응용 프로그램의 보안 영역을 식별합니다.  
+  
+ 로그인 메시지 매개 변수를 변경할 수도 있습니다 요청별 기준에 대 한 이벤트 처리기 대리자를 제공 하 여는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다.  
+  
+ 두 속성에는 모듈의 동작을 제어합니다. 이러한 속성을 모두 일반적으로에서 초기화 되는 `<wsFederation>` 요소를 구성 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A> 속성 모듈 인증을 위해 STS에 수동 리디렉션을 수행 해야 하는지 여부를 지정 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PersistentCookiesOnPassiveRedirects%2A> 속성 세션 영구 되어야 하는지 여부를 지정 합니다. 이 속성은 true, SAM 클라이언트로 세션 쿠키를 작성 하려면 사용 됩니다. 클라이언트의 후속 요청 SAM 세션 쿠키에 유지 되는 토큰을 사용 하 여 인증을 제공 합니다.  
+  
+ WSFAM에 로그인 하는 동안 여러 이벤트를 발생 시킵니다. 및 ASP.NET 개발자가 모듈의 기본 동작을 변경 하 고 세부 정보를 어떻게 인증 및 클레임 처리가 수행의 제어를 허용 하는 로그 아웃 합니다.  
+  
+ Ws-federation 로그인 요청을 STS로 전송 되기 전에 다음과 같은 이벤트가 발생 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed>: 수동 리디렉션을 사용 하도록 설정 하 고 요청된 된 리소스에서 권한 부여에 실패 하면 발생 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider>: 바로 전에 발생 WSFAM은 STS로 WS-페더레이션 로그인 요청을 보냅니다. 이 이벤트를 사용 하 여 로그인 요청에 매개 변수를 변경 합니다.  
+  
+ 다음 이벤트에서 STS (보안 토큰 발급 됨)는 로그인 응답을 받을 때 발생 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived>: STS에 의해 전송 되는 보안 토큰 응답에서 읽은 후에 발생 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated>: 토큰의 유효성이 검사 된 후에 발생 합니다. 이 이벤트를 사용 하 여 필터링, 변환 또는 클레임 보안 주체에 클레임을 추가 하려면 (<xref:System.Security.Claims.ClaimsPrincipal>)에서 보안 토큰을 생성 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated>: 세션 토큰 하기 바로 전에 발생 (<xref:System.IdentityModel.Tokens.SessionSecurityToken>) 주 스레드를 설정 하려면 보안 주체가 사용 되므로 클레임 및 현재 사용자에서 생성 하 고 세션 쿠키에 기록 됩니다. 세션 토큰 또는 사용 세션 쿠키를 작성 하는 사용 하지 않도록 설정 수정할 수가 있습니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedIn>: 스레드 보안 주체 및 현재 사용자를 설정한 후에 인증 끝날 때 발생 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInError>: 로그인 하는 동안 예외가 발생 하는 경우 발생 합니다. 요청을 취소 하 고 호출자에 게 반환 되는 예외를 방지할 수 있습니다.  
+  
+ Ws-federation 로그 아웃 정리 요청 (wsignoutcleanup1.0)를 처리할 때 또는 세션에서 서명 하는 경우에 다음 이벤트가 발생 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut>: 세션에 종속 된 정리 작업을 수행 하거나 로그 아웃을 취소할 수 있도록 세션을 삭제 하기 직전에 발생 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut>: 세션 삭제 된 후에 발생 합니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError>: 로그 아웃 하는 동안 예외가 발생 하는 경우 발생 합니다. 로그 아웃을 취소 하 고 호출자에 게 반환 되는 예외를 방지할 수 있습니다.  
+  
+> [!NOTE]
+>  호출 하 여 STS에서 로그 아웃 하는 경우 로그 아웃 이벤트가 발생 하지 않습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ WSFAM를 사용 하 여 STS에 로그인 하는 방법은 두 가지가 있습니다. 수동 리디렉션을 통해을 사용 하 여 첫 번째는는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A> 속성입니다. 이 경우 권한 부여에 실패 한 경우 요청된 된 리소스에서 반환 하는 대신는 `401:Access Denied` WSFAM 클라이언트에 대 한 응답 속성에서 Ws-federation 로그인 요청 메시지를 작성 및 클라이언트 보안 토큰을 검색 하려면 STS로 리디렉션합니다. 두 번째 방법은 명시적으로 호출 하 여 STS에 클라이언트를 리디렉션하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A> 메서드에서 웹 페이지 또는 응용 프로그램에서 사용자 지정 컨트롤입니다. <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A> 메서드 또한 사용 하 여 WSFAM의 속성에서 로그인 요청을 생성 합니다.  
+  
+ 오버 로드 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A> 세션 로그 아웃 메서드를 사용할 수 있습니다. 이 클라이언트에서 세션 쿠키를 삭제합니다. STS에 Ws-federation 로그 아웃 메시지 ("wsignout1.0") 보내지 않습니다. STS에서 로그 아웃을 사용 해야 합니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ WSFAM은 클라이언트를 사용 하 여 해당 세션을 삭제 하 여 Ws-federation 로그 아웃 정리 요청 ("wsignoutcleanup1.0"")를 처리 합니다. 로그 아웃 정리 메시지의 wreply 매개 변수가 설정 되어 있지 않으면 WSFAM 메시지를 보낸 STS에 녹색 확인 표시가의 이미지를 반환 합니다. 이 기능은 RP가 해당 로그 아웃 완료 되었음을 승인으로 STS에서 사용할 수 있습니다.  
+  
+ WSFAM 여러 작업별 메서드를 통해-예를 들어, 해당 요청 처리 파이프라인-기능을 노출 합니다. WSFAM의 동작을 변경 하기 위해 파생된 클래스에서 이러한 메서드를 재정의할 수 있습니다.  
+  
+ 사용할 모듈은 다음 XML 에서처럼 파이프라인에 추가 되어야 합니다.  
+  
+```  
+<configuration>  
+  <system.webServer>  
+    <modules>  
+      <add name="WsFederationAuthenticationModule" type="System.IdentityModel.Services.WSFederationAuthenticationModule, System.IdentityModel.Services, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"/>  
+    </modules>  
+  </system.webServer>  
+</configuration>  
+```  
+  
+ 한 번 구성 하면는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule> HTTP 요청을 처리 하는 다양 한 단계에서 이벤트를 발생 시킵니다. ASP.NET 개발자는 global.asax 파일에서 이러한 이벤트를 처리할 수 있습니다.  
+  
+   
+  
+## Examples  
+ [!code-csharp[WifWSFAM#1](~/samples/snippets/csharp/VS_Snippets_Misc/wifwsfam/cs/webapplication1/global.asax.cs#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public WSFederationAuthenticationModule ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; WSFederationAuthenticationModule();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" /> 클래스를 초기화하기 위해 파생 클래스의 생성자에서 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AuthenticationType">
+      <MemberSignature Language="C#" Value="public string AuthenticationType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string AuthenticationType" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthenticationType" />
+      <MemberSignature Language="VB.NET" Value="Public Property AuthenticationType As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ AuthenticationType { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.AuthenticationType : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.AuthenticationType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청("wsignin1.0")에 사용할 wauth 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value>인증 형식을 지정하는 URI입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Wauth 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthenticationType%2A> 속성이 `null` 또는 빈 문자열인 경우 wauth 매개 변수는 로그인 요청에 포함 되지 않습니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AuthorizationFailed">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.AuthorizationFailedEventArgs&gt; AuthorizationFailed;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.AuthorizationFailedEventArgs&gt; AuthorizationFailed" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed" />
+      <MemberSignature Language="VB.NET" Value="Public Event AuthorizationFailed As EventHandler(Of AuthorizationFailedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::AuthorizationFailedEventArgs ^&gt; ^ AuthorizationFailed;" />
+      <MemberSignature Language="F#" Value="member this.AuthorizationFailed : EventHandler&lt;System.IdentityModel.Services.AuthorizationFailedEventArgs&gt; " Usage="member this.AuthorizationFailed : System.EventHandler&lt;System.IdentityModel.Services.AuthorizationFailedEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.AuthorizationFailedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>사용자를 인증하기 위해 구성된 발급자에게 리디렉션해야 하는지 여부 모듈을 확인하는 동안 이벤트가 발생한 경우입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed> HTTP 요청에 대 한 권한 부여에 실패 한 경우 이벤트가 발생 합니다. 내에서 발생 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A> 호출을 통해 이벤트 처리기 대리자를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthorizationFailed%2A> 메서드.  
+  
+ 설정할 수 있습니다는 <xref:System.IdentityModel.Services.AuthorizationFailedEventArgs.RedirectToIdentityProvider%2A?displayProperty=nameWithType> id 공급자에 요청을 리디렉션할 여부를 제어 하는 속성입니다. 프레임 워크를이 속성을 초기화 `false` 사용자가 이미 인증 된 경우. 이 경우이 속성을 설정 `true` STS를 사용 하 여 순환 루프가 발생할 수 있습니다.  
+  
+> [!NOTE]
+>  <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트를 사용 하 여 URL을 수정 하거나 리디렉션 취소할 수 있습니다.  
+  
+ ASP.NET 응용 프로그램에서이 이벤트를 처리 하려면 라는 메서드를 만듭니다 `WSFederationAuthentication_AuthorizationFailed` global.asax 파일에 있습니다.  
+  
+   
+  
+## Examples  
+ [!code-csharp[WifWSFAM#7](~/samples/snippets/csharp/VS_Snippets_Misc/wifwsfam/cs/webapplication1/global.asax.cs#7)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="CanReadSignInResponse">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>지정된 HTTP 요청이 WS-Federation 로그인 응답 메시지인지 여부를 나타내는 값을 반환합니다. 메시지가 WS-Federation 로그아웃 정리 메시지("wsignoutcleanup1.0")일 경우 이 메서드는 요청을 처리합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 로그인 응답 메시지는 로그인 요청 메시지에 대 한 응답으로 보안 토큰 서비스 (STS)에서 신뢰 당사자 (RP)에 전송 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CanReadSignInResponse">
+      <MemberSignature Language="C#" Value="public bool CanReadSignInResponse (System.Web.HttpRequestBase request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CanReadSignInResponse(class System.Web.HttpRequestBase request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse(System.Web.HttpRequestBase)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CanReadSignInResponse (request As HttpRequestBase) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CanReadSignInResponse(System::Web::HttpRequestBase ^ request);" />
+      <MemberSignature Language="F#" Value="member this.CanReadSignInResponse : System.Web.HttpRequestBase -&gt; bool" Usage="wSFederationAuthenticationModule.CanReadSignInResponse request" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Web.HttpRequestBase" />
+      </Parameters>
+      <Docs>
+        <param name="request">들어오는 HTTP 요청입니다.</param>
+        <summary>지정된 HTTP 요청이 WS-Federation 로그인 응답 메시지인지 여부를 나타내는 값을 반환합니다. 메시지가 WS-Federation 로그아웃 정리 메시지("wsignoutcleanup1.0")일 경우 이 메서드는 요청을 처리합니다.</summary>
+        <returns>지정된 HTTP 요청에 wa 매개 변수가 “wsignout1.0”으로 설정되어 있고 wresult 매개 변수가 비어 있지 않은 폼 POST가 포함되어 있으면 <see langword="true" />이고, 그러지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 들어오는 HTTP 요청이 Ws-federation 로그인 응답 메시지를 포함 하는 폼 게시 되는지 확인 하려면 요청 처리 파이프라인에서 호출 됩니다.  
+  
+ 호출을 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%2CSystem.Boolean%29?displayProperty=nameWithType> 오버 로드는 `onPage` 매개 변수 집합 `false` 호출 페이지를 처리 하는 동안 시작 되지 않은 나타내려면 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />입니다.</exception>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest(System.Object,System.EventArgs)" />
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse(System.Web.HttpRequestBase,System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CanReadSignInResponse">
+      <MemberSignature Language="C#" Value="public virtual bool CanReadSignInResponse (System.Web.HttpRequestBase request, bool onPage);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool CanReadSignInResponse(class System.Web.HttpRequestBase request, bool onPage) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse(System.Web.HttpRequestBase,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function CanReadSignInResponse (request As HttpRequestBase, onPage As Boolean) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool CanReadSignInResponse(System::Web::HttpRequestBase ^ request, bool onPage);" />
+      <MemberSignature Language="F#" Value="abstract member CanReadSignInResponse : System.Web.HttpRequestBase * bool -&gt; bool&#xA;override this.CanReadSignInResponse : System.Web.HttpRequestBase * bool -&gt; bool" Usage="wSFederationAuthenticationModule.CanReadSignInResponse (request, onPage)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Web.HttpRequestBase" />
+        <Parameter Name="onPage" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="request">들어오는 HTTP 요청입니다.</param>
+        <param name="onPage">페이지 요청을 처리하는 동안 호출이 만들어지면 <see langword="true" />입니다. 호출자가 HTTP 모듈이면 <see langword="false" />입니다. 이 매개 변수는 처리를 종료하는 방법을 결정하거나 들어오는 메시지가 WS-Federation 로그아웃 정리 메시지("wsignoutcleanup1.0")인 경우 리디렉션을 보냅니다.</param>
+        <summary>지정된 HTTP 요청이 WS-Federation 로그인 응답 메시지인지 여부를 나타내는 값을 반환합니다. 메시지가 WS-Federation 로그아웃 정리 메시지("wsignoutcleanup1.0")일 경우 이 메서드는 요청을 처리합니다.</summary>
+        <returns>지정된 HTTP 요청에 wa 매개 변수가 “wsignout1.0”으로 설정되어 있고 wresult 매개 변수가 비어 있지 않은 FORM 게시가 포함되어 있으면 <see langword="true" />이고, 그러지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 통해 요청 처리 파이프라인에서 호출 됩니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29?displayProperty=nameWithType> 오버 로드는 들어오는 HTTP 요청의 폼 POST WS-페더레이션 로그인 응답 메시지를 포함 하는 인지 여부를 확인 합니다.  
+  
+ 기본 구현에서는 다음을 수행 합니다.  
+  
+-   폼 POST가 들어오는 요청을 사용 하는 경우 호출 하 여 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.IsSignInResponse%2A> 폼 POST 로그인 응답에 포함 되는지 여부를 결정 하는 방법입니다.  
+  
+-   들어오는 요청을 하지 않고 폼 POST를 요청에는 Ws-federation 로그 아웃 정리 요청 (wa 매개 변수는 "wsignoutcleanup1.0""), 로그 아웃 정리 수행 됩니다. 이 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType> 메서드가 호출 됩니다 (매개 변수 설정 `true` 를 로그 아웃 정리를 나타내기 위해) 세션에서 로그 아웃 하 합니다. 또한 로그 아웃 이벤트를 발생 그러면 합니다.  
+  
+     클라이언트에서 반환 된 URL로 리디렉션됩니다는 wreply 매개 변수를 포함 하는 로그 아웃 정리 요청을 하는 경우에 어는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSignOutRedirectUrl%2A> 메서드; STS에 녹색 확인 표시가의 이미지는 반환 하는 고, 그렇지 합니다. 이 이미지의 수신은 확인 하는 로그 아웃 정리 요청 수신 되었고 RP에서 성공적으로 처리는 STS에서 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />입니다.</exception>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse(System.Web.HttpRequestBase)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateSignInRequest">
+      <MemberSignature Language="C#" Value="public System.IdentityModel.Services.SignInRequestMessage CreateSignInRequest (string uniqueId, string returnUrl, bool rememberMeSet);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IdentityModel.Services.SignInRequestMessage CreateSignInRequest(string uniqueId, string returnUrl, bool rememberMeSet) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest(System.String,System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CreateSignInRequest (uniqueId As String, returnUrl As String, rememberMeSet As Boolean) As SignInRequestMessage" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IdentityModel::Services::SignInRequestMessage ^ CreateSignInRequest(System::String ^ uniqueId, System::String ^ returnUrl, bool rememberMeSet);" />
+      <MemberSignature Language="F#" Value="member this.CreateSignInRequest : string * string * bool -&gt; System.IdentityModel.Services.SignInRequestMessage" Usage="wSFederationAuthenticationModule.CreateSignInRequest (uniqueId, returnUrl, rememberMeSet)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Services.SignInRequestMessage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="uniqueId" Type="System.String" />
+        <Parameter Name="returnUrl" Type="System.String" />
+        <Parameter Name="rememberMeSet" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="uniqueId">WSFAM은 이 값을 WS 페더레이션 로그인 요청의 wctx 매개 변수에 저장하지만 모듈은 로그인 요청 또는 로그인 응답을 처리할 때는 이 값을 사용하지 않습니다. 임의의 값으로 설정할 수 있습니다. 고유하지 않아도 됩니다.</param>
+        <param name="returnUrl">인증 시 모듈이 반환되어야 하는 URL입니다.</param>
+        <param name="rememberMeSet">WSFAM은 이 값을 WS 페더레이션 로그인 요청의 wctx 매개 변수에 저장하지만 모듈은 로그인 요청 또는 로그인 응답을 처리할 때는 이 값을 사용하지 않습니다. <see langword="true" /> 또는 <see langword="false" />로 설정할 수 있습니다.</param>
+        <summary>모듈에 구성된 WS-Federation 매개 변수를 사용하여 WS-Federation 로그인 요청 메시지를 만듭니다.</summary>
+        <returns>WS-Federation 로그인 요청 메시지입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Ws-federation 로그인 요청을 나타내는 만듭니다는 <xref:System.IdentityModel.Services.SignInRequestMessage> 개체입니다. 새 속성 <xref:System.IdentityModel.Services.SignInRequestMessage> 개체는 다음과 같이 설정 됩니다.  
+  
+-   <xref:System.IdentityModel.Services.WSFederationMessage.Context%2A> 속성 (wctx 매개 변수)은 메서드 매개 변수를 사용 하 여 만든 값으로 설정 합니다.  
+  
+-   <xref:System.IdentityModel.Services.SignInRequestMessage.CurrentTime%2A> 속성 (wct 매개 변수)는 현재 시간으로 설정 됩니다.  
+  
+-   다른 모든 속성은 현재 인스턴스의 해당 하는 속성을 사용 하 여 설정 됩니다.  
+  
+ 메서드에 전달 된 매개 변수를 wctx 메시지 매개 변수를 만드는 데 사용 됩니다. 이 다음 형식의 문자열: `ru=returnUrl&cx=SignInContext&rm=rememberMeSet&id=uniqueId`합니다.  
+  
+-   합니다 `ru` 값의 값으로 설정 되는 `returnUrl` 매개 변수가 메서드에 전달 하 고 모듈 다음 성공적으로 인증 하려면 브라우저를 전달 해야 하는 URL을 지정 합니다. WSFAM에 의해 사용 되는 wctx 문자열에 저장 된 유일한 값입니다. 모듈 호출을 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A> WS-페더레이션 로그인 응답을 처리할 때 wctx 매개 변수에서이 값을 추출 하는 방법입니다. 하 여 지정한 wreply 메시지 매개 변수를 혼동 하지 해야는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply%2A> 속성 및 보안 토큰 서비스 (STS) 응답을 전달 해야 하는 RP에 주소를 제공 하는 합니다.  
+  
+-   `cx` 매개 변수 값으로 설정 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A> 속성입니다. Wctx 문자열에 저장 되어야 하는 모든 응용 프로그램 정의 컨텍스트를 설정 하는 데 사용할 수 있도록이 속성은 그러나 WSFAM은 응답에서이 값을 추출 하는 메서드를 노출 하지 않습니다. 값은 응용 프로그램에서 필요한 경우 wctx 문자열을 구문 분석 하 고 응답을 처리할 때이 값을 읽는 코드를 제공 해야 합니다. 재정의 하 여이 작업을 수행할 수는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A> 메서드.  
+  
+-   모두를 `rm` 의 값으로 설정 된 값을 `rememberMeSet` 매개 변수를 또는 `id` 매개 변수 값으로 설정 된는 `uniqueId` WSFAM 하 여 매개 변수를 사용 합니다. 이러한 값으로 설정할 수 있습니다.  
+  
+ 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 에서 메서드를 호출 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" />속성이 <see langword="null" />이거나 빈 문자열입니다.  
+  
+또는 
+<see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" />속성이 <see langword="null" />이거나 빈 문자열입니다.</exception>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider(System.String,System.String,System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="FederatedSignOut">
+      <MemberSignature Language="C#" Value="public static void FederatedSignOut (Uri signOutUrl, Uri replyUrl);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void FederatedSignOut(class System.Uri signOutUrl, class System.Uri replyUrl) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut(System.Uri,System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub FederatedSignOut (signOutUrl As Uri, replyUrl As Uri)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void FederatedSignOut(Uri ^ signOutUrl, Uri ^ replyUrl);" />
+      <MemberSignature Language="F#" Value="static member FederatedSignOut : Uri * Uri -&gt; unit" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut (signOutUrl, replyUrl)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="signOutUrl" Type="System.Uri" />
+        <Parameter Name="replyUrl" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="signOutUrl">WS-Federation 로그 아웃 요청 메시지를 받는 STS의 URL입니다. <see langword="null" />일 수 없습니다.</param>
+        <param name="replyUrl">로그 아웃 요청 메시지의 wreply 값으로 보내는 URL입니다.</param>
+        <summary>WS-Federation 프로토콜을 사용하여 지정한 STS(보안 토큰 서비스)에서 로그아웃합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 지정 된 STS에 Ws-federation 로그 아웃 요청 메시지를 보내기 위해이 메서드를 호출 합니다. 필요에 따라 로그 아웃 요청에서 wreply 매개 변수의 값을 제공할 수 있습니다.  
+  
+ 메서드는 다음을 수행 합니다.  
+  
+1.  지정된 된 매개 변수를 사용 하 여 Ws-federation 로그 아웃 요청 메시지를 만듭니다.  
+  
+2.  호출 된 <xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A?displayProperty=nameWithType> 세션 쿠키를 삭제 하려면 SAM 메서드.  
+  
+3.  첫 번째 단계에서 로그 아웃 요청 메시지를 사용 하 여 STS로 리디렉션.  
+  
+ 로그 아웃 이벤트가 없을: <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut>, <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut>, 또는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError> 이 메서드에 의해 발생 합니다. STS에 로그 아웃 요청 메시지를 보내지 않고 세션을 삭제 하는 오버 로드 된 중 하나를 호출 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A> 메서드.  
+  
+> [!NOTE]
+>  세션 토큰을 사용 하 여 수동 로그 아웃을 수행 하려면 모듈에 저장 된 값에 의존 합니다 <xref:System.IdentityModel.Tokens.SessionSecurityToken.Context%2A?displayProperty=nameWithType> 속성에는 로그인, 자세한 내용은 참조는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSessionTokenContext%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="signOutUrl" />은 <see langword="null" />이 아니며 절대 URI가 아닙니다.  
+  
+또는 
+ <paramref name="replyUrl" />은 <see langword="null" />이 아니며 절대 URI가 아닙니다.</exception>
+        <exception cref="T:System.InvalidOperationException"><paramref name="signOutUrl" />가 <see langword="null" />입니다.</exception>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut" />
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSessionTokenContext" />
+      </Docs>
+    </Member>
+    <Member MemberName="Freshness">
+      <MemberSignature Language="C#" Value="public string Freshness { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Freshness" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Freshness" />
+      <MemberSignature Language="VB.NET" Value="Public Property Freshness As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Freshness { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Freshness : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.Freshness" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청("wsignin1.0")에 사용할 wfresh 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value>원하는 최대 인증 요청 나이(분)입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Wfresh 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Freshness%2A> 속성이 `null` 또는 빈 문자열인 경우 wfresh 매개 변수는 로그인 요청에 포함 되지 않습니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetFederationPassiveSignOutUrl">
+      <MemberSignature Language="C#" Value="public static string GetFederationPassiveSignOutUrl (string issuer, string signOutReply, string signOutQueryString);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string GetFederationPassiveSignOutUrl(string issuer, string signOutReply, string signOutQueryString) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl(System.String,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetFederationPassiveSignOutUrl (issuer As String, signOutReply As String, signOutQueryString As String) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::String ^ GetFederationPassiveSignOutUrl(System::String ^ issuer, System::String ^ signOutReply, System::String ^ signOutQueryString);" />
+      <MemberSignature Language="F#" Value="static member GetFederationPassiveSignOutUrl : string * string * string -&gt; string" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl (issuer, signOutReply, signOutQueryString)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="issuer" Type="System.String" />
+        <Parameter Name="signOutReply" Type="System.String" />
+        <Parameter Name="signOutQueryString" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="issuer">발급자 주소입니다. 요청을 보내는 STS(보안 토큰 서비스)의 주소입니다.</param>
+        <param name="signOutReply">로그아웃 후에 반환할 주소를 지정하는 URL입니다. 따라서 로그아웃 요청에서 wreply 매개 변수가 설정됩니다. 생성된 로그아웃 요청에 wreply 매개 변수가 포함되지 않아도 되면 <see langword="null" />이거나 비어 있을 수 있습니다. 이 항목은 절대 URI이어야 합니다.</param>
+        <param name="signOutQueryString">로그 아웃 요청에 포함할 추가 쿼리 문자열 매개 변수입니다. 생성된 로그아웃 요청에 추가 매개 변수가 포함되지 않으면 <see langword="null" />이거나 비어 있을 수 있습니다. 상대적 URI여야 합니다.</param>
+        <summary>지정한 발급자 주소로 지정된 WS-Federation 로그아웃 요청을 나타내고 지정한 wreply 매개 변수와 지정한 추가 매개 변수를 포함하는 URL을 반환합니다.</summary>
+        <returns>지정된 매개 변수를 사용하여 빌드된 WS-Federation 수동 로그아웃 요청을 포함하는 URL입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 반환 되는 URL에: URI로 설정 된 기본 `issuer`wa 매개 변수가 "wsignout1.0"로 설정 됩니다; wreply 매개 변수는 설정 `signOutReply`; 및 지정 된 매개 변수 `signOutQueryString` 추가 쿼리 문자열 매개 변수로 제공 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="issuer" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetReferencedResult">
+      <MemberSignature Language="C#" Value="protected virtual string GetReferencedResult (string resultPtr);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string GetReferencedResult(string resultPtr) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReferencedResult(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetReferencedResult (resultPtr As String) As String" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::String ^ GetReferencedResult(System::String ^ resultPtr);" />
+      <MemberSignature Language="F#" Value="abstract member GetReferencedResult : string -&gt; string&#xA;override this.GetReferencedResult : string -&gt; string" Usage="wSFederationAuthenticationModule.GetReferencedResult resultPtr" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resultPtr" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="resultPtr">발급 결과의 주소를 지정하는 URL입니다.</param>
+        <summary>지정된 URL에서 발급 결과(일반적으로 발급된 토큰)를 가져옵니다. 로그인 응답 메시지의 wresultptr 매개 변수에 지정된 URL을 확인합니다.</summary>
+        <returns>URL에서 참조된 발급 결과입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 의해 호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetXmlTokenFromMessage%28System.IdentityModel.Services.SignInResponseMessage%29?displayProperty=nameWithType> 보안 토큰 서비스 (STS)에서 받은 로그인 응답 메시지의 wresultptr 매개 변수에 지정 된 URL을 확인 하는 처리 파이프라인 내에서 메서드.  
+  
+ 기본적으로이 메서드에서 throw 한 <xref:System.NotSupportedException>합니다. Wresultptr 매개 변수를 지원 하기 위해 파생된 클래스에서이 메서드를 재정의 합니다. URL 중 하나는 발급 결과 가리키는:는 `<wst:RequestSecurityTokenResponse>` 요소를 `<wst:RequestSecurityTokenResponseCollection>` 요소나 SOAP 응답의 경우 SOAP `<S:Fault>` 요소입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">이 메서드가 기본 클래스에서 지원되지 않는 경우 파생 클래스에서 재정의해야 합니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetReturnUrlFromResponse">
+      <MemberSignature Language="C#" Value="protected virtual string GetReturnUrlFromResponse (System.Web.HttpRequestBase request);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string GetReturnUrlFromResponse(class System.Web.HttpRequestBase request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse(System.Web.HttpRequestBase)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetReturnUrlFromResponse (request As HttpRequestBase) As String" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::String ^ GetReturnUrlFromResponse(System::Web::HttpRequestBase ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member GetReturnUrlFromResponse : System.Web.HttpRequestBase -&gt; string&#xA;override this.GetReturnUrlFromResponse : System.Web.HttpRequestBase -&gt; string" Usage="wSFederationAuthenticationModule.GetReturnUrlFromResponse request" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Web.HttpRequestBase" />
+      </Parameters>
+      <Docs>
+        <param name="request">WS-페더레이션 로그인 응답 메시지를 포함하는 폼 POST를 포함하는 HTTP 요청입니다.</param>
+        <summary>원래 로그인 응답에서 요청 된 페이지의 URL을 추출합니다.</summary>
+        <returns>클라이언트가 원래 요청했던 페이지의 URL입니다. 로그인이 성공한 후에 클라이언트를 리디렉션해야 하는 URL(신뢰 당사자)입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 요청 처리 파이프라인에서 호출 됩니다 (의 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A> 메서드) 성공적인 로그인 후 신뢰 당사자 (RP)를 클라이언트에서 페이지의 URL을 가져옵니다. 일반적으로이 RP는 클라이언트가 원래 요청 리소스 액세스의 URL입니다.  
+  
+ 기본적으로 WSFAM Ws-federation 로그인 요청 보안 토큰 서비스 (STS)를 보낼 때 메시지 wctx 매개 변수 내에서 반환 URL을 저장 합니다. Wctx 매개 변수는 메시지 전달 되며 엔터티 간에 유지 됩니다 Ws-federation 사양에 따라 STS에 의해 전송 되는 WS-페더레이션 로그인 응답 메시지에 변경 되지 않은 상태로 반환 합니다.  
+  
+ 기본 구현은 wctx 매개 변수를 로그인에 대 한 응답에서에서 반환 URL을 가져옵니다. WSFAM에 사용 되는 wctx 매개 변수의 형식에 대 한 자세한 내용은 참조는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />입니다.</exception>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest(System.String,System.String,System.Boolean)" />
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest(System.Object,System.EventArgs)" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetSecurityToken">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>지정된 요청에서 보안 토큰을 읽습니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetSecurityToken">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Tokens.SecurityToken GetSecurityToken (System.IdentityModel.Services.SignInResponseMessage message);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Tokens.SecurityToken GetSecurityToken(class System.IdentityModel.Services.SignInResponseMessage message) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSecurityToken(System.IdentityModel.Services.SignInResponseMessage)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetSecurityToken (message As SignInResponseMessage) As SecurityToken" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Tokens::SecurityToken ^ GetSecurityToken(System::IdentityModel::Services::SignInResponseMessage ^ message);" />
+      <MemberSignature Language="F#" Value="abstract member GetSecurityToken : System.IdentityModel.Services.SignInResponseMessage -&gt; System.IdentityModel.Tokens.SecurityToken&#xA;override this.GetSecurityToken : System.IdentityModel.Services.SignInResponseMessage -&gt; System.IdentityModel.Tokens.SecurityToken" Usage="wSFederationAuthenticationModule.GetSecurityToken message" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.SecurityToken</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.IdentityModel.Services.SignInResponseMessage" />
+      </Parameters>
+      <Docs>
+        <param name="message">토큰을 읽을 로그인 응답 메시지입니다.</param>
+        <summary>WS Federation 로그인 응답 메시지에서 보안 토큰을 읽습니다.</summary>
+        <returns>메시지에서 읽은 보안 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현 호출을 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetXmlTokenFromMessage%28System.IdentityModel.Services.SignInResponseMessage%2CSystem.IdentityModel.Services.WSFederationSerializer%29?displayProperty=nameWithType> 토큰을 가져오기 위한 메서드를 하 고 구성 된 보안 토큰 처리기에서 적절 한 처리기를 사용 하 여 읽습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="message" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSecurityToken">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Tokens.SecurityToken GetSecurityToken (System.Web.HttpRequestBase request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Tokens.SecurityToken GetSecurityToken(class System.Web.HttpRequestBase request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSecurityToken(System.Web.HttpRequestBase)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetSecurityToken (request As HttpRequestBase) As SecurityToken" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Tokens::SecurityToken ^ GetSecurityToken(System::Web::HttpRequestBase ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member GetSecurityToken : System.Web.HttpRequestBase -&gt; System.IdentityModel.Tokens.SecurityToken&#xA;override this.GetSecurityToken : System.Web.HttpRequestBase -&gt; System.IdentityModel.Tokens.SecurityToken" Usage="wSFederationAuthenticationModule.GetSecurityToken request" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Tokens.SecurityToken</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Web.HttpRequestBase" />
+      </Parameters>
+      <Docs>
+        <param name="request">토큰을 읽어올 HTTP 요청입니다.</param>
+        <summary>지정된 HTTP 요청에서 보안 토큰을 읽습니다.</summary>
+        <returns>읽은 보안 토큰입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Ws-federation 로그인 요청 메시지를 가져오려는 요청 처리 파이프라인에서 호출을 <xref:System.IdentityModel.Tokens.SecurityToken> 개체입니다.  
+  
+ 기본 구현을 호출 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSignInResponseMessage%2A> 메서드를를 <xref:System.IdentityModel.Services.SignInResponseMessage> 개체를 호출 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSecurityToken%28System.IdentityModel.Services.SignInResponseMessage%29?displayProperty=nameWithType> 오버 로드.  
+  
+ 파생된 클래스를 사용 하 여 특정 종류의 요청을 해석 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSessionTokenContext">
+      <MemberSignature Language="C#" Value="protected virtual string GetSessionTokenContext ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string GetSessionTokenContext() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSessionTokenContext" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetSessionTokenContext () As String" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::String ^ GetSessionTokenContext();" />
+      <MemberSignature Language="F#" Value="abstract member GetSessionTokenContext : unit -&gt; string&#xA;override this.GetSessionTokenContext : unit -&gt; string" Usage="wSFederationAuthenticationModule.GetSessionTokenContext " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="P:System.IdentityModel.Tokens.SessionSecurityToken.Context" /> 속성에서 세션 크기와 유지해야 하는 문자열을 가져옵니다.</summary>
+        <returns>세션 쿠키에 유지되는 문자열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSessionTokenContext%2A> 에 저장 하는 값을 가져오려면 Ws-federation 로그인 응답 메시지를 처리할 때 요청 처리 파이프라인에서 메서드를 호출 합니다 <xref:System.IdentityModel.Tokens.SessionSecurityToken.Context%2A?displayProperty=nameWithType> 세션 쿠키를 내부 속성입니다.  
+  
+ 쿠키에 저장 될 응용 프로그램별 값을 제공 하려면이 메서드를 재정의할 수 있습니다. WSFAM 된 쿠키의 값을 검색 하는 모든 메서드를 노출 하지 않습니다. 필요한 경우 쿠키에서 값을 읽을 수 있는 응용 프로그램의 논리를 제공 해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 속성이 <see langword="null" />일 경우(이 속성은</exception>
+        <altmember cref="P:System.IdentityModel.Tokens.SessionSecurityToken.Context" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetSignInResponseMessage">
+      <MemberSignature Language="C#" Value="public virtual System.IdentityModel.Services.SignInResponseMessage GetSignInResponseMessage (System.Web.HttpRequestBase request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IdentityModel.Services.SignInResponseMessage GetSignInResponseMessage(class System.Web.HttpRequestBase request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSignInResponseMessage(System.Web.HttpRequestBase)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetSignInResponseMessage (request As HttpRequestBase) As SignInResponseMessage" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IdentityModel::Services::SignInResponseMessage ^ GetSignInResponseMessage(System::Web::HttpRequestBase ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member GetSignInResponseMessage : System.Web.HttpRequestBase -&gt; System.IdentityModel.Services.SignInResponseMessage&#xA;override this.GetSignInResponseMessage : System.Web.HttpRequestBase -&gt; System.IdentityModel.Services.SignInResponseMessage" Usage="wSFederationAuthenticationModule.GetSignInResponseMessage request" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IdentityModel.Services.SignInResponseMessage</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Web.HttpRequestBase" />
+      </Parameters>
+      <Docs>
+        <param name="request">로그인 응답 메시지를 읽는 HTTP 요청입니다. 요청에는 폼 POST가 있어야 합니다.</param>
+        <summary>지정된 HTTP 요청으로 표현되는 POST에서 <see cref="T:System.IdentityModel.Services.SignInResponseMessage" /> 개체를 읽습니다.</summary>
+        <returns>만들어진 된 로그인 응답 메시지입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSecurityToken%28System.Web.HttpRequestBase%29?displayProperty=nameWithType> 폼 POST HTTP 요청에 포함 된 로그인 응답 메시지를 활용 하려면 요청 처리 파이프라인에는 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.InvalidOperationException">로그인 응답 메시지를 지정된 요청에서 읽을 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSignOutRedirectUrl">
+      <MemberSignature Language="C#" Value="protected virtual string GetSignOutRedirectUrl (System.IdentityModel.Services.SignOutCleanupRequestMessage signOutMessage);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance string GetSignOutRedirectUrl(class System.IdentityModel.Services.SignOutCleanupRequestMessage signOutMessage) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSignOutRedirectUrl(System.IdentityModel.Services.SignOutCleanupRequestMessage)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetSignOutRedirectUrl (signOutMessage As SignOutCleanupRequestMessage) As String" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::String ^ GetSignOutRedirectUrl(System::IdentityModel::Services::SignOutCleanupRequestMessage ^ signOutMessage);" />
+      <MemberSignature Language="F#" Value="abstract member GetSignOutRedirectUrl : System.IdentityModel.Services.SignOutCleanupRequestMessage -&gt; string&#xA;override this.GetSignOutRedirectUrl : System.IdentityModel.Services.SignOutCleanupRequestMessage -&gt; string" Usage="wSFederationAuthenticationModule.GetSignOutRedirectUrl signOutMessage" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="signOutMessage" Type="System.IdentityModel.Services.SignOutCleanupRequestMessage" />
+      </Parameters>
+      <Docs>
+        <param name="signOutMessage">로그 아웃 정리 요청입니다.</param>
+        <summary>wreply 매개 변수를 포함하는 WS-Federation 로그아웃 정리 요청(wsignoutcleanup1.0)을 처리할 때 리디렉션할 URL을 결정합니다.</summary>
+        <returns>리디렉션할 URI입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%2A> Ws-federation 로그 아웃 정리 요청을 처리 한 후에 리디렉션할 URL을 확인 하려면 요청 처리 파이프라인에는 메서드. 메시지의 wreply 매개 변수 에서만 호출 됩니다 (합니다 `signOutMessage` 매개 변수를 <xref:System.IdentityModel.Services.SignOutCleanupRequestMessage.Reply%2A> 않은 속성 `null` 아니고 비어 있지).  
+  
+ 기본 구현에서는 메시지에 포함 된 회신 URL의 유효성을 검사 (합니다 <xref:System.IdentityModel.Services.SignOutCleanupRequestMessage.Reply%2A?displayProperty=nameWithType> 속성) 보안 토큰 서비스 (STS)에 지정 된 주소에 대해는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다. 다음 조건이 유효 하려면 회신 URL에 대 한 참 이어야 합니다.  
+  
+1.  회신 URL은 절대 URL입니다.  
+  
+2.  회신 URL 발급자 동일한 구성표를 있습니다.  
+  
+3.  회신 URL에는 발급자와 동일한 포트를 있습니다.  
+  
+4.  발급자와 동일한 호스트에 회신 URL 또는 회신 URL 발급자의 하위 도메인을 지정 합니다.  
+  
+ 이러한 조건이 모두 true 이면 회신 URL (Reply)가 반환 하는 경우 URL을 지정 하는 고, 그렇지는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성이 반환 됩니다.  
+  
+ 회신 URL에 대 한 추가 유효성 검사를 제공 하려면이 메서드를 재정의 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="signOutMessage" />에는 <see langword="null" />이거나 빈 <see cref="P:System.IdentityModel.Services.SignOutCleanupRequestMessage.Reply" /> 속성이 있습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="signOutMessage" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetXmlTokenFromMessage">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>WS Federation 로그인 응답 메시지에서 발급된 토큰을 추출합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetXmlTokenFromMessage">
+      <MemberSignature Language="C#" Value="public virtual string GetXmlTokenFromMessage (System.IdentityModel.Services.SignInResponseMessage message);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetXmlTokenFromMessage(class System.IdentityModel.Services.SignInResponseMessage message) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetXmlTokenFromMessage(System.IdentityModel.Services.SignInResponseMessage)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetXmlTokenFromMessage (message As SignInResponseMessage) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::String ^ GetXmlTokenFromMessage(System::IdentityModel::Services::SignInResponseMessage ^ message);" />
+      <MemberSignature Language="F#" Value="abstract member GetXmlTokenFromMessage : System.IdentityModel.Services.SignInResponseMessage -&gt; string&#xA;override this.GetXmlTokenFromMessage : System.IdentityModel.Services.SignInResponseMessage -&gt; string" Usage="wSFederationAuthenticationModule.GetXmlTokenFromMessage message" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.IdentityModel.Services.SignInResponseMessage" />
+      </Parameters>
+      <Docs>
+        <param name="message">토큰을 추출할 로그인 응답 메시지입니다. 로그인 응답은 STS에서 발급된 토큰을 포함합니다.</param>
+        <summary>WS Federation 로그인 응답 메시지에서 발급된 토큰을 추출합니다.</summary>
+        <returns>발급된 토큰을 나타내는 XML이 포함된 문자열입니다. 이것은 <see langword="&lt;wst:RequestSecurityTokenResponse&gt;" /> 요소입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 로그인 응답 메시지의 wresult 매개 변수가 없는 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReferencedResult%2A> 메서드가 호출 되어 wresultptr 매개 변수를 사용 하 여 토큰을 가져오려고 시도 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="message" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.InvalidOperationException"><paramref name="message" />에 토큰이 포함되어 있지 않습니다. (유효한 wresult 또는 wresultptr 매개 변수가 포함되어 있지 않습니다.)</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetXmlTokenFromMessage">
+      <MemberSignature Language="C#" Value="public virtual string GetXmlTokenFromMessage (System.IdentityModel.Services.SignInResponseMessage message, System.IdentityModel.Services.WSFederationSerializer federationSerializer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance string GetXmlTokenFromMessage(class System.IdentityModel.Services.SignInResponseMessage message, class System.IdentityModel.Services.WSFederationSerializer federationSerializer) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.GetXmlTokenFromMessage(System.IdentityModel.Services.SignInResponseMessage,System.IdentityModel.Services.WSFederationSerializer)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetXmlTokenFromMessage (message As SignInResponseMessage, federationSerializer As WSFederationSerializer) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::String ^ GetXmlTokenFromMessage(System::IdentityModel::Services::SignInResponseMessage ^ message, System::IdentityModel::Services::WSFederationSerializer ^ federationSerializer);" />
+      <MemberSignature Language="F#" Value="abstract member GetXmlTokenFromMessage : System.IdentityModel.Services.SignInResponseMessage * System.IdentityModel.Services.WSFederationSerializer -&gt; string&#xA;override this.GetXmlTokenFromMessage : System.IdentityModel.Services.SignInResponseMessage * System.IdentityModel.Services.WSFederationSerializer -&gt; string" Usage="wSFederationAuthenticationModule.GetXmlTokenFromMessage (message, federationSerializer)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.IdentityModel.Services.SignInResponseMessage" />
+        <Parameter Name="federationSerializer" Type="System.IdentityModel.Services.WSFederationSerializer" />
+      </Parameters>
+      <Docs>
+        <param name="message">토큰을 추출할 로그인 응답 메시지입니다. 로그인 응답은 STS에서 발급된 토큰을 포함합니다.</param>
+        <param name="federationSerializer">사용하여 로그인 응답 메시지를 de-serialize하는 WS-Federation serializer입니다.</param>
+        <summary>지정된 WS-페더레이션 로그인 응답 메시지에서 WS-페더레이션 serializer를 사용하여 발급된 토큰을 추출합니다.</summary>
+        <returns>발급된 토큰을 나타내는 XML이 포함된 문자열입니다. 이것은 <see langword="&lt;wst:RequestSecurityTokenResponse&gt;" /> 요소입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="message" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="HomeRealm">
+      <MemberSignature Language="C#" Value="public string HomeRealm { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string HomeRealm" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.HomeRealm" />
+      <MemberSignature Language="VB.NET" Value="Public Property HomeRealm As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ HomeRealm { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.HomeRealm : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.HomeRealm" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청("wsignin1.0")에 사용할 whr 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value>ID 공급자의 주소입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Whr 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.HomeRealm%2A> 속성이 `null` 또는 빈 문자열인 경우 다음과 같이 whr 매개 변수는 로그인 요청에 포함 되지 않습니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeModule">
+      <MemberSignature Language="C#" Value="protected override void InitializeModule (System.Web.HttpApplication context);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void InitializeModule(class System.Web.HttpApplication context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.InitializeModule(System.Web.HttpApplication)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub InitializeModule (context As HttpApplication)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void InitializeModule(System::Web::HttpApplication ^ context);" />
+      <MemberSignature Language="F#" Value="override this.InitializeModule : System.Web.HttpApplication -&gt; unit" Usage="wSFederationAuthenticationModule.InitializeModule context" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Web.HttpApplication" />
+      </Parameters>
+      <Docs>
+        <param name="context">이 모듈을 포함하는 HTTP 응용 프로그램 개체입니다.</param>
+        <summary>모듈을 초기화하고 모듈의 [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 응용 프로그램 개체에서 이벤트를 처리할 수 있도록 준비합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 다음 표에 따라 ASP.NET 파이프라인 이벤트에 대 한 처리기를 추가합니다.  
+  
+|이벤트|처리기|  
+|-----------|-------------|  
+|<xref:System.Web.HttpApplication.AuthenticateRequest?displayProperty=nameWithType>|<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A>|  
+|<xref:System.Web.HttpApplication.EndRequest?displayProperty=nameWithType>|<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A>|  
+|<xref:System.Web.HttpApplication.PostAuthenticateRequest?displayProperty=nameWithType>|<xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnPostAuthenticateRequest%2A>|  
+  
+> [!NOTE]
+>  모듈 속성을 같은 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 에서 초기화 되는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.InitializePropertiesFromConfiguration%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="context" />가 <see langword="null" />입니다.</exception>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.InitializePropertiesFromConfiguration" />
+      </Docs>
+    </Member>
+    <Member MemberName="InitializePropertiesFromConfiguration">
+      <MemberSignature Language="C#" Value="protected override void InitializePropertiesFromConfiguration ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void InitializePropertiesFromConfiguration() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.InitializePropertiesFromConfiguration" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub InitializePropertiesFromConfiguration ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void InitializePropertiesFromConfiguration();" />
+      <MemberSignature Language="F#" Value="override this.InitializePropertiesFromConfiguration : unit -&gt; unit" Usage="wSFederationAuthenticationModule.InitializePropertiesFromConfiguration " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>모듈의 <see cref="P:System.IdentityModel.Services.HttpModuleBase.FederationConfiguration" /> 속성에서 지정된 구성을 기반으로 모듈 속성을 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 모듈 속성의 해당 하는 속성을 사용 하 여 초기화 됩니다 합니다 <xref:System.IdentityModel.Services.Configuration.WsFederationConfiguration> 로 지정 된 개체는 <xref:System.IdentityModel.Services.Configuration.FederationConfiguration.WsFederationConfiguration%2A?displayProperty=nameWithType> 속성입니다.  
+  
+ 설정을 통해 구성 파일에서 지정할 수 있습니다 합니다 [ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md) 요소입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsSignInResponse">
+      <MemberSignature Language="C#" Value="public virtual bool IsSignInResponse (System.Web.HttpRequestBase request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool IsSignInResponse(class System.Web.HttpRequestBase request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.IsSignInResponse(System.Web.HttpRequestBase)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function IsSignInResponse (request As HttpRequestBase) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool IsSignInResponse(System::Web::HttpRequestBase ^ request);" />
+      <MemberSignature Language="F#" Value="abstract member IsSignInResponse : System.Web.HttpRequestBase -&gt; bool&#xA;override this.IsSignInResponse : System.Web.HttpRequestBase -&gt; bool" Usage="wSFederationAuthenticationModule.IsSignInResponse request" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Web.HttpRequestBase" />
+      </Parameters>
+      <Docs>
+        <param name="request">들어오는 HTTP 요청입니다.</param>
+        <summary>지정된 요청이 WS-Federation 로그인 응답 메시지인지 여부를 나타내는 값을 가져옵니다.</summary>
+        <returns>요청이 WS-Federation 로그인 응답 메시지이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%2A> 메서드 요청 처리 파이프라인 들어오는 HTTP 요청이 Ws-federation 로그인 응답 메시지 인지 여부를 확인 합니다.  
+  
+ 기본 구현은 반환 `true` 경우 wa 매개 변수는 "wsignin1.0""와 wreq 및 wreqptr 매개 변수가 둘 다 설정 합니다.  
+  
+ 추가 유효성 검사를 수행 하기 위해 파생된 클래스에서이 메서드를 재정의할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Issuer">
+      <MemberSignature Language="C#" Value="public string Issuer { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Issuer" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" />
+      <MemberSignature Language="VB.NET" Value="Public Property Issuer As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Issuer { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Issuer : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>보안 토큰의 의도된 발급자를 식별하는 URI를 가져오거나 설정합니다.</summary>
+        <value>STS(보안 토큰 서비스)를 식별하는 URI입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 필수 속성입니다. 수동 리디렉션을 사용 하는 경우에 설정 되어야 합니다. WS-페더레이션 요청 해야 발급할 보안 토큰 서비스 (STS)의 URL을 지정 합니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">속성을 <see langword="null" />이나 빈 문자열로 설정하려고 한 경우  
+  
+또는 
+속성을 유효한 절대 URI가 아닌 값으로 설정하려는 시도가 발생합니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAuthenticateRequest">
+      <MemberSignature Language="C#" Value="protected virtual void OnAuthenticateRequest (object sender, EventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAuthenticateRequest(object sender, class System.EventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest(System.Object,System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAuthenticateRequest (sender As Object, args As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAuthenticateRequest(System::Object ^ sender, EventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnAuthenticateRequest : obj * EventArgs -&gt; unit&#xA;override this.OnAuthenticateRequest : obj * EventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnAuthenticateRequest (sender, args)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sender" Type="System.Object" />
+        <Parameter Name="args" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="sender">이벤트에 대한 소스입니다. <see cref="T:System.Web.HttpApplication" /> 개체가 됩니다.</param>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary>[!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 파이프라인에서 <see cref="E:System.Web.HttpApplication.AuthenticateRequest" /> 이벤트를 처리합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A> WS-페더레이션 요청 처리 파이프라인을 구현 하는 메서드입니다. 에 추가 됩니다는 <xref:System.Web.HttpApplication.AuthenticateRequest?displayProperty=nameWithType> 이벤트에는 [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 파이프라인을 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.InitializeModule%2A> 메서드.  
+  
+ 메서드는 다음을 수행합니다.  
+  
+1.  호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29> WS-페더레이션 로그인 응답 메시지 ("wsignin1.0"")을 받았는지 여부를 결정 하는 방법입니다. 응답에 Ws-federation 로그 아웃 정리 요청 ("wsignoutcleanup1.0"") 이면 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%29> , 메시지를 처리 하 고, 요청을 종료 하 고, 요청에서 Ws-federation 매개 변수에 따라 클라이언트를 리디렉션합니다. 메시지가 없는 경우 로그인 응답 또는 로그 아웃 정리 요청 모듈만 반환 합니다. 그렇지 않으면 로그인 응답을 처리 하려면 다음 단계를 수행 합니다.  
+  
+2.  호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetSecurityToken%28System.Web.HttpRequestBase%29> deserialize 하는 방법을 <xref:System.IdentityModel.Tokens.SecurityToken> 요청의 개체입니다.  
+  
+3.  <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived> 이벤트를 발생시킵니다. 추가 처리를 취소 하거나이 이벤트 처리기에서 수신된 된 보안 토큰을 수정할 수 있습니다. 처리기는 일반적으로 수정 하는 데는 <xref:System.IdentityModel.Tokens.SecurityToken.ValidFrom%2A?displayProperty=nameWithType> 또는 <xref:System.IdentityModel.Tokens.SecurityToken.ValidTo%2A?displayProperty=nameWithType> 속성입니다.  
+  
+4.  보안 토큰의 유효성을 검사 하 고 만듭니다는 <xref:System.Security.Claims.ClaimsPrincipal> 보안 토큰의 클레임 개체입니다.  
+  
+5.  <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated> 이벤트를 발생시킵니다. 추가 처리를 취소 하거나이 이벤트 처리기에서 클레임 보안 주체를 수정할 수 있습니다.  
+  
+6.  구성 된 세션 인증 모듈 (SAM)를 사용 하 여 만듭니다는 <xref:System.IdentityModel.Tokens.SessionSecurityToken> 개체입니다. (구성 된 SAM은는 <xref:System.IdentityModel.Services.SessionAuthenticationModule> 에서 반환 된 개체는 <xref:System.IdentityModel.Services.FederatedAuthentication.SessionAuthenticationModule%2A?displayProperty=nameWithType> 속성입니다.) 세션 토큰은 5 단계에서 반환 된 클레임 보안 주체를 사용 하 여 만들어집니다. <xref:System.IdentityModel.Tokens.SessionSecurityToken.ValidFrom%2A?displayProperty=nameWithType> 및 <xref:System.IdentityModel.Tokens.SessionSecurityToken.ValidTo%2A?displayProperty=nameWithType> 속성이 사용 하 여 설정 됩니다는 <xref:System.IdentityModel.Tokens.SecurityToken.ValidFrom%2A> 및 <xref:System.IdentityModel.Tokens.SecurityToken.ValidTo%2A> 의 속성을 <xref:System.IdentityModel.Tokens.SecurityToken> 3 단계에서 반환 되 고 현재 시간 및 중 하나는 지정된토큰수명에대해유효성이검사됩니다<xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler.DefaultTokenLifetime%2A>또는 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler.TokenLifetime%2A> 의 속성을 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> WSFAM에서 사용 하 고 토큰 처리기 컬렉션의 개체입니다. 세션 토큰 처리기에서 토큰 수명 구성을 통해 지정할 수 있습니다 합니다 [ &lt;sessionTokenRequirement&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/sessiontokenrequirement.md) 요소입니다. 참고: <xref:System.IdentityModel.Services.CookieHandler.PersistentSessionLifetime%2A> SAM 사용 되지 않는 대해 구성 된 쿠키 처리기의 속성입니다.  
+  
+7.  호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SetPrincipalAndWriteSessionToken%2A> 세션 쿠키를 작성 하려면 세션 토큰을 사용 하 여 메서드. <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SetPrincipalAndWriteSessionToken%2A> 메서드가 첫 번째 발생의 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated> 이벤트입니다. 세션 토큰의 속성을 변경 하거나이 이벤트 처리기에 쿠키를 유지할지 여부를 변경할 수 있습니다. 이벤트가 발생 한 후 메서드는 그런 다음 SAM을 사용 하 여 쿠키를 씁니다.  
+  
+    > [!NOTE]
+    >  <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> 구성에서 설정한 쿠키를 작성 하는 데 사용 되지 않습니다.  
+  
+8.  호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedIn%2A> 발생 하는 방법의 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedIn> 이벤트.  
+  
+9. 호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetReturnUrlFromResponse%2A> RP 페이지가 클라이언트를 리디렉션하는 방법입니다. 기본적으로이 메서드는 반환 URL에 로그인 응답에 wctx 매개 변수에서 읽습니다. WSFAM 반환 URL을 저장 하는 방법에 대 한 자세한 내용은 참조는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAuthorizationFailed">
+      <MemberSignature Language="C#" Value="protected virtual void OnAuthorizationFailed (System.IdentityModel.Services.AuthorizationFailedEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAuthorizationFailed(class System.IdentityModel.Services.AuthorizationFailedEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthorizationFailed(System.IdentityModel.Services.AuthorizationFailedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAuthorizationFailed (e As AuthorizationFailedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAuthorizationFailed(System::IdentityModel::Services::AuthorizationFailedEventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnAuthorizationFailed : System.IdentityModel.Services.AuthorizationFailedEventArgs -&gt; unit&#xA;override this.OnAuthorizationFailed : System.IdentityModel.Services.AuthorizationFailedEventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnAuthorizationFailed e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.IdentityModel.Services.AuthorizationFailedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A> 권한 부여에 실패 한 경우 이벤트 처리기 대리자입니다.  
+  
+ 초기화를 <xref:System.IdentityModel.Services.AuthorizationFailedEventArgs.RedirectToIdentityProvider%2A?displayProperty=nameWithType> 발생 하기 전에 속성을 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.AuthorizationFailed> 사용자가 이미 인증 된 경우 순환 리디렉션을 방지 하기 위해 이벤트입니다. 사용자가 이미 인증을 하는 경우 속성으로 초기화 됩니다 `false` 방지 하기 위해 리디렉션합니다;이 고, 그렇지으로 초기화 됩니다 `true`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndRequest">
+      <MemberSignature Language="C#" Value="protected virtual void OnEndRequest (object sender, EventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnEndRequest(object sender, class System.EventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest(System.Object,System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnEndRequest (sender As Object, args As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnEndRequest(System::Object ^ sender, EventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnEndRequest : obj * EventArgs -&gt; unit&#xA;override this.OnEndRequest : obj * EventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnEndRequest (sender, args)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sender" Type="System.Object" />
+        <Parameter Name="args" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="sender">이벤트에 대한 소스입니다. <see cref="T:System.Web.HttpApplication" /> 개체가 됩니다.</param>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary>[!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 파이프라인에서 <see cref="E:System.Web.HttpApplication.EndRequest" /> 이벤트를 처리합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이벤트 무시 되는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A> 속성은 `true`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPostAuthenticateRequest">
+      <MemberSignature Language="C#" Value="protected virtual void OnPostAuthenticateRequest (object sender, EventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnPostAuthenticateRequest(object sender, class System.EventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnPostAuthenticateRequest(System.Object,System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnPostAuthenticateRequest (sender As Object, e As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnPostAuthenticateRequest(System::Object ^ sender, EventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnPostAuthenticateRequest : obj * EventArgs -&gt; unit&#xA;override this.OnPostAuthenticateRequest : obj * EventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnPostAuthenticateRequest (sender, e)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sender" Type="System.Object" />
+        <Parameter Name="e" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="sender">이벤트에 대한 소스입니다. <see cref="T:System.Web.HttpApplication" /> 개체가 됩니다.</param>
+        <param name="e">이벤트 데이터입니다.</param>
+        <summary>[!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 파이프라인에서 <see cref="E:System.Web.HttpApplication.PostAuthenticateRequest" /> 이벤트를 처리합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로 빈는 처리기입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnRedirectingToIdentityProvider">
+      <MemberSignature Language="C#" Value="protected virtual void OnRedirectingToIdentityProvider (System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnRedirectingToIdentityProvider(class System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnRedirectingToIdentityProvider(System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnRedirectingToIdentityProvider (e As RedirectingToIdentityProviderEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnRedirectingToIdentityProvider(System::IdentityModel::Services::RedirectingToIdentityProviderEventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="abstract member OnRedirectingToIdentityProvider : System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs -&gt; unit&#xA;override this.OnRedirectingToIdentityProvider : System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnRedirectingToIdentityProvider e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSessionSecurityTokenCreated">
+      <MemberSignature Language="C#" Value="protected virtual void OnSessionSecurityTokenCreated (System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSessionSecurityTokenCreated(class System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSessionSecurityTokenCreated(System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSessionSecurityTokenCreated (args As SessionSecurityTokenCreatedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSessionSecurityTokenCreated(System::IdentityModel::Services::SessionSecurityTokenCreatedEventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnSessionSecurityTokenCreated : System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs -&gt; unit&#xA;override this.OnSessionSecurityTokenCreated : System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnSessionSecurityTokenCreated args" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSignedIn">
+      <MemberSignature Language="C#" Value="protected virtual void OnSignedIn (EventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSignedIn(class System.EventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedIn(System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSignedIn (args As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSignedIn(EventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnSignedIn : EventArgs -&gt; unit&#xA;override this.OnSignedIn : EventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnSignedIn args" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedIn" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSignedOut">
+      <MemberSignature Language="C#" Value="protected virtual void OnSignedOut (EventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSignedOut(class System.EventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedOut(System.EventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSignedOut (args As EventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSignedOut(EventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnSignedOut : EventArgs -&gt; unit&#xA;override this.OnSignedOut : EventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnSignedOut args" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.EventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType> 세션을 삭제 한 후에 바로 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut(System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSignInError">
+      <MemberSignature Language="C#" Value="protected virtual void OnSignInError (System.IdentityModel.Services.ErrorEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSignInError(class System.IdentityModel.Services.ErrorEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignInError(System.IdentityModel.Services.ErrorEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSignInError (args As ErrorEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSignInError(System::IdentityModel::Services::ErrorEventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnSignInError : System.IdentityModel.Services.ErrorEventArgs -&gt; unit&#xA;override this.OnSignInError : System.IdentityModel.Services.ErrorEventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnSignInError args" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.IdentityModel.Services.ErrorEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInError" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSigningOut">
+      <MemberSignature Language="C#" Value="protected virtual void OnSigningOut (System.IdentityModel.Services.SigningOutEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSigningOut(class System.IdentityModel.Services.SigningOutEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSigningOut(System.IdentityModel.Services.SigningOutEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSigningOut (args As SigningOutEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSigningOut(System::IdentityModel::Services::SigningOutEventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnSigningOut : System.IdentityModel.Services.SigningOutEventArgs -&gt; unit&#xA;override this.OnSigningOut : System.IdentityModel.Services.SigningOutEventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnSigningOut args" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.IdentityModel.Services.SigningOutEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType> 세션이 삭제 되기 직전 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut(System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSignOutError">
+      <MemberSignature Language="C#" Value="protected virtual void OnSignOutError (System.IdentityModel.Services.ErrorEventArgs args);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnSignOutError(class System.IdentityModel.Services.ErrorEventArgs args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignOutError(System.IdentityModel.Services.ErrorEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnSignOutError (args As ErrorEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnSignOutError(System::IdentityModel::Services::ErrorEventArgs ^ args);" />
+      <MemberSignature Language="F#" Value="abstract member OnSignOutError : System.IdentityModel.Services.ErrorEventArgs -&gt; unit&#xA;override this.OnSignOutError : System.IdentityModel.Services.ErrorEventArgs -&gt; unit" Usage="wSFederationAuthenticationModule.OnSignOutError args" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="args" Type="System.IdentityModel.Services.ErrorEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="args">이벤트 데이터입니다.</param>
+        <summary><see cref="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError" /> 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType> 메서드를 처리 하는 동안 예외가 발생 한 경우.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut(System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="PassiveRedirectEnabled">
+      <MemberSignature Language="C#" Value="public bool PassiveRedirectEnabled { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PassiveRedirectEnabled" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled" />
+      <MemberSignature Language="VB.NET" Value="Public Property PassiveRedirectEnabled As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool PassiveRedirectEnabled { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.PassiveRedirectEnabled : bool with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>모듈에서 WS-Federation 프로토콜 리디렉션을 시작할 수 있는지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>리디렉션을 사용하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 모드를 설정 하지 않으면 모듈에 Ws-federation 프로토콜 리디렉션을 시작 하지 않습니다. 이 속성이 `true`, <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 의 서비스가 STS (보안 토큰)는 호출자에 게 리디렉션해야 할 URL로 설정 되어야 합니다.  
+  
+> [!WARNING]
+>  응용 프로그램 코드 요청을 실행할 수 WS-페더레이션 로그인에 명시적으로 사용 하 여 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A> 의 값에 관계 없이 메서드를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.PersistentCookiesOnPassiveRedirects" />
+      </Docs>
+    </Member>
+    <Member MemberName="PersistentCookiesOnPassiveRedirects">
+      <MemberSignature Language="C#" Value="public bool PersistentCookiesOnPassiveRedirects { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PersistentCookiesOnPassiveRedirects" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.PersistentCookiesOnPassiveRedirects" />
+      <MemberSignature Language="VB.NET" Value="Public Property PersistentCookiesOnPassiveRedirects As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool PersistentCookiesOnPassiveRedirects { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.PersistentCookiesOnPassiveRedirects : bool with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.PersistentCookiesOnPassiveRedirects" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>인증 성공 시 영구 세션 쿠키를 발급할지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>영구 세션 쿠키를 발급하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated> 이벤트입니다. 이 이벤트는 보안 토큰 서비스 (STS)에서 WS-페더레이션 로그인 응답 메시지를 처리 하는 경우 파이프라인 처리 요청에서 발생 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.PassiveRedirectEnabled" />
+      </Docs>
+    </Member>
+    <Member MemberName="Policy">
+      <MemberSignature Language="C#" Value="public string Policy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Policy" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Policy" />
+      <MemberSignature Language="VB.NET" Value="Public Property Policy As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Policy { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Policy : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.Policy" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청("wsignin1.0")에 사용할 wp 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value>사용할 정책을 식별하는 URL입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Wp 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Policy%2A> 속성이 `null` 또는 빈 문자열인 경우 wp 매개 변수는 로그인 요청에 포함 되지 않습니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Realm">
+      <MemberSignature Language="C#" Value="public string Realm { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Realm" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" />
+      <MemberSignature Language="VB.NET" Value="Public Property Realm As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Realm { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Realm : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청("wsignin1.0")에 사용할 wtrealm 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value>STS(보안 토큰 서비스)에 대한 RP(신뢰 당사자)를 식별하는 URI입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Ws-federation 로그인 요청에 대 한 필수 속성입니다. 수동 리디렉션을 사용 하는 경우에 설정 되어야 합니다. STS에 RP를 식별 하는 URI입니다. (RP STS를 식별 하는 것에 대 한 참조를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성).  
+  
+ 이 속성의 값은 WS-페더레이션 프로토콜 wtrealm 쿼리 문자열 매개 변수와로 serialize 됩니다. STS에 RP를 식별합니다. 토큰 발급 및 토큰 발급 후에 사용자를 리디렉션할 수 있는 위치를 적용 하는 정책을 결정 하는 STS에서 사용 됩니다. (RP STS를 식별 하는 것에 대 한 참조 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A>.)  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">속성을 <see langword="null" />이나 빈 문자열로 설정하려고 한 경우  
+  
+또는 
+속성을 유효한 절대 URI가 아닌 값으로 설정하려는 시도가 발생합니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RedirectingToIdentityProvider">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs&gt; RedirectingToIdentityProvider;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs&gt; RedirectingToIdentityProvider" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider" />
+      <MemberSignature Language="VB.NET" Value="Public Event RedirectingToIdentityProvider As EventHandler(Of RedirectingToIdentityProviderEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::RedirectingToIdentityProviderEventArgs ^&gt; ^ RedirectingToIdentityProvider;" />
+      <MemberSignature Language="F#" Value="member this.RedirectingToIdentityProvider : EventHandler&lt;System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs&gt; " Usage="member this.RedirectingToIdentityProvider : System.EventHandler&lt;System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>모듈이 ID 공급자에 사용자를 리디렉션할 때 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 액세스를 통해 Ws-federation 로그인 요청을 수정 합니다 <xref:System.IdentityModel.Services.RedirectingToIdentityProviderEventArgs.SignInRequestMessage%2A?displayProperty=nameWithType> 속성입니다. 예를 들어, 수정할 수 있습니다는 <xref:System.IdentityModel.Services.FederationMessage.BaseUri%2A> 요청 리디렉션 id 공급자를 변경 하려면 로그인 메시지의 속성입니다. <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트는 취소할 수 있는 이벤트 및 설정할 수 있습니다 합니다 <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> 속성을 `true` 리디렉션 취소 합니다.  
+  
+ 이벤트는 내부를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A> 메서드를 호출 하 여는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnRedirectingToIdentityProvider%2A> 메서드.  
+  
+ ASP.NET 응용 프로그램에서이 이벤트를 처리 하려면 이라는 메서드를 만듭니다 `WSFederationAuthentication_RedirectingToIdentityProvider` global.asax 파일에 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드에 대 한 처리기를 추가 하는 방법을 보여 줍니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트에는 `Application_Init` global.asax 파일에는 이벤트입니다. 코드에서 수행 되는 `FederationForWebApps` 샘플입니다. 이 샘플에 대 한 자세한 내용은 참조 하세요. [WIF 코드 샘플 인덱스](~/docs/framework/security/wif-code-sample-index.md)합니다.  
+  
+  
+  
+ 다음 코드에 대 한 처리기를 보여 줍니다.는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트에는 RP의 global.asax 파일에서 합니다. 코드를 확인 하는지 여부를 들어오는 HTTP 요청을 다음과 같이 whr 매개 변수를 포함 하 고, 그렇지 않으면 설정이 매개 변수는 WS-페더레이션 로그인 요청에 STS로 전송 됩니다. 코드에서 수행 되는 `FederationForWebApps` 샘플입니다. 이 샘플에 대 한 자세한 내용은 참조 하세요. [WIF 코드 샘플 인덱스](~/docs/framework/security/wif-code-sample-index.md)합니다.  
+  
+  
+  
+ 다음 코드에 대 한 처리기를 보여 줍니다.는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트는 페더레이션 공급자 STS의 global.asax 파일에서 합니다. 코드를 다음과 같이 whr 매개 변수는 들어오는 HTTP 요청에 포함 되는지 여부를 확인 합니다. 다음과 같이 whr 매개 변수를 포함 하는 요청을 하는 경우 클라이언트는 로그인; IP-STS로 전달 됩니다. 그렇지 않은 경우 클라이언트 IP-STS 로그인을 선택 하려면 홈 영역 검색 페이지에 전달 됩니다. 코드에서 수행 되는 `FederationForWebApps` 샘플입니다. 이 샘플에 대 한 자세한 내용은 참조 하세요. [WIF 코드 샘플 인덱스](~/docs/framework/security/wif-code-sample-index.md)합니다.  
+  
+  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RedirectToIdentityProvider">
+      <MemberSignature Language="C#" Value="public virtual void RedirectToIdentityProvider (string uniqueId, string returnUrl, bool persist);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void RedirectToIdentityProvider(string uniqueId, string returnUrl, bool persist) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider(System.String,System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub RedirectToIdentityProvider (uniqueId As String, returnUrl As String, persist As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void RedirectToIdentityProvider(System::String ^ uniqueId, System::String ^ returnUrl, bool persist);" />
+      <MemberSignature Language="F#" Value="abstract member RedirectToIdentityProvider : string * string * bool -&gt; unit&#xA;override this.RedirectToIdentityProvider : string * string * bool -&gt; unit" Usage="wSFederationAuthenticationModule.RedirectToIdentityProvider (uniqueId, returnUrl, persist)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="uniqueId" Type="System.String" />
+        <Parameter Name="returnUrl" Type="System.String" />
+        <Parameter Name="persist" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="uniqueId">WSFAM은 이 값을 WS 페더레이션 로그인 요청의 wctx 매개 변수에 저장하지만 모듈은 로그인 요청 또는 로그인 응답을 처리할 때는 이 값을 사용하지 않습니다. 임의의 값으로 설정할 수 있습니다. 고유하지 않아도 됩니다. 자세한 내용은 <see cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest(System.String,System.String,System.Boolean)" /> 메서드를 참조하세요.</param>
+        <param name="returnUrl">인증 시 모듈이 반환되어야 하는 URL입니다.</param>
+        <param name="persist">WSFAM은 이 값을 WS 페더레이션 로그인 요청의 wctx 매개 변수에 저장하지만 모듈은 로그인 요청 또는 로그인 응답을 처리할 때는 이 값을 사용하지 않습니다. <see langword="true" /> 또는 <see langword="false" />로 설정할 수 있습니다.</param>
+        <summary><see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 속성에 지정된 사용자가 STS(보안 토큰 서비스)로 리디렉션하여 WS-Federation 프로토콜을 사용하여 보안 토큰을 받습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A> 에서 메서드를 호출 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A> 메서드 또는 신뢰 당사자 (RP)가 제공 하는 웹 페이지에서 요청이 발급 되는 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnEndRequest%2A> 를 id 공급자로 수동 리디렉션에 대해 수행할 이벤트 처리기 대리자 권한 부여 오류가 발생 했습니다.  
+  
+ 메서드에 전달 된 매개 변수를 wctx 메시지 매개 변수를 만드는 데 사용 됩니다. 한 가지 중요 한 매개 변수는 `returnUrl` 매개 변수입니다. RP가 다음 성공적으로 인증 하려면 브라우저를 전달 해야 하는 URL을 지정 합니다. 하 여 지정한 wreply 메시지 매개 변수를 혼동 하지 해야는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply%2A> 속성 및 보안 토큰 서비스 (STS) 응답을 전달 해야 하는 RP에 주소를 제공 하는 합니다.  
+  
+ 메서드는 다음을 수행합니다.  
+  
+1.  호출 하 여 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.VerifyProperties%2A> 모듈에 의해를 유효한 로그인 요청을 실행할 수 있는지 확인 하는 방법입니다.  
+  
+2.  호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 모듈에 구성 된 속성에서 로그인 요청을 만드는 방법.  
+  
+3.  호출 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnRedirectingToIdentityProvider%2A> 발생 하는 방법의 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 리디렉션 취소 하거나이 이벤트에 대 한 이벤트 처리기에서 로그인 요청 메시지를 수정할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" />이 <see langword="null" /> 또는 빈 문자열인 경우  
+  
+또는 
+ <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" />이 <see langword="null" /> 또는 빈 문자열인 경우  
+  
+또는 
+<see cref="P:System.Web.HttpContext.Current" /> 속성이 <see langword="null" />이거나 비어 있습니다.  
+  
+또는 
+<see cref="P:System.Web.HttpContext.Response" />에서 반환된 컨텍스트의 <see cref="P:System.Web.HttpContext.Current" /> 속성이  <see langword="null" />이거나 비어 있습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Reply">
+      <MemberSignature Language="C#" Value="public string Reply { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Reply" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply" />
+      <MemberSignature Language="VB.NET" Value="Public Property Reply As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Reply { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Reply : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.Reply" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청("wsignin1.0")에 사용할 wreply 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value>RP(신뢰 당사자) 응용 프로그램이 STS(보안 토큰 서비스)에서 응답을 받을 주소를 식별하는 URL입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Wreply 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Reply%2A> 속성이 `null` 또는 빈 문자열인 경우 wreply 매개 변수는 로그인 요청에 포함 되지 않습니다.  
+  
+ Wreply 매개 변수는 토큰 발급 후에 사용자를 리디렉션할 위치를 결정 하는 STS에서 사용 됩니다. 맹목적으로이 주소를 사용 하 여 이러한 리디렉션 보안 취약점에 사용자를 리디렉션할 STS에 대 한 권장 하지 않습니다. 회신 주소 회신은 인식 잘 알려져 있고 안전한 위치로 전송 되 고 있는지 확인 하려면 (가능한 경우에서 비교 미리 구성 된 회신 주소 집합에 목적 또는 일부 다른 메서드) STS에서 유효성이 검사 되어야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">속성을 유효한 절대 URI가 아닌 값으로 설정하려는 시도가 발생합니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Request">
+      <MemberSignature Language="C#" Value="public string Request { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Request" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Request" />
+      <MemberSignature Language="VB.NET" Value="Public Property Request As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Request { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Request : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.Request" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청("wsignin1.0")에 사용할 wreq 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value><see langword="&lt;wst:RequestSecurityToken&gt;" /> 요소로 표현되는 토큰 발급 요청입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Wreq 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Request%2A> 속성이 `null` 또는 빈 문자열인 경우 wreq 매개 변수는 로그인 요청에 포함 되지 않습니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestPtr">
+      <MemberSignature Language="C#" Value="public string RequestPtr { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string RequestPtr" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequestPtr" />
+      <MemberSignature Language="VB.NET" Value="Public Property RequestPtr As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ RequestPtr { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.RequestPtr : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.RequestPtr" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청("wsignin1.0")에 사용할 wreqptr 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value><see langword="&lt;wst:RequestSecurityToken&gt;" /> 요소로 표현된 토큰 발급 요청의 위치를 지정하는 URL입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Wreqptr 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RequestPtr%2A> 속성이 `null` 또는 빈 문자열인 경우 wreq 매개 변수는 로그인 요청에 포함 되지 않습니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">속성을 유효한 절대 URI가 아닌 값으로 설정하려는 시도가 발생합니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RequireHttps">
+      <MemberSignature Language="C#" Value="public bool RequireHttps { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool RequireHttps" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" />
+      <MemberSignature Language="VB.NET" Value="Public Property RequireHttps As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool RequireHttps { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.RequireHttps : bool with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>STS(보안 토큰 서비스)와의 통신에서 HTTPS 프로토콜을 사용해야 하는지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>STS와 통신할 때 HTTPS를 사용하여 보안을 유지해야 하는 경우 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Resource">
+      <MemberSignature Language="C#" Value="public string Resource { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Resource" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Resource" />
+      <MemberSignature Language="VB.NET" Value="Public Property Resource As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Resource { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Resource : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.Resource" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청(“wsignin1.0”)에 사용할 wres 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value>RP(신뢰 당사자)인 액세스될 리소스를 STS(보안 토큰 서비스)에 식별하는 URI입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 로 설정 된 wtrealm 매개 변수는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm%2A> 속성을이 매개 변수 대신 사용 해야 합니다.  
+  
+ Wres 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Resource%2A> 속성이 `null` 또는 빈 문자열인 경우 wres 매개 변수는 로그인 요청에 포함 되지 않습니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecurityTokenReceived">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.SecurityTokenReceivedEventArgs&gt; SecurityTokenReceived;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.SecurityTokenReceivedEventArgs&gt; SecurityTokenReceived" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived" />
+      <MemberSignature Language="VB.NET" Value="Public Event SecurityTokenReceived As EventHandler(Of SecurityTokenReceivedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::SecurityTokenReceivedEventArgs ^&gt; ^ SecurityTokenReceived;" />
+      <MemberSignature Language="F#" Value="member this.SecurityTokenReceived : EventHandler&lt;System.IdentityModel.Services.SecurityTokenReceivedEventArgs&gt; " Usage="member this.SecurityTokenReceived : System.EventHandler&lt;System.IdentityModel.Services.SecurityTokenReceivedEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.SecurityTokenReceivedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>STS(보안 토큰 서비스)에서 보안 토큰을 수신하면 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 전에 유효성이 검사 되는 토큰을 수정 하는 이벤트 처리기를 추가할 수 있습니다. 이벤트 처리기에 액세스할 수 있습니다를 통해 보안 토큰을 <xref:System.IdentityModel.Services.SecurityTokenReceivedEventArgs.SecurityToken%2A?displayProperty=nameWithType> 속성입니다. 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenReceived> 이벤트를 취소할 수 있는 이벤트를 설정할 수 있습니다 합니다 <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> 속성을 `true` WS-페더레이션 로그인 응답 메시지의 처리를 종료 하는 이벤트 처리기에서.  
+  
+ 이 이벤트는 내부는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A> 보안 토큰 서비스 (STS)에서 수신한 WS-페더레이션 로그인 응답 메시지 ("wsignin1.0"")를 처리할 때 이벤트 처리기 대리자입니다. 보안 토큰 wresult 또는 wresultptr 매개 변수는 보안 토큰의 유효성을 검사 시점과 로그인 응답 메시지에서 deserialize 된 직후 발생 합니다.  
+  
+   
+  
+## Examples  
+ [!code-csharp[WifWSFAM#6](~/samples/snippets/csharp/VS_Snippets_Misc/wifwsfam/cs/webapplication1/global.asax.cs#6)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.IdentityModel.Services.SecurityTokenReceivedEventArgs" />
+      </Docs>
+    </Member>
+    <Member MemberName="SecurityTokenValidated">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.SecurityTokenValidatedEventArgs&gt; SecurityTokenValidated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.SecurityTokenValidatedEventArgs&gt; SecurityTokenValidated" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated" />
+      <MemberSignature Language="VB.NET" Value="Public Event SecurityTokenValidated As EventHandler(Of SecurityTokenValidatedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::SecurityTokenValidatedEventArgs ^&gt; ^ SecurityTokenValidated;" />
+      <MemberSignature Language="F#" Value="member this.SecurityTokenValidated : EventHandler&lt;System.IdentityModel.Services.SecurityTokenValidatedEventArgs&gt; " Usage="member this.SecurityTokenValidated : System.EventHandler&lt;System.IdentityModel.Services.SecurityTokenValidatedEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.SecurityTokenValidatedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>STS(보안 토큰 서비스)에서 수신된 보안 토큰에 대해 유효성을 검사한 이후이며 세션 보안 토큰이 만들어지기 이전에 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 세션 토큰을 만드는 사용 하기 전에 보안 토큰 서비스 (STS)에서 WS-페더레이션 로그인 응답 메시지를 처리 하는 동안 만든 보안 주체를 수정 하는 이벤트 처리기를 추가할 수 있습니다. 이벤트 처리기에 액세스할 수 있습니다를 통해 보안 주체는 <xref:System.IdentityModel.Services.SecurityTokenValidatedEventArgs.ClaimsPrincipal%2A> 속성입니다. 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SecurityTokenValidated> 이벤트를 취소할 수 있는 이벤트를 설정할 수 있습니다 합니다 <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> 속성을 `true` WS-페더레이션 로그인 응답 메시지의 처리를 종료 하는 이벤트 처리기에서.  
+  
+ 이 이벤트는 내부는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A> 보안 토큰 서비스 (STS)에서 수신한 WS-페더레이션 로그인 응답 메시지 ("wsignin1.0"")를 처리할 때 이벤트 처리기 대리자입니다. Wresult에서 deserialize 된 보안 토큰 직후 발생 또는 로그인 응답 메시지의 wresultptr 매개 변수를 확인, 하 고 이전 세션 보안 토큰이 생성 됩니다.  
+  
+   
+  
+## Examples  
+ [!code-csharp[WifWSFAM#5](~/samples/snippets/csharp/VS_Snippets_Misc/wifwsfam/cs/webapplication1/global.asax.cs#5)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SessionSecurityTokenCreated">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt; SessionSecurityTokenCreated;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt; SessionSecurityTokenCreated" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated" />
+      <MemberSignature Language="VB.NET" Value="Public Event SessionSecurityTokenCreated As EventHandler(Of SessionSecurityTokenCreatedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::SessionSecurityTokenCreatedEventArgs ^&gt; ^ SessionSecurityTokenCreated;" />
+      <MemberSignature Language="F#" Value="member this.SessionSecurityTokenCreated : EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt; " Usage="member this.SessionSecurityTokenCreated : System.EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 이벤트는 STS(보안 토큰 서비스)에서 수신된 보안 토큰으로부터 세션 보안 토큰이 만들어졌을 때 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 스레드 보안 주체를 설정 하는 데 사용 되 고 세션 쿠키를 쓸 수는 세션 토큰을 수정 하는 이벤트 처리기를 추가할 수 있습니다. 이벤트 처리기에 액세스할 수 있습니다를 통해 세션 토큰은 <xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.SessionToken%2A?displayProperty=nameWithType> 속성입니다. 세션 쿠키를 설정 하 여 기록 되어야 하는지 지정할 수 있습니다는 <xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.WriteSessionCookie%2A?displayProperty=nameWithType> 속성입니다.  
+  
+ 이 이벤트는 내부는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A> 보안 토큰 서비스 (STS)에서 수신한 WS-페더레이션 로그인 응답 메시지 ("wsignin1.0"")를 처리할 때 이벤트 처리기 대리자입니다. 또는 wresult에서 deserialize 된 보안 토큰 직후 발생 하 고, 로그인 응답 메시지의 wresultptr 매개 변수를 확인 하 고, 클레임 하기 전에 사용자가에 설정 합니다 <xref:System.Threading.Thread.CurrentPrincipal%2A?displayProperty=nameWithType> (및는 <xref:System.Web.HttpContext.User%2A> 의속성<xref:System.Web.HttpContext.Current%2A?displayProperty=nameWithType>).  
+  
+> [!IMPORTANT]
+>  제공 하는 것이 좋습니다 세션 참조 모드로 작동 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated?displayProperty=nameWithType> global.asax.cs 파일 설정에서 이벤트를 <xref:System.IdentityModel.Tokens.SessionSecurityToken.IsReferenceMode%2A?displayProperty=nameWithType> 전달 된 토큰에 대 한 속성을 <xref:System.IdentityModel.Services.SessionSecurityTokenCreatedEventArgs.SessionToken%2A?displayProperty=nameWithType> 속성입니다. 이렇게 하면 세션 토큰이 모든 요청에 대해 참조 모드로 작동 하 고 단순히 설정 보다 우선 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.IsReferenceMode%2A?displayProperty=nameWithType> 세션 인증 모듈의 속성입니다.  
+  
+   
+  
+## Examples  
+ [!code-csharp[WifWSFAM#4](~/samples/snippets/csharp/VS_Snippets_Misc/wifwsfam/cs/webapplication1/global.asax.cs#4)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetPrincipalAndWriteSessionToken">
+      <MemberSignature Language="C#" Value="public void SetPrincipalAndWriteSessionToken (System.IdentityModel.Tokens.SessionSecurityToken sessionToken, bool isSession);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetPrincipalAndWriteSessionToken(class System.IdentityModel.Tokens.SessionSecurityToken sessionToken, bool isSession) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SetPrincipalAndWriteSessionToken(System.IdentityModel.Tokens.SessionSecurityToken,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetPrincipalAndWriteSessionToken (sessionToken As SessionSecurityToken, isSession As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetPrincipalAndWriteSessionToken(System::IdentityModel::Tokens::SessionSecurityToken ^ sessionToken, bool isSession);" />
+      <MemberSignature Language="F#" Value="member this.SetPrincipalAndWriteSessionToken : System.IdentityModel.Tokens.SessionSecurityToken * bool -&gt; unit" Usage="wSFederationAuthenticationModule.SetPrincipalAndWriteSessionToken (sessionToken, isSession)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sessionToken" Type="System.IdentityModel.Tokens.SessionSecurityToken" />
+        <Parameter Name="isSession" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="sessionToken">STS의 WS-Federation 등록 응답 메시지에서 만든 세션 보안 토큰입니다.</param>
+        <param name="isSession">응답에 포함된 세션을 나타내는 쿠키를 작성하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>스레드 보안 주체를 설정하고 세션 쿠키를 선택적으로 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 구현 하는 파이프라인 처리 요청에서 호출 된 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest%2A> 이벤트 처리기 대리자입니다. 이 메서드는 다음을 수행 합니다.  
+  
+1.  호출 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSessionSecurityTokenCreated%2A> 발생 하는 방법의 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SessionSecurityTokenCreated> 이벤트입니다. 이 이벤트를 사용 하 여 스레드 보안 주체를 설정 하는 데 사용 되 고 세션 쿠키에 기록 되기 전에 세션 토큰을 수정 하 고 세션 쿠키를 내용을 기록할지 여부를 지정할 수 있습니다.  
+  
+2.  호출 하는 <xref:System.IdentityModel.Services.SessionAuthenticationModule.AuthenticateSessionSecurityToken%2A> 구성 된 세션 인증 모듈에서 메서드 (<xref:System.IdentityModel.Services.SessionAuthenticationModule>) 스레드 보안 주체를 설정 하 여 필요에 따라 세션 쿠키를 작성 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="sessionToken" />가 <see langword="null" />입니다.</exception>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.OnAuthenticateRequest(System.Object,System.EventArgs)" />
+      </Docs>
+    </Member>
+    <Member MemberName="SignedIn">
+      <MemberSignature Language="C#" Value="public event EventHandler SignedIn;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SignedIn" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedIn" />
+      <MemberSignature Language="VB.NET" Value="Public Event SignedIn As EventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler ^ SignedIn;" />
+      <MemberSignature Language="F#" Value="member this.SignedIn : EventHandler " Usage="member this.SignedIn : System.EventHandler " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>사용자가 로그인한 후에 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 요청은 로그인 페이지에 게시 하는 경우 페이지의 컨트롤을이 모듈이 아닌이 이벤트를 발생 시킵니다.  
+  
+   
+  
+## Examples  
+ [!code-csharp[WifWSFAM#3](~/samples/snippets/csharp/VS_Snippets_Misc/wifwsfam/cs/webapplication1/global.asax.cs#3)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignedOut">
+      <MemberSignature Language="C#" Value="public event EventHandler SignedOut;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler SignedOut" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut" />
+      <MemberSignature Language="VB.NET" Value="Public Event SignedOut As EventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler ^ SignedOut;" />
+      <MemberSignature Language="F#" Value="member this.SignedOut : EventHandler " Usage="member this.SignedOut : System.EventHandler " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>로그아웃 도중 세션을 삭제한 바로 다음에 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출을 통해이 이벤트는 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedOut%2A> 내에서 메서드는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType> 신뢰 당사자 (RP)에 있는 세션에서 로그 아웃 하는 동안 메서드. 이렇게 하면 페더레이션 통해 로그 아웃 하는 경우에 이벤트가 발생 하지 않습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ 세션 쿠키를 삭제 한 후 응용 프로그램에 필요한 추가 처리 하는 작업은 수행 하는 이벤트 처리기를 추가할 수 있습니다.  
+  
+ 이 이벤트는 모든 세션에 대해 호출 되는 보장 되지 않습니다. 쿠키 삭제 될 수 있습니다 클라이언트 쪽에서 예를 들어 있으므로이 이벤트가 발생 하면 안 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignIn">
+      <MemberSignature Language="C#" Value="public virtual void SignIn (string ControlId);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SignIn(string ControlId) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub SignIn (ControlId As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SignIn(System::String ^ ControlId);" />
+      <MemberSignature Language="F#" Value="abstract member SignIn : string -&gt; unit&#xA;override this.SignIn : string -&gt; unit" Usage="wSFederationAuthenticationModule.SignIn ControlId" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ControlId" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="ControlId">WSFAM은 이 값을 WS 페더레이션 로그인 요청의 wctx 매개 변수에 저장하지만 모듈은 로그인 요청 또는 로그인 응답을 처리할 때는 이 값을 사용하지 않습니다. 임의의 값으로 설정할 수 있습니다. 고유하지 않아도 됩니다. 자세한 내용은 <see cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest(System.String,System.String,System.Boolean)" /> 메서드를 참조하세요.</param>
+        <summary>로그인을 보안 토큰 서비스 (STS)는 WS-페더레이션 프로토콜을 통해 수행합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현 호출을 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A> 로그인을 수행 하는 방법입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignInContext">
+      <MemberSignature Language="C#" Value="public string SignInContext { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SignInContext" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext" />
+      <MemberSignature Language="VB.NET" Value="Public Property SignInContext As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SignInContext { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SignInContext : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청의 wctx 매개 변수에 포함될 애플리케이션별 컨텍스트 값을 가져오거나 설정합니다.</summary>
+        <value>로그인 요청의 wctx 매개 변수에 포함될 응용 프로그램별 컨텍스트 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 메서드가 호출 되 면 다음 서식이 있는 wctx 매개 변수를 포함 하는 생성 되는 로그인 메시지: `ru=returnUrl&cx=SignInContext&rm=rememberMeSet&id=uniqueId`합니다. 값을 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A> 에 저장 됩니다는 `cx` 매개 변수입니다. <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 코드에서 직접 호출할 수 있습니다. WSFAM 수동 리디렉션을 수행 하는 시기 또한 라고 그리고 경우 중 하나는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignIn%2A> 메서드 또는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectToIdentityProvider%2A> 메서드 응용 프로그램 코드에서 호출 됩니다.  
+  
+ WSFAM 저장 하지만 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInContext%2A> 로그인 요청 메시지를 처리 하는 응답 하는 동안 응용 프로그램에서 값을 사용 하는 경우에 값을 로그인 응답 메시지의 wctx 매개 변수에서 추출 논리를 제공 해야 합니다.  
+  
+ 형식 및 wctx 매개 변수의 처리 하는 방법에 대 한 자세한 내용은 참조는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.IdentityModel.Services.WSFederationAuthenticationModule.CreateSignInRequest(System.String,System.String,System.Boolean)" />
+      </Docs>
+    </Member>
+    <Member MemberName="SignInError">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; SignInError;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.ErrorEventArgs&gt; SignInError" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInError" />
+      <MemberSignature Language="VB.NET" Value="Public Event SignInError As EventHandler(Of ErrorEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::ErrorEventArgs ^&gt; ^ SignInError;" />
+      <MemberSignature Language="F#" Value="member this.SignInError : EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; " Usage="member this.SignInError : System.EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>로그인 중 오류가 나타날 때 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 요청은 로그인 페이지에 게시 하는 경우 페이지의 컨트롤을이 모듈이 아닌이 이벤트를 발생 시킵니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SigningOut">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.SigningOutEventArgs&gt; SigningOut;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.SigningOutEventArgs&gt; SigningOut" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut" />
+      <MemberSignature Language="VB.NET" Value="Public Event SigningOut As EventHandler(Of SigningOutEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::SigningOutEventArgs ^&gt; ^ SigningOut;" />
+      <MemberSignature Language="F#" Value="member this.SigningOut : EventHandler&lt;System.IdentityModel.Services.SigningOutEventArgs&gt; " Usage="member this.SigningOut : System.EventHandler&lt;System.IdentityModel.Services.SigningOutEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.SigningOutEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>로그아웃 도중 세션을 삭제하기 전에 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출을 통해이 이벤트는 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSigningOut%2A> 내에서 메서드는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType> 신뢰 당사자 (RP)에 있는 세션에서 로그 아웃 하는 동안 메서드. 이렇게 하면 페더레이션 통해 로그 아웃 하는 경우에 이벤트가 발생 하지 않습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ 세션 쿠키를 삭제 하기 전에 응용 프로그램에 필요한 추가 처리를 수행 하는 이벤트 처리기를 추가할 수 있습니다. 읽을 수는 <xref:System.IdentityModel.Services.SigningOutEventArgs.IsIPInitiated*> 를 로그 아웃 "(wsignoutcleanup1.0)" Ws-federation 로그 아웃 정리 요청 메시지를 수신 하면 보안 토큰 서비스 (STS)에서 또는 인지에서 초기화 되었는지 여부를 확인 하려면 이벤트 처리기의 속성 RP 합니다.  
+  
+ 이 이벤트는 모든 세션에 대해 호출 되는 보장 되지 않습니다. 쿠키 삭제 될 수 있습니다 클라이언트 쪽에서 예를 들어 있으므로이 이벤트가 발생 하면 안 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignInQueryString">
+      <MemberSignature Language="C#" Value="public string SignInQueryString { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SignInQueryString" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.SignInQueryString" />
+      <MemberSignature Language="VB.NET" Value="Public Property SignInQueryString As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SignInQueryString { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SignInQueryString : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.SignInQueryString" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그인 요청(“wsignin1.0”)에서 보낼 추가 매개 변수를 포함하는 쿼리 문자열을 가져오거나 설정합니다.</summary>
+        <value>다음 형식의 추가 메시지 매개 변수를 포함 하는 URL 조각: <c>param1 = value1&amp;param2 = value2&amp;paramN = 값</c>합니다. 기본값은 빈 문자열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성을 사용 하 여 로그인 요청에 추가 매개 변수를 보낼 수 있습니다. 이러한 응용 프로그램 관련 매개 변수가 WS-페더레이션 프로토콜에 의해 지정 된 매개 변수 중 하나는 것입니다. 요청에서 추가 매개 변수를 제거 하려면 빈 문자열에는 속성을 설정 합니다.  
+  
+ 에 대 한 처리기를 추가 하 여 각 HTTP 요청에서이 설정을 재정의할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.RedirectingToIdentityProvider> 이벤트입니다. 이 이벤트는 모듈에는 Ws-federation 로그인 요청 메시지를 사용 하 여 보안 토큰 서비스 (STS) 리디렉션합니다 직전에 발생 합니다. 지정 된 STS는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">속성을 <see langword="null" />로 설정하려고 한 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="SignOut">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>현재 세션에서 로그아웃합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 세션을 삭제합니다.  
+  
+ 로그 아웃 요청 메시지 ("wsignout1.0"")는 보안 토큰 서비스 (STS)에 전송 됩니다. Ws-federation 프로토콜을 사용 하 여 STS에서 로그 아웃을 사용 하 여를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="SignOut">
+      <MemberSignature Language="C#" Value="public virtual void SignOut ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SignOut() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub SignOut ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SignOut();" />
+      <MemberSignature Language="F#" Value="abstract member SignOut : unit -&gt; unit&#xA;override this.SignOut : unit -&gt; unit" Usage="wSFederationAuthenticationModule.SignOut " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 세션을 로그아웃하고 요청을 현재 HTTP 요청에 지정된 URL로 다시 리디렉션합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 세션을 삭제 하 고 브라우저 현재 HTTP 요청에 지정 된 URL로 다시 리디렉션합니다.  
+  
+ 호출 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.String%29?displayProperty=nameWithType> 메서드는 `redirectUrl` 매개 변수가 현재 요청의 URL로 설정 합니다.  
+  
+ 로그 아웃 요청 메시지 ("wsignout1.0"")는 보안 토큰 서비스 (STS)에 전송 됩니다. Ws-federation 프로토콜을 사용 하 여 STS에서 로그 아웃을 사용 하 여를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignOut">
+      <MemberSignature Language="C#" Value="public virtual void SignOut (bool isIPRequest);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SignOut(bool isIPRequest) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub SignOut (isIPRequest As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SignOut(bool isIPRequest);" />
+      <MemberSignature Language="F#" Value="abstract member SignOut : bool -&gt; unit&#xA;override this.SignOut : bool -&gt; unit" Usage="wSFederationAuthenticationModule.SignOut isIPRequest" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="isIPRequest" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="isIPRequest">요청이 WS-Federation 로그아웃 정리 요청 메시지("wsignoutcleanup1.0")를 통해 IP-STS에 의해 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>현재 세션에서 로그아웃하고 적절한 이벤트를 발생시킵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 실제로 현재 세션을 삭제 하 고 적절 한 로그 아웃 이벤트를 발생 시키는 작업을 수행 합니다. 메서드는 다음을 수행 합니다.  
+  
+1.  호출 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSigningOut%2A> 발생 하는 방법의 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SigningOut> 이벤트입니다. 이벤트 처리기는 세션을 삭제 하기 전에 필요한 처리 모든 제공할 수 있습니다. 합니다 <xref:System.IdentityModel.Services.SigningOutEventArgs.IsIPInitiated%2A?displayProperty=nameWithType> 속성에 따라 설정 됩니다는 `isIPRequest` 매개 변수입니다.  
+  
+2.  호출 된 <xref:System.IdentityModel.Services.SessionAuthenticationModule.DeleteSessionTokenCookie%2A?displayProperty=nameWithType> 세션 쿠키를 삭제 하려면 현재 세션 인증 관리자 메서드.  
+  
+     호출 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignedOut%2A> 발생 하는 방법의 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignedOut> 이벤트입니다.  
+  
+3.  로그 아웃 처리 하는 동안 오류가 발생 하는 경우 호출 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignOutError%2A> 발생 하는 방법의 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError> 이벤트입니다. 이벤트 처리기 처리를 취소 하 고 호출자에 게 반환 되는 예외를 방지 합니다. <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A>  
+  
+ 호출할 수 있습니다 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A?displayProperty=nameWithType> 메서드를 `isIPRequest` 매개 변수 집합 `false` 리디렉션을 수행 하지 않고 세션에서 로그 아웃 하 합니다. 다른 오버 로드 된 모든 메서드는 최종적으로 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%2A> 메서드 (사용 하 여는 `isIPRequest` 매개 변수 설정 `false`) 로그 아웃 처리를 수행 하 합니다. 메서드가 호출 되는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.CanReadSignInResponse%28System.Web.HttpRequestBase%2CSystem.Boolean%29?displayProperty=nameWithType> 메서드를 `isIPRequest` 매개 변수 집합 `true` 경우 Ws-federation 로그 아웃 정리 메시지 ("wsignoutcleanup1.0") 처리 하는 세션에서 로그 아웃 하 합니다.  
+  
+ 로그 아웃 요청 메시지 ("wsignout1.0"")는 보안 토큰 서비스 (STS)에 전송 됩니다. Ws-federation 프로토콜을 사용 하 여 STS에서 로그 아웃을 사용 하 여를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignOut">
+      <MemberSignature Language="C#" Value="public virtual void SignOut (string redirectUrl);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SignOut(string redirectUrl) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub SignOut (redirectUrl As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SignOut(System::String ^ redirectUrl);" />
+      <MemberSignature Language="F#" Value="abstract member SignOut : string -&gt; unit&#xA;override this.SignOut : string -&gt; unit" Usage="wSFederationAuthenticationModule.SignOut redirectUrl" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="redirectUrl" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="redirectUrl">세션이 삭제된 후 브라우저가 리디렉션되어야 하는 URL입니다.</param>
+        <summary>현재 세션에서 로그아웃하고 리디렉션을 지정된 URL에 다시 요청합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 세션을 삭제 하 고 브라우저를 지정된 된 URL로 다시 리디렉션합니다.  
+  
+ 호출 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> 메서드를 `redirectUrl` 매개 변수와는 `initiateSignoutCleanup` 설정 `false`합니다.  
+  
+ 로그 아웃 요청 메시지 ("wsignout1.0"")는 보안 토큰 서비스 (STS)에 전송 됩니다. Ws-federation 프로토콜을 사용 하 여 STS에서 로그 아웃을 사용 하 여를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="redirectUrl" /> 경로는 유효한 URI가 아닙니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SignOut">
+      <MemberSignature Language="C#" Value="public virtual void SignOut (string redirectUrl, bool initiateSignoutCleanup);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SignOut(string redirectUrl, bool initiateSignoutCleanup) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut(System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub SignOut (redirectUrl As String, initiateSignoutCleanup As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SignOut(System::String ^ redirectUrl, bool initiateSignoutCleanup);" />
+      <MemberSignature Language="F#" Value="abstract member SignOut : string * bool -&gt; unit&#xA;override this.SignOut : string * bool -&gt; unit" Usage="wSFederationAuthenticationModule.SignOut (redirectUrl, initiateSignoutCleanup)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="redirectUrl" Type="System.String" />
+        <Parameter Name="initiateSignoutCleanup" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="redirectUrl">로그 아웃 후 브라우저가 리디렉션되어야 하는 URL입니다.</param>
+        <param name="initiateSignoutCleanup">항상 <see langword="false" />으로 설정합니다. 이 매개 변수를 <see langword="true" />로 설정하는 것은 지원되지 않습니다.</param>
+        <summary>현재 세션에서 로그아웃하고 리디렉션을 지정된 URL에 다시 요청합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 세션을 삭제 하 고 브라우저를 지정된 된 URL로 다시 리디렉션합니다.  
+  
+ 호출 하는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType> 메서드를 `initiateSignoutCleanup` 매개 변수 집합 `false`합니다.  
+  
+ 로그 아웃 요청 메시지 ("wsignout1.0"")는 보안 토큰 서비스 (STS)에 전송 됩니다. Ws-federation 프로토콜을 사용 하 여 STS에서 로그 아웃을 사용 하 여를 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="redirectUrl" /> 경로는 유효한 URI가 아닙니다.</exception>
+        <exception cref="T:System.NotImplementedException"><paramref name="initiateSignoutCleanup" />이 <see langword="true" />일 경우 <see cref="T:System.IdentityModel.Services.WSFederationAuthenticationModule" /> 클래스는 이 예외를 throw합니다. 이 매개 변수를 <see langword="true" />로 설정하지 마십시오.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SignOutError">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; SignOutError;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.IdentityModel.Services.ErrorEventArgs&gt; SignOutError" />
+      <MemberSignature Language="DocId" Value="E:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError" />
+      <MemberSignature Language="VB.NET" Value="Public Event SignOutError As EventHandler(Of ErrorEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::IdentityModel::Services::ErrorEventArgs ^&gt; ^ SignOutError;" />
+      <MemberSignature Language="F#" Value="member this.SignOutError : EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; " Usage="member this.SignOutError : System.EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.IdentityModel.Services.ErrorEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>로그아웃 중 오류가 나타날 때 발생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출을 통해이 이벤트는 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.OnSignOutError%2A> 내에서 메서드는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOut%28System.Boolean%29?displayProperty=nameWithType> 신뢰 당사자 (RP)에 있는 세션에서 로그 아웃 하는 동안 메서드. 이렇게 하면 페더레이션 통해 로그 아웃 하는 경우에 이벤트가 발생 하지 않습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드.  
+  
+ <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutError> 이벤트는 이벤트를 취소할 수 있습니다. 설정할 수 있습니다는 <xref:System.ComponentModel.CancelEventArgs.Cancel%2A> 를 로그 아웃의 시작자에 게 반환 되 고 오류를 발생 시킨 예외를 방지 하기 위해 이벤트 처리기의 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignOutQueryString">
+      <MemberSignature Language="C#" Value="public string SignOutQueryString { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SignOutQueryString" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutQueryString" />
+      <MemberSignature Language="VB.NET" Value="Public Property SignOutQueryString As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SignOutQueryString { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SignOutQueryString : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutQueryString" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그아웃 요청("wsignout1.0")에서 보낼 추가 매개 변수를 포함하는 쿼리 문자열을 가져오거나 설정합니다.</summary>
+        <value>다음 형식의 추가 메시지 매개 변수를 포함 하는 URL 조각: <c>param1 = value1&amp;param2 = value2&amp;paramN = 값</c>합니다. 기본값은 빈 문자열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로이 속성에서 초기화 됩니다 합니다 `signOutQueryString` 특성을 [ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md) 구성 파일의 요소입니다. Ws-federation 로그 아웃 요청을 전송 될 때까지 응용 프로그램 관련 매개 변수를 포함 하기 위한 것입니다. 이러한 매개 변수를 제거 하려면 속성을 빈 문자열로 설정할 수 있습니다.  
+  
+ WSFAM이이 속성을 직접 사용 하지 않습니다. 그러나에 전달할 수 있습니다는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl%2A> 메서드 코드에서 사용할 수 있는 전체 Ws-federation 로그 아웃 URL을 만듭니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">속성을 <see langword="null" />로 설정하려고 한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SignOutReply">
+      <MemberSignature Language="C#" Value="public string SignOutReply { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SignOutReply" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutReply" />
+      <MemberSignature Language="VB.NET" Value="Public Property SignOutReply As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SignOutReply { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SignOutReply : string with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutReply" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>WS-Federation 로그아웃 요청("wsignout1.0") 중 사용할 wreply 매개 변수의 값을 가져오거나 설정합니다.</summary>
+        <value>WS-Federation 프로토콜을 통한 로그아웃 후에 STS(보안 토큰 서비스)에서 클라이언트를 리디렉션해야 할 URL입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로이 속성에서 초기화 됩니다 합니다 `signOutReply` 특성을 [ &lt;wsFederation&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/wsfederation.md) 구성 파일의 요소입니다. Ws-federation 로그 아웃 요청에서 wreply 매개 변수를 나타내는 것입니다.  
+  
+ Wreply 매개 변수는 선택 사항입니다. 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.SignOutReply%2A> 속성이 `null` 또는 빈 문자열인 경우 wreply 매개 변수는 로그 아웃 요청에 포함 되지 않습니다.  
+  
+ WSFAM이이 속성을 직접 사용 하지 않습니다. 그러나에 전달할 수 있습니다 합니다 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.FederatedSignOut%2A> 메서드를 전달할 수 Ws-federation 로그 아웃 코드에서 수행 하는 경우는 <xref:System.IdentityModel.Services.WSFederationAuthenticationModule.GetFederationPassiveSignOutUrl%2A> 전체 Ws-federation 로그 아웃 URL을 만드는 방법.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VerifyProperties">
+      <MemberSignature Language="C#" Value="public void VerifyProperties ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void VerifyProperties() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.WSFederationAuthenticationModule.VerifyProperties" />
+      <MemberSignature Language="VB.NET" Value="Public Sub VerifyProperties ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void VerifyProperties();" />
+      <MemberSignature Language="F#" Value="member this.VerifyProperties : unit -&gt; unit" Usage="wSFederationAuthenticationModule.VerifyProperties " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 및 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" /> 속성이 비어 있지 않은지, 그리고 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" /> 속성이 <see langword="true" />가 아닌 경우 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" /> 및 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" />에 대해 지정된 URI가 HTTPS 규격인지 확인합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" />이 <see langword="null" /> 또는 빈 문자열인 경우  
+  
+또는 
+ <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" />이 <see langword="null" /> 또는 빈 문자열인 경우  
+  
+또는 
+ <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" />는 <see langword="true" />이며 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Issuer" />는 HTTPS 호환이 아닙니다.  
+  
+또는 
+ <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.RequireHttps" />는 <see langword="true" />이며 <see cref="P:System.IdentityModel.Services.WSFederationAuthenticationModule.Realm" />는 HTTPS 호환이 아닙니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDictionaryReaderQuotas">
+      <MemberSignature Language="C#" Value="public System.Xml.XmlDictionaryReaderQuotas XmlDictionaryReaderQuotas { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xml.XmlDictionaryReaderQuotas XmlDictionaryReaderQuotas" />
+      <MemberSignature Language="DocId" Value="P:System.IdentityModel.Services.WSFederationAuthenticationModule.XmlDictionaryReaderQuotas" />
+      <MemberSignature Language="VB.NET" Value="Public Property XmlDictionaryReaderQuotas As XmlDictionaryReaderQuotas" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xml::XmlDictionaryReaderQuotas ^ XmlDictionaryReaderQuotas { System::Xml::XmlDictionaryReaderQuotas ^ get(); void set(System::Xml::XmlDictionaryReaderQuotas ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.XmlDictionaryReaderQuotas : System.Xml.XmlDictionaryReaderQuotas with get, set" Usage="System.IdentityModel.Services.WSFederationAuthenticationModule.XmlDictionaryReaderQuotas" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.XmlDictionaryReaderQuotas</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>STS(보안 토큰 서비스)에 의해 발급된 토큰을 가져오기 위해 WS-Federation 로그인 응답 메시지를 deserialize할 때 사용할 <see cref="T:System.Xml.XmlDictionaryReaderQuotas" /> 개체를 가져오거나 설정합니다.</summary>
+        <value>STS(보안 토큰 서비스)에 의해 발급된 토큰을 가져오기 위해 WS-Federation 로그인 응답 메시지를 deserialize할 때 사용할 <see cref="T:System.Xml.XmlDictionaryReaderQuotas" />입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">속성을 <see langword="null" />로 설정하려고 한 경우</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

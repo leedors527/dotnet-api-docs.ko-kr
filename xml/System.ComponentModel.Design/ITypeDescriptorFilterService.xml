@@ -1,0 +1,221 @@
+<Type Name="ITypeDescriptorFilterService" FullName="System.ComponentModel.Design.ITypeDescriptorFilterService">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="dde13c6623bf839a58865ff79bd94fd5c045fa19" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58741661" /></Metadata><TypeSignature Language="C#" Value="public interface ITypeDescriptorFilterService" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract ITypeDescriptorFilterService" />
+  <TypeSignature Language="DocId" Value="T:System.ComponentModel.Design.ITypeDescriptorFilterService" />
+  <TypeSignature Language="VB.NET" Value="Public Interface ITypeDescriptorFilterService" />
+  <TypeSignature Language="C++ CLI" Value="public interface class ITypeDescriptorFilterService" />
+  <TypeSignature Language="F#" Value="type ITypeDescriptorFilterService = interface" />
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.ComponentModel.TypeConverter</AssemblyName>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Docs>
+    <summary>디자인 모드에서 구성 요소에 대한 멤버 설명자의 집합을 수정할 수 있는 인터페이스를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.ITypeDescriptorFilterService> 인터페이스 디자인 타임에 속성, 이벤트 및 구성 요소의 클래스 수준 특성의 수정을 허용 하는 인터페이스를 제공 합니다. 구성 요소를 통해 제공 하는 설명자의 집합을 통해이 수정이 발생 한 <xref:System.ComponentModel.TypeDescriptor>합니다. 형식 설명자는 구성 요소의 사이트에 대 한 쿼리는 <xref:System.ComponentModel.Design.ITypeDescriptorFilterService> 서비스 및 존재 하는 경우 형식 설명자가이 서비스에 수집 된 모든 메타 데이터를 전달 합니다. 서비스 메타 데이터 추가, 제거 및 구성 요소의 기존 특성을 변경 하 여 수정할 수 있습니다.  
+  
+ 구성 요소의 속성에 대 한 호출을 통해 예를 들어, 수정할 수는 <xref:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterProperties%2A> 메서드. 필터 서비스 속성 이름 및 형식의 속성 설명자가 들어 있는 사전을 가져옵니다 <xref:System.ComponentModel.PropertyDescriptor>합니다. 수정한 다음 논리를 사용 하 여 구현 됩니다.  
+  
+|수정|구현|  
+|------------------|--------------------|  
+|제거|사전에서 해당 항목을 삭제 합니다.|  
+|더하기|사전에 적절 한 항목을 추가 합니다.|  
+|변경|기존 속성 설명자 메서드를 호출 하 고 연결 된 속성 설명자 항목을 바꾸거나 사전에 전체 속성 키/값 쌍을 대체 합니다.|  
+  
+ 반환 값 <xref:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterProperties%2A> 있으면이 속성 집합이 수정 결정 합니다. 이 메서드가 반환 하는 경우 `true`, <xref:System.ComponentModel.TypeDescriptor> 에이 구성 요소 결과 캐시할 수 있습니다. 이 캐시는 두 구성 요소에는 가비지 수집 될 때까지 유지 됩니다 또는 <xref:System.ComponentModel.TypeDescriptor.Refresh%2A> 형식 설명자의 메서드가 호출 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 디자이너를 보여 줍니다.는 <xref:System.ComponentModel.Design.ITypeDescriptorFilterService> 신규 또는 기존의 특성 컬렉션을 필터링 하려면 <xref:System.Windows.Forms.Button> 단추에 대해 디자이너를 로드 하거나 다시 로드 하기 전에 새 디자이너에 대 한 디자이너 특성을 추가 합니다.  
+  
+ 예제를 사용 하려면 Windows Forms 프로젝트에 코드를 추가 하 고 도구 상자에 클래스 라이브러리에서 구성 요소를 로드 합니다.  
+  
+ 또한 참조 [연습: 사용자 지정 구성 요소를 사용 하 여 도구 상자에 자동으로 채우기](https://msdn.microsoft.com/library/fw694kde\(v=vs.110\).aspx)합니다.  
+  
+ 폼에 단추를 추가 합니다. 추가 된 `ButtonDesignerFilterComponent` 를 폼에 구성 요소 트레이에 표시 됩니다. `ButtonDesignerFilterComponent` 추가 `ButtonDesignerFilterService`를 구현 하는 <xref:System.ComponentModel.Design.ITypeDescriptorFilterService>, 디자인 모드 서비스 공급자입니다. 기존 또는 새 <xref:System.Windows.Forms.Button> 색 후 순환을 시작 폼에 개체를 `ButtonDesignerFilterService` 사용 하 여 각 기존 및 새 단추에 대 한 디자이너를 대체는 `ColorCycleButtonDesigner`합니다. 단추 색이 순환 때, 위로 마우스 포인터를 이동 하 고 또는 순환 하거나에서 배경 및 전경 색을 다시 설정 됩니다 `MouseLeave` 이벤트입니다. 새 <xref:System.Windows.Forms.Button> 개체를 제공 합니다는 `ColorCycleButtonDesigner` 를 통해를 <xref:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterAttributes%2A> 메서드의 `ButtonDesignerFilterService` 는 로드 될 때까지 `ButtonDesignerFilterComponent` 삭제 되 고 바뀝니다 <xref:System.ComponentModel.Design.ITypeDescriptorFilterService>. 합니다 `ColorCycleButton` 이 예제는 클래스는를 <xref:System.Windows.Forms.Button> 연관를 `ColorCycleButtonDesigner`합니다.  
+  
+ [!code-cpp[ITypeDescriptorFilterService#1](~/samples/snippets/cpp/VS_Snippets_Winforms/ITypeDescriptorFilterService/CPP/source.cpp#1)]
+ [!code-csharp[ITypeDescriptorFilterService#1](~/samples/snippets/csharp/VS_Snippets_Winforms/ITypeDescriptorFilterService/CS/source.cs#1)]
+ [!code-vb[ITypeDescriptorFilterService#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ITypeDescriptorFilterService/VB/source.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <block subset="none" type="overrides"><para>필터에 의해 노출 멤버 설명자에는 <see cref="T:System.ComponentModel.TypeDescriptor" />구성 요소에서이 인터페이스를 구현 하 고 재정의 합니다 <see cref="M:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterAttributes(System.ComponentModel.IComponent,System.Collections.IDictionary)" />, <see cref="M:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterEvents(System.ComponentModel.IComponent,System.Collections.IDictionary)" />, 또는 <see cref="M:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterProperties(System.ComponentModel.IComponent,System.Collections.IDictionary)" /> 각각 특성, 이벤트 또는 속성을 필터링 하려면이 클래스의 메서드.</para></block>
+    <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+    <altmember cref="T:System.ComponentModel.EventDescriptor" />
+    <altmember cref="T:System.ComponentModel.PropertyDescriptor" />
+    <altmember cref="T:System.Attribute" />
+    <altmember cref="T:System.Collections.IDictionary" />
+  </Docs>
+  <Members>
+    <Member MemberName="FilterAttributes">
+      <MemberSignature Language="C#" Value="public bool FilterAttributes (System.ComponentModel.IComponent component, System.Collections.IDictionary attributes);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool FilterAttributes(class System.ComponentModel.IComponent component, class System.Collections.IDictionary attributes) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterAttributes(System.ComponentModel.IComponent,System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Function FilterAttributes (component As IComponent, attributes As IDictionary) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool FilterAttributes(System::ComponentModel::IComponent ^ component, System::Collections::IDictionary ^ attributes);" />
+      <MemberSignature Language="F#" Value="abstract member FilterAttributes : System.ComponentModel.IComponent * System.Collections.IDictionary -&gt; bool" Usage="iTypeDescriptorFilterService.FilterAttributes (component, attributes)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ComponentModel.TypeConverter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="component" Type="System.ComponentModel.IComponent" />
+        <Parameter Name="attributes" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="component">특성을 필터링할 구성 요소입니다.</param>
+        <param name="attributes">수정할 수 있는 특성의 사전입니다.</param>
+        <summary>구성 요소가 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출한 특성을 필터링합니다.</summary>
+        <returns>필터링된 특성 집합이 캐시되도록 하려면 <see langword="true" />이고, 필터 서비스가 다시 쿼리하도록 하려면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 사용자 구성 요소에 대 한 특성 집합을 요청할 때 호출 됩니다. 특성은 특성을 사용 하 여 사전에 추가 됩니다 <xref:System.Attribute.TypeId%2A> 키와 값으로 실제 특성입니다. 이 서비스의 구현자 추가, 제거 또는 사전에 기존 특성 항목을 변경할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>반환 <see langword="false" /> 반복 형식 설명자 필터 서비스에 대 한 쿼리 성능이 저하 될 수 있으므로 필요한 경우에 합니다.</para></block>
+        <altmember cref="T:System.Attribute" />
+        <altmember cref="P:System.Attribute.TypeId" />
+        <altmember cref="T:System.Collections.IDictionary" />
+      </Docs>
+    </Member>
+    <Member MemberName="FilterEvents">
+      <MemberSignature Language="C#" Value="public bool FilterEvents (System.ComponentModel.IComponent component, System.Collections.IDictionary events);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool FilterEvents(class System.ComponentModel.IComponent component, class System.Collections.IDictionary events) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterEvents(System.ComponentModel.IComponent,System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Function FilterEvents (component As IComponent, events As IDictionary) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool FilterEvents(System::ComponentModel::IComponent ^ component, System::Collections::IDictionary ^ events);" />
+      <MemberSignature Language="F#" Value="abstract member FilterEvents : System.ComponentModel.IComponent * System.Collections.IDictionary -&gt; bool" Usage="iTypeDescriptorFilterService.FilterEvents (component, events)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ComponentModel.TypeConverter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="component" Type="System.ComponentModel.IComponent" />
+        <Parameter Name="events" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="component">이벤트를 필터링할 구성 요소입니다.</param>
+        <param name="events">수정할 수 있는 이벤트의 사전입니다.</param>
+        <summary>구성 요소가 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출한 이벤트를 필터링합니다.</summary>
+        <returns>필터링된 이벤트 집합이 캐시되도록 하려면 <see langword="true" />이고, 필터 서비스가 다시 쿼리하도록 하려면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 사용자 구성 요소에 대 한 이벤트 집합을 요청할 때 호출 됩니다. 키 및 해당 이벤트를 이벤트 이름으로 사전에 추가 <xref:System.ComponentModel.EventDescriptor> 개체를 값으로. 이 서비스의 구현자 추가, 제거 또는 사전에 대 한 이벤트 항목을 변경할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>반환 <see langword="false" /> 반복 형식 설명자 필터 서비스에 대 한 쿼리 성능이 저하 될 수 있으므로 필요한 경우에 합니다.</para></block>
+        <altmember cref="T:System.ComponentModel.EventDescriptor" />
+        <altmember cref="T:System.Collections.IDictionary" />
+      </Docs>
+    </Member>
+    <Member MemberName="FilterProperties">
+      <MemberSignature Language="C#" Value="public bool FilterProperties (System.ComponentModel.IComponent component, System.Collections.IDictionary properties);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool FilterProperties(class System.ComponentModel.IComponent component, class System.Collections.IDictionary properties) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ITypeDescriptorFilterService.FilterProperties(System.ComponentModel.IComponent,System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Function FilterProperties (component As IComponent, properties As IDictionary) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool FilterProperties(System::ComponentModel::IComponent ^ component, System::Collections::IDictionary ^ properties);" />
+      <MemberSignature Language="F#" Value="abstract member FilterProperties : System.ComponentModel.IComponent * System.Collections.IDictionary -&gt; bool" Usage="iTypeDescriptorFilterService.FilterProperties (component, properties)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ComponentModel.TypeConverter</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="component" Type="System.ComponentModel.IComponent" />
+        <Parameter Name="properties" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="component">속성을 필터링할 구성 요소입니다.</param>
+        <param name="properties">수정할 수 있는 속성의 사전입니다.</param>
+        <summary>구성 요소가 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출한 속성을 필터링합니다.</summary>
+        <returns>필터링된 속성 집합이 캐시되도록 하려면 <see langword="true" />이고, 필터 서비스가 다시 쿼리하도록 하려면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 사용자 구성 요소에 대 한 속성 집합을 요청할 때 호출 됩니다. 속성 이름이 포함 된 사전에 키 및 해당 속성을 추가할 <xref:System.ComponentModel.PropertyDescriptor> 개체를 값으로. 이 서비스의 구현자 추가, 제거 또는 사전에 속성 항목을 변경할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>반환 <see langword="false" /> 반복 형식 설명자 필터 서비스에 대 한 쿼리 성능이 저하 될 수 있으므로 필요한 경우에 합니다.</para></block>
+        <altmember cref="T:System.ComponentModel.PropertyDescriptor" />
+        <altmember cref="T:System.Collections.IDictionary" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

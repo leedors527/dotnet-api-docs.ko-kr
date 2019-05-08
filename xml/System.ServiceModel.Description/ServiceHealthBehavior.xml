@@ -1,0 +1,368 @@
+<Type Name="ServiceHealthBehavior" FullName="System.ServiceModel.Description.ServiceHealthBehavior">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="f271c2ffc9f93a8538410d3afa402d68f462fe90" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58704147" /></Metadata><TypeSignature Language="C#" Value="public class ServiceHealthBehavior : System.ServiceModel.Description.ServiceHealthBehaviorBase" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ServiceHealthBehavior extends System.ServiceModel.Description.ServiceHealthBehaviorBase" />
+  <TypeSignature Language="DocId" Value="T:System.ServiceModel.Description.ServiceHealthBehavior" />
+  <TypeSignature Language="VB.NET" Value="Public Class ServiceHealthBehavior&#xA;Inherits ServiceHealthBehaviorBase" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ServiceHealthBehavior : System::ServiceModel::Description::ServiceHealthBehaviorBase" />
+  <TypeSignature Language="F#" Value="type ServiceHealthBehavior = class&#xA;    inherit ServiceHealthBehaviorBase" />
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.ServiceModel.Description.ServiceHealthBehaviorBase</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>상태 엔드포인트를 제공하는 WCF(Windows Communication Foundation) 서비스 동작을 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+
+## Remarks
+
+상태 끝점 구성 요소의 상태를 평가 하는 상태 검사를 수행 하는 데 사용 됩니다. 상태 끝점을 사용할 수 있습니다.
+
+- 중요 한 상태 검사를 실패 하는 프로세스를 종료 오케스트레이션 도구를 게 알립니다. 
+
+- 추적 서비스의 성능과 가용성에 대 한 경고를 제공 하 여 모니터링 도구에 대 한 초기 문제 표시기로 사용 됩니다.
+
+`ServiceHealthBehavior` IServiceBehavior를 확장 하 고에서 파생 되는 WCF 서비스 동작 <xref:System.ServiceModel.Description.ServiceHealthBehaviorBase>합니다.  추가 된 `ServiceHealthBehavior` 인스턴스는 <xref:System.ServiceModel.Description.ServiceDescription.Behaviors?displayProperty=nameWithType> 컬렉션을 사용 하면 다음:
+
+-   **게시 서비스 상태:** 서비스 상태, 제한 개수와 같은 서비스 관련 세부 정보 및 사용 하 여 HTTP/GET 요청을 사용 하 여 용량을 표시할 수 있습니다는 `?health` 쿼리 문자열입니다. 파악 하 고 표시 되는 정보에 대 한 액세스를 쉽게 것은 매우 중요 오동작 WCF 서비스의 문제를 해결 합니다.
+
+-   **HTTP 응답 코드를 반환 합니다.** HTTP 상태 코드는 HTTP/GET 상태 프로브 요청에 대 한 쿼리 문자열에 지정할 수 있습니다.
+
+상태 끝점은 해당 상태를 모니터링 구성 요소의 컨텍스트에서 의미 있는 수만 있습니다. 다른 의미가 없거나 목적이 있습니다. 따라서 해당 상태는 구성 요소의 상태에 통로입니다. 클라이언트 *해야* 상태 끝점에서 반환 된 HTTP 응답 코드는 전체 구성 요소에 적용 가능한 것으로 가정 합니다. 이 부하 분산 장치, 서비스 검색 등과 같은 상태 검사를 활용 하는 현재 인프라 도구에서 예상 되는 동작 호환 됩니다.
+
+### <a name="enable-a-health-endpoint"></a>상태 끝점을 사용 하도록 설정
+
+두 가지 방법으로 상태 끝점을 노출 하 여 WCF 서비스 상태 정보를 게시 하는 방법을 지정할 수 있습니다.
+
+- 구성 파일을 사용 합니다. 예:
+
+   ```xml
+   <behaviors>
+     <serviceBehaviors>
+       <behavior name="DefaultBehavior">
+         <serviceHealth httpGetEnabled="true"/>
+       </behavior>
+     </serviceBehaviors>
+   </behaviors>
+   ```
+
+- 프로그래밍 방식으로 합니다. 다음 코드 조각에서는 C# 상태 끝점을 노출 합니다.
+
+    ```csharp
+    ServiceHost host = new ServiceHost(typeof(Service1),
+        new Uri("http://jconde-dev1:81/Service1"));
+    ServiceHealthBehavior healthBehavior =
+                host.Description.Behaviors.Find<ServiceHealthBehavior>();
+    if (healthBehavior == null)
+    {
+        healthBehavior = new ServiceHealthBehavior();
+    }
+    //healthBehavior.HttpGetEnabled = false;
+    //healthBehavior.HttpsGetEnabled = false;
+    host.Description.Behaviors.Add(healthBehavior);
+    ```
+
+       ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ServiceHealthBehavior ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ServiceHealthBehavior();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.Description.ServiceHealthBehavior" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddHttpProperty">
+      <MemberSignature Language="C#" Value="protected static void AddHttpProperty (System.ServiceModel.Channels.Message message, System.Net.HttpStatusCode status, bool isXml);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig void AddHttpProperty(class System.ServiceModel.Channels.Message message, valuetype System.Net.HttpStatusCode status, bool isXml) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.AddHttpProperty(System.ServiceModel.Channels.Message,System.Net.HttpStatusCode,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static void AddHttpProperty(System::ServiceModel::Channels::Message ^ message, System::Net::HttpStatusCode status, bool isXml);" />
+      <MemberSignature Language="F#" Value="static member AddHttpProperty : System.ServiceModel.Channels.Message * System.Net.HttpStatusCode * bool -&gt; unit" Usage="System.ServiceModel.Description.ServiceHealthBehavior.AddHttpProperty (message, status, isXml)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.ServiceModel.Channels.Message" />
+        <Parameter Name="status" Type="System.Net.HttpStatusCode" />
+        <Parameter Name="isXml" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="message">회신 메시지입니다.</param>
+        <param name="status">HTTP 상태 코드입니다.</param>
+        <param name="isXml">메시지에 쓸 <see langWord="ContentType" /> 헤더의 형식을 정의합니다. <see langword="true" />인 경우 <see langWord="ContentType" />은 <see langword="text/xml" /> 콘텐츠 형식이고, 그렇지 않으면 <see langWord="ContentType" />은 <see langword="text/sml" />입니다.</param>
+        <summary>응답 메시지에 대한 콘텐츠 형식 및 HTTP 상태 코드를 설정합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="message" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EnsureHttpStatusCode">
+      <MemberSignature Language="C#" Value="protected static bool EnsureHttpStatusCode (int code);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig bool EnsureHttpStatusCode(int32 code) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.EnsureHttpStatusCode(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function EnsureHttpStatusCode (code As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static bool EnsureHttpStatusCode(int code);" />
+      <MemberSignature Language="F#" Value="static member EnsureHttpStatusCode : int -&gt; bool" Usage="System.ServiceModel.Description.ServiceHealthBehavior.EnsureHttpStatusCode code" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="code" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="code">HTTP 상태 코드입니다.</param>
+        <summary>HTTP 상태 코드가 200~599(포함)의 범위 내에 있는지 확인합니다.</summary>
+        <returns>HTTP 상태 코드가 200~599(포함)의 범위 내에 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHttpResponseCode">
+      <MemberSignature Language="C#" Value="protected virtual System.Net.HttpStatusCode GetHttpResponseCode (System.ServiceModel.ServiceHostBase serviceHost, string[] queries);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance valuetype System.Net.HttpStatusCode GetHttpResponseCode(class System.ServiceModel.ServiceHostBase serviceHost, string[] queries) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.GetHttpResponseCode(System.ServiceModel.ServiceHostBase,System.String[])" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetHttpResponseCode (serviceHost As ServiceHostBase, queries As String()) As HttpStatusCode" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Net::HttpStatusCode GetHttpResponseCode(System::ServiceModel::ServiceHostBase ^ serviceHost, cli::array &lt;System::String ^&gt; ^ queries);" />
+      <MemberSignature Language="F#" Value="abstract member GetHttpResponseCode : System.ServiceModel.ServiceHostBase * string[] -&gt; System.Net.HttpStatusCode&#xA;override this.GetHttpResponseCode : System.ServiceModel.ServiceHostBase * string[] -&gt; System.Net.HttpStatusCode" Usage="serviceHealthBehavior.GetHttpResponseCode (serviceHost, queries)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.HttpStatusCode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serviceHost" Type="System.ServiceModel.ServiceHostBase" />
+        <Parameter Name="queries" Type="System.String[]" />
+      </Parameters>
+      <Docs>
+        <param name="serviceHost">해당 <see cref="T:System.ServiceModel.Description.ServiceHealthBehavior" />를 사용하여 WCF 서비스를 포함하는 서비스 호스트의 인스턴스입니다.</param>
+        <param name="queries">쿼리 문자열의 필드/값 쌍이 포함된 배열입니다.</param>
+        <summary>쿼리 문자열 필드를 구문 분석하고 정의된 해당 HTTP 응답 코드를 반환합니다.</summary>
+        <returns>HTTP 응답 코드입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="serviceHost" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetServiceHealthSections">
+      <MemberSignature Language="C#" Value="protected virtual System.ServiceModel.Description.ServiceHealthSectionCollection GetServiceHealthSections (System.ServiceModel.ServiceHostBase serviceHost);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.ServiceModel.Description.ServiceHealthSectionCollection GetServiceHealthSections(class System.ServiceModel.ServiceHostBase serviceHost) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.GetServiceHealthSections(System.ServiceModel.ServiceHostBase)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetServiceHealthSections (serviceHost As ServiceHostBase) As ServiceHealthSectionCollection" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::ServiceModel::Description::ServiceHealthSectionCollection ^ GetServiceHealthSections(System::ServiceModel::ServiceHostBase ^ serviceHost);" />
+      <MemberSignature Language="F#" Value="abstract member GetServiceHealthSections : System.ServiceModel.ServiceHostBase -&gt; System.ServiceModel.Description.ServiceHealthSectionCollection&#xA;override this.GetServiceHealthSections : System.ServiceModel.ServiceHostBase -&gt; System.ServiceModel.Description.ServiceHealthSectionCollection" Usage="serviceHealthBehavior.GetServiceHealthSections serviceHost" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Description.ServiceHealthSectionCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serviceHost" Type="System.ServiceModel.ServiceHostBase" />
+      </Parameters>
+      <Docs>
+        <param name="serviceHost">해당 <see cref="T:System.ServiceModel.Description.ServiceHealthBehavior" />를 사용하여 WCF 서비스를 포함하는 서비스 호스트의 인스턴스입니다.</param>
+        <summary><see cref="T:System.ServiceModel.Description.ServiceHealthBehavior" />에 정의된 <see cref="T:System.ServiceModel.Description.ServiceHealthSection" /> 개체의 컬렉션을 가져옵니다.</summary>
+        <returns><see cref="T:System.ServiceModel.Description.ServiceHealthBehavior" />에 정의된 <see cref="T:System.ServiceModel.Description.ServiceHealthSection" /> 개체의 컬렉션입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="serviceHost" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetXmlDocument">
+      <MemberSignature Language="C#" Value="protected virtual System.Xml.XmlDocument GetXmlDocument (System.ServiceModel.ServiceHostBase serviceHost);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Xml.XmlDocument GetXmlDocument(class System.ServiceModel.ServiceHostBase serviceHost) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.GetXmlDocument(System.ServiceModel.ServiceHostBase)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetXmlDocument (serviceHost As ServiceHostBase) As XmlDocument" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Xml::XmlDocument ^ GetXmlDocument(System::ServiceModel::ServiceHostBase ^ serviceHost);" />
+      <MemberSignature Language="F#" Value="abstract member GetXmlDocument : System.ServiceModel.ServiceHostBase -&gt; System.Xml.XmlDocument&#xA;override this.GetXmlDocument : System.ServiceModel.ServiceHostBase -&gt; System.Xml.XmlDocument" Usage="serviceHealthBehavior.GetXmlDocument serviceHost" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.XmlDocument</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serviceHost" Type="System.ServiceModel.ServiceHostBase" />
+      </Parameters>
+      <Docs>
+        <param name="serviceHost">해당 <see cref="T:System.ServiceModel.Description.ServiceHealthBehavior" />를 사용하여 WCF 서비스를 포함하는 서비스 호스트의 인스턴스입니다.</param>
+        <summary>지정된 <paramref name="serviceHost" />와 연결된 <see cref="T:System.ServiceModel.Description.ServiceHealthModel" /> 개체를 직렬화하고 XML 형식으로 반환합니다.</summary>
+        <returns>직렬화된 <see cref="T:System.ServiceModel.Description.ServiceHealthModel" /> 개체에 해당하는 XML 문서입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="serviceHost" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="HandleHealthRequest">
+      <MemberSignature Language="C#" Value="public override void HandleHealthRequest (System.ServiceModel.ServiceHostBase serviceHost, System.ServiceModel.Channels.Message httpGetRequest, string[] queries, out System.ServiceModel.Channels.Message replyMessage);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void HandleHealthRequest(class System.ServiceModel.ServiceHostBase serviceHost, class System.ServiceModel.Channels.Message httpGetRequest, string[] queries, [out] class System.ServiceModel.Channels.Message&amp; replyMessage) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.HandleHealthRequest(System.ServiceModel.ServiceHostBase,System.ServiceModel.Channels.Message,System.String[],System.ServiceModel.Channels.Message@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub HandleHealthRequest (serviceHost As ServiceHostBase, httpGetRequest As Message, queries As String(), ByRef replyMessage As Message)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void HandleHealthRequest(System::ServiceModel::ServiceHostBase ^ serviceHost, System::ServiceModel::Channels::Message ^ httpGetRequest, cli::array &lt;System::String ^&gt; ^ queries, [Runtime::InteropServices::Out] System::ServiceModel::Channels::Message ^ % replyMessage);" />
+      <MemberSignature Language="F#" Value="override this.HandleHealthRequest : System.ServiceModel.ServiceHostBase * System.ServiceModel.Channels.Message * string[] *  -&gt; unit" Usage="serviceHealthBehavior.HandleHealthRequest (serviceHost, httpGetRequest, queries, replyMessage)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serviceHost" Type="System.ServiceModel.ServiceHostBase" />
+        <Parameter Name="httpGetRequest" Type="System.ServiceModel.Channels.Message" />
+        <Parameter Name="queries" Type="System.String[]" />
+        <Parameter Name="replyMessage" Type="System.ServiceModel.Channels.Message" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="serviceHost">해당 <see cref="T:System.ServiceModel.Description.ServiceHealthBehavior" />를 사용하여 WCF 서비스를 포함하는 서비스 호스트의 인스턴스입니다.</param>
+        <param name="httpGetRequest">상태 엔드포인트에 대한 HTTP 요청입니다.</param>
+        <param name="queries">쿼리 문자열의 필드/값 쌍을 포함한 배열입니다.</param>
+        <param name="replyMessage">메서드가 반환되는 경우 상태 동작의 응답 메시지입니다. 이 메시지의 콘텐츠 형식은 XML 또는 HTML에 대한 요청인지에 따라 <see langword="text/html" /> 또는 <see langword="text/xml" />입니다.</param>
+        <summary>지정된 요청에 응답 메시지를 반환합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+
+이 메서드를 호출한는 <xref:System.ServiceModel.Description.ServiceHealthBehaviorBase> 인스턴스 이며 상태 끝점에 응답 메시지를 작성 하는 일을 담당 합니다.
+
+         ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="serviceHost" />가 <see langword="null" />입니다.
+
+또는
+
+<paramref name="httpGetRequest" />가 <see langword="null" />인 경우
+
+또는
+
+<paramref name="queries" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="HasXmlSupport">
+      <MemberSignature Language="C#" Value="protected virtual bool HasXmlSupport { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasXmlSupport" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Description.ServiceHealthBehavior.HasXmlSupport" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable ReadOnly Property HasXmlSupport As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual property bool HasXmlSupport { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.HasXmlSupport : bool" Usage="System.ServiceModel.Description.ServiceHealthBehavior.HasXmlSupport" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 응답 메시지가 지원되는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>이 메서드를 항상 반환 파생된 클래스에서 재정의 되지 않는 한 <see langword="true" />합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryParseBooleanQueryParameter">
+      <MemberSignature Language="C#" Value="protected static bool TryParseBooleanQueryParameter (string parameterName, string parameter, bool defaultValue, out bool result);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig bool TryParseBooleanQueryParameter(string parameterName, string parameter, bool defaultValue, [out] bool&amp; result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.TryParseBooleanQueryParameter(System.String,System.String,System.Boolean,System.Boolean@)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function TryParseBooleanQueryParameter (parameterName As String, parameter As String, defaultValue As Boolean, ByRef result As Boolean) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static bool TryParseBooleanQueryParameter(System::String ^ parameterName, System::String ^ parameter, bool defaultValue, [Runtime::InteropServices::Out] bool % result);" />
+      <MemberSignature Language="F#" Value="static member TryParseBooleanQueryParameter : string * string * bool *  -&gt; bool" Usage="System.ServiceModel.Description.ServiceHealthBehavior.TryParseBooleanQueryParameter (parameterName, parameter, defaultValue, result)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="parameterName" Type="System.String" />
+        <Parameter Name="parameter" Type="System.String" />
+        <Parameter Name="defaultValue" Type="System.Boolean" />
+        <Parameter Name="result" Type="System.Boolean" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="parameterName">메서드에서 구문 분석하려고 하는 값의 매개 변수 이름입니다.</param>
+        <param name="parameter">쿼리 문자열의 필드/값 쌍입니다.</param>
+        <param name="defaultValue">구문 분석 작업에 실패한 경우 <paramName name="result" /> 인수에 할당될 값입니다.</param>
+        <param name="result">메서드가 반환되는 경우 구문 분석된 부울 인수의 값입니다.</param>
+        <summary>부울 쿼리 문자열 매개 변수를 구문 분석하려고 시도하고 구문 분석 작업이 성공했는지 여부를 나타내는 값을 반환합니다.</summary>
+        <returns>구문 분석 작업에 성공한 경우 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+
+메서드는 반환 `true` 필드의 값으로 구문 분석 했습니다 하는 경우는 <xref:System.Boolean.TryParse%2A?displayProperty=nameWithType> 메서드.
+
+         ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="parameterName" />가 <see langword="null" />입니다.
+        
+또는
+
+<paramref name="parameter" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TryParseHttpStatusCodeQueryParameter">
+      <MemberSignature Language="C#" Value="protected static bool TryParseHttpStatusCodeQueryParameter (string parameterName, string parameter, System.Net.HttpStatusCode defaultErrorCode, out System.Net.HttpStatusCode result);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig bool TryParseHttpStatusCodeQueryParameter(string parameterName, string parameter, valuetype System.Net.HttpStatusCode defaultErrorCode, [out] valuetype System.Net.HttpStatusCode&amp; result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Description.ServiceHealthBehavior.TryParseHttpStatusCodeQueryParameter(System.String,System.String,System.Net.HttpStatusCode,System.Net.HttpStatusCode@)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function TryParseHttpStatusCodeQueryParameter (parameterName As String, parameter As String, defaultErrorCode As HttpStatusCode, ByRef result As HttpStatusCode) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static bool TryParseHttpStatusCodeQueryParameter(System::String ^ parameterName, System::String ^ parameter, System::Net::HttpStatusCode defaultErrorCode, [Runtime::InteropServices::Out] System::Net::HttpStatusCode % result);" />
+      <MemberSignature Language="F#" Value="static member TryParseHttpStatusCodeQueryParameter : string * string * System.Net.HttpStatusCode *  -&gt; bool" Usage="System.ServiceModel.Description.ServiceHealthBehavior.TryParseHttpStatusCodeQueryParameter (parameterName, parameter, defaultErrorCode, result)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="parameterName" Type="System.String" />
+        <Parameter Name="parameter" Type="System.String" />
+        <Parameter Name="defaultErrorCode" Type="System.Net.HttpStatusCode" />
+        <Parameter Name="result" Type="System.Net.HttpStatusCode" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="parameterName">메서드에서 구문 분석하려고 하는 값의 매개 변수 이름입니다.</param>
+        <param name="parameter">쿼리 문자열의 필드/값 쌍입니다.</param>
+        <param name="defaultErrorCode">구문 분석 작업에 실패한 경우 인수에 할당될 값입니다.</param>
+        <param name="result">메서드가 반환되는 경우 구문 분석된 HTTP 상태 코드 인수의 값입니다.</param>
+        <summary>쿼리 문자열 변수의 HTTP 상태 코드를 구문 분석하려고 시도하고 구문 분석 작업이 성공했는지 여부를 나타내는 값을 반환합니다.</summary>
+        <returns>구문 분석 작업에 성공한 경우 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="parameterName" />가 <see langword="null" />입니다.
+        
+또는
+
+<paramref name="parameter" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

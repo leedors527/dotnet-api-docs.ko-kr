@@ -1,0 +1,1 @@
+이 클래스가 나타내는 메시지에 대한 자세한 내용은 [Web Services Federation Language (WS-Federation) Version 1.2](https://docs.oasis-open.org/wsfed/federation/v1.2/os/ws-federation-1.2-spec-os.html)(WS-Federation(Web Services Federation Language) 버전 1.2) 사양의 섹션 13을 참조하세요.

@@ -1,0 +1,771 @@
+<Type Name="AnonymousPipeServerStream" FullName="System.IO.Pipes.AnonymousPipeServerStream">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d0e982690f510c68030f4bade1b3c0d8537f4f5b" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58742916" /></Metadata><TypeSignature Language="C#" Value="public sealed class AnonymousPipeServerStream : System.IO.Pipes.PipeStream" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit AnonymousPipeServerStream extends System.IO.Pipes.PipeStream" />
+  <TypeSignature Language="DocId" Value="T:System.IO.Pipes.AnonymousPipeServerStream" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class AnonymousPipeServerStream&#xA;Inherits PipeStream" />
+  <TypeSignature Language="C++ CLI" Value="public ref class AnonymousPipeServerStream sealed : System::IO::Pipes::PipeStream" />
+  <TypeSignature Language="F#" Value="type AnonymousPipeServerStream = class&#xA;    inherit PipeStream" />
+  <AssemblyInfo>
+    <AssemblyName>System.IO.Pipes</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Core</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.IO.Pipes.PipeStream</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>동기 및 비동기 읽기/쓰기 작업을 모두 지원하는 익명 파이프 주위의 스트림을 노출합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 익명 파이프 안전 하 게 제공 시키고 자식 및 부모 간의 프로세스 간 통신 프로세스를 보호 합니다. <xref:System.IO.Pipes.AnonymousPipeServerStream> 클래스 부모 프로세스에서 자식 프로세스 정보를 주고받을 수 있습니다.  
+  
+ 익명 파이프는 일반적으로 부모 및 자식 프로세스 간에 데이터를 전송 하는 명명 되지 않은, 단방향 파이프 합니다. 익명 파이프는 항상 로컬입니다. 네트워크를 통해 사용할 수 없습니다. A <xref:System.IO.Pipes.PipeDirection> 의 값 <xref:System.IO.Pipes.PipeDirection.InOut> 익명 파이프는 단방향 정의 되기 때문에 지원 되지 않습니다.  
+  
+ 익명 파이프를 지원 하지 않는 <xref:System.IO.Pipes.PipeTransmissionMode.Message> 읽기 모드입니다.  
+  
+ 익명 파이프의 클라이언트 쪽을 호출 하 여 서버 쪽에서 제공 하는 파이프 핸들에서 만들어야 합니다를 <xref:System.IO.Pipes.AnonymousPipeServerStream.GetClientHandleAsString%2A> 메서드. 그러면 클라이언트 프로세스를 만들 때 문자열 매개 변수로 전달 됩니다. 클라이언트 프로세스에서 다음 전달 되는 <xref:System.IO.Pipes.AnonymousPipeClientStream> 으로 생성자는 `pipeHandleAsString` 매개 변수입니다.  
+  
+ <xref:System.IO.Pipes.AnonymousPipeServerStream> 개체가 사용 하 여 클라이언트 핸들을 삭제 해야 합니다는 <xref:System.IO.Pipes.AnonymousPipeServerStream.DisposeLocalCopyOfClientHandle%2A> 메서드 클라이언트 종료 될 때 알림을 받을 수 있습니다.  
+  
+> [!NOTE]
+>  에 대 한 [!INCLUDE[winxppro](~/includes/winxppro-md.md)] 고 [!INCLUDE[win2kserver](~/includes/win2kserver-md.md)], 최대 10 개의 파이프는 네트워크를 통해 동시에 연결할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제는 익명 파이프를 사용하여 부모 프로세스에서 자식 프로세스로 문자열을 보내는 방법을 보여줍니다. 이 예제는 <xref:System.IO.Pipes.PipeDirection.Out>의 <xref:System.IO.Pipes.PipeDirection> 값을 사용하여 부모 프로세스에서 <xref:System.IO.Pipes.AnonymousPipeServerStream> 개체를 생성합니다. 도 만듭니다는 <xref:System.IO.Pipes.AnonymousPipeClientStream> 사용 하 여 자식 프로세스에서 개체를 <xref:System.IO.Pipes.PipeDirection> 의 값 <xref:System.IO.Pipes.PipeDirection.In>합니다. 그런 다음, 부모 프로세스는 사용자가 제공한 문자열을 자식 프로세스로 보냅니다. 문자열을 콘솔에 표시 됩니다.  
+  
+ 이 예제는 사용 하는 서버 프로세스는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 클래스입니다. 파이프 클라이언트와 서버 모두에 대 한 코드를 포함 한 전체 코드 예제를 보려면 [방법: 로컬 프로세스 간 통신에 익명 파이프 사용](~/docs/standard/io/how-to-use-anonymous-pipes-for-local-interprocess-communication.md)을 참조하세요.  
+  
+ [!code-cpp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cpp/program.cpp#01)]
+ [!code-csharp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/vb/program.vb#01)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AnonymousPipeServerStream ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; AnonymousPipeServerStream();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 대 한 <xref:System.IO.Pipes.AnonymousPipeServerStream> 없이 생성자를 <xref:System.IO.Pipes.PipeDirection> 매개 변수를 기본 방향은 <xref:System.IO.Pipes.PipeDirection.Out>합니다. A <xref:System.IO.Pipes.PipeDirection> 의 값 <xref:System.IO.Pipes.PipeDirection.InOut> 익명 파이프는 단방향 정의 되기 때문에 지원 되지 않습니다.  
+  
+ 이 생성자를 만듭니다는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 기본 버퍼 크기, 파이프 보안 된 개체와 <xref:System.IO.HandleInheritability> 값 <xref:System.IO.HandleInheritability.None>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">직접 실행 호출자에 대 한 완전 신뢰 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AnonymousPipeServerStream (System.IO.Pipes.PipeDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.IO.Pipes.PipeDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.#ctor(System.IO.Pipes.PipeDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (direction As PipeDirection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; AnonymousPipeServerStream(System::IO::Pipes::PipeDirection direction);" />
+      <MemberSignature Language="F#" Value="new System.IO.Pipes.AnonymousPipeServerStream : System.IO.Pipes.PipeDirection -&gt; System.IO.Pipes.AnonymousPipeServerStream" Usage="new System.IO.Pipes.AnonymousPipeServerStream direction" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">파이프의 방향을 결정하는 열거형 값 중 하나입니다.  
+  
+익명 파이프는 한 방향으로만 지정할 수 있으므로 <paramref name="direction" />을 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />으로 설정할 수 없습니다.</param>
+        <summary>지정된 파이프 방향을 사용하여 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ A <xref:System.IO.Pipes.PipeDirection> 의 값 <xref:System.IO.Pipes.PipeDirection.InOut> 익명 파이프는 단방향 정의 되기 때문에 지원 되지 않습니다.  
+  
+ 이 생성자를 만듭니다는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 기본 버퍼 크기, 파이프 보안 된 개체와 <xref:System.IO.HandleInheritability> 값 <xref:System.IO.HandleInheritability.None>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotSupportedException"><paramref name="direction" />이 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />로 설정됩니다.</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">직접 실행 호출자에 대 한 완전 신뢰 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AnonymousPipeServerStream (System.IO.Pipes.PipeDirection direction, System.IO.HandleInheritability inheritability);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.IO.Pipes.PipeDirection direction, valuetype System.IO.HandleInheritability inheritability) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.#ctor(System.IO.Pipes.PipeDirection,System.IO.HandleInheritability)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (direction As PipeDirection, inheritability As HandleInheritability)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; AnonymousPipeServerStream(System::IO::Pipes::PipeDirection direction, System::IO::HandleInheritability inheritability);" />
+      <MemberSignature Language="F#" Value="new System.IO.Pipes.AnonymousPipeServerStream : System.IO.Pipes.PipeDirection * System.IO.HandleInheritability -&gt; System.IO.Pipes.AnonymousPipeServerStream" Usage="new System.IO.Pipes.AnonymousPipeServerStream (direction, inheritability)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="inheritability" Type="System.IO.HandleInheritability" />
+      </Parameters>
+      <Docs>
+        <param name="direction">파이프의 방향을 결정하는 열거형 값 중 하나입니다.  
+  
+익명 파이프는 한 방향으로만 지정할 수 있으므로 <paramref name="direction" />을 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />으로 설정할 수 없습니다.</param>
+        <param name="inheritability">자식 프로세스가 기본 핸들을 상속할 수 있는지 여부를 결정하는 열거형 값 중 하나입니다. <see cref="F:System.IO.HandleInheritability.None" /> 또는 <see cref="F:System.IO.HandleInheritability.Inheritable" />로 설정해야 합니다.</param>
+        <summary>지정된 파이프 방향 및 상속 모드를 사용하여 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 클래스의 새 인스턴스를 초기화합니다. </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ A <xref:System.IO.Pipes.PipeDirection> 의 값 <xref:System.IO.Pipes.PipeDirection.InOut> 익명 파이프는 단방향 정의 되기 때문에 지원 되지 않습니다.  
+  
+ 이 생성자는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 기본 버퍼 크기 및 파이프 보안을 가진 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 익명 파이프를 사용 하 여 자식 프로세스에는 부모 프로세스에서 문자열을 보내는 방법을 보여 줍니다. 이 예제는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 사용 하 여 부모 프로세스에서 개체를 만들를 <xref:System.IO.Pipes.PipeDirection> 값 <xref:System.IO.Pipes.PipeDirection.Out>.  
+  
+ [!code-cpp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cpp/program.cpp#01)]
+ [!code-csharp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="inheritability" />가 <see cref="F:System.IO.HandleInheritability.None" /> 또는 <see cref="F:System.IO.HandleInheritability.Inheritable" />로 설정되어 있지 않습니다.</exception>
+        <exception cref="T:System.NotSupportedException"><paramref name="direction" />이 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />로 설정됩니다.</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">직접 실행 호출자에 대 한 완전 신뢰 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AnonymousPipeServerStream (System.IO.Pipes.PipeDirection direction, Microsoft.Win32.SafeHandles.SafePipeHandle serverSafePipeHandle, Microsoft.Win32.SafeHandles.SafePipeHandle clientSafePipeHandle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.IO.Pipes.PipeDirection direction, class Microsoft.Win32.SafeHandles.SafePipeHandle serverSafePipeHandle, class Microsoft.Win32.SafeHandles.SafePipeHandle clientSafePipeHandle) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.#ctor(System.IO.Pipes.PipeDirection,Microsoft.Win32.SafeHandles.SafePipeHandle,Microsoft.Win32.SafeHandles.SafePipeHandle)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (direction As PipeDirection, serverSafePipeHandle As SafePipeHandle, clientSafePipeHandle As SafePipeHandle)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; AnonymousPipeServerStream(System::IO::Pipes::PipeDirection direction, Microsoft::Win32::SafeHandles::SafePipeHandle ^ serverSafePipeHandle, Microsoft::Win32::SafeHandles::SafePipeHandle ^ clientSafePipeHandle);" />
+      <MemberSignature Language="F#" Value="new System.IO.Pipes.AnonymousPipeServerStream : System.IO.Pipes.PipeDirection * Microsoft.Win32.SafeHandles.SafePipeHandle * Microsoft.Win32.SafeHandles.SafePipeHandle -&gt; System.IO.Pipes.AnonymousPipeServerStream" Usage="new System.IO.Pipes.AnonymousPipeServerStream (direction, serverSafePipeHandle, clientSafePipeHandle)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="serverSafePipeHandle" Type="Microsoft.Win32.SafeHandles.SafePipeHandle" />
+        <Parameter Name="clientSafePipeHandle" Type="Microsoft.Win32.SafeHandles.SafePipeHandle" />
+      </Parameters>
+      <Docs>
+        <param name="direction">파이프의 방향을 결정하는 열거형 값 중 하나입니다.  
+  
+익명 파이프는 한 방향으로만 지정할 수 있으므로 <paramref name="direction" />을 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />으로 설정할 수 없습니다.</param>
+        <param name="serverSafePipeHandle">이 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 개체가 캡슐화할 파이프의 SafeHandle입니다.</param>
+        <param name="clientSafePipeHandle"><see cref="T:System.IO.Pipes.AnonymousPipeClientStream" /> 개체의 SafeHandle입니다.</param>
+        <summary>지정된 파이프 핸들을 사용하여 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ A <xref:System.IO.Pipes.PipeDirection> 의 값 <xref:System.IO.Pipes.PipeDirection.InOut> 익명 파이프는 단방향 정의 되기 때문에 지원 되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="serverSafePipeHandle" />또는 <paramref name="clientSafePipeHandle" />이 잘못된 핸들인 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="serverSafePipeHandle" /> 또는 <paramref name="clientSafePipeHandle" />가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.NotSupportedException"><paramref name="direction" />이 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />로 설정됩니다.</exception>
+        <exception cref="T:System.IO.IOException">디스크 오류 등의 I/O 오류가 발생한 경우  
+  
+또는 
+스트림이 닫혔습니다.</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">직접 실행 호출자에 대 한 완전 신뢰 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AnonymousPipeServerStream (System.IO.Pipes.PipeDirection direction, System.IO.HandleInheritability inheritability, int bufferSize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.IO.Pipes.PipeDirection direction, valuetype System.IO.HandleInheritability inheritability, int32 bufferSize) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.#ctor(System.IO.Pipes.PipeDirection,System.IO.HandleInheritability,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (direction As PipeDirection, inheritability As HandleInheritability, bufferSize As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; AnonymousPipeServerStream(System::IO::Pipes::PipeDirection direction, System::IO::HandleInheritability inheritability, int bufferSize);" />
+      <MemberSignature Language="F#" Value="new System.IO.Pipes.AnonymousPipeServerStream : System.IO.Pipes.PipeDirection * System.IO.HandleInheritability * int -&gt; System.IO.Pipes.AnonymousPipeServerStream" Usage="new System.IO.Pipes.AnonymousPipeServerStream (direction, inheritability, bufferSize)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="inheritability" Type="System.IO.HandleInheritability" />
+        <Parameter Name="bufferSize" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="direction">파이프의 방향을 결정하는 열거형 값 중 하나입니다.  
+  
+익명 파이프는 한 방향으로만 지정할 수 있으므로 <paramref name="direction" />을 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />으로 설정할 수 없습니다.</param>
+        <param name="inheritability">자식 프로세스가 기본 핸들을 상속할 수 있는지 여부를 결정하는 열거형 값 중 하나입니다. <see cref="F:System.IO.HandleInheritability.None" /> 또는 <see cref="F:System.IO.HandleInheritability.Inheritable" />로 설정해야 합니다.</param>
+        <param name="bufferSize">버퍼의 크기입니다. 이 값은 0보다 크거나 같아야 합니다.</param>
+        <summary>지정된 파이프 방향, 상속 모드 및 버퍼 크기를 사용하여 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 클래스의 새 인스턴스를 초기화합니다. </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ A <xref:System.IO.Pipes.PipeDirection> 의 값 <xref:System.IO.Pipes.PipeDirection.InOut> 익명 파이프는 단방향 정의 되기 때문에 지원 되지 않습니다.  
+  
+ 이 생성자는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 파이프 보안 없이 개체입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="inheritability" />가 <see cref="F:System.IO.HandleInheritability.None" /> 또는 <see cref="F:System.IO.HandleInheritability.Inheritable" />로 설정되어 있지 않습니다.  
+  
+또는 
+ <paramref name="bufferSize" />가 0보다 작은 경우</exception>
+        <exception cref="T:System.NotSupportedException"><paramref name="direction" />이 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />로 설정됩니다.</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">직접 실행 호출자에 대 한 완전 신뢰 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public AnonymousPipeServerStream (System.IO.Pipes.PipeDirection direction, System.IO.HandleInheritability inheritability, int bufferSize, System.IO.Pipes.PipeSecurity pipeSecurity);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.IO.Pipes.PipeDirection direction, valuetype System.IO.HandleInheritability inheritability, int32 bufferSize, class System.IO.Pipes.PipeSecurity pipeSecurity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.#ctor(System.IO.Pipes.PipeDirection,System.IO.HandleInheritability,System.Int32,System.IO.Pipes.PipeSecurity)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; AnonymousPipeServerStream(System::IO::Pipes::PipeDirection direction, System::IO::HandleInheritability inheritability, int bufferSize, System::IO::Pipes::PipeSecurity ^ pipeSecurity);" />
+      <MemberSignature Language="F#" Value="new System.IO.Pipes.AnonymousPipeServerStream : System.IO.Pipes.PipeDirection * System.IO.HandleInheritability * int * System.IO.Pipes.PipeSecurity -&gt; System.IO.Pipes.AnonymousPipeServerStream" Usage="new System.IO.Pipes.AnonymousPipeServerStream (direction, inheritability, bufferSize, pipeSecurity)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" Index="0" FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="inheritability" Type="System.IO.HandleInheritability" Index="1" FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="bufferSize" Type="System.Int32" Index="2" FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="pipeSecurity" Type="System.IO.Pipes.PipeSecurity" Index="3" FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="direction">파이프의 방향을 결정하는 열거형 값 중 하나입니다.  
+  
+익명 파이프는 한 방향으로만 지정할 수 있으므로 <paramref name="direction" />을 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />으로 설정할 수 없습니다.</param>
+        <param name="inheritability">자식 프로세스가 기본 핸들을 상속할 수 있는지 여부를 결정하는 열거형 값 중 하나입니다.</param>
+        <param name="bufferSize">버퍼의 크기입니다. 이 값은 0보다 크거나 같아야 합니다.</param>
+        <param name="pipeSecurity">파이프의 액세스 제어 및 감사 보안을 결정하는 개체입니다.</param>
+        <summary>지정된 파이프 방향, 상속 모드, 버퍼 크기 및 파이프 보안을 사용하여 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ A <xref:System.IO.Pipes.PipeDirection> 의 값 <xref:System.IO.Pipes.PipeDirection.InOut> 익명 파이프는 단방향 정의 되기 때문에 지원 되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="inheritability" />가 <see cref="F:System.IO.HandleInheritability.None" /> 또는 <see cref="F:System.IO.HandleInheritability.Inheritable" />로 설정되어 있지 않습니다.  
+  
+또는 
+ <paramref name="bufferSize" />가 0보다 작은 경우</exception>
+        <exception cref="T:System.NotSupportedException"><paramref name="direction" />이 <see cref="F:System.IO.Pipes.PipeDirection.InOut" />로 설정됩니다.</exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">직접 실행 호출자에 대 한 완전 신뢰 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName="ClientSafePipeHandle">
+      <MemberSignature Language="C#" Value="public Microsoft.Win32.SafeHandles.SafePipeHandle ClientSafePipeHandle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class Microsoft.Win32.SafeHandles.SafePipeHandle ClientSafePipeHandle" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Pipes.AnonymousPipeServerStream.ClientSafePipeHandle" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ClientSafePipeHandle As SafePipeHandle" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Microsoft::Win32::SafeHandles::SafePipeHandle ^ ClientSafePipeHandle { Microsoft::Win32::SafeHandles::SafePipeHandle ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ClientSafePipeHandle : Microsoft.Win32.SafeHandles.SafePipeHandle" Usage="System.IO.Pipes.AnonymousPipeServerStream.ClientSafePipeHandle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>get: System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Microsoft.Win32.SafeHandles.SafePipeHandle</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.IO.Pipes.AnonymousPipeClientStream" /> 개체에 연결된 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 개체에 대한 안전한 핸들을 가져옵니다.</summary>
+        <value>현재 <see cref="T:System.IO.Pipes.AnonymousPipeClientStream" /> 개체에 연결된 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 개체의 핸들입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IO.Pipes.AnonymousPipeServerStream.DisposeLocalCopyOfClientHandle%2A> 클라이언트 프로세스에 핸들을 클라이언트 경과한 후 메서드를 호출 해야 합니다. 이 메서드를 호출 하지 않으면 경우는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 클라이언트를 삭제 하는 경우 개체에서는 통지를 받지 못합니다 해당 <xref:System.IO.Pipes.PipeStream> 개체입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="override this.Dispose : bool -&gt; unit" Usage="anonymousPipeServerStream.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" Index="0" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisposeLocalCopyOfClientHandle">
+      <MemberSignature Language="C#" Value="public void DisposeLocalCopyOfClientHandle ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void DisposeLocalCopyOfClientHandle() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.DisposeLocalCopyOfClientHandle" />
+      <MemberSignature Language="VB.NET" Value="Public Sub DisposeLocalCopyOfClientHandle ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void DisposeLocalCopyOfClientHandle();" />
+      <MemberSignature Language="F#" Value="member this.DisposeLocalCopyOfClientHandle : unit -&gt; unit" Usage="anonymousPipeServerStream.DisposeLocalCopyOfClientHandle " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.IO.Pipes.AnonymousPipeClientStream" /> 개체 핸들의 로컬 복사본을 종료합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IO.Pipes.AnonymousPipeServerStream.DisposeLocalCopyOfClientHandle%2A> 클라이언트 핸들을 클라이언트에 전달 된 후 메서드를 호출 해야 합니다. 이 메서드를 호출 하지 않으면 경우는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 클라이언트를 삭제 하는 경우 개체에서는 통지를 받지 못합니다 해당 <xref:System.IO.Pipes.PipeStream> 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 익명 파이프를 사용 하 여 부모 프로세스에서 자식 프로세스로 문자열을 보내는 방법을 보여 줍니다. 이 예제는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 사용 하 여 부모 프로세스에서 개체를 만들를 <xref:System.IO.Pipes.PipeDirection> 값 <xref:System.IO.Pipes.PipeDirection.Out>.  
+  
+ [!code-cpp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cpp/program.cpp#01)]
+ [!code-csharp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~AnonymousPipeServerStream ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!AnonymousPipeServerStream ()" />
+      <MemberSignature Language="F#" Value="override this.Finalize : unit -&gt; unit" Usage="anonymousPipeServerStream.Finalize " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>가비지 컬렉션에 의해 <see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 인스턴스가 회수되기 전에 관리되지 않는 리소스를 해제하고 기타 정리 작업을 수행합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetClientHandleAsString">
+      <MemberSignature Language="C#" Value="public string GetClientHandleAsString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetClientHandleAsString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.AnonymousPipeServerStream.GetClientHandleAsString" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetClientHandleAsString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ GetClientHandleAsString();" />
+      <MemberSignature Language="F#" Value="member this.GetClientHandleAsString : unit -&gt; string" Usage="anonymousPipeServerStream.GetClientHandleAsString " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>연결된 <see cref="T:System.IO.Pipes.AnonymousPipeClientStream" /> 개체의 핸들을 문자열로 가져옵니다.</summary>
+        <returns>연결된 <see cref="T:System.IO.Pipes.AnonymousPipeClientStream" /> 개체의 핸들을 나타내는 문자열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.IO.Pipes.AnonymousPipeServerStream.DisposeLocalCopyOfClientHandle%2A> 클라이언트 프로세스에 핸들을 클라이언트 경과한 후 메서드를 호출 해야 합니다. 이 메서드를 호출 하지 않으면 경우는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 클라이언트를 삭제 하는 경우 개체에서는 통지를 받지 못합니다 해당 <xref:System.IO.Pipes.PipeStream> 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 익명 파이프를 사용 하 여 부모 프로세스에서 자식 프로세스로 문자열을 보내는 방법을 보여 줍니다. 이 예제는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 사용 하 여 부모 프로세스에서 개체를 만들를 <xref:System.IO.Pipes.PipeDirection> 값 <xref:System.IO.Pipes.PipeDirection.Out>.  
+  
+ [!code-cpp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cpp/program.cpp#01)]
+ [!code-csharp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReadMode">
+      <MemberSignature Language="C#" Value="public override System.IO.Pipes.PipeTransmissionMode ReadMode { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.IO.Pipes.PipeTransmissionMode ReadMode" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Pipes.AnonymousPipeServerStream.ReadMode" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property ReadMode As PipeTransmissionMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::IO::Pipes::PipeTransmissionMode ReadMode {  void set(System::IO::Pipes::PipeTransmissionMode value); };" />
+      <MemberSignature Language="F#" Value="member this.ReadMode : System.IO.Pipes.PipeTransmissionMode" Usage="System.IO.Pipes.AnonymousPipeServerStream.ReadMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>set: System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IO.Pipes.PipeTransmissionMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 개체에 대한 읽기 모드를 설정합니다. 익명 파이프의 경우 전송 모드가 <see cref="F:System.IO.Pipes.PipeTransmissionMode.Byte" />여야 합니다.</summary>
+        <value><see cref="T:System.IO.Pipes.AnonymousPipeServerStream" /> 개체에 대한 읽기 모드입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 익명 파이프를 지원 하지 않는 <xref:System.IO.Pipes.PipeTransmissionMode.Message> 읽기 모드입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 익명 파이프를 사용 하 여 부모 프로세스에서 자식 프로세스로 문자열을 보내는 방법을 보여 줍니다. 이 예제에서는 합니다 <xref:System.NotSupportedException> 때 발견 되는 <xref:System.IO.Pipes.AnonymousPipeServerStream.ReadMode%2A> 속성이 <xref:System.IO.Pipes.PipeTransmissionMode.Message>합니다.  
+  
+ [!code-cpp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cpp/program.cpp#01)]
+ [!code-csharp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">전송 모드가 올바르지 않습니다. 익명 파이프의 경우 <see cref="F:System.IO.Pipes.PipeTransmissionMode.Byte" />만 지원됩니다.</exception>
+        <exception cref="T:System.NotSupportedException">속성이 <see cref="F:System.IO.Pipes.PipeTransmissionMode.Message" />로 설정되며, 이는 익명 파이프를 지원하지 않습니다.</exception>
+        <exception cref="T:System.IO.IOException">연결이 끊어졌거나 다른 I/O 오류가 발생했습니다.</exception>
+        <exception cref="T:System.ObjectDisposedException">파이프가 닫혔습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TransmissionMode">
+      <MemberSignature Language="C#" Value="public override System.IO.Pipes.PipeTransmissionMode TransmissionMode { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.IO.Pipes.PipeTransmissionMode TransmissionMode" />
+      <MemberSignature Language="DocId" Value="P:System.IO.Pipes.AnonymousPipeServerStream.TransmissionMode" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property TransmissionMode As PipeTransmissionMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::IO::Pipes::PipeTransmissionMode TransmissionMode { System::IO::Pipes::PipeTransmissionMode get(); };" />
+      <MemberSignature Language="F#" Value="member this.TransmissionMode : System.IO.Pipes.PipeTransmissionMode" Usage="System.IO.Pipes.AnonymousPipeServerStream.TransmissionMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>get: System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IO.Pipes.PipeTransmissionMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 파이프가 지원하는 파이프 전송 모드를 가져옵니다.</summary>
+        <value>현재 파이프에서 지원하는 <see cref="T:System.IO.Pipes.PipeTransmissionMode" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 익명 파이프를 지원 하지 않는 <xref:System.IO.Pipes.PipeTransmissionMode.Message> 읽기 모드입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 익명 파이프를 사용 하 여 부모 프로세스에서 자식 프로세스로 문자열을 보내는 방법을 보여 줍니다. 이 예제는 <xref:System.IO.Pipes.AnonymousPipeServerStream> 개체는 부모 프로세스에서 생성 된 및 <xref:System.IO.Pipes.AnonymousPipeServerStream.TransmissionMode%2A> 속성이 콘솔에 표시 됩니다.  
+  
+ [!code-cpp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cpp/program.cpp#01)]
+ [!code-csharp[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.AnonymousPipeServerStream_Sample#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.AnonymousPipeServerStream_Sample/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

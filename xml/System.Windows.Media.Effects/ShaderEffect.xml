@@ -1,0 +1,725 @@
+<Type Name="ShaderEffect" FullName="System.Windows.Media.Effects.ShaderEffect">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6e56e17a4be59e38901f9a9c8ec0a1d057d18b02" /><Meta Name="ms.sourcegitcommit" Value="42a3c35677e9d87eeb503607ae50c9d39827d414" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/17/2018" /><Meta Name="ms.locfileid" Value="53477208" /></Metadata><TypeSignature Language="C#" Value="public abstract class ShaderEffect : System.Windows.Media.Effects.Effect" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract ShaderEffect extends System.Windows.Media.Effects.Effect" />
+  <TypeSignature Language="DocId" Value="T:System.Windows.Media.Effects.ShaderEffect" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ShaderEffect&#xA;Inherits Effect" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ShaderEffect abstract : System::Windows::Media::Effects::Effect" />
+  <TypeSignature Language="F#" Value="type ShaderEffect = class&#xA;    inherit Effect" />
+  <AssemblyInfo>
+    <AssemblyName>PresentationCore</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Windows.Media.Effects.Effect</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary><see cref="T:System.Windows.Media.Effects.PixelShader" />를 사용하여 사용자 지정 비트맵 효과를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 <xref:System.Windows.Media.Effects.ShaderEffect> 단일 픽셀 셰이더를 기반으로 사용자 지정 효과 구현 하는 클래스입니다.  
+  
+ 다음 단계를 사용자 지정 효과 만드는 방법을 보여 줍니다.  
+  
+1.  부하는 <xref:System.Windows.Media.Effects.PixelShader> 음영 언어 HLSL (High Level)의 미리 컴파일된 바이트 코드에서.  
+  
+2.  효과의 매개 변수를 나타내는 종속성 속성을 정의 하며 <xref:System.Windows.Media.Brush>-기반 화면 입력 합니다. 중 하나를 사용 합니다 <xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> HLSL 바이트 코드에 참조 되는 번호를 등록 하는 오버 로드를 사용 하 여 이러한 입력을 연결 합니다.  
+  
+ 샘플 수를 4로 제한 됩니다.  
+  
+ PS 3.0 셰이더를 사용 하는 경우 다음 제한이 있습니다.  
+  
+-   PS 3.0 셰이더를 할당 하는 경우 샘플 수를 8로 증가 합니다. 다른 셰이더 등록 8 샘플러를 사용 하도록 설정 하기 전에 PS 3.0 셰이더를 할당 합니다.  
+  
+-   224 부동 소수점 수에 대 한 전체 셰이더 상수 레지스터 제한이 사용 됩니다. 자세한 내용은 [ps_3_0](https://go.microsoft.com/fwlink/?LinkId=166292)합니다.  
+  
+-   데이터 형식은 PS 3.0 셰이더만 지원 됩니다. 이러한 하위 셰이더 버전에서 사용 되는 경우 예외가 throw 됩니다.  
+  
+    -   `int` 및 형식 변환할 수 있는 `int`: `uint`를 `byte`, `sbyte`를 `long`를 `ulong`를 `short`, `ushort`, `char`  
+  
+    -   `bool`  
+  
+-   유효한 PS 3.0 셰이더 하드웨어 PS 3.0에 대 한 지원 되지 않은 컴퓨터에서 로드 된 셰이더는 무시 됩니다. 셰이더에 올바르지 않으면 예외가 throw 됩니다.  
+  
+-   컴퓨터에 둘 이상의 비디오 카드가 동작 이상 지원 비디오 카드에 의해 정의 됩니다. 예를 들어, 컴퓨터에 있는 경우 두 개의 비디오 카드 중 하나는 그렇지 않습니다 PS 3.0을 지 원하는 그 중 하나를 동작은 동일한 것 처럼 컴퓨터 PS 3.0을 지원 하지 않습니다.  
+  
+-   컴퓨터 하드웨어에서 렌더링 PS 3.0을 지원 하지만 잘못 된 PS 3.0 셰이더를 할당 하는 경우는 <xref:System.Windows.Media.Effects.PixelShader.InvalidPixelShaderEncountered> 이벤트가 발생 합니다. 잘못 된 PS 3.0 셰이더를 예로 사용 하 여 컴파일된는 `ps_3_sw` 플래그입니다. <xref:System.Windows.Media.Effects.ShaderEffect> 클래스를 사용 하 여 컴파일되는 PS 3.0 셰이더만 허용 합니다 `ps_3_0` 플래그 fxc.exe를 전달 합니다. 자세한 내용은 [효과 컴파일러 도구](https://go.microsoft.com/fwlink/?LinkId=166293)합니다.  
+  
+> [!NOTE]
+>  PS 셰이더 2.0 소프트웨어에서 렌더링할 때 실행 합니다. 그러나 PS 3.0 시스템의 하드웨어에서 지원 되는 경우에 PS 3.0 셰이더 소프트웨어 렌더링 하는 동안 실행 하지 마십시오.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서 파생 하는 방법을 보여 줍니다는 <xref:System.Windows.Media.Effects.ShaderEffect> 클래스입니다.  
+  
+ [!code-csharp[System.Windows.Media.Effects.ShaderEffect#1](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Media.Effects.ShaderEffect/CS/ThresholdEffect.cs#1)]  
+  
+ 다음 코드 예제에서는 이전에 해당 하는 셰이더를 보여 줍니다. <xref:System.Windows.Media.Effects.ShaderEffect> 클래스입니다.  
+  
+ [!code-csharp[System.Windows.Media.Effects.ShaderEffect#10](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Media.Effects.ShaderEffect/CS/Threshold.fx#10)]  
+  
+ 다음 XAML에는 사용자 지정 셰이더 효과 사용 하는 방법을 보여 줍니다.  
+  
+ [!code-xaml[System.Windows.Media.Effects.ShaderEffect#1000](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Media.Effects.ShaderEffect/CS/Window1.xaml#1000)]  
+  
+ ]]></format>
+    </remarks>
+    <permission cref="T:System.Security.Permissions.UIPermission">UI 리소스에 대 한 전체 액세스 합니다. 연결 된 열거형: <see cref="F:System.Security.Permissions.UIPermissionWindow.AllWindows" /></permission>
+    <altmember cref="T:System.Windows.Media.Effects.Effect" />
+    <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ShaderEffect ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ShaderEffect();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Effects.ShaderEffect" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Clone">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Effects.ShaderEffect Clone ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.Effects.ShaderEffect Clone() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.Clone" />
+      <MemberSignature Language="VB.NET" Value="Public Function Clone () As ShaderEffect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::Effects::ShaderEffect ^ Clone();" />
+      <MemberSignature Language="F#" Value="override this.Clone : unit -&gt; System.Windows.Media.Effects.ShaderEffect" Usage="shaderEffect.Clone " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.ShaderEffect</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 개체 값의 전체 복사본을 만들어 이 <see cref="T:System.Windows.Media.Effects.ShaderEffect" /> 개체의 수정 가능한 복제본을 만듭니다. 이 개체의 종속성 속성을 복사하는 경우 이 메서드는 더 이상 확인되지 않을 수도 있는 리소스 참조와 데이터 바인딩을 복사하지만 애니메이션이나 애니메이션의 현재 값은 복사하지 않습니다.</summary>
+        <returns>이 인스턴스의 수정 가능한 복제본입니다. 반환되는 복제본은 사실상 현재 개체의 전체 복사본입니다. 복제본의 <see cref="P:System.Windows.Freezable.IsFrozen" /> 속성은 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Windows.Media.Effects.ShaderEffect.Clone%2A> 메서드는의 수정 가능한 복사본을 만드는 데 사용할 수 있습니다 고정 <xref:System.Windows.Freezable> 개체입니다. 편의 위해이 메서드는 상속 된 숨깁니다 <xref:System.Windows.Freezable.Clone%2A> 강력한 형식의 구현을 제공 하는 방법입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Freezable.Clone" />
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCore">
+      <MemberSignature Language="C#" Value="protected override void CloneCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void CloneCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.CloneCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub CloneCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void CloneCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberSignature Language="F#" Value="override this.CloneCore : System.Windows.Freezable -&gt; unit" Usage="shaderEffect.CloneCore sourceFreezable" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">복제할 개체입니다.</param>
+        <summary>기본(애니메이션이 적용되지 않은) 속성 값을 사용하여 인스턴스를 지정된 <see cref="T:System.Windows.Freezable" />의 복제본(전체 복사본)으로 만듭니다.</summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Freezable.CloneCore(System.Windows.Freezable)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCurrentValue">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Effects.ShaderEffect CloneCurrentValue ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.Effects.ShaderEffect CloneCurrentValue() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.CloneCurrentValue" />
+      <MemberSignature Language="VB.NET" Value="Public Function CloneCurrentValue () As ShaderEffect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::Effects::ShaderEffect ^ CloneCurrentValue();" />
+      <MemberSignature Language="F#" Value="override this.CloneCurrentValue : unit -&gt; System.Windows.Media.Effects.ShaderEffect" Usage="shaderEffect.CloneCurrentValue " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.ShaderEffect</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Effects.ShaderEffect" /> 개체의 현재 값에 대한 전체 복사본을 만들어 이 개체의 수정 가능한 복제본을 만듭니다. 리소스 참조, 데이터 바인딩 및 애니메이션은 복사되지 않지만 이러한 요소의 현재 값은 복사됩니다.</summary>
+        <returns>현재 개체의 수정 가능한 복제본입니다. 소스의 <see cref="P:System.Windows.Freezable.IsFrozen" /> 속성이 <see langword="true" />인 경우에도 복제된 개체의 <see cref="P:System.Windows.Freezable.IsFrozen" /> 속성은 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 수정 가능한 복사본을 만드는이 메서드는 사용 중지 <xref:System.Windows.Freezable> 개체 (또는 <xref:System.Windows.Freezable> 개체). 편의 위해이 메서드는 강력한 형식의 구현이 상속 된 버전을 숨깁니다.  
+  
+ 자세한 내용은 <xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=nameWithType>을 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCurrentValueCore">
+      <MemberSignature Language="C#" Value="protected override void CloneCurrentValueCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void CloneCurrentValueCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.CloneCurrentValueCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub CloneCurrentValueCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void CloneCurrentValueCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberSignature Language="F#" Value="override this.CloneCurrentValueCore : System.Windows.Freezable -&gt; unit" Usage="shaderEffect.CloneCurrentValueCore sourceFreezable" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">복제할 <see cref="T:System.Windows.Freezable" />입니다.</param>
+        <summary>현재 속성 값을 사용하여 이 인스턴스를 지정된 <see cref="T:System.Windows.Freezable" />의 수정 가능한 클론(전체 복사본)으로 만듭니다.</summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Freezable.CloneCurrentValueCore(System.Windows.Freezable)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateInstanceCore">
+      <MemberSignature Language="C#" Value="protected override System.Windows.Freezable CreateInstanceCore ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance class System.Windows.Freezable CreateInstanceCore() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.CreateInstanceCore" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function CreateInstanceCore () As Freezable" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::Windows::Freezable ^ CreateInstanceCore();" />
+      <MemberSignature Language="F#" Value="override this.CreateInstanceCore : unit -&gt; System.Windows.Freezable" Usage="shaderEffect.CreateInstanceCore " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Freezable</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Windows.Freezable" /> 파생 클래스의 새 인스턴스를 만듭니다.</summary>
+        <returns>새 인스턴스입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DdxUvDdyUvRegisterIndex">
+      <MemberSignature Language="C#" Value="protected int DdxUvDdyUvRegisterIndex { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 DdxUvDdyUvRegisterIndex" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex" />
+      <MemberSignature Language="VB.NET" Value="Protected Property DdxUvDdyUvRegisterIndex As Integer" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property int DdxUvDdyUvRegisterIndex { int get(); void set(int value); };" />
+      <MemberSignature Language="F#" Value="member this.DdxUvDdyUvRegisterIndex : int with get, set" Usage="System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>화면 공간을 기준으로 하는 질감 좌표의 부분 파생 값에 사용할 셰이더 레지스터를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>부분 파생 값이 포함된 레지스터의 인덱스입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> 화면 공간을 기준으로 질감 부분 파생 값이 포함 된 셰이더 레지스터를 지정 하는 속성을 조정 합니다. 예를 들어, 경우 <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> 설정 하기 위해 4, 셰이더 레지스터 c4 사용 됩니다. 등록 c4 네 부동 소수점 수 필드를 포함합니다. 음영 언어 HLSL (High Level) 다음 코드에서는이 레지스터를 사용 하는 방법을 보여 줍니다. `nextPixelUV` 값 오른쪽에 다음 픽셀을 나타냅니다.  
+  
+```  
+float4 ddxUvDdyUv : register(c4);  
+SamplerState  sampler : register(S0);  
+...  
+float2 nextPixelUV;  
+nextPixelUV.u = ddxUvDdyUv.x + u;  
+nextPixelUV.v = ddxUvDdyUv.y + v;  
+  
+tex2D(sampler, nextPixelUV);  
+```  
+  
+ 다음 테이블에 대 한 등록을 지정 하는 방법을 보여 줍니다. <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> 채워집니다.  
+  
+|상수를 등록 합니다.|파생 값|  
+|-----------------------|----------------------|  
+|x 구성 요소|ddx (u)|  
+|y 구성 요소|ddx(v)|  
+|z 구성 요소|ddy(u)|  
+|w 구성 요소|ddy (v)|  
+  
+ 질감 좌표로 표시 `(u, v)`합니다. `ddx(u)` 질감 좌표 요소의 상수 부분 파생 값은 `u` 화면 공간 x 좌표를 기준으로 합니다. `ddy(u)` 질감 좌표의 부분 파생 `u` 화면 공간 y 좌표를 기준으로 합니다. 마찬가지로 `ddx(v)` 하 고 `ddy(v)` 질감 좌표 구성 요소에 대 한 해당 화면 공간 파생형은 `v`합니다.  
+  
+> [!NOTE]
+>  HLSL에 이러한 값을 계산 하려면 ddx 및 ddy 지침 되지만 이러한 지침은 모든 PixelShader 2.0 하드웨어에서 사용할 수 없습니다.  
+  
+ 이러한 상수는 다음과 같은 방법으로 생각할 수 있습니다. 다음 (x) 한 방향의 화면 공간에서 오른쪽으로 1 픽셀씩을 실행할 경우 `ddx(u)` 크기는 `u` 질감 공간에서 변경 및 `ddx(v)` 시간은 `v` 질감 공간에서 변경 합니다. 하는 경우 결과 축에 맞춰진 렌더링 될 때 `ddx(v)` 은 0입니다. 효과 렌더링 될 때 회전 `ddx(v)` 는 0이 아닙니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex" /> 속성을 두 번 이상 설정하려고 했거나 효과를 초기 처리한 후에 설정하려고 한 경우</exception>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsFrozenCore">
+      <MemberSignature Language="C#" Value="protected override void GetAsFrozenCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void GetAsFrozenCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.GetAsFrozenCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub GetAsFrozenCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void GetAsFrozenCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberSignature Language="F#" Value="override this.GetAsFrozenCore : System.Windows.Freezable -&gt; unit" Usage="shaderEffect.GetAsFrozenCore sourceFreezable" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">복사할 인스턴스입니다.</param>
+        <summary>기본(애니메이션이 적용되지 않은) 속성 값을 사용하여 인스턴스를 지정된 <see cref="T:System.Windows.Freezable" />의 고정된 복제본으로 만듭니다.</summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Freezable.GetAsFrozenCore(System.Windows.Freezable)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCurrentValueAsFrozenCore">
+      <MemberSignature Language="C#" Value="protected override void GetCurrentValueAsFrozenCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void GetCurrentValueAsFrozenCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.GetCurrentValueAsFrozenCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub GetCurrentValueAsFrozenCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void GetCurrentValueAsFrozenCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberSignature Language="F#" Value="override this.GetCurrentValueAsFrozenCore : System.Windows.Freezable -&gt; unit" Usage="shaderEffect.GetCurrentValueAsFrozenCore sourceFreezable" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">복사 및 고정할 <see cref="T:System.Windows.Freezable" />입니다.</param>
+        <summary>현재 인스턴스를 지정된 <see cref="T:System.Windows.Freezable" />의 고정 클론으로 만듭니다. 개체에 애니메이션 효과를 준 종속성 속성이 있는 경우 애니메이션 효과를 준 현재 값이 복사됩니다.</summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Freezable.GetCurrentValueAsFrozenCore(System.Windows.Freezable)" />
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingBottom">
+      <MemberSignature Language="C#" Value="protected double PaddingBottom { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PaddingBottom" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PaddingBottom" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PaddingBottom As Double" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property double PaddingBottom { double get(); void set(double value); };" />
+      <MemberSignature Language="F#" Value="member this.PaddingBottom : double with get, set" Usage="System.Windows.Media.Effects.ShaderEffect.PaddingBottom" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>효과의 출력 질감이 아래쪽 가장자리를 따라 해당 입력 질감보다 큼을 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>효과의 아래쪽 가장자리를 따라 있는 안쪽 여백입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">제공된 값이 0보다 작은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingLeft">
+      <MemberSignature Language="C#" Value="protected double PaddingLeft { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PaddingLeft" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PaddingLeft" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PaddingLeft As Double" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property double PaddingLeft { double get(); void set(double value); };" />
+      <MemberSignature Language="F#" Value="member this.PaddingLeft : double with get, set" Usage="System.Windows.Media.Effects.ShaderEffect.PaddingLeft" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>효과의 출력 질감이 왼쪽 가장자리를 따라 해당 입력 질감보다 큼을 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>효과의 왼쪽 가장자리를 따라 있는 안쪽 여백입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">제공된 값이 0보다 작은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingRight">
+      <MemberSignature Language="C#" Value="protected double PaddingRight { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PaddingRight" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PaddingRight" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PaddingRight As Double" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property double PaddingRight { double get(); void set(double value); };" />
+      <MemberSignature Language="F#" Value="member this.PaddingRight : double with get, set" Usage="System.Windows.Media.Effects.ShaderEffect.PaddingRight" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>효과의 출력 질감이 오른쪽 가장자리를 따라 해당 입력 질감보다 큼을 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>효과의 오른쪽 가장자리를 따라 있는 안쪽 여백입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">제공된 값이 0보다 작은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingTop">
+      <MemberSignature Language="C#" Value="protected double PaddingTop { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PaddingTop" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PaddingTop" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PaddingTop As Double" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property double PaddingTop { double get(); void set(double value); };" />
+      <MemberSignature Language="F#" Value="member this.PaddingTop : double with get, set" Usage="System.Windows.Media.Effects.ShaderEffect.PaddingTop" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>효과의 출력 질감이 위쪽 가장자리를 따라 해당 입력 질감보다 큼을 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>효과의 위쪽 가장자리를 따라 있는 안쪽 여백입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">제공된 값이 0보다 작은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PixelShader">
+      <MemberSignature Language="C#" Value="protected System.Windows.Media.Effects.PixelShader PixelShader { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.Effects.PixelShader PixelShader" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PixelShader" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PixelShader As PixelShader" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Windows::Media::Effects::PixelShader ^ PixelShader { System::Windows::Media::Effects::PixelShader ^ get(); void set(System::Windows::Media::Effects::PixelShader ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.PixelShader : System.Windows.Media.Effects.PixelShader with get, set" Usage="System.Windows.Media.Effects.ShaderEffect.PixelShader" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.PixelShader</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>효과에 사용할 <see cref="T:System.Windows.Media.Effects.PixelShader" />를 가져오거나 설정합니다.</summary>
+        <value>효과에 대한 <see cref="T:System.Windows.Media.Effects.PixelShader" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+<a name="dependencyPropertyInfo_PixelShader"></a>   
+## <a name="dependency-property-information"></a>종속성 속성 정보  
+  
+|||  
+|-|-|  
+|식별자 필드|<xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderProperty>|  
+|메타 데이터 속성 설정 `true`|없음|  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="PixelShaderConstantCallback">
+      <MemberSignature Language="C#" Value="protected static System.Windows.PropertyChangedCallback PixelShaderConstantCallback (int floatRegisterIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.PropertyChangedCallback PixelShaderConstantCallback(int32 floatRegisterIndex) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function PixelShaderConstantCallback (floatRegisterIndex As Integer) As PropertyChangedCallback" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::PropertyChangedCallback ^ PixelShaderConstantCallback(int floatRegisterIndex);" />
+      <MemberSignature Language="F#" Value="static member PixelShaderConstantCallback : int -&gt; System.Windows.PropertyChangedCallback" Usage="System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback floatRegisterIndex" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.PropertyChangedCallback</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="floatRegisterIndex" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="floatRegisterIndex">종속성 속성과 연결된 셰이더 레지스터의 인덱스입니다.</param>
+        <summary>종속성 속성 값을 픽셀 셰이더의 float 상수 레지스터와 연결합니다.</summary>
+        <returns>종속성 속성과 <paramref name="floatRegisterIndex" />로 지정된 셰이더 상수 레지스터를 연결하는 <see cref="T:System.Windows.PropertyChangedCallback" /> 대리자입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback%2A> 셰이더 상수에 대 한 종속성 속성을 등록할 때 메서드. 합니다 <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback%2A> 메서드 구문을 <xref:System.Windows.PropertyChangedCallback> 대리자를 호출 하는 경우 종속성 속성으로 지정 된 셰이더 상수 레지스터 사이의 연결을 만듭니다 `floatRegisterIndex`합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">종속성 속성이 알 수 없는 형식인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="floatRegisterIndex" />가 32보다 크거나 같은 경우 또는 <paramref name="floatRegisterIndex" />가 0보다 작은 경우</exception>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="PixelShaderProperty">
+      <MemberSignature Language="C#" Value="protected static readonly System.Windows.DependencyProperty PixelShaderProperty;" />
+      <MemberSignature Language="ILAsm" Value=".field family static initonly class System.Windows.DependencyProperty PixelShaderProperty" />
+      <MemberSignature Language="DocId" Value="F:System.Windows.Media.Effects.ShaderEffect.PixelShaderProperty" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared ReadOnly PixelShaderProperty As DependencyProperty " />
+      <MemberSignature Language="C++ CLI" Value="protected: static initonly System::Windows::DependencyProperty ^ PixelShaderProperty;" />
+      <MemberSignature Language="F#" Value=" staticval mutable PixelShaderProperty : System.Windows.DependencyProperty" Usage="System.Windows.Media.Effects.ShaderEffect.PixelShaderProperty" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyProperty</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="P:System.Windows.Media.Effects.ShaderEffect.PixelShader" /> 종속성 속성을 식별합니다.</summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="PixelShaderSamplerCallback">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>종속성 속성 값과 픽셀 셰이더의 샘플러 레지스터를 연결합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="PixelShaderSamplerCallback">
+      <MemberSignature Language="C#" Value="protected static System.Windows.PropertyChangedCallback PixelShaderSamplerCallback (int samplerRegisterIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.PropertyChangedCallback PixelShaderSamplerCallback(int32 samplerRegisterIndex) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function PixelShaderSamplerCallback (samplerRegisterIndex As Integer) As PropertyChangedCallback" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::PropertyChangedCallback ^ PixelShaderSamplerCallback(int samplerRegisterIndex);" />
+      <MemberSignature Language="F#" Value="static member PixelShaderSamplerCallback : int -&gt; System.Windows.PropertyChangedCallback" Usage="System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback samplerRegisterIndex" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Windows.PropertyChangedCallback</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="samplerRegisterIndex" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="samplerRegisterIndex">종속성 속성에 연결된 셰이더 샘플러의 인덱스입니다.</param>
+        <summary>종속성 속성 값과 픽셀 셰이더의 샘플러 레지스터를 연결합니다.</summary>
+        <returns>종속성 속성과 <paramref name="samplerRegisterIndex" />로 지정된 셰이더 샘플러 레지스터를 연결하는 <see cref="T:System.Windows.PropertyChangedCallback" /> 대리자입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback%2A> 메서드를 등록할 때를 <xref:System.Windows.Media.Brush>-셰이더 샘플러에 대 한 종속성 속성을 반환 합니다. 합니다 <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback%2A> 메서드 구문을 <xref:System.Windows.PropertyChangedCallback> 대리자를 호출 하는 경우 종속성 속성으로 지정 된 셰이더 샘플러 레지스터 사이의 연결을 만듭니다 `samplerRegisterIndex`합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="PixelShaderSamplerCallback">
+      <MemberSignature Language="C#" Value="protected static System.Windows.PropertyChangedCallback PixelShaderSamplerCallback (int samplerRegisterIndex, System.Windows.Media.Effects.SamplingMode samplingMode);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.PropertyChangedCallback PixelShaderSamplerCallback(int32 samplerRegisterIndex, valuetype System.Windows.Media.Effects.SamplingMode samplingMode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback(System.Int32,System.Windows.Media.Effects.SamplingMode)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::PropertyChangedCallback ^ PixelShaderSamplerCallback(int samplerRegisterIndex, System::Windows::Media::Effects::SamplingMode samplingMode);" />
+      <MemberSignature Language="F#" Value="static member PixelShaderSamplerCallback : int * System.Windows.Media.Effects.SamplingMode -&gt; System.Windows.PropertyChangedCallback" Usage="System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback (samplerRegisterIndex, samplingMode)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.PropertyChangedCallback</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="samplerRegisterIndex" Type="System.Int32" />
+        <Parameter Name="samplingMode" Type="System.Windows.Media.Effects.SamplingMode" />
+      </Parameters>
+      <Docs>
+        <param name="samplerRegisterIndex">종속성 속성에 연결된 셰이더 샘플러의 인덱스입니다.</param>
+        <param name="samplingMode">셰이더 샘플러에 대한 <see cref="T:System.Windows.Media.Effects.SamplingMode" />입니다.</param>
+        <summary>종속성 속성 값을 픽셀 셰이더의 샘플러 레지스터 및 <see cref="T:System.Windows.Media.Effects.SamplingMode" />와 연결합니다.</summary>
+        <returns>종속성 속성과 <paramref name="samplerRegisterIndex" />로 지정된 셰이더 샘플러 레지스터를 연결하는 <see cref="T:System.Windows.PropertyChangedCallback" /> 대리자입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> 메서드를 등록할 때를 <xref:System.Windows.Media.Brush>-셰이더 샘플러에 대 한 종속성 속성을 반환 합니다. 합니다 <xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> 메서드 구문을 <xref:System.Windows.PropertyChangedCallback> 대리자를 호출 하는 경우 종속성 속성으로 지정 된 셰이더 샘플러 레지스터 사이의 연결을 만듭니다 `samplerRegisterIndex`합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="RegisterPixelShaderSamplerProperty">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>종속성 속성과 셰이더 샘플러 레지스터를 연결합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="RegisterPixelShaderSamplerProperty">
+      <MemberSignature Language="C#" Value="protected static System.Windows.DependencyProperty RegisterPixelShaderSamplerProperty (string dpName, Type ownerType, int samplerRegisterIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.DependencyProperty RegisterPixelShaderSamplerProperty(string dpName, class System.Type ownerType, int32 samplerRegisterIndex) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty(System.String,System.Type,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function RegisterPixelShaderSamplerProperty (dpName As String, ownerType As Type, samplerRegisterIndex As Integer) As DependencyProperty" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::DependencyProperty ^ RegisterPixelShaderSamplerProperty(System::String ^ dpName, Type ^ ownerType, int samplerRegisterIndex);" />
+      <MemberSignature Language="F#" Value="static member RegisterPixelShaderSamplerProperty : string * Type * int -&gt; System.Windows.DependencyProperty" Usage="System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty (dpName, ownerType, samplerRegisterIndex)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyProperty</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dpName" Type="System.String" />
+        <Parameter Name="ownerType" Type="System.Type" />
+        <Parameter Name="samplerRegisterIndex" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="dpName">종속성 속성의 이름입니다.</param>
+        <param name="ownerType">종속성 속성이 있는 효과의 형식입니다.</param>
+        <param name="samplerRegisterIndex">종속성 속성에 연결된 셰이더 샘플러의 인덱스입니다.</param>
+        <summary>종속성 속성과 셰이더 샘플러 레지스터를 연결합니다.</summary>
+        <returns><paramref name="samplerRegisterIndex" />로 지정된 셰이더 샘플러에 연결된 종속성 속성입니다.</returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterPixelShaderSamplerProperty">
+      <MemberSignature Language="C#" Value="protected static System.Windows.DependencyProperty RegisterPixelShaderSamplerProperty (string dpName, Type ownerType, int samplerRegisterIndex, System.Windows.Media.Effects.SamplingMode samplingMode);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.DependencyProperty RegisterPixelShaderSamplerProperty(string dpName, class System.Type ownerType, int32 samplerRegisterIndex, valuetype System.Windows.Media.Effects.SamplingMode samplingMode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty(System.String,System.Type,System.Int32,System.Windows.Media.Effects.SamplingMode)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::DependencyProperty ^ RegisterPixelShaderSamplerProperty(System::String ^ dpName, Type ^ ownerType, int samplerRegisterIndex, System::Windows::Media::Effects::SamplingMode samplingMode);" />
+      <MemberSignature Language="F#" Value="static member RegisterPixelShaderSamplerProperty : string * Type * int * System.Windows.Media.Effects.SamplingMode -&gt; System.Windows.DependencyProperty" Usage="System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty (dpName, ownerType, samplerRegisterIndex, samplingMode)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyProperty</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dpName" Type="System.String" />
+        <Parameter Name="ownerType" Type="System.Type" />
+        <Parameter Name="samplerRegisterIndex" Type="System.Int32" />
+        <Parameter Name="samplingMode" Type="System.Windows.Media.Effects.SamplingMode" />
+      </Parameters>
+      <Docs>
+        <param name="dpName">종속성 속성의 이름입니다.</param>
+        <param name="ownerType">종속성 속성이 있는 효과의 형식입니다.</param>
+        <param name="samplerRegisterIndex">종속성 속성에 연결된 셰이더 샘플러의 인덱스입니다.</param>
+        <param name="samplingMode">셰이더 샘플러에 대한 <see cref="T:System.Windows.Media.Effects.SamplingMode" />입니다.</param>
+        <summary>종속성 속성을 셰이더 샘플러 레지스터 및 <see cref="T:System.Windows.Media.Effects.SamplingMode" />와 연결합니다.</summary>
+        <returns><paramref name="samplerRegisterIndex" />로 지정된 셰이더 샘플러에 연결된 종속성 속성입니다.</returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateShaderValue">
+      <MemberSignature Language="C#" Value="protected void UpdateShaderValue (System.Windows.DependencyProperty dp);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void UpdateShaderValue(class System.Windows.DependencyProperty dp) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.UpdateShaderValue(System.Windows.DependencyProperty)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub UpdateShaderValue (dp As DependencyProperty)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void UpdateShaderValue(System::Windows::DependencyProperty ^ dp);" />
+      <MemberSignature Language="F#" Value="member this.UpdateShaderValue : System.Windows.DependencyProperty -&gt; unit" Usage="shaderEffect.UpdateShaderValue dp" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
+      </Parameters>
+      <Docs>
+        <param name="dp">업데이트할 종속성 속성입니다.</param>
+        <summary>지정된 종속성 속성에 해당하는 셰이더 상수 또는 샘플러를 업데이트해야 함을 효과에 알립니다.</summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

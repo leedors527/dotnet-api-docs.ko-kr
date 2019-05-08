@@ -1,0 +1,642 @@
+<Type Name="SpinLock" FullName="System.Threading.SpinLock">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="a9968c671067a22cf9e81da2cfb7a0510bf86e40" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58682795" /></Metadata><TypeSignature Language="C#" Value="public struct SpinLock" />
+  <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit SpinLock extends System.ValueType" />
+  <TypeSignature Language="DocId" Value="T:System.Threading.SpinLock" />
+  <TypeSignature Language="VB.NET" Value="Public Structure SpinLock" />
+  <TypeSignature Language="C++ CLI" Value="public value class SpinLock" />
+  <TypeSignature Language="F#" Value="type SpinLock = struct" />
+  <AssemblyInfo>
+    <AssemblyName>System.Threading</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.10.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.ValueType</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+      <AttributeName>System.Diagnostics.DebuggerDisplay("IsHeld = {IsHeld}")</AttributeName>
+    </Attribute>
+    <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+      <AttributeName>System.Diagnostics.DebuggerTypeProxy(typeof(System.Threading.SpinLock/SystemThreading_SpinLockDebugView))</AttributeName>
+    </Attribute>
+    <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+      <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>잠금을 얻으려는 스레드가 잠금을 사용할 수 있을 때까지 루프에서 반복적으로 확인하면서 대기하는 기본적인 상호 배타 잠금을 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 스핀 잠금을 사용 하는 방법의 예제를 참조 하세요. [방법: 낮은 수준의 동기화에 SpinLock 사용](~/docs/standard/threading/how-to-use-spinlock-for-low-level-synchronization.md)합니다.  
+  
+ 스핀 잠금 수 리프 수준 잠금에 대 한 위치를 사용 하 여 포함 된 개체 할당이 <xref:System.Threading.Monitor>, 크기 또는 가비지 컬렉션 압력으로 인해 과도 하 게 비용이 많이 듭니다. 스핀 잠금; 차단을 방지 하는 데 유용할 수 있습니다. 그러나 상당한 차단, 예상 되는 경우 과도 한 회전으로 인해 스핀 잠금 사용 되지 않을 해야 합니다. 회전 수 (예를 들어, 연결 된 목록의 노드 당 잠금) 보다 크고 세분화 된 잠금을 표시 되는 경우 및 잠금 대기 시간이 매우 짧을 항상 때 유용할 수 있습니다. 일반적으로 스핀 잠금을 보유를 피해 야 이러한 동작 중 하나:  
+  
+-   차단  
+  
+-   아무 것도 호출 그 자체가 차단할 수 있습니다.  
+  
+-   한 번에 둘 이상의 스핀 잠금 보유  
+  
+-   디스패치 된 호출 (인터페이스 및 가상)을 동적으로 만들기  
+  
+-   다음을 소유 하지 않는 한, 모든 코드에 대 한 호출을 디스패치 된 정적으로 만들기 또는  
+  
+-   메모리를 할당 합니다.  
+  
+ <xref:System.Threading.SpinLock> 이렇게 하면 되므로 성능이 향상 됩니다 응용 프로그램을 확인 한 후에 사용 해야 합니다. 중요 한 사실은 이기도 <xref:System.Threading.SpinLock> 는 성능상의 이유로, 값 형식입니다. 이러한 이유로 실수로 복사 매우 주의 해야는 <xref:System.Threading.SpinLock> 인스턴스를 두 개의 인스턴스 (원본 및 복사본) 다음 것 처럼, 서로 완전히 독립적 응용 프로그램의 잘못 된 동작을 초래할 가능성이 있습니다. 경우는 <xref:System.Threading.SpinLock> 인스턴스를 전달 해야, 값이 아닌 참조로 전달 해야 합니다.  
+  
+ 저장 하지 않는 <xref:System.Threading.SpinLock> 읽기 전용 필드의 인스턴스.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법을 보여 줍니다는 <xref:System.Threading.SpinLock>:  
+  
+ [!code-csharp[System.Threading.SpinLock#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.spinlock/cs/spinlock.cs#01)]
+ [!code-vb[System.Threading.SpinLock#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.spinlock/vb/spinlock.vb#01)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>모든 멤버 <see cref="T:System.Threading.SpinLock" /> 는 스레드로부터 안전 하 고 여러 스레드에서 동시에 사용할 수 있습니다.</threadsafe>
+    <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 사용 하 여 SpinWait 및 SpinLock</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SpinLock (bool enableThreadOwnerTracking);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool enableThreadOwnerTracking) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.SpinLock.#ctor(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (enableThreadOwnerTracking As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SpinLock(bool enableThreadOwnerTracking);" />
+      <MemberSignature Language="F#" Value="new System.Threading.SpinLock : bool -&gt; System.Threading.SpinLock" Usage="new System.Threading.SpinLock enableThreadOwnerTracking" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="enableThreadOwnerTracking" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="enableThreadOwnerTracking">디버깅 용도로 스레드 ID를 캡처하고 사용할지 여부입니다.</param>
+        <summary>디버깅을 향상시키기 위해 스레드 ID를 추적하는 옵션을 사용하여 <see cref="T:System.Threading.SpinLock" /> 구조체의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 대 한 기본 생성자를 <xref:System.Threading.SpinLock> 스레드 소유권을 추적 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 SpinLock을 사용할 수 있습니다 하는 방법을 보여 줍니다.  
+  
+```csharp  
+// C#  
+public class MyType  
+{  
+    private SpinLock _spinLock = new SpinLock();  
+  
+    public void DoWork()  
+    {  
+        bool lockTaken = false;   
+        try  
+        {  
+           _spinLock.Enter(ref lockTaken);  
+           // do work here protected by the lock  
+        }  
+        finally  
+        {  
+            if (lockTaken) _spinLock.Exit();  
+        }  
+    }  
+}  
+```  
+  
+```vb  
+' Visual Basic  
+  
+Class MyType  
+   Private _spinLock As New SpinLock()  
+  
+   Public Sub DoWork()  
+      Dim lockTaken As Boolean = False  
+      Try  
+         _spinLock.Enter(lockTaken)  
+         ' do work here protected by the lock  
+      Finally  
+         If lockTaken Then _spinLock.Exit()  
+      End Try  
+   End Sub  
+End Class  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Enter">
+      <MemberSignature Language="C#" Value="public void Enter (ref bool lockTaken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Enter(bool&amp; lockTaken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.SpinLock.Enter(System.Boolean@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Enter (ByRef lockTaken As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Enter(bool % lockTaken);" />
+      <MemberSignature Language="F#" Value="member this.Enter :  -&gt; unit" Usage="spinLock.Enter lockTaken" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="lockTaken" Type="System.Boolean" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="lockTaken">잠금을 얻었으면 true이고, 그렇지 않으면 false입니다. 이 메서드를 호출하기 전에 <paramref name="lockTaken" />을 false로 초기화해야 합니다.</param>
+        <summary>메서드 호출에서 예외가 발생하는 경우에도 안정적인 방식으로 잠금을 얻으며 잠금을 얻었는지 확인하기 위해 <paramref name="lockTaken" />을 안정적으로 검사할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Threading.SpinLock> 재진입 잠금이, 스레드가 잠금을 보유 하는 경우 즉, 다시 잠금에 진입할 수 없습니다. 스레드 소유권 추적이 사용 되는 경우 (사용 되는지 여부를 통해 이용하실 수 <xref:System.Threading.SpinLock.IsThreadOwnerTrackingEnabled%2A>), 스레드 다시 이미 보유 한 잠금에 진입 하려고 할 때 예외가 throw 됩니다. 그러나 스레드 소유권 추적을 해제 하면 이미 보유 한 잠금에 진입 하려고 하면 교착 상태.  
+  
+ 호출 하는 경우 <xref:System.Threading.SpinLock.Exit%2A> 먼저 호출 하지 않고 <xref:System.Threading.SpinLock.Enter%2A> 의 내부 상태를 <xref:System.Threading.SpinLock> 손상 될 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="lockTaken" /> 인수는 Enter를 호출하기 전에 false로 초기화해야 합니다.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">스레드 소유권 추적 기능을 사용할 수 있으며 현재 스레드가 이미 이 잠금을 획득했습니다.</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Exit">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>잠금을 해제합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Exit">
+      <MemberSignature Language="C#" Value="public void Exit ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Exit() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.SpinLock.Exit" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Exit ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Exit();" />
+      <MemberSignature Language="F#" Value="member this.Exit : unit -&gt; unit" Usage="spinLock.Exit " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>잠금을 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 오버 로드 <xref:System.Threading.SpinLock.Exit%2A> 를 호출 하는 경우에 따라 같은 동작을 제공 <xref:System.Threading.SpinLock.Exit%2A> 인수로 true를 사용 합니다.  
+  
+ 호출 하는 경우 <xref:System.Threading.SpinLock.Exit%2A> 먼저 호출 하지 않고 <xref:System.Threading.SpinLock.Enter%2A> 의 내부 상태를 <xref:System.Threading.SpinLock> 손상 될 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.SynchronizationLockException">스레드 소유권 추적 기능을 사용할 수 있으며 현재 스레드가 이 잠금의 소유자가 아닙니다.</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Exit">
+      <MemberSignature Language="C#" Value="public void Exit (bool useMemoryBarrier);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Exit(bool useMemoryBarrier) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.SpinLock.Exit(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Exit (useMemoryBarrier As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Exit(bool useMemoryBarrier);" />
+      <MemberSignature Language="F#" Value="member this.Exit : bool -&gt; unit" Usage="spinLock.Exit useMemoryBarrier" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="useMemoryBarrier" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="useMemoryBarrier">종료 작업을 다른 스레드에 즉시 게시하기 위해 메모리 펜스를 실행할지 여부를 나타내는 부울 값입니다.</param>
+        <summary>잠금을 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Threading.SpinLock.Exit%2A> 사용 하 여는 `useMemoryBarrier` 인수가 true로 설정에 따라 성능이 저하 되며 잠금 공정성 향상 됩니다. 기본값 <xref:System.Threading.SpinLock.Exit%2A> 오버 로드 동작에 대해 true를 지정 하는 경우에 따라 `useMemoryBarrier`합니다.  
+  
+ 호출 하는 경우 <xref:System.Threading.SpinLock.Exit%2A> 먼저 호출 하지 않고 <xref:System.Threading.SpinLock.Enter%2A> 의 내부 상태를 <xref:System.Threading.SpinLock> 손상 될 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Threading.SynchronizationLockException">스레드 소유권 추적 기능을 사용할 수 있으며 현재 스레드가 이 잠금의 소유자가 아닙니다.</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <Member MemberName="IsHeld">
+      <MemberSignature Language="C#" Value="public bool IsHeld { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsHeld" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.SpinLock.IsHeld" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsHeld As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsHeld { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsHeld : bool" Usage="System.Threading.SpinLock.IsHeld" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>get: System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>스레드에서 현재 잠금을 보유하고 있는지 여부를 가져옵니다.</summary>
+        <value>스레드에서 현재 잠금을 보유하고 있으면 true이고, 그렇지 않으면 false입니다.</value>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <Member MemberName="IsHeldByCurrentThread">
+      <MemberSignature Language="C#" Value="public bool IsHeldByCurrentThread { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsHeldByCurrentThread" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.SpinLock.IsHeldByCurrentThread" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsHeldByCurrentThread As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsHeldByCurrentThread { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsHeldByCurrentThread : bool" Usage="System.Threading.SpinLock.IsHeldByCurrentThread" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>get: System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 스레드에서 잠금을 보유하고 있는지 여부를 가져옵니다.</summary>
+        <value>현재 스레드에서 잠금을 보유하고 있으면 true이고, 그렇지 않으면 false입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 잠금 소유자 스레드를 추적 하도록 초기화 된, 하는 경우 현재 스레드에서 잠금을 얻었는지 여부를 반환 합니다. 스레드 소유권을 추적 하는 잠금 초기화 될 때이 속성을 사용 하려면 올바르지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">스레드 소유권 추적을 사용할 수 없습니다.</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <Member MemberName="IsThreadOwnerTrackingEnabled">
+      <MemberSignature Language="C#" Value="public bool IsThreadOwnerTrackingEnabled { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsThreadOwnerTrackingEnabled" />
+      <MemberSignature Language="DocId" Value="P:System.Threading.SpinLock.IsThreadOwnerTrackingEnabled" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsThreadOwnerTrackingEnabled As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsThreadOwnerTrackingEnabled { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsThreadOwnerTrackingEnabled : bool" Usage="System.Threading.SpinLock.IsThreadOwnerTrackingEnabled" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>get: System.Runtime.ConstrainedExecution.ReliabilityContract(System.Runtime.ConstrainedExecution.Consistency.WillNotCorruptState, System.Runtime.ConstrainedExecution.Cer.Success)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 인스턴스에 대해 스레드 소유권 추적이 사용되는지 여부를 가져옵니다.</summary>
+        <value>이 인스턴스에 대해 스레드 소유권 추적이 사용되면 true이고, 그렇지 않으면 false입니다.</value>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TryEnter">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>메서드 호출에서 예외가 발생하는 경우에도 안정적인 방식으로 잠금을 얻으려고 시도합니다. 잠금을 얻었는지 확인하기 위해 <paramref name="lockTaken" />을 안정적으로 검사할 수 있습니다.</summary>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TryEnter">
+      <MemberSignature Language="C#" Value="public void TryEnter (ref bool lockTaken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TryEnter(bool&amp; lockTaken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.SpinLock.TryEnter(System.Boolean@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TryEnter (ByRef lockTaken As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TryEnter(bool % lockTaken);" />
+      <MemberSignature Language="F#" Value="member this.TryEnter :  -&gt; unit" Usage="spinLock.TryEnter lockTaken" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="lockTaken" Type="System.Boolean" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="lockTaken">잠금을 얻었으면 true이고, 그렇지 않으면 false입니다. 이 메서드를 호출하기 전에 <paramref name="lockTaken" />을 false로 초기화해야 합니다.</param>
+        <summary>메서드 호출에서 예외가 발생하는 경우에도 안정적인 방식으로 잠금을 얻으려고 시도합니다. 잠금을 얻었는지 확인하기 위해 <paramref name="lockTaken" />을 안정적으로 검사할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 와 달리 <xref:System.Threading.SpinLock.Enter%2A>, TryEnter는 잠금이 사용 가능 하도록 대기를 차단 하지 것입니다. 잠금을 사용할 수 없는 경우 TryEnter 호출 되 면, 추가 회전 하지 않고 즉시 반환 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="lockTaken" /> 인수는 TryEnter를 호출하기 전에 false로 초기화해야 합니다.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">스레드 소유권 추적 기능을 사용할 수 있으며 현재 스레드가 이미 이 잠금을 획득했습니다.</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <Member MemberName="TryEnter">
+      <MemberSignature Language="C#" Value="public void TryEnter (int millisecondsTimeout, ref bool lockTaken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TryEnter(int32 millisecondsTimeout, bool&amp; lockTaken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.SpinLock.TryEnter(System.Int32,System.Boolean@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TryEnter (millisecondsTimeout As Integer, ByRef lockTaken As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TryEnter(int millisecondsTimeout, bool % lockTaken);" />
+      <MemberSignature Language="F#" Value="member this.TryEnter : int *  -&gt; unit" Usage="spinLock.TryEnter (millisecondsTimeout, lockTaken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="millisecondsTimeout" Type="System.Int32" />
+        <Parameter Name="lockTaken" Type="System.Boolean" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="millisecondsTimeout">대기할 시간(밀리초)이거나, 무기한 대기할 경우 <see cref="F:System.Threading.Timeout.Infinite" />(-1)입니다.</param>
+        <param name="lockTaken">잠금을 얻었으면 true이고, 그렇지 않으면 false입니다. 이 메서드를 호출하기 전에 <paramref name="lockTaken" />을 false로 초기화해야 합니다.</param>
+        <summary>메서드 호출에서 예외가 발생하는 경우에도 안정적인 방식으로 잠금을 얻으려고 시도합니다. 잠금을 얻었는지 확인하기 위해 <paramref name="lockTaken" />을 안정적으로 검사할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 와 달리 <xref:System.Threading.SpinLock.Enter%2A>, TryEnter 사용할 잠금이 무기한 대기를 차단 하지 것입니다. 잠금이 있을 때까지 또는 될 때까지 차단 됩니다는 `millisecondsTimeout` 만료 되었습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />이 시간 제한 없음을 나타내는 -1 이외의 음수인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="lockTaken" /> 인수는 TryEnter를 호출하기 전에 false로 초기화해야 합니다.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">스레드 소유권 추적 기능을 사용할 수 있으며 현재 스레드가 이미 이 잠금을 획득했습니다.</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+    <Member MemberName="TryEnter">
+      <MemberSignature Language="C#" Value="public void TryEnter (TimeSpan timeout, ref bool lockTaken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TryEnter(valuetype System.TimeSpan timeout, bool&amp; lockTaken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.SpinLock.TryEnter(System.TimeSpan,System.Boolean@)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TryEnter (timeout As TimeSpan, ByRef lockTaken As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TryEnter(TimeSpan timeout, bool % lockTaken);" />
+      <MemberSignature Language="F#" Value="member this.TryEnter : TimeSpan *  -&gt; unit" Usage="spinLock.TryEnter (timeout, lockTaken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="lockTaken" Type="System.Boolean" RefType="ref" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">대기할 시간(밀리초)을 나타내는 <see cref="T:System.TimeSpan" />이거나, 무한 대기하도록 -1밀리초를 나타내는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="lockTaken">잠금을 얻었으면 true이고, 그렇지 않으면 false입니다. 이 메서드를 호출하기 전에 <paramref name="lockTaken" />을 false로 초기화해야 합니다.</param>
+        <summary>메서드 호출에서 예외가 발생하는 경우에도 안정적인 방식으로 잠금을 얻으려고 시도합니다. 잠금을 얻었는지 확인하기 위해 <paramref name="lockTaken" />을 안정적으로 검사할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 와 달리 <xref:System.Threading.SpinLock.Enter%2A>, TryEnter 사용할 잠금이 무기한 대기를 차단 하지 것입니다. 잠금이 있을 때까지 또는 될 때까지 차단 됩니다는 `timeout` 만료 되었습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />이 무기한 시간 제한을 나타내는 -1밀리초 이외의 음수이거나 시간 제한이 <see cref="F:System.Int32.MaxValue" />밀리초보다 큰 경우.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="lockTaken" /> 인수는 TryEnter를 호출하기 전에 false로 초기화해야 합니다.</exception>
+        <exception cref="T:System.Threading.LockRecursionException">스레드 소유권 추적 기능을 사용할 수 있으며 현재 스레드가 이미 이 잠금을 획득했습니다.</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/f9af93bb-7a0d-4ba5-afe8-74f48b6b6958">SpinLock</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/a9ed3e4e-4f29-4207-b730-ed0a51ecbc19">방법: 낮은 수준의 동기화에 SpinLock 사용</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/62ee2e68-0bdd-4869-afc9-f0a57a11ae01">방법: 스핀 잠금에서 스레드-추적 모드 사용</related>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

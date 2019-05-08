@@ -1,0 +1,112 @@
+<Type Name="QueryActivatableWorkflowsCommand" FullName="System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="faa02202653f0e041ed5edfe7920ebd417933894" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="36655152" /></Metadata><TypeSignature Language="C#" Value="public sealed class QueryActivatableWorkflowsCommand : System.Runtime.DurableInstancing.InstancePersistenceCommand" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit QueryActivatableWorkflowsCommand extends System.Runtime.DurableInstancing.InstancePersistenceCommand" />
+  <TypeSignature Language="DocId" Value="T:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class QueryActivatableWorkflowsCommand&#xA;Inherits InstancePersistenceCommand" />
+  <TypeSignature Language="C++ CLI" Value="public ref class QueryActivatableWorkflowsCommand sealed : System::Runtime::DurableInstancing::InstancePersistenceCommand" />
+  <TypeSignature Language="F#" Value="type QueryActivatableWorkflowsCommand = class&#xA;    inherit InstancePersistenceCommand" />
+  <AssemblyInfo>
+    <AssemblyName>System.Activities</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Runtime.DurableInstancing.InstancePersistenceCommand</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>일반 호스트가 활성화 매개 변수를 검색하기 위해 인스턴스 저장소에 대해 실행하는 명령을 나타냅니다. 일반 호스트는 이러한 활성화 매개 변수를 사용하여 워크플로 호스트를 만들고, 워크플로 호스트가 실행 가능한 서비스 인스턴스를 로드합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인스턴스가 *활성화할 수 있는*일시 중단 된 상태나 완료 된 상태가 아니며 다음 조건을 충족 하는 경우:  
+  
+-   인스턴스가 *runnable*합니다. 지속성 데이터베이스의 인스턴스는 다음 조건을 충족하는 경우 실행 가능으로 간주됩니다.  
+  
+    -   인스턴스가 잠금 해제되었으며 만료된 보류 중인 타이머가 있습니다.  
+  
+    -   인스턴스를 잠금 해제 하 고 해당 상태가 **Executing**합니다.  
+  
+    -   인스턴스에 만료된 잠금이 있습니다.  
+  
+-   로컬 컴퓨터에서 실행 중인 인스턴스를 로드할 수 있는 워크플로 호스트가 없습니다.  
+  
+ 인스턴스 저장소는 해당 저장소를 사용하는 워크플로 호스트에 속하는 활성화 가능한 워크플로 인스턴스를 정기적으로 검색해야 합니다. 지속성 저장소에서 활성화 가능한 인스턴스를 찾으면 <xref:System.Activities.DurableInstancing.HasActivatableWorkflowEvent>를 발생시켜야 합니다. 인스턴스 저장소가 지속성 저장소에서 활성화 가능한 인스턴스를 찾지 못하면 지속성 저장소에서 활성화 가능한 인스턴스를 계속 모니터링해야 합니다.  
+  
+ HasActivatableWorkflowEvent를 발생시킨 후 인스턴스 저장소는 <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand>를 받고 실행할 때까지 지속성 저장소에서 활성화 가능한 인스턴스를 모니터링하는 작업을 중지해야 합니다. 명령 실행에서 활성화 가능한 워크플로 인스턴스를 반환하지 않는 경우에만 모니터링이 계속됩니다.  
+  
+ 일반 호스트는 이 이벤트를 받을 경우 인스턴스 저장소에 대해 <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand>를 실행하여 워크플로 호스트를 만드는 데 필요한 활성화 매개 변수를 가져옵니다. 일반 호스트는 이러한 활성화 매개 변수를 사용하여 워크플로 호스트를 만들고, 워크플로 호스트가 서비스 인스턴스를 로드 및 실행합니다. WAS 활성화 형식의 활성화 매개 변수는 사이트 이름, 애플리케이션 경로(사이트 기준) 및 서비스 경로(애플리케이션 기준)입니다. 인스턴스 저장소는 이러한 세 활성화 매개 변수의 여러 집합을 반환합니다.  
+  
+ 일반 호스트는 호스트에 이라는 XName 매개 **ActivationType**, 인스턴스 저장소에서 지 원하는 값으로 설정 해야 합니다. 현재 SQL 워크플로 인스턴스 저장소를 값으로 설정 하는 ActivationType 매개 변수를 사용 하 여 일반 호스트를 지원 합니다. **WAS**합니다. ActivationType이 설정되어 있지 않으면 SQL 워크플로 인스턴스 저장소는 호스트를 일반 호스트로 처리합니다.  
+  
+> [!NOTE]
+>  "Dublin" (.NET 4.0 용 Application Server Extensions)을 지정 하는 코드와 함께 제공 됩니다 워크플로 관리 서비스 정품 인증 유형 설정 된 일반 호스트는 **WAS**합니다.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public QueryActivatableWorkflowsCommand ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; QueryActivatableWorkflowsCommand();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand" /> 클래스의 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsTransactionEnlistmentOptional">
+      <MemberSignature Language="C#" Value="protected internal override bool IsTransactionEnlistmentOptional { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsTransactionEnlistmentOptional" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand.IsTransactionEnlistmentOptional" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides ReadOnly Property IsTransactionEnlistmentOptional As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual property bool IsTransactionEnlistmentOptional { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsTransactionEnlistmentOptional : bool" Usage="System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand.IsTransactionEnlistmentOptional" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Validate">
+      <MemberSignature Language="C#" Value="protected internal override void Validate (System.Runtime.DurableInstancing.InstanceView view);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void Validate(class System.Runtime.DurableInstancing.InstanceView view) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand.Validate(System.Runtime.DurableInstancing.InstanceView)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub Validate (view As InstanceView)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void Validate(System::Runtime::DurableInstancing::InstanceView ^ view);" />
+      <MemberSignature Language="F#" Value="override this.Validate : System.Runtime.DurableInstancing.InstanceView -&gt; unit" Usage="queryActivatableWorkflowsCommand.Validate view" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="view" Type="System.Runtime.DurableInstancing.InstanceView" />
+      </Parameters>
+      <Docs>
+        <param name="view">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

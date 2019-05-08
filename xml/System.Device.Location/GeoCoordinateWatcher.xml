@@ -1,0 +1,913 @@
+<Type Name="GeoCoordinateWatcher" FullName="System.Device.Location.GeoCoordinateWatcher">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7d792389634ad2054eb62a7ac76f329fc4e273d6" /><Meta Name="ms.sourcegitcommit" Value="756d085f27705e86604f1bba5f2086ee23761acf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="01/30/2019" /><Meta Name="ms.locfileid" Value="55374360" /></Metadata><TypeSignature Language="C#" Value="public class GeoCoordinateWatcher : IDisposable, System.ComponentModel.INotifyPropertyChanged, System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit GeoCoordinateWatcher extends System.Object implements class System.ComponentModel.INotifyPropertyChanged, class System.Device.Location.IGeoPositionWatcher`1&lt;class System.Device.Location.GeoCoordinate&gt;, class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Device.Location.GeoCoordinateWatcher" />
+  <TypeSignature Language="VB.NET" Value="Public Class GeoCoordinateWatcher&#xA;Implements IDisposable, IGeoPositionWatcher(Of GeoCoordinate), INotifyPropertyChanged" />
+  <TypeSignature Language="C++ CLI" Value="public ref class GeoCoordinateWatcher : IDisposable, System::ComponentModel::INotifyPropertyChanged, System::Device::Location::IGeoPositionWatcher&lt;System::Device::Location::GeoCoordinate ^&gt;" />
+  <TypeSignature Language="F#" Value="type GeoCoordinateWatcher = class&#xA;    interface IDisposable&#xA;    interface INotifyPropertyChanged&#xA;    interface IGeoPositionWatcher&lt;GeoCoordinate&gt;" />
+  <AssemblyInfo>
+    <AssemblyName>System.Device</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.ComponentModel.INotifyPropertyChanged</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Security.SecurityCritical</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>위도 및 경도 좌표를 기준으로 하는 위치 데이터를 공급합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Device.Location.GeoCoordinateWatcher> 클래스는 현재 위치 공급자 로부터 좌표 기반 위치 데이터를 제공 합니다. 현재 위치 공급자는 컴퓨터에서 가장 높은 수를 기준으로 보존 기간 및 모든 공급자에서 데이터의 정확성 등의 요인 위치 애플리케이션에서 요청 된 정확도 전력 소비 및 성능에 영향을 우선 순위가 지정 됩니다. 위치 공급자를 사용 하 여 연결 합니다. 현재 위치 공급자는 시간이 지남에 따라 예를 들어 경우 GPS 디바이스 실내 해당 위성 신호를 잃고 Wi-fi 삼각형 분할 공급자 컴퓨터의 가장 정확한 공급자가 변경 될 수 있습니다.  
+  
+ 위치 데이터에 액세스 하려면 만들기를 <xref:System.Device.Location.GeoCoordinateWatcher> 호출 <xref:System.Device.Location.GeoCoordinateWatcher.Start%2A> 또는 <xref:System.Device.Location.GeoCoordinateWatcher.TryStart%2A> 현재 위치 공급자 로부터 데이터를 가져오기 시작 합니다.  
+  
+ <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 데이터 사용할 수 있는지 확인 하려면 속성을 확인할 수 있습니다. 데이터를 사용할 수 있는 경우 가져올 수 있습니다 위치에서 한 번 합니다 <xref:System.Device.Location.GeoCoordinateWatcher.Position*> 속성 또는 처리 하 여 연속 위치 업데이트를 수신 합니다 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트입니다.  
+  
+ 합니다 <xref:System.Device.Location.GeoCoordinateWatcher.Permission%2A>, <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A>, 및 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 속성 지원 <xref:System.ComponentModel.INotifyPropertyChanged>애플리케이션 데이터 바인딩할 수 이러한 속성에 있도록 합니다.  
+  
+ Windows 7, 모든는 <xref:System.Device.Location> 클래스는 위치 공급자가 설치 되어 작동 하는 컴퓨터의 위치를 확인할 수 있습니다.  
+  
+> [!NOTE]
+>  Windows 7 Starter Edition을만 지원 되는 위치 공급자가 제어판에서 기본 위치 공급자에 추가 기능을 설치 해야 위도 및 경도 지정 합니다.  
+  
+ **참고** 버전의 Windows 7 이전의 Windows에서는 다음 조건이 적용 합니다.  
+  
+-   모든 <xref:System.Device.Location> 생성자에 있는 개체를 만들 수 있습니다, 있지만 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 속성 값은 항상 <xref:System.Device.Location.GeoPositionStatus.Disabled>합니다.  
+  
+-   가 나타내는 위치를 <xref:System.Device.Location.GeoPosition%601.Location%2A> 속성을 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 항상 <xref:System.Device.Location.GeoCoordinate.Unknown>합니다.  
+  
+-   위치 이벤트가 발생 합니다.  
+  
+   
+  
+## Examples  
+ 다음 프로그램을 만드는 방법을 보여 줍니다는 <xref:System.Device.Location.GeoCoordinateWatcher> 초기화 시간 제한을 사용 하 여 데이터 가져오기를 시작 합니다. 다음 코드를 알 수 있는 경우 위치 좌표를 인쇄 합니다.  
+  
+ [!code-csharp[System.Device.Location.GetLocationDataSync1#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.getlocationdatasync1/cs/getlocationdatasync.cs#1)]
+ [!code-vb[System.Device.Location.GetLocationDataSync1#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.getlocationdatasync1/vb/GetLocationDataSync.vb#1)]  
+  
+ 다음 프로그램을 구독 하 여 연속 위치 업데이트를 수신 하는 방법을 보여 줍니다 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트입니다.  
+  
+ [!code-csharp[System.Device.Location.GetLocationDataAsync#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.getlocationdataasync/cs/getlocationdataasync.cs#1)]
+ [!code-vb[System.Device.Location.GetLocationDataAsync#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.getlocationdataasync/vb/GetLocationDataAsync.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" />의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ **참고** 버전의 Windows 7 이전의 Windows에서는 다음 조건이 적용 합니다.  
+  
+-   모든 <xref:System.Device.Location> 생성자에 있는 개체를 만들 수 있습니다, 있지만 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 속성 값은 항상 <xref:System.Device.Location.GeoPositionStatus.Disabled>합니다.  
+  
+-   가 나타내는 위치를 <xref:System.Device.Location.GeoPosition%601.Location%2A> 속성을 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 항상 <xref:System.Device.Location.GeoCoordinate.Unknown>합니다.  
+  
+-   위치 이벤트가 발생 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GeoCoordinateWatcher ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; GeoCoordinateWatcher();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>기본 정확도 설정을 사용하여 <see cref="T:System.Device.Location.GeoCoordinateWatcher" />의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 정확도 설정을 <xref:System.Device.Location.GeoPositionAccuracy.Default>합니다.  
+  
+ **참고** 버전의 Windows 7 이전의 Windows에서는 다음 조건이 적용 합니다.  
+  
+-   모든 <xref:System.Device.Location> 생성자에 있는 개체를 만들 수 있습니다, 있지만 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 속성 값은 항상 <xref:System.Device.Location.GeoPositionStatus.Disabled>합니다.  
+  
+-   가 나타내는 위치를 <xref:System.Device.Location.GeoPosition%601.Location%2A> 속성을 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 항상 <xref:System.Device.Location.GeoCoordinate.Unknown>합니다.  
+  
+-   위치 이벤트가 발생 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public GeoCoordinateWatcher (System.Device.Location.GeoPositionAccuracy desiredAccuracy);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Device.Location.GeoPositionAccuracy desiredAccuracy) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.#ctor(System.Device.Location.GeoPositionAccuracy)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (desiredAccuracy As GeoPositionAccuracy)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; GeoCoordinateWatcher(System::Device::Location::GeoPositionAccuracy desiredAccuracy);" />
+      <MemberSignature Language="F#" Value="new System.Device.Location.GeoCoordinateWatcher : System.Device.Location.GeoPositionAccuracy -&gt; System.Device.Location.GeoCoordinateWatcher" Usage="new System.Device.Location.GeoCoordinateWatcher desiredAccuracy" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="desiredAccuracy" Type="System.Device.Location.GeoPositionAccuracy" />
+      </Parameters>
+      <Docs>
+        <param name="desiredAccuracy">위치 공급자의 요청된 정확도 수준을 나타내는 <see cref="T:System.Device.Location.GeoPositionAccuracy" />입니다.  
+  
+<see cref="F:System.Device.Location.GeoPositionAccuracy.High" /> 정확도는 성능을 떨어뜨릴 수 있으며 높은 정확도가 필요한 경우에만 지정되어야 합니다.</param>
+        <summary>지정된 정확도 수준으로 <see cref="T:System.Device.Location.GeoCoordinateWatcher" />의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ **참고** 버전의 Windows 7 이전의 Windows에서는 다음 조건이 적용 합니다.  
+  
+-   모든 <xref:System.Device.Location> 생성자에 있는 개체를 만들 수 있습니다, 있지만 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 속성 값은 항상 <xref:System.Device.Location.GeoPositionStatus.Disabled>합니다.  
+  
+-   가 나타내는 위치를 <xref:System.Device.Location.GeoPosition%601.Location%2A> 속성을 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 항상 <xref:System.Device.Location.GeoCoordinate.Unknown>합니다.  
+  
+-   위치 이벤트가 발생 합니다.   
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DesiredAccuracy">
+      <MemberSignature Language="C#" Value="public System.Device.Location.GeoPositionAccuracy DesiredAccuracy { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Device.Location.GeoPositionAccuracy DesiredAccuracy" />
+      <MemberSignature Language="DocId" Value="P:System.Device.Location.GeoCoordinateWatcher.DesiredAccuracy" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DesiredAccuracy As GeoPositionAccuracy" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Device::Location::GeoPositionAccuracy DesiredAccuracy { System::Device::Location::GeoPositionAccuracy get(); };" />
+      <MemberSignature Language="F#" Value="member this.DesiredAccuracy : System.Device.Location.GeoPositionAccuracy" Usage="System.Device.Location.GeoCoordinateWatcher.DesiredAccuracy" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Device.Location.GeoPositionAccuracy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" />에서 제공하는 위치 데이터에 대해 요청된 정확도 수준입니다.</summary>
+        <value>위치 공급자의 요청된 정확도 수준을 나타내는 <see cref="T:System.Device.Location.GeoPositionAccuracy" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Device.Location.GeoPositionAccuracy.High> 정확도는 성능을 떨어뜨릴 수 있으며 높은 정확도가 필요한 경우에만 지정되어야 합니다.  
+  
+ **참고** 버전의 Windows 7 이전의 Windows에서는 다음 조건이 적용 합니다.  
+  
+-   모든 <xref:System.Device.Location> 생성자에 있는 개체를 만들 수 있습니다, 있지만 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 속성 값은 항상 <xref:System.Device.Location.GeoPositionStatus.Disabled>합니다.  
+  
+-   가 나타내는 위치를 <xref:System.Device.Location.GeoPosition%601.Location%2A> 속성을 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 항상 <xref:System.Device.Location.GeoCoordinate.Unknown>합니다.  
+  
+-   위치 이벤트가 발생 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Device.Location.GeoCoordinateWatcher.Dispose%2A> 완료 될 때 사용 하는 <xref:System.Device.Location.GeoCoordinateWatcher> 클래스입니다.  
+  
+ 관리 되지 않는 리소스를 해제할 수 있도록이 메서드를 호출 해야 합니다.  
+  
+ 자세한 내용은 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md) 하 고 [Dispose 메서드 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="geoCoordinateWatcher.Dispose " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Device.Location.GeoCoordinateWatcher.Dispose%2A> 완료 될 때 사용 하는 <xref:System.Device.Location.GeoCoordinateWatcher> 클래스입니다.  
+  
+ 관리 되지 않는 리소스를 해제할 수 있도록이 메서드를 호출 해야 합니다.  
+  
+ 자세한 내용은 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md) 하 고 [Dispose 메서드 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : bool -&gt; unit&#xA;override this.Dispose : bool -&gt; unit" Usage="geoCoordinateWatcher.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">관리되는 리소스와 관리되지 않는 리소스를 모두 해제하려면 <see langword="true" />로 설정하고, 관리되지 않는 리소스만 해제하려면 <see langword="false" />로 설정합니다.</param>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Device.Location.GeoCoordinateWatcher.Dispose%2A> 완료 될 때 사용 하는 <xref:System.Device.Location.GeoCoordinateWatcher> 클래스입니다.  
+  
+ 관리 되지 않는 리소스를 해제할 수 있도록이 메서드를 호출 해야 합니다.  
+  
+ 자세한 내용은 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md) 하 고 [Dispose 메서드 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~GeoCoordinateWatcher ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!GeoCoordinateWatcher ()" />
+      <MemberSignature Language="F#" Value="override this.Finalize : unit -&gt; unit" Usage="geoCoordinateWatcher.Finalize " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>가비지 컬렉션에 의해 <see cref="T:System.Device.Location.GeoCoordinateWatcher" />가 회수되기 전에 리소스를 해제하고 기타 정리 작업을 수행합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MovementThreshold">
+      <MemberSignature Language="C#" Value="public double MovementThreshold { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 MovementThreshold" />
+      <MemberSignature Language="DocId" Value="P:System.Device.Location.GeoCoordinateWatcher.MovementThreshold" />
+      <MemberSignature Language="VB.NET" Value="Public Property MovementThreshold As Double" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property double MovementThreshold { double get(); void set(double value); };" />
+      <MemberSignature Language="F#" Value="member this.MovementThreshold : double with get, set" Usage="System.Device.Location.GeoCoordinateWatcher.MovementThreshold" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>위치 공급자가 다른 <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> 이벤트를 발생시키기 전에 마지막 <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> 이벤트에서 이동해야 하는 좌표에 대한 상대적인 거리(미터 단위)입니다.</summary>
+        <value>미터 단위의 거리입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 이동을 임계값은 0 이며 현재 위치 공급자 원인에서 검색 하는 위치에 변경 하는 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트 및 업데이트는 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 속성입니다.  
+  
+> [!NOTE]
+>  이동 임계값 이벤트 요청 된 임계값에 도달한 받았음을 보장 하지 않습니다. 플랫폼 특정 이동 임계값에 대 한 요청을 허용 하려고 하지만 일부 경우 요청 된 임계값에 도달한 경우 이벤트를 발생 하지 않습니다.  
+  
+ **참고** 버전의 Windows 7 이전의 Windows에서는 다음 조건이 적용 합니다.  
+  
+-   모든 <xref:System.Device.Location> 생성자에 있는 개체를 만들 수 있습니다, 있지만 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 속성 값은 항상 <xref:System.Device.Location.GeoPositionStatus.Disabled>합니다.  
+  
+-   가 나타내는 위치를 <xref:System.Device.Location.GeoPosition%601.Location%2A> 속성을 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 항상 <xref:System.Device.Location.GeoCoordinate.Unknown>합니다.  
+  
+-   위치 이벤트가 발생 합니다.  
+  
+ 다음 다이어그램은 위치 공급자 (예: GPS 디바이스)가 컴퓨터에 제공 하는 위치 좌표를 나타냅니다. P1 다이어그램에 포함 된 위치 데이터를 나타내는 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트 및 P2, P3, P4 이동 임계값 내의 위치를 나타냅니다. 위치 공급자 이상 (P1, P2, P3 및 P4) 해당 지점에 위치를 나타내는 데이터를 제공 하면 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트가 발생 하 고 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> P1을 반환 합니다. 지점 P5는 외부를 <xref:System.Device.Location.GeoCoordinateWatcher.MovementThreshold%2A> 거리, 따라서 이때 <xref:System.Device.Location.GeoCoordinateWatcher.Position*> 업데이트 됩니다 및 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트가 발생 합니다.  
+  
+ ![MovementThreshold를 보여 주는 다이어그램](~/add/media/ndp-movementthreshold.png "MovementThreshold를 보여 주는 다이어그램")  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPositionChanged">
+      <MemberSignature Language="C#" Value="protected void OnPositionChanged (System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt; e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void OnPositionChanged(class System.Device.Location.GeoPositionChangedEventArgs`1&lt;class System.Device.Location.GeoCoordinate&gt; e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.OnPositionChanged(System.Device.Location.GeoPositionChangedEventArgs{System.Device.Location.GeoCoordinate})" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub OnPositionChanged (e As GeoPositionChangedEventArgs(Of GeoCoordinate))" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void OnPositionChanged(System::Device::Location::GeoPositionChangedEventArgs&lt;System::Device::Location::GeoCoordinate ^&gt; ^ e);" />
+      <MemberSignature Language="F#" Value="member this.OnPositionChanged : System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt; -&gt; unit" Usage="geoCoordinateWatcher.OnPositionChanged e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="e">새 위치를 포함하는 <see cref="T:System.Device.Location.GeoPositionChangedEventArgs`1" /> 개체입니다.</param>
+        <summary><see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> 이벤트가 발생할 때 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 프로그램의 지속적인 업데이트를 구독 하는 방법을 보여 줍니다 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트입니다.  
+  
+ [!code-csharp[System.Device.Location.GetLocationDataAsync#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.getlocationdataasync/cs/getlocationdataasync.cs#1)]
+ [!code-vb[System.Device.Location.GetLocationDataAsync#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.getlocationdataasync/vb/GetLocationDataAsync.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPositionStatusChanged">
+      <MemberSignature Language="C#" Value="protected void OnPositionStatusChanged (System.Device.Location.GeoPositionStatusChangedEventArgs e);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void OnPositionStatusChanged(class System.Device.Location.GeoPositionStatusChangedEventArgs e) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.OnPositionStatusChanged(System.Device.Location.GeoPositionStatusChangedEventArgs)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub OnPositionStatusChanged (e As GeoPositionStatusChangedEventArgs)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void OnPositionStatusChanged(System::Device::Location::GeoPositionStatusChangedEventArgs ^ e);" />
+      <MemberSignature Language="F#" Value="member this.OnPositionStatusChanged : System.Device.Location.GeoPositionStatusChangedEventArgs -&gt; unit" Usage="geoCoordinateWatcher.OnPositionStatusChanged e" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="e" Type="System.Device.Location.GeoPositionStatusChangedEventArgs" />
+      </Parameters>
+      <Docs>
+        <param name="e">새 상태를 포함하는 <see cref="T:System.Device.Location.GeoPositionStatusChangedEventArgs" /> 개체입니다.</param>
+        <summary><see cref="E:System.Device.Location.GeoCoordinateWatcher.StatusChanged" /> 이벤트가 발생할 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnPropertyChanged">
+      <MemberSignature Language="C#" Value="protected void OnPropertyChanged (string propertyName);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void OnPropertyChanged(string propertyName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.OnPropertyChanged(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub OnPropertyChanged (propertyName As String)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void OnPropertyChanged(System::String ^ propertyName);" />
+      <MemberSignature Language="F#" Value="member this.OnPropertyChanged : string -&gt; unit" Usage="geoCoordinateWatcher.OnPropertyChanged propertyName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="propertyName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="propertyName">변경된 속성의 이름입니다.</param>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" />의 속성이 변경되면 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 처리는 <xref:System.ComponentModel.INotifyPropertyChanged.PropertyChanged> Windows Forms 애플리케이션에서 데이터 바인딩을 구현 하는 이벤트입니다.  
+  
+ 나타내는이 메서드는 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 속성을 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 속성을 또는 <xref:System.Device.Location.GeoCoordinateWatcher.Permission%2A> 속성이 변경.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="E:System.Device.Location.GeoCoordinateWatcher.System.ComponentModel.INotifyPropertyChanged.PropertyChanged" />
+      </Docs>
+    </Member>
+    <Member MemberName="Permission">
+      <MemberSignature Language="C#" Value="public System.Device.Location.GeoPositionPermission Permission { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Device.Location.GeoPositionPermission Permission" />
+      <MemberSignature Language="DocId" Value="P:System.Device.Location.GeoCoordinateWatcher.Permission" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Permission As GeoPositionPermission" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Device::Location::GeoPositionPermission Permission { System::Device::Location::GeoPositionPermission get(); };" />
+      <MemberSignature Language="F#" Value="member this.Permission : System.Device.Location.GeoPositionPermission" Usage="System.Device.Location.GeoCoordinateWatcher.Permission" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Device.Location.GeoPositionPermission</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>위치 공급자의 위치 데이터에 액세스할 수 있는 권한이 부여되었는지 아니면 거부되었는지를 나타냅니다.</summary>
+        <value>권한이 부여되었는지 아니면 거부되었는지를 나타내는 값입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Device.Location.GeoPositionPermission" />
+      </Docs>
+    </Member>
+    <Member MemberName="Position">
+      <MemberSignature Language="C#" Value="public System.Device.Location.GeoPosition&lt;System.Device.Location.GeoCoordinate&gt; Position { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Device.Location.GeoPosition`1&lt;class System.Device.Location.GeoCoordinate&gt; Position" />
+      <MemberSignature Language="DocId" Value="P:System.Device.Location.GeoCoordinateWatcher.Position" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Position As GeoPosition(Of GeoCoordinate)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Device::Location::GeoPosition&lt;System::Device::Location::GeoCoordinate ^&gt; ^ Position { System::Device::Location::GeoPosition&lt;System::Device::Location::GeoCoordinate ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Position : System.Device.Location.GeoPosition&lt;System.Device.Location.GeoCoordinate&gt;" Usage="System.Device.Location.GeoCoordinateWatcher.Position" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Device.Location.IGeoPositionWatcher`1.Position</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Device.Location.GeoPosition&lt;System.Device.Location.GeoCoordinate&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 위치를 나타내는 <see cref="T:System.Device.Location.GeoCoordinate" />를 가져옵니다.</summary>
+        <value>현재 위치를 나타내는 <see cref="T:System.Device.Location.GeoCoordinate" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예에서 <xref:System.Device.Location.GeoPosition%601.Location%2A> 의 속성을 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 속성에 저장 됩니다는 <xref:System.Device.Location.GeoCoordinate> 개체. 위도 및 경도 필드는 <xref:System.Device.Location.GeoCoordinate> 알려진 경우 출력 됩니다.  
+  
+ [!code-csharp[System.Device.Location.GetLocationDataSync1#2](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.getlocationdatasync1/cs/getlocationdatasync.cs#2)]
+ [!code-vb[System.Device.Location.GetLocationDataSync1#2](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.getlocationdatasync1/vb/GetLocationDataSync.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PositionChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt;&gt; PositionChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.Device.Location.GeoPositionChangedEventArgs`1&lt;class System.Device.Location.GeoCoordinate&gt;&gt; PositionChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" />
+      <MemberSignature Language="VB.NET" Value="Public Event PositionChanged As EventHandler(Of GeoPositionChangedEventArgs(Of GeoCoordinate)) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::Device::Location::GeoPositionChangedEventArgs&lt;System::Device::Location::GeoCoordinate ^&gt; ^&gt; ^ PositionChanged;" />
+      <MemberSignature Language="F#" Value="member this.PositionChanged : EventHandler&lt;System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt;&gt; " Usage="member this.PositionChanged : System.EventHandler&lt;System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt;&gt; " />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.Device.Location.IGeoPositionWatcher`1.PositionChanged</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt;&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>위치 데이터의 위도 또는 경도가 변경되었음을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 이벤트는 지정 된 임계값을 초과 하는 마지막 이벤트 이후 간격을 이동할 때만 발생 <xref:System.Device.Location.GeoCoordinateWatcher.MovementThreshold%2A>합니다.  
+  
+ <xref:System.Device.Location.GeoPositionChangedEventArgs%601> 이벤트 처리기에 전달 된 개체가 포함 됩니다는 <xref:System.Device.Location.GeoPosition%601> 업데이트 위치 데이터를 포함 하는 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 첫 번째를 처리 하는 방법을 보여 줍니다 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트입니다.  
+  
+ [!code-csharp[System.Device.Location.LocationEvent1#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.locationevent1/cs/locationevent.cs#1)]
+ [!code-vb[System.Device.Location.LocationEvent1#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.locationevent1/vb/locationevent.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Device.Location.GeoCoordinateWatcher.MovementThreshold" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Start">
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>현재 위치 공급자로부터 데이터를 가져오기 시작합니다. 이 메서드는 <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> 이벤트를 사용하도록 설정하고 <see cref="P:System.Device.Location.GeoCoordinateWatcher.Position" /> 속성에 대한 액세스를 허용합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Start">
+      <MemberSignature Language="C#" Value="public void Start ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Start() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.Start" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Start ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Start();" />
+      <MemberSignature Language="F#" Value="abstract member Start : unit -&gt; unit&#xA;override this.Start : unit -&gt; unit" Usage="geoCoordinateWatcher.Start " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Device.Location.IGeoPositionWatcher`1.Start</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 위치 공급자로부터 데이터를 가져오기 시작합니다. 이 메서드는 <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> 이벤트를 사용하도록 설정하고 <see cref="P:System.Device.Location.GeoCoordinateWatcher.Position" /> 속성에 대한 액세스를 허용합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 호출 하면 현재 위치 공급자 로부터 데이터를 가져오기를 시작 합니다. 연령 등의 모든 공급자, 애플리케이션 또는 애플리케이션 및 전력 소비를 요청한 정확성과 성능에 미치는 영향 위치 공급자와 연결 된 데이터의 정확도 요소를 기준으로 현재 위치 공급자 선택 . 현재 위치 공급자는 시간이 지남에 따라 예를 들어 경우 GPS 디바이스 실내 해당 위성 신호를 잃고 Wi-fi 삼각형 분할 공급자 컴퓨터의 가장 정확한 공급자가 변경 될 수 있습니다.  
+  
+ 위치 공급자에 데이터가 없는 경우 현재 우선 순위가 지정 된 때를 <xref:System.Device.Location.GeoCoordinateWatcher.Start%2A> 메서드가 호출 되 면 데이터를 얻기를 시작 합니다. 사용 권한을 데이터 사용 가능 해지면 클라이언트에 부여 된, 데이터 동기적으로 액세스할 수 있습니다 하 고 이벤트를 처리 하는 경우 비동기적으로 전달 됩니다.  
+  
+ Windows 7 센서 및 위치 플랫폼을 사용 하지 않으면 때 <xref:System.Device.Location.GeoCoordinateWatcher.Start%2A> 가 호출 <xref:System.Device.Location.GeoCoordinateWatcher.Start%2A> 즉시 반환 됩니다 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트를 발생 하지 것입니다, 그리고 및에서 반환 된 위치를 <xref:System.Device.Location.GeoPosition%601.Location%2A> 속성의 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 포함 됩니다 <xref:System.Device.Location.GeoCoordinate.Unknown>.  
+  
+ 현재 우선 순위가 지정 된 위치 공급자 데이터가 없는 경우 동기적으로 즉시 사용 가능한 되 고 이벤트를 처리 하는 경우 비동기적으로 전달 됩니다.  
+  
+ 호출 애플리케이션에 위치 공급자 로부터 데이터를 액세스할 수 있는 권한이 없으면 하거나 권한을 부여 하거나 거부할 수 있는 대화 상자를 사용 하 여 사용자 라는 메시지가 표시 됩니다. 대화 상자는 모덜리스 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 프로그램 업데이트를 처리 합니다 첫 번째 위치 뒤에 오는 <xref:System.Device.Location.GeoCoordinateWatcher.Start%2A> 라고 합니다.  
+  
+ [!code-csharp[System.Device.Location.GetLocationDataUpdateOnce#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.getlocationdataupdateonce/cs/getlocationdataupdateonce.cs#1)]
+ [!code-vb[System.Device.Location.GetLocationDataUpdateOnce#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.getlocationdataupdateonce/vb/GetLocationDataUpdateOnce.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Start">
+      <MemberSignature Language="C#" Value="public void Start (bool suppressPermissionPrompt);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Start(bool suppressPermissionPrompt) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.Start(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Start (suppressPermissionPrompt As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Start(bool suppressPermissionPrompt);" />
+      <MemberSignature Language="F#" Value="abstract member Start : bool -&gt; unit&#xA;override this.Start : bool -&gt; unit" Usage="geoCoordinateWatcher.Start suppressPermissionPrompt" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Device.Location.IGeoPositionWatcher`1.Start(System.Boolean)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="suppressPermissionPrompt" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="suppressPermissionPrompt">사용 권한 대화 상자를 표시하지 않으려면 <see langword="true" />이고, 사용 권한이 아직 부여되지 않은 경우 사용 권한 대화 상자를 선택적으로 표시하려면 <see langword="false" />입니다.</param>
+        <summary>현재 위치 공급자로부터 데이터를 가져오기 시작합니다. 이 메서드는 <see cref="E:System.Device.Location.GeoCoordinateWatcher.PositionChanged" /> 이벤트를 사용하도록 설정하고 <see cref="P:System.Device.Location.GeoCoordinateWatcher.Position" /> 속성에 대한 액세스를 허용합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Status">
+      <MemberSignature Language="C#" Value="public System.Device.Location.GeoPositionStatus Status { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Device.Location.GeoPositionStatus Status" />
+      <MemberSignature Language="DocId" Value="P:System.Device.Location.GeoCoordinateWatcher.Status" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Status As GeoPositionStatus" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Device::Location::GeoPositionStatus Status { System::Device::Location::GeoPositionStatus get(); };" />
+      <MemberSignature Language="F#" Value="member this.Status : System.Device.Location.GeoPositionStatus" Usage="System.Device.Location.GeoCoordinateWatcher.Status" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Device.Location.IGeoPositionWatcher`1.Status</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>get: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Device.Location.GeoPositionStatus</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" />의 현재 상태를 가져옵니다.</summary>
+        <value><see cref="T:System.Device.Location.GeoPositionStatus" />의 데이터를 사용할 수 있는지 여부를 나타내는 <see cref="T:System.Device.Location.GeoCoordinateWatcher" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제에서는 핸들 <xref:System.Device.Location.GeoCoordinateWatcher.StatusChanged> 이벤트 및 메시지 기반 인쇄는 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A>합니다.  
+  
+ [!code-csharp[System.Device.Location.ShowStatusUpdates#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.showstatusupdates/cs/showstatusupdates.cs#1)]
+ [!code-vb[System.Device.Location.ShowStatusUpdates#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.showstatusupdates/vb/ShowStatusUpdates.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Device.Location.GeoPositionStatus" />
+      </Docs>
+    </Member>
+    <Member MemberName="StatusChanged">
+      <MemberSignature Language="C#" Value="public event EventHandler&lt;System.Device.Location.GeoPositionStatusChangedEventArgs&gt; StatusChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.Device.Location.GeoPositionStatusChangedEventArgs&gt; StatusChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Device.Location.GeoCoordinateWatcher.StatusChanged" />
+      <MemberSignature Language="VB.NET" Value="Public Event StatusChanged As EventHandler(Of GeoPositionStatusChangedEventArgs) " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler&lt;System::Device::Location::GeoPositionStatusChangedEventArgs ^&gt; ^ StatusChanged;" />
+      <MemberSignature Language="F#" Value="member this.StatusChanged : EventHandler&lt;System.Device.Location.GeoPositionStatusChangedEventArgs&gt; " Usage="member this.StatusChanged : System.EventHandler&lt;System.Device.Location.GeoPositionStatusChangedEventArgs&gt; " />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.Device.Location.IGeoPositionWatcher`1.StatusChanged</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.Device.Location.GeoPositionStatusChangedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" /> 개체의 상태가 변경되었음을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Device.Location.GeoCoordinateWatcher.StatusChanged> 에서 이벤트가 발생 되는 스레드를 동일한는 <xref:System.Device.Location.GeoCoordinateWatcher> 개체에서 생성 된 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 처리 하는 방법에 설명 <xref:System.Device.Location.GeoCoordinateWatcher.StatusChanged> 이벤트입니다.  
+  
+ [!code-csharp[System.Device.Location.ShowStatusUpdates#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.showstatusupdates/cs/showstatusupdates.cs#1)]
+ [!code-vb[System.Device.Location.ShowStatusUpdates#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.showstatusupdates/vb/ShowStatusUpdates.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Stop">
+      <MemberSignature Language="C#" Value="public void Stop ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Stop() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.Stop" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Stop ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Stop();" />
+      <MemberSignature Language="F#" Value="abstract member Stop : unit -&gt; unit&#xA;override this.Stop : unit -&gt; unit" Usage="geoCoordinateWatcher.Stop " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Device.Location.IGeoPositionWatcher`1.Stop</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Device.Location.GeoCoordinateWatcher" />가 위치 데이터 및 이벤트를 더 이상 제공하지 않도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 후 <xref:System.Device.Location.GeoCoordinateWatcher.Stop%2A> 더 이상 호출 됩니다 <xref:System.Device.Location.GeoCoordinateWatcher.PositionChanged> 이벤트가 발생 하며 <xref:System.Device.Location.GeoCoordinateWatcher.Position%2A> 속성은 반환 <xref:System.Device.Location.GeoCoordinate.Unknown>합니다.  
+  
+ 때 <xref:System.Device.Location.GeoCoordinateWatcher.Stop%2A> 호출 되는 <xref:System.Device.Location.GeoCoordinateWatcher.Status%2A> 속성이 <xref:System.Device.Location.GeoPositionStatus.Disabled>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.INotifyPropertyChanged.PropertyChanged">
+      <MemberSignature Language="C#" Value="event System.ComponentModel.PropertyChangedEventHandler System.ComponentModel.INotifyPropertyChanged.PropertyChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.ComponentModel.PropertyChangedEventHandler System.ComponentModel.INotifyPropertyChanged.PropertyChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Device.Location.GeoCoordinateWatcher.System#ComponentModel#INotifyPropertyChanged#PropertyChanged" />
+      <MemberSignature Language="VB.NET" Value="Custom Event PropertyChanged As PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged" />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>add: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>remove: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.PropertyChangedEventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="P:System.Device.Location.GeoCoordinateWatcher.Status" /> 속성, <see cref="P:System.Device.Location.GeoCoordinateWatcher.Position" /> 속성 또는 <see cref="P:System.Device.Location.GeoCoordinateWatcher.Permission" /> 속성이 변경되었음을 나타냅니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;.PositionChanged">
+      <MemberSignature Language="C#" Value="event EventHandler&lt;System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt;&gt; System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;.PositionChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.Device.Location.GeoPositionChangedEventArgs`1&lt;class System.Device.Location.GeoCoordinate&gt;&gt; System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;.PositionChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Device.Location.GeoCoordinateWatcher.System#Device#Location#IGeoPositionWatcher&lt;System#Device#Location#GeoCoordinate&gt;#PositionChanged" />
+      <MemberSignature Language="VB.NET" Value="Custom Event PositionChanged As EventHandler(Of GeoPositionChangedEventArgs(Of GeoCoordinate)) Implements System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;" />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.Device.Location.IGeoPositionWatcher`1.PositionChanged</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>add: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>remove: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.Device.Location.GeoPositionChangedEventArgs&lt;System.Device.Location.GeoCoordinate&gt;&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>위치 데이터가 변경되었음을 나타냅니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;.StatusChanged">
+      <MemberSignature Language="C#" Value="event EventHandler&lt;System.Device.Location.GeoPositionStatusChangedEventArgs&gt; System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;.StatusChanged;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler`1&lt;class System.Device.Location.GeoPositionStatusChangedEventArgs&gt; System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;.StatusChanged" />
+      <MemberSignature Language="DocId" Value="E:System.Device.Location.GeoCoordinateWatcher.System#Device#Location#IGeoPositionWatcher&lt;System#Device#Location#GeoCoordinate&gt;#StatusChanged" />
+      <MemberSignature Language="VB.NET" Value="Custom Event StatusChanged As EventHandler(Of GeoPositionStatusChangedEventArgs) Implements System.Device.Location.IGeoPositionWatcher&lt;System.Device.Location.GeoCoordinate&gt;" />
+      <MemberType>Event</MemberType>
+      <Implements>
+        <InterfaceMember>E:System.Device.Location.IGeoPositionWatcher`1.StatusChanged</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>add: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>remove: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.EventHandler&lt;System.Device.Location.GeoPositionStatusChangedEventArgs&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>위치 공급자의 상태가 변경되었음을 나타냅니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryStart">
+      <MemberSignature Language="C#" Value="public bool TryStart (bool suppressPermissionPrompt, TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool TryStart(bool suppressPermissionPrompt, valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Device.Location.GeoCoordinateWatcher.TryStart(System.Boolean,System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryStart (suppressPermissionPrompt As Boolean, timeout As TimeSpan) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool TryStart(bool suppressPermissionPrompt, TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="abstract member TryStart : bool * TimeSpan -&gt; bool&#xA;override this.TryStart : bool * TimeSpan -&gt; bool" Usage="geoCoordinateWatcher.TryStart (suppressPermissionPrompt, timeout)" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Device.Location.IGeoPositionWatcher`1.TryStart(System.Boolean,System.TimeSpan)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Device</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="suppressPermissionPrompt" Type="System.Boolean" />
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="suppressPermissionPrompt">사용 권한 대화 상자를 표시하지 않으려면 <see langword="true" />이고, 사용 권한 대화 상자를 표시하려면 <see langword="false" />입니다.</param>
+        <param name="timeout">제한 시간을 초과할 때까지 위치 공급자의 시작을 기다릴 시간(밀리초)입니다.</param>
+        <summary>현재 위치 공급자로부터 데이터를 가져오기 시작합니다. 이 메서드는 동기적으로 반환됩니다.</summary>
+        <returns><paramref name="timeout" />에 의해 지정된 시간 안에 데이터 가져오기가 시작되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 지정 된 기간 동안 호출 스레드의 실행을 차단 하는이 메서드 `timeout`합니다. 호출할 때 주의 해야 <xref:System.Device.Location.GeoCoordinateWatcher.TryStart%2A> 애플리케이션의 사용자 인터페이스 스레드에서 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 호출 하는 방법에 설명 <xref:System.Device.Location.GeoCoordinateWatcher.TryStart%2A>합니다.  
+  
+ [!code-csharp[System.Device.Location.GetLocationDataSync1#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.device.location.getlocationdatasync1/cs/getlocationdatasync.cs#1)]
+ [!code-vb[System.Device.Location.GetLocationDataSync1#1](~/samples/snippets/visualbasic/VS_Snippets_Misc/system.device.location.getlocationdatasync1/vb/GetLocationDataSync.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

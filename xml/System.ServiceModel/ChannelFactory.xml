@@ -1,0 +1,1008 @@
+<Type Name="ChannelFactory" FullName="System.ServiceModel.ChannelFactory">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="8a41a89a1a7355fe07329b704f3749b88aee4731" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58698917" /></Metadata><TypeSignature Language="C#" Value="public abstract class ChannelFactory : System.ServiceModel.Channels.CommunicationObject, IDisposable, System.ServiceModel.Channels.IChannelFactory" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ChannelFactory extends System.ServiceModel.Channels.CommunicationObject implements class System.IDisposable, class System.ServiceModel.Channels.IChannelFactory, class System.ServiceModel.ICommunicationObject" />
+  <TypeSignature Language="DocId" Value="T:System.ServiceModel.ChannelFactory" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ChannelFactory&#xA;Inherits CommunicationObject&#xA;Implements IChannelFactory, IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ChannelFactory abstract : System::ServiceModel::Channels::CommunicationObject, IDisposable, System::ServiceModel::Channels::IChannelFactory" />
+  <TypeSignature Language="F#" Value="type ChannelFactory = class&#xA;    inherit CommunicationObject&#xA;    interface IChannelFactory&#xA;    interface ICommunicationObject&#xA;    interface IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.5.0.1</AssemblyVersion>
+    <AssemblyVersion>4.5.0.3</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.ServiceModel.Channels.CommunicationObject</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.ServiceModel.Channels.IChannelFactory</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.ServiceModel.ICommunicationObject</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>클라이언트에서 서비스 엔드포인트로 메시지를 보낼 때 사용하는 채널을 만들고 관리합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Channels.IChannelFactory> 인터페이스를 구현하는 채널 팩터리 및 관련 채널은 일반적으로 통신 패턴의 개시자에서 사용됩니다. <xref:System.ServiceModel.Channels.IChannelListener> 인터페이스를 구현하는 수신기 팩터리 및 관련 수신기는 통신을 위해 채널을 수락하는 메커니즘을 제공합니다.  
+  
+ 이 클래스는 채널 모델이 아니라 서비스 모델에 속해 있습니다. <xref:System.ServiceModel.ChannelFactory.CreateFactory%2A> 메서드를 사용하면 서비스 엔드포인트에 대한 <xref:System.ServiceModel.Channels.IChannelFactory>를 만들 수 있습니다. 메타데이터나 정책을 사용하지 않고 서비스에서 인터페이스 계약에 연결되는 클라이언트를 생성할 때 이 메서드를 사용합니다.  
+  
+> [!NOTE]
+>  `ChannelFactory.Credentials.Windows.AllowedImpersonationLevel`을 `TokenImpersonationLevel.Anonymous`로 설정하면 가장 수준과 관계없이 항상 익명 로그온이 수행됩니다.  
+  
+ 이 클래스에서 파생된 Managed C++ 사용자 관련 참고 사항:  
+  
+-   소멸자가 아니라 (On)(Begin)Close 및/또는 OnAbort에 정리 코드를 입력하십시오.  
+  
+-   소멸자를 사용하지 마십시오. 소멸자를 사용하면 컴파일러에서 <xref:System.IDisposable>을 자동으로 생성할 수 있습니다.  
+  
+-   비참조 멤버를 사용하지 마십시오. 비참조 멤버를 사용하면 컴파일러에서 <xref:System.IDisposable>을 자동으로 생성할 수 있습니다.  
+  
+-   종료자를 사용하지 마십시오. 그러나 종료자를 포함하는 경우 자동으로 생성되는 <xref:System.GC.SuppressFinalize%28System.Object%29> 동작을 에뮬레이트하기 위해 빌드 경고를 표시하지 않고 (On)(Begin)Close 및/또는 OnAbort에서 <xref:System.IDisposable> 및 해당 종료자를 호출해야 합니다.  
+  
+ 동작을 프로그래밍 방식으로 추가할 경우 동작은 채널이 만들어지기 이전에 `Behaviors`의 적절한 <xref:System.ServiceModel.ChannelFactory> 속성에 추가됩니다. 코드 예제는 예제 단원을 참조하십시오.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 팩터리에서 채널 개체를 만들기 전에 클라이언트 동작을 프로그래밍 방식으로 삽입하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[ChannelFactoryBehaviors#10](~/samples/snippets/csharp/VS_Snippets_CFX/channelfactorybehaviors/cs/client.cs#10)]
+ [!code-vb[ChannelFactoryBehaviors#10](~/samples/snippets/visualbasic/VS_Snippets_CFX/channelfactorybehaviors/vb/client.vb#10)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ChannelFactory ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ChannelFactory();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.ChannelFactory" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ApplyConfiguration">
+      <MemberSignature Language="C#" Value="protected virtual void ApplyConfiguration (string configurationName);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void ApplyConfiguration(string configurationName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.ApplyConfiguration(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub ApplyConfiguration (configurationName As String)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void ApplyConfiguration(System::String ^ configurationName);" />
+      <MemberSignature Language="F#" Value="abstract member ApplyConfiguration : string -&gt; unit&#xA;override this.ApplyConfiguration : string -&gt; unit" Usage="channelFactory.ApplyConfiguration configurationName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="configurationName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="configurationName">구성 파일의 이름입니다.</param>
+        <summary>지정된 구성 파일에서 제공한 동작 및 채널 팩터리의 서비스 엔드포인트에 있는 동작을 통해 채널 팩터리를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `configurationName`이 `null`인 경우 서비스 엔드포인트에 지정된 동작만 로드됩니다. 와일드카드 "*"가 사용되는 경우 클라이언트 구성 파일 내의 임의의 엔드포인트 구성이 사용되지만, 이때 엔드포인트 구성이 하나만 있어야 합니다. 그렇지 않으면 예외가 throw됩니다. 빈 문자열 ""을 비롯한 그 밖의 `configurationName` 값은 동일한 이름을 가진 엔드포인트 구성에 일치시킵니다. 참조 된 [WCF 클라이언트 구성](~/docs/framework/wcf/feature-details/client-configuration.md) 클라이언트 구성의 토론에 대 한 항목입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">채널 팩터리의 서비스 엔드포인트가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDescription">
+      <MemberSignature Language="C#" Value="protected abstract System.ServiceModel.Description.ServiceEndpoint CreateDescription ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.ServiceModel.Description.ServiceEndpoint CreateDescription() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.CreateDescription" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Function CreateDescription () As ServiceEndpoint" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract System::ServiceModel::Description::ServiceEndpoint ^ CreateDescription();" />
+      <MemberSignature Language="F#" Value="abstract member CreateDescription : unit -&gt; System.ServiceModel.Description.ServiceEndpoint" Usage="channelFactory.CreateDescription " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Description.ServiceEndpoint</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 구현되는 경우 채널 팩터리와 연결된 서비스 엔드포인트에 대한 설명을 만듭니다.</summary>
+        <returns>채널 팩터리에 연결된 <see cref="T:System.ServiceModel.Description.ServiceEndpoint" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateFactory">
+      <MemberSignature Language="C#" Value="protected virtual System.ServiceModel.Channels.IChannelFactory CreateFactory ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.ServiceModel.Channels.IChannelFactory CreateFactory() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.CreateFactory" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function CreateFactory () As IChannelFactory" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::ServiceModel::Channels::IChannelFactory ^ CreateFactory();" />
+      <MemberSignature Language="F#" Value="abstract member CreateFactory : unit -&gt; System.ServiceModel.Channels.IChannelFactory&#xA;override this.CreateFactory : unit -&gt; System.ServiceModel.Channels.IChannelFactory" Usage="channelFactory.CreateFactory " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.IChannelFactory</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>팩터리의 현재 엔드포인트에 대해 채널 팩터리를 생성합니다.</summary>
+        <returns>현재 팩터리의 엔드포인트에 대한 <see cref="T:System.ServiceModel.Channels.IChannelFactory" />입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">팩터리 채널이 연결된 서비스 엔드포인트가 <see langword="null" />이거나 엔드포인트의 바인딩이 <see langword="null" />이거나 지정된 구성 이름을 가진 요소가 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Credentials">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Description.ClientCredentials Credentials { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Description.ClientCredentials Credentials" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.ChannelFactory.Credentials" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Credentials As ClientCredentials" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Description::ClientCredentials ^ Credentials { System::ServiceModel::Description::ClientCredentials ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Credentials : System.ServiceModel.Description.ClientCredentials" Usage="System.ServiceModel.ChannelFactory.Credentials" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Description.ClientCredentials</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>팩터리에서 생성한 채널을 통해 클라이언트가 서비스 엔드포인트와 통신할 때 사용하는 자격 증명을 가져옵니다.</summary>
+        <value>클라이언트가 팩터리에 대해 구성되었거나 엔드포인트가 <see cref="T:System.ServiceModel.Description.ClientCredentials" />이 아니고 Created 또는 Opening 통신 상태인 경우 클라이언트에서 사용되는 <see langword="null" />입니다. 그렇지 않으면 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Description.ClientCredentials> 개체는 엔드포인트 동작의 형식으로 저장되며 <xref:System.ServiceModel.Description.ServiceEndpoint.Behaviors%2A> 속성을 통해 액세스될 수 있습니다.  
+  
+ <xref:System.ServiceModel.ChannelFactory.OnOpened%2A> 메서드는 팩터리에 대한 <xref:System.ServiceModel.Description.ClientCredentials> 개체의 읽기 전용 복사본을 초기화합니다.  
+  
+ <xref:System.ServiceModel.Description.ClientCredentials> 개체는 <xref:System.ServiceModel.ClientBase%601> 클래스(또는 이 클래스의 파생 클래스)에서 서비스를 호출할 수 있는 프록시 개체를 만드는 데 사용합니다. <xref:System.ServiceModel.Description.ClientCredentials> 개체는 <xref:System.ServiceModel.ClientBase%601.ClientCredentials%2A> 속성을 통해서도 액세스할 수 있습니다.  
+  
+> [!NOTE]
+>  `ChannelFactory.Credentials.Windows.AllowedImpersonationLevel`을 `TokenImpersonationLevel.Anonymous`로 설정하면 가장 수준과 관계없이 항상 익명 로그온이 수행됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultCloseTimeout">
+      <MemberSignature Language="C#" Value="protected internal override TimeSpan DefaultCloseTimeout { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan DefaultCloseTimeout" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.ChannelFactory.DefaultCloseTimeout" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides ReadOnly Property DefaultCloseTimeout As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual property TimeSpan DefaultCloseTimeout { TimeSpan get(); };" />
+      <MemberSignature Language="F#" Value="member this.DefaultCloseTimeout : TimeSpan" Usage="System.ServiceModel.ChannelFactory.DefaultCloseTimeout" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>닫기 작업을 완료하기 위해 제공되는 기본 시간 간격을 가져옵니다.</summary>
+        <value>시간 제한이 초과되기 전에 닫기 작업이 완료되어야 하는 기간을 지정하는 기본 <see cref="T:System.TimeSpan" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Description.ServiceEndpoint>와 <xref:System.ServiceModel.Description.ServiceEndpoint.Binding%2A> 모두 `null`인 경우 기본 서비스 모델 닫기 제한 시간을 가져옵니다. 서비스 모델 닫기 제한 시간 기본값은 1분입니다. 그렇지 않으면 이 값은 <xref:System.ServiceModel.Channels.Binding.CloseTimeout%2A>와 연결된 <xref:System.ServiceModel.Description.ServiceEndpoint> 값으로 설정됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultOpenTimeout">
+      <MemberSignature Language="C#" Value="protected internal override TimeSpan DefaultOpenTimeout { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan DefaultOpenTimeout" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.ChannelFactory.DefaultOpenTimeout" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides ReadOnly Property DefaultOpenTimeout As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual property TimeSpan DefaultOpenTimeout { TimeSpan get(); };" />
+      <MemberSignature Language="F#" Value="member this.DefaultOpenTimeout : TimeSpan" Usage="System.ServiceModel.ChannelFactory.DefaultOpenTimeout" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>열기 작업을 완료하기 위해 제공되는 기본 시간 간격을 가져옵니다.</summary>
+        <value>시간 제한이 초과되기 전에 열기 작업이 완료되어야 하는 기간을 지정하는 기본 <see cref="T:System.TimeSpan" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Description.ServiceEndpoint>와 <xref:System.ServiceModel.Description.ServiceEndpoint.Binding%2A> 모두 `null`인 경우 기본 서비스 모델 열기 제한 시간을 가져옵니다. 서비스 모델 열기 제한 시간 기본값은 1분입니다. 그렇지 않으면 이 값은 <xref:System.ServiceModel.Channels.Binding.OpenTimeout%2A>와 연결된 <xref:System.ServiceModel.Description.ServiceEndpoint> 값으로 설정됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Endpoint">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Description.ServiceEndpoint Endpoint { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Description.ServiceEndpoint Endpoint" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.ChannelFactory.Endpoint" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Endpoint As ServiceEndpoint" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Description::ServiceEndpoint ^ Endpoint { System::ServiceModel::Description::ServiceEndpoint ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Endpoint : System.ServiceModel.Description.ServiceEndpoint" Usage="System.ServiceModel.ChannelFactory.Endpoint" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Description.ServiceEndpoint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>팩터리에서 만든 채널이 연결되는 서비스 엔드포인트를 가져옵니다.</summary>
+        <value>팩터리 연결에서 생성하는 채널이 연결된 <see cref="T:System.ServiceModel.Description.ServiceEndpoint" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnsureOpened">
+      <MemberSignature Language="C#" Value="protected void EnsureOpened ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void EnsureOpened() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.EnsureOpened" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub EnsureOpened ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void EnsureOpened();" />
+      <MemberSignature Language="F#" Value="member this.EnsureOpened : unit -&gt; unit" Usage="channelFactory.EnsureOpened " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 채널 팩터리가 아직 열리지 않은 경우 이를 엽니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 채널 팩터리를 열기 전에 <xref:System.ServiceModel.CommunicationState.Closed>, <xref:System.ServiceModel.CommunicationState.Closing> 또는 <xref:System.ServiceModel.CommunicationState.Opened>가 아닌지 확인합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">현재 팩터리가 닫히는 중이거나 닫혀 있어 열 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetProperty&lt;T&gt;">
+      <MemberSignature Language="C#" Value="public T GetProperty&lt;T&gt; () where T : class;" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance !!T GetProperty&lt;class T&gt;() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.GetProperty``1" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetProperty(Of T As Class) () As T" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;generic &lt;typename T&gt;&#xA; where T : class virtual T GetProperty();" />
+      <MemberSignature Language="F#" Value="abstract member GetProperty : unit -&gt; 'T (requires 'T : null)&#xA;override this.GetProperty : unit -&gt; 'T (requires 'T : null)" Usage="channelFactory.GetProperty " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ServiceModel.Channels.IChannelFactory.GetProperty``1</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>T</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters />
+      <Docs>
+        <typeparam name="T">메서드에서 쿼리하고 있는 형식화된 개체입니다.</typeparam>
+        <summary>요청한 형식의 개체가 있으면 채널 스택의 해당 계층에서 그 개체를 반환하고, 개체가 없으면 <see langword="null" />을 반환합니다.</summary>
+        <returns>요청한 형식의 개체가 있으면 해당 형식의 개체 <paramref name="T" />이고, 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 채널 스택으로부터 기능, 요구 사항 및 매개 변수를 검색할 때 사용합니다. 채널 팩터리가 요청된 개체의 반환을 지원할 경우 해당 개체를 반환합니다. 그렇지 않으면 스택의 다음 아래 수준에 호출을 위임합니다. 스택의 맨 아래에 도달할 때까지 요청된 개체를 지원하는 채널 팩터리가 없으면 메서드는 `null`을 반환합니다.  
+  
+ 일반적으로 `T`는 채널 팩터리가 지원할 수 있는 채널 인터페이스입니다. 예를 들어, 이중 채널 팩터리에서 `GetProperty<IChannelListener>`가 호출되는 경우 기본 수신기가 반환됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="InitializeEndpoint">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>채널 팩터리의 서비스 엔드포인트를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 엔드포인트를 초기화하기 위해 주소가 필요하지만, 전체 엔드포인트 대신 바인딩이나 구성만 있어도 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="InitializeEndpoint">
+      <MemberSignature Language="C#" Value="protected void InitializeEndpoint (System.ServiceModel.Description.ServiceEndpoint endpoint);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void InitializeEndpoint(class System.ServiceModel.Description.ServiceEndpoint endpoint) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.InitializeEndpoint(System.ServiceModel.Description.ServiceEndpoint)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub InitializeEndpoint (endpoint As ServiceEndpoint)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void InitializeEndpoint(System::ServiceModel::Description::ServiceEndpoint ^ endpoint);" />
+      <MemberSignature Language="F#" Value="member this.InitializeEndpoint : System.ServiceModel.Description.ServiceEndpoint -&gt; unit" Usage="channelFactory.InitializeEndpoint endpoint" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="endpoint" Type="System.ServiceModel.Description.ServiceEndpoint" />
+      </Parameters>
+      <Docs>
+        <param name="endpoint">채널 팩터리를 초기화하는 데 사용하는 <see cref="T:System.ServiceModel.Description.ServiceEndpoint" />입니다.</param>
+        <summary>지정된 엔드포인트를 사용하여 채널 팩터리의 서비스 엔드포인트를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 바인딩만 있는 경우 <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.ServiceModel.Channels.Binding%2CSystem.ServiceModel.EndpointAddress%29>를 사용합니다. 구성이 있는 경우 <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.String%2CSystem.ServiceModel.EndpointAddress%29>를 사용합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="endpoint" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeEndpoint">
+      <MemberSignature Language="C#" Value="protected void InitializeEndpoint (System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress address);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void InitializeEndpoint(class System.ServiceModel.Channels.Binding binding, class System.ServiceModel.EndpointAddress address) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.InitializeEndpoint(System.ServiceModel.Channels.Binding,System.ServiceModel.EndpointAddress)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void InitializeEndpoint(System::ServiceModel::Channels::Binding ^ binding, System::ServiceModel::EndpointAddress ^ address);" />
+      <MemberSignature Language="F#" Value="member this.InitializeEndpoint : System.ServiceModel.Channels.Binding * System.ServiceModel.EndpointAddress -&gt; unit" Usage="channelFactory.InitializeEndpoint (binding, address)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="binding" Type="System.ServiceModel.Channels.Binding" />
+        <Parameter Name="address" Type="System.ServiceModel.EndpointAddress" />
+      </Parameters>
+      <Docs>
+        <param name="binding">채널 팩터리를 초기화하는 데 사용하는 <see cref="T:System.ServiceModel.Channels.Binding" />입니다.</param>
+        <param name="address">채널 팩터리를 초기화하는 데 사용하는 <see cref="T:System.ServiceModel.EndpointAddress" />입니다.</param>
+        <summary>지정된 바인딩 및 주소를 사용하여 채널 팩터리의 서비스 엔드포인트를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 구성이 있는 경우 <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.String%2CSystem.ServiceModel.EndpointAddress%29>를 사용합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeEndpoint">
+      <MemberSignature Language="C#" Value="protected void InitializeEndpoint (string configurationName, System.ServiceModel.EndpointAddress address);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-uwp-10.0;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void InitializeEndpoint(string configurationName, class System.ServiceModel.EndpointAddress address) cil managed" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-uwp-10.0;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub InitializeEndpoint (configurationName As String, address As EndpointAddress)" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-uwp-10.0;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void InitializeEndpoint(System::String ^ configurationName, System::ServiceModel::EndpointAddress ^ address);" FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.8;dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-uwp-10.0;dotnet-plat-ext-3.0" />
+      <MemberSignature Language="C#" Value="protected void InitializeEndpoint (string configurationName, System.ServiceModel.EndpointAddress remoteAddress);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void InitializeEndpoint(string configurationName, class System.ServiceModel.EndpointAddress remoteAddress) cil managed" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.InitializeEndpoint(System.String,System.ServiceModel.EndpointAddress)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub InitializeEndpoint (configurationName As String, remoteAddress As EndpointAddress)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void InitializeEndpoint(System::String ^ configurationName, System::ServiceModel::EndpointAddress ^ remoteAddress);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.InitializeEndpoint : string * System.ServiceModel.EndpointAddress -&gt; unit" Usage="channelFactory.InitializeEndpoint (configurationName, address)" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;netcore-1.0;netcore-1.1;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.InitializeEndpoint : string * System.ServiceModel.EndpointAddress -&gt; unit" Usage="channelFactory.InitializeEndpoint (configurationName, remoteAddress)" FrameworkAlternate="xamarinandroid-7.1" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.InitializeEndpoint(System.String,System.ServiceModel.EndpointAddress)" FrameworkAlternate="xamarinandroid-7.1;dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;dotnet-uwp-10.0" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="configurationName" Type="System.String" Index="0" />
+        <Parameter Name="address" Type="System.ServiceModel.EndpointAddress" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="remoteAddress" Type="System.ServiceModel.EndpointAddress" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="configurationName">채널 팩터리 초기화에 사용되는 구성 파일의 이름입니다.</param>
+        <param name="address">채널 팩터리를 초기화하는 데 사용하는 <see cref="T:System.ServiceModel.EndpointAddress" />입니다.</param>
+        <param name="remoteAddress">To be added.</param>
+        <summary>지정된 주소 및 구성을 사용하여 채널 팩터리의 서비스 엔드포인트를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 바인딩만 있는 경우 <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.ServiceModel.Channels.Binding%2CSystem.ServiceModel.EndpointAddress%29>를 사용합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAbort">
+      <MemberSignature Language="C#" Value="protected override void OnAbort ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnAbort() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnAbort" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnAbort ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnAbort();" />
+      <MemberSignature Language="F#" Value="override this.OnAbort : unit -&gt; unit" Usage="channelFactory.OnAbort " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 채널 팩터리의 내부 채널 팩터리를 종료합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.ChannelFactory.OnAbort%2A> 메서드가 호출되는 경우 Closing 상태로 전환된 팩터리에 대해 <xref:System.ServiceModel.Channels.CommunicationObject.Abort%2A> 메서드가 호출됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginClose">
+      <MemberSignature Language="C#" Value="protected override IAsyncResult OnBeginClose (TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance class System.IAsyncResult OnBeginClose(valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnBeginClose(System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function OnBeginClose (timeout As TimeSpan, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override IAsyncResult ^ OnBeginClose(TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="override this.OnBeginClose : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="channelFactory.OnBeginClose (timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">시간 제한이 초과되기 전에 작업이 완료되어야 하는 기간을 지정하는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="callback">비동기 작업 완료에 대한 알림을 수신하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">애플리케이션에서 지정하는 개체로, 비동기 작업과 연결된 상태 정보를 포함합니다.</param>
+        <summary>연결된 상태 개체가 있는 현재 채널 팩터리의 내부 채널 팩터리에서 비동기 닫기 작업을 시작합니다.</summary>
+        <returns>비동기 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 콜백을 통해 해당 작업의 이벤트 처리기 ID에 대한 알림을 수신합니다. 내부 채널 팩터리에 대한 비동기 닫기가 반환되거나 시간 제한이 초과될 때까지는 작업이 완료되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginOpen">
+      <MemberSignature Language="C#" Value="protected override IAsyncResult OnBeginOpen (TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance class System.IAsyncResult OnBeginOpen(valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnBeginOpen(System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function OnBeginOpen (timeout As TimeSpan, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override IAsyncResult ^ OnBeginOpen(TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="override this.OnBeginOpen : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="channelFactory.OnBeginOpen (timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">시간 제한이 초과되기 전에 작업이 완료되어야 하는 기간을 지정하는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <param name="callback">비동기 작업 완료에 대한 알림을 수신하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">애플리케이션에서 지정하는 개체로, 비동기 작업과 연결된 상태 정보를 포함합니다.</param>
+        <summary>연결된 상태 개체가 있는 현재 채널 팩터리의 내부 채널 팩터리에서 비동기 열기 작업을 시작합니다.</summary>
+        <returns>비동기 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 콜백을 통해 해당 작업의 이벤트 처리기 ID에 대한 알림을 수신합니다. 내부 채널 팩터리에 대한 비동기 열기가 반환되거나 시간 제한이 초과될 때까지는 작업이 완료되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnClose">
+      <MemberSignature Language="C#" Value="protected override void OnClose (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnClose(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnClose(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnClose (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnClose(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="override this.OnClose : TimeSpan -&gt; unit" Usage="channelFactory.OnClose timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">시간 제한이 초과되기 전에 작업이 완료되어야 하는 기간을 지정하는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <summary>작업 완료를 위해 지정된 시간 제한을 사용하여 내부 채널 팩터리에 대한 닫기를 호출합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndClose">
+      <MemberSignature Language="C#" Value="protected override void OnEndClose (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnEndClose(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnEndClose(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnEndClose (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnEndClose(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="override this.OnEndClose : IAsyncResult -&gt; unit" Usage="channelFactory.OnEndClose result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출하여 반환된 <see cref="M:System.ServiceModel.ChannelFactory.OnBeginClose(System.TimeSpan,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>현재 채널 팩터리의 내부 채널 팩터리에 대한 비동기 닫기 작업을 완료합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndOpen">
+      <MemberSignature Language="C#" Value="protected override void OnEndOpen (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnEndOpen(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnEndOpen(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnEndOpen (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnEndOpen(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="override this.OnEndOpen : IAsyncResult -&gt; unit" Usage="channelFactory.OnEndOpen result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출하여 반환된 <see cref="M:System.ServiceModel.ChannelFactory.OnBeginOpen(System.TimeSpan,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>현재 채널 팩터리의 내부 채널 팩터리에 대한 비동기 열기 작업을 완료합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnOpen">
+      <MemberSignature Language="C#" Value="protected override void OnOpen (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnOpen(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnOpen(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnOpen (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnOpen(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="override this.OnOpen : TimeSpan -&gt; unit" Usage="channelFactory.OnOpen timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">제한 시간이 초과되기 전에 열기 작업이 완료되어야 하는 기간을 지정하는 <see cref="T:System.TimeSpan" />입니다.</param>
+        <summary>작업 완료를 위해 지정된 시간 제한을 사용하여 현재 채널 팩터리의 내부 채널 팩터리에 대한 열기를 호출합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">현재 채널의 내부 채널이 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="OnOpened">
+      <MemberSignature Language="C#" Value="protected override void OnOpened ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnOpened() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnOpened" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnOpened ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnOpened();" />
+      <MemberSignature Language="F#" Value="override this.OnOpened : unit -&gt; unit" Usage="channelFactory.OnOpened " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>채널 팩터리에 대한 <see cref="T:System.ServiceModel.Description.ClientCredentials" /> 개체의 읽기 전용 복사본을 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Channels.CommunicationObject.OnOpened%2A> 메서드를 재정의하고 호출합니다. 이 메서드는 개체를 Opened 상태로 전환하는 도중에 호출됩니다. <xref:System.ServiceModel.Description.ClientCredentials> 개체는 엔드포인트 동작의 형식으로 저장되며 <xref:System.ServiceModel.Description.ServiceEndpoint.Behaviors%2A> 속성을 통해 액세스될 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnOpening">
+      <MemberSignature Language="C#" Value="protected override void OnOpening ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnOpening() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.OnOpening" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnOpening ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnOpening();" />
+      <MemberSignature Language="F#" Value="override this.OnOpening : unit -&gt; unit" Usage="channelFactory.OnOpening " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 채널의 내부 채널 팩터리를 생성합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">채널 팩터리의 내부 채널 팩터리가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="System.IDisposable.Dispose">
+      <MemberSignature Language="C#" Value="void IDisposable.Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.IDisposable.Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.System#IDisposable#Dispose" />
+      <MemberSignature Language="VB.NET" Value="Sub Dispose () Implements IDisposable.Dispose" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.IDisposable.Dispose() = IDisposable::Dispose;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.5.0.1</AssemblyVersion>
+        <AssemblyVersion>4.5.0.3</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 채널 팩터리를 닫습니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

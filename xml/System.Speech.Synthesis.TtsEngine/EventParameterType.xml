@@ -1,0 +1,233 @@
+<Type Name="EventParameterType" FullName="System.Speech.Synthesis.TtsEngine.EventParameterType">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="e7e3c533e67474caf3180044f96c0cf36485613d" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="37610237" /></Metadata><TypeSignature Language="C#" Value="public enum EventParameterType" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed EventParameterType extends System.Enum" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Synthesis.TtsEngine.EventParameterType" />
+  <TypeSignature Language="VB.NET" Value="Public Enum EventParameterType" />
+  <TypeSignature Language="C++ CLI" Value="public enum class EventParameterType" />
+  <TypeSignature Language="F#" Value="type EventParameterType = " />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Enum</BaseTypeName>
+  </Base>
+  <Docs>
+    <summary>음성 합성 이벤트에 전달되는 데이터 포인터 형식을 열거합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Speech.Synthesis.TtsEngine.EventParameterType> 생성할 때 사용 되는 <xref:System.Speech.Synthesis.TtsEngine.SpeechEventInfo> 개체입니다. 인스턴스의 <xref:System.Speech.Synthesis.TtsEngine.EventParameterType> 변수로 전달 합니다 `parameterType` 인수에 대 한 생성자를 <xref:System.Speech.Synthesis.TtsEngine.SpeechEventInfo> 지정 하는 방법을 `param2` 생성자의 인수 (이어야 합니다는 `System.IntPtr`) 해석 됩니다.  
+  
+ 선택할 <xref:System.Speech.Synthesis.TtsEngine.EventParameterType> 요청 되는 이벤트의 형식에 의해 결정 됩니다의 멤버에 의해 지정 된 대로 <xref:System.Speech.Synthesis.TtsEngine.TtsEventId>입니다.  
+  
+ 사용 하는 방법에 대 한 자세한 내용은 <xref:System.Speech.Synthesis.TtsEngine.EventParameterType>에 대 한 설명서를 참조 하세요. <xref:System.Speech.Synthesis.TtsEngine.SpeechEventInfo.EventId%2A>  
+  
+   
+  
+## Examples  
+ 아래 예제에서 상속 하는 사용자 지정 음성 합성 구현의 일부인 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineSsml>, 및 사용을 사용 하 여 <xref:System.Speech.Synthesis.TtsEngine.TextFragment>를 <xref:System.Speech.Synthesis.TtsEngine.SpeechEventInfo>를 <xref:System.Speech.Synthesis.TtsEngine.FragmentState>, 및 <xref:System.Speech.Synthesis.TtsEngine.TtsEventId>합니다.  
+  
+ 구현 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineSsml.Speak%2A>  
+  
+1.  배열을 받습니다 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 인스턴스 및 새 배열을 만듭니다 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 전달 되는 인스턴스는 `Speak` 기본 합성 엔진에서 메서드.  
+  
+2.  경우는 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineAction> 에서 열거형 값에서 찾을 <xref:System.Speech.Synthesis.TtsEngine.FragmentState.Action%2A> 속성에는 <xref:System.Speech.Synthesis.TtsEngine.FragmentState> 반환한를 <xref:System.Speech.Synthesis.TtsEngine.TextFragment.State%2A> 의 각 속성 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 인스턴스가 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineAction.Speak>, 구현  
+  
+    -   읽을 텍스트의 Americanism Britishisms 변환 합니다.  
+  
+    -   경우는 <xref:System.Speech.Synthesis.TtsEngine.ITtsEngineSite.EventInterest%2A> 속성에는 <xref:System.Speech.Synthesis.TtsEngine.ITtsEngineSite> 구현 지원 제공 하는 인터페이스를 <xref:System.Speech.Synthesis.TtsEngine.TtsEventId.WordBoundary> 이벤트 유형는 <xref:System.Speech.Synthesis.TtsEngine.SpeechEventInfo> 인스턴스 이벤트 신시사이저 진행률 표시기가 만든 드라이브를 만드는 데 사용 됩니다.  
+  
+         매개 변수 <xref:System.Speech.Synthesis.TtsEngine.SpeechEventInfo>를 포함 하 여는 <xref:System.Speech.Synthesis.TtsEngine.EventParameterType> 멤버 값을 반환한 <xref:System.Speech.Synthesis.TtsEngine.SpeechEventInfo.ParameterType%2A>를 통해 생성 된 이벤트를 기록 하는 데 사용 되는 `LogSpeechEvent` 메서드.  
+  
+3.  이라고 하는 음성 렌더링 엔진이 수정 된 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 배열입니다.  
+  
+```  
+private const int WordBoundaryFlag = 1 << (int)TtsEventId.WordBoundary;  
+private readonly char[] spaces = new char[] { ' ', '\t', '\r', '\n' };  
+internal struct UsVsUk  
+{  
+  internal string UK;  
+  internal string US;  
+}  
+  
+override public void Speak (TextFragment [] frags, IntPtr wfx, ITtsEngineSite site)  
+{  
+  TextFragment [] newFrags=new TextFragment[frags.Length];  
+  
+  for (int i=0;i<frags.Length;i++){  
+    newFrags[i].State=frags[i].State;  
+    //truncate  
+    newFrags[i].TextToSpeak = frags[i].TextToSpeak.Substring(frags[i].TextOffset,  
+                               frags[i].TextLength);  
+    newFrags[i].TextLength = newFrags[i].TextToSpeak.Length;  
+    newFrags[i].TextOffset = 0;  
+    if (newFrags[i].State.Action == TtsEngineAction.Speak) {  
+      //Us to UK conversion  
+      foreach (UsVsUk term in TransList) {  
+      newFrags[i].TextToSpeak.Replace(term.US, term.UK);  
+      }  
+      //Generate progress meter events if supported  
+      if ((site.EventInterest & WordBoundaryFlag) != 0) {  
+      string[] subs = newFrags[i].TextToSpeak.Split(spaces);  
+  
+      foreach (string s in subs) {  
+        int offset = newFrags[i].TextOffset;  
+        SpeechEventInfo spEvent = new SpeechEventInfo((Int16)TtsEventId.WordBoundary,   
+                (Int16)EventParameterType.Undefined,   
+                 s.Length, new IntPtr(offset));  
+         LogSpeechEvent(spEvent.EventId,   
+                        spEvent.ParameterType,   
+                        spEvent.Param1,  
+                        spEvent.Param2);  
+        offset += s.Length;  
+        if (s.Trim().Length > 0) {  
+          SpeechEventInfo[] events = new SpeechEventInfo[1];  
+          events[0] = spEvent;  
+          site.AddEvents(events, 1);  
+        }  
+      }  
+      }  
+    }  
+  }  
+  
+  _baseSynthesize.Speak(newFrags, wfx, site);  
+  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Speech.Synthesis.TtsEngine.SpeechEventInfo" />
+  </Docs>
+  <Members>
+    <Member MemberName="Object">
+      <MemberSignature Language="C#" Value="Object" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.EventParameterType Object = int32(2)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.EventParameterType.Object" />
+      <MemberSignature Language="VB.NET" Value="Object" />
+      <MemberSignature Language="C++ CLI" Value="Object" />
+      <MemberSignature Language="F#" Value="Object = 2" Usage="System.Speech.Synthesis.TtsEngine.EventParameterType.Object" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.EventParameterType</ReturnType>
+      </ReturnValue>
+      <MemberValue>2</MemberValue>
+      <Docs>
+        <summary>현재 지원되지 않습니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="Pointer">
+      <MemberSignature Language="C#" Value="Pointer" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.EventParameterType Pointer = int32(3)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.EventParameterType.Pointer" />
+      <MemberSignature Language="VB.NET" Value="Pointer" />
+      <MemberSignature Language="C++ CLI" Value="Pointer" />
+      <MemberSignature Language="F#" Value="Pointer = 3" Usage="System.Speech.Synthesis.TtsEngine.EventParameterType.Pointer" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.EventParameterType</ReturnType>
+      </ReturnValue>
+      <MemberValue>3</MemberValue>
+      <Docs>
+        <summary>현재 지원되지 않습니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="String">
+      <MemberSignature Language="C#" Value="String" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.EventParameterType String = int32(4)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.EventParameterType.String" />
+      <MemberSignature Language="VB.NET" Value="String" />
+      <MemberSignature Language="C++ CLI" Value="String" />
+      <MemberSignature Language="F#" Value="String = 4" Usage="System.Speech.Synthesis.TtsEngine.EventParameterType.String" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.EventParameterType</ReturnType>
+      </ReturnValue>
+      <MemberValue>4</MemberValue>
+      <Docs>
+        <summary><see cref="T:System.Speech.Synthesis.TtsEngine.SpeechEventInfo" />에 대한 <paramref name="param2" /> 인수가 <see langword="System.IntPtr" /> 개체를 참조하는 <see langword="System.Runtime.InteropServices.Marshal.StringToCoTaskMemUni" />를 사용하여 만든 <see langword="System.String" />임을 나타냅니다. <paramref name="param1" />는 임의의 값을 사용할 수 있습니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="Token">
+      <MemberSignature Language="C#" Value="Token" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.EventParameterType Token = int32(1)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.EventParameterType.Token" />
+      <MemberSignature Language="VB.NET" Value="Token" />
+      <MemberSignature Language="C++ CLI" Value="Token" />
+      <MemberSignature Language="F#" Value="Token = 1" Usage="System.Speech.Synthesis.TtsEngine.EventParameterType.Token" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.EventParameterType</ReturnType>
+      </ReturnValue>
+      <MemberValue>1</MemberValue>
+      <Docs>
+        <summary><see cref="T:System.Speech.Synthesis.TtsEngine.SpeechEventInfo" />에 대한 <paramref name="param2" /> 인수임을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 가 `System.IntPtr` 사용 하 여 만든 `System.Runtime.InteropServices.Marshal.PtrToStructure`  
+  
+ Windows 데스크톱 음성 기술을 토큰-Windows 바탕 화면 음성 기술을 나타내는 개체를 음성으로 같은 리소스에 참조 (<xref:System.Speech.Synthesis.VoiceInfo>); `param1` 값 걸릴 수 있습니다.  
+  
+> [!NOTE]
+>  멤버를 사용 하 여 작성 된 관리 되는 합성 음성 엔진의 현재 인스턴스는 <xref:System.Speech.Synthesis> 네임 스페이스, 리소스 생성 후 변경할 수 없습니다  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Undefined">
+      <MemberSignature Language="C#" Value="Undefined" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.EventParameterType Undefined = int32(0)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.EventParameterType.Undefined" />
+      <MemberSignature Language="VB.NET" Value="Undefined" />
+      <MemberSignature Language="C++ CLI" Value="Undefined" />
+      <MemberSignature Language="F#" Value="Undefined = 0" Usage="System.Speech.Synthesis.TtsEngine.EventParameterType.Undefined" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.EventParameterType</ReturnType>
+      </ReturnValue>
+      <MemberValue>0</MemberValue>
+      <Docs>
+        <summary><paramref name="param2" /> 인수가 <see cref="T:System.Speech.Synthesis.TtsEngine.SpeechEventInfo" />에 정의되지 않았음을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 일반적으로 `param1` 고 `param2` 은 무시 됩니다. 그러나 경우 <xref:System.Speech.Synthesis.TtsEngine.TtsEventId> 됩니다 <xref:System.Speech.Synthesis.TtsEngine.TtsEventId.WordBoundary>, 진행률 미터 이벤트를 생성할 수 있습니다 `param1` 현재 단어의 길이 포함 하는 정수 여야 합니다 및 `param2` 는 `System.IntPtr` 현재 오프셋을 포함 하는 정수 참조 단어입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

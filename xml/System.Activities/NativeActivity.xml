@@ -1,0 +1,457 @@
+<Type Name="NativeActivity" FullName="System.Activities.NativeActivity">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="87a24291515d732d916107b6c82cc8d3e2caa6b8" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57946029" /></Metadata><TypeSignature Language="C#" Value="public abstract class NativeActivity : System.Activities.Activity" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit NativeActivity extends System.Activities.Activity" />
+  <TypeSignature Language="DocId" Value="T:System.Activities.NativeActivity" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class NativeActivity&#xA;Inherits Activity" />
+  <TypeSignature Language="C++ CLI" Value="public ref class NativeActivity abstract : System::Activities::Activity" />
+  <TypeSignature Language="F#" Value="type NativeActivity = class&#xA;    inherit Activity" />
+  <AssemblyInfo>
+    <AssemblyName>System.Activities</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Activities.Activity</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary><see cref="M:System.Activities.NativeActivity.Execute(System.Activities.NativeActivityContext)" /> 메서드를 사용하여 실행 논리를 구현하는 사용자 지정 활동의 추상 기본 클래스로, 런타임 기능에 완전히 액세스할 수 있도록 지정합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 샘플에서는 <xref:System.Activities.NativeActivity%601>에서 상속되는 클래스를 만드는 방법을 보여 줍니다. 이 예제에서는 합니다 [Nativeactivity를 사용 하 여 사용자 지정 복합](~/docs/framework/windows-workflow-foundation/samples/custom-composite-using-native-activity.md) 샘플.  
+  
+```csharp
+public sealed class MySequence : NativeActivity  
+{  
+    Collection<Activity> children;  
+    Collection<Variable> variables;  
+    Variable<int> currentIndex;  
+    CompletionCallback onChildComplete;  
+  
+    public MySequence()  
+        : base()  
+    {  
+        this.children = new Collection<Activity>();  
+        this.variables = new Collection<Variable>();  
+        this.currentIndex = new Variable<int>();  
+    }  
+  
+    public Collection<Activity> Activities  
+    {  
+        get  
+        {  
+            return this.children;  
+        }  
+    }  
+    public Collection<Variable> Variables  
+    {  
+        get  
+        {  
+            return this.variables;  
+        }  
+    }  
+    protected override void CacheMetadata(NativeActivityMetadata metadata)  
+    {  
+        //call base.CacheMetadata to add the Activities and Variables to this activity's metadata  
+        base.CacheMetadata(metadata);  
+        //add the private implementation variable: currentIndex   
+        metadata.AddImplementationVariable(this.currentIndex);  
+    }                     
+  
+    protected override void Execute(NativeActivityContext context)  
+    {  
+        InternalExecute(context, null);  
+    }  
+    void InternalExecute(NativeActivityContext context, ActivityInstance instance)  
+    {  
+        //grab the index of the current Activity  
+        int currentActivityIndex = this.currentIndex.Get(context);  
+        if (currentActivityIndex == Activities.Count)  
+        {  
+            //if the currentActivityIndex is equal to the count of MySequence's Activities  
+            //MySequence is complete  
+            return;  
+        }  
+  
+        if (this.onChildComplete == null)  
+        {  
+            //on completion of the current child, have the runtime call back on this method  
+            this.onChildComplete = new CompletionCallback(InternalExecute);  
+        }  
+        //grab the next Activity in MySequence.Activities and schedule it  
+        Activity nextChild = Activities[currentActivityIndex];  
+        context.ScheduleActivity(nextChild, this.onChildComplete);  
+  
+        //increment the currentIndex  
+        this.currentIndex.Set(context, ++currentActivityIndex);  
+    }  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected NativeActivity ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; NativeActivity();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 구현된 경우 파생 클래스의 새 인스턴스를 만듭니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 샘플에서는 <xref:System.Activities.NativeActivity%601>에서 상속되는 클래스를 만드는 방법을 보여 줍니다. 이 예제에서는 합니다 [Nativeactivity를 사용 하 여 사용자 지정 복합](~/docs/framework/windows-workflow-foundation/samples/custom-composite-using-native-activity.md) 샘플.  
+  
+ [!code-csharp[wfs_CustomCompositeNativeActivity#1](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_customcompositenativeactivity/cs/mysequence.cs#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Abort">
+      <MemberSignature Language="C#" Value="protected virtual void Abort (System.Activities.NativeActivityAbortContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Abort(class System.Activities.NativeActivityAbortContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.Abort(System.Activities.NativeActivityAbortContext)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Abort (context As NativeActivityAbortContext)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Abort(System::Activities::NativeActivityAbortContext ^ context);" />
+      <MemberSignature Language="F#" Value="abstract member Abort : System.Activities.NativeActivityAbortContext -&gt; unit&#xA;override this.Abort : System.Activities.NativeActivityAbortContext -&gt; unit" Usage="nativeActivity.Abort context" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Activities.NativeActivityAbortContext" />
+      </Parameters>
+      <Docs>
+        <param name="context">활동이 실행되는 실행 컨텍스트입니다.</param>
+        <summary>파생 클래스에서 구현된 경우 중단 중인 활동에 대한 응답으로 동작을 수행합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="CacheMetadata">
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>활동의 인수, 변수, 자식 활동 및 활동 대리자에 대한 설명을 만들고 유효성을 검사합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용자 지정 활동 작성자는 활동의 <xref:System.Activities.NativeActivity.CacheMetadata%2A> 재정의에서 유효성 검사 논리를 제공할 수 있습니다. <xref:System.Activities.NativeActivity.CacheMetadata%2A>에서 throw되는 모든 예외는 유효성 검사 오류로 처리되지 않습니다. 이러한 예외는 <xref:System.Activities.Validation.ActivityValidationServices.Validate%2A>에 대한 호출에서 이스케이프되며 호출자가 처리해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CacheMetadata">
+      <MemberSignature Language="C#" Value="protected override sealed void CacheMetadata (System.Activities.ActivityMetadata metadata);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void CacheMetadata(valuetype System.Activities.ActivityMetadata metadata) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.CacheMetadata(System.Activities.ActivityMetadata)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides NotOverridable Sub CacheMetadata (metadata As ActivityMetadata)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void CacheMetadata(System::Activities::ActivityMetadata metadata);" />
+      <MemberSignature Language="F#" Value="override this.CacheMetadata : System.Activities.ActivityMetadata -&gt; unit" Usage="nativeActivity.CacheMetadata metadata" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="metadata" Type="System.Activities.ActivityMetadata" />
+      </Parameters>
+      <Docs>
+        <param name="metadata">구현되지 않았습니다.</param>
+        <summary>구현되지 않았습니다. 대신 <see cref="M:System.Activities.NativeActivity.CacheMetadata(System.Activities.NativeActivityMetadata)" /> 메서드를 사용합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용자 지정 활동 작성자는 활동의 <xref:System.Activities.NativeActivity.CacheMetadata%2A> 재정의에서 유효성 검사 논리를 제공할 수 있습니다. <xref:System.Activities.NativeActivity.CacheMetadata%2A>에서 throw되는 모든 예외는 유효성 검사 오류로 처리되지 않습니다. 이러한 예외는 <xref:System.Activities.Validation.ActivityValidationServices.Validate%2A>에 대한 호출에서 이스케이프되며 호출자가 처리해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CacheMetadata">
+      <MemberSignature Language="C#" Value="protected virtual void CacheMetadata (System.Activities.NativeActivityMetadata metadata);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void CacheMetadata(valuetype System.Activities.NativeActivityMetadata metadata) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.CacheMetadata(System.Activities.NativeActivityMetadata)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub CacheMetadata (metadata As NativeActivityMetadata)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void CacheMetadata(System::Activities::NativeActivityMetadata metadata);" />
+      <MemberSignature Language="F#" Value="override this.CacheMetadata : System.Activities.NativeActivityMetadata -&gt; unit" Usage="nativeActivity.CacheMetadata metadata" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="metadata" Type="System.Activities.NativeActivityMetadata" />
+      </Parameters>
+      <Docs>
+        <param name="metadata">활동의 인수, 변수, 자식 활동 및 활동 대리자를 캡슐화하는 활동의 메타데이터입니다.</param>
+        <summary>활동의 인수, 변수, 자식 활동 및 활동 대리자에 대한 설명을 만들고 유효성을 검사합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 워크플로 런타임은 <xref:System.Activities.NativeActivity.CacheMetadata%2A>의 기본 구현을 사용하여 워크플로의 올바른 생성을 보장함은 물론 런타임 관계 및 수명 규칙을 관리할 수 있습니다. 기본 구현의 <xref:System.Activities.NativeActivity.CacheMetadata%2A> 형식의 사용 하 여 활동 형식의 공용 멤버를 검사 <xref:System.ComponentModel.TypeDescriptor>합니다. 이러한 공용 멤버는 형식의 <xref:System.Activities.Argument>, <xref:System.Activities.Variable>를 [IEnumerable\<변수 >](xref:System.Collections.Generic.IEnumerable%601)를 <xref:System.Activities.Activity>를 [IEnumerable\<활동 >](xref:System.Collections.Generic.IEnumerable%601), 또는 <xref:System.Activities.ActivityDelegate>. 활동의 런타임 설명 작성 하는 사용자 지정 하 고 사용자 지정 유효성 검사 논리를 제공 하도록이 메서드를 재정의할 수 있습니다. <xref:System.Activities.NativeActivity.CacheMetadata%2A>에서 throw되는 모든 예외는 유효성 검사 오류로 처리되지 않습니다. 이러한 예외는 <xref:System.Activities.Validation.ActivityValidationServices.Validate%2A>에 대한 호출에서 이스케이프되며 호출자가 처리해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 샘플에서는 <xref:System.Activities.NativeActivity%601>에서 상속되는 클래스에 CacheMetadata를 사용하는 방법을 보여 줍니다. 이 예제에서는 합니다 [Nativeactivity를 사용 하 여 사용자 지정 복합](~/docs/framework/windows-workflow-foundation/samples/custom-composite-using-native-activity.md) 샘플.  
+  
+ [!code-csharp[wfs_CustomCompositeNativeActivity#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_customcompositenativeactivity/cs/mysequence.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Cancel">
+      <MemberSignature Language="C#" Value="protected virtual void Cancel (System.Activities.NativeActivityContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Cancel(class System.Activities.NativeActivityContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.Cancel(System.Activities.NativeActivityContext)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Cancel (context As NativeActivityContext)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Cancel(System::Activities::NativeActivityContext ^ context);" />
+      <MemberSignature Language="F#" Value="abstract member Cancel : System.Activities.NativeActivityContext -&gt; unit&#xA;override this.Cancel : System.Activities.NativeActivityContext -&gt; unit" Usage="nativeActivity.Cancel context" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Activities.NativeActivityContext" />
+      </Parameters>
+      <Docs>
+        <param name="context">활동이 실행되는 실행 컨텍스트입니다.</param>
+        <summary>파생 클래스에서 구현된 경우 활동을 점진적으로 조기에 완료하도록 논리를 실행합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 샘플에서는 <xref:System.Activities.NativeActivity%601>에서 상속되는 클래스에 Cancel을 사용하는 방법을 보여 줍니다. 이 예제에서는 합니다 [제네릭이 아닌 ParallelForEach](~/docs/framework/windows-workflow-foundation/samples/non-generic-parallelforeach.md) 샘플입니다.  
+  
+ [!code-csharp[wfs_NonGenericParallelForEach#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_nongenericparallelforeach/cs/parallelforeach.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CanInduceIdle">
+      <MemberSignature Language="C#" Value="protected virtual bool CanInduceIdle { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool CanInduceIdle" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.NativeActivity.CanInduceIdle" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable ReadOnly Property CanInduceIdle As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual property bool CanInduceIdle { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.CanInduceIdle : bool" Usage="System.Activities.NativeActivity.CanInduceIdle" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>활동을 통해 워크플로가 유휴 상태가 될 수 있는지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>작업을 통해 워크플로가 유휴 상태가 될 수 있으면 <see langword="true" />입니다. 이 값의 기본값은 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Execute">
+      <MemberSignature Language="C#" Value="protected abstract void Execute (System.Activities.NativeActivityContext context);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Execute(class System.Activities.NativeActivityContext context) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.Execute(System.Activities.NativeActivityContext)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub Execute (context As NativeActivityContext)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void Execute(System::Activities::NativeActivityContext ^ context);" />
+      <MemberSignature Language="F#" Value="abstract member Execute : System.Activities.NativeActivityContext -&gt; unit" Usage="nativeActivity.Execute context" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="context" Type="System.Activities.NativeActivityContext" />
+      </Parameters>
+      <Docs>
+        <param name="context">활동이 실행되는 실행 컨텍스트입니다.</param>
+        <summary>파생 클래스에서 구현된 경우 활동의 실행 논리를 실행합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 샘플에서는 <xref:System.Activities.NativeActivity%601>에서 상속되는 클래스에 Cancel을 사용하는 방법을 보여 줍니다. 이 예제에서는 합니다 [제네릭이 아닌 ParallelForEach](~/docs/framework/windows-workflow-foundation/samples/non-generic-parallelforeach.md) 샘플입니다.  
+  
+ [!code-csharp[wfs_NonGenericParallelForEach#2](~/samples/snippets/csharp/VS_Snippets_CFX/wfs_nongenericparallelforeach/cs/parallelforeach.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Implementation">
+      <MemberSignature Language="C#" Value="protected override sealed Func&lt;System.Activities.Activity&gt; Implementation { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Func`1&lt;class System.Activities.Activity&gt; Implementation" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.NativeActivity.Implementation" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides NotOverridable Property Implementation As Func(Of Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property Func&lt;System::Activities::Activity ^&gt; ^ Implementation { Func&lt;System::Activities::Activity ^&gt; ^ get(); void set(Func&lt;System::Activities::Activity ^&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Implementation : Func&lt;System.Activities.Activity&gt; with get, set" Usage="System.Activities.NativeActivity.Implementation" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.Runtime.Serialization.IgnoreDataMember</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Func&lt;System.Activities.Activity&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>작업의 실행 논리입니다.</summary>
+        <value>실행 논리입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImplementationVersion">
+      <MemberSignature Language="C#" Value="protected internal override sealed Version ImplementationVersion { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Version ImplementationVersion" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.NativeActivity.ImplementationVersion" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides NotOverridable Property ImplementationVersion As Version" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; property Version ^ ImplementationVersion { Version ^ get(); void set(Version ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ImplementationVersion : Version with get, set" Usage="System.Activities.NativeActivity.ImplementationVersion" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Version</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>작업의 구현 버전을 가져오거나 설정합니다.</summary>
+        <value>동작의 구현 버전입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="OnCreateDynamicUpdateMap">
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>동적 업데이트 맵을 만들 때 이벤트를 발생시킵니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="OnCreateDynamicUpdateMap">
+      <MemberSignature Language="C#" Value="protected virtual void OnCreateDynamicUpdateMap (System.Activities.DynamicUpdate.NativeActivityUpdateMapMetadata metadata, System.Activities.Activity originalActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnCreateDynamicUpdateMap(class System.Activities.DynamicUpdate.NativeActivityUpdateMapMetadata metadata, class System.Activities.Activity originalActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.OnCreateDynamicUpdateMap(System.Activities.DynamicUpdate.NativeActivityUpdateMapMetadata,System.Activities.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnCreateDynamicUpdateMap (metadata As NativeActivityUpdateMapMetadata, originalActivity As Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnCreateDynamicUpdateMap(System::Activities::DynamicUpdate::NativeActivityUpdateMapMetadata ^ metadata, System::Activities::Activity ^ originalActivity);" />
+      <MemberSignature Language="F#" Value="override this.OnCreateDynamicUpdateMap : System.Activities.DynamicUpdate.NativeActivityUpdateMapMetadata * System.Activities.Activity -&gt; unit" Usage="nativeActivity.OnCreateDynamicUpdateMap (metadata, originalActivity)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="metadata" Type="System.Activities.DynamicUpdate.NativeActivityUpdateMapMetadata" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="originalActivity" Type="System.Activities.Activity" Index="1" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="metadata">메타데이터입니다.</param>
+        <param name="originalActivity">원래 동작입니다.</param>
+        <summary>동적 업데이트 맵을 만들 때 이벤트를 발생시킵니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnCreateDynamicUpdateMap">
+      <MemberSignature Language="C#" Value="protected override sealed void OnCreateDynamicUpdateMap (System.Activities.DynamicUpdate.UpdateMapMetadata metadata, System.Activities.Activity originalActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnCreateDynamicUpdateMap(class System.Activities.DynamicUpdate.UpdateMapMetadata metadata, class System.Activities.Activity originalActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.OnCreateDynamicUpdateMap(System.Activities.DynamicUpdate.UpdateMapMetadata,System.Activities.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides NotOverridable Sub OnCreateDynamicUpdateMap (metadata As UpdateMapMetadata, originalActivity As Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnCreateDynamicUpdateMap(System::Activities::DynamicUpdate::UpdateMapMetadata ^ metadata, System::Activities::Activity ^ originalActivity);" />
+      <MemberSignature Language="F#" Value="override this.OnCreateDynamicUpdateMap : System.Activities.DynamicUpdate.UpdateMapMetadata * System.Activities.Activity -&gt; unit" Usage="nativeActivity.OnCreateDynamicUpdateMap (metadata, originalActivity)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="metadata" Type="System.Activities.DynamicUpdate.UpdateMapMetadata" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="originalActivity" Type="System.Activities.Activity" Index="1" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="metadata">메타데이터입니다.</param>
+        <param name="originalActivity">원래 동작입니다.</param>
+        <summary>동적 업데이트 맵을 만들 때 이벤트를 발생시킵니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateInstance">
+      <MemberSignature Language="C#" Value="protected virtual void UpdateInstance (System.Activities.DynamicUpdate.NativeActivityUpdateContext updateContext);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void UpdateInstance(class System.Activities.DynamicUpdate.NativeActivityUpdateContext updateContext) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.NativeActivity.UpdateInstance(System.Activities.DynamicUpdate.NativeActivityUpdateContext)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub UpdateInstance (updateContext As NativeActivityUpdateContext)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void UpdateInstance(System::Activities::DynamicUpdate::NativeActivityUpdateContext ^ updateContext);" />
+      <MemberSignature Language="F#" Value="abstract member UpdateInstance : System.Activities.DynamicUpdate.NativeActivityUpdateContext -&gt; unit&#xA;override this.UpdateInstance : System.Activities.DynamicUpdate.NativeActivityUpdateContext -&gt; unit" Usage="nativeActivity.UpdateInstance updateContext" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="updateContext" Type="System.Activities.DynamicUpdate.NativeActivityUpdateContext" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="updateContext">업데이트 컨텍스트입니다.</param>
+        <summary><see cref="T:System.Activities.NativeActivity" />의 인스턴스를 업데이트합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

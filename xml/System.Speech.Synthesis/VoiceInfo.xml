@@ -1,0 +1,407 @@
+<Type Name="VoiceInfo" FullName="System.Speech.Synthesis.VoiceInfo">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="058f72c7bf829ae21873e6acca545353e8d3cef7" /><Meta Name="ms.sourcegitcommit" Value="756d085f27705e86604f1bba5f2086ee23761acf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="01/30/2019" /><Meta Name="ms.locfileid" Value="55373515" /></Metadata><TypeSignature Language="C#" Value="public class VoiceInfo" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit VoiceInfo extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Synthesis.VoiceInfo" />
+  <TypeSignature Language="VB.NET" Value="Public Class VoiceInfo" />
+  <TypeSignature Language="C++ CLI" Value="public ref class VoiceInfo" />
+  <TypeSignature Language="F#" Value="type VoiceInfo = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Diagnostics.DebuggerDisplay("{(_name != null ? "'" + _name + "' " : "") +  (_culture != null ? " '" + _culture.ToString () + "' " : "") + (_gender != VoiceGender.NotSet ? " '" + _gender.ToString () + "' " : "") + (_age != VoiceAge.NotSet ? " '" + _age.ToString () + "' " : "") + (_variant &gt; 0 ? " " + _variant.ToString () : "")}")</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>System.Serializable</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>설치된 스피치 합성 엔진을 표현한다</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 음성은 텍스트 음성 변환 엔진 또는 TTS 엔진으로도 참조 되는 설치 된 음성 합성 엔진을 경우 <xref:System.Speech.Synthesis.SpeechSynthesizer> 개체가 텍스트에서 음성을 생성 하는 음성을 사용 합니다. 속성을 <xref:System.Speech.Synthesis.VoiceInfo> 개체는 음성을 식별 하 고 해당 특성을 설명 합니다. 음성의 가장 대표적인 특징은 해당 <xref:System.Speech.Synthesis.VoiceInfo.Culture%2A>를 음성으로 말할 수 있는 단일 언어를 정의 하는 합니다.  
+  
+ <xref:System.Speech.Synthesis.SpeechSynthesizer.Voice%2A> 속성에서 반환을 <xref:System.Speech.Synthesis.VoiceInfo> 사용 하 여 현재 음성에 대 한 정보가 포함 된 개체는 <xref:System.Speech.Synthesis.SpeechSynthesizer>합니다. 사용할 수도 있습니다는 <xref:System.Speech.Synthesis.VoiceInfo> 반환한 시스템에 설치 된 음성에 대 한 정보를 가져올 개체는 <xref:System.Speech.Synthesis.SpeechSynthesizer.GetInstalledVoices> 메서드. 자세한 내용은 <xref:System.Speech.Synthesis.InstalledVoice>를 참조하세요.  
+  
+   
+  
+## Examples  
+ 다음 예제는 초기화 하는 콘솔 애플리케이션의 일부를 <xref:System.Speech.Synthesis.SpeechSynthesizer> 개체 설치 된 음성 (음성 합성 엔진)의 목록을 콘솔에 출력 하 고 각 음성에 사용할 수 있는 정보를 보여 줍니다.  
+  
+```csharp  
+using System;  
+using System.Speech.Synthesis;  
+using System.Speech.AudioFormat;  
+  
+namespace SampleSynthesis  
+{  
+  class Program  
+  {  
+    static void Main(string[] args)  
+    {  
+  
+      // Initialize a new instance of the SpeechSynthesizer.  
+      using (SpeechSynthesizer synth = new SpeechSynthesizer())  
+      {  
+  
+        // Output information about all of the installed voices.   
+        Console.WriteLine("Installed voices -");  
+        foreach (InstalledVoice voice in synth.GetInstalledVoices())  
+        {  
+          VoiceInfo info = voice.VoiceInfo;  
+          string AudioFormats = "";  
+          foreach (SpeechAudioFormatInfo fmt in info.SupportedAudioFormats)  
+          {  
+            AudioFormats += String.Format("{0}\n",  
+            fmt.EncodingFormat.ToString());  
+          }  
+  
+          Console.WriteLine(" Name:          " + info.Name);  
+          Console.WriteLine(" Culture:       " + info.Culture);  
+          Console.WriteLine(" Age:           " + info.Age);  
+          Console.WriteLine(" Gender:        " + info.Gender);  
+          Console.WriteLine(" Description:   " + info.Description);  
+          Console.WriteLine(" ID:            " + info.Id);  
+          Console.WriteLine(" Enabled:       " + voice.Enabled);  
+          if (info.SupportedAudioFormats.Count != 0)  
+          {  
+            Console.WriteLine( " Audio formats: " + AudioFormats);  
+          }  
+          else  
+          {  
+            Console.WriteLine(" No supported audio formats found");  
+          }  
+  
+          string AdditionalInfo = "";  
+          foreach (string key in info.AdditionalInfo.Keys)  
+          {  
+            AdditionalInfo += String.Format("  {0}: {1}\n", key, info.AdditionalInfo[key]);  
+          }  
+  
+          Console.WriteLine(" Additional Info - " + AdditionalInfo);  
+          Console.WriteLine();  
+        }  
+      }  
+      Console.WriteLine("Press any key to exit...");  
+      Console.ReadKey();  
+    }  
+  }  
+}  
+  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Speech.Synthesis.InstalledVoice" />
+    <altmember cref="M:System.Speech.Synthesis.SpeechSynthesizer.GetInstalledVoices" />
+  </Docs>
+  <Members>
+    <Member MemberName="AdditionalInfo">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.IDictionary&lt;string,string&gt; AdditionalInfo { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.IDictionary`2&lt;string, string&gt; AdditionalInfo" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.VoiceInfo.AdditionalInfo" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property AdditionalInfo As IDictionary(Of String, String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Generic::IDictionary&lt;System::String ^, System::String ^&gt; ^ AdditionalInfo { System::Collections::Generic::IDictionary&lt;System::String ^, System::String ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.AdditionalInfo : System.Collections.Generic.IDictionary&lt;string, string&gt;" Usage="System.Speech.Synthesis.VoiceInfo.AdditionalInfo" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IDictionary&lt;System.String,System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성에 대한 추가 정보를 가져옵니다.</summary>
+        <value>설명하고 음성을 식별하는 이름/값 쌍의 집합을 반환 합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Age">
+      <MemberSignature Language="C#" Value="public System.Speech.Synthesis.VoiceAge Age { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Speech.Synthesis.VoiceAge Age" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.VoiceInfo.Age" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Age As VoiceAge" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Speech::Synthesis::VoiceAge Age { System::Speech::Synthesis::VoiceAge get(); };" />
+      <MemberSignature Language="F#" Value="member this.Age : System.Speech.Synthesis.VoiceAge" Usage="System.Speech.Synthesis.VoiceInfo.Age" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.VoiceAge</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>목소리 연령을 가져옵니다.</summary>
+        <value>음성의 나이를 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Speech.Synthesis.VoiceInfo.Age%2A> 속성의 멤버를 가져옵니다는 <xref:System.Speech.Synthesis.VoiceAge> 음성의 나이 나타내는 열거형입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Speech.Synthesis.InstalledVoice" />
+        <altmember cref="M:System.Speech.Synthesis.SpeechSynthesizer.GetInstalledVoices" />
+      </Docs>
+    </Member>
+    <Member MemberName="Culture">
+      <MemberSignature Language="C#" Value="public System.Globalization.CultureInfo Culture { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Globalization.CultureInfo Culture" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.VoiceInfo.Culture" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Culture As CultureInfo" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Globalization::CultureInfo ^ Culture { System::Globalization::CultureInfo ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Culture : System.Globalization.CultureInfo" Usage="System.Speech.Synthesis.VoiceInfo.Culture" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Globalization.CultureInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성의 문화권을 가져옵니다.</summary>
+        <value>문화권의 이름, 쓰기 체계, 사용 달력과 날짜 서식 지정 및 문자열 정렬 방법 등 특정 문화권에 대한 정보를 제공하는 <see cref="T:System.Globalization.CultureInfo" /> 개체를 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Globalization.CultureInfo> 클래스에는 각 문화권에 대 한 고유한 이름을 지정 합니다. 이름에는 언어와 관련 된 ISO 639 두 문자의 소문자 문화권 코드를 한 국가 또는 지역에 연결 된 ISO 3166 두 문자의 대문자 하위 문화권 코드를 조합입니다. 프랑스어 캐나다에서 사용 되는 미국 또는 "FR-CA"에서 사용 되 스페인어 "es (미국)"를 포함 하는 문화권 이름의 예입니다. 두 자리 소문자 언어 코드에만 사용 하 여 중립 문화권을 지정할 수 있습니다. 예를 들어, "fr" 프랑스어에 대 한 중립 문화권을 지정 하 고 "de" 독일어 중립 문화권을 지정 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Description">
+      <MemberSignature Language="C#" Value="public string Description { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Description" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.VoiceInfo.Description" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Description As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Description { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Description : string" Usage="System.Speech.Synthesis.VoiceInfo.Description" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성에 대한 설명을 가져옵니다.</summary>
+        <value>음성에 대한 설명을 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public override bool Equals (object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool Equals(object obj) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Synthesis.VoiceInfo.Equals(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function Equals (obj As Object) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool Equals(System::Object ^ obj);" />
+      <MemberSignature Language="F#" Value="override this.Equals : obj -&gt; bool" Usage="voiceInfo.Equals obj" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">지정된 <see cref="T:System.Speech.Synthesis.VoiceInfo" /> 개체입니다.</param>
+        <summary>음성 필드와 지정된 <see cref="T:System.Speech.Synthesis.VoiceInfo" /> 개체를 비교하여 같은 값이 있는지 여부를 확인합니다.</summary>
+        <returns>두 <see cref="T:System.Speech.Synthesis.VoiceInfo" /> 개체의 필드가 같으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Speech.Synthesis.VoiceInfo.Equals%2A> 메서드는 <xref:System.Object> 형식을 매개 변수로 합니다. 해당 개체의 경우는 <xref:System.Speech.Synthesis.VoiceInfo> 메서드는 반환 형식을 `False`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Gender">
+      <MemberSignature Language="C#" Value="public System.Speech.Synthesis.VoiceGender Gender { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Speech.Synthesis.VoiceGender Gender" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.VoiceInfo.Gender" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Gender As VoiceGender" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Speech::Synthesis::VoiceGender Gender { System::Speech::Synthesis::VoiceGender get(); };" />
+      <MemberSignature Language="F#" Value="member this.Gender : System.Speech.Synthesis.VoiceGender" Usage="System.Speech.Synthesis.VoiceInfo.Gender" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.VoiceGender</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성의 성별을 가져옵니다.</summary>
+        <value>음성의 성별을 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Speech.Synthesis.VoiceInfo.Gender%2A> 속성의 멤버를 가져옵니다는 <xref:System.Speech.Synthesis.VoiceGender> 음성의 성별을 나타내는 열거형입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetHashCode">
+      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetHashCode() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Synthesis.VoiceInfo.GetHashCode" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function GetHashCode () As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int GetHashCode();" />
+      <MemberSignature Language="F#" Value="override this.GetHashCode : unit -&gt; int" Usage="voiceInfo.GetHashCode " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><c>VoiceInfo</c> 개체에 대한 해시 코드를 제공합니다.</summary>
+        <returns>현재 <see cref="T:System.Speech.Synthesis.VoiceInfo" /> 개체의 해시 코드입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Id">
+      <MemberSignature Language="C#" Value="public string Id { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Id" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.VoiceInfo.Id" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Id As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Id { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Id : string" Usage="System.Speech.Synthesis.VoiceInfo.Id" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성의 ID를 가져옵니다.</summary>
+        <value>음성의 식별자를 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.VoiceInfo.Name" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Name As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Name { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Name : string" Usage="System.Speech.Synthesis.VoiceInfo.Name" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성의 이름을 가져옵니다.</summary>
+        <value>음성의 이름을 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SupportedAudioFormats">
+      <MemberSignature Language="C#" Value="public System.Collections.ObjectModel.ReadOnlyCollection&lt;System.Speech.AudioFormat.SpeechAudioFormatInfo&gt; SupportedAudioFormats { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ObjectModel.ReadOnlyCollection`1&lt;class System.Speech.AudioFormat.SpeechAudioFormatInfo&gt; SupportedAudioFormats" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.VoiceInfo.SupportedAudioFormats" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SupportedAudioFormats As ReadOnlyCollection(Of SpeechAudioFormatInfo)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::ObjectModel::ReadOnlyCollection&lt;System::Speech::AudioFormat::SpeechAudioFormatInfo ^&gt; ^ SupportedAudioFormats { System::Collections::ObjectModel::ReadOnlyCollection&lt;System::Speech::AudioFormat::SpeechAudioFormatInfo ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SupportedAudioFormats : System.Collections.ObjectModel.ReadOnlyCollection&lt;System.Speech.AudioFormat.SpeechAudioFormatInfo&gt;" Usage="System.Speech.Synthesis.VoiceInfo.SupportedAudioFormats" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Collections.ObjectModel.ReadOnlyCollection&lt;System.Speech.AudioFormat.SpeechAudioFormatInfo&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>음성을 지원하는 오디오 형식 컬렉션을 가져옵니다.</summary>
+        <value>음성을 지원하는 오디오 형식 집합을 반환합니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Speech.AudioFormat.SpeechAudioFormatInfo" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

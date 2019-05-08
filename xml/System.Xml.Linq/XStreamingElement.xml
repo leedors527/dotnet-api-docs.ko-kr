@@ -1,0 +1,2082 @@
+<Type Name="XStreamingElement" FullName="System.Xml.Linq.XStreamingElement">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="753b9830836ee79a60431875849d6698b0ec5337" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58683988" /></Metadata><TypeSignature Language="C#" Value="public class XStreamingElement" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XStreamingElement extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Xml.Linq.XStreamingElement" />
+  <TypeSignature Language="VB.NET" Value="Public Class XStreamingElement" />
+  <TypeSignature Language="C++ CLI" Value="public ref class XStreamingElement" />
+  <TypeSignature Language="F#" Value="type XStreamingElement = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Xml.XDocument</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.10.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Xml.Linq</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>XML 트리에서 지연된 스트리밍 출력을 지원하는 요소를 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 클래스를 사용 하면 지연 된 스트리밍 출력을 지 원하는 XML 트리를 만들 수 있습니다. 이 클래스를 사용 하 여 사용 하 여 XML 트리 만들기는 매우 비슷한 방식으로 XML 트리를 만들려는 <xref:System.Xml.Linq.XElement>합니다. 그러나 근본적인 차이가 있습니다. LINQ 쿼리를 사용 하 여 트리 XML을 만들 때 콘텐츠를 지정 하려면 사용 하는 경우 <xref:System.Xml.Linq.XElement>XML 트리 생성 당시에는 쿼리 변수가 반복 되 고 쿼리의 결과 XML 트리에 추가 됩니다. 이와 대조적으로 만들 때 사용 하 여 XML 트리를 <xref:System.Xml.Linq.XStreamingElement>, 반복 되지 않고 XML 트리에서 쿼리 변수에 대 한 참조 저장 됩니다. 쿼리는 직렬화 될 경우에 반복 됩니다. 이 옵션을 사용 하면 작은 메모리 사용 공간을 유지 하는 동안 더 큰 XML 트리를 만들 수 있습니다.  
+  
+ 텍스트 파일과 같은 입력된 원본에서 스트리밍하는 경우 매우 큰 텍스트 파일 읽기 및 작은 메모리 사용 공간을 유지 하면서 매우 큰 XML 문서를 생성할 수 있습니다.  
+  
+ 다른 시나리오는 대형 XML 트리를 메모리에 로드 된 있는 변환 된 버전의 문서를 만들려고 할 수 있다는 것입니다. 사용 하 여 새 문서를 만드는 경우 <xref:System.Xml.Linq.XElement>에 변환이 완료 될 때 메모리에 두 개의 대형 XML 트리를 사용 해야 합니다. 그러나 사용 하 여 새 XML 트리를 만드는 경우 <xref:System.Xml.Linq.XStreamingElement>, 다음 절반 작업 집합을 효과적으로 제거 될 예정입니다.  
+  
+ 사용 하는 프로그램을 디버깅 하는 경우 사용자에 게 유의 <xref:System.Xml.Linq.XStreamingElement>, 개체의 값을 표시 하면 해당 <xref:System.Xml.Linq.XStreamingElement.ToString%2A> 호출 될 메서드입니다. 이렇게 하면 XML을 serialize 합니다. 스트리밍 요소 쿼리 의미 체계는 스트리밍 요소를 한 번만 스트림 수 있는 경우에 디버깅 환경에서 바람직하지 않은 동작이 발생할 수 있습니다이 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 먼저 소스 XML 트리를 만듭니다. 그런 다음 사용 하 여 원본의 XML 트리 변환 만듭니다 <xref:System.Xml.Linq.XElement>합니다. 이 변환은 메모리에 새 트리를 만듭니다. 그런 다음 사용 하 여 원본의 XML 트리 변환 만듭니다 <xref:System.Xml.Linq.XStreamingElement>합니다. 이 변환은 변환된 된 트리를 콘솔에 serialize 될 때까지 쿼리를 실행 하지 않습니다. 메모리 사용량이 작습니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XElement dstTree1 = new XElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el >= 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+XStreamingElement dstTree2 = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el >= 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+Console.WriteLine(dstTree1);  
+Console.WriteLine("------");  
+Console.WriteLine(dstTree2);  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+        <Root>  
+            <Child>1</Child>  
+            <Child>2</Child>  
+            <Child>3</Child>  
+            <Child>4</Child>  
+            <Child>5</Child>  
+        </Root>  
+  
+Dim dstTree1 As XElement = _  
+    <NewRoot>  
+        <%= From el In srcTree.Elements _  
+            Where (el.Value >= 3) _  
+            Select <DifferentChild><%= el.Value %></DifferentChild> %>  
+    </NewRoot>  
+  
+Dim dstTree2 As XStreamingElement = New XStreamingElement("NewRoot", _  
+                From el In srcTree.Elements _  
+                Where el.Value >= 3 _  
+                Select <DifferentChild><%= el.Value %></DifferentChild> _  
+            )  
+  
+Console.WriteLine(dstTree1)  
+Console.WriteLine("------")  
+Console.WriteLine(dstTree2)  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+  <DifferentChild>4</DifferentChild>  
+  <DifferentChild>5</DifferentChild>  
+</NewRoot>  
+------  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+  <DifferentChild>4</DifferentChild>  
+  <DifferentChild>5</DifferentChild>  
+</NewRoot>  
+```  
+  
+ 텍스트 파일을 처리하는 한 가지 방법은 `yield return` 구문을 사용하여 한 번에 한 줄씩 텍스트 파일을 스트리밍하는 확장 메서드를 작성하는 것입니다. 그런 다음 지연된 방식으로 텍스트 파일을 처리하는 LINQ 쿼리를 작성할 수 있습니다. 다음 사용 하는 경우는 <xref:System.Xml.Linq.XStreamingElement> 스트림 출력으로 다음에서 만들 수 있습니다 변환 텍스트 파일을 소스 텍스트 파일의 크기에 관계 없이 메모리의 최소 크기를 사용 하는 XML입니다.  
+  
+ 아래에 있는 People.txt 텍스트 파일은 이 예제의 소스입니다.  
+  
+```  
+#This is a comment  
+1,Tai,Yee,Writer  
+2,Nikolay,Grachev,Programmer  
+3,David,Wright,Inventor  
+```  
+  
+ 다음 코드에는 지연된 방식으로 텍스트 파일의 줄을 스트림하는 확장 메서드가 포함되어 있습니다.  
+  
+```csharp  
+public static class StreamReaderSequence  
+{  
+    public static IEnumerable<string> Lines(this StreamReader source)  
+    {  
+        String line;  
+  
+        if (source == null)  
+            throw new ArgumentNullException("source");  
+        while ((line = source.ReadLine()) != null)  
+        {  
+            yield return line;  
+        }  
+    }  
+}  
+  
+class Program  
+{  
+    static void Main(string[] args)  
+    {  
+        StreamReader sr = new StreamReader("People.txt");  
+        XStreamingElement xmlTree = new XStreamingElement("Root",  
+            from line in sr.Lines()  
+            let items = line.Split(',')  
+            where !line.StartsWith("#")  
+            select new XElement("Person",  
+                       new XAttribute("ID", items[0]),  
+                       new XElement("First", items[1]),  
+                       new XElement("Last", items[2]),  
+                       new XElement("Occupation", items[3])  
+                   )  
+        );  
+        Console.WriteLine(xmlTree);  
+        sr.Close();  
+    }  
+}  
+```  
+  
+```vb  
+Module StreamReaderSequence  
+  
+    <Runtime.CompilerServices.Extension>  
+    Public Iterator Function Lines(source As IO.StreamReader) As IEnumerable(Of String)  
+        If source Is Nothing Then Throw New ArgumentNullException("source")  
+        Dim line As String = source.ReadLine()  
+        While (line <> Nothing)  
+            Yield line  
+            line = source.ReadLine()  
+        End While  
+    End Function  
+  
+End Module  
+  
+Module Module1  
+    Sub Main()  
+        Dim sr As New IO.StreamReader("People.txt")  
+        Dim xmlTree As New XStreamingElement("Root",  
+            From line In sr.Lines()  
+            Let items = line.Split(","c)  
+            Where Not line.StartsWith("#")  
+            Select <Person ID=<%= items(0) %>>  
+                       <First><%= items(1) %></First>  
+                       <Last><%= items(2) %></Last>  
+                       <Occupation><%= items(3) %></Occupation>  
+                   </Person>)  
+        Console.WriteLine(xmlTree)  
+        sr.Close()  
+    End Sub  
+End Module  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<Root>  
+  <Person ID="1">  
+    <First>Tai</First>  
+    <Last>Yee</Last>  
+    <Occupation>Writer</Occupation>  
+  </Person>  
+  <Person ID="2">  
+    <First>Nikolay</First>  
+    <Last>Grachev</Last>  
+    <Occupation>Programmer</Occupation>  
+  </Person>  
+  <Person ID="3">  
+    <First>David</First>  
+    <Last>Wright</Last>  
+    <Occupation>Inventor</Occupation>  
+  </Person>  
+</Root>  
+```  
+  
+ 큰 XML 파일을 변환하고 애플리케이션의 메모리 사용 공간이 예상 가능하도록 애플리케이션을 작성해야 하는 경우가 있습니다. XML 트리를 매우 큰 XML 파일로 채우려는 경우 메모리 사용은 파일 크기에 비례하므로 지나치게 증가하게 됩니다. 따라서 스트리밍 기법을 대신 사용해야 합니다.  
+  
+ <xref:System.Linq.Enumerable.OrderBy%2A>와 같은 특정 표준 쿼리 연산자는 자신의 소스를 반복하고 모든 데이터를 수집하여 정렬한 다음 시퀀스의 첫 번째 항목을 최종적으로 생성합니다. 첫 번째 항목을 반환하기 전에 소스를 유형화하는 쿼리 연산자를 사용하는 경우 애플리케이션에 대한 작은 메모리 사용 공간이 유지되지 않습니다.  
+  
+ 변환 된 문서가 포함 된 XML 트리를 조합 하면에서 설명 하는 기법을 사용 하는 경우에 메모리 사용량이 너무 수 있습니다.  
+  
+ 다음 예제는 [방법: 헤더 정보에 대 한 액세스를 사용 하 여 XML 조각 Stream](https://msdn.microsoft.com/library/01311522-9d03-4977-8641-2932c6f56092)합니다.  
+  
+ 이 예제에서는 <xref:System.Xml.Linq.XStreamingElement>의 지연된 실행 기능을 사용하여 출력을 스트림합니다.  
+  
+ 사용자 지정 축(`StreamCustomerItem`)은 문서에 `Customer`, `Name` 및 `Item` 요소가 있고 이러한 요소가 다음 Source.xml 문서의 경우와 마찬가지로 정렬되어 있다고 가정하고 작성된 것입니다. 그러나 더욱 강력한 구현은 XSD를 사용하여 소스 문서의 유효성을 검사하거나, 잘못된 문서의 구문을 분석할 준비가 되어 있습니다.  
+  
+ 다음은 소스 문서인 Source.xml입니다.  
+  
+```xml  
+<?xml version="1.0" encoding="utf-8" ?>   
+<Root>  
+  <Customer>  
+    <Name>A. Datum Corporation</Name>  
+    <Item>  
+      <Key>0001</Key>  
+    </Item>  
+    <Item>  
+      <Key>0002</Key>  
+    </Item>  
+    <Item>  
+      <Key>0003</Key>  
+    </Item>  
+    <Item>  
+      <Key>0004</Key>  
+    </Item>  
+  </Customer>  
+  <Customer>  
+    <Name>Fabrikam, Inc.</Name>  
+    <Item>  
+      <Key>0005</Key>  
+    </Item>  
+    <Item>  
+      <Key>0006</Key>  
+    </Item>  
+    <Item>  
+      <Key>0007</Key>  
+    </Item>  
+    <Item>  
+      <Key>0008</Key>  
+    </Item>  
+  </Customer>  
+  <Customer>  
+    <Name>Southridge Video</Name>  
+    <Item>  
+      <Key>0009</Key>  
+    </Item>  
+    <Item>  
+      <Key>0010</Key>  
+    </Item>  
+  </Customer>  
+</Root>  
+```  
+  
+ 다음 코드에 사용 하는 메서드는 <xref:System.Xml.XmlReader> 소스 XML을 스트림 하 합니다. 사용 하 여 <xref:System.Xml.Linq.XStreamingElement> 에 새 XML을 스트림 합니다.  
+  
+```csharp  
+static IEnumerable<XElement> StreamCustomerItem(string uri)  
+{  
+    using (XmlReader reader = XmlReader.Create(uri))  
+    {  
+        XElement name = null;  
+        XElement item = null;  
+  
+        reader.MoveToContent();  
+  
+        // Parse the file, save header information when encountered, and yield the  
+        // Item XElement objects as they are created.  
+  
+        // loop through Customer elements  
+        while (reader.Read())  
+        {  
+            if (reader.NodeType == XmlNodeType.Element  
+                && reader.Name == "Customer")  
+            {  
+                // move to Name element  
+                while (reader.Read())  
+                {  
+                    if (reader.NodeType == XmlNodeType.Element &&  
+                        reader.Name == "Name")  
+                    {  
+                        name = XElement.ReadFrom(reader) as XElement;  
+                        break;  
+                    }  
+                }  
+  
+                // loop through Item elements  
+                while (reader.Read())  
+                {  
+                    if (reader.NodeType == XmlNodeType.EndElement)  
+                        break;  
+                    if (reader.NodeType == XmlNodeType.Element  
+                        && reader.Name == "Item")  
+                    {  
+                        item = XElement.ReadFrom(reader) as XElement;  
+                        if (item != null)  
+                        {  
+                            XElement tempRoot = new XElement("Root",  
+                                new XElement(name)  
+                            );  
+                            tempRoot.Add(item);  
+                            yield return item;  
+                        }  
+                    }  
+                }  
+            }  
+        }  
+    }  
+}  
+  
+static void Main(string[] args)  
+{  
+    XStreamingElement root = new XStreamingElement("Root",  
+        from el in StreamCustomerItem("Source.xml")  
+        select new XElement("Item",  
+            new XElement("Customer", (string)el.Parent.Element("Name")),  
+            new XElement(el.Element("Key"))  
+        )  
+    );  
+    root.Save("Test.xml");  
+    Console.WriteLine(File.ReadAllText("Test.xml"));  
+}  
+```  
+  
+```vb  
+Iterator Function StreamCustomerItem(uri As String) As IEnumerable(Of XElement)  
+  
+    Dim name As XElement = Nothing  
+    Dim item As XElement = Nothing  
+  
+    Dim reader As XmlReader = XmlReader.Create(uri)  
+    reader.MoveToContent()  
+  
+    ' Parse the file, save header information when encountered, and yield the  
+    ' Item XElement objects as they are created.  
+  
+    ' Loop through Customer elements.  
+    While (reader.Read())  
+        If (reader.NodeType = XmlNodeType.Element And reader.Name = "Customer") Then  
+            While (reader.Read())  
+                ' Move to Name element  
+                If (reader.NodeType = XmlNodeType.Element And reader.Name = "Name") Then  
+                    name = CType(XElement.ReadFrom(reader), XElement)  
+                    Exit While  
+                End If  
+            End While  
+  
+            ' Loop through Item elements  
+            While (reader.Read())  
+                If (reader.NodeType = XmlNodeType.EndElement) Then  
+                    Exit While  
+                End If  
+  
+                If (reader.NodeType = XmlNodeType.Element And reader.Name = "Item") Then  
+                    item = CType(XElement.ReadFrom(reader), XElement)  
+                    If (Not (item Is Nothing)) Then  
+                        Dim tempRoot = New XElement("Root",  
+                            New XElement(name)  
+                        )  
+                        tempRoot.Add(item)  
+                        Yield item  
+                     End If  
+                End If  
+            End While  
+        End If  
+     End While  
+    reader.Close()  
+End Function  
+  
+Sub Main()  
+    Dim root As New XStreamingElement("Root",  
+        From el In StreamCustomerItem("c:\trash\Source.xml")  
+        Select New XElement("Item",  
+            New XElement("Customer", CStr(el.Parent.Element("Name"))),  
+            New XElement(el.Element("Key"))))  
+    root.Save("c:\trash\Test.xml")  
+    Console.WriteLine(System.IO.File.ReadAllText("c:\trash\Test.xml"))  
+End Sub  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<?xml version="1.0" encoding="utf-8"?>  
+<Root>  
+  <Item>  
+    <Customer>A. Datum Corporation</Customer>  
+    <Key>0001</Key>  
+  </Item>  
+  <Item>  
+    <Customer>A. Datum Corporation</Customer>  
+    <Key>0002</Key>  
+  </Item>  
+  <Item>  
+    <Customer>A. Datum Corporation</Customer>  
+    <Key>0003</Key>  
+  </Item>  
+  <Item>  
+    <Customer>A. Datum Corporation</Customer>  
+    <Key>0004</Key>  
+  </Item>  
+  <Item>  
+    <Customer>Fabrikam, Inc.</Customer>  
+    <Key>0005</Key>  
+  </Item>  
+  <Item>  
+    <Customer>Fabrikam, Inc.</Customer>  
+    <Key>0006</Key>  
+  </Item>  
+  <Item>  
+    <Customer>Fabrikam, Inc.</Customer>  
+    <Key>0007</Key>  
+  </Item>  
+  <Item>  
+    <Customer>Fabrikam, Inc.</Customer>  
+    <Key>0008</Key>  
+  </Item>  
+  <Item>  
+    <Customer>Southridge Video</Customer>  
+    <Key>0009</Key>  
+  </Item>  
+  <Item>  
+    <Customer>Southridge Video</Customer>  
+    <Key>0010</Key>  
+  </Item>  
+</Root>  
+```  
+  
+ ]]></format>
+    </remarks>
+    <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Xml.Linq.XStreamingElement" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 쿼리는 일까 지는 <xref:System.Xml.Linq.XStreamingElement> serialize 됩니다. 이와 반대로 콘텐츠에 대 한 쿼리를 사용 하는 <xref:System.Xml.Linq.XElement>새 생성 시 쿼리는 반복 하는 위치, <xref:System.Xml.Linq.XElement>합니다.  
+  
+ 이 생성자에 전달할 수 있는 유효한 콘텐츠에 대 한 자세한 내용은 참조 하세요 [유효한 콘텐츠 XElement 및 XDocument 개체](https://msdn.microsoft.com/library/aee2d319-5c5f-4b99-9bb4-2f58232577ae)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XStreamingElement (System.Xml.Linq.XName name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xml.Linq.XName name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.#ctor(System.Xml.Linq.XName)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As XName)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XStreamingElement(System::Xml::Linq::XName ^ name);" />
+      <MemberSignature Language="F#" Value="new System.Xml.Linq.XStreamingElement : System.Xml.Linq.XName -&gt; System.Xml.Linq.XStreamingElement" Usage="new System.Xml.Linq.XStreamingElement name" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.Xml.Linq.XName" />
+      </Parameters>
+      <Docs>
+        <param name="name">요소의 이름이 들어 있는 <see cref="T:System.Xml.Linq.XName" />입니다.</param>
+        <summary>지정된 <see cref="T:System.Xml.Linq.XName" />에서 <see cref="T:System.Xml.Linq.XElement" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자는 콘텐츠가 없는와 특성이 없는 스트리밍 요소를 만듭니다.  
+  
+ 문자열에서 변환이 암시적 <xref:System.Xml.Linq.XName>합니다. 새로 만드는 대신 매개 변수로 문자열을 지정 하려면이 생성자의 일반적인 사용은 <xref:System.Xml.Linq.XName>합니다.  
+  
+   
+  
+## Examples  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el >= 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+Console.WriteLine(dstTree);  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+        <Root>  
+            <Child>1</Child>  
+            <Child>2</Child>  
+            <Child>3</Child>  
+            <Child>4</Child>  
+            <Child>5</Child>  
+        </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                From el In srcTree.Elements _  
+                Where el.Value >= 3 _  
+                Select <DifferentChild><%= el.Value %></DifferentChild> _  
+            )  
+  
+Console.WriteLine(dstTree)  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+  <DifferentChild>4</DifferentChild>  
+  <DifferentChild>5</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XStreamingElement (System.Xml.Linq.XName name, object content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xml.Linq.XName name, object content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.#ctor(System.Xml.Linq.XName,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As XName, content As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XStreamingElement(System::Xml::Linq::XName ^ name, System::Object ^ content);" />
+      <MemberSignature Language="F#" Value="new System.Xml.Linq.XStreamingElement : System.Xml.Linq.XName * obj -&gt; System.Xml.Linq.XStreamingElement" Usage="new System.Xml.Linq.XStreamingElement (name, content)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.Xml.Linq.XName" />
+        <Parameter Name="content" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="name">요소 이름이 들어 있는 <see cref="T:System.Xml.Linq.XName" />입니다.</param>
+        <param name="content">요소의 콘텐츠입니다.</param>
+        <summary>지정된 이름 및 콘텐츠를 사용하여 <see cref="T:System.Xml.Linq.XStreamingElement" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자는 지정 된 내용 및 특성을 사용 하 여 스트리밍 요소를 만듭니다.  
+  
+ 문자열에서 변환이 암시적 <xref:System.Xml.Linq.XName>합니다. 새로 만드는 대신 매개 변수로 문자열을 지정 하려면이 생성자의 일반적인 사용은 <xref:System.Xml.Linq.XName>합니다.  
+  
+ 쿼리는 일까 지는 <xref:System.Xml.Linq.XStreamingElement> serialize 됩니다. 이와 반대로 콘텐츠에 대 한 쿼리를 사용 하는 <xref:System.Xml.Linq.XElement>새 생성 시 쿼리는 반복 하는 위치, <xref:System.Xml.Linq.XElement>합니다.  
+  
+ 이 생성자에 전달할 수 있는 유효한 콘텐츠에 대 한 자세한 내용은 참조 하세요 [유효한 콘텐츠 XElement 및 XDocument 개체](https://msdn.microsoft.com/library/aee2d319-5c5f-4b99-9bb4-2f58232577ae)합니다.  
+  
+   
+  
+## Examples  
+ 이 예제에서는 Source.xml 라는 다음 XML 파일을 사용 합니다.  
+  
+```xml  
+<?xml version="1.0" encoding="utf-8" ?>   
+<Root>  
+  <Child Key="01">  
+    <GrandChild>aaa</GrandChild>  
+  </Child>  
+  <Child Key="02">  
+    <GrandChild>bbb</GrandChild>  
+  </Child>  
+  <Child Key="03">  
+    <GrandChild>ccc</GrandChild>  
+  </Child>  
+</Root>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XStreamingElement (System.Xml.Linq.XName name, params object[] content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xml.Linq.XName name, object[] content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.#ctor(System.Xml.Linq.XName,System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As XName, ParamArray content As Object())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XStreamingElement(System::Xml::Linq::XName ^ name, ... cli::array &lt;System::Object ^&gt; ^ content);" />
+      <MemberSignature Language="F#" Value="new System.Xml.Linq.XStreamingElement : System.Xml.Linq.XName * obj[] -&gt; System.Xml.Linq.XStreamingElement" Usage="new System.Xml.Linq.XStreamingElement (name, content)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="name" Type="System.Xml.Linq.XName" />
+        <Parameter Name="content" Type="System.Object[]">
+          <Attributes>
+            <Attribute FrameworkAlternate="dotnet-uwp-10.0">
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="name">요소 이름이 들어 있는 <see cref="T:System.Xml.Linq.XName" />입니다.</param>
+        <param name="content">요소의 콘텐츠입니다.</param>
+        <summary>지정된 이름 및 콘텐츠를 사용하여 <see cref="T:System.Xml.Linq.XStreamingElement" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자는 지정 된 내용 및 특성을 사용 하 여 스트리밍 요소를 만듭니다.  
+  
+ 문자열에서 변환이 암시적 <xref:System.Xml.Linq.XName>합니다. 새로 만드는 대신 매개 변수로 문자열을 지정 하려면이 생성자의 일반적인 사용은 <xref:System.Xml.Linq.XName>합니다.  
+  
+ 쿼리는 일까 지는 <xref:System.Xml.Linq.XStreamingElement> serialize 됩니다. 이와 반대로 콘텐츠에 대 한 쿼리를 사용 하는 <xref:System.Xml.Linq.XElement>새 생성 시 쿼리는 반복 하는 위치, <xref:System.Xml.Linq.XElement>합니다.  
+  
+ 이 함수에 전달 될 수 있는 유효한 콘텐츠에 대 한 자세한 내용은 참조 하세요 [유효한 콘텐츠 XElement 및 XDocument 개체](https://msdn.microsoft.com/library/aee2d319-5c5f-4b99-9bb4-2f58232577ae)합니다.  
+  
+   
+  
+## Examples  
+ 이 예제에서는 Source.xml 라는 다음 XML 파일을 사용 합니다.  
+  
+```xml  
+<?xml version="1.0" encoding="utf-8" ?>   
+<Root>  
+  <Child Key="01">  
+    <GrandChild>aaa</GrandChild>  
+  </Child>  
+  <Child Key="02">  
+    <GrandChild>bbb</GrandChild>  
+  </Child>  
+  <Child Key="03">  
+    <GrandChild>ccc</GrandChild>  
+  </Child>  
+</Root>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Add">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>지정된 콘텐츠를 이 <see cref="T:System.Xml.Linq.XStreamingElement" />에 자식으로 추가합니다.</summary>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (object content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(object content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Add(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Add (content As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Add(System::Object ^ content);" />
+      <MemberSignature Language="F#" Value="member this.Add : obj -&gt; unit" Usage="xStreamingElement.Add content" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="content" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="content">스트리밍 요소에 추가할 콘텐츠입니다.</param>
+        <summary>지정된 콘텐츠를 이 <see cref="T:System.Xml.Linq.XStreamingElement" />에 자식으로 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자는 지정된 된 콘텐츠를 추가 하 고 특성을 <xref:System.Xml.Linq.XStreamingElement>합니다. 수는 있지만 자주 생성 하는 <xref:System.Xml.Linq.XStreamingElement> 단일 문에서 경우가 더 증분 방식으로 콘텐츠 스트리밍 요소를 추가 하면 편리 합니다.  
+  
+ 쿼리는 일까 지는 <xref:System.Xml.Linq.XStreamingElement> serialize 됩니다. 이와 반대로 콘텐츠에 대 한 쿼리를 사용 하는 <xref:System.Xml.Linq.XElement>새 생성 시 쿼리는 반복 하는 위치, <xref:System.Xml.Linq.XElement>합니다.  
+  
+ 이 함수에 전달 될 수 있는 유효한 콘텐츠에 대 한 자세한 내용은 참조 하세요 [유효한 콘텐츠 XElement 및 XDocument 개체](https://msdn.microsoft.com/library/aee2d319-5c5f-4b99-9bb4-2f58232577ae)합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 새 <xref:System.Xml.Linq.XStreamingElement>합니다. 스트리밍 요소에 두 개의 쿼리를 추가합니다. 쿼리는 스트리밍 요소 serialize 될 때까지 합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot");  
+  
+dstTree.Add(  
+    from el in srcTree.Elements()  
+    where (int)el <= 1  
+    select new XElement("Child", (int)el)  
+);  
+  
+dstTree.Add(  
+    from el in srcTree.Elements()  
+    where (int)el >= 3  
+    select new XElement("DifferentChild", (int)el)  
+);  
+  
+Console.WriteLine(dstTree);  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot")  
+  
+dstTree.Add( _  
+    From el In srcTree.Elements() _  
+    Where el.Value <= 1 _  
+    Select <Child><%= el.Value %></Child> _  
+)  
+  
+dstTree.Add( _  
+    From el In srcTree.Elements() _  
+    Where el.Value >= 3 _  
+    Select <DifferentChild><%= el.Value %></DifferentChild> _  
+)  
+  
+Console.WriteLine(dstTree)  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<NewRoot>  
+  <Child>1</Child>  
+  <DifferentChild>3</DifferentChild>  
+  <DifferentChild>4</DifferentChild>  
+  <DifferentChild>5</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="public void Add (params object[] content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Add(object[] content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Add(System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Add (ParamArray content As Object())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Add(... cli::array &lt;System::Object ^&gt; ^ content);" />
+      <MemberSignature Language="F#" Value="member this.Add : obj[] -&gt; unit" Usage="xStreamingElement.Add content" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="content" Type="System.Object[]">
+          <Attributes>
+            <Attribute FrameworkAlternate="dotnet-uwp-10.0">
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="content">스트리밍 요소에 추가할 콘텐츠입니다.</param>
+        <summary>지정된 콘텐츠를 이 <see cref="T:System.Xml.Linq.XStreamingElement" />에 자식으로 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자는 지정된 된 콘텐츠를 추가 하 고 특성을 <xref:System.Xml.Linq.XStreamingElement>합니다. 수는 있지만 자주 생성 하는 <xref:System.Xml.Linq.XStreamingElement> 단일 문에서 경우가 더 증분 방식으로 콘텐츠 스트리밍 요소를 추가 하면 편리 합니다.  
+  
+ 쿼리는 일까 지는 <xref:System.Xml.Linq.XStreamingElement> serialize 됩니다. 이와 반대로 콘텐츠에 대 한 쿼리를 사용 하는 <xref:System.Xml.Linq.XElement>새 생성 시 쿼리는 반복 하는 위치, <xref:System.Xml.Linq.XElement>합니다.  
+  
+ 이 함수에 전달 될 수 있는 유효한 콘텐츠에 대 한 자세한 내용은 참조 하세요 [유효한 콘텐츠 XElement 및 XDocument 개체](https://msdn.microsoft.com/library/aee2d319-5c5f-4b99-9bb4-2f58232577ae)합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 새 <xref:System.Xml.Linq.XStreamingElement>합니다. 스트리밍 요소에 두 개의 쿼리를 추가합니다. 쿼리는 스트리밍 요소 serialize 될 때까지 합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot");  
+  
+dstTree.Add(  
+    from el in srcTree.Elements()  
+    where (int)el <= 1  
+    select new XElement("Child", (int)el)  
+);  
+  
+dstTree.Add(  
+    from el in srcTree.Elements()  
+    where (int)el >= 3  
+    select new XElement("DifferentChild", (int)el)  
+);  
+  
+Console.WriteLine(dstTree);  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot")  
+  
+dstTree.Add( _  
+    From el In srcTree.Elements() _  
+    Where el.Value <= 1 _  
+    Select <Child><%= el.Value %></Child> _  
+)  
+  
+dstTree.Add( _  
+    From el In srcTree.Elements() _  
+    Where el.Value >= 3 _  
+    Select <DifferentChild><%= el.Value %></DifferentChild> _  
+)  
+  
+Console.WriteLine(dstTree)  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<NewRoot>  
+  <Child>1</Child>  
+  <DifferentChild>3</DifferentChild>  
+  <DifferentChild>4</DifferentChild>  
+  <DifferentChild>5</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public System.Xml.Linq.XName Name { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xml.Linq.XName Name" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.Linq.XStreamingElement.Name" />
+      <MemberSignature Language="VB.NET" Value="Public Property Name As XName" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xml::Linq::XName ^ Name { System::Xml::Linq::XName ^ get(); void set(System::Xml::Linq::XName ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Name : System.Xml.Linq.XName with get, set" Usage="System.Xml.Linq.XStreamingElement.Name" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Xml.Linq.XName</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 스트리밍 요소의 이름을 가져오거나 설정합니다.</summary>
+        <value>이 스트리밍 요소의 이름이 들어 있는 <see cref="T:System.Xml.Linq.XName" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 이 예제에서는 새 스트리밍 요소를 만들고 요소의 이름을 출력 합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el >= 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+Console.WriteLine(dstTree.Name);  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+        <Root>  
+            <Child>1</Child>  
+            <Child>2</Child>  
+            <Child>3</Child>  
+            <Child>4</Child>  
+            <Child>5</Child>  
+        </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                From el In srcTree.Elements _  
+                Where el.Value >= 3 _  
+                Select <DifferentChild><%= el.Value %></DifferentChild> _  
+            )  
+  
+Console.WriteLine(dstTree.Name)  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+NewRoot  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Save">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>이 스트리밍 요소를 serialize합니다. 출력을 파일, <see cref="T:System.Xml.XmlTextWriter" />, <see cref="T:System.IO.TextWriter" /> 또는 <see cref="T:System.Xml.XmlWriter" />로 저장할 수 있습니다. 또한 형식 지정(들여쓰기)을 선택적으로 해제할 수 있습니다.</summary>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public void Save (System.IO.Stream stream);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Save(class System.IO.Stream stream) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Save(System.IO.Stream)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Save(System::IO::Stream ^ stream);" />
+      <MemberSignature Language="F#" Value="member this.Save : System.IO.Stream -&gt; unit" Usage="xStreamingElement.Save stream" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="stream">이 <see cref="T:System.Xml.Linq.XDocument" />를 출력할 스트림입니다.</param>
+        <summary>이 <see cref="T:System.Xml.Linq.XStreamingElement" />를 지정된 <see cref="T:System.IO.Stream" />에 출력합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Serialize 된 XML은 들여씁니다. 모든 무효 공백이 제거할 수 있으며, XML을 올바르게 들여쓰기 됩니다 있도록 추가 공백이 추가 됩니다. 이 메서드의 동작은 불필요 한 공백이 유지 되지 것입니다.  
+  
+ 오버 로드를 사용 하 여 공백 제어 하려는 경우 <xref:System.Xml.Linq.XStreamingElement.Save%2A> 를 사용 하는 <xref:System.Xml.Linq.SaveOptions> 매개 변수로 합니다. 사용 된 <xref:System.Xml.Linq.SaveOptions.DisableFormatting> 된 들여쓰지 않은 XML을 저장 하는 옵션입니다. 이렇게 하면 모든 공백이 XML 트리에 표시 된 대로 정확 하 게 작성할 작성기입니다.  
+  
+ 사용 하 여 <xref:System.Xml.Linq.SaveOptions.OmitDuplicateNamespaces> 중복 된 네임 스페이스 선언을 제거 하려는 경우 옵션입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public void Save (System.IO.TextWriter textWriter);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Save(class System.IO.TextWriter textWriter) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Save(System.IO.TextWriter)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Save(System::IO::TextWriter ^ textWriter);" />
+      <MemberSignature Language="F#" Value="member this.Save : System.IO.TextWriter -&gt; unit" Usage="xStreamingElement.Save textWriter" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="textWriter" Type="System.IO.TextWriter" />
+      </Parameters>
+      <Docs>
+        <param name="textWriter"><see cref="T:System.IO.TextWriter" />를 쓸 <see cref="T:System.Xml.Linq.XStreamingElement" />입니다.</param>
+        <summary>이 스트리밍 요소를 <see cref="T:System.IO.TextWriter" />로 serialize합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Serialize 된 XML은 들여씁니다. 모든 무효 공백이 제거할 수 있으며, XML을 올바르게 들여쓰기 됩니다 있도록 추가 공백이 추가 됩니다. 이 메서드의 동작은 무효 공백이 XML 트리에서 노드를 유지 되지 것입니다.  
+  
+ 공백을 제어 하려는 경우 오버 로드 중 하나를 사용 <xref:System.Xml.Linq.XStreamingElement.Save%2A> 사용 하는 <xref:System.Xml.Linq.SaveOptions> 매개 변수로 합니다. 자세한 내용은 [로드 하거나 XML 구문 분석 하는 동안 공백을 유지](https://msdn.microsoft.com/library/093a7169-a04e-4638-b08c-d1cb98aa650d) 하 고 [유지 공백 하는 동안 직렬화](https://msdn.microsoft.com/library/fb146217-0a49-4efc-ac84-7265b91d3939)합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 원본 XML 트리를 만든 다음 인스턴스화하는 <xref:System.Xml.Linq.XStreamingElement> 원본 XML 트리에 쿼리를 사용 합니다. 스트리밍 요소를 작성 한 다음는 <xref:System.IO.StringWriter>합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el >= 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+StringBuilder sb = new StringBuilder();  
+dstTree.Save(new StringWriter(sb));  
+Console.WriteLine(sb.ToString());  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                        From el In srcTree.Elements() _  
+                        Where el.Value >= 3 _  
+                        Select <DifferentChild><%= el.Value %></DifferentChild> _  
+                    )  
+  
+Dim sb As StringBuilder = New StringBuilder()  
+dstTree.Save(New StringWriter(sb))  
+Console.WriteLine(sb.ToString())  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<?xml version="1.0" encoding="utf-16"?>  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+  <DifferentChild>4</DifferentChild>  
+  <DifferentChild>5</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public void Save (string fileName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Save(string fileName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Save(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Save (fileName As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Save(System::String ^ fileName);" />
+      <MemberSignature Language="F#" Value="member this.Save : string -&gt; unit" Usage="xStreamingElement.Save fileName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fileName" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="fileName">파일 이름이 들어 있는 <see cref="T:System.String" />입니다.</param>
+        <summary>이 스트리밍 요소를 파일로 serialize합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Serialize 된 XML은 들여씁니다. 모든 무효 공백이 제거할 수 있으며, XML을 올바르게 들여쓰기 됩니다 있도록 추가 공백이 추가 됩니다. 이 메서드의 동작은 무효 공백이 XML 트리에서 노드를 유지 되지 것입니다.  
+  
+ 공백을 제어 하려는 경우 오버 로드 중 하나를 사용 <xref:System.Xml.Linq.XStreamingElement.Save%2A> 사용 하는 <xref:System.Xml.Linq.SaveOptions> 매개 변수로 합니다. 자세한 내용은 [로드 하거나 XML 구문 분석 하는 동안 공백을 유지](https://msdn.microsoft.com/library/093a7169-a04e-4638-b08c-d1cb98aa650d) 하 고 [유지 공백 하는 동안 직렬화](https://msdn.microsoft.com/library/fb146217-0a49-4efc-ac84-7265b91d3939)합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 스트리밍 XML 트리를 만듭니다. 다음 파일로 스트리밍 XML 트리를 serialize합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el >= 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+dstTree.Save("Test.xml");  
+Console.WriteLine(File.ReadAllText("Test.xml"));  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                        From el In srcTree.Elements() _  
+                        Where el.Value >= 3 _  
+                        Select <DifferentChild><%= el.Value %></DifferentChild> _  
+                    )  
+  
+dstTree.Save("Test.xml")  
+Console.WriteLine(File.ReadAllText("Test.xml"))  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<?xml version="1.0" encoding="utf-8"?>  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+  <DifferentChild>4</DifferentChild>  
+  <DifferentChild>5</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public void Save (System.Xml.XmlWriter writer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Save(class System.Xml.XmlWriter writer) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Save(System.Xml.XmlWriter)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Save (writer As XmlWriter)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Save(System::Xml::XmlWriter ^ writer);" />
+      <MemberSignature Language="F#" Value="member this.Save : System.Xml.XmlWriter -&gt; unit" Usage="xStreamingElement.Save writer" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="writer" Type="System.Xml.XmlWriter" />
+      </Parameters>
+      <Docs>
+        <param name="writer"><see cref="T:System.Xml.XmlWriter" />를 쓸 <see cref="T:System.Xml.Linq.XElement" />입니다.</param>
+        <summary>이 스트리밍 요소를 <see cref="T:System.Xml.XmlWriter" />로 serialize합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제는 <xref:System.Xml.Linq.XStreamingElement> 에 씁니다는 <xref:System.Xml.XmlWriter>합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+StringBuilder sb = new StringBuilder();  
+XmlWriterSettings xws = new XmlWriterSettings();  
+xws.OmitXmlDeclaration = true;  
+using (XmlWriter xw = XmlWriter.Create(sb, xws))  
+{  
+    XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                            from el in srcTree.Elements()  
+                            where (int)el == 5  
+                            select new XElement("DifferentChild", (int)el)  
+                        );  
+  
+    dstTree.Save(xw);  
+}  
+Console.WriteLine(sb.ToString());  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim sb As StringBuilder = New StringBuilder()  
+Dim xws As XmlWriterSettings = New XmlWriterSettings()  
+xws.OmitXmlDeclaration = True  
+Using xw As XmlWriter = XmlWriter.Create(sb, xws)  
+    Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                            From el In srcTree.Elements() _  
+                            Where el.Value = 5 _  
+                            Select <DifferentChild><%= el.Value %></DifferentChild> _  
+                        )  
+    dstTree.Save(xw)  
+End Using  
+Console.WriteLine(sb.ToString())  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<NewRoot><DifferentChild>5</DifferentChild></NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public void Save (System.IO.Stream stream, System.Xml.Linq.SaveOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Save(class System.IO.Stream stream, valuetype System.Xml.Linq.SaveOptions options) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Save(System.IO.Stream,System.Xml.Linq.SaveOptions)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Save(System::IO::Stream ^ stream, System::Xml::Linq::SaveOptions options);" />
+      <MemberSignature Language="F#" Value="member this.Save : System.IO.Stream * System.Xml.Linq.SaveOptions -&gt; unit" Usage="xStreamingElement.Save (stream, options)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+        <Parameter Name="options" Type="System.Xml.Linq.SaveOptions" Index="1" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="stream">이 <see cref="T:System.Xml.Linq.XDocument" />를 출력할 스트림입니다.</param>
+        <param name="options">서식 지정 동작을 지정하는 <see cref="T:System.Xml.Linq.SaveOptions" /> 개체입니다.</param>
+        <summary>이 <see cref="T:System.Xml.Linq.XStreamingElement" />를 지정된 <see cref="T:System.IO.Stream" />에 출력하고 선택적으로 형식 지정 동작을 지정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로는 `options` 로 설정 되어 <xref:System.Xml.Linq.SaveOptions.None>입니다. 이 옵션은 모든 불필요 한 공백이 제거 하 고 XML이 제대로 들여쓰는 지 수 있도록 적절 한 무효 공백을 추가 합니다.  
+  
+ 지정 된 들여쓰지 않은 XML을 저장 하려는 경우는 <xref:System.Xml.Linq.SaveOptions.DisableFormatting> 플래그 `options`합니다. 이렇게 하면 모든 공백이 XML 트리에 표시 된 대로 정확 하 게 작성할 작성기입니다.  
+  
+ 사용 하 여 <xref:System.Xml.Linq.SaveOptions.OmitDuplicateNamespaces> 중복 된 네임 스페이스 선언을 제거 하려는 경우 옵션입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public void Save (System.IO.TextWriter textWriter, System.Xml.Linq.SaveOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Save(class System.IO.TextWriter textWriter, valuetype System.Xml.Linq.SaveOptions options) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Save(System.IO.TextWriter,System.Xml.Linq.SaveOptions)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Save(System::IO::TextWriter ^ textWriter, System::Xml::Linq::SaveOptions options);" />
+      <MemberSignature Language="F#" Value="member this.Save : System.IO.TextWriter * System.Xml.Linq.SaveOptions -&gt; unit" Usage="xStreamingElement.Save (textWriter, options)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="textWriter" Type="System.IO.TextWriter" />
+        <Parameter Name="options" Type="System.Xml.Linq.SaveOptions" />
+      </Parameters>
+      <Docs>
+        <param name="textWriter">XML을 출력할 <see cref="T:System.IO.TextWriter" />입니다.</param>
+        <param name="options">형식 지정 동작을 지정하는 <see cref="T:System.Xml.Linq.SaveOptions" />입니다.</param>
+        <summary>이 스트리밍 요소를 <see cref="T:System.IO.TextWriter" />로 serialize하고, 선택적으로 서식 지정을 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 지정 된 들여쓰지 않은 XML을 저장 하려는 경우는 <xref:System.Xml.Linq.SaveOptions.DisableFormatting> 플래그 `options`합니다. 이렇게 하면 모든 공백이 XML 트리에 표시 된 대로 정확 하 게 작성할 작성기입니다.  
+  
+ 들여쓰기 된 XML을 저장 하려는 경우를 지정 하지 않으면 합니다 <xref:System.Xml.Linq.SaveOptions.DisableFormatting> 플래그 `options`합니다. 모든 불필요 한 공백이 제거 되 고 XML이 제대로 들여쓰는 지 수 있도록 적절 한 불필요 한 공백이 추가 됩니다. 이 기본 동작을 오버 로드의 동작을 <xref:System.Xml.Linq.XElement.Save%2A> 사용 하지 않는 메서드 `options` 매개 변수로 합니다.  
+  
+ 자세한 내용은 [로드 하거나 XML 구문 분석 하는 동안 공백을 유지](https://msdn.microsoft.com/library/093a7169-a04e-4638-b08c-d1cb98aa650d) 하 고 [유지 공백 하는 동안 직렬화](https://msdn.microsoft.com/library/fb146217-0a49-4efc-ac84-7265b91d3939)합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는이 메서드의 두 가지 용도 보여 줍니다. 첫 번째 사용에서는 공백을 유지합니다. 두 번째 serialize 된 <xref:System.Xml.Linq.XStreamingElement> 서식을 사용 하 여 합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el == 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+StringBuilder sb = new StringBuilder();  
+dstTree.Save(new StringWriter(sb), SaveOptions.DisableFormatting);  
+Console.WriteLine(sb.ToString());  
+Console.WriteLine("------");  
+sb = new StringBuilder();  
+dstTree.Save(new StringWriter(sb), SaveOptions.None);  
+Console.WriteLine(sb.ToString());  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                        From el In srcTree.Elements() _  
+                        Where el.Value = 3 _  
+                        Select <DifferentChild><%= el.Value %></DifferentChild> _  
+                    )  
+  
+Dim sb As StringBuilder = New StringBuilder()  
+dstTree.Save(New StringWriter(sb), SaveOptions.DisableFormatting)  
+Console.WriteLine(sb.ToString())  
+Console.WriteLine("------")  
+sb = New StringBuilder()  
+dstTree.Save(New StringWriter(sb), SaveOptions.None)  
+Console.WriteLine(sb.ToString())  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<?xml version="1.0" encoding="utf-16"?><NewRoot><DifferentChild>3</DifferentChild></NewRoot>  
+------  
+<?xml version="1.0" encoding="utf-16"?>  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Save">
+      <MemberSignature Language="C#" Value="public void Save (string fileName, System.Xml.Linq.SaveOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Save(string fileName, valuetype System.Xml.Linq.SaveOptions options) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.Save(System.String,System.Xml.Linq.SaveOptions)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Save (fileName As String, options As SaveOptions)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Save(System::String ^ fileName, System::Xml::Linq::SaveOptions options);" />
+      <MemberSignature Language="F#" Value="member this.Save : string * System.Xml.Linq.SaveOptions -&gt; unit" Usage="xStreamingElement.Save (fileName, options)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="fileName" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="options" Type="System.Xml.Linq.SaveOptions" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="fileName">파일 이름이 들어 있는 <see cref="T:System.String" />입니다.</param>
+        <param name="options">서식 지정 동작을 지정하는 <see cref="T:System.Xml.Linq.SaveOptions" /> 개체입니다.</param>
+        <summary>이 스트리밍 요소를 파일로 serialize하고, 선택적으로 서식 지정을 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 지정 된 들여쓰지 않은 XML을 저장 하려는 경우는 <xref:System.Xml.Linq.SaveOptions.DisableFormatting> 플래그 `options`합니다. 이렇게 하면 모든 공백이 XML 트리에 표시 된 대로 정확 하 게 작성할 작성기입니다.  
+  
+ 들여쓰기 된 XML을 저장 하려는 경우를 지정 하지 않으면 합니다 <xref:System.Xml.Linq.SaveOptions.DisableFormatting> 플래그 `options`합니다. 모든 불필요 한 공백이 제거 되 고 XML이 제대로 들여쓰는 지 수 있도록 적절 한 불필요 한 공백이 추가 됩니다. 이 기본 동작을 오버 로드의 동작을 <xref:System.Xml.Linq.XElement.Save%2A> 사용 하지 않는 메서드 `options` 매개 변수로 합니다.  
+  
+ 자세한 내용은 [로드 하거나 XML 구문 분석 하는 동안 공백을 유지](https://msdn.microsoft.com/library/093a7169-a04e-4638-b08c-d1cb98aa650d) 하 고 [유지 공백 하는 동안 직렬화](https://msdn.microsoft.com/library/fb146217-0a49-4efc-ac84-7265b91d3939)합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는이 메서드의 두 가지 용도 보여 줍니다. 첫 번째 사용에서는 공백을 유지합니다. 두 번째 serialize 된 <xref:System.Xml.Linq.XStreamingElement> 서식을 사용 하 여 합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el == 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+dstTree.Save("Test1.xml", SaveOptions.DisableFormatting);  
+dstTree.Save("Test2.xml", SaveOptions.None);  
+Console.WriteLine(File.ReadAllText("Test1.xml"));  
+Console.WriteLine("------");  
+Console.WriteLine(File.ReadAllText("Test2.xml"));  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                        From el In srcTree.Elements() _  
+                        Where el.Value = 3 _  
+                        Select <DifferentChild><%= el.Value %></DifferentChild> _  
+                    )  
+  
+dstTree.Save("Test1.xml", SaveOptions.DisableFormatting)  
+dstTree.Save("Test2.xml", SaveOptions.None)  
+Console.WriteLine(File.ReadAllText("Test1.xml"))  
+Console.WriteLine("------")  
+Console.WriteLine(File.ReadAllText("Test2.xml"))  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+<?xml version="1.0" encoding="utf-8"?><NewRoot><DifferentChild>3</DifferentChild></NewRoot>  
+------  
+<?xml version="1.0" encoding="utf-8"?>  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="ToString">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>이 스트리밍 요소의 XML을 반환하고, 선택적으로 서식 지정을 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하는 프로그램을 디버깅 하는 경우 사용자에 게 유의 <xref:System.Xml.Linq.XStreamingElement>, 개체의 값을 표시 하면 해당 <xref:System.Xml.Linq.XStreamingElement.ToString%2A> 호출 될 메서드입니다. 이렇게 하면 XML을 serialize 합니다. 스트리밍 요소 쿼리 의미 체계는 스트리밍 요소를 한 번만 스트림 수 있는 경우에 디버깅 환경에서 바람직하지 않은 동작이 발생할 수 있습니다이 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberSignature Language="F#" Value="override this.ToString : unit -&gt; string" Usage="xStreamingElement.ToString " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 스트리밍 요소의 형식 지정(들여쓰기)된 XML을 반환합니다.</summary>
+        <returns>들여쓰기된 XML이 들어 있는 <see cref="T:System.String" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하는 프로그램을 디버깅 하는 경우 사용자에 게 유의 <xref:System.Xml.Linq.XStreamingElement>, 개체의 값을 표시 하면 해당 <xref:System.Xml.Linq.XStreamingElement.ToString%2A> 호출 될 메서드입니다. 이렇게 하면 XML을 serialize 합니다. 스트리밍 요소 쿼리 의미 체계는 스트리밍 요소를 한 번만 스트림 수 있는 경우에 디버깅 환경에서 바람직하지 않은 동작이 발생할 수 있습니다이 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 두 개의 사용 <xref:System.Xml.Linq.XStreamingElement.ToString%2A>합니다. 첫 번째 사용에서는 공백을 유지합니다. 두 번째 serialize 된 <xref:System.Xml.Linq.XStreamingElement> 서식을 사용 하 여 합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el == 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+Console.WriteLine(dstTree.ToString(SaveOptions.DisableFormatting));  
+Console.WriteLine("------");  
+Console.WriteLine(dstTree.ToString());  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                        From el In srcTree.Elements() _  
+                        Where el.Value = 3 _  
+                        Select <DifferentChild><%= el.Value %></DifferentChild> _  
+                    )  
+  
+Console.WriteLine(dstTree.ToString(SaveOptions.DisableFormatting))  
+Console.WriteLine("------")  
+Console.WriteLine(dstTree.ToString())  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+<NewRoot><DifferentChild>3</DifferentChild></NewRoot>  
+------  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public string ToString (System.Xml.Linq.SaveOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string ToString(valuetype System.Xml.Linq.SaveOptions options) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.ToString(System.Xml.Linq.SaveOptions)" />
+      <MemberSignature Language="VB.NET" Value="Public Function ToString (options As SaveOptions) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ ToString(System::Xml::Linq::SaveOptions options);" />
+      <MemberSignature Language="F#" Value="override this.ToString : System.Xml.Linq.SaveOptions -&gt; string" Usage="xStreamingElement.ToString options" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="options" Type="System.Xml.Linq.SaveOptions" />
+      </Parameters>
+      <Docs>
+        <param name="options">형식 지정 동작을 지정하는 <see cref="T:System.Xml.Linq.SaveOptions" />입니다.</param>
+        <summary>이 스트리밍 요소의 XML을 반환하고, 선택적으로 서식 지정을 해제합니다.</summary>
+        <returns>XML이 들어 있는 <see cref="T:System.String" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하는 프로그램을 디버깅 하는 경우 사용자에 게 유의 <xref:System.Xml.Linq.XStreamingElement>, 개체의 값을 표시 하면 해당 <xref:System.Xml.Linq.XStreamingElement.ToString%2A> 호출 될 메서드입니다. 이렇게 하면 XML을 serialize 합니다. 스트리밍 요소 쿼리 의미 체계는 스트리밍 요소를 한 번만 스트림 수 있는 경우에 디버깅 환경에서 바람직하지 않은 동작이 발생할 수 있습니다이 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 두 개의 사용 <xref:System.Xml.Linq.XStreamingElement.ToString%2A>합니다. 첫 번째 사용에서는 공백을 유지합니다. 두 번째 serialize 된 <xref:System.Xml.Linq.XStreamingElement> 서식을 사용 하 여 합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el == 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+Console.WriteLine(dstTree.ToString(SaveOptions.DisableFormatting));  
+Console.WriteLine("------");  
+Console.WriteLine(dstTree.ToString());  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = New XStreamingElement("NewRoot", _  
+                        From el In srcTree.Elements() _  
+                        Where el.Value = 3 _  
+                        Select <DifferentChild><%= el.Value %></DifferentChild> _  
+                    )  
+  
+Console.WriteLine(dstTree.ToString(SaveOptions.DisableFormatting))  
+Console.WriteLine("------")  
+Console.WriteLine(dstTree.ToString())  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+<NewRoot><DifferentChild>3</DifferentChild></NewRoot>  
+------  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteTo">
+      <MemberSignature Language="C#" Value="public void WriteTo (System.Xml.XmlWriter writer);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void WriteTo(class System.Xml.XmlWriter writer) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Linq.XStreamingElement.WriteTo(System.Xml.XmlWriter)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub WriteTo (writer As XmlWriter)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void WriteTo(System::Xml::XmlWriter ^ writer);" />
+      <MemberSignature Language="F#" Value="member this.WriteTo : System.Xml.XmlWriter -&gt; unit" Usage="xStreamingElement.WriteTo writer" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="writer" Type="System.Xml.XmlWriter" />
+      </Parameters>
+      <Docs>
+        <param name="writer">이 메서드가 쓸 <see cref="T:System.Xml.XmlWriter" />입니다.</param>
+        <summary>이 스트리밍 요소를 <see cref="T:System.Xml.XmlWriter" />에 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제에서는 사용 하 여 XML 트리를 <xref:System.Xml.Linq.XStreamingElement>입니다. 스트리밍 요소를 작성 한 다음는 <xref:System.Xml.XmlWriter>합니다.  
+  
+```csharp  
+XElement srcTree = new XElement("Root",  
+                       new XElement("Child", 1),  
+                       new XElement("Child", 2),  
+                       new XElement("Child", 3),  
+                       new XElement("Child", 4),  
+                       new XElement("Child", 5)  
+                   );  
+  
+XStreamingElement dstTree = new XStreamingElement("NewRoot",  
+                        from el in srcTree.Elements()  
+                        where (int)el == 3  
+                        select new XElement("DifferentChild", (int)el)  
+                    );  
+  
+StringBuilder sb = new StringBuilder();  
+XmlWriterSettings xws = new XmlWriterSettings();  
+xws.OmitXmlDeclaration = true;  
+xws.Indent = true;  
+  
+using (XmlWriter xw = XmlWriter.Create(sb, xws))  
+{  
+    dstTree.WriteTo(xw);  
+}  
+Console.WriteLine(sb.ToString());  
+```  
+  
+```vb  
+Dim srcTree As XElement = _  
+    <Root>  
+        <Child>1</Child>  
+        <Child>2</Child>  
+        <Child>3</Child>  
+        <Child>4</Child>  
+        <Child>5</Child>  
+    </Root>  
+  
+Dim dstTree As XStreamingElement = _   
+    New XStreamingElement("NewRoot", _  
+        From el In srcTree.Elements() _  
+        Where el.Value = 3 _  
+        Select <DifferentChild><%= el.Value %></DifferentChild> )  
+  
+Dim sb As StringBuilder = New StringBuilder()  
+Dim xws As XmlWriterSettings = New XmlWriterSettings()  
+xws.OmitXmlDeclaration = True  
+xws.Indent = True  
+  
+Using xw As XmlWriter = XmlWriter.Create(sb, xws)  
+    dstTree.WriteTo(xw)  
+End Using  
+Console.WriteLine(sb.ToString())  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```xml  
+<NewRoot>  
+  <DifferentChild>3</DifferentChild>  
+</NewRoot>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

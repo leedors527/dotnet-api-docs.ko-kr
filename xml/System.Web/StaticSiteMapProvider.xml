@@ -1,0 +1,446 @@
+<Type Name="StaticSiteMapProvider" FullName="System.Web.StaticSiteMapProvider">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="f1abbaaf7209b538d32488a7a70e1b59220235fb" /><Meta Name="ms.sourcegitcommit" Value="adc8598fd19d91438cacaa8fa7ce613e28c8218e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/11/2018" /><Meta Name="ms.locfileid" Value="53229443" /></Metadata><TypeSignature Language="C#" Value="public abstract class StaticSiteMapProvider : System.Web.SiteMapProvider" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit StaticSiteMapProvider extends System.Web.SiteMapProvider" />
+  <TypeSignature Language="DocId" Value="T:System.Web.StaticSiteMapProvider" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class StaticSiteMapProvider&#xA;Inherits SiteMapProvider" />
+  <TypeSignature Language="C++ CLI" Value="public ref class StaticSiteMapProvider abstract : System::Web::SiteMapProvider" />
+  <TypeSignature Language="F#" Value="type StaticSiteMapProvider = class&#xA;    inherit SiteMapProvider" />
+  <AssemblyInfo>
+    <AssemblyName>System.Web</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Web.SiteMapProvider</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>추상 <see cref="T:System.Web.SiteMapProvider" /> 클래스의 부분적 구현 상태로, ASP.NET에서 기본 사이트 맵 공급자인 <see cref="T:System.Web.XmlSiteMapProvider" /> 클래스에 대한 기본 클래스로 작동합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.StaticSiteMapProvider> 클래스는 추상 부분적으로 구현 <xref:System.Web.SiteMapProvider> 클래스 및 두 개의 추가 메서드를 제공: <xref:System.Web.StaticSiteMapProvider.AddNode%2A> 하 고 <xref:System.Web.StaticSiteMapProvider.RemoveNode%2A>, 추상 뿐만 아니라 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 및 보호 된 <xref:System.Web.StaticSiteMapProvider.Clear%2A> 메서드.  
+  
+ <xref:System.Web.StaticSiteMapProvider> 클래스는 영구 스토리지에 저장된 사이트 맵을 메모리에 저장된 사이트 맵으로 변환하는 사이트 맵 공급자(예: <xref:System.Web.XmlSiteMapProvider>) 작성을 지원합니다. 합니다 <xref:System.Web.StaticSiteMapProvider> 저장 및 검색에 대 한 기본 구현을 제공 하는 클래스 <xref:System.Web.SiteMapNode> 개체입니다.  
+  
+ 합니다 <xref:System.Web.SiteMapProvider> 고 <xref:System.Web.StaticSiteMapProvider> 클래스 사이트 맵 공급자를 다른 사이트 맵 공급자를 사용 하 여 계층 관계를 가질 수 있는 사이트 맵 공급자 계층의 개념을 지원 합니다. 이 패턴을 사용 하 여 구현 되는 <xref:System.Web.SiteMapProvider.RootProvider%2A> 고 <xref:System.Web.SiteMapProvider.ParentProvider%2A> 속성입니다.  
+  
+ <xref:System.Web.StaticSiteMapProvider> 저장소 클래스 해당 <xref:System.Web.SiteMapNode> 해시 테이블에 있는 개체를 내부적으로 사용 하는 <xref:System.Web.SiteMapNode.Url%2A?displayProperty=nameWithType> 키로 사이트 맵 노드를 나타내는 페이지의 속성입니다. (사이트 맵 노드를 URL을 지정 하지 않는 경우 추적 됩니다 자동으로 생성 된 고유 키를 사용 합니다.) 결과적으로 동일한 URL 사용 하 여 사이트 맵 노드를 두 번 이상 사용 여기서 사이트 맵 노드 수는 없습니다. 예를 들어, 다음 코드 예제에 설명 된 사이트 맵 노드를 로드 하려고 합니다 <xref:System.Web.XmlSiteMapProvider> 클래스에서 파생 되는 모든 사이트 맵 공급자 또는 기본 ASP.NET 사이트 맵 공급자를 <xref:System.Web.StaticSiteMapProvider> 있으므로 클래스 작동 하지 것입니다는 AboutUs.aspx 페이지가 두 번 이상 사용 됩니다.  
+  
+```  
+<sitemap>  
+  <sitemapnode title="Home" description="Home" url="default.aspx" >  
+    <sitemapnode title="Catalog" description="Our catalog" url="catalog.aspx"/>  
+    <sitemapnode title="About Us" description="All about our company" url="aboutus.aspx"/>  
+    <sitemapnode title="Driving Directions" description="Directions to our store" url="aboutus.aspx"/>  
+  </sitemapnode>  
+</sitemap>  
+```  
+  
+ 확장 하는 경우는 <xref:System.Web.StaticSiteMapProvider> 클래스는 세 가지 가장 중요 한 메서드는 합니다 <xref:System.Web.SiteMapProvider.GetRootNodeCore%2A>를 <xref:System.Configuration.Provider.ProviderBase.Initialize%2A>, 및 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 메서드. <xref:System.Web.StaticSiteMapProvider.Clear%2A> 및 <xref:System.Web.StaticSiteMapProvider.FindSiteMapNode%2A> 메서드 한 대부분의 사용자 지정 사이트 맵 공급자 구현에 대 한 충분 한 기본 구현을 제공 합니다.  
+  
+ <xref:System.Configuration.Provider.ProviderBase.Initialize%2A> 메서드가 호출 되어 파생된 사이트 맵 공급자, 사이트 맵 데이터를 로드 하는 데 필요한 모든 리소스를 포함 하 여 초기화 하지만 메모리에서 사이트 맵 노드를 작성 하려고지 않습니다. 파생된 클래스를 사용 중인 경우 파일을 사이트 맵 데이터를 저장할 파일 초기화를 여기서 수행할 수 있습니다. 사이트 맵 노드를 다른 유형의 관계형 데이터베이스와 같은 데이터 저장소를 사용 하는 경우 연결을 초기화할 수행할 수 있습니다 같습니다. 와 같은 파일 이름 또는 연결 문자열 구성에서 사이트 맵 공급자 요소에 배치 된 ASP.NET 구성 시스템에서 처리 되 고 전달 된 추가 특성을 <xref:System.Configuration.Provider.ProviderBase.Initialize%2A> 메서드는 `attributes` 매개 변수입니다.  
+  
+ <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 메서드는 <xref:System.Web.StaticSiteMapProvider> 클래스에서 파생된 모든 클래스에서 재정의해야 하며 영구 스토리지에서 사이트 맵 노드를 로드하여 내부 표현으로 변환하도록 호출됩니다. <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 메서드는 내부적으로 다양 한 기본 멤버 구현에는 <xref:System.Web.StaticSiteMapProvider> 및 <xref:System.Web.XmlSiteMapProvider> 클래스입니다. 고유한 사이트 맵 공급자를 구현 하는 경우, 사이트 맵 데이터 처리에 대 한 후속 호출을 한 번 발생 하는지 확인 합니다 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 사이트 맵 정보 이미 로드 된 경우 메서드가 즉시 반환 합니다. 구현 하는 경우는 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 메서드를 여러 동시 페이지 요청 사이트 맵 정보를 로드 하는 여러 호출에서 직접 발생할 수 있으므로 스레드로부터 안전한 지, 인지 확인 합니다. 사이트 맵 인프라에서 사용자의 역할에 따라 표시 사이트 맵 정보를 지원 합니다. 에 따라 합니다 <xref:System.Web.SiteMapNode.Roles%2A> 개별 지 속성 <xref:System.Web.SiteMapNode> 개체를 다른 사용자에 대 한 다른 탐색 구조가 있을 수 있습니다. 사이트의 기본 구현을 맵의 노드 검색 멤버를 <xref:System.Web.StaticSiteMapProvider> 클래스 보안 조정을 자동으로 호출 하 여 수행 합니다 <xref:System.Web.SiteMapProvider.IsAccessibleToUser%2A> 메서드.  
+  
+ 합니다 <xref:System.Web.StaticSiteMapProvider.AddNode%2A>, <xref:System.Web.StaticSiteMapProvider.Clear%2A> 및 <xref:System.Web.StaticSiteMapProvider.RemoveNode%2A> 메서드는 스레드로부터 안전한 방식으로 사이트 맵 노드를 추적 하는 데 사용 되는 내부 컬렉션을 조작 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 어떻게 확장할 수는 <xref:System.Web.StaticSiteMapProvider> 사이트 맵 공급자 Microsoft Access를 사용 하는 클래스입니다. `AccessSiteMapProvider` 클래스는 간단 하 고 심층 수준-1-계층이 하나만 지 원하는 사이트 맵 공급자입니다. 사이트 맵 데이터에 저장 된 테이블에 다음과 같은 구조:  
+  
+```  
+NODEID URL            NAME       PARENTNODEID  
+ ---------------------------------------------  
+ 1      default.aspx   Default    <NULL>  
+ 2      catalog.aspx   Catalog    1  
+ 3      aboutus.aspx   Contact Us 1  
+...  
+```  
+  
+ `AccessSiteMapProvider` 에서 파생 된 클래스를 <xref:System.Web.StaticSiteMapProvider> 클래스 및 기본 SQL 쿼리를 사용 하 여 Microsoft Access 데이터베이스에서 해당 정보를 검색 하며 <xref:System.Data.OleDb.OleDbCommand> 및 <xref:System.Data.OleDb.OleDbDataReader> 개체.  
+  
+ [!code-cpp[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#1](~/samples/snippets/cpp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/CPP/accesssitemapprovider.cpp#1)]
+ [!code-csharp[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#1](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/CS/accesssitemapprovider.cs#1)]
+ [!code-vb[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#1](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/VB/accesssitemapprovider.vb#1)]  
+  
+ 마지막으로 `AccessSiteMapProvider` 다음 Web.config 파일에서 기본 공급자로 구성 됩니다.  
+  
+```  
+<configuration>  
+  <system.web>  
+    <siteMap defaultProvider="AccessSiteMapProvider">  
+     <providers>  
+       <add   
+         name="AccessSiteMapProvider"  
+         type="Samples.AspNet.AccessSiteMapProvider,Samples.AspNet "  
+         accessSiteMapConnectionString="PROVIDER=MICROSOFT.JET.OLEDB.4.0;DATA SOURCE=sitemap.mdb "/>  
+     </providers>   
+    </siteMap>  
+  </system.web>  
+</configuration>  
+```  
+  
+ ]]></format>
+    </remarks>
+    <block subset="none" type="overrides"><para>상속 하는 경우는 <see cref="T:System.Web.StaticSiteMapProvider" /> 클래스에 다음 멤버를 재정의 해야 합니다: <see cref="M:System.Web.StaticSiteMapProvider.BuildSiteMap" />합니다.</para></block>
+    <altmember cref="T:System.Web.SiteMapProvider" />
+    <altmember cref="T:System.Web.XmlSiteMapProvider" />
+    <altmember cref="T:System.Web.SiteMapNode" />
+    <altmember cref="T:System.Web.SiteMap" />
+    <related type="Article" href="https://msdn.microsoft.com/library/23de8a05-cac3-4693-b508-39f1d4b7053d">ASP.NET 사이트 탐색 개요</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/6b85a558-1df8-44cf-bea6-62e61bcc8d20">ASP.NET 사이트 맵</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/4f3ce72a-4fa3-4c3a-94c8-3e2bc4a92d85">ASP.NET 사이트 탐색 공급자</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected StaticSiteMapProvider ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; StaticSiteMapProvider();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Web.StaticSiteMapProvider" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ **참고** 이 클래스가 직접 인스턴스화되지 않습니다. 파생 된 클래스의 생성자에서이 생성자를 호출 합니다 <xref:System.Web.StaticSiteMapProvider> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddNode">
+      <MemberSignature Language="C#" Value="protected internal override void AddNode (System.Web.SiteMapNode node, System.Web.SiteMapNode parentNode);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void AddNode(class System.Web.SiteMapNode node, class System.Web.SiteMapNode parentNode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.AddNode(System.Web.SiteMapNode,System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub AddNode (node As SiteMapNode, parentNode As SiteMapNode)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void AddNode(System::Web::SiteMapNode ^ node, System::Web::SiteMapNode ^ parentNode);" />
+      <MemberSignature Language="F#" Value="override this.AddNode : System.Web.SiteMapNode * System.Web.SiteMapNode -&gt; unit" Usage="staticSiteMapProvider.AddNode (node, parentNode)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+        <Parameter Name="parentNode" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node">사이트 맵 공급자에 추가할 <see cref="T:System.Web.SiteMapNode" />입니다.</param>
+        <param name="parentNode"><paramref name="node" />를 추가할 <see cref="T:System.Web.SiteMapNode" />입니다.</param>
+        <summary>사이트 맵 공급자가 유지 관리하는 컬렉션에 <see cref="T:System.Web.SiteMapNode" />를 추가하고 <see cref="T:System.Web.SiteMapNode" /> 개체 간 부모/자식 관계를 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 로 식별 되는 사이트 맵 노드를 `node` 매개 변수는 내부 컬렉션에 추가 되 고로 식별 되는 사이트 맵 노드 사이 부모-자식 관계가 만들어집니다는 `parentNode` 매개 변수입니다.  
+  
+ 내부 컬렉션에 추가 될 때 사이트 맵 노드에 대 한 URL은 해석 될 수 있습니다. 애플리케이션에 상대적인 및 상대 Url 데 내부적으로 저장 하 고 개별 인스턴스를 액세스 하는 애플리케이션 절대 가상 경로로 확장 되는 <xref:System.Web.SiteMapNode> 클래스입니다. 실제 경로, 프로토콜을 사용 하 여 경로 및 UNC 경로 같은 다른 Url는 해석 되지 않습니다.  
+  
+ <xref:System.Web.XmlSiteMapProvider> 클래스에서 파생 되는 <xref:System.Web.StaticSiteMapProvider> 클래스 및 ASP.NET에 대 한 기본 사이트 맵 공급자를 사용 하 여는 <xref:System.Web.SiteMapNode.Url%2A> 의 속성을 <xref:System.Web.SiteMapNode> 기본적으로 내부 컬렉션을 조회 키로 개체입니다. 경우는 <xref:System.Web.SiteMapNode.Url%2A> 의 속성을 <xref:System.Web.SiteMapNode> 설정, 사이트 맵 공급자의 범위 내에서 고유 해야 합니다. 합니다 <xref:System.Web.StaticSiteMapProvider.FindSiteMapNode%2A> 메서드를 기반으로 하는 사이트 맵 노드를 검색 하려고 합니다. 해당 <xref:System.Web.SiteMapNode.Url%2A> 속성입니다. 그렇지 않으면 사용할 수 있습니다 합니다 <xref:System.Web.SiteMapNode.Key%2A> 속성과 해당 <xref:System.Web.StaticSiteMapProvider.FindSiteMapNodeFromKey%2A> 사이트 맵 노드를 검색 하는 방법입니다. 없으면 <xref:System.Web.SiteMapNode.Url%2A> 또는 <xref:System.Web.SiteMapNode.Key%2A> 가 지정, 사이트 맵 공급자가 자동으로 생성을 <xref:System.Web.SiteMapNode.Key%2A> 사이트 맵 노드를 추적 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="node" />가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Web.SiteMapNode.Url" /> 또는 <see cref="P:System.Web.SiteMapNode.Key" />가 이미 <see cref="T:System.Web.StaticSiteMapProvider" />에 등록된 경우. 사이트 맵 노드는 고유한 URL 또는 키가 있는 페이지로 구성되어야 합니다.</exception>
+        <block subset="none" type="overrides"><para>재정의 하는 경우를 <see cref="M:System.Web.StaticSiteMapProvider.AddNode(System.Web.SiteMapNode,System.Web.SiteMapNode)" /> 메서드를 확인 합니다 <see cref="P:System.Web.SiteMapNode.Key" /> 속성은 고유한 값으로 사용 하 여 사이트 맵 노드를 추가 하는 경우를 <see cref="Overload:System.Web.StaticSiteMapProvider.AddNode" /> 메서드.</para></block>
+        <altmember cref="M:System.Web.StaticSiteMapProvider.RemoveNode(System.Web.SiteMapNode)" />
+      </Docs>
+    </Member>
+    <Member MemberName="BuildSiteMap">
+      <MemberSignature Language="C#" Value="public abstract System.Web.SiteMapNode BuildSiteMap ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Web.SiteMapNode BuildSiteMap() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.BuildSiteMap" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function BuildSiteMap () As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Web::SiteMapNode ^ BuildSiteMap();" />
+      <MemberSignature Language="F#" Value="abstract member BuildSiteMap : unit -&gt; System.Web.SiteMapNode" Usage="staticSiteMapProvider.BuildSiteMap " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 재정의되면 영구 스토리지에서 사이트 맵 정보를 로드한 후 메모리에 빌드합니다.</summary>
+        <returns>사이트 맵 탐색 구조의 루트 <see cref="T:System.Web.SiteMapNode" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 메서드는의 추상 멤버는 <xref:System.Web.StaticSiteMapProvider> 클래스입니다. <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 메서드는 로드 하 고 영구 저장소에서 사이트 맵 노드를 작성 합니다. 구현 하는 경우는 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 메서드를 여러 동시 페이지 요청 사이트 맵 정보를 로드 하는 여러 호출에서 직접 발생할 수 있으므로 스레드로부터 안전 인지 확인 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 구현 하는 방법에 설명 합니다 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> Microsoft Access 데이터베이스에서 데이터를 검색 하 여 구축 하는 메서드 <xref:System.Web.SiteMapNode> 에 추가 되는 개체는 <xref:System.Web.SiteMapNode.ChildNodes%2A> 루트 사이트 맵 노드의 컬렉션. 마지막으로 <xref:System.Web.SiteMapProvider.RootNode%2A> 속성은 호출자에 게 반환 됩니다.  
+  
+ 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.StaticSiteMapProvider> 클래스입니다.  
+  
+ [!code-cpp[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#4](~/samples/snippets/cpp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/CPP/accesssitemapprovider.cpp#4)]
+ [!code-csharp[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#4](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/CS/accesssitemapprovider.cs#4)]
+ [!code-vb[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#4](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/VB/accesssitemapprovider.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>재정의 하는 경우는 <see cref="M:System.Web.StaticSiteMapProvider.BuildSiteMap" /> 파생된 클래스에서 메서드를의 Url을 정규화 해야 <see cref="T:System.Web.SiteMapNode" /> 사이트 맵 공급자를 추가 하는 개체 있도록는 <see cref="M:System.Web.StaticSiteMapProvider.FindSiteMapNode(System.String)" /> 여부에 관계 없이 사이트 맵 노드를 검색할 수 사이트 맵에 대 한 URL 노드 가상 절대 경로 또는 상대 경로 애플리케이션으로 제공 됩니다. 사용 하 여 사이트 맵 공급자 구현자는 <see cref="Overload:System.Web.StaticSiteMapProvider.AddNode" /> 메서드를 저장 하기 전에 모든 Url을 정규화 해야 <see cref="T:System.Web.SiteMapNode" /> 사이트 맵 공급자를 대신 하 여 내부 해시 테이블에 있는 개체입니다.  
+  
+보안 조정 동작에 포함 되어는 <see cref="T:System.Web.SiteMapProvider" /> 및 <see cref="T:System.Web.StaticSiteMapProvider" /> 클래스 구현 합니다. 그러나 파생된 클래스에서 함수를 보안 트리밍이 설정 해야 합니다는 <see cref="P:System.Web.SiteMapNode.Roles" /> 속성을 <see cref="T:System.Web.SiteMapNode" /> 재정의 하는 경우 사이트 맵 공급자를 빌드하는 동안 만든 개체는 <see cref="M:System.Web.StaticSiteMapProvider.BuildSiteMap" /> 메서드.</para></block>
+        <altmember cref="P:System.Web.SiteMapProvider.RootNode" />
+        <altmember cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" />
+        <altmember cref="M:System.Web.StaticSiteMapProvider.Clear" />
+      </Docs>
+    </Member>
+    <Member MemberName="Clear">
+      <MemberSignature Language="C#" Value="protected virtual void Clear ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Clear() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.Clear" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Clear ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Clear();" />
+      <MemberSignature Language="F#" Value="abstract member Clear : unit -&gt; unit&#xA;override this.Clear : unit -&gt; unit" Usage="staticSiteMapProvider.Clear " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Web.StaticSiteMapProvider" />가 상태의 일부로 추적하는 하위 및 상위 사이트 맵 노드의 컬렉션에서 모든 요소를 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스를 <xref:System.Web.StaticSiteMapProvider> 클래스에서 재정의할 수 있습니다는 <xref:System.Web.StaticSiteMapProvider.Clear%2A> 파생 된 클래스 상태에 따라 추가 정리를 수행 하는 방법에 유지 관리 합니다.  
+  
+ <xref:System.Web.StaticSiteMapProvider.Clear%2A> 메서드 중 초기화 된 상태는 다시 설정 하지 않습니다는 <xref:System.Configuration.Provider.ProviderBase.Initialize%2A> 메서드 중 초기화 되는 유일한 상태 다시 설정 합니다 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 메서드.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 재정의 하는 방법에 설명 합니다 <xref:System.Web.StaticSiteMapProvider.Clear%2A> 클래스에 의해 유지 관리 되는 상태의 추가 정리를 수행 하는 방법입니다.  
+  
+ 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Web.StaticSiteMapProvider> 클래스입니다.  
+  
+ [!code-cpp[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#3](~/samples/snippets/cpp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/CPP/accesssitemapprovider.cpp#3)]
+ [!code-csharp[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#3](~/samples/snippets/csharp/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/CS/accesssitemapprovider.cs#3)]
+ [!code-vb[Urtue.Samples.Alexkr.AccessSiteMapProvider_1#3](~/samples/snippets/visualbasic/VS_Snippets_WebNet/Urtue.Samples.Alexkr.AccessSiteMapProvider_1/VB/accesssitemapprovider.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)" />
+        <altmember cref="M:System.Web.StaticSiteMapProvider.BuildSiteMap" />
+      </Docs>
+    </Member>
+    <Member MemberName="FindSiteMapNode">
+      <MemberSignature Language="C#" Value="public override System.Web.SiteMapNode FindSiteMapNode (string rawUrl);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Web.SiteMapNode FindSiteMapNode(string rawUrl) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.FindSiteMapNode(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function FindSiteMapNode (rawUrl As String) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Web::SiteMapNode ^ FindSiteMapNode(System::String ^ rawUrl);" />
+      <MemberSignature Language="F#" Value="override this.FindSiteMapNode : string -&gt; System.Web.SiteMapNode" Usage="staticSiteMapProvider.FindSiteMapNode rawUrl" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rawUrl" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="rawUrl"><see cref="T:System.Web.SiteMapNode" />를 검색할 페이지를 식별하는 URL입니다.</param>
+        <summary>지정된 URL의 페이지를 나타내는 <see cref="T:System.Web.SiteMapNode" /> 개체를 검색합니다.</summary>
+        <returns><paramref name="rawURL" />로 식별되는 페이지를 나타내는 <see cref="T:System.Web.SiteMapNode" />이고, 해당 사이트 맵 노드가 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 제공된 된 URL은 일반적으로 가상 또는 절대 URL입니다. 와 같은 ASP.NET 애플리케이션에 상대적인 구문을 사용 하는 URL 일 수도 있습니다 `"~/apprelativedirectory"`합니다. <xref:System.Web.StaticSiteMapProvider> 클래스를 절대 가상 경로로 응용 프로그램에 상대적인 원시 Url을 자동으로 정규화 합니다.  
+  
+ <xref:System.Web.XmlSiteMapProvider> 에서 파생 된 개체를 <xref:System.Web.StaticSiteMapProvider> 및 ASP.NET에 대 한 기본 사이트 맵 공급자를 사용 하 여는 <xref:System.Web.SiteMapNode.Url%2A> 의 속성을 <xref:System.Web.SiteMapNode> 기본적으로 내부 컬렉션을 조회 키로 개체. 경우는 <xref:System.Web.SiteMapNode.Url%2A> 의 속성을 <xref:System.Web.SiteMapNode> 설정, 사이트 맵 공급자의 범위 내에서 고유 해야 합니다. 합니다 <xref:System.Web.StaticSiteMapProvider.FindSiteMapNode%2A> 메서드를 기반으로 하는 사이트 맵 노드를 검색 하려고 합니다. 해당 <xref:System.Web.SiteMapNode.Url%2A>합니다. 그렇지 않으면 사용할 수 있습니다 합니다 <xref:System.Web.SiteMapNode.Key%2A> 속성과 해당 <xref:System.Web.StaticSiteMapProvider.FindSiteMapNodeFromKey%2A> 사이트 맵 노드를 검색 하는 방법입니다. 없으면 <xref:System.Web.SiteMapNode.Url%2A> 또는 <xref:System.Web.SiteMapNode.Key%2A> 가 지정, 사이트 맵 공급자가 자동으로 생성 된 <xref:System.Web.SiteMapNode.Key%2A> 사이트 맵 노드를 추적 하는 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rawURL" />가 <see langword="null" />인 경우</exception>
+        <block subset="none" type="overrides"><para>재정의 하는 경우는 <see cref="M:System.Web.StaticSiteMapProvider.FindSiteMapNode(System.String)" /> 파생된 클래스에서 메서드를의 Url을 정규화 해야 합니다 <see cref="T:System.Web.SiteMapNode" /> 사이트 맵 공급자를 추가 하는 개체 있도록는 <see cref="M:System.Web.StaticSiteMapProvider.FindSiteMapNode(System.String)" /> 여부에 관계 없이 사이트 맵 노드를 검색할 수 사이트 맵에 대 한 URL 노드는 애플리케이션 상대 경로 또는 절대 가상 경로가 제공 됩니다.  
+  
+보안 조정 동작에 포함 되어는 <see cref="T:System.Web.SiteMapProvider" /> 및 <see cref="T:System.Web.StaticSiteMapProvider" /> 클래스 구현 합니다. 그러나 파생된 클래스에서 함수를 보안 트리밍이 설정 해야 합니다는 <see cref="P:System.Web.SiteMapNode.Roles" /> 속성을 <see cref="T:System.Web.SiteMapNode" /> 재정의 하는 경우 사이트 맵 공급자를 빌드하는 동안 만든 개체는 <see cref="M:System.Web.StaticSiteMapProvider.BuildSiteMap" /> 메서드.</para></block>
+        <altmember cref="M:System.Web.StaticSiteMapProvider.BuildSiteMap" />
+        <altmember cref="M:System.Web.StaticSiteMapProvider.FindSiteMapNodeFromKey(System.String)" />
+      </Docs>
+    </Member>
+    <Member MemberName="FindSiteMapNodeFromKey">
+      <MemberSignature Language="C#" Value="public override System.Web.SiteMapNode FindSiteMapNodeFromKey (string key);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Web.SiteMapNode FindSiteMapNodeFromKey(string key) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.FindSiteMapNodeFromKey(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function FindSiteMapNodeFromKey (key As String) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Web::SiteMapNode ^ FindSiteMapNodeFromKey(System::String ^ key);" />
+      <MemberSignature Language="F#" Value="override this.FindSiteMapNodeFromKey : string -&gt; System.Web.SiteMapNode" Usage="staticSiteMapProvider.FindSiteMapNodeFromKey key" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="key" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="key"><see cref="T:System.Web.SiteMapNode" />를 만들 때 사용한 조회 키입니다.</param>
+        <summary>지정된 키를 기반으로 <see cref="T:System.Web.SiteMapNode" /> 개체를 검색합니다.</summary>
+        <returns><paramref name="key" />로 식별된 페이지를 나타내는 <see cref="T:System.Web.SiteMapNode" />이고, 보안 트리밍이 활성화되었고 현재 사용자가 사이트 맵 노드를 볼 수 없거나 사이트 맵 노드 컬렉션에서 <paramref name="key" />로 사이트 맵 노드를 찾을 수 없으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Web.StaticSiteMapProvider.FindSiteMapNodeFromKey%2A> 메서드 내부에서 사이트 맵 노드를 검색 <xref:System.Collections.Hashtable> 개체에 따라 `key`합니다.  
+  
+ <xref:System.Web.XmlSiteMapProvider> 에서 파생 된 개체를 <xref:System.Web.StaticSiteMapProvider> 클래스 및 ASP.NET에 대 한 기본 사이트 맵 공급자를 사용 하 여는 <xref:System.Web.SiteMapNode.Url%2A> 의 속성을 <xref:System.Web.SiteMapNode> 기본적으로 내부 컬렉션을 조회 키로 개체. 경우는 <xref:System.Web.SiteMapNode.Url%2A> 의 속성을 <xref:System.Web.SiteMapNode> 설정, 사이트 맵 공급자의 범위 내에서 고유 해야 합니다. 합니다 <xref:System.Web.StaticSiteMapProvider.FindSiteMapNode%2A> 메서드를 기반으로 하는 사이트 맵 노드를 검색 하려고 합니다. 해당 <xref:System.Web.SiteMapNode.Url%2A>합니다. 그렇지 않으면 사용할 수 있습니다 합니다 <xref:System.Web.SiteMapNode.Key%2A> 속성과 해당 <xref:System.Web.StaticSiteMapProvider.FindSiteMapNodeFromKey%2A> 사이트 맵 노드를 검색 하는 방법입니다.  
+  
+ <xref:System.Web.StaticSiteMapProvider> 의 인스턴스를 조회 하는 기본 구현을 합니다 <xref:System.Web.SiteMapNode> 클래스에 따라는 `key` 매개 변수입니다. 경우 사용 하는 사이트 맵 제공자 구현자는 <xref:System.Web.StaticSiteMapProvider.AddNode%2A> 메서드를 <xref:System.Web.StaticSiteMapProvider> 저장 하 게 됩니다 각각에 대 한 참조 <xref:System.Web.SiteMapNode> 의 값을 기반으로 <xref:System.Web.SiteMapNode.Key%2A?displayProperty=nameWithType> 속성. 기본적으로 <xref:System.Web.XmlSiteMapProvider> 에 대 한 Guid를 생성의 인스턴스를 <xref:System.Web.SiteMapNode> 클래스에 대 한 값이 없는 <xref:System.Web.SiteMapNode.Url%2A?displayProperty=nameWithType> 속성입니다.  사용자 지정 사이트 맵 공급자 구현자의 고유한 값을 생성 하기 위한 고유한 메커니즘을 제공 해야 합니다는 <xref:System.Web.SiteMapNode.Key%2A?displayProperty=nameWithType> 속성에서의 인스턴스를 <xref:System.Web.SiteMapNode> 클래스에 대 한 값이 없는 <xref:System.Web.SiteMapNode.Url%2A?displayProperty=nameWithType> 속성.  
+  
+ <xref:System.Web.SiteMapProvider> 하 고 <xref:System.Web.XmlSiteMapProvider> 의 URL을 사용 하는 클래스는 ASP.NET의 기본 사이트 맵 공급자 구현을 <xref:System.Web.SiteMapNode> 개체 클래스를 유지 관리 하는 다양 한 컬렉션의 키로 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="Overload:System.Web.StaticSiteMapProvider.FindSiteMapNode" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetChildNodes">
+      <MemberSignature Language="C#" Value="public override System.Web.SiteMapNodeCollection GetChildNodes (System.Web.SiteMapNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Web.SiteMapNodeCollection GetChildNodes(class System.Web.SiteMapNode node) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.GetChildNodes(System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function GetChildNodes (node As SiteMapNode) As SiteMapNodeCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Web::SiteMapNodeCollection ^ GetChildNodes(System::Web::SiteMapNode ^ node);" />
+      <MemberSignature Language="F#" Value="override this.GetChildNodes : System.Web.SiteMapNode -&gt; System.Web.SiteMapNodeCollection" Usage="staticSiteMapProvider.GetChildNodes node" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNodeCollection</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node">모든 하위 사이트 맵 노드를 검색할 <see cref="T:System.Web.SiteMapNode" />입니다.</param>
+        <summary>특정 <see cref="T:System.Web.SiteMapNode" /> 개체의 하위 사이트 맵 노드를 검색합니다.</summary>
+        <returns><paramref name="node" />의 하위 사이트 맵 노드를 포함하는 읽기 전용 <see cref="T:System.Web.SiteMapNodeCollection" />입니다. 보안 트리밍을 활성화한 경우 이 컬렉션에는 사용자가 볼 수 있도록 허용된 사이트 맵 노드만 포함됩니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SiteMapNode> 개체의 자식 및 부모 사이트 맵 노드를 추적 하기 위해 사이트 맵 공급자에 위임 합니다. 결과적으로, 계층적 사이트에 대 한 사이트 맵 공급자를 구현 하는 클래스 매핑 구조와 같은 <xref:System.Web.StaticSiteMapProvider>를 사용 하 여 <xref:System.Web.SiteMapNode> 사이트 맵 노드를 나타내는 개체를 있으려면 모든 사이트 맵 노드의 계층 관계를 추적 해야 합니다 전체 계층 구조 트리를 이동 합니다.  
+  
+ <xref:System.Web.StaticSiteMapProvider.GetChildNodes%2A> 메서드 호출을 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 내부적으로 읽기 전용으로 검색 하는 메서드 <xref:System.Web.SiteMapNodeCollection> 기준으로 지정 된 사이트 맵 노드 및 현재 사용자에 게 관련 된 사이트 맵 노드의 컬렉션입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="node" />가 <see langword="null" />인 경우</exception>
+        <altmember cref="M:System.Web.SiteMapProvider.IsAccessibleToUser(System.Web.HttpContext,System.Web.SiteMapNode)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetParentNode">
+      <MemberSignature Language="C#" Value="public override System.Web.SiteMapNode GetParentNode (System.Web.SiteMapNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Web.SiteMapNode GetParentNode(class System.Web.SiteMapNode node) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.GetParentNode(System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function GetParentNode (node As SiteMapNode) As SiteMapNode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Web::SiteMapNode ^ GetParentNode(System::Web::SiteMapNode ^ node);" />
+      <MemberSignature Language="F#" Value="override this.GetParentNode : System.Web.SiteMapNode -&gt; System.Web.SiteMapNode" Usage="staticSiteMapProvider.GetParentNode node" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.SiteMapNode</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node">해당 상위 사이트 맵 노드를 검색할 <see cref="T:System.Web.SiteMapNode" />입니다.</param>
+        <summary>특정 <see cref="T:System.Web.SiteMapNode" /> 개체의 상위 사이트 맵 노드를 검색합니다.</summary>
+        <returns>지정된 <see cref="T:System.Web.SiteMapNode" />의 상위 사이트 맵 노드를 나타내는 <see cref="T:System.Web.SiteMapNode" />이고, 상위 사이트 맵 노드가 없거나 사용자가 상위 사이트 맵 노드를 볼 수 있도록 허가되지 않은 경우<see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Web.SiteMapNode> 개체의 자식 및 부모 사이트 맵 노드를 추적 하기 위해 사이트 맵 공급자에 위임 합니다. 결과적으로, 계층적 사이트에 대 한 사이트 맵 공급자를 구현 하는 클래스 맵 구조의 예는 <xref:System.Web.StaticSiteMapProvider> 클래스를 사용 하 여 <xref:System.Web.SiteMapNode> 사이트 맵 노드를 나타내는 개체를 위해 모든 사이트 맵 노드의 계층 관계를 추적 해야 합니다 전체 계층 구조 트리를 이동할 수 있습니다.  
+  
+ 경우는 <xref:System.Web.SiteMapNode.ParentNode%2A> 속성이 없으면 합니다 <xref:System.Web.StaticSiteMapProvider> 클래스는 현재 사이트 맵 공급자에 있는지 여부를 검색을 <xref:System.Web.SiteMapProvider.ParentProvider%2A> 속성. 따라서 사이트 맵 공급자 호출 하는 경우는 <xref:System.Web.StaticSiteMapProvider.GetParentNode%2A> 상위 사이트 맵 공급자에 대 한 속성입니다. 이 시나리오를 다른 사이트 맵 공급자가 사이트 맵 노드의 상위 사이트 맵 노드를 유지 관리를 수 있습니다.  
+  
+ <xref:System.Web.StaticSiteMapProvider.GetParentNode%2A> 메서드 호출을 <xref:System.Web.StaticSiteMapProvider.BuildSiteMap%2A> 내부적으로 검색 하는 메서드는 <xref:System.Web.SiteMapNode> 지정된 사이트 맵 노드의 부모를 나타내는입니다. 보안 트리밍이 설정 되어 사이트 맵 노드를 허용 된 경우에 반환 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="node" />가 <see langword="null" />인 경우</exception>
+        <altmember cref="M:System.Web.SiteMapProvider.IsAccessibleToUser(System.Web.HttpContext,System.Web.SiteMapNode)" />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveNode">
+      <MemberSignature Language="C#" Value="protected internal override void RemoveNode (System.Web.SiteMapNode node);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void RemoveNode(class System.Web.SiteMapNode node) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Web.StaticSiteMapProvider.RemoveNode(System.Web.SiteMapNode)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub RemoveNode (node As SiteMapNode)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void RemoveNode(System::Web::SiteMapNode ^ node);" />
+      <MemberSignature Language="F#" Value="override this.RemoveNode : System.Web.SiteMapNode -&gt; unit" Usage="staticSiteMapProvider.RemoveNode node" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Web</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="node" Type="System.Web.SiteMapNode" />
+      </Parameters>
+      <Docs>
+        <param name="node">사이트 맵 노드 컬렉션에서 제거할 사이트 맵 노드입니다.</param>
+        <summary>사이트 맵 공급자가 추적한 모든 사이트 맵 노드 컬렉션에서 지정된 <see cref="T:System.Web.SiteMapNode" /> 개체를 제거합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="node" />가 <see langword="null" />인 경우</exception>
+        <altmember cref="Overload:System.Web.StaticSiteMapProvider.AddNode" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,1362 @@
+<Type Name="ECDiffieHellmanCng" FullName="System.Security.Cryptography.ECDiffieHellmanCng">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="5dc57182468664e0dc9cbafc859ee9da53e63775" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57939737" /></Metadata><TypeSignature Language="C#" Value="public sealed class ECDiffieHellmanCng : System.Security.Cryptography.ECDiffieHellman" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ECDiffieHellmanCng extends System.Security.Cryptography.ECDiffieHellman" />
+  <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.ECDiffieHellmanCng" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ECDiffieHellmanCng&#xA;Inherits ECDiffieHellman" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ECDiffieHellmanCng sealed : System::Security::Cryptography::ECDiffieHellman" />
+  <TypeSignature Language="F#" Value="type ECDiffieHellmanCng = class&#xA;    inherit ECDiffieHellman" />
+  <AssemblyInfo>
+    <AssemblyName>System.Core</AssemblyName>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+    <AssemblyVersion>4.3.1.0</AssemblyVersion>
+    <AssemblyVersion>4.3.2.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Security.Cryptography.ECDiffieHellman</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>ECDH(Elliptic Curve Diffie-Hellman) 알고리즘의 CNG(Cryptography Next Generation) 구현을 제공합니다. 이 클래스는 암호화 작업을 수행하는 데 사용됩니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.ECDiffieHellmanCng> 클래스를 사용 하면 두 당사자를 공용 채널을 통해 통신 하는 경우에 개인 키 자료를 교환 합니다.  양쪽 라고 동일한 비밀 값을 계산할 수는 *비밀 계약* 관리 Diffie Hellman 클래스에서. 그런 다음 다양 한 용도로, 대칭 키로 포함 하 여 비밀 계약을 사용할 수 있습니다. 그러나 비밀 계약을 직접 노출 하는 대신는 <xref:System.Security.Cryptography.ECDiffieHellmanCng> 클래스 값을 제공 하기 전에 규약의 일부 사후 처리를 수행 합니다. 이 사후 처리 라고 합니다 *KDF (파생 함수) 키*;를 사용 하 고 Diffie Hellman 개체 인스턴스의 속성 집합을 통해 해당 매개 변수를 설정 하는 KDF를 선택할 수 있습니다.  
+  
+|키 파생 함수|속성|  
+|-----------------------------|----------------|  
+|<xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hash>|<xref:System.Security.Cryptography.ECDiffieHellmanCng.HashAlgorithm%2A> 비밀 계약을 처리 하는 데 사용 되는-해시 알고리즘입니다.<br /><br /> <xref:System.Security.Cryptography.ECDiffieHellmanCng.SecretPrepend%2A> -앞에 해시 하기 전에 비밀 계약에 추가할 선택적 바이트 배열입니다.<br /><br /> <xref:System.Security.Cryptography.ECDiffieHellmanCng.SecretAppend%2A> 해시 전에 비밀 계약에 추가할-선택적 바이트 배열입니다.|  
+|<xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hmac>|<xref:System.Security.Cryptography.ECDiffieHellmanCng.HashAlgorithm%2A> 비밀 계약을 처리 하는 데 사용 되는-해시 알고리즘입니다.<br /><br /> <xref:System.Security.Cryptography.ECDiffieHellmanCng.SecretPrepend%2A>-앞에 해시 하기 전에 비밀 계약에 추가할 선택적 바이트 배열입니다.<br /><br /> <xref:System.Security.Cryptography.ECDiffieHellmanCng.SecretAppend%2A> 해시 전에 비밀 계약에 추가할-선택적 바이트 배열입니다.|  
+|<xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Tls>|<xref:System.Security.Cryptography.ECDiffieHellmanCng.Label%2A> -키 파생에 대 한 레이블입니다.<br /><br /> <xref:System.Security.Cryptography.ECDiffieHellmanCng.Seed%2A> -키 파생에 대 한 초기값입니다.|  
+  
+ 키 파생 함수를 통해 비밀 계약을 전달 하는 결과는 응용 프로그램에 대 한 키 자료로 사용할 수 있는 바이트 배열입니다. 생성 된 키 자료의 바이트 수가 키 파생 함수에 따라 다릅니다. 예를 들어, SHA-256 SHA-512는 512 비트의 키 자료를 생성 하는 반면 256 비트의 키 자료를 생성 됩니다. ECDH 키 교환 기본 흐름은 다음과 같습니다.  
+  
+1.  Alice와 bob은 Diffie-hellman 키 교환 작업에 사용할 키 쌍 만들기  
+  
+2.  Alice와 bob은 KDF을 구성에 매개 변수는 동의 사용 합니다.  
+  
+3.  Alice는 bob이 자신의 공개 키를 전송합니다.  
+  
+4.  Bob은 alice가 공개 키를 보냅니다.  
+  
+5.  Alice와 bob은 상대방의 공개 키를 사용 하 여 비밀 계약 생성 및 KDF 키 자료를 생성 하는 비밀 계약에 적용 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 사용 하는 방법의 <xref:System.Security.Cryptography.ECDiffieHellmanCng> 키 교환 및 해당 키를 사용 하 여 공용 채널을 통해 전송 하 고 수신자에 의해 암호를 해독할 수 있는 메시지를 암호화 하는 방법을 설정 하는 클래스입니다.  
+  
+ [!code-csharp[ECDiffieHellmanCng#1](~/samples/snippets/csharp/VS_Snippets_CLR/ecdiffiehellmancng/cs/program.cs#1)]
+ [!code-vb[ECDiffieHellmanCng#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/ecdiffiehellmancng/vb/program.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.ECDiffieHellmanCng" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ECDiffieHellmanCng ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ECDiffieHellmanCng();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary>임의의 키 쌍을 사용하여 <see cref="T:System.Security.Cryptography.ECDiffieHellmanCng" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 임의의 키 쌍의 521 비트의 기본 공개 키 길이입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ECDiffieHellmanCng (int keySize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(int32 keySize) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.#ctor(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (keySize As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ECDiffieHellmanCng(int keySize);" />
+      <MemberSignature Language="F#" Value="new System.Security.Cryptography.ECDiffieHellmanCng : int -&gt; System.Security.Cryptography.ECDiffieHellmanCng" Usage="new System.Security.Cryptography.ECDiffieHellmanCng keySize" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="keySize" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="keySize">키 크기입니다. 유효한 키 크기는 256, 384 및 521비트입니다.</param>
+        <summary>지정된 키 크기를 사용하여 임의의 키 쌍으로 <see cref="T:System.Security.Cryptography.ECDiffieHellmanCng" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 임의의 키 쌍에 정의 된 공용 키 길이 갖습니다는 `keySize` 매개 변수입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="keySize" />에서 잘못된 길이를 지정합니다.</exception>
+        <exception cref="T:System.PlatformNotSupportedException">CNG(Cryptography Next Generation) 클래스는 이 시스템에서 지원되지 않습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ECDiffieHellmanCng (System.Security.Cryptography.CngKey key);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Security.Cryptography.CngKey key) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.#ctor(System.Security.Cryptography.CngKey)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (key As CngKey)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ECDiffieHellmanCng(System::Security::Cryptography::CngKey ^ key);" />
+      <MemberSignature Language="F#" Value="new System.Security.Cryptography.ECDiffieHellmanCng : System.Security.Cryptography.CngKey -&gt; System.Security.Cryptography.ECDiffieHellmanCng" Usage="new System.Security.Cryptography.ECDiffieHellmanCng key" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="key" Type="System.Security.Cryptography.CngKey" />
+      </Parameters>
+      <Docs>
+        <param name="key">현재 개체에 의해 수행되는 암호화 작업의 입력으로 사용할 키입니다.</param>
+        <summary>지정된 <see cref="T:System.Security.Cryptography.CngKey" /> 개체를 사용하여 <see cref="T:System.Security.Cryptography.ECDiffieHellmanCng" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="key" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="key" />가 ECDH(Elliptic Curve Diffie-Hellman) 알고리즘 그룹을 지정하지 않는 경우</exception>
+        <exception cref="T:System.PlatformNotSupportedException">CNG(Cryptography Next Generation) 클래스는 이 시스템에서 지원되지 않습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ECDiffieHellmanCng (System.Security.Cryptography.ECCurve curve);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.Security.Cryptography.ECCurve curve) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.#ctor(System.Security.Cryptography.ECCurve)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (curve As ECCurve)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ECDiffieHellmanCng(System::Security::Cryptography::ECCurve curve);" />
+      <MemberSignature Language="F#" Value="new System.Security.Cryptography.ECDiffieHellmanCng : System.Security.Cryptography.ECCurve -&gt; System.Security.Cryptography.ECDiffieHellmanCng" Usage="new System.Security.Cryptography.ECDiffieHellmanCng curve" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="curve" Type="System.Security.Cryptography.ECCurve" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="curve">공개/개인 키 쌍을 생성하는 데 사용되는 곡선입니다.</param>
+        <summary>해당 공개/개인 키 쌍이 지정된 곡선에서 생성되는 <see cref="T:System.Security.Cryptography.ECDiffieHellmanCng" /> 클래스의 새 인스턴스를 만듭니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `curve` 유효성을 검사 해야 합니다 (즉, 반환 해야 합니다 `true`)에 전달 하는 경우는 <xref:System.Security.Cryptography.ECCurve.Validate%2A?displayProperty=nameWithType> 메서드 이름이 나 명시적 소수 여야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="curve" />의 유효성을 검사할 수 없습니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="DeriveKeyFromHash">
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>해시 함수를 사용하여 키로 사용할 수 있는 바이트를 파생합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="DeriveKeyFromHash">
+      <MemberSignature Language="C#" Value="public override byte[] DeriveKeyFromHash (System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, byte[] secretPrepend, byte[] secretAppend);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance unsigned int8[] DeriveKeyFromHash(class System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey, valuetype System.Security.Cryptography.HashAlgorithmName hashAlgorithm, unsigned int8[] secretPrepend, unsigned int8[] secretAppend) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.DeriveKeyFromHash(System.Security.Cryptography.ECDiffieHellmanPublicKey,System.Security.Cryptography.HashAlgorithmName,System.Byte[],System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function DeriveKeyFromHash (otherPartyPublicKey As ECDiffieHellmanPublicKey, hashAlgorithm As HashAlgorithmName, secretPrepend As Byte(), secretAppend As Byte()) As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Byte&gt; ^ DeriveKeyFromHash(System::Security::Cryptography::ECDiffieHellmanPublicKey ^ otherPartyPublicKey, System::Security::Cryptography::HashAlgorithmName hashAlgorithm, cli::array &lt;System::Byte&gt; ^ secretPrepend, cli::array &lt;System::Byte&gt; ^ secretAppend);" />
+      <MemberSignature Language="F#" Value="override this.DeriveKeyFromHash : System.Security.Cryptography.ECDiffieHellmanPublicKey * System.Security.Cryptography.HashAlgorithmName * byte[] * byte[] -&gt; byte[]" Usage="eCDiffieHellmanCng.DeriveKeyFromHash (otherPartyPublicKey, hashAlgorithm, secretPrepend, secretAppend)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherPartyPublicKey" Type="System.Security.Cryptography.ECDiffieHellmanPublicKey" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="hashAlgorithm" Type="System.Security.Cryptography.HashAlgorithmName" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="secretPrepend" Type="System.Byte[]" Index="2" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="secretAppend" Type="System.Byte[]" Index="3" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="otherPartyPublicKey">상대방의 공개 키입니다.</param>
+        <param name="hashAlgorithm">키 자료를 파생시키는 데 사용할 해시 알고리즘입니다.</param>
+        <param name="secretPrepend">해시 전에 파생된 암호 앞에 추가할 값입니다.</param>
+        <param name="secretAppend">해시 전에 파생된 암호 뒤에 추가할 값입니다.</param>
+        <summary>해시 함수, 지정된 다른 당사자의 공개 키, 해시 알고리즘의 이름, 선행 값 및 후행 값을 사용하여 키로 사용할 수 있는 바이트를 파생합니다.</summary>
+        <returns>다른 당사자와 공개 키를 교환하여 가져온 키 자료입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우 값 `secretPrepend` 나 `secretAppend` 는 `null`, 빈 배열로 처리 되는 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="otherPartyPublicKey" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="otherPartyPublicKey" />가 ECDH 키가 아니거나 올바른 크기가 아닌 경우  
+  
+또는 
+ <paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> <see langword="null" /> 또는 <see cref="F:System.String.Empty" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">다른 모든 오류입니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="DeriveKeyFromHmac">
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>HMAC(해시 기반 메시지 인증 코드)를 사용하여 키로 사용할 수 있는 바이트를 파생합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="DeriveKeyFromHmac">
+      <MemberSignature Language="C#" Value="public override byte[] DeriveKeyFromHmac (System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, byte[] hmacKey, byte[] secretPrepend, byte[] secretAppend);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance unsigned int8[] DeriveKeyFromHmac(class System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey, valuetype System.Security.Cryptography.HashAlgorithmName hashAlgorithm, unsigned int8[] hmacKey, unsigned int8[] secretPrepend, unsigned int8[] secretAppend) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.DeriveKeyFromHmac(System.Security.Cryptography.ECDiffieHellmanPublicKey,System.Security.Cryptography.HashAlgorithmName,System.Byte[],System.Byte[],System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function DeriveKeyFromHmac (otherPartyPublicKey As ECDiffieHellmanPublicKey, hashAlgorithm As HashAlgorithmName, hmacKey As Byte(), secretPrepend As Byte(), secretAppend As Byte()) As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Byte&gt; ^ DeriveKeyFromHmac(System::Security::Cryptography::ECDiffieHellmanPublicKey ^ otherPartyPublicKey, System::Security::Cryptography::HashAlgorithmName hashAlgorithm, cli::array &lt;System::Byte&gt; ^ hmacKey, cli::array &lt;System::Byte&gt; ^ secretPrepend, cli::array &lt;System::Byte&gt; ^ secretAppend);" />
+      <MemberSignature Language="F#" Value="override this.DeriveKeyFromHmac : System.Security.Cryptography.ECDiffieHellmanPublicKey * System.Security.Cryptography.HashAlgorithmName * byte[] * byte[] * byte[] -&gt; byte[]" Usage="eCDiffieHellmanCng.DeriveKeyFromHmac (otherPartyPublicKey, hashAlgorithm, hmacKey, secretPrepend, secretAppend)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherPartyPublicKey" Type="System.Security.Cryptography.ECDiffieHellmanPublicKey" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="hashAlgorithm" Type="System.Security.Cryptography.HashAlgorithmName" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="hmacKey" Type="System.Byte[]" Index="2" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="secretPrepend" Type="System.Byte[]" Index="3" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="secretAppend" Type="System.Byte[]" Index="4" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="otherPartyPublicKey">상대방의 공개 키입니다.</param>
+        <param name="hashAlgorithm">키 자료를 파생시키는 데 사용할 해시 알고리즘입니다.</param>
+        <param name="hmacKey">HMAC의 키입니다.</param>
+        <param name="secretPrepend">해시 전에 파생된 암호 앞에 추가할 값입니다.</param>
+        <param name="secretAppend">해시 전에 파생된 암호 뒤에 추가할 값입니다.</param>
+        <summary>HMAC(해시 기반 메시지 인증 코드)를 사용하여 키로 사용할 수 있는 바이트를 파생합니다.</summary>
+        <returns>다른 당사자와 공개 키를 교환하여 가져온 키 자료입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우 값 `secretPrepend` 나 `secretAppend` 는 `null`, 빈 배열로 처리 되는 합니다. 경우 값 `hmacKey` 는 `null`, HMAC 키로 사용할 Diffie Hellman ECDH (Elliptic Curve) 알고리즘의 결과입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="otherPartyPublicKey" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="otherPartyPublicKey" />가 ECDH 키가 아니거나 올바른 크기가 아닌 경우  
+  
+또는 
+ <paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> <see langword="null" /> 또는 <see cref="F:System.String.Empty" />입니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">다른 모든 오류입니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="DeriveKeyMaterial">
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>두 당사자 간의 비밀 계약을 통해 생성되는 키 자료를 파생합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Diffie Hellman ECDH (Elliptic Curve) 알고리즘 개인 키와 다른 당사자의 공개 키 입력으로 받고 출력으로 비밀 계약을 생성 합니다. 그런 다음 (KDF) 키 파생 함수는 비밀 계약을 사용 하 고 출력으로 키 자료를 생성 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="DeriveKeyMaterial">
+      <MemberSignature Language="C#" Value="public byte[] DeriveKeyMaterial (System.Security.Cryptography.CngKey otherPartyPublicKey);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance unsigned int8[] DeriveKeyMaterial(class System.Security.Cryptography.CngKey otherPartyPublicKey) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.DeriveKeyMaterial(System.Security.Cryptography.CngKey)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeriveKeyMaterial (otherPartyPublicKey As CngKey) As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Byte&gt; ^ DeriveKeyMaterial(System::Security::Cryptography::CngKey ^ otherPartyPublicKey);" />
+      <MemberSignature Language="F#" Value="override this.DeriveKeyMaterial : System.Security.Cryptography.CngKey -&gt; byte[]" Usage="eCDiffieHellmanCng.DeriveKeyMaterial otherPartyPublicKey" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherPartyPublicKey" Type="System.Security.Cryptography.CngKey" />
+      </Parameters>
+      <Docs>
+        <param name="otherPartyPublicKey">키 교환의 다른 당사자가 제공한 ECDH(Elliptic Curve Diffie-Hellman) 키의 공개 부분이 들어 있는 개체입니다.</param>
+        <summary>두 번째 당사자의 공개 키가 들어 있는 <see cref="T:System.Security.Cryptography.CngKey" /> 개체를 사용하여 두 당사자 간의 비밀 계약을 통해 생성되는 키 자료를 파생합니다.</summary>
+        <returns>키 자료가 들어 있는 바이트 배열입니다. 이 정보는 현재 개체의 개인 키와 지정된 공개 키에 따라 계산되는 비밀 계약을 통해 생성됩니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="otherPartyPublicKey" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="otherPartyPublicKey" />이 잘못되었습니다. <see cref="P:System.Security.Cryptography.CngKey.AlgorithmGroup" /> 속성이 <see cref="P:System.Security.Cryptography.CngAlgorithmGroup.ECDiffieHellman" />을 지정하지 않거나 키 크기가 이 인스턴스의 키 크기와 일치하지 않습니다.</exception>
+        <exception cref="T:System.InvalidOperationException">이 개체의 <see cref="P:System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction" /> 속성이 <see cref="F:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Tls" /> 키 파생 함수를 지정하지만 <see cref="P:System.Security.Cryptography.ECDiffieHellmanCng.Label" /> 또는 <see cref="P:System.Security.Cryptography.ECDiffieHellmanCng.Seed" />가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">다른 모든 오류입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeriveKeyMaterial">
+      <MemberSignature Language="C#" Value="public override byte[] DeriveKeyMaterial (System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance unsigned int8[] DeriveKeyMaterial(class System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.DeriveKeyMaterial(System.Security.Cryptography.ECDiffieHellmanPublicKey)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function DeriveKeyMaterial (otherPartyPublicKey As ECDiffieHellmanPublicKey) As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Byte&gt; ^ DeriveKeyMaterial(System::Security::Cryptography::ECDiffieHellmanPublicKey ^ otherPartyPublicKey);" />
+      <MemberSignature Language="F#" Value="override this.DeriveKeyMaterial : System.Security.Cryptography.ECDiffieHellmanPublicKey -&gt; byte[]" Usage="eCDiffieHellmanCng.DeriveKeyMaterial otherPartyPublicKey" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherPartyPublicKey" Type="System.Security.Cryptography.ECDiffieHellmanPublicKey" />
+      </Parameters>
+      <Docs>
+        <param name="otherPartyPublicKey">키 교환의 다른 당사자가 제공한 공개 키입니다.</param>
+        <summary>두 번째 당사자의 공개 키가 들어 있는 <see cref="T:System.Security.Cryptography.ECDiffieHellmanPublicKey" /> 개체를 사용하여 두 당사자 간의 비밀 계약을 통해 생성되는 키 자료를 파생합니다.</summary>
+        <returns>키 자료가 들어 있는 바이트 배열입니다. 이 정보는 현재 개체의 개인 키와 지정된 공개 키에 따라 계산되는 비밀 계약을 통해 생성됩니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="otherPartyPublicKey" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="otherPartyPublicKey" />가 <see cref="T:System.Security.Cryptography.ECDiffieHellmanCngPublicKey" /> 키가 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeriveKeyTls">
+      <MemberSignature Language="C#" Value="public override byte[] DeriveKeyTls (System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey, byte[] prfLabel, byte[] prfSeed);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance unsigned int8[] DeriveKeyTls(class System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey, unsigned int8[] prfLabel, unsigned int8[] prfSeed) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.DeriveKeyTls(System.Security.Cryptography.ECDiffieHellmanPublicKey,System.Byte[],System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function DeriveKeyTls (otherPartyPublicKey As ECDiffieHellmanPublicKey, prfLabel As Byte(), prfSeed As Byte()) As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override cli::array &lt;System::Byte&gt; ^ DeriveKeyTls(System::Security::Cryptography::ECDiffieHellmanPublicKey ^ otherPartyPublicKey, cli::array &lt;System::Byte&gt; ^ prfLabel, cli::array &lt;System::Byte&gt; ^ prfSeed);" />
+      <MemberSignature Language="F#" Value="override this.DeriveKeyTls : System.Security.Cryptography.ECDiffieHellmanPublicKey * byte[] * byte[] -&gt; byte[]" Usage="eCDiffieHellmanCng.DeriveKeyTls (otherPartyPublicKey, prfLabel, prfSeed)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherPartyPublicKey" Type="System.Security.Cryptography.ECDiffieHellmanPublicKey" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="prfLabel" Type="System.Byte[]" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="prfSeed" Type="System.Byte[]" Index="2" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="otherPartyPublicKey">상대방의 공개 키입니다.</param>
+        <param name="prfLabel">ASCII로 인코딩된 PRF 레이블입니다.</param>
+        <param name="prfSeed">64바이트 PRF 시드입니다.</param>
+        <summary>TLS(전송 계층 보안) PRF(의사 난수 함수) 파생 알고리즘을 사용하여 키로 사용할 수 있는 바이트를 파생합니다.</summary>
+        <returns>다른 당사자와 공개 키를 교환하여 가져온 키 자료입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="otherPartyPublicKey" />가 <see langword="null" />입니다.  
+  
+또는 
+ <paramref name="prfLabel" />가 <see langword="null" />인 경우  
+  
+또는 
+ <paramref name="prfSeed" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="otherPartyPublicKey" />가 ECDH 키가 아니거나 올바른 크기가 아닌 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="prfSeed" />의 정확한 길이가 64바이트가 아닌 경우  
+  
+또는 
+다른 모든 암호화 오류</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="DeriveSecretAgreementHandle">
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>두 당사자 간에 생성된 비밀 계약에 대한 핸들을 가져옵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.ECDiffieHellmanCng.DeriveSecretAgreementHandle%2A> 키 자료 대신 원시 비밀 계약에 대 한 핸들을 해야 하는 고급 사용자에 대 한 메서드 오버 로드 됩니다. 비밀 계약 핸들을 플랫폼에서 사용할 수 없습니다 래핑되는 작업을 수행 하는 호출을 <xref:System.Security.Cryptography.ECDiffieHellmanCng> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="DeriveSecretAgreementHandle">
+      <MemberSignature Language="C#" Value="public Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle DeriveSecretAgreementHandle (System.Security.Cryptography.CngKey otherPartyPublicKey);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle DeriveSecretAgreementHandle(class System.Security.Cryptography.CngKey otherPartyPublicKey) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.DeriveSecretAgreementHandle(System.Security.Cryptography.CngKey)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeriveSecretAgreementHandle (otherPartyPublicKey As CngKey) As SafeNCryptSecretHandle" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Microsoft::Win32::SafeHandles::SafeNCryptSecretHandle ^ DeriveSecretAgreementHandle(System::Security::Cryptography::CngKey ^ otherPartyPublicKey);" />
+      <MemberSignature Language="F#" Value="member this.DeriveSecretAgreementHandle : System.Security.Cryptography.CngKey -&gt; Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle" Usage="eCDiffieHellmanCng.DeriveSecretAgreementHandle otherPartyPublicKey" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherPartyPublicKey" Type="System.Security.Cryptography.CngKey" />
+      </Parameters>
+      <Docs>
+        <param name="otherPartyPublicKey">키 교환의 다른 당사자가 제공한 ECDH(Elliptic Curve Diffie-Hellman) 키의 공개 부분이 들어 있는 개체입니다.</param>
+        <summary>두 번째 당사자의 공개 키가 들어 있는 <see cref="T:System.Security.Cryptography.CngKey" /> 개체를 사용하여 두 당사자 간에 생성된 비밀 계약에 대한 핸들을 가져옵니다.</summary>
+        <returns>비밀 계약에 대한 핸들입니다. 이 정보는 현재 개체의 개인 키와 지정된 공개 키에 따라 계산됩니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="otherPartyPublicKey" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="otherPartyPublicKey" />가 ECDH 키가 아니거나 올바른 크기가 아닌 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">다른 모든 오류입니다.</exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">관리 되지 않는 코드를 호출할 수 있는 권한입니다. 요청 값: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />합니다. 연결 된 열거형: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+      </Docs>
+    </Member>
+    <Member MemberName="DeriveSecretAgreementHandle">
+      <MemberSignature Language="C#" Value="public Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle DeriveSecretAgreementHandle (System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle DeriveSecretAgreementHandle(class System.Security.Cryptography.ECDiffieHellmanPublicKey otherPartyPublicKey) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.DeriveSecretAgreementHandle(System.Security.Cryptography.ECDiffieHellmanPublicKey)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeriveSecretAgreementHandle (otherPartyPublicKey As ECDiffieHellmanPublicKey) As SafeNCryptSecretHandle" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; Microsoft::Win32::SafeHandles::SafeNCryptSecretHandle ^ DeriveSecretAgreementHandle(System::Security::Cryptography::ECDiffieHellmanPublicKey ^ otherPartyPublicKey);" />
+      <MemberSignature Language="F#" Value="member this.DeriveSecretAgreementHandle : System.Security.Cryptography.ECDiffieHellmanPublicKey -&gt; Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle" Usage="eCDiffieHellmanCng.DeriveSecretAgreementHandle otherPartyPublicKey" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>Microsoft.Win32.SafeHandles.SafeNCryptSecretHandle</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherPartyPublicKey" Type="System.Security.Cryptography.ECDiffieHellmanPublicKey" />
+      </Parameters>
+      <Docs>
+        <param name="otherPartyPublicKey">키 교환의 다른 당사자가 제공한 공개 키입니다.</param>
+        <summary>두 번째 당사자의 공개 키가 들어 있는 <see cref="T:System.Security.Cryptography.ECDiffieHellmanPublicKey" /> 개체를 사용하여 두 당사자 간에 생성된 비밀 계약에 대한 핸들을 가져옵니다.</summary>
+        <returns>비밀 계약에 대한 핸들입니다. 이 정보는 현재 개체의 개인 키와 지정된 공개 키에 따라 계산됩니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="otherPartyPublicKey" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="otherPartyPublicKey" />가 <see cref="T:System.Security.Cryptography.ECDiffieHellmanPublicKey" /> 키가 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="override this.Dispose : bool -&gt; unit" Usage="eCDiffieHellmanCng.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ExportExplicitParameters">
+      <MemberSignature Language="C#" Value="public override System.Security.Cryptography.ECParameters ExportExplicitParameters (bool includePrivateParameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance valuetype System.Security.Cryptography.ECParameters ExportExplicitParameters(bool includePrivateParameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.ExportExplicitParameters(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ExportExplicitParameters (includePrivateParameters As Boolean) As ECParameters" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Security::Cryptography::ECParameters ExportExplicitParameters(bool includePrivateParameters);" />
+      <MemberSignature Language="F#" Value="override this.ExportExplicitParameters : bool -&gt; System.Security.Cryptography.ECParameters" Usage="eCDiffieHellmanCng.ExportExplicitParameters includePrivateParameters" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.ECParameters</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="includePrivateParameters" Type="System.Boolean" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="includePrivateParameters">private 매개 변수를 포함하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary><see cref="T:System.Security.Cryptography.ECCurve" /> 개체에 사용되는 키 및 명시적 곡선 매개 변수를 <see cref="T:System.Security.Cryptography.ECParameters" /> 개체로 내보냅니다.</summary>
+        <returns><see cref="T:System.Security.Cryptography.ECCurve" /> 개체에 사용되는 키 및 명시적 곡선 매개 변수입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">메서드가 곡선 값을 가져올 수 없습니다.</exception>
+        <exception cref="T:System.PlatformNotSupportedException">이 플랫폼에서는 명시적 내보내기가 지원되지 않습니다. Windows 10 이상이 필요합니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ExportParameters">
+      <MemberSignature Language="C#" Value="public override System.Security.Cryptography.ECParameters ExportParameters (bool includePrivateParameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance valuetype System.Security.Cryptography.ECParameters ExportParameters(bool includePrivateParameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.ExportParameters(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ExportParameters (includePrivateParameters As Boolean) As ECParameters" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Security::Cryptography::ECParameters ExportParameters(bool includePrivateParameters);" />
+      <MemberSignature Language="F#" Value="override this.ExportParameters : bool -&gt; System.Security.Cryptography.ECParameters" Usage="eCDiffieHellmanCng.ExportParameters includePrivateParameters" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.ECParameters</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="includePrivateParameters" Type="System.Boolean" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="includePrivateParameters">private 매개 변수를 포함하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary><see cref="T:System.Security.Cryptography.ECCurve" /> 개체가 사용하는 키를 <see cref="T:System.Security.Cryptography.ECParameters" /> 개체로 내보냅니다.</summary>
+        <returns><see cref="T:System.Security.Cryptography.ECCurve" /> 개체에 사용되는 키 및 명명된 곡선 매개 변수입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 명명된 된 곡선으로 키를 만든 경우는 <xref:System.Security.Cryptography.ECParameters.Curve?displayProperty=nameWithType> 필드에 명명 된 곡선 매개 변수입니다.          그렇지 않으면 명시적 매개 변수를 포함 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">메서드가 곡선 값을 가져올 수 없습니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="FromXmlString">
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>XML 문자열에서 키 정보를 deserialize합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="FromXmlString">
+      <MemberSignature Language="C#" Value="public override void FromXmlString (string xmlString);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void FromXmlString(string xmlString) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.FromXmlString(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub FromXmlString (xmlString As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void FromXmlString(System::String ^ xmlString);" />
+      <MemberSignature Language="F#" Value="override this.FromXmlString : string -&gt; unit" Usage="eCDiffieHellmanCng.FromXmlString xmlString" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="xmlString" Type="System.String" Index="0" FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="xmlString">deserialize할 XML 기반 키 정보입니다.</param>
+        <summary>이 메서드가 구현되지 않은 경우</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여 XML 키를 deserialize 하는 <xref:System.Security.Cryptography.ECDiffieHellmanCng.FromXmlString%28System.String%2CSystem.Security.Cryptography.ECKeyXmlFormat%29> 오버 로드를 대신 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotImplementedException">이 인스턴스에서 이 메서드가 재정의되지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="FromXmlString">
+      <MemberSignature Language="C#" Value="public void FromXmlString (string xml, System.Security.Cryptography.ECKeyXmlFormat format);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void FromXmlString(string xml, valuetype System.Security.Cryptography.ECKeyXmlFormat format) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.FromXmlString(System.String,System.Security.Cryptography.ECKeyXmlFormat)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub FromXmlString (xml As String, format As ECKeyXmlFormat)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void FromXmlString(System::String ^ xml, System::Security::Cryptography::ECKeyXmlFormat format);" />
+      <MemberSignature Language="F#" Value="override this.FromXmlString : string * System.Security.Cryptography.ECKeyXmlFormat -&gt; unit" Usage="eCDiffieHellmanCng.FromXmlString (xml, format)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="xml" Type="System.String" />
+        <Parameter Name="format" Type="System.Security.Cryptography.ECKeyXmlFormat" />
+      </Parameters>
+      <Docs>
+        <param name="xml">deserialize할 XML 기반 키 정보입니다.</param>
+        <param name="format">XML 문자열의 형식을 지정하는 열거형 값 중 하나입니다. 현재 사용 가능한 형식은 <see cref="F:System.Security.Cryptography.ECKeyXmlFormat.Rfc4050" />뿐입니다.</param>
+        <summary>지정된 형식을 사용하여 XML 문자열에서 키 정보를 deserialize합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="xml" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="xml" />의 형식이 잘못된 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="format" />에 지정된 형식이 잘못된 경우. <see cref="F:System.Security.Cryptography.ECKeyXmlFormat.Rfc4050" /> 값만 사용할 수 있습니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">다른 모든 오류입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GenerateKey">
+      <MemberSignature Language="C#" Value="public override void GenerateKey (System.Security.Cryptography.ECCurve curve);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void GenerateKey(valuetype System.Security.Cryptography.ECCurve curve) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.GenerateKey(System.Security.Cryptography.ECCurve)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub GenerateKey (curve As ECCurve)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void GenerateKey(System::Security::Cryptography::ECCurve curve);" />
+      <MemberSignature Language="F#" Value="override this.GenerateKey : System.Security.Cryptography.ECCurve -&gt; unit" Usage="eCDiffieHellmanCng.GenerateKey curve" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="curve" Type="System.Security.Cryptography.ECCurve" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="curve">사용 후 삭제 공개/개인 키 쌍을 생성하는 데 사용되는 곡선입니다.</param>
+        <summary>지정된 곡선에 대해 사용 후 삭제 공개/개인 키 쌍을 새로 생성합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `curve` 유효성을 검사 해야 합니다 (즉, 전달 될 때 true 반환 해야 합니다는 <xref:System.Security.Cryptography.ECCurve.Validate%2A?displayProperty=nameWithType> 메서드) 및 암시적 이어야 합니다.  
+  
+ 특성 2 곡선 Windows에서 지원 되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="curve" />의 유효성을 검사할 수 없습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="HashAlgorithm">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.CngAlgorithm HashAlgorithm { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.CngAlgorithm HashAlgorithm" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.HashAlgorithm" />
+      <MemberSignature Language="VB.NET" Value="Public Property HashAlgorithm As CngAlgorithm" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::CngAlgorithm ^ HashAlgorithm { System::Security::Cryptography::CngAlgorithm ^ get(); void set(System::Security::Cryptography::CngAlgorithm ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.HashAlgorithm : System.Security.Cryptography.CngAlgorithm with get, set" Usage="System.Security.Cryptography.ECDiffieHellmanCng.HashAlgorithm" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.CngAlgorithm</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>키 자료를 생성하는 데 사용할 해시 알고리즘을 가져오거나 설정합니다.</summary>
+        <value>해시 알고리즘을 지정하는 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 생성 CNG (Cryptography Next) 개체 경우에만이 속성은 사용 합니다 <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hash> 또는 <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hmac> 에 값이 설정의 <xref:System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction%2A> 속성.  
+  
+ 이 속성은 다음 알고리즘을 허용 합니다. <xref:System.Security.Cryptography.CngAlgorithm.MD5%2A>, <xref:System.Security.Cryptography.CngAlgorithm.Sha1%2A>, <xref:System.Security.Cryptography.CngAlgorithm.Sha256%2A>, <xref:System.Security.Cryptography.CngAlgorithm.Sha384%2A>, 및 <xref:System.Security.Cryptography.CngAlgorithm.Sha512%2A>.  
+  
+ 다른 사용자 지정 해시 알고리즘을 사용할 수도 있습니다.  
+  
+ 기본 알고리즘은 <xref:System.Security.Cryptography.CngAlgorithm.Sha256%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">값이 <see langword="null." />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="HmacKey">
+      <MemberSignature Language="C#" Value="public byte[] HmacKey { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] HmacKey" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.HmacKey" />
+      <MemberSignature Language="VB.NET" Value="Public Property HmacKey As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::Byte&gt; ^ HmacKey { cli::array &lt;System::Byte&gt; ^ get(); void set(cli::array &lt;System::Byte&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.HmacKey : byte[] with get, set" Usage="System.Security.Cryptography.ECDiffieHellmanCng.HmacKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>키 자료를 파생하는 데 사용할 HMAC(해시 기반 메시지 인증 코드) 키를 가져오거나 설정합니다.</summary>
+        <value>키 자료를 파생하는 데 사용할 HMAC(해시 기반 메시지 인증 코드) 키입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성은 경우에만 적용 됩니다는 <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hmac> 에 값이 설정 합니다 <xref:System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction%2A> 속성 및 <xref:System.Security.Cryptography.ECDiffieHellmanCng.UseSecretAgreementAsHmacKey%2A> 속성은 `false`. 기본적으로 이 값은 `null`입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImportParameters">
+      <MemberSignature Language="C#" Value="public override void ImportParameters (System.Security.Cryptography.ECParameters parameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ImportParameters(valuetype System.Security.Cryptography.ECParameters parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.ImportParameters(System.Security.Cryptography.ECParameters)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub ImportParameters (parameters As ECParameters)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void ImportParameters(System::Security::Cryptography::ECParameters parameters);" />
+      <MemberSignature Language="F#" Value="override this.ImportParameters : System.Security.Cryptography.ECParameters -&gt; unit" Usage="eCDiffieHellmanCng.ImportParameters parameters" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.Security.Cryptography.ECParameters" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="parameters">가져올 곡선의 매개 변수입니다.</param>
+        <summary><see cref="T:System.Security.Cryptography.ECCurve" /> 개체에 대해 지정된 매개 변수를 현재 인스턴스에 키로 가져옵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.ECDiffieHellmanCng.ImportParameters%2A> 메서드는 새 작업은이 개체는 기존 키를 대체 <xref:System.Security.Cryptography.CngKey> 개체입니다. 경우 `parameters` 만 포함 된 <xref:System.Security.Cryptography.ECParameters.Q> 공개 키를 가져온 다음 필드.         경우 `parameters` 도 포함 되어 있습니다 <xref:System.Security.Cryptography.ECParameters.D>, 후 전체 키 쌍을 가져올 수 있습니다. 합니다 `parameter` <xref:System.Security.Cryptography.ECParameters.Curve> 값 가져올 곡선의 유형을 지정 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="parameters" />의 유효성을 검사할 수 없습니다.</exception>
+        <exception cref="T:System.NotSupportedException"><paramref name="parameters" />가 가져올 수 없는 곡선을 참조합니다.</exception>
+        <exception cref="T:System.PlatformNotSupportedException"><paramref name="parameters" />가 이 플랫폼에서 지원되지 않는 곡선을 참조합니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Key">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.CngKey Key { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.CngKey Key" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.Key" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Key As CngKey" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::CngKey ^ Key { System::Security::Cryptography::CngKey ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Key : System.Security.Cryptography.CngKey" Usage="System.Security.Cryptography.ECDiffieHellmanCng.Key" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.CngKey</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 개체에서 암호화 작업에 사용하는 <see cref="T:System.Security.Cryptography.CngKey" />를 지정합니다.</summary>
+        <value>이 개체에서 암호화 작업을 수행하는 데 사용하는 키 쌍입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="KeyDerivationFunction">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction KeyDerivationFunction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction KeyDerivationFunction" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction" />
+      <MemberSignature Language="VB.NET" Value="Public Property KeyDerivationFunction As ECDiffieHellmanKeyDerivationFunction" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::ECDiffieHellmanKeyDerivationFunction KeyDerivationFunction { System::Security::Cryptography::ECDiffieHellmanKeyDerivationFunction get(); void set(System::Security::Cryptography::ECDiffieHellmanKeyDerivationFunction value); };" />
+      <MemberSignature Language="F#" Value="member this.KeyDerivationFunction : System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction with get, set" Usage="System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.ECDiffieHellmanCng" /> 클래스의 키 파생 함수를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction" /> 열거형 값인 <see cref="F:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hash" />, <see cref="F:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hmac" /> 또는 <see cref="F:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Tls" /> 중 하나입니다. 기본값은 <see cref="F:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hash" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성을 키 자료로 비밀 계약을 변환 하는 데 사용 되는 키 파생 함수를 지정 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">열거형 값이 범위에서 벗어난 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="KeySize">
+      <MemberSignature Language="C#" Value="public override int KeySize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 KeySize" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.KeySize" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property KeySize As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int KeySize { int get(); void set(int value); };" />
+      <MemberSignature Language="F#" Value="member this.KeySize : int with get, set" Usage="System.Security.Cryptography.ECDiffieHellmanCng.KeySize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Label">
+      <MemberSignature Language="C#" Value="public byte[] Label { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] Label" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.Label" />
+      <MemberSignature Language="VB.NET" Value="Public Property Label As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::Byte&gt; ^ Label { cli::array &lt;System::Byte&gt; ^ get(); void set(cli::array &lt;System::Byte&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Label : byte[] with get, set" Usage="System.Security.Cryptography.ECDiffieHellmanCng.Label" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>키 파생에 사용되는 레이블 값을 가져오거나 설정합니다.</summary>
+        <value>레이블 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 값은 키 파생에 사용 하는 경우는 <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Tls> 값에 설정 됩니다는 <xref:System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction%2A> 속성. 기본적으로 `null`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LegalKeySizes">
+      <MemberSignature Language="C#" Value="public override System.Security.Cryptography.KeySizes[] LegalKeySizes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.KeySizes[] LegalKeySizes" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.LegalKeySizes" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property LegalKeySizes As KeySizes()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property cli::array &lt;System::Security::Cryptography::KeySizes ^&gt; ^ LegalKeySizes { cli::array &lt;System::Security::Cryptography::KeySizes ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.LegalKeySizes : System.Security.Cryptography.KeySizes[]" Usage="System.Security.Cryptography.ECDiffieHellmanCng.LegalKeySizes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.KeySizes[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PublicKey">
+      <MemberSignature Language="C#" Value="public override System.Security.Cryptography.ECDiffieHellmanPublicKey PublicKey { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.ECDiffieHellmanPublicKey PublicKey" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.PublicKey" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property PublicKey As ECDiffieHellmanPublicKey" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Security::Cryptography::ECDiffieHellmanPublicKey ^ PublicKey { System::Security::Cryptography::ECDiffieHellmanPublicKey ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.PublicKey : System.Security.Cryptography.ECDiffieHellmanPublicKey" Usage="System.Security.Cryptography.ECDiffieHellmanCng.PublicKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-3.5;netframework-4.0">
+          <AttributeName>get: System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.ECDiffieHellmanPublicKey</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>다른 <see cref="T:System.Security.Cryptography.ECDiffieHellmanCng" /> 개체에서 공유 비밀 계약을 생성하는 데 사용할 수 있는 공개 키를 가져옵니다.</summary>
+        <value><see cref="T:System.Security.Cryptography.ECDiffieHellmanCng" /> 개체의 이 인스턴스에 연결된 공개 키입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecretAppend">
+      <MemberSignature Language="C#" Value="public byte[] SecretAppend { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] SecretAppend" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.SecretAppend" />
+      <MemberSignature Language="VB.NET" Value="Public Property SecretAppend As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::Byte&gt; ^ SecretAppend { cli::array &lt;System::Byte&gt; ^ get(); void set(cli::array &lt;System::Byte&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SecretAppend : byte[] with get, set" Usage="System.Security.Cryptography.ECDiffieHellmanCng.SecretAppend" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>키 자료를 생성할 때 비밀 계약에 추가되는 값을 가져오거나 설정합니다.</summary>
+        <value>비밀 계약에 추가되는 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 값은 키 파생에 사용 하는 경우는 <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hash> 또는 <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hmac> 키 파생 함수 KDF ()를 사용 합니다. 값이 비밀 계약에 추가 하 고 키 자료를 생성 하려면 KDF 결합 된 값이 전달. 기본적으로 이 값은 `null`입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecretPrepend">
+      <MemberSignature Language="C#" Value="public byte[] SecretPrepend { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] SecretPrepend" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.SecretPrepend" />
+      <MemberSignature Language="VB.NET" Value="Public Property SecretPrepend As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::Byte&gt; ^ SecretPrepend { cli::array &lt;System::Byte&gt; ^ get(); void set(cli::array &lt;System::Byte&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SecretPrepend : byte[] with get, set" Usage="System.Security.Cryptography.ECDiffieHellmanCng.SecretPrepend" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>키 자료를 파생할 때 비밀 계약의 시작 부분에 추가될 값을 가져오거나 설정합니다.</summary>
+        <value>키를 파생할 때 비밀 계약의 시작 부분에 추가될 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 값은 키 파생에 사용 하는 경우를 <xref:System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction%2A> 속성은 다음 값 중 하나로 설정 됩니다.  
+  
+-   <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hash>  
+  
+-   <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hmac>  
+  
+ 비밀 계약에는 값은 앞에 추가 하 고 결합 된 값을 키 자료를 생성 하는 키 파생 함수 (KDF) 전달 됩니다. 기본적으로 이 값은 `null`입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Seed">
+      <MemberSignature Language="C#" Value="public byte[] Seed { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] Seed" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.Seed" />
+      <MemberSignature Language="VB.NET" Value="Public Property Seed As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::Byte&gt; ^ Seed { cli::array &lt;System::Byte&gt; ^ get(); void set(cli::array &lt;System::Byte&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Seed : byte[] with get, set" Usage="System.Security.Cryptography.ECDiffieHellmanCng.Seed" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>키 자료를 파생할 때 사용될 시드 값을 가져오거나 설정합니다.</summary>
+        <value>시드 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 값은 키 파생에 사용 하는 경우는 <xref:System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction%2A> 속성이 <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Tls>합니다. 기본적으로 이 값은 `null`입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="ToXmlString">
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>키 정보를 XML 문자열로 serialize합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="ToXmlString">
+      <MemberSignature Language="C#" Value="public override string ToXmlString (bool includePrivateParameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToXmlString(bool includePrivateParameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.ToXmlString(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToXmlString (includePrivateParameters As Boolean) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToXmlString(bool includePrivateParameters);" />
+      <MemberSignature Language="F#" Value="override this.ToXmlString : bool -&gt; string" Usage="eCDiffieHellmanCng.ToXmlString includePrivateParameters" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="includePrivateParameters" Type="System.Boolean" Index="0" FrameworkAlternate="netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="includePrivateParameters">private 매개 변수를 포함하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>이 메서드가 구현되지 않은 경우</summary>
+        <returns>해당 사항 없음.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 키를 XML 표현으로 변환 하려면 사용 된 <xref:System.Security.Cryptography.ECDiffieHellmanCng.ToXmlString%28System.Security.Cryptography.ECKeyXmlFormat%29> 오버 로드를 대신 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotImplementedException">이 인스턴스에서 이 메서드가 재정의되지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ToXmlString">
+      <MemberSignature Language="C#" Value="public string ToXmlString (System.Security.Cryptography.ECKeyXmlFormat format);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string ToXmlString(valuetype System.Security.Cryptography.ECKeyXmlFormat format) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.ECDiffieHellmanCng.ToXmlString(System.Security.Cryptography.ECKeyXmlFormat)" />
+      <MemberSignature Language="VB.NET" Value="Public Function ToXmlString (format As ECKeyXmlFormat) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ ToXmlString(System::Security::Cryptography::ECKeyXmlFormat format);" />
+      <MemberSignature Language="F#" Value="override this.ToXmlString : System.Security.Cryptography.ECKeyXmlFormat -&gt; string" Usage="eCDiffieHellmanCng.ToXmlString format" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="format" Type="System.Security.Cryptography.ECKeyXmlFormat" />
+      </Parameters>
+      <Docs>
+        <param name="format">XML 문자열의 형식을 지정하는 열거형 값 중 하나입니다. 현재 사용 가능한 형식은 <see cref="F:System.Security.Cryptography.ECKeyXmlFormat.Rfc4050" />뿐입니다.</param>
+        <summary>지정된 형식을 사용하여 키 정보를 XML 문자열로 serialize합니다.</summary>
+        <returns>요청된 형식에 따라 XML 문자열로 serialize한 키 정보가 들어 있는 문자열 개체입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="format" />에 지정된 형식이 잘못된 경우. <see cref="F:System.Security.Cryptography.ECKeyXmlFormat.Rfc4050" /> 값만 사용할 수 있습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="UseSecretAgreementAsHmacKey">
+      <MemberSignature Language="C#" Value="public bool UseSecretAgreementAsHmacKey { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UseSecretAgreementAsHmacKey" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.ECDiffieHellmanCng.UseSecretAgreementAsHmacKey" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property UseSecretAgreementAsHmacKey As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool UseSecretAgreementAsHmacKey { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.UseSecretAgreementAsHmacKey : bool" Usage="System.Security.Cryptography.ECDiffieHellmanCng.UseSecretAgreementAsHmacKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Cng</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+        <AssemblyVersion>4.3.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>비밀 계약을 HMAC(해시 기반 메시지 인증 코드)로 사용하여 키 자료를 파생하는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>비밀 계약을 HMAC 키로 사용하여 키 자료를 파생하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+-   이 값은 키 파생에 사용 하는 경우는 <xref:System.Security.Cryptography.ECDiffieHellmanCng.KeyDerivationFunction%2A> 속성이 <xref:System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction.Hmac>합니다. 기본적으로 이 값은 `false`입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

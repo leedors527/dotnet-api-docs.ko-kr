@@ -1,0 +1,745 @@
+<Type Name="ReceiveContext" FullName="System.ServiceModel.Channels.ReceiveContext">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="a6312a29990c7c766fc4e34062d9e7d09dbb7d02" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58686792" /></Metadata><TypeSignature Language="C#" Value="public abstract class ReceiveContext" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ReceiveContext extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.ServiceModel.Channels.ReceiveContext" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ReceiveContext" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ReceiveContext abstract" />
+  <TypeSignature Language="F#" Value="type ReceiveContext = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>이 클래스에서 파생되어 받기 컨텍스트 기능의 사용자 지정 상태 시스템을 구현합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 받기 컨텍스트 기능은 두 가지입니다. 대기 중인 채널에서 사용할 경우 받기 컨텍스트를 통해 처리할 메시지를 미리 잠글 수 있습니다. 오류가 발생하면 메시지가 잠긴 상태로 유지되므로 메시지를 처리하는 서비스가 소유권을 유지할 수 있으며(다른 서비스가 같은 메시지를 받거나 처리할 수 없음) 필요한 경우 메시지에 다른 작업을 수행할 수 있습니다. 단방향 채널에서 사용할 경우 받기 컨텍스트를 통해 서비스가 확인 메시지를 보내는 시기를 제어하거나 부정 확인 메시지를 보내 문제를 나타낼 수 있습니다. 클라이언트는 부정 확인을 받거나 특정 기간 내에 확인을 받지 못한 경우 메시지를 다시 보낼 수 있습니다.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ReceiveContext ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ReceiveContext();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.Channels.ReceiveContext" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Abandon">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>상태 시스템이 중단된 상태로 전환됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> 앰비언트 트랜잭션이 있으면 중단 될 수 있습니다 및 <xref:System.ServiceModel.Channels.ReceiveContext.Complete%2A> 호출 되 고 나중에 트랜잭션이 롤백됩니다. 하는 경우 <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> 라고 트랜잭션 롤백이 완료 되기 전에 경합은 존재에 대 한 호출을 일으키는 <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> 중단 합니다. 다음 의사 코드 예제에서이 설명할 수 있습니다.  
+  
+```  
+using (TransactionScope ts = new TransactionScope())   
+{  
+   try  
+   {  
+       rc.Complete();  
+      ...  
+   }  
+   Catch (Exception)   
+   {  
+      rc.Abandon()  
+   }  
+}  
+  
+```  
+  
+ 이 작업에 대 한 권장된 패턴 <xref:System.ServiceModel.Channels.ReceiveContext>합니다. 대신 트랜잭션 범위 외부 try/catch 블록을 배치 되어야 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Abandon">
+      <MemberSignature Language="C#" Value="public virtual void Abandon (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Abandon(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.Abandon(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub Abandon (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Abandon(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="abstract member Abandon : TimeSpan -&gt; unit&#xA;override this.Abandon : TimeSpan -&gt; unit" Usage="receiveContext.Abandon timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">중단 작업을 완료하기 위한 시간 제한입니다.</param>
+        <summary>지정된 시간 제한 값을 사용하여 상태 시스템이 중단된 상태로 전환됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Abandon">
+      <MemberSignature Language="C#" Value="public virtual void Abandon (Exception exception, TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Abandon(class System.Exception exception, valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.Abandon(System.Exception,System.TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Abandon(Exception ^ exception, TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="abstract member Abandon : Exception * TimeSpan -&gt; unit&#xA;override this.Abandon : Exception * TimeSpan -&gt; unit" Usage="receiveContext.Abandon (exception, timeout)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="exception" Type="System.Exception" />
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="exception">중단 작업을 발생시킨 예외입니다.</param>
+        <param name="timeout">중단 작업을 완료하기 위한 시간 제한입니다.</param>
+        <summary>지정된 예외와 시간 제한 값을 사용하여 상태 시스템이 중단된 상태로 전환됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="BeginAbandon">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>비동기 중단 작업을 시작합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="BeginAbandon">
+      <MemberSignature Language="C#" Value="public virtual IAsyncResult BeginAbandon (TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IAsyncResult BeginAbandon(valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.BeginAbandon(System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BeginAbandon (timeout As TimeSpan, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual IAsyncResult ^ BeginAbandon(TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginAbandon : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginAbandon : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="receiveContext.BeginAbandon (timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">중단 작업을 완료하기 위한 시간 제한입니다.</param>
+        <param name="callback">비동기 작업 완료에 대한 알림을 수신하는 비동기 콜백 대리자입니다.</param>
+        <param name="state">사용자 정의 상태 데이터입니다.</param>
+        <summary>지정된 시간 제한, 비동기 콜백 및 사용자 정의 상태 데이터를 사용하여 비동기 중단 작업을 시작합니다.</summary>
+        <returns>비동기 중단 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginAbandon">
+      <MemberSignature Language="C#" Value="public virtual IAsyncResult BeginAbandon (Exception exception, TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IAsyncResult BeginAbandon(class System.Exception exception, valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.BeginAbandon(System.Exception,System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual IAsyncResult ^ BeginAbandon(Exception ^ exception, TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginAbandon : Exception * TimeSpan * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginAbandon : Exception * TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="receiveContext.BeginAbandon (exception, timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="exception" Type="System.Exception" />
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="exception">중단 작업의 이유가 포함된 예외입니다.</param>
+        <param name="timeout">중단 작업을 완료하기 위한 시간 제한입니다.</param>
+        <param name="callback">비동기 작업 완료에 대한 알림을 수신하는 비동기 콜백 대리자입니다.</param>
+        <param name="state">사용자 정의 상태 데이터입니다.</param>
+        <summary>지정된 예외, 시간 제한, 비동기 콜백 및 사용자 정의 상태 데이터를 사용하여 비동기 중단 작업을 시작합니다.</summary>
+        <returns>비동기 중단 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginComplete">
+      <MemberSignature Language="C#" Value="public virtual IAsyncResult BeginComplete (TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IAsyncResult BeginComplete(valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.BeginComplete(System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function BeginComplete (timeout As TimeSpan, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual IAsyncResult ^ BeginComplete(TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member BeginComplete : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.BeginComplete : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="receiveContext.BeginComplete (timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">완료 작업을 완료하기 위한 시간 제한입니다.</param>
+        <param name="callback">비동기 작업 완료에 대한 알림을 수신하는 비동기 콜백 대리자입니다.</param>
+        <param name="state">사용자 정의 상태 데이터입니다.</param>
+        <summary>지정된 시간 제한, 비동기 콜백 및 사용자 정의 상태 데이터를 사용하여 비동기 완료 작업을 시작합니다.</summary>
+        <returns>비동기 완료 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Complete">
+      <MemberSignature Language="C#" Value="public virtual void Complete (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Complete(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.Complete(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub Complete (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Complete(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="abstract member Complete : TimeSpan -&gt; unit&#xA;override this.Complete : TimeSpan -&gt; unit" Usage="receiveContext.Complete timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">완료 작업을 완료하기 위한 시간 제한입니다.</param>
+        <summary>지정된 시간 제한 값을 사용하여 상태 시스템이 완료된 상태로 전환됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndAbandon">
+      <MemberSignature Language="C#" Value="public virtual void EndAbandon (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EndAbandon(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.EndAbandon(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub EndAbandon (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void EndAbandon(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member EndAbandon : IAsyncResult -&gt; unit&#xA;override this.EndAbandon : IAsyncResult -&gt; unit" Usage="receiveContext.EndAbandon result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드 중 하나를 호출하면 반환되는 <see cref="Overload:System.ServiceModel.Activities.WorkflowControlClient.BeginAbandon" />입니다.</param>
+        <summary>비동기 중단 작업을 완료합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndComplete">
+      <MemberSignature Language="C#" Value="public virtual void EndComplete (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void EndComplete(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.EndComplete(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub EndComplete (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void EndComplete(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member EndComplete : IAsyncResult -&gt; unit&#xA;override this.EndComplete : IAsyncResult -&gt; unit" Usage="receiveContext.EndComplete result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출하여 반환된 <see cref="M:System.ServiceModel.Channels.ReceiveContext.BeginComplete(System.TimeSpan,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>비동기 완료 작업을 완료합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Fault">
+      <MemberSignature Language="C#" Value="protected internal virtual void Fault ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void Fault() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.Fault" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overridable Sub Fault ()" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual void Fault();" />
+      <MemberSignature Language="F#" Value="abstract member Fault : unit -&gt; unit&#xA;override this.Fault : unit -&gt; unit" Usage="receiveContext.Fault " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>상태 시스템이 오류 상태로 전환됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Faulted">
+      <MemberSignature Language="C#" Value="public event EventHandler Faulted;" />
+      <MemberSignature Language="ILAsm" Value=".event class System.EventHandler Faulted" />
+      <MemberSignature Language="DocId" Value="E:System.ServiceModel.Channels.ReceiveContext.Faulted" />
+      <MemberSignature Language="VB.NET" Value="Public Event Faulted As EventHandler " />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; event EventHandler ^ Faulted;" />
+      <MemberSignature Language="F#" Value="member this.Faulted : EventHandler " Usage="member this.Faulted : System.EventHandler " />
+      <MemberType>Event</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.EventHandler</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>메시지를 처리하는 동안 예외가 있으면 발생되는 이벤트를 정의합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public static readonly string Name;" />
+      <MemberSignature Language="ILAsm" Value=".field public static initonly string Name" />
+      <MemberSignature Language="DocId" Value="F:System.ServiceModel.Channels.ReceiveContext.Name" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Name As String " />
+      <MemberSignature Language="C++ CLI" Value="public: static initonly System::String ^ Name;" />
+      <MemberSignature Language="F#" Value=" staticval mutable Name : string" Usage="System.ServiceModel.Channels.ReceiveContext.Name" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>받기 컨텍스트의 이름입니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="OnAbandon">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>상태 시스템이 중단된 상태로 전환될 때 호출됩니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="OnAbandon">
+      <MemberSignature Language="C#" Value="protected abstract void OnAbandon (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAbandon(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnAbandon(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub OnAbandon (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void OnAbandon(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="abstract member OnAbandon : TimeSpan -&gt; unit" Usage="receiveContext.OnAbandon timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">중단 작업을 완료하기 위한 시간 제한입니다.</param>
+        <summary>지정된 시간 제한 값을 사용하여 상태 시스템이 중단된 상태로 전환될 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAbandon">
+      <MemberSignature Language="C#" Value="protected virtual void OnAbandon (Exception exception, TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAbandon(class System.Exception exception, valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnAbandon(System.Exception,System.TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAbandon(Exception ^ exception, TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="abstract member OnAbandon : Exception * TimeSpan -&gt; unit&#xA;override this.OnAbandon : Exception * TimeSpan -&gt; unit" Usage="receiveContext.OnAbandon (exception, timeout)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="exception" Type="System.Exception" />
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="exception">중단 작업의 이유가 포함된 예외입니다.</param>
+        <param name="timeout">중단 작업을 완료하기 위한 시간 제한입니다.</param>
+        <summary>지정된 예외와 시간 제한 값을 사용하여 상태 시스템이 중단된 상태로 전환될 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="OnBeginAbandon">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>상태 시스템이 비동기적으로 중단된 상태로 전환될 때 호출됩니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="OnBeginAbandon">
+      <MemberSignature Language="C#" Value="protected abstract IAsyncResult OnBeginAbandon (TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IAsyncResult OnBeginAbandon(valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnBeginAbandon(System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Function OnBeginAbandon (timeout As TimeSpan, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract IAsyncResult ^ OnBeginAbandon(TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member OnBeginAbandon : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="receiveContext.OnBeginAbandon (timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">중단 작업을 완료하기 위한 시간 제한입니다.</param>
+        <param name="callback">비동기 작업 완료에 대한 알림을 수신하는 비동기 콜백 대리자입니다.</param>
+        <param name="state">사용자 정의 상태 데이터입니다.</param>
+        <summary>지정된 시간 제한 값, 콜백 및 상태 데이터를 사용하여 상태 시스템이 비동기적으로 중단된 상태로 전환될 때 호출됩니다.</summary>
+        <returns>비동기 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginAbandon">
+      <MemberSignature Language="C#" Value="protected virtual IAsyncResult OnBeginAbandon (Exception exception, TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IAsyncResult OnBeginAbandon(class System.Exception exception, valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnBeginAbandon(System.Exception,System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual IAsyncResult ^ OnBeginAbandon(Exception ^ exception, TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member OnBeginAbandon : Exception * TimeSpan * AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.OnBeginAbandon : Exception * TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="receiveContext.OnBeginAbandon (exception, timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="exception" Type="System.Exception" />
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="exception">중단 작업의 이유가 포함된 예외입니다.</param>
+        <param name="timeout">중단 작업을 완료하기 위한 시간 제한입니다.</param>
+        <param name="callback">비동기 작업 완료에 대한 알림을 수신하는 비동기 콜백 대리자입니다.</param>
+        <param name="state">사용자 정의 상태 데이터입니다.</param>
+        <summary>지정된 예외, 시간 제한 값, 콜백 및 상태 데이터를 사용하여 상태 시스템이 비동기적으로 중단된 상태로 전환될 때 호출됩니다.</summary>
+        <returns>비동기 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginComplete">
+      <MemberSignature Language="C#" Value="protected abstract IAsyncResult OnBeginComplete (TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IAsyncResult OnBeginComplete(valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnBeginComplete(System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Function OnBeginComplete (timeout As TimeSpan, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract IAsyncResult ^ OnBeginComplete(TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member OnBeginComplete : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="receiveContext.OnBeginComplete (timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">완료 작업을 완료하기 위한 시간 제한입니다.</param>
+        <param name="callback">비동기 작업 완료에 대한 알림을 수신하는 비동기 콜백 대리자입니다.</param>
+        <param name="state">사용자 정의 상태 데이터입니다.</param>
+        <summary>지정된 시간 제한, 콜백 및 상태 데이터를 사용하여 상태 시스템이 비동기적으로 완료된 상태로 전환될 때 호출됩니다.</summary>
+        <returns>비동기 작업을 참조하는 <see cref="T:System.IAsyncResult" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnComplete">
+      <MemberSignature Language="C#" Value="protected abstract void OnComplete (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnComplete(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnComplete(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub OnComplete (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void OnComplete(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="abstract member OnComplete : TimeSpan -&gt; unit" Usage="receiveContext.OnComplete timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">완료 작업을 완료하기 위한 시간 제한입니다.</param>
+        <summary>지정된 시간 제한 값을 사용하여 상태 시스템이 완료된 상태로 전환될 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndAbandon">
+      <MemberSignature Language="C#" Value="protected abstract void OnEndAbandon (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnEndAbandon(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnEndAbandon(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub OnEndAbandon (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void OnEndAbandon(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member OnEndAbandon : IAsyncResult -&gt; unit" Usage="receiveContext.OnEndAbandon result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드 중 하나를 호출하면 반환되는 <see cref="Overload:System.ServiceModel.Channels.ReceiveContext.OnBeginAbandon" />입니다.</param>
+        <summary>상태 시스템이 비동기적으로 중단된 상태로 전환될 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndComplete">
+      <MemberSignature Language="C#" Value="protected abstract void OnEndComplete (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnEndComplete(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnEndComplete(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub OnEndComplete (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void OnEndComplete(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member OnEndComplete : IAsyncResult -&gt; unit" Usage="receiveContext.OnEndComplete result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result"><see cref="T:System.IAsyncResult" /> 메서드를 호출했을 때 반환되는 <see cref="M:System.ServiceModel.Channels.ReceiveContext.OnBeginComplete(System.TimeSpan,System.AsyncCallback,System.Object)" />입니다.</param>
+        <summary>상태 시스템이 비동기적으로 완료된 상태로 전환될 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnFaulted">
+      <MemberSignature Language="C#" Value="protected virtual void OnFaulted ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnFaulted() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.OnFaulted" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnFaulted ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnFaulted();" />
+      <MemberSignature Language="F#" Value="abstract member OnFaulted : unit -&gt; unit&#xA;override this.OnFaulted : unit -&gt; unit" Usage="receiveContext.OnFaulted " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>상태 시스템이 오류 상태로 전환될 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="State">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Channels.ReceiveContextState State { get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.ServiceModel.Channels.ReceiveContextState State" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.ReceiveContext.State" />
+      <MemberSignature Language="VB.NET" Value="Public Property State As ReceiveContextState" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::ServiceModel::Channels::ReceiveContextState State {  public:&#xA;System::ServiceModel::Channels::ReceiveContextState get(); protected:&#xA; void set(System::ServiceModel::Channels::ReceiveContextState value); };" />
+      <MemberSignature Language="F#" Value="member this.State : System.ServiceModel.Channels.ReceiveContextState with get, set" Usage="System.ServiceModel.Channels.ReceiveContext.State" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Channels.ReceiveContextState</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>상태 시스템의 상태를 가져오거나 설정합니다.</summary>
+        <value>상태 시스템의 현재 받기 컨텍스트 상태입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ThisLock">
+      <MemberSignature Language="C#" Value="protected object ThisLock { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object ThisLock" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.ReceiveContext.ThisLock" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property ThisLock As Object" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Object ^ ThisLock { System::Object ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ThisLock : obj" Usage="System.ServiceModel.Channels.ReceiveContext.ThisLock" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.Channels.ReceiveContext" /> 인스턴스를 잠그는 데 사용되는 개체입니다.</summary>
+        <value><see cref="T:System.Object" />.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TryGet">
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>받기 컨텍스트를 가져오려고 합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TryGet">
+      <MemberSignature Language="C#" Value="public static bool TryGet (System.ServiceModel.Channels.Message message, out System.ServiceModel.Channels.ReceiveContext property);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool TryGet(class System.ServiceModel.Channels.Message message, [out] class System.ServiceModel.Channels.ReceiveContext&amp; property) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.TryGet(System.ServiceModel.Channels.Message,System.ServiceModel.Channels.ReceiveContext@)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool TryGet(System::ServiceModel::Channels::Message ^ message, [Runtime::InteropServices::Out] System::ServiceModel::Channels::ReceiveContext ^ % property);" />
+      <MemberSignature Language="F#" Value="static member TryGet : System.ServiceModel.Channels.Message *  -&gt; bool" Usage="System.ServiceModel.Channels.ReceiveContext.TryGet (message, property)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.ServiceModel.Channels.Message" />
+        <Parameter Name="property" Type="System.ServiceModel.Channels.ReceiveContext" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="message">메시지입니다.</param>
+        <param name="property">받기 컨텍스트입니다.</param>
+        <summary>지정된 메시지에서 받기 컨텍스트를 가져오려고 합니다.</summary>
+        <returns>받기 컨텍스트가 성공적으로 검색되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryGet">
+      <MemberSignature Language="C#" Value="public static bool TryGet (System.ServiceModel.Channels.MessageProperties properties, out System.ServiceModel.Channels.ReceiveContext property);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool TryGet(class System.ServiceModel.Channels.MessageProperties properties, [out] class System.ServiceModel.Channels.ReceiveContext&amp; property) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ServiceModel.Channels.ReceiveContext.TryGet(System.ServiceModel.Channels.MessageProperties,System.ServiceModel.Channels.ReceiveContext@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function TryGet (properties As MessageProperties, ByRef property As ReceiveContext) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool TryGet(System::ServiceModel::Channels::MessageProperties ^ properties, [Runtime::InteropServices::Out] System::ServiceModel::Channels::ReceiveContext ^ % property);" />
+      <MemberSignature Language="F#" Value="static member TryGet : System.ServiceModel.Channels.MessageProperties *  -&gt; bool" Usage="System.ServiceModel.Channels.ReceiveContext.TryGet (properties, property)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="properties" Type="System.ServiceModel.Channels.MessageProperties" />
+        <Parameter Name="property" Type="System.ServiceModel.Channels.ReceiveContext" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="properties">메시지 속성 컬렉션입니다.</param>
+        <param name="property">받기 컨텍스트입니다.</param>
+        <summary>지정된 메시지 속성 컬렉션에서 받기 컨텍스트를 가져오려고 합니다.</summary>
+        <returns>받기 컨텍스트가 성공적으로 검색되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,147 @@
+<Type Name="BookmarkReachedEventArgs" FullName="System.Speech.Synthesis.BookmarkReachedEventArgs">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="66a84194df43de3f1f49d721bf587f8fceb5030c" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58720899" /></Metadata><TypeSignature Language="C#" Value="public class BookmarkReachedEventArgs : System.Speech.Synthesis.PromptEventArgs" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit BookmarkReachedEventArgs extends System.Speech.Synthesis.PromptEventArgs" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Synthesis.BookmarkReachedEventArgs" />
+  <TypeSignature Language="VB.NET" Value="Public Class BookmarkReachedEventArgs&#xA;Inherits PromptEventArgs" />
+  <TypeSignature Language="C++ CLI" Value="public ref class BookmarkReachedEventArgs : System::Speech::Synthesis::PromptEventArgs" />
+  <TypeSignature Language="F#" Value="type BookmarkReachedEventArgs = class&#xA;    inherit PromptEventArgs" />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Speech.Synthesis.PromptEventArgs</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary><see cref="E:System.Speech.Synthesis.SpeechSynthesizer.BookmarkReached" /> 이벤트에서 데이터를 반환합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인스턴스의 <xref:System.Speech.Synthesis.BookmarkReachedEventArgs> 때 생성 되는 <xref:System.Speech.Synthesis.SpeechSynthesizer> 발생 시키는 개체를 <xref:System.Speech.Synthesis.SpeechSynthesizer.BookmarkReached> 이벤트입니다. <xref:System.Speech.Synthesis.SpeechSynthesizer> 발생 시킵니다 합니다 <xref:System.Speech.Synthesis.SpeechSynthesizer.BookmarkReached> 이벤트 중 하나를 처리 하는 동안 책갈피를 발견할 때를 <xref:System.Speech.Synthesis.SpeechSynthesizer.Speak%2A>, <xref:System.Speech.Synthesis.SpeechSynthesizer.SpeakAsync%2A>, <xref:System.Speech.Synthesis.SpeechSynthesizer.SpeakSsml%2A>, 또는 <xref:System.Speech.Synthesis.SpeechSynthesizer.SpeakSsmlAsync%2A> 메서드. 이름 및 이벤트를 트리거한 책갈피의 위치를 가져오려면 액세스는 <xref:System.Speech.Synthesis.BookmarkReachedEventArgs.Bookmark%2A> 및 <xref:System.Speech.Synthesis.BookmarkReachedEventArgs.AudioPosition%2A> 이벤트 처리기의 속성입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 두 개의 책갈피를 포함 하 고 WAV 파일 재생에 출력을 전송 하는 프롬프트를 만듭니다. 에 대 한 처리기를 <xref:System.Speech.Synthesis.SpeechSynthesizer.BookmarkReached> 콘솔로 이벤트가 발생 하는 경우 이벤트에 책갈피 및 오디오 스트림에서 위치 이름을 씁니다.  
+  
+```  
+using System;  
+using System.Speech.Synthesis;  
+  
+namespace SampleSynthesis  
+{  
+  class Program  
+  {  
+    static void Main(string[] args)  
+    {  
+  
+      // Initialize a new instance of the SpeechSynthesizer.  
+      using (SpeechSynthesizer synth = new SpeechSynthesizer())  
+      {  
+  
+        // Configure the audio output.   
+        synth.SetOutputToWaveFile(@"C:\test\weather.wav");  
+  
+        // Create a SoundPlayer instance to play the output audio file.  
+        System.Media.SoundPlayer m_SoundPlayer =  
+          new System.Media.SoundPlayer(@"C:\test\weather.wav");  
+  
+        // Build a prompt and append bookmarks.  
+        PromptBuilder builder = new PromptBuilder(  
+          new System.Globalization.CultureInfo("en-US"));  
+        builder.AppendText(  
+          "The weather forecast for today is partly cloudy with some sun breaks.");  
+        builder.AppendBookmark("Daytime forecast");  
+        builder.AppendText(  
+          "Tonight's weather will be cloudy with a 30% chance of showers.");  
+        builder.AppendBookmark("Nighttime forecast");  
+  
+        // Add a handler for the BookmarkReached event.  
+        synth.BookmarkReached +=  
+          new EventHandler<BookmarkReachedEventArgs>(synth_BookmarkReached);  
+  
+        // Speak the prompt and play back the output file.  
+        synth.Speak(builder);  
+        m_SoundPlayer.Play();  
+      }  
+  
+      Console.WriteLine();  
+      Console.WriteLine("Press any key to exit...");  
+      Console.ReadKey();  
+    }  
+  
+    // Write the name and position of the bookmark to the console.  
+    static void synth_BookmarkReached(object sender, BookmarkReachedEventArgs e)  
+    {  
+      Console.WriteLine("Bookmark ({0}) reached at: {1} ",  
+        e.Bookmark, e.AudioPosition);  
+    }  
+  }  
+}  
+  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="M:System.Speech.Synthesis.PromptBuilder.AppendBookmark(System.String)" />
+  </Docs>
+  <Members>
+    <Member MemberName="AudioPosition">
+      <MemberSignature Language="C#" Value="public TimeSpan AudioPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan AudioPosition" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.BookmarkReachedEventArgs.AudioPosition" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property AudioPosition As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan AudioPosition { TimeSpan get(); };" />
+      <MemberSignature Language="F#" Value="member this.AudioPosition : TimeSpan" Usage="System.Speech.Synthesis.BookmarkReachedEventArgs.AudioPosition" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>책갈피가 도착한 타임 오프셋을 가져옵니다.</summary>
+        <value>이벤트가 발생 했을 때 위치에 합성 엔진의 오디오 입력된 스트림을 반환 합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Bookmark">
+      <MemberSignature Language="C#" Value="public string Bookmark { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Bookmark" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Synthesis.BookmarkReachedEventArgs.Bookmark" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Bookmark As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Bookmark { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Bookmark : string" Usage="System.Speech.Synthesis.BookmarkReachedEventArgs.Bookmark" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>도달한 책갈피의 이름을 가져옵니다.</summary>
+        <value>책갈피의 이름의 값을 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

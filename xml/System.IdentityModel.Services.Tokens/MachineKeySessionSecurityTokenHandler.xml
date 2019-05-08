@@ -1,0 +1,101 @@
+<Type Name="MachineKeySessionSecurityTokenHandler" FullName="System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="33235c262171d8d35641a3068e4e33edd87c2eed" /><Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="11/17/2018" /><Meta Name="ms.locfileid" Value="51920612" /></Metadata><TypeSignature Language="C#" Value="public class MachineKeySessionSecurityTokenHandler : System.IdentityModel.Tokens.SessionSecurityTokenHandler" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit MachineKeySessionSecurityTokenHandler extends System.IdentityModel.Tokens.SessionSecurityTokenHandler" />
+  <TypeSignature Language="DocId" Value="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" />
+  <TypeSignature Language="VB.NET" Value="Public Class MachineKeySessionSecurityTokenHandler&#xA;Inherits SessionSecurityTokenHandler" />
+  <TypeSignature Language="C++ CLI" Value="public ref class MachineKeySessionSecurityTokenHandler : System::IdentityModel::Tokens::SessionSecurityTokenHandler" />
+  <TypeSignature Language="F#" Value="type MachineKeySessionSecurityTokenHandler = class&#xA;    inherit SessionSecurityTokenHandler" />
+  <AssemblyInfo>
+    <AssemblyName>System.IdentityModel.Services</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.IdentityModel.Tokens.SessionSecurityTokenHandler</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>구성 파일의 ASP.NET <see langword="&lt;machineKey&gt;" /> 요소에 지정된 서명 및 암호화 키를 사용하여 세션 토큰을 처리합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> 클래스가 사용 하는 <xref:System.IdentityModel.ProtectedDataCookieTransform> 데이터 보호 API (DPAPI)를 사용 하 여 세션 토큰을 보호 하는 클래스입니다. DPAPI는 사용자 또는 컴퓨터 자격 증명을 사용하여 보호를 제공하고 사용자 프로필에 키 데이터를 저장합니다. 이 즉, 세션 토큰을 서명 하 고 대 이상의 컴퓨터에서 암호화 유효성을 검사 하거나 다른 컴퓨터에서 암호를 해독할 수 없습니다.  
+  
+ 반면,는 <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> 클래스가 사용 하는 <xref:System.IdentityModel.Services.MachineKeyTransform> 에 지정 된 암호화 자료를 사용 하 여 세션 쿠키 데이터를 보호 하는 클래스는 `<machineKey>` 구성 파일의 요소입니다. 즉, 여러 컴퓨터에서 동일한 키 (및 세션 토큰)를 사용할 수 있습니다. 이 애플리케이션이 웹 팜에 배포 된 경우에 특히 중요 합니다. Windows Identity Foundation을 사용 하 여 웹 팜에 배포 된 애플리케이션을 보호 하는 방법에 대 한 자세한 내용은 참조 하세요. [WIF 및 웹 팜](~/docs/framework/security/wif-and-web-farms.md)합니다.  
+  
+ 토큰 처리기 컬렉션에 추가하여 <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler>를 사용하도록 애플리케이션을 구성합니다. <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler>(또는 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> 클래스에서 파생된 임의 처리기)가 있는 경우 먼저 토큰 처리기 컬렉션에서 제거해야 합니다. 왜냐하면 <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler> 에서 파생 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> 토큰 처리기 컬렉션을 지정 된 형식의 여러 처리기를 포함할 수 없습니다.  
+  
+   
+  
+## Examples  
+ 다음 XML에서는 ASP.NET을 사용 하는 방법을 보여 줍니다. `<machineKey>` 서명 및 암호화 키를 명시적으로 지정 하는 구성에서 요소입니다. `<machineKey>` 요소 아래에 지정 된 된 `<system.web>` 구성 파일의 요소입니다.  
+  
+```xml  
+<machineKey compatibilityMode="Framework45" decryptionKey="CC510D … 8925E6" validationKey="BEAC8 … 6A4B1DE" />  
+```  
+  
+ 다음 XML에서는 <xref:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler>를 토큰 처리기 컬렉션에 추가하는 방법을 보여 줍니다. 기본 <xref:System.IdentityModel.Tokens.SessionSecurityTokenHandler> 먼저 컬렉션에서 제거 됩니다. 토큰 처리기 구성 되는 [ &lt;securityTokenHandlers&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/securitytokenhandlers.md) 요소입니다.  
+  
+```xml  
+<securityTokenHandlers>  
+  <remove type="System.IdentityModel.Tokens.SessionSecurityTokenHandler, System.IdentityModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />  
+  <add type="System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler, System.IdentityModel.Services, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />  
+</securityTokenHandlers>  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.IdentityModel.Tokens.SessionSecurityTokenHandler" />
+    <related type="Article" href="https://msdn.microsoft.com/library/fc3cd7fa-2b45-4614-a44f-8fa9b9d15284">WIF 및 웹 팜</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MachineKeySessionSecurityTokenHandler ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; MachineKeySessionSecurityTokenHandler();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MachineKeySessionSecurityTokenHandler (TimeSpan tokenLifetime);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.TimeSpan tokenLifetime) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler.#ctor(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (tokenLifetime As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; MachineKeySessionSecurityTokenHandler(TimeSpan tokenLifetime);" />
+      <MemberSignature Language="F#" Value="new System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler : TimeSpan -&gt; System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" Usage="new System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler tokenLifetime" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel.Services</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="tokenLifetime" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="tokenLifetime">토큰에 대한 기본 수명입니다.</param>
+        <summary>지정한 기본 토큰 수명을 사용하여 <see cref="T:System.IdentityModel.Services.Tokens.MachineKeySessionSecurityTokenHandler" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException"><paramref name="tokenLifetime" />이 <see cref="F:System.TimeSpan.Zero" />보다 작거나 같은 경우</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

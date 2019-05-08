@@ -1,0 +1,1780 @@
+<Type Name="FtpWebRequest" FullName="System.Net.FtpWebRequest">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="e179fcb3123ee5c133417a91ca70870c2f2c9a4f" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58716761" /></Metadata><TypeSignature Language="C#" Value="public sealed class FtpWebRequest : System.Net.WebRequest" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit FtpWebRequest extends System.Net.WebRequest" />
+  <TypeSignature Language="DocId" Value="T:System.Net.FtpWebRequest" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class FtpWebRequest&#xA;Inherits WebRequest" />
+  <TypeSignature Language="C++ CLI" Value="public ref class FtpWebRequest sealed : System::Net::WebRequest" />
+  <TypeSignature Language="F#" Value="type FtpWebRequest = class&#xA;    inherit WebRequest" />
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Net.Requests</AssemblyName>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Net.WebRequest</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>FTP(파일 전송 프로토콜) 클라이언트를 구현합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks
+
+> [!IMPORTANT]
+>  사용 하는 권장 하지 않습니다는 `FtpWebRequest` 새로운 개발에 대 한 클래스입니다. 자세한 내용 및에 대 한 대안 `FtpWebRequest`를 참조 하세요 [WebRequest를 사용할 수 없습니다](https://github.com/dotnet/platform-compat/blob/master/docs/DE0003.md) GitHub에서.
+
+ 인스턴스를 얻고 <xref:System.Net.FtpWebRequest>를 사용 하 여를 <xref:System.Net.WebRequest.Create%2A> 메서드. 사용할 수도 있습니다는 <xref:System.Net.WebClient> 업로드 및 FTP 서버에서 정보를 다운로드 하는 클래스입니다. 이러한 방법 중 하나를 사용 하 여, 지정 하면 FTP 체계를 사용 하는 네트워크 리소스 (예를 들어 `"ftp://contoso.com"`)는 <xref:System.Net.FtpWebRequest> 클래스는 프로그래밍 방식으로 FTP 서버와 상호 작용 하는 기능을 제공 합니다.  
+  
+ URI는 상대적 이거나 절대적일 수 있습니다. 폼의 URI가 `"ftp://contoso.com/%2fpath"` (%2f는 이스케이프 된 '/'), 다음 URI는 절대 및 현재 디렉터리가 `/path`합니다. 하는 경우 URI 것 인데, 폼의 `"ftp://contoso.com/path"`,.NET Framework가 FTP 서버에 로그인 하는 먼저 (설정한 사용자 이름과 암호를 사용 하 여 합니다 <xref:System.Net.FtpWebRequest.Credentials%2A> 속성), 현재 디렉터리를 설정 `<UserLoginDirectory>/path`합니다.  
+  
+ 올바른 사용자 이름이 있어야 하며 서버 또는 서버에 대 한 암호는 익명 로그온을 허용 해야 합니다. 설정 하 여 서버에 연결할 때 사용할 자격 증명을 지정할 수 있습니다를 <xref:System.Net.FtpWebRequest.Credentials%2A> 하거나 속성에 포함 될 수 있습니다 합니다 <xref:System.Uri.UserInfo%2A> 에 전달 된 URI의 부분을 <xref:System.Net.WebRequest.Create%2A> 메서드. 포함 하는 경우 <xref:System.Uri.UserInfo%2A> URI에 대 한 정보는 <xref:System.Net.FtpWebRequest.Credentials%2A> 속성은 지정 된 사용자 이름 및 암호 정보를 사용 하 여 새 네트워크 자격 증명을로 설정 합니다.  
+  
+> [!CAUTION]
+>  경우가 아니면 합니다 <xref:System.Net.FtpWebRequest.EnableSsl%2A> 속성은 `true`, 모든 데이터와 명령을, 사용자 이름 및 암호 정보를 포함 하 여 서버에 일반 텍스트로 전송 됩니다. 네트워크 트래픽을 모니터링 하는 모든 자격 증명을 확인 하 고 하는 서버에 연결 하는 데 사용할 수 있습니다. 자격 증명을 요구 하 고 Secure Sockets Layer (SSL)를 지 원하는 FTP 서버에 연결 하는 경우 설정 해야 <xref:System.Net.FtpWebRequest.EnableSsl%2A> 에 `true`입니다.  
+  
+ 있어야 <xref:System.Net.WebPermission> 리소스에 액세스할 때 FTP;이 고, 그렇지는 <xref:System.Security.SecurityException> 예외가 throw 됩니다.  
+  
+ 설정 하 여 서버에 보낼 FTP 명령을 지정 합니다 <xref:System.Net.FtpWebRequest.Method%2A> 속성에 정의 된 값을는 <xref:System.Net.WebRequestMethods.Ftp> 구조입니다. 텍스트 데이터를 전송 하려면 변경 합니다 <xref:System.Net.FtpWebRequest.UseBinary%2A> 기본값에서 속성 (`true`)를 `false`입니다. 세부 정보 및 제한 사항에 대 한 참조 <xref:System.Net.FtpWebRequest.Method%2A>합니다.  
+  
+ 사용 하는 경우는 <xref:System.Net.FtpWebRequest> 서버에 파일을 업로드 하는 개체 파일 콘텐츠를 호출 하 여 얻은 요청 스트림에 작성 해야 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A> 메서드 또는 해당 비동기 메서드인을 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A> 및 <xref:System.Net.FtpWebRequest.EndGetRequestStream%2A> 메서드. 스트림에 쓸 하며 요청을 보내기 전에 스트림을 닫습니다.  
+  
+ 호출에서 서버로 요청이 전송 되는 <xref:System.Net.FtpWebRequest.GetResponse%2A> 메서드 또는 해당 비동기 메서드인 합니다 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 및 <xref:System.Net.FtpWebRequest.EndGetResponse%2A> 메서드. 요청 된 작업이 완료 되 면는 <xref:System.Net.FtpWebResponse> 개체가 반환 됩니다. <xref:System.Net.FtpWebResponse> 개체는 서버에서 다운로드 한 모든 데이터와 작업의 상태를 제공 합니다.  
+  
+ 읽기 또는 쓰기 서버를 사용 하 여 제한 시간 값을 설정할 수 있습니다는 <xref:System.Net.FtpWebRequest.ReadWriteTimeout%2A> 속성입니다. 제한 시간이 초과 되 면 호출 하는 메서드에서 throw 한 <xref:System.Net.WebException> 사용 하 여 <xref:System.Net.WebExceptionStatus> 로 <xref:System.Net.WebExceptionStatus.Timeout>합니다.  
+  
+ 명령이 성공한 경우 FTP 서버에서 파일을 다운로드, 응답 개체의 스트림에서 요청된 된 파일의 내용을 사용할 수 있습니다. 호출 하 여이 스트림에 액세스할 수 있습니다는 <xref:System.Net.FtpWebResponse.GetResponseStream%2A> 메서드. 자세한 내용은 <xref:System.Net.FtpWebResponse>를 참조하십시오.  
+  
+ 경우는 <xref:System.Net.FtpWebRequest.Proxy%2A> 속성을 설정 하거나 직접 또는 구성 파일에서 FTP 서버와 통신은 지정 된 프록시를 통해 이루어집니다. 지정된 된 프록시만 HTTP 프록시를 인지 합니다 <xref:System.Net.WebRequestMethods.Ftp.DownloadFile>, <xref:System.Net.WebRequestMethods.Ftp.ListDirectory>, 및 <xref:System.Net.WebRequestMethods.Ftp.ListDirectoryDetails> 명령이 지원 됩니다.  
+  
+ 이진 콘텐츠를 다운로드만 캐시 됩니다. 즉, 콘텐츠를 사용 하 여 받은 <xref:System.Net.WebRequestMethods.Ftp.DownloadFile> 명령에 <xref:System.Net.FtpWebRequest.UseBinary%2A> 속성이로 설정 `true`합니다.  
+  
+ 여러 <xref:System.Net.FtpWebRequest>s 가능 하면 기존 연결을 다시 사용 합니다.  
+  
+ FTP 프로토콜에 대 한 자세한 내용은 참조 하세요. [RFC 959: 파일 전송 프로토콜](https://www.ietf.org/rfc/rfc959.txt)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 FTP 서버에서 파일을 삭제 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[NCLFtpClient#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#4)]
+ [!code-csharp[NCLFtpClient#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#4)]  
+  
+ 다음 코드 예제를 사용 하 여 FTP 서버에서 파일을 다운로드 하는 방법을 보여 줍니다는 <xref:System.Net.WebClient> 클래스입니다.  
+  
+ [!code-cpp[NCLFtpClient#5](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#5)]
+ [!code-csharp[NCLFtpClient#5](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#5)]  
+  
+ 다음 코드 예제에서는 비동기 작업을 사용 하 여 FTP 서버에 파일을 업로드 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[NCLFtpAsync#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpAsync/CPP/async.cpp#1)]
+ [!code-csharp[NCLFtpAsync#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpAsync/CS/async.cs#1)]  
+  
+ ]]></format>
+    </remarks>
+    <permission cref="T:System.Net.WebPermission">이 요청에 의해 참조 되는 리소스에 액세스 합니다. 연관된 열거형: <see cref="F:System.Net.NetworkAccess.Connect" /></permission>
+    <altmember cref="T:System.Net.FtpWebResponse" />
+    <altmember cref="T:System.Net.FtpStatusCode" />
+    <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+    <altmember cref="T:System.Net.WebRequest" />
+    <altmember cref="T:System.Net.WebResponse" />
+    <altmember cref="T:System.Net.WebClient" />
+  </Docs>
+  <Members>
+    <Member MemberName="Abort">
+      <MemberSignature Language="C#" Value="public override void Abort ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Abort() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.FtpWebRequest.Abort" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Abort ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Abort();" />
+      <MemberSignature Language="F#" Value="override this.Abort : unit -&gt; unit" Usage="ftpWebRequest.Abort " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>비동기 FTP 작업을 종료합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 진행 중인 작업이 있으면이 메서드는 없습니다. 파일 전송이 진행 중인 경우이 메서드는 전송을 종료 합니다.  
+  
+> [!NOTE]
+>  응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 사용자 서버를 로컬 디렉터리에서 파일의 비동기 업로드를 종료할 수 있습니다 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[NCLFtpClient#10](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#10)]
+ [!code-csharp[NCLFtpClient#10](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#10)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginGetRequestStream">
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginGetRequestStream (AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginGetRequestStream(class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.FtpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function BeginGetRequestStream (callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override IAsyncResult ^ BeginGetRequestStream(AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="override this.BeginGetRequestStream : AsyncCallback * obj -&gt; IAsyncResult" Usage="ftpWebRequest.BeginGetRequestStream (callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="callback">작업이 완료되었을 때 호출할 메서드를 참조하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">작업에 대한 정보가 들어 있는 사용자 정의 개체입니다. 이 개체는 작업이 완료되면 <paramref name="callback" /> 대리자에게 전달됩니다.</param>
+        <summary>요청의 콘텐츠 스트림을 쓰기 위해 비동기적으로 여는 작업을 시작합니다.</summary>
+        <returns>작업의 상태를 나타내는 <see cref="T:System.IAsyncResult" /> 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 하 여 비동기 작업을 완료 해야 합니다는 <xref:System.Net.FtpWebRequest.EndGetRequestStream%2A> 메서드. 일반적으로 <xref:System.Net.FtpWebRequest.EndGetRequestStream%2A> 에서 참조 하는 메서드를 호출한 `callback`합니다. 작업의 상태를 확인 하려면의 속성을 확인 합니다 <xref:System.IAsyncResult> 이 메서드에서 반환 된 개체입니다.  
+  
+ 이 메서드는 스트림에 대 한 대기 하는 동안 차단 하지 않습니다. 호출을 차단 하려면 <xref:System.Net.FtpWebRequest.GetRequestStream%2A> 이 메서드 대신 합니다.  
+  
+ 비동기 프로그래밍 모델을 사용 하는 방법에 대 한 자세한 내용은 [Calling Synchronous Methods Asynchronously](~/docs/standard/asynchronous-programming-patterns/calling-synchronous-methods-asynchronously.md)합니다.  
+  
+> [!NOTE]
+>  응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 요청의 스트림을 가져오기 위한 비동기 작업을 시작 하는 방법을 보여 줍니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Net.FtpWebRequest> 클래스 개요입니다.  
+  
+ [!code-cpp[NCLFtpAsync#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpAsync/CPP/async.cpp#4)]
+ [!code-csharp[NCLFtpAsync#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpAsync/CS/async.cs#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이 메서드 또는 <see cref="M:System.Net.FtpWebRequest.GetRequestStream" />에 대한 이전 호출이 아직 완료되지 않은 경우</exception>
+        <exception cref="T:System.Net.WebException">FTP 서버에 연결할 수 없는 경우</exception>
+        <exception cref="T:System.Net.ProtocolViolationException"><see cref="P:System.Net.FtpWebRequest.Method" /> 속성이 <see cref="F:System.Net.WebRequestMethods.Ftp.UploadFile" />으로 설정되지 않은 경우</exception>
+        <block subset="none" type="usage"><para>이 메서드는 네트워크 트래픽을 생성합니다.</para></block>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="BeginGetResponse">
+      <MemberSignature Language="C#" Value="public override IAsyncResult BeginGetResponse (AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IAsyncResult BeginGetResponse(class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.FtpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function BeginGetResponse (callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override IAsyncResult ^ BeginGetResponse(AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="override this.BeginGetResponse : AsyncCallback * obj -&gt; IAsyncResult" Usage="ftpWebRequest.BeginGetResponse (callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="callback">작업이 완료되었을 때 호출할 메서드를 참조하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">작업에 대한 정보가 들어 있는 사용자 정의 개체입니다. 이 개체는 작업이 완료되면 <paramref name="callback" /> 대리자에게 전달됩니다.</param>
+        <summary>비동기적으로 FTP 서버에 요청을 보내고 응답을 받는 작업을 시작합니다.</summary>
+        <returns>작업의 상태를 나타내는 <see cref="T:System.IAsyncResult" /> 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 하 여 비동기 작업을 완료 해야 합니다는 <xref:System.Net.FtpWebRequest.EndGetResponse%2A> 메서드. 일반적으로 <xref:System.Net.FtpWebRequest.EndGetResponse%2A> 에서 참조 하는 메서드를 호출한 `callback`합니다. 작업의 상태를 확인 하려면의 속성을 확인 합니다 <xref:System.IAsyncResult> 에서 반환 된 개체는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드.  
+  
+ 경우는 <xref:System.Net.FtpWebRequest.Proxy%2A> 속성을 설정 하거나 직접 또는 구성 파일에서 FTP 서버와 통신은 지정 된 프록시를 통해 이루어집니다.  
+  
+ <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 서버에서 응답을 기다리는 동안 차단 하지 않습니다. 호출을 차단 하려면 합니다 <xref:System.Net.FtpWebRequest.GetResponse%2A> 메서드 대신 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A>합니다.  
+  
+ 비동기 프로그래밍 모델을 사용 하는 방법에 대 한 자세한 내용은 참조 하세요. [Calling Synchronous Methods Asynchronously](~/docs/standard/asynchronous-programming-patterns/calling-synchronous-methods-asynchronously.md)합니다.  
+  
+ 응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.  
+  
+> [!NOTE]
+>  경우는 <xref:System.Net.WebException> 는 throw를 사용 합니다 <xref:System.Net.WebException.Response%2A> 및 <xref:System.Net.WebException.Status%2A> 서버에서 응답을 확인 하려면 예외의 속성.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 가져올 요청의 스트림을 비동기 작업을 종료 하 고 다음 응답을 가져오는 요청을 시작 하는 방법을 보여 줍니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Net.FtpWebRequest> 클래스 개요입니다.  
+  
+ [!code-cpp[NCLFtpAsync#5](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpAsync/CPP/async.cpp#5)]
+ [!code-csharp[NCLFtpAsync#5](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpAsync/CS/async.cs#5)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="M:System.Net.FtpWebRequest.GetResponse" /> 또는 <see cref="M:System.Net.FtpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />가 이 인스턴스에 대해 이미 호출된 경우</exception>
+        <block subset="none" type="usage"><para>이 메서드는 네트워크 트래픽을 생성합니다.</para></block>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="ClientCertificates">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.X509Certificates.X509CertificateCollection ClientCertificates { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.X509Certificates.X509CertificateCollection ClientCertificates" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.ClientCertificates" />
+      <MemberSignature Language="VB.NET" Value="Public Property ClientCertificates As X509CertificateCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::X509Certificates::X509CertificateCollection ^ ClientCertificates { System::Security::Cryptography::X509Certificates::X509CertificateCollection ^ get(); void set(System::Security::Cryptography::X509Certificates::X509CertificateCollection ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ClientCertificates : System.Security.Cryptography.X509Certificates.X509CertificateCollection with get, set" Usage="System.Net.FtpWebRequest.ClientCertificates" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.MonoTODO</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.X509Certificates.X509CertificateCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>FTP 서버에 대해 암호화된 연결을 설정하는 데 사용되는 자격 증명을 가져오거나 설정합니다.</summary>
+        <value>클라이언트 자격 증명이 들어 있는 <see cref="T:System.Security.Cryptography.X509Certificates.X509CertificateCollection" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 클라이언트 인증서는 초기 SSL 연결 협상 하는 동안 클라이언트를 인증 하는 데 사용 됩니다. 자세한 내용은 <xref:System.Net.FtpWebRequest.EnableSsl%2A>를 참조하십시오.  
+  
+> [!NOTE]
+>  .NET Framework 만들어지면 SSL 세션을 캐시 하 고 가능한 경우 새 요청에 대 한 캐시 된 세션을 사용 하려고 합니다. SSL 세션을 다시 사용 하려고 시도할 때,.NET Framework의 첫 번째 요소를 사용 하는 <xref:System.Net.HttpWebRequest.ClientCertificates%2A> (있는 경우 하나) 하는 경우 익명 세션을 다시 사용 하려고 <xref:System.Net.HttpWebRequest.ClientCertificates%2A> 비어 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">Set 작업에 대해 지정된 값이 <see langword="null" />입니다.</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="ConnectionGroupName">
+      <MemberSignature Language="C#" Value="public override string ConnectionGroupName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ConnectionGroupName" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.ConnectionGroupName" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property ConnectionGroupName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ ConnectionGroupName { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ConnectionGroupName : string with get, set" Usage="System.Net.FtpWebRequest.ConnectionGroupName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.MonoTODO</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 요청을 보내는 데 사용되는 서비스 지점이 들어 있는 연결 그룹의 이름을 가져오거나 설정합니다.</summary>
+        <value>연결 그룹의 이름이 들어 있는 <see cref="T:System.String" /> 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 연결 그룹을 특정 연결 또는 연결 집합을 사용 하 여 요청 집합을 연결 합니다. 연결 그룹 이름을 지정 하는 요청 및 요청에 자격 증명이 동일한 경우 동일한 응용 프로그램 도메인에서 시작 된 요청에 의해서만 연결 그룹의 연결을 재사용할 수 있습니다. 요청 연결 그룹 이름을 지정 하지 않은, 경우에 연결 그룹과 연결 되지 않은 요청 된 서버에 대 한 기존 연결을 사용할 수 있습니다. 자격 증명이 동일한, 기존 연결을 닫고 새 요청을 기록해 야 합니다.  
+  
+ 연결 그룹을 사용 하 여이 모든 사용자의 자격 증명을 사용 하 여 인증 된 연결을 다시 사용 하려면 사용자에 대 한 요청을 허용 하므로 성능을 향상 시킬 수 있습니다.  
+  
+ 변경 합니다 <xref:System.Net.FtpWebRequest.ConnectionGroupName%2A> 호출한 후 속성을 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>, <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A>, <xref:System.Net.FtpWebRequest.GetResponse%2A>, 또는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드를 사용 하면은 <xref:System.InvalidOperationException> 예외.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 속성의 값을 검색 합니다.  
+  
+ [!code-cpp[NCLFtpClient#16](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#16)]
+ [!code-csharp[NCLFtpClient#16](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#16)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+        <related type="Article" href="~/docs/framework/network-programming/managing-connections.md">연결 관리</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ContentLength">
+      <MemberSignature Language="C#" Value="public override long ContentLength { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 ContentLength" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.ContentLength" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property ContentLength As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property long ContentLength { long get(); void set(long value); };" />
+      <MemberSignature Language="F#" Value="member this.ContentLength : int64 with get, set" Usage="System.Net.FtpWebRequest.ContentLength" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Net.FtpWebRequest" /> 클래스에서 무시되는 값을 가져오거나 설정합니다.</summary>
+        <value>무시되는 <see cref="T:System.Int64" /> 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Net.FtpWebRequest.ContentLength%2A> 속성은 다른 구현과의 호환성을 위해서만 제공 됩니다 합니다 <xref:System.Net.WebRequest> 및 <xref:System.Net.WebResponse> 클래스입니다. 사용할 이유가 없습니다 <xref:System.Net.FtpWebRequest.ContentLength%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContentOffset">
+      <MemberSignature Language="C#" Value="public long ContentOffset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 ContentOffset" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.ContentOffset" />
+      <MemberSignature Language="VB.NET" Value="Public Property ContentOffset As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property long ContentOffset { long get(); void set(long value); };" />
+      <MemberSignature Language="F#" Value="member this.ContentOffset : int64 with get, set" Usage="System.Net.FtpWebRequest.ContentOffset" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 요청으로 다운로드할 파일의 바이트 오프셋을 가져오거나 설정합니다.</summary>
+        <value>파일 오프셋을 바이트 단위로 지정하는 <see cref="T:System.Int64" /> 인스턴스입니다. 기본값은 0입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 설정 된 <xref:System.Net.FtpWebRequest.ContentOffset%2A> FTP 서버에서 파일을 다운로드 하는 경우에 속성입니다. 이 오프셋 다운로드할 데이터의 시작을 표시 하는 서버의 파일의 위치를 나타냅니다. 오프셋은 파일의 시작 부분에서 바이트 수로 지정 첫 번째 바이트의 오프셋은 0입니다.  
+  
+ 설정 <xref:System.Net.FtpWebRequest.ContentOffset%2A> 하면 합니다 <xref:System.Net.FtpWebRequest> 다시 시작을 보낼 (`REST`) 서버에 명령을 합니다. 이 명령은 서버에 데이터를 업로드 하는 경우 대부분의 FTP 서버 구현에서 무시 됩니다.  
+  
+ 변경 <xref:System.Net.FtpWebRequest.ContentOffset%2A> 호출한 후 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>를 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A>, <xref:System.Net.FtpWebRequest.GetResponse%2A>, 또는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드를 사용 하면은 <xref:System.InvalidOperationException> 예외입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 서버 및 로컬 파일에 다운로드 한 데이터를 추가 합니다. 다운로드 파일 부분을 보여 줍니다.  
+  
+ [!code-cpp[NclFtpClient#7](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#7)]
+ [!code-csharp[NclFtpClient#7](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#7)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">이 속성에 지정된 값이 0보다 작은 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="ContentType">
+      <MemberSignature Language="C#" Value="public override string ContentType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ContentType" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.ContentType" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property ContentType As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ ContentType { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ContentType : string with get, set" Usage="System.Net.FtpWebRequest.ContentType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</summary>
+        <value>항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Net.FtpWebRequest.ContentType%2A> 속성은 다른 구현과의 호환성을 위해서만 제공 됩니다 합니다 <xref:System.Net.WebRequest> 및 <xref:System.Net.WebResponse> 클래스입니다. 사용할 이유가 없습니다 <xref:System.Net.FtpWebRequest.ContentType%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">FTP에서 콘텐츠 형식 정보를 지원하지 않는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Credentials">
+      <MemberSignature Language="C#" Value="public override System.Net.ICredentials Credentials { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.ICredentials Credentials" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.Credentials" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Credentials As ICredentials" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Net::ICredentials ^ Credentials { System::Net::ICredentials ^ get(); void set(System::Net::ICredentials ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Credentials : System.Net.ICredentials with get, set" Usage="System.Net.FtpWebRequest.Credentials" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Net.ICredentials</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>FTP 서버와 통신하는 데 사용되는 자격 증명을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Net.ICredentials" /> 인스턴스이거나, 속성이 아직 설정되지 않은 경우 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 익명 로그온을 사용 하 여 연결할 때 자격 증명을 지정 하지 않아도 됩니다. 설정 해야 합니다 <xref:System.Net.FtpWebRequest.Credentials%2A> 형식의 자격 증명을 사용 하 여 속성 <xref:System.Net.NetworkCredential>;는 사용자 이름 및 암호를 읽고 수 서버로 전송 합니다. 이렇게 하면 합니다.  
+  
+> [!CAUTION]
+>  서버에 전송 하지 않는 한 자격 증명 정보는 암호화 되지 않습니다는 <xref:System.Net.FtpWebRequest.EnableSsl%2A> 속성이 `true`합니다.  
+  
+ 변경 <xref:System.Net.FtpWebRequest.Credentials%2A> 호출한 후 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>를 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A>, <xref:System.Net.FtpWebRequest.GetResponse%2A>, 또는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드를 사용 하면은 <xref:System.InvalidOperationException> 예외입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 속성의 값을 검색 하 고 사용자 이름을 표시 하는 데 사용 합니다.  
+  
+ [!code-cpp[NCLFtpClient#14](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#14)]
+ [!code-csharp[NCLFtpClient#14](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#14)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">Set 작업에 대해 지정된 값이 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><see cref="T:System.Net.ICredentials" />이 아닌 형식의 <see cref="T:System.Net.NetworkCredential" />가 set 작업에 지정된 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultCachePolicy">
+      <MemberSignature Language="C#" Value="public static System.Net.Cache.RequestCachePolicy DefaultCachePolicy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property class System.Net.Cache.RequestCachePolicy DefaultCachePolicy" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.DefaultCachePolicy" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Property DefaultCachePolicy As RequestCachePolicy" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::Net::Cache::RequestCachePolicy ^ DefaultCachePolicy { System::Net::Cache::RequestCachePolicy ^ get(); void set(System::Net::Cache::RequestCachePolicy ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.DefaultCachePolicy : System.Net.Cache.RequestCachePolicy with get, set" Usage="System.Net.FtpWebRequest.DefaultCachePolicy" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinmac-3.0">
+          <AttributeName>System.MonoTODO</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Net.Cache.RequestCachePolicy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>모든 FTP 요청에 대한 기본 캐시 정책을 정의합니다.</summary>
+        <value>FTP 요청에 대한 캐시 정책을 정의하는 <see cref="T:System.Net.Cache.RequestCachePolicy" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여 받은 콘텐츠만 <xref:System.Net.WebRequestMethods.Ftp.DownloadFile> 명령 캐시 됩니다.  
+  
+ 다음 표에 FTP 캐싱 정책이 미치는 <xref:System.Net.FtpWebRequest>합니다.  
+  
+|정책|효과|  
+|------------|------------|  
+|<xref:System.Net.Cache.RequestCacheLevel.Default>|리소스 새로 고침, 콘텐츠 길이 정확 하 고, 이며 만료, 수정 및 콘텐츠 길이 특성이 있는 경우 캐시 된 리소스를 반환 합니다.|  
+|<xref:System.Net.Cache.RequestCacheLevel.BypassCache>|서버에서 리소스를 반환합니다.|  
+|<xref:System.Net.Cache.RequestCacheLevel.CacheOnly>|콘텐츠 길이가 있는지와 항목 크기를 일치 하는 경우 캐시 된 리소스를 반환 합니다. 그렇지 않으면 throw 된 <xref:System.Net.WebException>합니다.|  
+|<xref:System.Net.Cache.RequestCacheLevel.CacheIfAvailable>|콘텐츠 길이 제공 하는 크기와 일치 항목; 경우 캐시 된 리소스를 반환 합니다. 그렇지 않은 경우 리소스 서버에서 다운로드 되 고 호출자에 게 반환 됩니다.|  
+|<xref:System.Net.Cache.RequestCacheLevel.Revalidate>|캐시 된 리소스의 타임 스탬프 서버에서 리소스의 타임 스탬프와 동일한 경우 캐시 된 리소스를 반환 합니다. 이 고, 그렇지 리소스 다운로드 서버에서 캐시에 저장 되어 호출자에 게 반환 합니다.|  
+|<xref:System.Net.Cache.RequestCacheLevel.Reload>|서버에서 리소스를 다운로드, 캐시에 저장 하 고 호출자에 게 리소스를 반환 합니다.|  
+|<xref:System.Net.Cache.RequestCacheLevel.NoCacheNoStore>|캐시 된 리소스가 있는 경우 삭제 됩니다. 리소스는 서버에서 다운로드 되 고 호출자에 게 반환 됩니다.|  
+  
+> [!NOTE]
+>  설정 <xref:System.Net.FtpWebRequest.DefaultCachePolicy%2A> 모든 구성 설정을 재정의 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">호출자가 이 속성을 <see langword="null" />로 설정하려고 한 경우</exception>
+        <related type="Article" href="https://msdn.microsoft.com/library/0eb0c5cb-dd97-484d-8614-785e88877abb">defaultFtpCachePolicy (네트워크 설정)</related>
+      </Docs>
+    </Member>
+    <Member MemberName="EnableSsl">
+      <MemberSignature Language="C#" Value="public bool EnableSsl { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool EnableSsl" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.EnableSsl" />
+      <MemberSignature Language="VB.NET" Value="Public Property EnableSsl As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool EnableSsl { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.EnableSsl : bool with get, set" Usage="System.Net.FtpWebRequest.EnableSsl" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>SSL 연결 사용 여부를 지정하는 <see cref="T:System.Boolean" />을 가져오거나 설정합니다.</summary>
+        <value>제어 및 데이터 전송이 암호화되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!CAUTION]
+>  경우가 아니면 합니다 <xref:System.Net.FtpWebRequest.EnableSsl%2A> 속성은 `true`, 모든 데이터와 명령을, 사용자 이름 및 암호 정보를 포함 하 여 서버에 일반 텍스트로 전송 됩니다. 네트워크 트래픽을 모니터링 하는 모든 자격 증명을 확인 하 고 하는 서버에 연결 하는 데 사용할 수 있습니다. 자격 증명을 요구 하 고 SSL을 지 원하는 FTP 서버에 연결 하는 경우 설정 해야 <xref:System.Net.FtpWebRequest.EnableSsl%2A> 에 `true`입니다.  
+  
+ `"AUTH TLS"` 명령 암호화 된 세션을 요청 하는 서버로 전송 됩니다. 서버에는이 명령을 인식 하지 못하면, 받게를 <xref:System.Net.WebException> 예외입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 FTP 서버에서 디렉터리 목록을 다운로드 하는 암호화 된 연결을 사용 합니다.  
+  
+ [!code-cpp[NCLFtpClient#8](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#8)]
+ [!code-csharp[NCLFtpClient#8](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#8)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">FTP 서버에 대한 연결이 이미 설정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="EndGetRequestStream">
+      <MemberSignature Language="C#" Value="public override System.IO.Stream EndGetRequestStream (IAsyncResult asyncResult);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IO.Stream EndGetRequestStream(class System.IAsyncResult asyncResult) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.FtpWebRequest.EndGetRequestStream(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function EndGetRequestStream (asyncResult As IAsyncResult) As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::IO::Stream ^ EndGetRequestStream(IAsyncResult ^ asyncResult);" />
+      <MemberSignature Language="F#" Value="override this.EndGetRequestStream : IAsyncResult -&gt; System.IO.Stream" Usage="ftpWebRequest.EndGetRequestStream asyncResult" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="asyncResult" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="asyncResult">작업이 시작될 때 반환된 <see cref="T:System.IAsyncResult" /> 개체입니다.</param>
+        <summary><see cref="M:System.Net.FtpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" />으로 시작된 보류 중인 비동기 작업을 종료합니다.</summary>
+        <returns>이 인스턴스와 연결된 쓰기 가능한 <see cref="T:System.IO.Stream" /> 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 작업이 완료 되지 않은 경우는 <xref:System.Net.FtpWebRequest.EndGetRequestStream%2A> 메서드는 작업이 완료 될 때까지 차단 합니다. 작업이 완료 되었는지 여부를 확인 하려면 다음을 확인 합니다 <xref:System.IAsyncResult.IsCompleted%2A> 호출 하기 전에 속성 <xref:System.Net.FtpWebRequest.EndGetRequestStream%2A>합니다.  
+  
+ "예외"에 설명 된 예외 외에도 <xref:System.Net.FtpWebRequest.EndGetRequestStream%2A> 쓰기 위해 스트림을 여는 동안 throw 된 예외를 다시 throw 합니다.  
+  
+> [!NOTE]
+>  응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 요청 스트림을 가져오려면 비동기 작업을 종료 하는 방법을 보여 줍니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Net.FtpWebRequest> 클래스 개요입니다.  
+  
+ [!code-cpp[NCLFtpAsync#5](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpAsync/CPP/async.cpp#5)]
+ [!code-csharp[NCLFtpAsync#5](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpAsync/CS/async.cs#5)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="asyncResult" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><see cref="M:System.Net.FtpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" />을 호출하여 <paramref name="asyncResult" />를 가져오지 못한 경우</exception>
+        <exception cref="T:System.InvalidOperationException"><paramref name="asyncResult" />로 식별된 작업에 대해 이 메서드가 이미 호출된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="EndGetResponse">
+      <MemberSignature Language="C#" Value="public override System.Net.WebResponse EndGetResponse (IAsyncResult asyncResult);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Net.WebResponse EndGetResponse(class System.IAsyncResult asyncResult) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.FtpWebRequest.EndGetResponse(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function EndGetResponse (asyncResult As IAsyncResult) As WebResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Net::WebResponse ^ EndGetResponse(IAsyncResult ^ asyncResult);" />
+      <MemberSignature Language="F#" Value="override this.EndGetResponse : IAsyncResult -&gt; System.Net.WebResponse" Usage="ftpWebRequest.EndGetResponse asyncResult" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.WebResponse</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="asyncResult" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="asyncResult">작업이 시작될 때 반환된 <see cref="T:System.IAsyncResult" />입니다.</param>
+        <summary><see cref="M:System.Net.FtpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />으로 시작된 보류 중인 비동기 작업을 종료합니다.</summary>
+        <returns><see cref="T:System.Net.WebResponse" /> 인스턴스가 들어 있는 <see cref="T:System.Net.FtpWebResponse" /> 참조입니다. 이 개체에는 요청에 대한 FTP 서버의 응답이 들어 있습니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 작업 시간에 완료 되지 않은 경우는 <xref:System.Net.FtpWebRequest.EndGetResponse%2A> 메서드를 호출 <xref:System.Net.FtpWebRequest.EndGetResponse%2A> 작업이 완료 될 때까지 차단 합니다. 차단 되지 않도록를 확인 합니다 <xref:System.IAsyncResult.IsCompleted%2A> 호출 하기 전에 속성 <xref:System.Net.FtpWebRequest.EndGetResponse%2A>합니다.  
+  
+ "예외"에 설명 된 예외 외에도 <xref:System.Net.FtpWebRequest.EndGetResponse%2A> 서버와 통신 하는 동안 throw 된 예외를 다시 throw 합니다.  
+  
+> [!NOTE]
+>  응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 응답을 수신 하기 위해 비동기 작업을 종료 하는 방법을 보여 줍니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Net.FtpWebRequest> 클래스 개요입니다.  
+  
+ [!code-cpp[NCLFtpAsync#6](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpAsync/CPP/async.cpp#6)]
+ [!code-csharp[NCLFtpAsync#6](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpAsync/CS/async.cs#6)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="asyncResult" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><see cref="M:System.Net.FtpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />을 호출하여 <paramref name="asyncResult" />를 가져오지 못한 경우</exception>
+        <exception cref="T:System.InvalidOperationException"><paramref name="asyncResult" />로 식별된 작업에 대해 이 메서드가 이미 호출된 경우</exception>
+        <exception cref="T:System.Net.WebException">HTTP 프록시를 사용하는 동안 오류가 발생했습니다.</exception>
+        <block subset="none" type="usage"><para>이 메서드는 네트워크 트래픽을 생성합니다.</para></block>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+        <altmember cref="M:System.Net.FtpWebRequest.GetResponse" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetRequestStream">
+      <MemberSignature Language="C#" Value="public override System.IO.Stream GetRequestStream ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.IO.Stream GetRequestStream() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.FtpWebRequest.GetRequestStream" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function GetRequestStream () As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::IO::Stream ^ GetRequestStream();" />
+      <MemberSignature Language="F#" Value="override this.GetRequestStream : unit -&gt; System.IO.Stream" Usage="ftpWebRequest.GetRequestStream " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>데이터를 FTP 서버에 업로드하는 데 사용되는 스트림을 검색합니다.</summary>
+        <returns>현재 요청에서 서버로 보낼 데이터를 저장하는 데 사용되는 쓰기 가능한 <see cref="T:System.IO.Stream" /> 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 하기 전에 요청 속성을 설정 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A> 메서드. 스트림에 데이터를 작성 한 후 요청을 보내기 전에 스트림을 닫아야 합니다.  
+  
+ 설정 하지 않은 경우는 <xref:System.Net.FtpWebRequest.Method%2A> 속성을 <xref:System.Net.WebRequestMethods.Ftp.UploadFile> 또는 <xref:System.Net.WebRequestMethods.Ftp.AppendFile>, 스트림을 가져올 수 없습니다.  
+  
+ <xref:System.Net.FtpWebRequest.GetRequestStream%2A> 스트림에 대 한 대기 하는 동안 차단 합니다. 이 방지 하려면 호출을 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A> 메서드 대신 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>합니다.  
+  
+> [!NOTE]
+>  응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 요청의 데이터 스트림 파일을 복사 하 고 데이터를 업로드 하 고 파일에 추가 하려면 서버에 요청을 보내는 방법을 보여 줍니다.  
+  
+ [!code-cpp[NCLFtpClient#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#3)]
+ [!code-csharp[NCLFtpClient#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="M:System.Net.FtpWebRequest.BeginGetRequestStream(System.AsyncCallback,System.Object)" />이 호출되어 아직 완료되지 않은 경우  
+  
+또는 
+HTTP 프록시를 사용하도록 설정되어 있고 <see cref="F:System.Net.WebRequestMethods.Ftp.DownloadFile" />, <see cref="F:System.Net.WebRequestMethods.Ftp.ListDirectory" /> 또는 <see cref="F:System.Net.WebRequestMethods.Ftp.ListDirectoryDetails" /> 이외의 FTP 명령을 사용하려고 한 경우</exception>
+        <exception cref="T:System.Net.WebException">FTP 서버에 연결할 수 없는 경우</exception>
+        <exception cref="T:System.Net.ProtocolViolationException"><see cref="P:System.Net.FtpWebRequest.Method" /> 속성이 <see cref="F:System.Net.WebRequestMethods.Ftp.UploadFile" /> 또는 <see cref="F:System.Net.WebRequestMethods.Ftp.AppendFile" />로 설정되지 않은 경우</exception>
+        <block subset="none" type="usage"><para>이 메서드는 네트워크 트래픽을 생성합니다.</para></block>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetResponse">
+      <MemberSignature Language="C#" Value="public override System.Net.WebResponse GetResponse ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Net.WebResponse GetResponse() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.FtpWebRequest.GetResponse" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function GetResponse () As WebResponse" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Net::WebResponse ^ GetResponse();" />
+      <MemberSignature Language="F#" Value="override this.GetResponse : unit -&gt; System.Net.WebResponse" Usage="ftpWebRequest.GetResponse " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.WebResponse</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>FTP 서버 응답을 반환합니다.</summary>
+        <returns><see cref="T:System.Net.WebResponse" /> 인스턴스가 들어 있는 <see cref="T:System.Net.FtpWebResponse" /> 참조입니다. 이 개체에는 요청에 대한 FTP 서버의 응답이 들어 있습니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ FTP 별 속성에 액세스 하려면 캐스팅 해야 합니다 <xref:System.Net.WebResponse> 에이 메서드에서 반환 된 개체 <xref:System.Net.FtpWebResponse>합니다.  
+  
+ <xref:System.Net.FtpWebRequest.GetResponse%2A> 제어 연결을 설정할 수는 데이터 연결을 만들 수도 있습니다. <xref:System.Net.FtpWebRequest.GetResponse%2A> 응답을 받을 때까지 차단 합니다. 이 방지 하려면이 작업을 수행할 수이 비동기적으로 호출 하 여 합니다 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 하 고 <xref:System.Net.FtpWebRequest.EndGetResponse%2A> 메서드 대신 <xref:System.Net.FtpWebRequest.GetResponse%2A>합니다.  
+  
+ 경우는 <xref:System.Net.FtpWebRequest.Proxy%2A> 속성을 설정 하거나 직접 또는 구성 파일에서 FTP 서버와의 통신 프록시를 통해 이루어집니다.  
+  
+ 경우는 <xref:System.Net.WebException> 는 throw를 사용 합니다 <xref:System.Net.WebException.Response%2A> 및 <xref:System.Net.WebException.Status%2A> 서버에서 응답을 확인 하려면 예외의 속성.  
+  
+ 응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.  
+  
+> [!NOTE]
+>  여러 번 호출 <xref:System.Net.FtpWebRequest.GetResponse%2A> 동일한 응답 개체를 반환 합니다. 요청은 다시 발급 되지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 요청의 데이터 스트림 파일을 복사 하 고 데이터를 서버에 파일을 추가할 요청을 보내는 방법을 보여 줍니다. 예제에서는 <xref:System.Net.FtpWebRequest.GetResponse%2A> 요청을 보내고 응답을 서버에서 반환 될 때까지 차단 합니다.  
+  
+ [!code-cpp[NCLFtpClient#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#3)]
+ [!code-csharp[NCLFtpClient#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="M:System.Net.FtpWebRequest.GetResponse" /> 또는 <see cref="M:System.Net.FtpWebRequest.BeginGetResponse(System.AsyncCallback,System.Object)" />가 이 인스턴스에 대해 이미 호출된 경우  
+  
+또는 
+HTTP 프록시를 사용하도록 설정되어 있고 <see cref="F:System.Net.WebRequestMethods.Ftp.DownloadFile" />, <see cref="F:System.Net.WebRequestMethods.Ftp.ListDirectory" /> 또는 <see cref="F:System.Net.WebRequestMethods.Ftp.ListDirectoryDetails" /> 이외의 FTP 명령을 사용하려고 한 경우</exception>
+        <exception cref="T:System.Net.WebException"><see cref="P:System.Net.FtpWebRequest.EnableSsl" />이 <see langword="true" />로 설정되었지만 서버에서 이 기능을 지원하지 않는 경우  
+  
+또는 
+<see cref="P:System.Net.FtpWebRequest.Timeout" />이 지정되었고 제한 시간이 만료되었습니다.</exception>
+        <block subset="none" type="usage"><para>이 메서드는 네트워크 트래픽을 생성합니다.</para></block>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="Headers">
+      <MemberSignature Language="C#" Value="public override System.Net.WebHeaderCollection Headers { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.WebHeaderCollection Headers" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.Headers" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Headers As WebHeaderCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Net::WebHeaderCollection ^ Headers { System::Net::WebHeaderCollection ^ get(); void set(System::Net::WebHeaderCollection ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Headers : System.Net.WebHeaderCollection with get, set" Usage="System.Net.FtpWebRequest.Headers" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.MonoTODO</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Net.WebHeaderCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>빈 <see cref="T:System.Net.WebHeaderCollection" /> 개체를 가져옵니다.</summary>
+        <value>빈 <see cref="T:System.Net.WebHeaderCollection" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Net.FtpWebRequest.Headers%2A> 속성은 다른 구현과의 호환성을 위해서만 제공 됩니다 합니다 <xref:System.Net.WebRequest> 및 <xref:System.Net.WebResponse> 클래스입니다. 사용할 이유가 없습니다 <xref:System.Net.FtpWebRequest.Headers%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="KeepAlive">
+      <MemberSignature Language="C#" Value="public bool KeepAlive { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool KeepAlive" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.KeepAlive" />
+      <MemberSignature Language="VB.NET" Value="Public Property KeepAlive As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool KeepAlive { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.KeepAlive : bool with get, set" Usage="System.Net.FtpWebRequest.KeepAlive" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.MonoTODO("We don't support KeepAlive = true")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>FTP 서버에 대한 제어 연결이 요청 완료 후 닫히는지 여부를 지정하는 <see cref="T:System.Boolean" /> 값을 가져오거나 설정합니다.</summary>
+        <value>서버에 대한 연결이 소멸되지 않아야 하면 <see langword="true" />이고, 소멸되어야 하면 <see langword="false" />입니다. 기본값은 <see langword="true" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우는 <xref:System.Net.FtpWebRequest.KeepAlive%2A> 속성이 `false`를 호출할 때 컨트롤 연결이 닫혀는 <xref:System.Net.FtpWebResponse.Close%2A> 메서드.  
+  
+ 변경 <xref:System.Net.FtpWebRequest.KeepAlive%2A> 호출한 후 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>를 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A>, <xref:System.Net.FtpWebRequest.GetResponse%2A>, 또는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드를 사용 하면은 <xref:System.InvalidOperationException> 예외입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 검색 하 고 지정 된 속성 값을 표시 <xref:System.Net.FtpWebRequest> 개체입니다.  
+  
+ [!code-cpp[NCLFtpClient#15](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#15)]
+ [!code-csharp[NCLFtpClient#15](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#15)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="Method">
+      <MemberSignature Language="C#" Value="public override string Method { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Method" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.Method" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Method As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ Method { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Method : string with get, set" Usage="System.Net.FtpWebRequest.Method" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>FTP 서버에 보낼 명령을 가져오거나 설정합니다.</summary>
+        <value>서버에 보낼 FTP 명령이 들어 있는 <see cref="T:System.String" /> 값입니다. 기본값은 <see cref="F:System.Net.WebRequestMethods.Ftp.DownloadFile" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.FtpWebRequest.Method%2A> 속성 결정 어떤 명령이 서버로 전송 됩니다. 설정한 합니다 <xref:System.Net.FtpWebRequest.Method%2A> 의 공용 필드 멤버에 정의 된 문자열을 사용 하 여는 <xref:System.Net.WebRequestMethods.Ftp> 클래스입니다. 에 정의 된 문자열에 <xref:System.Net.WebRequestMethods.Ftp> 클래스에 대 한 지원 되는 유일한 옵션은는 <xref:System.Net.FtpWebRequest.Method%2A> 속성입니다. 설정 된 <xref:System.Net.FtpWebRequest.Method%2A> 속성을 다른 값으로 생성 됩니다는 <xref:System.ArgumentException> 예외입니다.  
+  
+ 설정 하는 경우 <xref:System.Net.FtpWebRequest.Method%2A> 하 <xref:System.Net.WebRequestMethods.Ftp.UploadFile>를 호출 하기 전에 수행 해야 합니다는 <xref:System.Net.FtpWebRequest.GetRequestStream%2A> 메서드. 올바른 순서로 원인에서 이러한 멤버를 호출 하는 오류를 <xref:System.Net.ProtocolViolationException> 요청 스트림을 가져오려고 시도 하는 동안 예외가 발생 합니다.  
+  
+ 에 대 한 자격 증명을 제공 합니다 <xref:System.Net.FtpWebRequest> 개체에 지정 된 메서드를 실행할 수 있는 권한이 있어야 합니다. 그렇지 않은 경우 FTP 명령이 실패 합니다.  
+  
+ 명령의 성공 여부를 확인 하려면 다음을 확인 합니다 <xref:System.Net.FtpWebResponse.StatusCode%2A> 및 <xref:System.Net.FtpWebResponse.StatusDescription%2A> 속성입니다.  
+  
+   
+  
+## Examples  
+ 이 속성을 설정 하는 다음 코드 예제에서는 <xref:System.Net.WebRequestMethods.Ftp.DeleteFile>합니다.  
+  
+ [!code-cpp[NCLFtpClient#4](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#4)]
+ [!code-csharp[NCLFtpClient#4](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <exception cref="T:System.ArgumentException">메서드가 잘못된 경우  
+  
+또는 
+메서드가 지원되지 않는 경우  
+  
+또는 
+여러 메서드가 지정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="PreAuthenticate">
+      <MemberSignature Language="C#" Value="public override bool PreAuthenticate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PreAuthenticate" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.PreAuthenticate" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property PreAuthenticate As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool PreAuthenticate { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.PreAuthenticate : bool with get, set" Usage="System.Net.FtpWebRequest.PreAuthenticate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</summary>
+        <value>항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Net.FtpWebRequest.PreAuthenticate%2A> 속성은 다른 구현과의 호환성을 위해서만 제공 됩니다 합니다 <xref:System.Net.WebRequest> 및 <xref:System.Net.WebResponse> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">FTP에서 사전 인증을 지원하지 않는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Proxy">
+      <MemberSignature Language="C#" Value="public override System.Net.IWebProxy Proxy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.IWebProxy Proxy" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.Proxy" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Proxy As IWebProxy" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Net::IWebProxy ^ Proxy { System::Net::IWebProxy ^ get(); void set(System::Net::IWebProxy ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Proxy : System.Net.IWebProxy with get, set" Usage="System.Net.FtpWebRequest.Proxy" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.IWebProxy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>FTP 서버와 통신하는 데 사용되는 프록시를 가져오거나 설정합니다.</summary>
+        <value>FTP 서버와의 통신을 처리하는 <see cref="T:System.Net.IWebProxy" /> 인스턴스입니다. 해당 값은.NET Core에서 <see langword="null" />합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+### <a name="on-net-framework"></a>.NET framework
+
+ 합니다 <xref:System.Net.FtpWebRequest.Proxy%2A> 속성을 식별 합니다 <xref:System.Net.IWebProxy> FTP 서버와 통신 하는 인스턴스. 프록시 구성 파일 및 Internet Explorer 로컬 영역 네트워크 설정을 사용 하 여 시스템에 의해 설정 됩니다. 없는 프록시를 사용 해야 함을 지정 하려면 <xref:System.Net.FtpWebRequest.Proxy%2A> 반환한 프록시 인스턴스에 <xref:System.Net.GlobalProxySelection.GetEmptyWebProxy%2A?displayProperty=nameWithType> 메서드. 프록시 자동 검색에 대 한 자세한 내용은 참조 하세요. [자동 프록시 검색](~/docs/framework/network-programming/automatic-proxy-detection.md)합니다.  
+  
+ 설정 해야 <xref:System.Net.FtpWebRequest.Proxy%2A> 요청 스트림에 데이터를 쓰거나 응답을 가져오기 전에 합니다. 변경 <xref:System.Net.FtpWebRequest.Proxy%2A> 호출한 후 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>를 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A>, <xref:System.Net.FtpWebRequest.GetResponse%2A>, 또는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드를 사용 하면은 <xref:System.InvalidOperationException> 예외입니다.  
+  
+ <xref:System.Net.FtpWebRequest> 클래스는 HTTP 및 ISA 방화벽 클라이언트 프록시를 지원 합니다.  
+  
+ 지정된 된 프록시만 HTTP 프록시를 인지 합니다 <xref:System.Net.WebRequestMethods.Ftp.DownloadFile>, <xref:System.Net.WebRequestMethods.Ftp.ListDirectory>, 및 <xref:System.Net.WebRequestMethods.Ftp.ListDirectoryDetails> 명령이 지원 됩니다.  
+  
+### <a name="on-net-core"></a>.NET Core에서   
+
+`FtpWebRequest.Proxy` 속성이 지원 되지 않습니다. 속성을 설정 해도 효과가 없습니다. 반환 값 속성을 가져올 `null`합니다. 
+
+
+## Examples  
+ 다음 코드 예제에서는이 속성 값을 표시합니다.  
+  
+ [!code-cpp[NCLFtpClient#16](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#16)]
+ [!code-csharp[NCLFtpClient#16](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#16)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">이 속성을 <see langword="null" />로 설정한 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+        <altmember cref="T:System.Net.WebProxy" />
+        <altmember cref="T:System.Net.GlobalProxySelection" />
+      </Docs>
+    </Member>
+    <Member MemberName="ReadWriteTimeout">
+      <MemberSignature Language="C#" Value="public int ReadWriteTimeout { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 ReadWriteTimeout" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.ReadWriteTimeout" />
+      <MemberSignature Language="VB.NET" Value="Public Property ReadWriteTimeout As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int ReadWriteTimeout { int get(); void set(int value); };" />
+      <MemberSignature Language="F#" Value="member this.ReadWriteTimeout : int with get, set" Usage="System.Net.FtpWebRequest.ReadWriteTimeout" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>스트림을 읽거나 쓸 때의 제한 시간을 가져오거나 설정합니다.</summary>
+        <value>읽기 또는 쓰기가 가능한 제한 시간(밀리초)입니다. 기본값은 300,000밀리초(5분)입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.FtpWebRequest.ReadWriteTimeout%2A> 반환한 스트림에 쓸 때 사용 되는 <xref:System.Net.FtpWebRequest.GetRequestStream%2A> 메서드나에서 반환 된 스트림에서 읽기는 <xref:System.Net.FtpWebResponse.GetResponseStream%2A> 메서드.  
+  
+ 특히를 <xref:System.Net.FtpWebRequest.ReadWriteTimeout%2A> 속성에 대 한 제한 시간을 제어 합니다 <xref:System.IO.Stream.Read%2A> 반환한 스트림을 읽는 데 사용 되는 메서드를를 <xref:System.Net.FtpWebResponse.GetResponseStream%2A> 메서드를 한를 <xref:System.IO.Stream.Write%2A> 합니다 에서반환된스트림으로쓰는데사용되는메서드를<xref:System.Net.FtpWebRequest.GetRequestStream%2A>메서드. 제한 시간이 초과 되 면 호출 하는 메서드에서 throw 한 <xref:System.Net.WebException> 사용 하 여 <xref:System.Net.WebExceptionStatus> 로 <xref:System.Net.WebExceptionStatus.Timeout>합니다.  
+  
+ 요청이 완료 될 때까지 기다리는 기간을 지정 하려면 사용 된 <xref:System.Net.FtpWebRequest.Timeout%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">요청을 이미 보낸 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">set 작업에 지정된 값이 0보다 작거나 같고 <see cref="F:System.Threading.Timeout.Infinite" />와 같지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RenameTo">
+      <MemberSignature Language="C#" Value="public string RenameTo { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string RenameTo" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.RenameTo" />
+      <MemberSignature Language="VB.NET" Value="Public Property RenameTo As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ RenameTo { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.RenameTo : string with get, set" Usage="System.Net.FtpWebRequest.RenameTo" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이름을 바꿀 파일의 새 이름을 가져오거나 설정합니다.</summary>
+        <value>이름을 바꿀 파일의 새 이름입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">set 작업에 지정된 값이 <see langword="null" />이거나 빈 문자열인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RequestUri">
+      <MemberSignature Language="C#" Value="public override Uri RequestUri { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Uri RequestUri" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.RequestUri" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property RequestUri As Uri" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property Uri ^ RequestUri { Uri ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.RequestUri : Uri" Usage="System.Net.FtpWebRequest.RequestUri" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Uri</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 인스턴스에서 요청한 URI를 가져옵니다.</summary>
+        <value>FTP(파일 전송 프로토콜)를 사용하여 액세스되는 리소스를 식별하는 <see cref="T:System.Uri" /> 인스턴스입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Net.FtpWebRequest.RequestUri%2A> 속성이 URI 될 때 지정 되는 <xref:System.Net.WebRequest.Create%2A> 이 인스턴스를 가져오는 메서드를 호출한.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 속성 값을 표시합니다.  
+  
+ [!code-cpp[NCLFtpClient#14](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#14)]
+ [!code-csharp[NCLFtpClient#14](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#14)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="ServicePoint">
+      <MemberSignature Language="C#" Value="public System.Net.ServicePoint ServicePoint { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.ServicePoint ServicePoint" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.ServicePoint" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ServicePoint As ServicePoint" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::ServicePoint ^ ServicePoint { System::Net::ServicePoint ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ServicePoint : System.Net.ServicePoint" Usage="System.Net.FtpWebRequest.ServicePoint" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.ServicePoint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>FTP 서버에 연결하는 데 사용되는 <see cref="T:System.Net.ServicePoint" /> 개체를 가져옵니다.</summary>
+        <value>연결 동작을 사용자 지정하는 데 사용할 수 있는 <see cref="T:System.Net.ServicePoint" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 없으면 <xref:System.Net.ServicePoint> 개체가, FTP 서버에 만들어집니다. FTP 서버에 대 한 열 수 있는 연결의 최대 수를 설정 하려면 설정 합니다 <xref:System.Net.ServicePoint.ConnectionLimit%2A> 의 속성을 <xref:System.Net.ServicePoint> 이 속성에서 반환한 인스턴스.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 요청에서 서비스 지점을 검색 하 고 연결의 최대 수를 하나로 설정 합니다.  
+  
+ [!code-cpp[NCLFtpClient#1](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#1)]
+ [!code-csharp[NCLFtpClient#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#1)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="Timeout">
+      <MemberSignature Language="C#" Value="public override int Timeout { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Timeout" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.Timeout" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Timeout As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int Timeout { int get(); void set(int value); };" />
+      <MemberSignature Language="F#" Value="member this.Timeout : int with get, set" Usage="System.Net.FtpWebRequest.Timeout" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청 대기 시간(밀리초)을 가져오거나 설정합니다.</summary>
+        <value>요청이 시간 초과되기 전까지 기다릴 수 있는 시간(밀리초)이 들어 있는 <see cref="T:System.Int32" /> 값입니다. 기본값은 <see cref="F:System.Threading.Timeout.Infinite" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 무한 한 값을 지정 하려면 다음을 설정 합니다 <xref:System.Net.FtpWebRequest.Timeout%2A> 속성을 <xref:System.Threading.Timeout.Infinite> (-1). 기본값입니다.  
+  
+ <xref:System.Net.FtpWebRequest.Timeout%2A> 동기 요청을 사용 하 여 만든 시간 (밀리초)입니다는 <xref:System.Net.FtpWebRequest.GetResponse%2A> 메서드는 응답 및에 대 한 대기를 <xref:System.Net.FtpWebRequest.GetRequestStream%2A> 메서드는 스트림에 대 한 대기 합니다. 리소스 제한 시간 안에 응답 하지 않으면 요청 throw를 <xref:System.Net.WebException> 사용 하 여는 <xref:System.Net.WebException.Status%2A> 속성으로 설정 <xref:System.Net.WebExceptionStatus.Timeout>합니다.  
+  
+ 변경 <xref:System.Net.FtpWebRequest.Timeout%2A> 호출한 후 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>를 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A>, <xref:System.Net.FtpWebRequest.GetResponse%2A>, 또는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드를 사용 하면은 <xref:System.InvalidOperationException> 예외입니다.  
+  
+ 도메인 이름 시스템 (DNS) 쿼리는 최대 15 초 반환할 또는 제한 시간 걸릴 수 있습니다. 요청 확인이 필요 하는 호스트 이름을 포함 하 고 설정한 경우 <xref:System.Net.FtpWebRequest.Timeout%2A> 값 보다 작거나 15 초 걸릴 수 있습니다 이전 15 초 이상는 <xref:System.Net.WebException> 요청에서 제한 시간을 나타내기 위해 throw 되는 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 속성을 설정합니다.  
+  
+ [!code-cpp[NCLFtpClient#23](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#23)]
+ [!code-csharp[NCLFtpClient#23](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#23)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">지정된 값이 0보다 작고 <see cref="F:System.Threading.Timeout.Infinite" />가 아닌 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="UseBinary">
+      <MemberSignature Language="C#" Value="public bool UseBinary { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UseBinary" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.UseBinary" />
+      <MemberSignature Language="VB.NET" Value="Public Property UseBinary As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool UseBinary { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.UseBinary : bool with get, set" Usage="System.Net.FtpWebRequest.UseBinary" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파일 전송을 위한 데이터 형식을 지정하는 <see cref="T:System.Boolean" /> 값을 가져오거나 설정합니다.</summary>
+        <value>서버에 전송할 데이터가 이진 데이터임을 나타낼 경우 <see langword="true" />이고, 데이터가 텍스트임을 나타낼 경우 <see langword="false" />입니다. 기본값은 <see langword="true" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이미지와 같이 데이터를 이진 보내는 경우이 속성을 설정 `true`합니다. 텍스트를 보내는 경우 속성을 설정 `false`합니다. 지정 `true` 하면 합니다 <xref:System.Net.FtpWebRequest> 보낼는 `"TYPE I"` 서버로 명령을 합니다. 지정 `false` 하면 합니다 <xref:System.Net.FtpWebRequest> 보낼는 `"Type A"` 서버로 명령을 합니다. FTP 서버에는 이러한 명령을 무시 해도 됩니다.  
+  
+ 변경 <xref:System.Net.FtpWebRequest.UseBinary%2A> 호출한 후 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>를 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A>, <xref:System.Net.FtpWebRequest.GetResponse%2A>, 또는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드를 사용 하면은 <xref:System.InvalidOperationException> 예외입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 검색 하 고 지정 된 속성 값을 표시 <xref:System.Net.FtpWebRequest> 개체입니다.  
+  
+ [!code-cpp[NCLFtpClient#15](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#15)]
+ [!code-csharp[NCLFtpClient#15](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#15)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+    <Member MemberName="UseDefaultCredentials">
+      <MemberSignature Language="C#" Value="public override bool UseDefaultCredentials { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UseDefaultCredentials" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.UseDefaultCredentials" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property UseDefaultCredentials As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool UseDefaultCredentials { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.UseDefaultCredentials : bool with get, set" Usage="System.Net.FtpWebRequest.UseDefaultCredentials" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.MonoTODO</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</summary>
+        <value>항상 <see cref="T:System.NotSupportedException" />을 throw합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Net.FtpWebRequest.UseDefaultCredentials%2A> 속성은 다른 구현과의 호환성을 위해서만 제공 됩니다 합니다 <xref:System.Net.WebRequest> 및 <xref:System.Net.WebResponse> 클래스입니다. 사용할 이유가 없습니다 <xref:System.Net.FtpWebRequest.UseDefaultCredentials%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">FTP에서 기본 자격 증명을 지원하지 않는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="UsePassive">
+      <MemberSignature Language="C#" Value="public bool UsePassive { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UsePassive" />
+      <MemberSignature Language="DocId" Value="P:System.Net.FtpWebRequest.UsePassive" />
+      <MemberSignature Language="VB.NET" Value="Public Property UsePassive As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool UsePassive { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.UsePassive : bool with get, set" Usage="System.Net.FtpWebRequest.UsePassive" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Requests</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트 응용 프로그램의 데이터 전송 프로세스에 대한 동작을 가져오거나 설정합니다.</summary>
+        <value>클라이언트 응용 프로그램의 데이터 전송 프로세스에서 데이터 포트의 연결을 수신 대기할 경우 <see langword="false" />이고, 클라이언트에서 데이터 포트의 연결을 시작해야 할 경우에는 <see langword="true" />입니다. 기본값은 <see langword="true" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 설정 된 <xref:System.Net.FtpWebRequest.UsePassive%2A> 속성을 `true` 보냅니다는 "`PASV"` 서버로 명령을 합니다. 이 명령은 데이터 포트에서 수신 하 고을 전송 명령 받는 즉시 시작 하는 것이 아니라 연결 시 대기 서버를 요청 합니다.  
+  
+ 사용 하 여 지정 된 동작에 대 한 <xref:System.Net.FtpWebRequest.UsePassive%2A>를 참조 하세요 [RFC 959: "파일 전송 프로토콜", 섹션: "데이터 연결을 설정 합니다." 고 4.1.2: "매개 변수 명령을 전송"](https://www.ietf.org/rfc/rfc959.txt)합니다.  
+  
+ 변경 <xref:System.Net.FtpWebRequest.UsePassive%2A> 호출한 후 합니다 <xref:System.Net.FtpWebRequest.GetRequestStream%2A>를 <xref:System.Net.FtpWebRequest.BeginGetRequestStream%2A>, <xref:System.Net.FtpWebRequest.GetResponse%2A>, 또는 <xref:System.Net.FtpWebRequest.BeginGetResponse%2A> 메서드를 사용 하면은 <xref:System.InvalidOperationException> 예외입니다.  
+  
+ 하는 경우 <xref:System.Net.FtpWebRequest.UsePassive%2A> 로 설정 된 `true`, FTP 서버에는 파일의 크기를 보낼 수 없습니다 및 다운로드 진행률에서 0이 항상 가능 합니다. 하는 경우 <xref:System.Net.FtpWebRequest.UsePassive%2A> 로 설정 된 `false`, 방화벽 알림을 생성 하 고 파일 다운로드를 차단할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 검색 하 고 지정 된 속성 값을 표시 <xref:System.Net.FtpWebRequest> 개체입니다.  
+  
+ [!code-cpp[NCLFtpClient#6](~/samples/snippets/cpp/VS_Snippets_Remoting/NCLFtpClient/CPP/ftptests.cpp#6)]
+ [!code-csharp[NCLFtpClient#6](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLFtpClient/CS/ftptests.cs#6)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">이미 진행 중인 요청의 이 속성에 새 값이 지정된 경우</exception>
+        <altmember cref="T:System.Net.FtpWebResponse" />
+        <altmember cref="T:System.Net.FtpStatusCode" />
+        <altmember cref="T:System.Net.WebRequestMethods.Ftp" />
+        <altmember cref="T:System.Net.WebRequest" />
+        <altmember cref="T:System.Net.WebResponse" />
+        <altmember cref="T:System.Net.WebClient" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

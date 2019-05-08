@@ -1,0 +1,1531 @@
+<Type Name="ComponentDesigner" FullName="System.ComponentModel.Design.ComponentDesigner">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="cba9ab7eabae2155b27a0813aea41b359d88de55" /><Meta Name="ms.sourcegitcommit" Value="2dd0eede6edd6dd3d2aa8f79010848658b967609" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="04/18/2019" /><Meta Name="ms.locfileid" Value="59348665" /></Metadata><TypeSignature Language="C#" Value="public class ComponentDesigner : IDisposable, System.ComponentModel.Design.IComponentInitializer, System.ComponentModel.Design.IDesignerFilter, System.ComponentModel.Design.ITreeDesigner" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ComponentDesigner extends System.Object implements class System.ComponentModel.Design.IComponentInitializer, class System.ComponentModel.Design.IDesigner, class System.ComponentModel.Design.IDesignerFilter, class System.ComponentModel.Design.ITreeDesigner, class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.ComponentModel.Design.ComponentDesigner" />
+  <TypeSignature Language="VB.NET" Value="Public Class ComponentDesigner&#xA;Implements IComponentInitializer, IDesignerFilter, IDisposable, ITreeDesigner" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ComponentDesigner : IDisposable, System::ComponentModel::Design::IComponentInitializer, System::ComponentModel::Design::IDesignerFilter, System::ComponentModel::Design::ITreeDesigner" />
+  <TypeSignature Language="F#" Value="type ComponentDesigner = class&#xA;    interface ITreeDesigner&#xA;    interface IDesigner&#xA;    interface IDisposable&#xA;    interface IDesignerFilter&#xA;    interface IComponentInitializer" />
+  <AssemblyInfo>
+    <AssemblyName>System.Design</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.ComponentModel.Design.IComponentInitializer</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.ComponentModel.Design.IDesigner</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.ComponentModel.Design.IDesignerFilter</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.ComponentModel.Design.ITreeDesigner</InterfaceName>
+    </Interface>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>구성 요소의 디자인 모드 동작을 확장합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.ComponentDesigner> 기본 디자이너 클래스 디자인 모드에서 관련된 된 구성의 동작을 확장할 수 있는 간단한 디자이너를 제공 합니다.  
+  
+ <xref:System.ComponentModel.Design.ComponentDesigner> 빈 제공 <xref:System.ComponentModel.Design.IDesignerFilter> 인터페이스 구현, 특성, 속성 및 이벤트 관련된 된 구성 요소의 디자인 타임에 맞게 해당 메서드를 재정의할 수 있습니다.  
+  
+ 디자이너를 사용 하 여 형식에 연결할 수 있습니다는 <xref:System.ComponentModel.DesignerAttribute>합니다. 디자인 타임 동작을 사용자 지정의 개요를 보려면 [디자인 타임 지원 확장](https://docs.microsoft.com/previous-versions/visualstudio/visual-studio-2010/37899azc(v=vs.100))합니다.  
+  
+ <xref:System.ComponentModel.Design.ComponentDesigner> 클래스는 상속 된 구성 요소의 속성 설명자에 대 한 특별 한 동작을 구현 합니다. 라는 내부 형식을 `InheritedPropertyDescriptor` 는 기본적으로 사용 됩니다 <xref:System.ComponentModel.Design.ComponentDesigner> 기본 클래스에서 상속 된 속성을 구현 합니다. 이러한 속성 설명자 추가 되는 두 가지 경우가 있습니다.  
+  
+1.  반환 된 루트 개체 자체에 <xref:System.ComponentModel.Design.IDesignerHost.RootComponent%2A?displayProperty=nameWithType> 속성을 해당 기본 클래스에서 상속 하는 합니다.  
+  
+2.  루트 개체의 기본 클래스에 있는 필드에 있습니다. 기본 클래스에서 public 및 protected 필드는 사용자가 조작할 수 있도록 디자이너에 추가 됩니다.  
+  
+ `InheritedPropertyDescriptor` 기본 값이 개체를 인스턴스화할 때 현재 값이 되도록 클래스 속성의 기본값을 수정 합니다. 즉, 다른 인스턴스로부터 속성 상속 됩니다. 디자이너 정의 상속 된 클래스에 의해 설정 된 값으로 설정 된 하는 속성 값 다시 설정 합니다. 이 값은 메타 데이터에 저장 된 기본 값에서 달라질 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.ComponentModel.Design.ComponentDesigner> 구현과 디자이너와 연결 된 예제 구성 요소입니다. 재정의 구현 하는 디자이너는 <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> 기본을 호출 하는 메서드 `Initialize` 메서드를 재정의 하는 <xref:System.ComponentModel.Design.ComponentDesigner.DoDefaultAction%2A> 표시 하는 메서드를 <xref:System.Windows.Forms.MessageBox> 구성 요소를 두 번 재정의 및는 <xref:System.ComponentModel.Design.ComponentDesigner.Verbs%2A> 사용자 지정을 제공 하는 속성 접근자 <xref:System.ComponentModel.Design.DesignerVerb> 구성 요소에 대 한 바로 가기 메뉴에 메뉴 명령입니다.  
+  
+ [!code-cpp[ComponentDesignerExample#1](~/samples/snippets/cpp/VS_Snippets_Winforms/ComponentDesignerExample/CPP/examplecomponent.cpp#1)]
+ [!code-csharp[ComponentDesignerExample#1](~/samples/snippets/csharp/VS_Snippets_Winforms/ComponentDesignerExample/CS/examplecomponent.cs#1)]
+ [!code-vb[ComponentDesignerExample#1](~/samples/snippets/visualbasic/VS_Snippets_Winforms/ComponentDesignerExample/VB/examplecomponent.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+    <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+    <altmember cref="T:System.ComponentModel.DesignerAttribute" />
+    <related type="Article" href="https://docs.microsoft.com/previous-versions/visualstudio/visual-studio-2010/37899azc(v=vs.100)">디자인 타임 지원 확장</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/c186c4b6-076c-438d-9ed3-f13da29c8c1f">방법: 디자인 타임 서비스에 액세스</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ComponentDesigner ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ComponentDesigner();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.ComponentModel.Design.ComponentDesigner" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ActionLists">
+      <MemberSignature Language="C#" Value="public virtual System.ComponentModel.Design.DesignerActionListCollection ActionLists { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.Design.DesignerActionListCollection ActionLists" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.ActionLists" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property ActionLists As DesignerActionListCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::ComponentModel::Design::DesignerActionListCollection ^ ActionLists { System::ComponentModel::Design::DesignerActionListCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ActionLists : System.ComponentModel.Design.DesignerActionListCollection" Usage="System.ComponentModel.Design.ComponentDesigner.ActionLists" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.Design.DesignerActionListCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>디자이너와 관련된 구성 요소에서 지원하는 디자인 타임 작업 목록을 가져옵니다.</summary>
+        <value>디자이너와 관련된 구성 요소에서 지원하는 디자인 타임 작업 목록입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AssociatedComponents">
+      <MemberSignature Language="C#" Value="public virtual System.Collections.ICollection AssociatedComponents { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ICollection AssociatedComponents" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.AssociatedComponents" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property AssociatedComponents As ICollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Collections::ICollection ^ AssociatedComponents { System::Collections::ICollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.AssociatedComponents : System.Collections.ICollection" Usage="System.ComponentModel.Design.ComponentDesigner.AssociatedComponents" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ICollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>디자이너가 관리하는 구성 요소와 관련된 구성 요소 컬렉션을 가져옵니다.</summary>
+        <value>디자이너가 관리하는 구성 요소와 관련된 구성 요소입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성에는 모든 구성 요소를 복사 또는 이동, 복사 중 디자이너가 관리 하는 구성 요소와 함께 끌기 또는 이동 작업을 나타냅니다.  
+  
+ 이 컬렉션의 현재 디자인 모드 문서에서 다른 구성 요소에 대 한 참조가 들어 있으면 해당 구성 요소 디자이너에서 복사 작업 중 관리 되는 구성 요소와 함께 복사 됩니다.  
+  
+ 디자이너가 관리 하는 구성 요소를 선택 하면이 컬렉션에 중첩된 된 컨트롤로 채워집니다. 이 컬렉션의 도구 모음 단추와 같은 다른 구성 요소를 포함할 수도 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Component">
+      <MemberSignature Language="C#" Value="public System.ComponentModel.IComponent Component { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.IComponent Component" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.Component" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Component As IComponent" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ComponentModel::IComponent ^ Component { System::ComponentModel::IComponent ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Component : System.ComponentModel.IComponent" Usage="System.ComponentModel.Design.ComponentDesigner.Component" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.ComponentModel.Design.IDesigner.Component</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.IComponent</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 디자이너에서 디자인하고 있는 구성 요소를 가져옵니다.</summary>
+        <value>디자이너에서 관리하는 구성 요소입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> 메서드의 <xref:System.ComponentModel.Design.ComponentDesigner> 이 속성을 설정 합니다.  
+  
+> [!NOTE]
+>  재정의 하는 경우는 <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> 메서드를 기본 클래스를 호출 해야 <xref:System.ComponentModel.Design.ComponentDesigner.Initialize%2A> 이 속성을 사용 하기 전에 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.ComponentModel.Design.ComponentDesigner.Initialize(System.ComponentModel.IComponent)" />
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.ComponentModel.Design.ComponentDesigner" />에서 사용하는 리소스를 해제합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="componentDesigner.Dispose " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.ComponentModel.Design.ComponentDesigner" />에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A> 사용을 마치면 <xref:System.ComponentModel.Design.ComponentDesigner>를 호출합니다. <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A> 메서드를 사용하면 <xref:System.ComponentModel.Design.ComponentDesigner>를 사용할 수 없게 됩니다. 호출한 후 <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A>에 대 한 모든 참조를 해제 해야 합니다 <xref:System.ComponentModel.Design.ComponentDesigner> 가비지 수집기에서 메모리를 회수할 수 있도록 하는 <xref:System.ComponentModel.Design.ComponentDesigner> 차지한 합니다. 자세한 내용은 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md) 하 고 [Dispose 메서드 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.  
+  
+> [!NOTE]
+>  <xref:System.ComponentModel.Design.ComponentDesigner.Dispose%2A>에 대한 마지막 참조를 해제하기 전에 반드시 <xref:System.ComponentModel.Design.ComponentDesigner>를 호출하십시오. 이렇게 하지 않으면 가비지 수집기가 <xref:System.ComponentModel.Design.ComponentDesigner> 개체의 `Finalize` 메서드를 호출할 때까지 사용 중인 리소스가 해제되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : bool -&gt; unit&#xA;override this.Dispose : bool -&gt; unit" Usage="componentDesigner.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">관리되는 리소스와 관리되지 않는 리소스를 모두 해제하려면 <see langword="true" />로 설정하고, 관리되지 않는 리소스만 해제하려면 <see langword="false" />로 설정합니다.</param>
+        <summary><see cref="T:System.ComponentModel.Design.ComponentDesigner" />에서 사용하는 관리되지 않는 리소스를 해제하고, 관리되는 리소스를 선택적으로 해제할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 공용 `Dispose()` 메서드 및 <xref:System.Object.Finalize%2A> 메서드. `Dispose()` 보호 된 호출 `Dispose(Boolean)` 메서드를 `disposing` 매개 변수 설정 `true`합니다. <xref:System.Object.Finalize%2A> 호출 `Dispose` 사용 하 여 `disposing` 로 `false`합니다.  
+  
+ 경우는 `disposing` 매개 변수가 true 이면이 메서드는 관리 되는 개체가 보유 한 모든 리소스를 해제이 <xref:System.ComponentModel.Design.ComponentDesigner> 참조 합니다. 이 메서드는 참조되는 각 개체의 `Dispose()` 메서드를 호출합니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>
+            <see langword="Dispose" />는 다른 개체에서 여러 번 호출할 수 있습니다. 재정의 하는 경우 <see langword="Dispose(Boolean)" /> 대 한 이전 호출에서 삭제 된 개체를 참조 하지 않도록 주의 해야 <see langword="Dispose" />합니다. 구현 하는 방법에 대 한 자세한 내용은 <see langword="Dispose(Boolean)" />를 참조 하세요 [Dispose 메서드 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.  
+  
+에 대 한 자세한 내용은 <see langword="Dispose" /> 및 <see cref="M:System.Object.Finalize" />를 참조 하십시오 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md) 및 [Finalize 메서드 재정의](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ddae83kx(v=vs.100))합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="DoDefaultAction">
+      <MemberSignature Language="C#" Value="public virtual void DoDefaultAction ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void DoDefaultAction() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.DoDefaultAction" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub DoDefaultAction ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void DoDefaultAction();" />
+      <MemberSignature Language="F#" Value="abstract member DoDefaultAction : unit -&gt; unit&#xA;override this.DoDefaultAction : unit -&gt; unit" Usage="componentDesigner.DoDefaultAction " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesigner.DoDefaultAction</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>구성 요소의 기본 이벤트에 대한 소스 코드 파일에 메서드 시그니처를 만들고 해당 위치로 사용자의 커서를 이동합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Windows Forms 및 Web Forms 디자이너에서는이 메서드는 구성 요소를 클릭할 때 호출 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ComponentModel.Design.CheckoutException">소스 코드 관리 프로그램으로 체크 인된 파일을 체크 아웃하지 못한 경우</exception>
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~ComponentDesigner ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!ComponentDesigner ()" />
+      <MemberSignature Language="F#" Value="override this.Finalize : unit -&gt; unit" Usage="componentDesigner.Finalize " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>가비지 수집에서 개체를 회수하기 전에 <see langword="Dispose(false)" />를 호출하여 리소스를 해제하려고 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 재정의 <xref:System.Object.Finalize%2A?displayProperty=nameWithType> 를 호출 하 여 리소스를 정리 및 `Dispose(false)`합니다. `Dispose(Boolean)`를 재정의하여 정리 작업을 사용자 지정합니다.  
+  
+ 애플리케이션 코드는이 메서드를 호출 하지 개체의 `Finalize` 메서드를 호출 하 여 가비지 수집기에 의해 종료를 사용 하지 않도록 설정 된 경우가 아니면 자동으로 가비지를 수집 하는 동안 호출 됩니다는 <xref:System.GC.SuppressFinalize%2A?displayProperty=nameWithType> 메서드.  
+  
+ 자세한 내용은 [Finalize 메서드 및 소멸자](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/0s71x931(v%3dvs.100))를 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md), 및 [Finalize 메서드 재정의](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/ddae83kx(v=vs.100))합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetService">
+      <MemberSignature Language="C#" Value="protected virtual object GetService (Type serviceType);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance object GetService(class System.Type serviceType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.GetService(System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetService (serviceType As Type) As Object" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Object ^ GetService(Type ^ serviceType);" />
+      <MemberSignature Language="F#" Value="abstract member GetService : Type -&gt; obj&#xA;override this.GetService : Type -&gt; obj" Usage="componentDesigner.GetService serviceType" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="serviceType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="serviceType">요청할 서비스의 형식입니다.</param>
+        <summary>디자이너 구성 요소의 디자인 모드 사이트에서 지정된 서비스 종류를 검색합니다.</summary>
+        <returns>요청된 서비스를 구현하는 개체이거나, 서비스를 확인할 수 없는 경우 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드의 기본 구현은 구성 요소의 사이트에서 서비스를 요청합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.ComponentModel.Design.ComponentDesigner.GetService%2A> 디자이너 서비스에 액세스 하는 메서드.  
+  
+ [!code-csharp[System.ComponentModel.Design.DesignerServices#7](~/samples/snippets/csharp/VS_Snippets_Winforms/System.ComponentModel.Design.DesignerServices/CS/Form1.cs#7)]
+ [!code-vb[System.ComponentModel.Design.DesignerServices#7](~/samples/snippets/visualbasic/VS_Snippets_Winforms/System.ComponentModel.Design.DesignerServices/VB/Form1.vb#7)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/c186c4b6-076c-438d-9ed3-f13da29c8c1f">방법: 디자인 타임 서비스에 액세스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="InheritanceAttribute">
+      <MemberSignature Language="C#" Value="protected virtual System.ComponentModel.InheritanceAttribute InheritanceAttribute { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.InheritanceAttribute InheritanceAttribute" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.InheritanceAttribute" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable ReadOnly Property InheritanceAttribute As InheritanceAttribute" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual property System::ComponentModel::InheritanceAttribute ^ InheritanceAttribute { System::ComponentModel::InheritanceAttribute ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.InheritanceAttribute : System.ComponentModel.InheritanceAttribute" Usage="System.ComponentModel.Design.ComponentDesigner.InheritanceAttribute" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.InheritanceAttribute</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>관련된 구성 요소의 상속 형식을 나타내는 특성을 가져옵니다.</summary>
+        <value>관련된 구성 요소에 대한 <see cref="T:System.ComponentModel.InheritanceAttribute" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Inherited">
+      <MemberSignature Language="C#" Value="protected bool Inherited { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Inherited" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.Inherited" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property Inherited As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property bool Inherited { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.Inherited : bool" Usage="System.ComponentModel.Design.ComponentDesigner.Inherited" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 구성 요소가 상속되었는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>구성 요소가 상속된 것이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Initialize">
+      <MemberSignature Language="C#" Value="public virtual void Initialize (System.ComponentModel.IComponent component);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Initialize(class System.ComponentModel.IComponent component) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.Initialize(System.ComponentModel.IComponent)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub Initialize (component As IComponent)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Initialize(System::ComponentModel::IComponent ^ component);" />
+      <MemberSignature Language="F#" Value="abstract member Initialize : System.ComponentModel.IComponent -&gt; unit&#xA;override this.Initialize : System.ComponentModel.IComponent -&gt; unit" Usage="componentDesigner.Initialize component" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesigner.Initialize(System.ComponentModel.IComponent)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="component" Type="System.ComponentModel.IComponent" />
+      </Parameters>
+      <Docs>
+        <param name="component">이 디자이너에 대한 구성 요소입니다.</param>
+        <summary>지정된 구성 요소를 표시, 편집 및 디자인할 디자이너를 준비합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 디자이너를 사용 하는 준비 되 면이 메서드를 호출 하는 디자이너 호스트입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerHost" />
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeExistingComponent">
+      <MemberSignature Language="C#" Value="public virtual void InitializeExistingComponent (System.Collections.IDictionary defaultValues);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InitializeExistingComponent(class System.Collections.IDictionary defaultValues) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.InitializeExistingComponent(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub InitializeExistingComponent (defaultValues As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void InitializeExistingComponent(System::Collections::IDictionary ^ defaultValues);" />
+      <MemberSignature Language="F#" Value="abstract member InitializeExistingComponent : System.Collections.IDictionary -&gt; unit&#xA;override this.InitializeExistingComponent : System.Collections.IDictionary -&gt; unit" Usage="componentDesigner.InitializeExistingComponent defaultValues" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IComponentInitializer.InitializeExistingComponent(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="defaultValues" Type="System.Collections.IDictionary" Index="0" FrameworkAlternate="netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="defaultValues">속성에 적용할 기본값의 이름/값 사전입니다. 기본값이 지정되지 않은 경우에는 <see langword="null" />일 수 있습니다.</param>
+        <summary>기존 구성 요소를 다시 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.ComponentDesigner.InitializeExistingComponent%2A> 기존 구성 요소를 다시 초기화 되는 메서드가 호출 됩니다. 예를 들어 사용자가 다른 컨테이너에 구성 요소를 끈 후 발생할 수 있습니다.  
+  
+ 하지만 사용할 수는 `defaultValues` 사전 수정 하지 않아야 구성 요소 속성 사전에 저장 된 외에도이 기존 구성 요소 속성 설정에 이미 있을 수도 있으므로; 속성에 적용할 기본값을 권장 합니다.  
+  
+ 이 메서드의 기본 구현은 아무 작업도 수행합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeNewComponent">
+      <MemberSignature Language="C#" Value="public virtual void InitializeNewComponent (System.Collections.IDictionary defaultValues);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InitializeNewComponent(class System.Collections.IDictionary defaultValues) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.InitializeNewComponent(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub InitializeNewComponent (defaultValues As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void InitializeNewComponent(System::Collections::IDictionary ^ defaultValues);" />
+      <MemberSignature Language="F#" Value="abstract member InitializeNewComponent : System.Collections.IDictionary -&gt; unit&#xA;override this.InitializeNewComponent : System.Collections.IDictionary -&gt; unit" Usage="componentDesigner.InitializeNewComponent defaultValues" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IComponentInitializer.InitializeNewComponent(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="defaultValues" Type="System.Collections.IDictionary" Index="0" FrameworkAlternate="netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="defaultValues">속성에 적용할 기본값의 이름/값 사전입니다. 기본값이 지정되지 않은 경우에는 <see langword="null" />일 수 있습니다.</param>
+        <summary>새로 만든 구성 요소를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.ComponentDesigner.InitializeNewComponent%2A> 구성 요소가 초기화 될 때 먼저 일반적으로 먼저 디자인 화면에 추가 된 후 메서드가 호출 됩니다.  
+  
+ 이 요소의 필요한 초기화를 수행할 수 있습니다 하 고 무시할 수는 `defaultValues` 사전 완전히 합니다.  
+  
+ 이 메서드의 기본 구현은 아무 작업도 수행합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InitializeNonDefault">
+      <MemberSignature Language="C#" Value="public virtual void InitializeNonDefault ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InitializeNonDefault() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.InitializeNonDefault" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub InitializeNonDefault ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void InitializeNonDefault();" />
+      <MemberSignature Language="F#" Value="abstract member InitializeNonDefault : unit -&gt; unit&#xA;override this.InitializeNonDefault : unit -&gt; unit" Usage="componentDesigner.InitializeNonDefault " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netcore-3.0">
+          <AttributeName>System.Obsolete("This method has been deprecated. Use InitializeExistingComponent instead.  http://go.microsoft.com/fwlink/?linkid=14202")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>기본값이 아닌 설정으로 이미 초기화되어 가져온 구성 요소의 설정을 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 디자이너가 붙여넣거나 디자이너로 끌어서 놓기 작업으로 이동 하는 컨트롤 처럼 해당 기본 상태인 된 컨트롤과 연결 된 경우 호출 됩니다. 이 메서드를 수정 또는 섀도 구성 요소의 속성 보다는 기본값으로 구성 요소에 대 한 속성을 초기화 하는 데 수 있는 기회를 제공 합니다. 이 메서드는 다른 초기화 함수 후 호출 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InvokeGetInheritanceAttribute">
+      <MemberSignature Language="C#" Value="protected System.ComponentModel.InheritanceAttribute InvokeGetInheritanceAttribute (System.ComponentModel.Design.ComponentDesigner toInvoke);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance class System.ComponentModel.InheritanceAttribute InvokeGetInheritanceAttribute(class System.ComponentModel.Design.ComponentDesigner toInvoke) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.InvokeGetInheritanceAttribute(System.ComponentModel.Design.ComponentDesigner)" />
+      <MemberSignature Language="VB.NET" Value="Protected Function InvokeGetInheritanceAttribute (toInvoke As ComponentDesigner) As InheritanceAttribute" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; System::ComponentModel::InheritanceAttribute ^ InvokeGetInheritanceAttribute(System::ComponentModel::Design::ComponentDesigner ^ toInvoke);" />
+      <MemberSignature Language="F#" Value="member this.InvokeGetInheritanceAttribute : System.ComponentModel.Design.ComponentDesigner -&gt; System.ComponentModel.InheritanceAttribute" Usage="componentDesigner.InvokeGetInheritanceAttribute toInvoke" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.InheritanceAttribute</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="toInvoke" Type="System.ComponentModel.Design.ComponentDesigner" />
+      </Parameters>
+      <Docs>
+        <param name="toInvoke">상속 특성을 검색할 <see cref="T:System.ComponentModel.Design.ComponentDesigner" />입니다.</param>
+        <summary>지정된 <see cref="T:System.ComponentModel.InheritanceAttribute" />의 <see cref="T:System.ComponentModel.Design.ComponentDesigner" />를 가져옵니다.</summary>
+        <returns>지정된 디자이너의 <see cref="T:System.ComponentModel.InheritanceAttribute" />입니다.</returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetComponentDefaults">
+      <MemberSignature Language="C#" Value="public virtual void OnSetComponentDefaults ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void OnSetComponentDefaults() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.OnSetComponentDefaults" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub OnSetComponentDefaults ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void OnSetComponentDefaults();" />
+      <MemberSignature Language="F#" Value="abstract member OnSetComponentDefaults : unit -&gt; unit&#xA;override this.OnSetComponentDefaults : unit -&gt; unit" Usage="componentDesigner.OnSetComponentDefaults " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netcore-3.0">
+          <AttributeName>System.Obsolete("This method has been deprecated. Use InitializeNewComponent instead.  http://go.microsoft.com/fwlink/?linkid=14202")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>구성 요소의 기본 속성을 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ComponentModel.Design.ComponentDesigner.OnSetComponentDefaults%2A> 디자이너가 초기화 될 때 호출 됩니다. 이렇게 하면 디자이너에서 기본 구성 요소에 대 한 기본값을 제공 합니다.  
+  
+ 이 메서드는 한 번만 호출 됩니다: 처음 만들 때 구성 요소를 도구 상자에서 디자인 화면으로 끌어서 합니다. 디자이너의 후속 초기화는이 메서드를 호출 하지 마십시오.  
+  
+ 이 메서드의 기본 구현은 기본 속성은 문자열 속성이 아직 설정 되지 않은 경우 구성 요소의 이름으로 구성 요소의 기본 속성을 설정 합니다. 이 디자이너가 디자인 하는 구성 요소를 초기화 하는 사용자 지정 파생된 클래스에서이 메서드를 구현할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ParentComponent">
+      <MemberSignature Language="C#" Value="protected virtual System.ComponentModel.IComponent ParentComponent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.IComponent ParentComponent" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.ParentComponent" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable ReadOnly Property ParentComponent As IComponent" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual property System::ComponentModel::IComponent ^ ParentComponent { System::ComponentModel::IComponent ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ParentComponent : System.ComponentModel.IComponent" Usage="System.ComponentModel.Design.ComponentDesigner.ParentComponent" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.IComponent</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 디자이너의 부모 구성 요소를 가져옵니다.</summary>
+        <value>이 디자이너의 부모 구성 요소이거나, 이 디자이너가 루트 구성 요소인 경우 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성 디자이너 내에서 부모 관계를 검색 하기 위한 일반 메커니즘을 제공 하 고 사용 되는 <xref:System.ComponentModel.Design.ComponentDesigner> 개체의 <xref:System.ComponentModel.Design.ITreeDesigner> 인터페이스 구현. 이 속성은만 반환 `null` 이 디자이너 루트 구성 요소인 경우. 이 속성의 기본 구현에서는 루트 구성 요소가 없는 모든 구성 요소에 대 한 루트 구성 요소를 반환 하 고 반환 `null` 루트 구성 요소에 대 한 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PostFilterAttributes">
+      <MemberSignature Language="C#" Value="protected virtual void PostFilterAttributes (System.Collections.IDictionary attributes);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void PostFilterAttributes(class System.Collections.IDictionary attributes) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.PostFilterAttributes(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub PostFilterAttributes (attributes As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void PostFilterAttributes(System::Collections::IDictionary ^ attributes);" />
+      <MemberSignature Language="F#" Value="abstract member PostFilterAttributes : System.Collections.IDictionary -&gt; unit&#xA;override this.PostFilterAttributes : System.Collections.IDictionary -&gt; unit" Usage="componentDesigner.PostFilterAttributes attributes" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attributes" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="attributes">구성 요소의 클래스에 대한 특성입니다.</param>
+        <summary>디자이너에서 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출되는 특성 집합의 항목을 변경하거나 제거하도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 방법을 통해 노출 되는 특성의 사전 내에서 항목을 변경 하거나 제거할 수 있습니다는 <xref:System.ComponentModel.TypeDescriptor>합니다.  
+  
+ 특성의 사전에 키의 값으로 지정 된 대로 특성의 형식 식별자가 해당 <xref:System.Attribute.TypeId%2A> 속성입니다. 형식의 개체는 <xref:System.ComponentModel.PropertyDescriptor>합니다. 바로 뒤에이 메서드는 <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterAttributes%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>직접을 통해 액세스할 수 있는 사전 필터링는 <paramref name="attributes" /> 하거나 매개 변수를 그대로 둘 수 있습니다. 이 메서드를 재정의 하는 경우 필터링을 수행 하 고 나면 기본 구현을 호출 합니다. 또한에 있는 항목을 제거 하지 않아야 합니다 <see cref="M:System.ComponentModel.Design.ComponentDesigner.PostFilterAttributes(System.Collections.IDictionary)" /> 메서드. 항목을 숨기려면 특성을 변경 합니다. 항목을 제거할 수도 있습니다는 <see cref="M:System.ComponentModel.Design.ComponentDesigner.PreFilterAttributes(System.Collections.IDictionary)" /> 메서드.</para></block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+      </Docs>
+    </Member>
+    <Member MemberName="PostFilterEvents">
+      <MemberSignature Language="C#" Value="protected virtual void PostFilterEvents (System.Collections.IDictionary events);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void PostFilterEvents(class System.Collections.IDictionary events) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.PostFilterEvents(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub PostFilterEvents (events As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void PostFilterEvents(System::Collections::IDictionary ^ events);" />
+      <MemberSignature Language="F#" Value="abstract member PostFilterEvents : System.Collections.IDictionary -&gt; unit&#xA;override this.PostFilterEvents : System.Collections.IDictionary -&gt; unit" Usage="componentDesigner.PostFilterEvents events" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PostFilterEvents(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="events" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="events">구성 요소의 클래스에 대한 이벤트입니다.</param>
+        <summary>디자이너에서 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출되는 이벤트 집합의 항목을 변경하거나 제거하도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 방법을 통해 노출 되는 이벤트의 사전 내에서 항목을 변경 하거나 제거할 수 있습니다는 <xref:System.ComponentModel.TypeDescriptor>합니다.  
+  
+ 이벤트의 사전에 키는 이벤트의 이름입니다. 형식의 개체는 <xref:System.ComponentModel.PropertyDescriptor>합니다. 바로 뒤에이 메서드는 <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterEvents%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>직접을 통해 액세스할 수 있는 사전 필터링는 <paramref name="events" /> 하거나 매개 변수를 그대로 둘 수 있습니다. 이 메서드를 재정의 하는 경우 필터링을 수행 하 고 나면 기본 구현을 호출 합니다. 또한에 있는 항목을 제거 하지 않아야 합니다 <see cref="M:System.ComponentModel.Design.ComponentDesigner.PostFilterEvents(System.Collections.IDictionary)" /> 메서드. 항목을 숨기려면 특성을 변경 합니다. 항목을 제거할 수도 있습니다는 <see cref="M:System.ComponentModel.Design.ComponentDesigner.PreFilterEvents(System.Collections.IDictionary)" /> 메서드.</para></block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+      </Docs>
+    </Member>
+    <Member MemberName="PostFilterProperties">
+      <MemberSignature Language="C#" Value="protected virtual void PostFilterProperties (System.Collections.IDictionary properties);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void PostFilterProperties(class System.Collections.IDictionary properties) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.PostFilterProperties(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub PostFilterProperties (properties As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void PostFilterProperties(System::Collections::IDictionary ^ properties);" />
+      <MemberSignature Language="F#" Value="abstract member PostFilterProperties : System.Collections.IDictionary -&gt; unit&#xA;override this.PostFilterProperties : System.Collections.IDictionary -&gt; unit" Usage="componentDesigner.PostFilterProperties properties" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PostFilterProperties(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="properties" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="properties">구성 요소의 클래스에 대한 속성입니다.</param>
+        <summary>디자이너에서 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출되는 속성 집합의 항목을 변경하거나 제거하도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 방법을 통해 노출 되는 속성의 사전 내에서 항목을 변경 하거나 제거할 수 있습니다는 <xref:System.ComponentModel.TypeDescriptor>합니다.  
+  
+ 속성 사전의 키는 속성의 이름입니다. 형식의 개체는 <xref:System.ComponentModel.PropertyDescriptor>합니다. 바로 뒤에이 메서드는 <xref:System.ComponentModel.Design.ComponentDesigner.PreFilterProperties%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>직접을 통해 액세스할 수 있는 사전 필터링는 <paramref name="properties" /> 하거나 매개 변수를 그대로 둘 수 있습니다. 이 메서드를 재정의 하는 경우 필터링을 수행 하 고 나면 기본 구현을 호출 합니다. 또한에 있는 항목을 제거 하지 않아야 합니다 <see cref="M:System.ComponentModel.Design.ComponentDesigner.PostFilterProperties(System.Collections.IDictionary)" /> 메서드. 항목을 숨기려면 특성을 변경 합니다. 항목을 제거할 수도 있습니다는 <see cref="M:System.ComponentModel.Design.ComponentDesigner.PreFilterProperties(System.Collections.IDictionary)" /> 메서드.</para></block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+      </Docs>
+    </Member>
+    <Member MemberName="PreFilterAttributes">
+      <MemberSignature Language="C#" Value="protected virtual void PreFilterAttributes (System.Collections.IDictionary attributes);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void PreFilterAttributes(class System.Collections.IDictionary attributes) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.PreFilterAttributes(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub PreFilterAttributes (attributes As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void PreFilterAttributes(System::Collections::IDictionary ^ attributes);" />
+      <MemberSignature Language="F#" Value="abstract member PreFilterAttributes : System.Collections.IDictionary -&gt; unit&#xA;override this.PreFilterAttributes : System.Collections.IDictionary -&gt; unit" Usage="componentDesigner.PreFilterAttributes attributes" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attributes" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="attributes">구성 요소의 클래스에 대한 특성입니다.</param>
+        <summary>디자이너에서 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출되는 특성 집합에 항목을 추가하도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 디자이너를 통해 노출 되는 특성의 사전에 항목을 추가 하는 방법을 제공을 <xref:System.ComponentModel.TypeDescriptor>입니다.  
+  
+ 특성의 사전에 키의 값으로 지정 된 대로 특성의 형식 식별자가 해당 <xref:System.Attribute.TypeId%2A> 속성입니다. 형식의 개체는 <xref:System.ComponentModel.PropertyDescriptor>합니다. 바로 앞에이 메서드는 <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterAttributes%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>통해 액세스할 수 있는 사전을 직접 수정할 수 있습니다는 <paramref name="attributes" /> 하거나 매개 변수를 그대로 둘 수 있습니다. 이 메서드를 재정의 하는 경우 필터링을 수행 하기 전에 기본 구현을 호출 합니다.</para></block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+      </Docs>
+    </Member>
+    <Member MemberName="PreFilterEvents">
+      <MemberSignature Language="C#" Value="protected virtual void PreFilterEvents (System.Collections.IDictionary events);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void PreFilterEvents(class System.Collections.IDictionary events) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.PreFilterEvents(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub PreFilterEvents (events As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void PreFilterEvents(System::Collections::IDictionary ^ events);" />
+      <MemberSignature Language="F#" Value="abstract member PreFilterEvents : System.Collections.IDictionary -&gt; unit&#xA;override this.PreFilterEvents : System.Collections.IDictionary -&gt; unit" Usage="componentDesigner.PreFilterEvents events" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PreFilterEvents(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="events" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="events">구성 요소의 클래스에 대한 이벤트입니다.</param>
+        <summary>디자이너에서 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출되는 이벤트 집합에 항목을 추가하도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 디자이너를 통해 노출 하는 이벤트의 사전에 항목을 추가 하는 방법을 제공을 <xref:System.ComponentModel.TypeDescriptor>입니다.  
+  
+ 이벤트의 사전에 키는 이벤트의 이름입니다. 형식의 개체는 <xref:System.ComponentModel.PropertyDescriptor>합니다. 바로 앞에이 메서드는 <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterEvents%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>통해 액세스할 수 있는 사전을 직접 수정할 수 있습니다는 <paramref name="events" /> 하거나 매개 변수를 그대로 둘 수 있습니다. 이 메서드를 재정의 하는 경우 필터링을 수행 하기 전에 기본 구현을 호출 합니다.</para></block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+      </Docs>
+    </Member>
+    <Member MemberName="PreFilterProperties">
+      <MemberSignature Language="C#" Value="protected virtual void PreFilterProperties (System.Collections.IDictionary properties);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void PreFilterProperties(class System.Collections.IDictionary properties) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.PreFilterProperties(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub PreFilterProperties (properties As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void PreFilterProperties(System::Collections::IDictionary ^ properties);" />
+      <MemberSignature Language="F#" Value="abstract member PreFilterProperties : System.Collections.IDictionary -&gt; unit&#xA;override this.PreFilterProperties : System.Collections.IDictionary -&gt; unit" Usage="componentDesigner.PreFilterProperties properties" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PreFilterProperties(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="properties" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="properties">구성 요소의 클래스에 대한 속성입니다.</param>
+        <summary>디자이너에서 <see cref="T:System.ComponentModel.TypeDescriptor" />를 통해 노출되는 속성 집합에 항목을 추가하도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 디자이너를 통해 노출 되는 속성의 사전에 항목을 추가 하는 방법을 제공을 <xref:System.ComponentModel.TypeDescriptor>입니다.  
+  
+ 속성 사전의 키는 속성의 이름입니다. 형식의 개체는 <xref:System.ComponentModel.PropertyDescriptor>합니다. 바로 앞에이 메서드는 <xref:System.ComponentModel.Design.ComponentDesigner.PostFilterProperties%2A> 메서드.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>통해 액세스할 수 있는 사전을 직접 수정할 수 있습니다는 <paramref name="properties" /> 하거나 매개 변수를 그대로 둘 수 있습니다. 이 메서드를 재정의 하는 경우 필터링을 수행 하기 전에 기본 구현을 호출 합니다.</para></block>
+        <altmember cref="T:System.ComponentModel.TypeDescriptor" />
+        <altmember cref="T:System.ComponentModel.Design.IDesignerFilter" />
+      </Docs>
+    </Member>
+    <Member MemberName="RaiseComponentChanged">
+      <MemberSignature Language="C#" Value="protected void RaiseComponentChanged (System.ComponentModel.MemberDescriptor member, object oldValue, object newValue);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void RaiseComponentChanged(class System.ComponentModel.MemberDescriptor member, object oldValue, object newValue) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.RaiseComponentChanged(System.ComponentModel.MemberDescriptor,System.Object,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub RaiseComponentChanged (member As MemberDescriptor, oldValue As Object, newValue As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void RaiseComponentChanged(System::ComponentModel::MemberDescriptor ^ member, System::Object ^ oldValue, System::Object ^ newValue);" />
+      <MemberSignature Language="F#" Value="member this.RaiseComponentChanged : System.ComponentModel.MemberDescriptor * obj * obj -&gt; unit" Usage="componentDesigner.RaiseComponentChanged (member, oldValue, newValue)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="member" Type="System.ComponentModel.MemberDescriptor" />
+        <Parameter Name="oldValue" Type="System.Object" />
+        <Parameter Name="newValue" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="member">변경된 멤버를 나타내는 <see cref="T:System.ComponentModel.MemberDescriptor" />입니다.</param>
+        <param name="oldValue">멤버의 이전 값입니다.</param>
+        <param name="newValue">멤버의 새 값입니다.</param>
+        <summary><see cref="T:System.ComponentModel.Design.IComponentChangeService" />에 이 구성 요소가 변경되었음을 알립니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 직접 구성 요소 속성을 변경 하는 경우에를 사용 하 여 제공한 접근자 <xref:System.ComponentModel.MemberDescriptor>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.ComponentModel.Design.IComponentChangeService" />
+        <altmember cref="T:System.ComponentModel.MemberDescriptor" />
+      </Docs>
+    </Member>
+    <Member MemberName="RaiseComponentChanging">
+      <MemberSignature Language="C#" Value="protected void RaiseComponentChanging (System.ComponentModel.MemberDescriptor member);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void RaiseComponentChanging(class System.ComponentModel.MemberDescriptor member) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.RaiseComponentChanging(System.ComponentModel.MemberDescriptor)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub RaiseComponentChanging (member As MemberDescriptor)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void RaiseComponentChanging(System::ComponentModel::MemberDescriptor ^ member);" />
+      <MemberSignature Language="F#" Value="member this.RaiseComponentChanging : System.ComponentModel.MemberDescriptor -&gt; unit" Usage="componentDesigner.RaiseComponentChanging member" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="member" Type="System.ComponentModel.MemberDescriptor" />
+      </Parameters>
+      <Docs>
+        <param name="member">변경될 멤버를 나타내는 <see cref="T:System.ComponentModel.MemberDescriptor" />입니다.</param>
+        <summary><see cref="T:System.ComponentModel.Design.IComponentChangeService" />에 이 구성 요소가 변경될 예정임을 알립니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 구성 요소 속성을 직접 변경 하는 경우에를 사용 하 여 제공한 접근자에는이 메서드를 호출 <xref:System.ComponentModel.MemberDescriptor>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.ComponentModel.Design.IComponentChangeService" />
+        <altmember cref="T:System.ComponentModel.MemberDescriptor" />
+      </Docs>
+    </Member>
+    <Member MemberName="ShadowProperties">
+      <MemberSignature Language="C#" Value="protected System.ComponentModel.Design.ComponentDesigner.ShadowPropertyCollection ShadowProperties { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.Design.ComponentDesigner/ShadowPropertyCollection ShadowProperties" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.ShadowProperties" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property ShadowProperties As ComponentDesigner.ShadowPropertyCollection" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::ComponentModel::Design::ComponentDesigner::ShadowPropertyCollection ^ ShadowProperties { System::ComponentModel::Design::ComponentDesigner::ShadowPropertyCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ShadowProperties : System.ComponentModel.Design.ComponentDesigner.ShadowPropertyCollection" Usage="System.ComponentModel.Design.ComponentDesigner.ShadowProperties" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.Design.ComponentDesigner+ShadowPropertyCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>사용자 설정을 재정의하는 속성 값의 컬렉션을 가져옵니다.</summary>
+        <value>디자인 문서의 그림자 속성을 나타내는 <see cref="T:System.ComponentModel.Design.ComponentDesigner.ShadowPropertyCollection" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes">
+      <MemberSignature Language="C#" Value="void IDesignerFilter.PostFilterAttributes (System.Collections.IDictionary attributes);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes(class System.Collections.IDictionary attributes) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.System#ComponentModel#Design#IDesignerFilter#PostFilterAttributes(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Sub PostFilterAttributes (attributes As IDictionary) Implements IDesignerFilter.PostFilterAttributes" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes(System::Collections::IDictionary ^ attributes) = System::ComponentModel::Design::IDesignerFilter::PostFilterAttributes;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attributes" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="attributes">구성 요소의 클래스에 대한 <see cref="T:System.Attribute" /> 개체입니다. 특성의 사전에 포함된 키는 특성의 <see cref="P:System.Attribute.TypeId" /> 값입니다.</param>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterAttributes(System.Collections.IDictionary)" /> 메서드를 참조하세요.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.ComponentDesigner> 인스턴스가 <xref:System.ComponentModel.Design.IDesignerFilter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.IDesignerFilter.PostFilterEvents">
+      <MemberSignature Language="C#" Value="void IDesignerFilter.PostFilterEvents (System.Collections.IDictionary events);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.IDesignerFilter.PostFilterEvents(class System.Collections.IDictionary events) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.System#ComponentModel#Design#IDesignerFilter#PostFilterEvents(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Sub PostFilterEvents (events As IDictionary) Implements IDesignerFilter.PostFilterEvents" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.IDesignerFilter.PostFilterEvents(System::Collections::IDictionary ^ events) = System::ComponentModel::Design::IDesignerFilter::PostFilterEvents;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PostFilterEvents(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="events" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="events">구성 요소 클래스의 이벤트를 나타내는 <see cref="T:System.ComponentModel.EventDescriptor" /> 개체입니다. 이벤트의 사전에 포함된 키는 이벤트 이름입니다.</param>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterEvents(System.Collections.IDictionary)" /> 메서드를 참조하세요.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.ComponentDesigner> 인스턴스가 <xref:System.ComponentModel.Design.IDesignerFilter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.IDesignerFilter.PostFilterProperties">
+      <MemberSignature Language="C#" Value="void IDesignerFilter.PostFilterProperties (System.Collections.IDictionary properties);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.IDesignerFilter.PostFilterProperties(class System.Collections.IDictionary properties) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.System#ComponentModel#Design#IDesignerFilter#PostFilterProperties(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Sub PostFilterProperties (properties As IDictionary) Implements IDesignerFilter.PostFilterProperties" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.IDesignerFilter.PostFilterProperties(System::Collections::IDictionary ^ properties) = System::ComponentModel::Design::IDesignerFilter::PostFilterProperties;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PostFilterProperties(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="properties" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="properties">구성 요소 클래스의 속성을 나타내는 <see cref="T:System.ComponentModel.PropertyDescriptor" /> 개체입니다. 속성의 사전에 포함된 키는 속성 이름입니다.</param>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="M:System.ComponentModel.Design.IDesignerFilter.PostFilterProperties(System.Collections.IDictionary)" /> 메서드를 참조하세요.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.ComponentDesigner> 인스턴스가 <xref:System.ComponentModel.Design.IDesignerFilter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes">
+      <MemberSignature Language="C#" Value="void IDesignerFilter.PreFilterAttributes (System.Collections.IDictionary attributes);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes(class System.Collections.IDictionary attributes) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.System#ComponentModel#Design#IDesignerFilter#PreFilterAttributes(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Sub PreFilterAttributes (attributes As IDictionary) Implements IDesignerFilter.PreFilterAttributes" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes(System::Collections::IDictionary ^ attributes) = System::ComponentModel::Design::IDesignerFilter::PreFilterAttributes;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="attributes" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="attributes">구성 요소의 클래스에 대한 <see cref="T:System.Attribute" /> 개체입니다. 특성의 사전에 포함된 키는 특성의 <see cref="P:System.Attribute.TypeId" /> 값입니다.</param>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterAttributes(System.Collections.IDictionary)" /> 메서드를 참조하세요.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.ComponentDesigner> 인스턴스가 <xref:System.ComponentModel.Design.IDesignerFilter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.IDesignerFilter.PreFilterEvents">
+      <MemberSignature Language="C#" Value="void IDesignerFilter.PreFilterEvents (System.Collections.IDictionary events);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.IDesignerFilter.PreFilterEvents(class System.Collections.IDictionary events) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.System#ComponentModel#Design#IDesignerFilter#PreFilterEvents(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Sub PreFilterEvents (events As IDictionary) Implements IDesignerFilter.PreFilterEvents" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.IDesignerFilter.PreFilterEvents(System::Collections::IDictionary ^ events) = System::ComponentModel::Design::IDesignerFilter::PreFilterEvents;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PreFilterEvents(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="events" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="events">구성 요소 클래스의 이벤트를 나타내는 <see cref="T:System.ComponentModel.EventDescriptor" /> 개체입니다. 이벤트의 사전에 포함된 키는 이벤트 이름입니다.</param>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterEvents(System.Collections.IDictionary)" /> 메서드를 참조하세요.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.ComponentDesigner> 인스턴스가 <xref:System.ComponentModel.Design.IDesignerFilter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.IDesignerFilter.PreFilterProperties">
+      <MemberSignature Language="C#" Value="void IDesignerFilter.PreFilterProperties (System.Collections.IDictionary properties);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.ComponentModel.Design.IDesignerFilter.PreFilterProperties(class System.Collections.IDictionary properties) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.ComponentModel.Design.ComponentDesigner.System#ComponentModel#Design#IDesignerFilter#PreFilterProperties(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Sub PreFilterProperties (properties As IDictionary) Implements IDesignerFilter.PreFilterProperties" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.ComponentModel.Design.IDesignerFilter.PreFilterProperties(System::Collections::IDictionary ^ properties) = System::ComponentModel::Design::IDesignerFilter::PreFilterProperties;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ComponentModel.Design.IDesignerFilter.PreFilterProperties(System.Collections.IDictionary)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="properties" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="properties">구성 요소 클래스의 속성을 나타내는 <see cref="T:System.ComponentModel.PropertyDescriptor" /> 개체입니다. 속성의 사전에 포함된 키는 속성 이름입니다.</param>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="M:System.ComponentModel.Design.IDesignerFilter.PreFilterProperties(System.Collections.IDictionary)" /> 메서드를 참조하세요.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.ComponentDesigner> 인스턴스가 <xref:System.ComponentModel.Design.IDesignerFilter> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.ITreeDesigner.Children">
+      <MemberSignature Language="C#" Value="System.Collections.ICollection System.ComponentModel.Design.ITreeDesigner.Children { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ICollection System.ComponentModel.Design.ITreeDesigner.Children" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.System#ComponentModel#Design#ITreeDesigner#Children" />
+      <MemberSignature Language="VB.NET" Value=" ReadOnly Property Children As ICollection Implements ITreeDesigner.Children" />
+      <MemberSignature Language="C++ CLI" Value="property System::Collections::ICollection ^ System::ComponentModel::Design::ITreeDesigner::Children { System::Collections::ICollection ^ get(); };" />
+      <MemberSignature Language="F#" Usage="System.ComponentModel.Design.ITreeDesigner.Children" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.ComponentModel.Design.ITreeDesigner.Children</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ICollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="P:System.ComponentModel.Design.ITreeDesigner.Children" /> 속성을 참조하세요.</summary>
+        <value>현재 부모 디자이너에 포함된 <see cref="T:System.Collections.ICollection" /> 디자이너의 컬렉션이 들어 있는 <see cref="T:System.ComponentModel.Design.IDesigner" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.ComponentDesigner> 인스턴스가 <xref:System.ComponentModel.Design.ITreeDesigner> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ComponentModel.Design.ITreeDesigner.Parent">
+      <MemberSignature Language="C#" Value="System.ComponentModel.Design.IDesigner System.ComponentModel.Design.ITreeDesigner.Parent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.Design.IDesigner System.ComponentModel.Design.ITreeDesigner.Parent" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.System#ComponentModel#Design#ITreeDesigner#Parent" />
+      <MemberSignature Language="VB.NET" Value=" ReadOnly Property Parent As IDesigner Implements ITreeDesigner.Parent" />
+      <MemberSignature Language="C++ CLI" Value="property System::ComponentModel::Design::IDesigner ^ System::ComponentModel::Design::ITreeDesigner::Parent { System::ComponentModel::Design::IDesigner ^ get(); };" />
+      <MemberSignature Language="F#" Usage="System.ComponentModel.Design.ITreeDesigner.Parent" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.ComponentModel.Design.ITreeDesigner.Parent</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.Design.IDesigner</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 멤버에 대한 설명을 보려면 <see cref="P:System.ComponentModel.Design.ITreeDesigner.Parent" /> 속성을 참조하세요.</summary>
+        <value>부모 디자이너를 나타내는 <see cref="T:System.ComponentModel.Design.IDesigner" />이거나, 부모가 없는 경우 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 멤버는 명시적 인터페이스 멤버 구현이며, <xref:System.ComponentModel.Design.ComponentDesigner> 인스턴스가 <xref:System.ComponentModel.Design.ITreeDesigner> 인터페이스로 캐스팅된 경우에만 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Verbs">
+      <MemberSignature Language="C#" Value="public virtual System.ComponentModel.Design.DesignerVerbCollection Verbs { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ComponentModel.Design.DesignerVerbCollection Verbs" />
+      <MemberSignature Language="DocId" Value="P:System.ComponentModel.Design.ComponentDesigner.Verbs" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Verbs As DesignerVerbCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::ComponentModel::Design::DesignerVerbCollection ^ Verbs { System::ComponentModel::Design::DesignerVerbCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Verbs : System.ComponentModel.Design.DesignerVerbCollection" Usage="System.ComponentModel.Design.ComponentDesigner.Verbs" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.ComponentModel.Design.IDesigner.Verbs</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Windows.Forms.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.Design.DesignerVerbCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>디자이너와 관련된 구성 요소에서 지원하는 디자인 타임 동사를 가져옵니다.</summary>
+        <value><see cref="T:System.ComponentModel.Design.DesignerVerbCollection" /> 개체의 <see cref="T:System.ComponentModel.Design.DesignerVerb" />이거나, 사용할 수 있는 디자이너 동사가 없는 경우 <see langword="null" />입니다. 기본 구현은 항상 <see langword="null" />을 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드가 반환 `null` 구성 요소에 디자인 타임 동사가 없는 경우.  
+  
+ 일반적으로 디자인 타임 환경의 바로 가기 (마우스 오른쪽 단추로 클릭) 메뉴의이 메서드에 의해 반환 된 동사를 표시 합니다. 사용자가 동사 중 하나를 선택 합니다 <xref:System.ComponentModel.Design.MenuCommand.Invoke%2A> 해당 메서드의 <xref:System.ComponentModel.Design.DesignerVerb> 가 호출 됩니다.  
+  
+> [!NOTE]
+>  디자인 타임 환경에서 일반적으로 제공 된 **속성** 구성 요소의 바로 가기 메뉴에서 명령을 합니다. 따라서 이러한 항목 디자이너 지정 동사의 컬렉션에 포함 되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.ComponentModel.Design.IDesigner" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

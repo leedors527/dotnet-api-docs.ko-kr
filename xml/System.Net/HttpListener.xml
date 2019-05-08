@@ -1,0 +1,1282 @@
+<Type Name="HttpListener" FullName="System.Net.HttpListener">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="5cf85e11d98a02e74b8f4e39b325f1e6ce724e9e" /><Meta Name="ms.sourcegitcommit" Value="2dd0eede6edd6dd3d2aa8f79010848658b967609" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="04/18/2019" /><Meta Name="ms.locfileid" Value="59014914" /></Metadata><TypeSignature Language="C#" Value="public sealed class HttpListener : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit HttpListener extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Net.HttpListener" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class HttpListener&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class HttpListener sealed : IDisposable" />
+  <TypeSignature Language="F#" Value="type HttpListener = class&#xA;    interface IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Net.HttpListener</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>프로그래밍 방식으로 제어되는 간단한 HTTP 프로토콜 수신기를 제공합니다. 이 클래스는 상속될 수 없습니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하는 <xref:System.Net.HttpListener> 클래스, HTTP 요청에 응답 하는 간단한 HTTP 프로토콜 수신기를 만들 수 있습니다. 수신기의 수명 동안 활성화 되었는지는 <xref:System.Net.HttpListener> 개체 및 해당 권한으로 응용 프로그램 내에서 실행 됩니다.
+   
+ 사용 하 <xref:System.Net.HttpListener>를 사용 하 여 클래스의 새 인스턴스를 만들고는 <xref:System.Net.HttpListener> 생성자 및 사용 하 여를 <xref:System.Net.HttpListener.Prefixes%2A> 속성 액세스는 리소스 URI (Uniform Identifier)를 지정 하는 문자열을 포함 하는 컬렉션에 접두사를 <xref:System.Net.HttpListener>처리 해야 합니다.
+  
+ URI 접두사 문자열을 체계 (http 또는 https), 호스트, 선택적 포트를 및 선택적 경로 구성 됩니다. 완전 한 접두사 문자열의 예로 *http://www.contoso.com:8080/customerData/* 합니다. 접두사는 슬래시 ("/")에 종료 해야 합니다. <xref:System.Net.HttpListener> 가장 일치 하는 요청된 된 URI 접두사가 포함 된 개체는 요청에 응답 합니다. 여러 <xref:System.Net.HttpListener> 개체는 동일한 접두사를 추가할 수 없습니다는 <xref:System.ComponentModel.Win32Exception> 예외가 throw 됩니다는 <xref:System.Net.HttpListener> 에 이미 있는 접두사를 사용 하 여 추가 합니다.
+  
+ 포트를 지정 하면 호스트 요소 바꿀 수 있습니다 "\*" 나타내는 <xref:System.Net.HttpListener> 요청된 된 URI에 다른 접두사와 일치 하지 않으면 포트로 전송 요청을 수락 합니다. 예를 들어, 모든 요청을 수신 하도록 포트 8080에서 요청 된 URI에서 처리 되지 않은 경우에 보낸 <xref:System.Net.HttpListener>, 접두사 *http://\*: 8080 /* 합니다. 마찬가지로, 지정 하는 <xref:System.Net.HttpListener> 포트에 전송 하는 모든 요청을 수락 "+" 문자를 사용 하 여 호스트 요소를 바꿉니다. 예: *https://+:8080*. "\*" 및 "+" 문자는 경로 포함 하는 접두사에 있을 수 있습니다.
+  
+ .NET Core 2.0 또는 Windows 10에서.NET Framework 4.6부터, 와일드 카드 하위 도메인에서 관리 하는 URI 접두사에 지원 됩니다는 <xref:System.Net.HttpListener> 개체입니다. 와일드 카드 하위 도메인을 지정 하려면 사용 된 "\*" URI 접두사에서 호스트의 일부로 문자. 예를 들어 *http://\*.foo.com/* 합니다. 이에 대 한 인수로 전달 된 <xref:System.Net.HttpListenerPrefixCollection.Add%2A> 메서드. .NET Core 2.0 또는 Windows 10에.NET Framework 4.6을 기준으로 작동 이전 버전에서는 이렇게 생성 된 <xref:System.Net.HttpListenerException>합니다.
+
+ > [!WARNING]
+ > 최상위 와일드 카드 바인딩 (*http://\*: 8080 /* 하 고 *http://+:8080*) 해야 **되지** 사용할 합니다. 최상위 와일드카드 바인딩은 보안 취약점에 앱을 노출시킬 수 있습니다. 강력한 와일드카드와 약한 와일드카드 모두에 적용됩니다. 와일드카드보다는 명시적 호스트 이름을 사용합니다. 전체 부모 도메인을 제어하는 경우 하위 도메인 와일드카드 바인딩(예: `*.mysub.com`)에는 이러한 보안 위험이 없습니다(취약한 `*.com`과 반대임). 자세한 내용은 [rfc7230 섹션-5.4](https://tools.ietf.org/html/rfc7230#section-5.4)를 참조하세요.
+  
+ 클라이언트에서 요청을 수신 대기를 시작 하려면 URI 접두사는 추가 수집 및 호출 된 <xref:System.Net.HttpListener.Start%2A> 메서드. <xref:System.Net.HttpListener> 클라이언트 요청을 처리 하기 위한 동기 및 비동기 모델을 제공 합니다. 요청 및 응답을 통해 액세스 되는 <xref:System.Net.HttpListenerContext> 에서 반환 된 개체를 <xref:System.Net.HttpListener.GetContext%2A> 메서드 또는 해당 비동기 메서드인 합니다 <xref:System.Net.HttpListener.BeginGetContext%2A> 및 <xref:System.Net.HttpListener.EndGetContext%2A> 메서드.
+  
+ 모델은 동기 모델과 클라이언트 요청을 대기 하는 동안 응용 프로그램을 차단 하 고 한 번에 하나의 요청을 처리 하려는 경우 적합 합니다. 호출 동기 모델을 사용 하는 <xref:System.Net.HttpListener.GetContext%2A> 메서드는 클라이언트 요청을 보낼 때까지 기다립니다. 메서드는 <xref:System.Net.HttpListenerContext> 발생 한 경우 처리에 대 한 개체입니다.
+  
+ 더 복잡 한 비동기 모델에서 응용 프로그램의 실행 스레드에서 자체 처리 되는 요청 및 각 요청을 기다리는 동안 차단 하지 않습니다. 사용 된 <xref:System.Net.HttpListener.BeginGetContext%2A> 들어오는 각 요청에 대해 호출 되는 응용 프로그램 정의 메서드를 지정 하는 방법입니다. 해당 메서드 내에서 호출을 <xref:System.Net.HttpListener.EndGetContext%2A> 요청 가져오기, 처리 및 대응 방법입니다.
+  
+ 모델 중 하나에서 들어오는 요청을 통해 액세스 되는 <xref:System.Net.HttpListenerContext.Request%2A?displayProperty=nameWithType> 속성과 나타내는 <xref:System.Net.HttpListenerRequest> 개체입니다. 마찬가지로, 응답을 통해 액세스 되는 <xref:System.Net.HttpListenerContext.Response%2A?displayProperty=nameWithType> 속성과 나타내는 <xref:System.Net.HttpListenerResponse> 개체입니다. 이러한 개체와 일부 기능을 공유 합니다 <xref:System.Net.HttpWebRequest> 하 고 <xref:System.Net.HttpWebResponse> 개체에 있지만 두 번째 개체와 함께에서 사용할 수 없습니다 <xref:System.Net.HttpListener> 클라이언트, 없습니다 서버, 동작을 구현 하므로 합니다.
+  
+ <xref:System.Net.HttpListener> 클라이언트 인증을 요구할 수 있습니다. 인증을 위해 사용 하는 특정 구성표를 지정 하거나 또는 사용할 체계를 결정 하는 대리자를 지정할 수 있습니다. 특정 형태의 인증 클라이언트의 id에 대 한 정보를 요구 해야 합니다. 자세한 내용은 참조는 <xref:System.Net.HttpListenerContext.User%2A>, <xref:System.Net.HttpListener.AuthenticationSchemes%2A>, 및 <xref:System.Net.HttpListener.AuthenticationSchemeSelectorDelegate%2A> 속성.
+  
+> [!NOTE]
+> 만드는 경우는 <xref:System.Net.HttpListener> https를 사용 하 여 선택 해야 서버 인증서를 해당 수신기에 대 한 합니다. 그렇지 않은 경우는 <xref:System.Net.HttpWebRequest> 이 쿼리 <xref:System.Net.HttpListener> 예기치 연결 하지 못합니다.
+  
+> [!NOTE]
+> 네트워크 셸 (netsh.exe)를 사용 하 여 서버 인증서 및 기타 수신기 옵션을 구성할 수 있습니다. 참조 [네트워크 셸 (Netsh)](/windows-server/networking/technologies/netsh/netsh) 대 한 자세한 내용은 합니다. 실행 파일에 Windows Server 2008 및 Windows Vista를 사용 하 여 전달 하기 시작 했습니다.
+  
+> [!NOTE]
+> 에 대 한 여러 인증 체계를 지정 하는 경우는 <xref:System.Net.HttpListener>, 수신기에서 다음과 같은 순서로 클라이언트 즐길 수: `Negotiate`, `NTLM`, `Digest`를 차례로 `Basic`.
+  
+   
+  
+## Examples
+ 다음 코드 예제는 <xref:System.Net.HttpListener>합니다.  
+  
+ [!code-csharp[Net_Listener_Basic#2](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#2)]  
+  
+ ]]></format>
+    </remarks>
+    <related type="Article" href="https://msdn.microsoft.com/library/8bf0b428-5a21-4299-8d6e-bf8251fd978a">버전 3.5 SP1에서에서 HTTPWebRequest에 대 한 NTLM 인증 변경 내용</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HttpListener ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; HttpListener();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Net.HttpListener" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자에 의해 반환 되는 인스턴스를 사용 하기 전에 호출 해야 해당 <xref:System.Net.HttpListener.Start%2A> 메서드.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Net.HttpListener> 새 생성자 <xref:System.Net.HttpListener> 개체입니다. 전체 예제를 참조 하세요.를 <xref:System.Net.HttpListener> 클래스 항목입니다.  
+  
+ [!code-csharp[Net_listener_Basic#9](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#9)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.PlatformNotSupportedException">현재 운영 체제에서 이 클래스를 사용할 수 없는 경우. 이 클래스의 인스턴스를 사용하려면 Windows Server 2003 또는 Windows XP SP2가 필요합니다.</exception>
+        <block subset="none" type="usage"><para>참고: 응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="Abort">
+      <MemberSignature Language="C#" Value="public void Abort ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Abort() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.Abort" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Abort ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Abort();" />
+      <MemberSignature Language="F#" Value="member this.Abort : unit -&gt; unit" Usage="httpListener.Abort " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Net.HttpListener" /> 개체를 즉시 종료하고 현재 큐에 대기 중인 모든 요청을 삭제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드가이 수신기에서 사용 하는 리소스를 모두 삭제 합니다. 모든 보류 중인 요청은 완료할 수 없습니다.  
+  
+ 이 메서드를 호출한 후 나타납니다는 <xref:System.ObjectDisposedException> 사용 하려는 경우 <xref:System.Net.HttpListener>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 메서드를 호출 하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[Net_Listener_Basic#11](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#11)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="usage"><para>응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="AuthenticationSchemes">
+      <MemberSignature Language="C#" Value="public System.Net.AuthenticationSchemes AuthenticationSchemes { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Net.AuthenticationSchemes AuthenticationSchemes" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.AuthenticationSchemes" />
+      <MemberSignature Language="VB.NET" Value="Public Property AuthenticationSchemes As AuthenticationSchemes" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::AuthenticationSchemes AuthenticationSchemes { System::Net::AuthenticationSchemes get(); void set(System::Net::AuthenticationSchemes value); };" />
+      <MemberSignature Language="F#" Value="member this.AuthenticationSchemes : System.Net.AuthenticationSchemes with get, set" Usage="System.Net.HttpListener.AuthenticationSchemes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Net.AuthenticationSchemes</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트를 인증하는 데 사용되는 인증 체계를 가져오거나 설정합니다.</summary>
+        <value>클라이언트 인증 방법을 나타내는 <see cref="T:System.Net.AuthenticationSchemes" /> 열거형 값의 비트 조합입니다. 기본값은 <see cref="F:System.Net.AuthenticationSchemes.Anonymous" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.HttpListener> 지정된 된 체계를 사용 하 여 모든 들어오는 요청을 인증 합니다. <xref:System.Net.HttpListener.GetContext%2A> 하 고 <xref:System.Net.HttpListener.EndGetContext%2A> 경우에 들어오는 클라이언트 요청을 반환 하는 메서드는 <xref:System.Net.HttpListener> 성공적으로 요청을 인증 합니다.  
+  
+ 사용 하 여 성공적으로 인증 된 클라이언트의 id를 검색할 수는 <xref:System.Net.HttpListenerContext.User%2A?displayProperty=nameWithType> 속성입니다.  
+  
+ 하려는 경우는 <xref:System.Net.HttpListener> 수신한 요청의 특성을 기반으로 하는 다른 인증 메커니즘을 사용 하는 개체 (예: 요청 <xref:System.Net.HttpListenerRequest.Url%2A> 또는 <xref:System.Net.HttpListenerRequest.UserHostName%2A> 속성)를 선택 하는 메서드를 구현 해야 합니다 인증 체계입니다. 이 작업을 수행 하는 방법에 대 한 자세한 내용은 참조는 <xref:System.Net.HttpListener.AuthenticationSchemeSelectorDelegate%2A> 속성 설명서.  
+  
+> [!NOTE]
+>  다이제스트를 사용 하도록 설정 하려면이 속성을 설정 하려면 NTLM 또는 협상 해야 합니다 <xref:System.Security.Permissions.SecurityPermission>, <xref:System.Security.Permissions.SecurityPermissionFlag.ControlPrincipal>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Net.HttpListener.AuthenticationSchemes%2A> 인증 체계를 지정 하는 속성입니다.  
+  
+ [!code-csharp[Net_listener_Basic#14](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#14)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫힌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AuthenticationSchemeSelectorDelegate">
+      <MemberSignature Language="C#" Value="public System.Net.AuthenticationSchemeSelector AuthenticationSchemeSelectorDelegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.AuthenticationSchemeSelector AuthenticationSchemeSelectorDelegate" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.AuthenticationSchemeSelectorDelegate" />
+      <MemberSignature Language="VB.NET" Value="Public Property AuthenticationSchemeSelectorDelegate As AuthenticationSchemeSelector" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::AuthenticationSchemeSelector ^ AuthenticationSchemeSelectorDelegate { System::Net::AuthenticationSchemeSelector ^ get(); void set(System::Net::AuthenticationSchemeSelector ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.AuthenticationSchemeSelectorDelegate : System.Net.AuthenticationSchemeSelector with get, set" Usage="System.Net.HttpListener.AuthenticationSchemeSelectorDelegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.AuthenticationSchemeSelector</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트 인증에 사용되는 프로토콜을 결정하기 위해 호출되는 대리자를 가져오거나 설정합니다.</summary>
+        <value>인증 프로토콜을 선택하는 데 사용되는 메서드를 호출하는 <see cref="T:System.Net.AuthenticationSchemeSelector" /> 대리자입니다. 기본값은 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  특정 인스턴스에 의해 처리 되는 모든 요청에 사용할 동일한 인증 프로토콜을 사용 하려는 경우 <xref:System.Net.HttpListener>,이 속성을 설정할 필요가 없습니다. 모든 클라이언트 요청에 사용할 프로토콜을 지정 하려면 사용 된 <xref:System.Net.HttpListener.AuthenticationSchemes%2A> 속성입니다.  
+  
+ 클라이언트가 해당 헤더에 인증 정보를 지정 하지 않은 경우는 <xref:System.Net.HttpListener> 프로토콜을 결정, 있는 경우 클라이언트를 인증 하는 데 각 인증 되지 않은 들어오는 요청에 대해 지정 된 대리자를 호출 합니다. <xref:System.Net.HttpListener.GetContext%2A> 하 고 <xref:System.Net.HttpListener.EndGetContext%2A> 메서드는 들어오는 요청 경우에만 반환 합니다 <xref:System.Net.HttpListener> 성공적으로 요청을 인증 합니다. 요청을 인증할 수 없는 경우는 <xref:System.Net.HttpListener> 자동으로 다시 401 응답을 보냅니다. 사용 하 여 성공적으로 인증 된 클라이언트의 id를 가져올 수는 <xref:System.Web.HttpRequest.LogonUserIdentity%2A?displayProperty=nameWithType> 속성입니다.  
+  
+ 다양 한 응용 프로그램별 메서드 인증 프로토콜을 위임할 수의 인스턴스를 하려는 경우 유용 <xref:System.Net.HttpListener> (수신한 요청의 특성에 따라 다양 한 인증 프로토콜을 사용 하려면 예: 요청의 <xref:System.Net.HttpListenerRequest.Url%2A> 또는 <xref:System.Net.HttpListenerRequest.UserHostAddress%2A> 속성).  
+  
+> [!NOTE]
+>  다이제스트를 사용 하도록 설정 하려면이 속성을 설정 하려면 NTLM 또는 협상 해야 합니다 <xref:System.Security.Permissions.SecurityPermission>, <xref:System.Security.Permissions.SecurityPermissionFlag.ControlPrincipal>합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 속성의 값을 설정 합니다.  
+  
+ [!code-csharp[NclListener#2](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLListener/CS/sample.cs#2)]
+ [!code-vb[NclListener#2](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NCLListener/vb/sample.vb#2)]  
+  
+ 다음 코드 예제에서 호출 되는 메서드의 구현을 제공는 <xref:System.Net.AuthenticationSchemeSelector> 위임 합니다.  
+  
+ [!code-csharp[NclListener#1](~/samples/snippets/csharp/VS_Snippets_Remoting/NCLListener/CS/sample.cs#1)]
+ [!code-vb[NclListener#1](~/samples/snippets/visualbasic/VS_Snippets_Remoting/NCLListener/vb/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫힌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginGetContext">
+      <MemberSignature Language="C#" Value="public IAsyncResult BeginGetContext (AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IAsyncResult BeginGetContext(class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.BeginGetContext(System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Function BeginGetContext (callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; IAsyncResult ^ BeginGetContext(AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="member this.BeginGetContext : AsyncCallback * obj -&gt; IAsyncResult" Usage="httpListener.BeginGetContext (callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="callback">클라이언트 요청을 사용할 수 있을 때 호출할 메서드를 참조하는 <see cref="T:System.AsyncCallback" /> 대리자입니다.</param>
+        <param name="state">작업에 대한 정보가 들어 있는 사용자 정의 개체입니다. 이 개체는 작업이 완료되면 <paramref name="callback" /> 대리자에게 전달됩니다.</param>
+        <summary>들어오는 요청에 대한 비동기 검색을 시작합니다.</summary>
+        <returns>비동기 작업의 상태를 나타내는 <see cref="T:System.IAsyncResult" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.HttpListener.BeginGetContext%2A> 메서드는 들어오는 클라이언트 요청을 수신 하는 비동기 (비블로킹) 호출을 시작 합니다. 이 메서드를 호출 하기 전에 호출 해야 합니다는 <xref:System.Net.HttpListener.Start%2A> 메서드 URI 문자열을 추가 하 여 수신 하도록 하나 이상의 리소스 URI (Uniform Identifier) 접두사를 추가 합니다 <xref:System.Net.HttpListenerPrefixCollection> 반환한를 <xref:System.Net.HttpListener.Prefixes%2A> 속성입니다.  
+  
+ 호출 하 여 비동기 작업을 완료 해야 합니다 <xref:System.Net.HttpListener.EndGetContext%2A> 메서드. 메서드는 일반적으로 `callback` 위임 합니다.  
+  
+ 작업이 완료 될 때이 메서드를 차단 하지 않습니다. 작업이 완료 될 때까지 들어오는 요청과 블록을 가져오려면, 호출 된 <xref:System.Net.HttpListener.GetContext%2A> 메서드.  
+  
+ 비동기 프로그래밍 모델을 사용 하는 방법에 대 한 자세한 내용은 참조 하세요. [Calling Synchronous Methods Asynchronously](~/docs/standard/asynchronous-programming-patterns/calling-synchronous-methods-asynchronously.md)  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Net.HttpListener.BeginGetContext%2A> 들어오는 클라이언트 요청을 처리 하는 콜백 메서드를 지정 하는 방법입니다.  
+  
+ [!code-csharp[Net_Listener_Basic#12](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#12)]  
+  
+ 다음 코드 예제에서는 콜백 메서드를 구현 합니다.  
+  
+ [!code-csharp[Net_Listener_Basic#13](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#13)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Net.HttpListenerException">Win32 함수 호출이 실패한 경우. 예외의 <see cref="P:System.Net.HttpListenerException.ErrorCode" /> 속성을 검토하여 예외의 원인을 확인할 수 있습니다.</exception>
+        <exception cref="T:System.InvalidOperationException">이 개체가 시작되지 않았거나 현재 중지된 경우</exception>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫혀 있는 경우</exception>
+        <block subset="none" type="usage"><para>응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="Close">
+      <MemberSignature Language="C#" Value="public void Close ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Close() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.Close" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Close ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Close();" />
+      <MemberSignature Language="F#" Value="member this.Close : unit -&gt; unit" Usage="httpListener.Close " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Net.HttpListener" />를 종료합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 호출한 후 더 이상 사용할 수는 <xref:System.Net.HttpListener> 개체입니다. 일시적으로 일시 중지 하는 <xref:System.Net.HttpListener> 개체를 사용 하 여는 <xref:System.Net.HttpListener.Stop%2A> 메서드.  
+  
+ 이 메서드 종료 있는 <xref:System.Net.HttpListener> 큐에 대기 중인된 요청을 처리 하지 않고 개체입니다. 모든 보류 중인 요청은 완료할 수 없습니다.  
+  
+## Examples  
+
+다음 코드 예제에서는 호출 된 `Close` 메서드:
+  
+[!code-csharp[Net_Listener_Basic#12](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#12)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="usage"><para>응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultServiceNames">
+      <MemberSignature Language="C#" Value="public System.Security.Authentication.ExtendedProtection.ServiceNameCollection DefaultServiceNames { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Authentication.ExtendedProtection.ServiceNameCollection DefaultServiceNames" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.DefaultServiceNames" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DefaultServiceNames As ServiceNameCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Authentication::ExtendedProtection::ServiceNameCollection ^ DefaultServiceNames { System::Security::Authentication::ExtendedProtection::ServiceNameCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.DefaultServiceNames : System.Security.Authentication.ExtendedProtection.ServiceNameCollection" Usage="System.Net.HttpListener.DefaultServiceNames" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Authentication.ExtendedProtection.ServiceNameCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>등록된 접두사로 확인되는 SPN(서비스 공급자 이름) 기본 목록을 가져옵니다.</summary>
+        <value>SPN 목록이 들어 있는 <see cref="T:System.Security.Authentication.ExtendedProtection.ServiceNameCollection" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.HttpListener.DefaultServiceNames%2A> 속성은 데 통합된 Windows 인증을 사용 하 여 확장 된 보호를 제공 합니다. Spn 목록에서 초기화 되는 <xref:System.Net.HttpListener.Prefixes%2A> 속성에 액세스 하 고 새 접두사에 추가 될 때의 선택을 취소 합니다 <xref:System.Net.HttpListener.Prefixes%2A> 속성입니다.  
+  
+ <xref:System.Net.HttpListener.DefaultServiceNames%2A> 속성은 응용 프로그램 설정 하지 않는 경우 사용 합니다 <xref:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy.CustomServiceNames%2A> 해당 확장 된 보호 정책에 속성입니다.  
+  
+ 합니다 <xref:System.Security.Authentication.ExtendedProtection.ServiceNameCollection> 으로 검색 되는 <xref:System.Net.HttpListener.DefaultServiceNames%2A> 속성에서 빌드되는 <xref:System.Net.HttpListener.Prefixes%2A> 다음 규칙에 따라 속성:  
+  
+1.  호스트 하는 경우 "+", "*", 또는 IPv4 또는 IPv6 리터럴 (같음 "\*" 특정 로컬 인터페이스 하지만 제한), 다음 SPN이 추가:  
+  
+ `"HTTP/"` 또한 컴퓨터의 정규화 된 도메인 이름.  
+  
+1.  호스트 이름 (도메인 또는 하위 도메인) 점 없음 있으면 됩니다 DNS를 사용 하 여 정규화 된 도메인 이름을 확인 하려면 (사용 하 여 동일한 동작을 <xref:System.Net.HttpWebRequest>). 정규화 된 도메인 이름을 확인할 수 있습니다, Spn은 추가 됩니다.  
+  
+ `"HTTP/"` 또한 호스트 이름 (짧은 이름)입니다.  
+  
+ `"HTTP/"` 또한 호스트에 대 한 정규화 된 도메인 이름.  
+  
+1.  호스트 이름을 점이 포함 되지 않으며 (도메인 또는 하위 도메인) 정규화 된 도메인 이름을 확인할 수 없는 경우 다음 SPN 추가 됩니다.  
+  
+ `"HTTP/"` 또한 호스트 이름입니다.  
+  
+1.  호스트 이름에 점이 있는 (도메인 또는 하위 도메인) 같은 SPN은 추가 됩니다.  
+  
+ `"HTTP/"` 또한 호스트 이름입니다.  
+  
+ <xref:System.Net.HttpListener.DefaultServiceNames%2A> 속성을 사용 하는 응용 프로그램에서 사용자 지정 목록을 제공 하는 경우 인증에 사용 되는 기본 Spn 목록을 검토할 수 수 있습니다. 응용 프로그램 중 하나를 사용 하 여 추가할 수 있습니다 다른 Spn이 필요한 경우는 <xref:System.Security.Authentication.ExtendedProtection.ServiceNameCollection.Merge%2A> 메서드.  
+  
+ 확장 된 보호를 사용 하 여 스푸핑될 수 있으므로 요청된 된 URL에 따라 정책 결정을 내릴 때 안전 하지 않습니다. 대신, 응용 프로그램에 의존 해야 합니다 <xref:System.Net.HttpListenerRequest.LocalEndPoint%2A> 또는 <xref:System.Net.HttpListenerRequest.RemoteEndPoint%2A> 이러한 정책 결정을 내릴 수 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Net.HttpListener.ExtendedProtectionPolicy" />
+        <altmember cref="P:System.Net.HttpListener.ExtendedProtectionSelectorDelegate" />
+        <altmember cref="T:System.Net.HttpListener.ExtendedProtectionSelector" />
+        <altmember cref="N:System.Security.Authentication.ExtendedProtection" />
+        <altmember cref="T:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy" />
+        <related type="Article" href="~/docs/framework/network-programming/integrated-windows-authentication-with-extended-protection.md">확장된 보호를 사용하는 Windows 통합 인증</related>
+      </Docs>
+    </Member>
+    <Member MemberName="EndGetContext">
+      <MemberSignature Language="C#" Value="public System.Net.HttpListenerContext EndGetContext (IAsyncResult asyncResult);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Net.HttpListenerContext EndGetContext(class System.IAsyncResult asyncResult) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.EndGetContext(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Function EndGetContext (asyncResult As IAsyncResult) As HttpListenerContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Net::HttpListenerContext ^ EndGetContext(IAsyncResult ^ asyncResult);" />
+      <MemberSignature Language="F#" Value="member this.EndGetContext : IAsyncResult -&gt; System.Net.HttpListenerContext" Usage="httpListener.EndGetContext asyncResult" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.HttpListenerContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="asyncResult" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="asyncResult">비동기 작업을 시작할 때 가져온 <see cref="T:System.IAsyncResult" /> 개체입니다.</param>
+        <summary>들어오는 클라이언트 요청을 검색하기 위한 비동기 작업을 완료합니다.</summary>
+        <returns>클라이언트 요청을 나타내는 <see cref="T:System.Net.HttpListenerContext" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Net.HttpListener.EndGetContext%2A> 메서드는, 일반적으로 가져오려고은 대리자를 호출한 응용 프로그램에서 정의 된 콜백 메서드 내는 <xref:System.Net.HttpListenerContext> 들어오는 클라이언트 요청 및 연결 된 응답을 포함 하는 개체입니다. 이 메서드를 호출 하 여 이전에 시작 하는 작업을 완료 합니다 <xref:System.Net.HttpListener.BeginGetContext%2A> 메서드. 작업이 완료 되지 않은 경우이 메서드는 완료 될 때까지 차단 됩니다.  
+  
+ 호출 하기 때문에 합니다 <xref:System.Net.HttpListener.EndGetContext%2A> 메서드를 사용 하려면 합니다 <xref:System.Net.HttpListener> 개체를이 개체는 일반적으로 전달 하 여 콜백 메서드로 전달 된 상태 개체를 사용 하 여는 <xref:System.Net.HttpListener.BeginGetContext%2A> 메서드. 사용 하 여이 상태 개체를 가져올 수 있습니다 합니다 <xref:System.IAsyncResult.AsyncState%2A> 의 속성을 `asyncResult` 개체입니다.  
+  
+ 비동기 프로그래밍 모델을 사용 하는 방법에 대 한 자세한 내용은 참조 하세요. [Calling Synchronous Methods Asynchronously](~/docs/standard/asynchronous-programming-patterns/calling-synchronous-methods-asynchronously.md)  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 호출 하는 콜백 메서드의 구현을 보여 줍니다는 <xref:System.Net.HttpListener.EndGetContext%2A> 메서드.  
+  
+ [!code-csharp[Net_Listener_Basic#13](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#13)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><see cref="M:System.Net.HttpListener.BeginGetContext(System.AsyncCallback,System.Object)" /> 메서드를 호출하여 <paramref name="asyncResult" />를 가져오지 못한 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="asyncResult" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Net.HttpListenerException">Win32 함수 호출이 실패한 경우. 예외의 <see cref="P:System.Net.HttpListenerException.ErrorCode" /> 속성을 검토하여 예외의 원인을 확인할 수 있습니다.</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="M:System.Net.HttpListener.EndGetContext(System.IAsyncResult)" /> 메서드가 지정된 <paramref name="asyncResult" /> 개체에 대해 이미 호출된 경우</exception>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫혀 있는 경우</exception>
+        <block subset="none" type="usage"><para>응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="ExtendedProtectionPolicy">
+      <MemberSignature Language="C#" Value="public System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionPolicy" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.ExtendedProtectionPolicy" />
+      <MemberSignature Language="VB.NET" Value="Public Property ExtendedProtectionPolicy As ExtendedProtectionPolicy" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Authentication::ExtendedProtection::ExtendedProtectionPolicy ^ ExtendedProtectionPolicy { System::Security::Authentication::ExtendedProtection::ExtendedProtectionPolicy ^ get(); void set(System::Security::Authentication::ExtendedProtection::ExtendedProtectionPolicy ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ExtendedProtectionPolicy : System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy with get, set" Usage="System.Net.HttpListener.ExtendedProtectionPolicy" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.MonoTODO("not used anywhere in the implementation")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>세션에 대한 확장 보호에 사용할 <see cref="T:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy" />를 가져오거나 설정합니다.</summary>
+        <value>확장 보호에 사용할 정책을 지정하는 <see cref="T:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.HttpListener.ExtendedProtectionPolicy%2A> 속성은 데 통합된 Windows 인증을 사용 하 여 확장 된 보호를 제공 합니다. 합니다 <xref:System.Net.HttpListener.ExtendedProtectionPolicy%2A> 속성을 사용 하면 전체에 대 한 확장 된 보호 정책의 구성을 <xref:System.Net.HttpListener> 세션입니다. <xref:System.Net.HttpListener.ExtendedProtectionSelectorDelegate%2A> 속성의 각 개별 요청에 대 한 확장된 보호 정책 구성할 수 있습니다.  
+  
+ <xref:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy.CustomChannelBinding%2A> 속성은 `null`여야 합니다. <xref:System.Net.HttpListener> 인스턴스에 있는 경우 TLS 세션 자체에서 직접 채널 바인딩 토큰 (CBT)을 가져옵니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><see cref="P:System.Net.HttpListener.ExtendedProtectionPolicy" /> 속성을 설정하려고 했지만 <see cref="P:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy.CustomChannelBinding" /> 속성이 <see langword="null" />이 아닌 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><see cref="P:System.Net.HttpListener.ExtendedProtectionPolicy" /> 속성을 <see langword="null" />로 설정하려고 한 경우</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Net.HttpListener.ExtendedProtectionPolicy" /> 메서드가 이미 호출된 후 <see cref="M:System.Net.HttpListener.Start" /> 속성을 설정하려고 한 경우</exception>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫혀 있는 경우</exception>
+        <exception cref="T:System.PlatformNotSupportedException"><see cref="P:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy.PolicyEnforcement" /> 속성은 확장된 보호를 지원하지 않는 플랫폼에서 <see cref="F:System.Security.Authentication.ExtendedProtection.PolicyEnforcement.Always" />로 설정되었습니다.</exception>
+        <altmember cref="P:System.Net.HttpListener.DefaultServiceNames" />
+        <altmember cref="P:System.Net.HttpListener.ExtendedProtectionSelectorDelegate" />
+        <altmember cref="T:System.Net.HttpListener.ExtendedProtectionSelector" />
+        <altmember cref="N:System.Security.Authentication.ExtendedProtection" />
+        <altmember cref="T:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy" />
+        <related type="Article" href="~/docs/framework/network-programming/integrated-windows-authentication-with-extended-protection.md">확장된 보호를 사용하는 Windows 통합 인증</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ExtendedProtectionSelectorDelegate">
+      <MemberSignature Language="C#" Value="public System.Net.HttpListener.ExtendedProtectionSelector ExtendedProtectionSelectorDelegate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.HttpListener/ExtendedProtectionSelector ExtendedProtectionSelectorDelegate" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.ExtendedProtectionSelectorDelegate" />
+      <MemberSignature Language="VB.NET" Value="Public Property ExtendedProtectionSelectorDelegate As HttpListener.ExtendedProtectionSelector" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::HttpListener::ExtendedProtectionSelector ^ ExtendedProtectionSelectorDelegate { System::Net::HttpListener::ExtendedProtectionSelector ^ get(); void set(System::Net::HttpListener::ExtendedProtectionSelector ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ExtendedProtectionSelectorDelegate : System.Net.HttpListener.ExtendedProtectionSelector with get, set" Usage="System.Net.HttpListener.ExtendedProtectionSelectorDelegate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Net.HttpListener+ExtendedProtectionSelector</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>각 요청에 사용할 <see cref="T:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy" />를 확인하기 위해 호출되는 대리자를 가져오거나 설정합니다.</summary>
+        <value>확장 보호에 사용할 정책을 지정하는 <see cref="T:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.HttpListener.ExtendedProtectionPolicy%2A> 속성은 데 통합된 Windows 인증을 사용 하 여 확장 된 보호를 제공 합니다. 합니다 <xref:System.Net.HttpListener.ExtendedProtectionPolicy%2A> 속성을 사용 하면 전체에 대 한 확장 된 보호 정책의 구성을 <xref:System.Net.HttpListener> 세션입니다. <xref:System.Net.HttpListener.ExtendedProtectionSelectorDelegate%2A> 속성이 개별 요청에 따라 확장 된 보호 정책을 구성할 수 있습니다.  
+  
+ <xref:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy.CustomChannelBinding%2A> 속성은 `null`여야 합니다. <xref:System.Net.HttpListener> 인스턴스에 있는 경우 TLS 세션 자체에서 직접 채널 바인딩 토큰 (CBT)을 가져옵니다.  
+  
+ 각 요청에 대 한 대리자 설정을 선택할 수 있는 여 <xref:System.Net.HttpListener> 인스턴스에서 확장된 보호를 제공 하는 데 사용 됩니다.  
+  
+ 대리자를 반환 하는 경우 `null` 나타냅니다이이 속성에 대 한는 <xref:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy> 는 합니다 <xref:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy.PolicyEnforcement%2A> 속성이로 설정 <xref:System.Security.Authentication.ExtendedProtection.PolicyEnforcement.Never>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><see cref="P:System.Net.HttpListener.ExtendedProtectionSelectorDelegate" /> 속성을 설정하려고 했지만 <see cref="P:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy.CustomChannelBinding" /> 속성이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><see cref="P:System.Net.HttpListener.ExtendedProtectionSelectorDelegate" /> 속성을 <see langword="null" />로 설정하려고 한 경우</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Net.HttpListener.ExtendedProtectionSelectorDelegate" /> 메서드가 이미 호출된 후 <see cref="M:System.Net.HttpListener.Start" /> 속성을 설정하려고 한 경우</exception>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫혀 있는 경우</exception>
+        <exception cref="T:System.PlatformNotSupportedException">확장 보호를 지원하지 않는 플랫폼에 <see cref="P:System.Net.HttpListener.ExtendedProtectionSelectorDelegate" /> 속성을 설정하려고 했습니다.</exception>
+        <altmember cref="P:System.Net.HttpListener.DefaultServiceNames" />
+        <altmember cref="P:System.Net.HttpListener.ExtendedProtectionPolicy" />
+        <altmember cref="T:System.Net.HttpListener.ExtendedProtectionSelector" />
+        <altmember cref="N:System.Security.Authentication.ExtendedProtection" />
+        <altmember cref="T:System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy" />
+        <related type="Article" href="~/docs/framework/network-programming/integrated-windows-authentication-with-extended-protection.md">확장된 보호를 사용하는 Windows 통합 인증</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GetContext">
+      <MemberSignature Language="C#" Value="public System.Net.HttpListenerContext GetContext ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Net.HttpListenerContext GetContext() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.GetContext" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetContext () As HttpListenerContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Net::HttpListenerContext ^ GetContext();" />
+      <MemberSignature Language="F#" Value="member this.GetContext : unit -&gt; System.Net.HttpListenerContext" Usage="httpListener.GetContext " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.HttpListenerContext</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>들어오는 요청을 기다리고 요청을 받으면 반환됩니다.</summary>
+        <returns>클라이언트 요청을 나타내는 <see cref="T:System.Net.HttpListenerContext" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 호출 하기 전에 호출 해야 합니다는 <xref:System.Net.HttpListener.Start%2A> 메서드 URI 문자열을 추가 하 여 수신 하도록 하나 이상의 URI 접두사를 추가 합니다 <xref:System.Net.HttpListenerPrefixCollection> 반환한를 <xref:System.Net.HttpListener.Prefixes%2A> 속성입니다. 에 대 한 자세한 설명은 접두사, 참조는 <xref:System.Net.HttpListener> 클래스 개요입니다.  
+  
+ 이 메서드는 들어오는 요청을 기다리는 동안 차단 합니다. 사용 하 여 들어오는 요청은 응용 프로그램 차단 되지 않도록 비동기적으로 (별도 스레드에서) 처리를 하려는 경우는 <xref:System.Net.HttpListener.BeginGetContext%2A> 메서드.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 메서드를 호출 하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[Net_Listener_Basic#2](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Net.HttpListenerException">Win32 함수 호출이 실패한 경우. 예외의 <see cref="P:System.Net.HttpListenerException.ErrorCode" /> 속성을 검토하여 예외의 원인을 확인할 수 있습니다.</exception>
+        <exception cref="T:System.InvalidOperationException">이 개체가 시작되지 않았거나 현재 중지된 경우  
+  
+또는 
+<see cref="T:System.Net.HttpListener" />에 응답을 보낼 대상 URI(Uniform Resource Identifier) 접두사가 없는 경우.</exception>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫혀 있는 경우</exception>
+        <block subset="none" type="usage"><para>응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="GetContextAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.HttpListenerContext&gt; GetContextAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.HttpListenerContext&gt; GetContextAsync() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.GetContextAsync" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetContextAsync () As Task(Of HttpListenerContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::HttpListenerContext ^&gt; ^ GetContextAsync();" />
+      <MemberSignature Language="F#" Value="member this.GetContextAsync : unit -&gt; System.Threading.Tasks.Task&lt;System.Net.HttpListenerContext&gt;" Usage="httpListener.GetContextAsync " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.HttpListenerContext&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>들어오는 요청을 비동기 작업으로 대기합니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다. 작업 개체의 <see cref="P:System.Threading.Tasks.Task`1.Result" /> 속성은 클라이언트 요청을 나타내는 <see cref="T:System.Net.HttpListenerContext" /> 개체를 반환합니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체는 들어오는 요청을 수신 하면 완료 됩니다.  
+  
+ 이 메서드를 호출 하기 전에 호출 해야 합니다는 <xref:System.Net.HttpListener.Start%2A> 메서드 URI 문자열을 추가 하 여 수신 하도록 하나 이상의 URI 접두사를 추가 합니다 <xref:System.Net.HttpListenerPrefixCollection> 반환한를 <xref:System.Net.HttpListener.Prefixes%2A> 속성입니다. 에 대 한 자세한 설명은 접두사, 참조는 <xref:System.Net.HttpListener> 클래스 개요입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Net.HttpListenerContext" />
+      </Docs>
+    </Member>
+    <Member MemberName="IgnoreWriteExceptions">
+      <MemberSignature Language="C#" Value="public bool IgnoreWriteExceptions { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IgnoreWriteExceptions" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.IgnoreWriteExceptions" />
+      <MemberSignature Language="VB.NET" Value="Public Property IgnoreWriteExceptions As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IgnoreWriteExceptions { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.IgnoreWriteExceptions : bool with get, set" Usage="System.Net.HttpListener.IgnoreWriteExceptions" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Boolean" />에서 클라이언트에 응답을 보낼 때 발생하는 예외를 응용 프로그램에서 받을지 여부를 지정하는 <see cref="T:System.Net.HttpListener" /> 값을 가져오거나 설정합니다.</summary>
+        <value><see langword="true" /> 이 경우 <see cref="T:System.Net.HttpListener" /> 클라이언트에 대 한 응답을 보낼 때 발생 하는 예외를 반환 해야이 고, 그렇지 <see langword="false" />합니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성을 설정 `true` 응용 프로그램 경우 각 클라이언트에 성공적으로 응답을 보냈음이 필요 하지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 속성을 설정 하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[Net_Listener_Basic#14](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#14)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫힌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="IsListening">
+      <MemberSignature Language="C#" Value="public bool IsListening { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsListening" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.IsListening" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsListening As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsListening { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsListening : bool" Usage="System.Net.HttpListener.IsListening" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Net.HttpListener" />가 시작되었는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value><see cref="T:System.Net.HttpListener" />가 시작되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 시작 하는 <xref:System.Net.HttpListener>를 호출 합니다 <xref:System.Net.HttpListener.Start%2A> 메서드.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 인스턴스 수신 대기 상태를 확인 하려면이 속성을 사용 하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[Net_Listener_Basic#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsSupported">
+      <MemberSignature Language="C#" Value="public static bool IsSupported { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property bool IsSupported" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.IsSupported" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property IsSupported As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property bool IsSupported { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsSupported : bool" Usage="System.Net.HttpListener.IsSupported" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 운영 체제에서 <see cref="T:System.Net.HttpListener" />를 사용할 수 있는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value><see cref="T:System.Net.HttpListener" />가 지원되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 클래스는 Windows XP SP2 또는 Windows Server 2003 운영 체제를 실행 하는 컴퓨터 에서만 사용할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Net.HttpListener.IsSupported%2A> 속성 검색을 여부를 <xref:System.Net.HttpListener> 현재 운영 체제를 사용 하 여 개체를 사용할 수 있습니다.  
+  
+ [!code-csharp[Net_Listener_Basic#2](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Prefixes">
+      <MemberSignature Language="C#" Value="public System.Net.HttpListenerPrefixCollection Prefixes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.HttpListenerPrefixCollection Prefixes" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.Prefixes" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Prefixes As HttpListenerPrefixCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::HttpListenerPrefixCollection ^ Prefixes { System::Net::HttpListenerPrefixCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Prefixes : System.Net.HttpListenerPrefixCollection" Usage="System.Net.HttpListener.Prefixes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.HttpListenerPrefixCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Net.HttpListener" /> 개체에서 처리하는 URI(Uniform Resource Identifier) 접두사를 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Net.HttpListenerPrefixCollection" /> 개체에서 처리하도록 구성된 URI 접두사가 들어 있는 <see cref="T:System.Net.HttpListener" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 접두사는 정규 형식에서입니다. 에 대 한 자세한 설명은 접두사, 참조는 <xref:System.Net.HttpListener> 클래스 개요입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Net.HttpListener.Prefixes%2A> 가져오고 처리 하는 URI 접두사를 인쇄 하는 속성입니다.  
+  
+ [!code-csharp[Net_Listener_Basic#1](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫힌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Realm">
+      <MemberSignature Language="C#" Value="public string Realm { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Realm" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.Realm" />
+      <MemberSignature Language="VB.NET" Value="Public Property Realm As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Realm { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Realm : string with get, set" Usage="System.Net.HttpListener.Realm" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Net.HttpListener" /> 개체와 연결된 영역(또는 리소스 파티션)을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.String" /> 개체와 연결된 영역의 이름이 들어 있는 <see cref="T:System.Net.HttpListener" /> 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 서버 보호 된 리소스를 분할 영역 사용 각 파티션에 자체 인증 체계 및/또는 권한 부여 데이터베이스가 있을 수 있습니다. 영역은 기본 및 다이제스트 인증에만 사용됩니다. 클라이언트가 성공적으로 인증되면 이 인증은 지정된 영역의 모든 리소스에 대해 유효합니다. 영역에 대 한 자세한 설명을 참조에서 RFC 2617 [ https://www.ietf.org/ ](https://www.ietf.org/)합니다.  
+  
+ 인스턴스의 <xref:System.Net.HttpListener> 하나만 연결된 영역에 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 설정 된 <xref:System.Net.HttpListener.Realm%2A> 속성입니다.  
+  
+ [!code-csharp[Net_Listener_Basic#10](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#10)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫힌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Start">
+      <MemberSignature Language="C#" Value="public void Start ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Start() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.Start" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Start ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Start();" />
+      <MemberSignature Language="F#" Value="member this.Start : unit -&gt; unit" Usage="httpListener.Start " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 인스턴스에서 들어오는 요청을 받을 수 있도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 호출 하기 전에 호출 해야 합니다 <xref:System.Net.HttpListener.GetContext%2A> 또는 <xref:System.Net.HttpListener.BeginGetContext%2A> 메서드.  
+  
+ 시작 된 후에 <xref:System.Net.HttpListener> 개체를 사용할 수는 <xref:System.Net.HttpListener.Stop%2A> 중지 하는 방법입니다.  
+  
+> [!NOTE]
+>  이 수신기 인스턴스 https를 사용 하는 경우 설치 하 고 서버 인증서를 선택 해야 합니다. 그렇지 않은 경우는 <xref:System.Net.HttpWebRequest> 이 쿼리 <xref:System.Net.HttpListener> 예기치 연결 하지 못합니다. HttpCfg.exe를 사용 하 여 서버 인증서 및 기타 수신기 옵션을 구성할 수 있습니다. 참조 [ http://msdn.microsoft.com/library/default.asp?url=/library/http/http/httpcfg_exe.asp ](https://msdn.microsoft.com/library/default.asp?url=/library/http/http/httpcfg_exe.asp) 대 한 자세한 내용은 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Net.HttpListener.Start%2A> 들어오는 요청을 처리를 시작 하는 메서드.  
+  
+ [!code-csharp[Net_Listener_Basic#12](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#12)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Net.HttpListenerException">Win32 함수 호출이 실패한 경우. 예외의 <see cref="P:System.Net.HttpListenerException.ErrorCode" /> 속성을 검토하여 예외의 원인을 확인할 수 있습니다.</exception>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫혀 있는 경우</exception>
+        <block subset="none" type="usage"><para>응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="Stop">
+      <MemberSignature Language="C#" Value="public void Stop ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Stop() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.Stop" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Stop ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Stop();" />
+      <MemberSignature Language="F#" Value="member this.Stop : unit -&gt; unit" Usage="httpListener.Stop " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 인스턴스에서 들어오는 요청의 받기를 중지하도록 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 인스턴스가 이미 중지 된 경우이 메서드를 호출 영향을 주지 않습니다.  
+  
+ 중지 한 후는 <xref:System.Net.HttpListener> 개체를 사용할 수는 <xref:System.Net.HttpListener.Start%2A> 메서드를 다시 시작 합니다.  
+  
+   
+  
+## Examples  
+ 
+다음 코드 예제는 <xref:System.Net.HttpListener.Stop%2A> 들어오는 요청 처리를 중지 하는 방법입니다.  
+ 
+[!code-csharp[Net_Listener_Basic#2](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#2)]
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫힌 경우</exception>
+        <block subset="none" type="usage"><para>응용 프로그램에 네트워크 추적을 사용하도록 설정하면 이 멤버에서 추적 정보를 출력합니다. 자세한 내용은 [.NET Framework의 네트워크 추적](~/docs/framework/network-programming/network-tracing.md)합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="System.IDisposable.Dispose">
+      <MemberSignature Language="C#" Value="void IDisposable.Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.IDisposable.Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.HttpListener.System#IDisposable#Dispose" />
+      <MemberSignature Language="VB.NET" Value="Sub Dispose () Implements IDisposable.Dispose" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.IDisposable.Dispose() = IDisposable::Dispose;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Net.HttpListener" /> 개체에서 보유한 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 응용 프로그램을 사용할지는 <xref:System.Net.HttpListener.Close%2A> 이 메서드를 호출 하는 대신 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TimeoutManager">
+      <MemberSignature Language="C#" Value="public System.Net.HttpListenerTimeoutManager TimeoutManager { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.HttpListenerTimeoutManager TimeoutManager" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.TimeoutManager" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property TimeoutManager As HttpListenerTimeoutManager" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::HttpListenerTimeoutManager ^ TimeoutManager { System::Net::HttpListenerTimeoutManager ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.TimeoutManager : System.Net.HttpListenerTimeoutManager" Usage="System.Net.HttpListener.TimeoutManager" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.MonoTODO</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Net.HttpListenerTimeoutManager</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Net.HttpListener" /> 인스턴스의 시간 초과 관리자입니다.</summary>
+        <value>이 <see cref="T:System.Net.HttpListener" /> 인스턴스의 시간 초과 관리자입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 시간 초과 관리자가에 대 한 연결 제한 시간 제한을 정의 <xref:System.Net.HttpListener> 인스턴스.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnsafeConnectionNtlmAuthentication">
+      <MemberSignature Language="C#" Value="public bool UnsafeConnectionNtlmAuthentication { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UnsafeConnectionNtlmAuthentication" />
+      <MemberSignature Language="DocId" Value="P:System.Net.HttpListener.UnsafeConnectionNtlmAuthentication" />
+      <MemberSignature Language="VB.NET" Value="Public Property UnsafeConnectionNtlmAuthentication As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool UnsafeConnectionNtlmAuthentication { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.UnsafeConnectionNtlmAuthentication : bool with get, set" Usage="System.Net.HttpListener.UnsafeConnectionNtlmAuthentication" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.HttpListener</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.MonoTODO("Support for NTLM needs some loving.")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>NTLM이 사용될 때 동일한 TCP(Transmission Control Protocol) 연결을 사용하는 추가 요청을 인증해야 하는지 여부를 제어하는 <see cref="T:System.Boolean" /> 값을 가져오거나 설정합니다.</summary>
+        <value>첫 번째 요청의 <see cref="T:System.Security.Principal.IIdentity" />가 동일한 연결에서 후속 요청에 사용되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성 설정 된 경우 `true` 특정 TCP 연결을 통해 첫 번째 요청이 NTLM을 사용 하 여 인증 되 고 동일한 TCP 연결을 통한 후속 요청은 인증 정보를 사용 하 여 처리 됩니다 (<xref:System.Security.Principal.IIdentity>) 초기 요청입니다.  
+  
+ 인증 프로토콜이 NTLM이 아닌 경우에는 이 속성이 적용되지 않습니다. Negotiate는 인증 프로토콜로 지정 하는 경우이 속성은 NTLM 인증에 사용 된 실제 프로토콜 경우에을 적용 합니다.  
+  
+> [!NOTE]
+>  이 속성을 설정 하는 동안 `true` 때문에 성능이 향상 된 <xref:System.Net.HttpListener> 없습니다 송신 추가 NTLM 인증 요구를 요구 하지 않는 인증 정보를 제공 하는 모든 요청에 보안 위험이 있습니다. 따라서 성능 향상과 보안 위험 간의 관계를 신중히 고려해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는이 속성을 설정 하는 방법을 보여 줍니다.  
+  
+ [!code-csharp[Net_Listener_Basic#14](~/samples/snippets/csharp/VS_Snippets_Remoting/Net_Listener_Basic/CS/test.cs#14)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 개체가 닫힌 경우</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

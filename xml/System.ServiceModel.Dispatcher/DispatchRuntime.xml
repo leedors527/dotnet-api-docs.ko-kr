@@ -1,0 +1,1204 @@
+<Type Name="DispatchRuntime" FullName="System.ServiceModel.Dispatcher.DispatchRuntime">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="1740ad64f138a2a5e1416598374f03b0ef2b0eca" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58552048" /></Metadata><TypeSignature Language="C#" Value="public sealed class DispatchRuntime" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit DispatchRuntime extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.ServiceModel.Dispatcher.DispatchRuntime" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class DispatchRuntime" />
+  <TypeSignature Language="C++ CLI" Value="public ref class DispatchRuntime sealed" />
+  <TypeSignature Language="F#" Value="type DispatchRuntime = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.5.0.1</AssemblyVersion>
+    <AssemblyVersion>4.5.0.3</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>들어오는 메시지가 개체로 변형되고 작업에 디스패치되는 방법을 수정할 수 있는 사용자 지정 개체를 연결할 뿐만 아니라 기본 서비스 동작을 수정하는 데 사용할 수 있는 속성을 노출합니다. 이 클래스는 상속될 수 없습니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 서비스나 개별 엔드포인트의 기본 동작을 수정하거나 다음 서비스 프로세스 중 하나 또는 모두에 대해 사용자 지정 수정을 구현하는 개체를 삽입하려면 <xref:System.ServiceModel.Dispatcher.DispatchRuntime> 클래스를 사용합니다.  
+  
+1.  들어오는 메시지를 개체로 변형하고 이러한 개체를 서비스 개체에 대한 메서드 호출로 해제  
+  
+2.  서비스 작업 호출에 대한 응답에서 수신한 개체를 아웃바운드 메시지로 변형  
+  
+ Windows Communication Foundation (WCF), 채널 및 끝점 디스패처는 새 채널을 수락 하는 일을 담당 하는 서비스 구성 요소 메시지, 메서드 디스패치 및 호출 및 응답 처리를 수신 합니다. <xref:System.ServiceModel.ServiceHost> 개체에 의해 노출되는 각 엔드포인트에는 엔드포인트 디스패처 및 이에 연결된 채널 디스패처가 하나씩 있습니다. 또한 양방향 통신에 참여하는 각 클라이언트에도 콜백 엔드포인트마다 엔드포인트 디스패처와 채널 디스패처가 하나씩 있습니다.  
+  
+ <xref:System.ServiceModel.Dispatcher.DispatchRuntime>을 사용하면 메시지가 인식되지 않는 경우에도 특정 계약을 통해 모든 메시지에 대한 채널 또는 엔드포인트 디스패처를 가로채서 확장할 수 있습니다. 계약에 선언된 메시지와 일치하지 않는 메시지가 도착하면 이 메시지는 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.UnhandledDispatchOperation%2A> 속성에 의해 반환된 작업에 디스패치됩니다. 특정 작업에 대한 모든 메시지를 가로채거나 확장하려면 <xref:System.ServiceModel.Dispatcher.DispatchOperation> 클래스를 참조하세요.  
+  
+ <xref:System.ServiceModel.Dispatcher.DispatchRuntime> 클래스에 의해 노출되는 디스패처 확장성의 네 가지 기본 영역은 다음과 같습니다.  
+  
+1.  디스패치 구성 요소에서는 <xref:System.ServiceModel.Dispatcher.DispatchRuntime>의 속성 및 연결된 채널 디스패처의 속성(<xref:System.ServiceModel.Dispatcher.DispatchRuntime.ChannelDispatcher%2A> 속성에서 반환됨)을 사용하여 채널 디스패처가 채널을 허용하고 닫는 방법을 사용자 지정합니다. 이 범주에는 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ChannelInitializers%2A> 및 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.InputSessionShutdownHandlers%2A> 속성이 포함됩니다.  
+  
+2.  메시지 구성 요소는 처리되는 메시지별로 사용자 지정됩니다. 이 범주에는 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.MessageInspectors%2A>, <xref:System.ServiceModel.Dispatcher.DispatchRuntime.OperationSelector%2A>, <xref:System.ServiceModel.Dispatcher.DispatchRuntime.Operations%2A> 및 <xref:System.ServiceModel.Dispatcher.ChannelDispatcher.ErrorHandlers%2A> 속성이 포함됩니다.  
+  
+3.  인스턴스 구성 요소는 해당 서비스 형식 인스턴스의 생성, 수명, 삭제를 사용자 지정합니다. 서비스 개체 수명에 대한 자세한 내용은 <xref:System.ServiceModel.ServiceBehaviorAttribute.InstanceContextMode%2A> 속성을 참조하세요. 이 범주에는 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.InstanceContextInitializers%2A> 및 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.InstanceProvider%2A> 속성이 포함됩니다.  
+  
+4.  보안 관련 구성 요소는 다음과 같은 속성을 사용할 수 있습니다.  
+  
+    -   <xref:System.ServiceModel.Dispatcher.DispatchRuntime.SecurityAuditLogLocation%2A>은 감사 이벤트가 작성되는 위치를 나타냅니다.  
+  
+    -   <xref:System.ServiceModel.Dispatcher.DispatchRuntime.ImpersonateCallerForAllOperations%2A>는 들어오는 메시지가 제공하는 자격 증명을 사용하여 서비스가 가장을 시도하는지 여부를 제어합니다.  
+  
+    -   <xref:System.ServiceModel.Dispatcher.DispatchRuntime.MessageAuthenticationAuditLevel%2A>은 성공적인 메시지 권한 부여 이벤트가 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.SecurityAuditLogLocation%2A>에서 지정된 이벤트 로그에 작성되는지 여부를 제어합니다.  
+  
+    -   <xref:System.ServiceModel.Dispatcher.DispatchRuntime.PrincipalPermissionMode%2A>는 <xref:System.Threading.Thread.CurrentPrincipal%2A> 속성을 설정하는 방법을 제어합니다.  
+  
+    -   <xref:System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthorizationAuditLevel%2A>은 권한 부여 이벤트에 대한 감사를 수행하는 방법을 지정합니다.  
+  
+    -   <xref:System.ServiceModel.Dispatcher.DispatchRuntime.SuppressAuditFailure%2A>는 로깅 프로세스 중에 발생하는 중요하지 않은 예외가 표시되지 않도록 할지 여부를 지정합니다.  
+  
+ 일반적으로 사용자 지정 확장명 개체는 <xref:System.ServiceModel.Dispatcher.DispatchRuntime> 속성에 할당되거나 서비스 동작(<xref:System.ServiceModel.Description.IServiceBehavior>를 구현하는 개체), 계약 동작(<xref:System.ServiceModel.Description.IContractBehavior>를 구현하는 개체) 또는 엔드포인트 동작(<xref:System.ServiceModel.Description.IEndpointBehavior>를 구현하는 개체)에 의해 컬렉션에 삽입됩니다. 그런 다음 프로그래밍 방식을 사용하거나 사용자 지정 <xref:System.ServiceModel.Configuration.BehaviorExtensionElement> 개체를 구현하여 설치 동작 개체를 해당 동작 컬렉션에 추가하므로, 애플리케이션 구성 파일을 사용하여 동작을 삽입할 수 있습니다.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="AutomaticInputSessionShutdown">
+      <MemberSignature Language="C#" Value="public bool AutomaticInputSessionShutdown { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AutomaticInputSessionShutdown" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.AutomaticInputSessionShutdown" />
+      <MemberSignature Language="VB.NET" Value="Public Property AutomaticInputSessionShutdown As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool AutomaticInputSessionShutdown { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.AutomaticInputSessionShutdown : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.AutomaticInputSessionShutdown" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클라이언트가 출력 세션을 닫을 때 서비스에서 입력 세션을 닫는지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>클라이언트가 출력 세션을 닫을 때 서비스에서 입력 세션을 닫으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="true" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Dispatcher.DispatchRuntime.AutomaticInputSessionShutdown%2A> 속성을 `false`로 설정하면 다른 메커니즘을 사용하여 채널을 닫아야 합니다. 이런 경우 사용자 지정 세션 종료 처리기를 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.InputSessionShutdownHandlers%2A> 속성에 추가해야 합니다.  
+  
+ 기본적으로 클라이언트가 출력 세션을 닫고 서비스에서 나머지 메시지 처리를 마치면 서버는 해당 세션을 닫습니다. <xref:System.ServiceModel.Dispatcher.DispatchRuntime.AutomaticInputSessionShutdown%2A>을 `false`로 설정하면 서버에서 세션을 자동으로 닫지 못하고 세션 수명에 대한 사용자 지정 컨트롤이 활성화됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CallbackClientRuntime">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Dispatcher.ClientRuntime CallbackClientRuntime { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Dispatcher.ClientRuntime CallbackClientRuntime" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.CallbackClientRuntime" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CallbackClientRuntime As ClientRuntime" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Dispatcher::ClientRuntime ^ CallbackClientRuntime { System::ServiceModel::Dispatcher::ClientRuntime ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.CallbackClientRuntime : System.ServiceModel.Dispatcher.ClientRuntime" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.CallbackClientRuntime" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Dispatcher.ClientRuntime</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이중 콜백 엔드포인트에 대한 아웃바운드 호출을 위해 WCF(Windows Communication Foundation)에 대한 확장 설치 지점을 나타내는 <see cref="T:System.ServiceModel.Dispatcher.ClientRuntime" /> 개체를 가져옵니다.</summary>
+        <value>이중 계약에서 런타임 클라이언트 사용자 지정을 위한 설치 지점인 <see cref="T:System.ServiceModel.Dispatcher.ClientRuntime" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 아웃바운드 메시지 및 응답 메시지로 변환했던 매개 변수를 보고 다시 반환 값으로 수정하는 사용자 지정 확장 개체를 추가하려면 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.CallbackClientRuntime%2A>을 사용합니다. 자세한 내용은 <xref:System.ServiceModel.Dispatcher.ClientRuntime>를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ChannelDispatcher">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Dispatcher.ChannelDispatcher ChannelDispatcher { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Dispatcher.ChannelDispatcher ChannelDispatcher" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ChannelDispatcher" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ChannelDispatcher As ChannelDispatcher" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Dispatcher::ChannelDispatcher ^ ChannelDispatcher { System::ServiceModel::Dispatcher::ChannelDispatcher ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ChannelDispatcher : System.ServiceModel.Dispatcher.ChannelDispatcher" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ChannelDispatcher" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Dispatcher.ChannelDispatcher</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 디스패치 런타임 개체의 <see cref="T:System.ServiceModel.Dispatcher.ChannelDispatcher" />를 가져옵니다.</summary>
+        <value>디스패치 런타임 개체의 채널 디스패처입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ConcurrencyMode">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.ConcurrencyMode ConcurrencyMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.ServiceModel.ConcurrencyMode ConcurrencyMode" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ConcurrencyMode" />
+      <MemberSignature Language="VB.NET" Value="Public Property ConcurrencyMode As ConcurrencyMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::ConcurrencyMode ConcurrencyMode { System::ServiceModel::ConcurrencyMode get(); void set(System::ServiceModel::ConcurrencyMode value); };" />
+      <MemberSignature Language="F#" Value="member this.ConcurrencyMode : System.ServiceModel.ConcurrencyMode with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ConcurrencyMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.ConcurrencyMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>서비스의 인스턴스가 메시지를 순차적으로 처리할지 동시에 처리할지를 가져오거나 설정합니다.</summary>
+        <value>서비스의 인스턴스가 메시지를 순차적으로 처리할지 동시에 처리할지를 제어하는 <see cref="T:System.ServiceModel.ConcurrencyMode" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `Multiple` 동시성 모드를 사용하려면 스레드로부터 안전하게 서비스를 구현해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndpointDispatcher">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Dispatcher.EndpointDispatcher EndpointDispatcher { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Dispatcher.EndpointDispatcher EndpointDispatcher" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.EndpointDispatcher" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property EndpointDispatcher As EndpointDispatcher" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Dispatcher::EndpointDispatcher ^ EndpointDispatcher { System::ServiceModel::Dispatcher::EndpointDispatcher ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.EndpointDispatcher : System.ServiceModel.Dispatcher.EndpointDispatcher" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.EndpointDispatcher" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Dispatcher.EndpointDispatcher</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 디스패치 런타임의 <see cref="T:System.ServiceModel.Dispatcher.EndpointDispatcher" />를 가져옵니다.</summary>
+        <value>이 디스패치 런타임의 <see cref="T:System.ServiceModel.Dispatcher.EndpointDispatcher" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 디스패치 런타임과 연결된 엔드포인트 디스패처를 가져와서 엔드포인트별 실행을 수정하거나 사용자 지정하려면 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.EndpointDispatcher%2A> 속성을 사용합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EnsureOrderedDispatch">
+      <MemberSignature Language="C#" Value="public bool EnsureOrderedDispatch { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool EnsureOrderedDispatch" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.EnsureOrderedDispatch" />
+      <MemberSignature Language="VB.NET" Value="Public Property EnsureOrderedDispatch As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool EnsureOrderedDispatch { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.EnsureOrderedDispatch : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.EnsureOrderedDispatch" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>메시지가 전송된 순서대로 디스패치되는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>전송된 순서대로 메시지를 디스패치해야 하는 경우 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ExternalAuthorizationPolicies">
+      <MemberSignature Language="C#" Value="public System.Collections.ObjectModel.ReadOnlyCollection&lt;System.IdentityModel.Policy.IAuthorizationPolicy&gt; ExternalAuthorizationPolicies { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ObjectModel.ReadOnlyCollection`1&lt;class System.IdentityModel.Policy.IAuthorizationPolicy&gt; ExternalAuthorizationPolicies" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ExternalAuthorizationPolicies" />
+      <MemberSignature Language="VB.NET" Value="Public Property ExternalAuthorizationPolicies As ReadOnlyCollection(Of IAuthorizationPolicy)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::ObjectModel::ReadOnlyCollection&lt;System::IdentityModel::Policy::IAuthorizationPolicy ^&gt; ^ ExternalAuthorizationPolicies { System::Collections::ObjectModel::ReadOnlyCollection&lt;System::IdentityModel::Policy::IAuthorizationPolicy ^&gt; ^ get(); void set(System::Collections::ObjectModel::ReadOnlyCollection&lt;System::IdentityModel::Policy::IAuthorizationPolicy ^&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ExternalAuthorizationPolicies : System.Collections.ObjectModel.ReadOnlyCollection&lt;System.IdentityModel.Policy.IAuthorizationPolicy&gt; with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ExternalAuthorizationPolicies" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Collections.ObjectModel.ReadOnlyCollection&lt;System.IdentityModel.Policy.IAuthorizationPolicy&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>클레임 집합이 있는 경우 사용자에게 권한을 부여하기 위한 규칙 집합을 정의하는 외부 권한 부여 정책을 가져오거나 설정합니다.</summary>
+        <value>클레임 집합이 있는 경우 사용자에게 권한을 부여하기 위한 규칙 집합을 정의하는 <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" /> 개체의 <see cref="T:System.IdentityModel.Policy.IAuthorizationPolicy" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 클레임 집합이 있는 경우에 사용자에게 권한을 부여하기 위한 규칙 집합을 정의하는 <xref:System.IdentityModel.Policy.IAuthorizationPolicy>의 사용자 지정 구현을 추가하려면 이 속성을 사용합니다. 이 사용자 지정 구현은 서비스가 호출될 때마다 사용됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IgnoreTransactionMessageProperty">
+      <MemberSignature Language="C#" Value="public bool IgnoreTransactionMessageProperty { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IgnoreTransactionMessageProperty" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.IgnoreTransactionMessageProperty" />
+      <MemberSignature Language="VB.NET" Value="Public Property IgnoreTransactionMessageProperty As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IgnoreTransactionMessageProperty { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.IgnoreTransactionMessageProperty : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.IgnoreTransactionMessageProperty" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.Channels.TransactionMessageProperty" />를 무시하는지 여부를 가져오거나 설정합니다.</summary>
+        <value>서비스 메서드를 실행할 때 <see cref="T:System.ServiceModel.Channels.TransactionMessageProperty" />가 무시되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Channels.TransactionMessageProperty> 해당 채널에 대 한 비공개 트랜잭션 흐름 메커니즘을 사용 하 여 해당 트랜잭션을 Windows Communication Foundation (WCF)에 타사 채널 개발자가 있습니다. 이 속성을 `true`로 설정하면 서비스 메서드를 실행할 때 트랜잭션이 무시됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImpersonateCallerForAllOperations">
+      <MemberSignature Language="C#" Value="public bool ImpersonateCallerForAllOperations { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ImpersonateCallerForAllOperations" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ImpersonateCallerForAllOperations" />
+      <MemberSignature Language="VB.NET" Value="Public Property ImpersonateCallerForAllOperations As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool ImpersonateCallerForAllOperations { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.ImpersonateCallerForAllOperations : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ImpersonateCallerForAllOperations" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>들어오는 메시지가 제공하는 자격 증명을 사용하여 서비스가 가장을 시도하는지 여부를 제어하는 값을 가져오거나 설정합니다.</summary>
+        <value>작업의 <see cref="P:System.ServiceModel.Dispatcher.DispatchOperation.Impersonation" /> 속성 값이 <see cref="F:System.ServiceModel.ImpersonationOption.Required" /> 또는 <see cref="F:System.ServiceModel.ImpersonationOption.Allowed" />일 때 서비스에서 메시지 자격 증명을 기반으로 가장을 시도할 경우 <see langword="true" />이고, 작업의 <see cref="P:System.ServiceModel.Dispatcher.DispatchOperation.Impersonation" /> 속성 값이 <see cref="F:System.ServiceModel.ImpersonationOption.Required" />일 때만 서비스에서 가장을 시도하면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Dispatcher.DispatchRuntime.ImpersonateCallerForAllOperations%2A> 속성을 사용하여 작업의 <xref:System.ServiceModel.Dispatcher.DispatchOperation.Impersonation%2A> 속성 값이 <xref:System.ServiceModel.ImpersonationOption.Allowed>일 때 가장을 수행하는지 여부를 제어합니다. 속성이 `true`이고 작업의 <xref:System.ServiceModel.Dispatcher.DispatchOperation.Impersonation%2A> 속성 값은 <xref:System.ServiceModel.ImpersonationOption.NotAllowed>이면 예외가 throw됩니다.  
+  
+ 작업의 <xref:System.ServiceModel.Dispatcher.DispatchOperation.Impersonation%2A> 속성 값이 <xref:System.ServiceModel.ImpersonationOption.Required>이면 항상 가장이 시도됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImpersonateOnSerializingReply">
+      <MemberSignature Language="C#" Value="public bool ImpersonateOnSerializingReply { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ImpersonateOnSerializingReply" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ImpersonateOnSerializingReply" />
+      <MemberSignature Language="VB.NET" Value="Public Property ImpersonateOnSerializingReply As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool ImpersonateOnSerializingReply { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.ImpersonateOnSerializingReply : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ImpersonateOnSerializingReply" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>회신 작업을 serialize하는 데 가장을 사용하는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>응답 serialize 작업에 대해 가장이 사용되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InputSessionShutdownHandlers">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IInputSessionShutdown&gt; InputSessionShutdownHandlers { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.SynchronizedCollection`1&lt;class System.ServiceModel.Dispatcher.IInputSessionShutdown&gt; InputSessionShutdownHandlers" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.InputSessionShutdownHandlers" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property InputSessionShutdownHandlers As SynchronizedCollection(Of IInputSessionShutdown)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Generic::SynchronizedCollection&lt;System::ServiceModel::Dispatcher::IInputSessionShutdown ^&gt; ^ InputSessionShutdownHandlers { System::Collections::Generic::SynchronizedCollection&lt;System::ServiceModel::Dispatcher::IInputSessionShutdown ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.InputSessionShutdownHandlers : System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IInputSessionShutdown&gt;" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.InputSessionShutdownHandlers" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IInputSessionShutdown&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>입력 세션을 닫는 방법을 제어하는 사용자 지정 처리기를 추가하는 데 사용할 수 있는 <see cref="T:System.ServiceModel.Dispatcher.IInputSessionShutdown" /> 개체 컬렉션을 가져옵니다.</summary>
+        <value><see cref="T:System.Collections.Generic.SynchronizedCollection`1" /> 형식 개체의 <see cref="T:System.ServiceModel.Dispatcher.IInputSessionShutdown" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성에 <xref:System.ServiceModel.Dispatcher.IInputSessionShutdown> 개체를 추가하여 입력 세션을 닫는 방법을 제어합니다. <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A?displayProperty=nameWithType>에서 <xref:System.ServiceModel.Channels.IDuplexSessionChannel?displayProperty=nameWithType> 메서드를 호출하여 처음에 `null`이 반환되면(입력 세션이 닫혔음을 나타냄) 디스패처는 각 <xref:System.ServiceModel.Dispatcher.IInputSessionShutdown> 개체를 호출하여 이 개체에 <xref:System.ServiceModel.Channels.IDuplexSessionChannel?displayProperty=nameWithType> 개체를 전달합니다. 사용자 지정 <xref:System.ServiceModel.Dispatcher.IInputSessionShutdown> 개체는 전달된 이 <xref:System.ServiceModel.Channels.IDuplexSessionChannel> 개체를 사용하여 각 채널 상태를 정리하거나 채널을 닫기 이전에 응답 메시지를 보낼 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InstanceContextInitializers">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IInstanceContextInitializer&gt; InstanceContextInitializers { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.SynchronizedCollection`1&lt;class System.ServiceModel.Dispatcher.IInstanceContextInitializer&gt; InstanceContextInitializers" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.InstanceContextInitializers" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property InstanceContextInitializers As SynchronizedCollection(Of IInstanceContextInitializer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Generic::SynchronizedCollection&lt;System::ServiceModel::Dispatcher::IInstanceContextInitializer ^&gt; ^ InstanceContextInitializers { System::Collections::Generic::SynchronizedCollection&lt;System::ServiceModel::Dispatcher::IInstanceContextInitializer ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.InstanceContextInitializers : System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IInstanceContextInitializer&gt;" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.InstanceContextInitializers" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IInstanceContextInitializer&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.Dispatcher.IInstanceContextInitializer" /> 개체를 처음 만들 때 개체를 검사하거나 수정하는 데 사용할 수 있는 <see cref="T:System.ServiceModel.InstanceContext" /> 개체 컬렉션을 가져옵니다.</summary>
+        <value><see cref="T:System.Collections.Generic.SynchronizedCollection`1" /> 형식의 <see cref="T:System.ServiceModel.Dispatcher.IInstanceContextInitializer" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Dispatcher.DispatchRuntime.InstanceContextInitializers%2A> 개체를 처음 만들 때 이 개체를 검사 또는 수정할 수 있는 사용자 지정 이니셜라이저를 추가하려면 <xref:System.ServiceModel.InstanceContext> 속성을 사용합니다. <xref:System.ServiceModel.InstanceContext> 개체가 생성되는 빈도는 <xref:System.ServiceModel.ServiceBehaviorAttribute.InstanceContextMode%2A> 속성에 의해 제어됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InstanceContextProvider">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Dispatcher.IInstanceContextProvider InstanceContextProvider { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Dispatcher.IInstanceContextProvider InstanceContextProvider" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.InstanceContextProvider" />
+      <MemberSignature Language="VB.NET" Value="Public Property InstanceContextProvider As IInstanceContextProvider" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Dispatcher::IInstanceContextProvider ^ InstanceContextProvider { System::ServiceModel::Dispatcher::IInstanceContextProvider ^ get(); void set(System::ServiceModel::Dispatcher::IInstanceContextProvider ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.InstanceContextProvider : System.ServiceModel.Dispatcher.IInstanceContextProvider with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.InstanceContextProvider" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Dispatcher.IInstanceContextProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.Dispatcher.IInstanceContextProvider" />에서 사용할 <see cref="T:System.ServiceModel.Dispatcher.DispatchRuntime" />를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.ServiceModel.Dispatcher.IInstanceContextProvider" />에서 사용할 <see cref="T:System.ServiceModel.Dispatcher.DispatchRuntime" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InstanceProvider">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Dispatcher.IInstanceProvider InstanceProvider { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Dispatcher.IInstanceProvider InstanceProvider" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.InstanceProvider" />
+      <MemberSignature Language="VB.NET" Value="Public Property InstanceProvider As IInstanceProvider" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Dispatcher::IInstanceProvider ^ InstanceProvider { System::ServiceModel::Dispatcher::IInstanceProvider ^ get(); void set(System::ServiceModel::Dispatcher::IInstanceProvider ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.InstanceProvider : System.ServiceModel.Dispatcher.IInstanceProvider with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.InstanceProvider" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Dispatcher.IInstanceProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>서비스 개체 생성과 삭제를 제어하는 데 사용할 수 있는 <see cref="T:System.ServiceModel.Dispatcher.IInstanceProvider" /> 개체를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.ServiceModel.Dispatcher.IInstanceProvider" /> 개체와 연결된 서비스 개체의 생성과 삭제를 제어하는 <see cref="T:System.ServiceModel.InstanceContext" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Dispatcher.IInstanceProvider> 인터페이스를 구현하여 이를 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.InstanceProvider%2A> 속성에 할당하면 기본 생성자가 아닌 다른 생성자를 사용하여 해당 서비스 형식의 인스턴스를 제어합니다. 예를 들어, 인스턴스 풀링과 같은 사용자 지정 인스턴스 모드를 구현합니다.  
+  
+ 일반적으로 <xref:System.ServiceModel.Dispatcher.IInstanceProvider.GetInstance%2A> 메서드는 <xref:System.ServiceModel.InstanceContext> 개체가 처음 만들어질 때 한 번 호출됩니다. 또한 <xref:System.ServiceModel.Dispatcher.IInstanceProvider.ReleaseInstance%2A> 메서드는 <xref:System.ServiceModel.InstanceContext> 개체가 닫힐 때 한 번 호출됩니다.  
+  
+ <xref:System.ServiceModel.InstanceContext> 개체가 닫히기 전에 인스턴스를 해제하도록 서비스를 구성할 수 있습니다. <xref:System.ServiceModel.OperationBehaviorAttribute.ReleaseInstanceMode%2A> 속성을 사용하거나 <xref:System.ServiceModel.InstanceContext.ReleaseServiceInstance%2A> 메서드를 호출하면 됩니다. 이 작업이 수행되면 <xref:System.ServiceModel.InstanceContext> 개체는 <xref:System.ServiceModel.Dispatcher.IInstanceProvider.ReleaseInstance%2A> 메서드를 호출합니다. 인스턴스가 해제된 이후에 새 메시지가 도착하면 <xref:System.ServiceModel.Dispatcher.IInstanceProvider.GetInstance%2A> 메서드를 사용하여 새 인스턴스가 만들어집니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MessageAuthenticationAuditLevel">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.AuditLevel MessageAuthenticationAuditLevel { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.ServiceModel.AuditLevel MessageAuthenticationAuditLevel" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.MessageAuthenticationAuditLevel" />
+      <MemberSignature Language="VB.NET" Value="Public Property MessageAuthenticationAuditLevel As AuditLevel" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::AuditLevel MessageAuthenticationAuditLevel { System::ServiceModel::AuditLevel get(); void set(System::ServiceModel::AuditLevel value); };" />
+      <MemberSignature Language="F#" Value="member this.MessageAuthenticationAuditLevel : System.ServiceModel.AuditLevel with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.MessageAuthenticationAuditLevel" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.AuditLevel</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>성공적인 메시지 권한 부여 이벤트를 <see cref="P:System.ServiceModel.Dispatcher.DispatchRuntime.SecurityAuditLogLocation" />에서 지정된 이벤트 로그에 쓰는지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.ServiceModel.AuditLevel" /> 값 중 하나입니다. 기본값은 <see cref="F:System.ServiceModel.AuditLevel.None" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 성공적인 메시지 권한 부여 이벤트를 이벤트 로그에 쓸지 여부를 지정하려면 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.MessageAuthenticationAuditLevel%2A> 속성을 사용합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MessageInspectors">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IDispatchMessageInspector&gt; MessageInspectors { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.SynchronizedCollection`1&lt;class System.ServiceModel.Dispatcher.IDispatchMessageInspector&gt; MessageInspectors" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.MessageInspectors" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property MessageInspectors As SynchronizedCollection(Of IDispatchMessageInspector)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Generic::SynchronizedCollection&lt;System::ServiceModel::Dispatcher::IDispatchMessageInspector ^&gt; ^ MessageInspectors { System::Collections::Generic::SynchronizedCollection&lt;System::ServiceModel::Dispatcher::IDispatchMessageInspector ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.MessageInspectors : System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IDispatchMessageInspector&gt;" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.MessageInspectors" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.SynchronizedCollection&lt;System.ServiceModel.Dispatcher.IDispatchMessageInspector&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>엔드포인트를 통해 들어오거나 나가는 모든 메시지에 대해 사용자 지정 메시지 검사자를 연결하는 데 사용할 수 있는 <see cref="T:System.ServiceModel.Dispatcher.IDispatchMessageInspector" /> 개체 컬렉션을 가져옵니다.</summary>
+        <value><see cref="T:System.Collections.Generic.SynchronizedCollection`1" /> 형식의 <see cref="T:System.ServiceModel.Dispatcher.IDispatchMessageInspector" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 엔드포인트를 통해 이동하는 모든 메시지를 검사 또는 변환할 수 있는 사용자 지정 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.MessageInspectors%2A> 개체를 연결하려면 <xref:System.ServiceModel.Dispatcher.IDispatchMessageInspector> 속성을 사용합니다. <xref:System.ServiceModel.Dispatcher.IDispatchMessageInspector> 개체는 메시지에 대한 참조를 가져오므로 사용자는 참조를 버퍼링하여 본문 복사본을 검토할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Operations">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.SynchronizedKeyedCollection&lt;string,System.ServiceModel.Dispatcher.DispatchOperation&gt; Operations { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.SynchronizedKeyedCollection`2&lt;string, class System.ServiceModel.Dispatcher.DispatchOperation&gt; Operations" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.Operations" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Operations As SynchronizedKeyedCollection(Of String, DispatchOperation)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Generic::SynchronizedKeyedCollection&lt;System::String ^, System::ServiceModel::Dispatcher::DispatchOperation ^&gt; ^ Operations { System::Collections::Generic::SynchronizedKeyedCollection&lt;System::String ^, System::ServiceModel::Dispatcher::DispatchOperation ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Operations : System.Collections.Generic.SynchronizedKeyedCollection&lt;string, System.ServiceModel.Dispatcher.DispatchOperation&gt;" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.Operations" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.SynchronizedKeyedCollection&lt;System.String,System.ServiceModel.Dispatcher.DispatchOperation&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>특정 작업의 실행 동작을 제어하는 데 사용할 수 있는 <see cref="T:System.ServiceModel.Dispatcher.DispatchOperation" /> 개체 컬렉션을 가져옵니다.</summary>
+        <value><see cref="T:System.Collections.Generic.SynchronizedKeyedCollection`2" /> 및 <see cref="T:System.String" /> 개체 형식의 <see cref="T:System.ServiceModel.Dispatcher.DispatchOperation" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 매개 변수 검사 또는 수정, 매개 변수 값 및 반환 값의 serialization과 deserialization 제어, 작업 호출 제어, 단일 작업에 대한 다른 동작 수정 등을 수행하려면 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.Operations%2A> 속성을 사용합니다. 자세한 내용은 <xref:System.ServiceModel.Dispatcher.DispatchOperation>를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OperationSelector">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Dispatcher.IDispatchOperationSelector OperationSelector { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Dispatcher.IDispatchOperationSelector OperationSelector" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.OperationSelector" />
+      <MemberSignature Language="VB.NET" Value="Public Property OperationSelector As IDispatchOperationSelector" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Dispatcher::IDispatchOperationSelector ^ OperationSelector { System::ServiceModel::Dispatcher::IDispatchOperationSelector ^ get(); void set(System::ServiceModel::Dispatcher::IDispatchOperationSelector ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.OperationSelector : System.ServiceModel.Dispatcher.IDispatchOperationSelector with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.OperationSelector" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Dispatcher.IDispatchOperationSelector</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>특정 메시지에 대한 대상 <see cref="T:System.ServiceModel.Dispatcher.IDispatchOperationSelector" /> 선택을 제어하는 <see cref="T:System.ServiceModel.Dispatcher.DispatchOperation" /> 개체를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.ServiceModel.Dispatcher.IDispatchOperationSelector" /> 개체</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 특정 메시지를 수신할 작업을 결정하려면 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.OperationSelector%2A> 속성을 사용합니다. 기본 작업 선택기는 메시지에 대한 동작 헤더 값을 반환하며, 이 값은 올바른 <xref:System.ServiceModel.Dispatcher.DispatchOperation>을 찾기 위한 키로 사용됩니다. 일치하는 작업이 없으면 호출은 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.UnhandledDispatchOperation%2A> 속성에서 반환되는 값에 디스패치됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreserveMessage">
+      <MemberSignature Language="C#" Value="public bool PreserveMessage { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool PreserveMessage" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.PreserveMessage" />
+      <MemberSignature Language="VB.NET" Value="Public Property PreserveMessage As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool PreserveMessage { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.PreserveMessage : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.PreserveMessage" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>메시지의 보존 여부를 가져오거나 설정합니다.</summary>
+        <value>메시지를 보존하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PrincipalPermissionMode">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Description.PrincipalPermissionMode PrincipalPermissionMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.ServiceModel.Description.PrincipalPermissionMode PrincipalPermissionMode" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.PrincipalPermissionMode" />
+      <MemberSignature Language="VB.NET" Value="Public Property PrincipalPermissionMode As PrincipalPermissionMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Description::PrincipalPermissionMode PrincipalPermissionMode { System::ServiceModel::Description::PrincipalPermissionMode get(); void set(System::ServiceModel::Description::PrincipalPermissionMode value); };" />
+      <MemberSignature Language="F#" Value="member this.PrincipalPermissionMode : System.ServiceModel.Description.PrincipalPermissionMode with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.PrincipalPermissionMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Description.PrincipalPermissionMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="P:System.Threading.Thread.CurrentPrincipal" /> 속성 설정 방법을 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.ServiceModel.Description.PrincipalPermissionMode" /> 값 중 하나입니다. 기본값은 <see cref="F:System.ServiceModel.Description.PrincipalPermissionMode.UseWindowsGroups" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Dispatcher.DispatchRuntime.PrincipalPermissionMode%2A>가 <xref:System.ServiceModel.Description.PrincipalPermissionMode.None>이면 <xref:System.Threading.Thread.CurrentPrincipal%2A> 속성이 설정되지 않습니다.  
+  
+ 값이 <xref:System.ServiceModel.Description.PrincipalPermissionMode.UseWindowsGroups>이면, <xref:System.Threading.Thread.CurrentPrincipal%2A> 속성은 들어오는 메시지에 대한 사용자 자격 증명을 기반으로 하여 <xref:System.Security.Principal.WindowsPrincipal>로 채워집니다.  
+  
+ 값이 <xref:System.ServiceModel.Description.PrincipalPermissionMode.UseAspNetRoles>이면, <xref:System.Threading.Thread.CurrentPrincipal%2A> 속성은 <xref:System.Security.Principal.IPrincipal> 역할 정보를 기반으로 하여 [!INCLUDE[vstecasp](~/includes/vstecasp-md.md)] 개체로 채워집니다.  
+  
+ 값이 <xref:System.ServiceModel.Description.PrincipalPermissionMode.Custom>이면, <xref:System.Threading.Thread.CurrentPrincipal%2A> 속성은 사용자 지정 <xref:System.IdentityModel.Policy.IAuthorizationPolicy> 구현에 의해 채워집니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseServiceInstanceOnTransactionComplete">
+      <MemberSignature Language="C#" Value="public bool ReleaseServiceInstanceOnTransactionComplete { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ReleaseServiceInstanceOnTransactionComplete" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ReleaseServiceInstanceOnTransactionComplete" />
+      <MemberSignature Language="VB.NET" Value="Public Property ReleaseServiceInstanceOnTransactionComplete As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool ReleaseServiceInstanceOnTransactionComplete { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.ReleaseServiceInstanceOnTransactionComplete : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ReleaseServiceInstanceOnTransactionComplete" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>트랜잭션이 성공적으로 완료된 후에 서비스 개체를 재활용하는지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>트랜잭션이 성공적으로 완료된 후에 서비스 개체가 재활용되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see cref="P:System.ServiceModel.ServiceBehaviorAttribute.ReleaseServiceInstanceOnTransactionComplete" />의 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 트랜잭션이 성공적으로 완료되면 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.ReleaseServiceInstanceOnTransactionComplete%2A> 메서드를 호출하도록 지정하려면 <xref:System.ServiceModel.InstanceContext.ReleaseServiceInstance%2A>를 사용합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RoleProvider">
+      <MemberSignature Language="C#" Value="public System.Web.Security.RoleProvider RoleProvider { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Web.Security.RoleProvider RoleProvider" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.RoleProvider" />
+      <MemberSignature Language="VB.NET" Value="Public Property RoleProvider As RoleProvider" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Web::Security::RoleProvider ^ RoleProvider { System::Web::Security::RoleProvider ^ get(); void set(System::Web::Security::RoleProvider ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.RoleProvider : System.Web.Security.RoleProvider with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.RoleProvider" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Web.Security.RoleProvider</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Web.Security.RoleProvider" />에 사용되는 사용자 지정 <see cref="T:System.ServiceModel.Dispatcher.DispatchRuntime" />를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Web.Security.RoleProvider" />에 사용되는 사용자 지정 <see cref="T:System.ServiceModel.Dispatcher.DispatchRuntime" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SecurityAuditLogLocation">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.AuditLogLocation SecurityAuditLogLocation { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.ServiceModel.AuditLogLocation SecurityAuditLogLocation" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.SecurityAuditLogLocation" />
+      <MemberSignature Language="VB.NET" Value="Public Property SecurityAuditLogLocation As AuditLogLocation" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::AuditLogLocation SecurityAuditLogLocation { System::ServiceModel::AuditLogLocation get(); void set(System::ServiceModel::AuditLogLocation value); };" />
+      <MemberSignature Language="F#" Value="member this.SecurityAuditLogLocation : System.ServiceModel.AuditLogLocation with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.SecurityAuditLogLocation" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.AuditLogLocation</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>감사 로그의 위치를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.ServiceModel.AuditLogLocation" /> 값 중 하나입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ServiceAuthenticationManager">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.ServiceAuthenticationManager ServiceAuthenticationManager { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.ServiceAuthenticationManager ServiceAuthenticationManager" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthenticationManager" />
+      <MemberSignature Language="VB.NET" Value="Public Property ServiceAuthenticationManager As ServiceAuthenticationManager" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::ServiceAuthenticationManager ^ ServiceAuthenticationManager { System::ServiceModel::ServiceAuthenticationManager ^ get(); void set(System::ServiceModel::ServiceAuthenticationManager ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ServiceAuthenticationManager : System.ServiceModel.ServiceAuthenticationManager with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthenticationManager" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.ServiceAuthenticationManager</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>서비스 작업의 인증 프로세스를 관리하는 개체를 가져오거나 설정합니다.</summary>
+        <value>인증 관리 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인증에 따라 메시지에 서명한 엔티티의 ID가 결정됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ServiceAuthorizationAuditLevel">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.AuditLevel ServiceAuthorizationAuditLevel { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.ServiceModel.AuditLevel ServiceAuthorizationAuditLevel" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthorizationAuditLevel" />
+      <MemberSignature Language="VB.NET" Value="Public Property ServiceAuthorizationAuditLevel As AuditLevel" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::AuditLevel ServiceAuthorizationAuditLevel { System::ServiceModel::AuditLevel get(); void set(System::ServiceModel::AuditLevel value); };" />
+      <MemberSignature Language="F#" Value="member this.ServiceAuthorizationAuditLevel : System.ServiceModel.AuditLevel with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthorizationAuditLevel" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.AuditLevel</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>어느 서비스 권한 부여 이벤트를 감사할지 제어하는 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.ServiceModel.AuditLevel" /> 값 중 하나입니다. 기본값은 <see cref="F:System.ServiceModel.AuditLevel.None" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로 서비스 권한 부여 이벤트는 감사하지 않습니다. <xref:System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthorizationAuditLevel%2A> 값이 <xref:System.ServiceModel.AuditLevel.Success>이면 성공적인 서비스 권한 부여 이벤트만 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.SecurityAuditLogLocation%2A> 속성에서 지정된 감사 로그에 기록됩니다. 이 속성의 값이 <xref:System.ServiceModel.AuditLevel.Failure>이면 성공하지 못한 서비스 권한 부여 이벤트만 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.SecurityAuditLogLocation%2A> 속성에서 지정된 감사 로그에 기록됩니다. <xref:System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthorizationAuditLevel%2A> 값이 <xref:System.ServiceModel.AuditLevel.SuccessOrFailure>이면 성공한 서비스 권한 부여 이벤트와 실패한 서비스 권한 부여 이벤트 모두 감사 로그에 기록됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ServiceAuthorizationManager">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.ServiceAuthorizationManager ServiceAuthorizationManager { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.ServiceAuthorizationManager ServiceAuthorizationManager" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthorizationManager" />
+      <MemberSignature Language="VB.NET" Value="Public Property ServiceAuthorizationManager As ServiceAuthorizationManager" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::ServiceAuthorizationManager ^ ServiceAuthorizationManager { System::ServiceModel::ServiceAuthorizationManager ^ get(); void set(System::ServiceModel::ServiceAuthorizationManager ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.ServiceAuthorizationManager : System.ServiceModel.ServiceAuthorizationManager with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ServiceAuthorizationManager" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.ServiceAuthorizationManager</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.ServiceAuthorizationManager" />에 대한 인증 확인을 제공하는 <see cref="T:System.ServiceModel.Dispatcher.DispatchRuntime" />를 가져옵니다.</summary>
+        <value><see cref="T:System.ServiceModel.ServiceAuthorizationManager" />에 대한 인증 확인을 제공하는 <see cref="T:System.ServiceModel.Dispatcher.DispatchRuntime" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SingletonInstanceContext">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.InstanceContext SingletonInstanceContext { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.InstanceContext SingletonInstanceContext" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.SingletonInstanceContext" />
+      <MemberSignature Language="VB.NET" Value="Public Property SingletonInstanceContext As InstanceContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::InstanceContext ^ SingletonInstanceContext { System::ServiceModel::InstanceContext ^ get(); void set(System::ServiceModel::InstanceContext ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SingletonInstanceContext : System.ServiceModel.InstanceContext with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.SingletonInstanceContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.InstanceContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.ServiceModel.Dispatcher.IInstanceContextProvider" />에서 사용할 singleton <see cref="T:System.ServiceModel.Dispatcher.DispatchRuntime" />를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.ServiceModel.Dispatcher.IInstanceContextProvider" />에서 사용할 singleton <see cref="T:System.ServiceModel.Dispatcher.DispatchRuntime" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SuppressAuditFailure">
+      <MemberSignature Language="C#" Value="public bool SuppressAuditFailure { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SuppressAuditFailure" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.SuppressAuditFailure" />
+      <MemberSignature Language="VB.NET" Value="Public Property SuppressAuditFailure As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool SuppressAuditFailure { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.SuppressAuditFailure : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.SuppressAuditFailure" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>로깅 프로세스 중에 발생하는 중요하지 않은 예외가 표시되지 않도록 할지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>로깅 프로세스 중에 발생하는 중요하지 않은 예외를 표시하지 않으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="true" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 감사 로그를 기록하는 과정에서 발생하는 예외를 애플리케이션에 다시 throw되도록 하려면 <xref:System.ServiceModel.Dispatcher.DispatchRuntime.SuppressAuditFailure%2A>를 `false`로 설정합니다. 기본적으로, 감사 이벤트 쓰기 시도 결과로 발생하는 <xref:System.OutOfMemoryException>, <xref:System.StackOverflowException>, <xref:System.Threading.ThreadAbortException> 및 <xref:System.ArgumentException> 예외만 애플리케이션에 다시 throw되고 모든 다른 예외는 표시되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SynchronizationContext">
+      <MemberSignature Language="C#" Value="public System.Threading.SynchronizationContext SynchronizationContext { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Threading.SynchronizationContext SynchronizationContext" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.SynchronizationContext" />
+      <MemberSignature Language="VB.NET" Value="Public Property SynchronizationContext As SynchronizationContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Threading::SynchronizationContext ^ SynchronizationContext { System::Threading::SynchronizationContext ^ get(); void set(System::Threading::SynchronizationContext ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SynchronizationContext : System.Threading.SynchronizationContext with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.SynchronizationContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.SynchronizationContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>서비스 작업을 호출하는 데 사용되는 동기화 컨텍스트를 가져오거나 설정합니다.</summary>
+        <value>서비스 작업이 호출되는 스레드를 결정하는 데 사용되는 <see cref="T:System.Threading.SynchronizationContext" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 반환 값은 `null`일 수 있습니다. 이 값이 `null`이 아니면 이 동기화 컨텍스트를 사용하여 올바른 스레드에서 서비스 작업을 호출합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TransactionAutoCompleteOnSessionClose">
+      <MemberSignature Language="C#" Value="public bool TransactionAutoCompleteOnSessionClose { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool TransactionAutoCompleteOnSessionClose" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.TransactionAutoCompleteOnSessionClose" />
+      <MemberSignature Language="VB.NET" Value="Public Property TransactionAutoCompleteOnSessionClose As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool TransactionAutoCompleteOnSessionClose { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.TransactionAutoCompleteOnSessionClose : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.TransactionAutoCompleteOnSessionClose" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>세션이 닫힐 때 현재 트랜잭션이 자동으로 완료되는지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>세션이 닫힐 때 트랜잭션이 자동으로 완료되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see cref="P:System.ServiceModel.ServiceBehaviorAttribute.TransactionAutoCompleteOnSessionClose" />에서 지정한 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Dispatcher.DispatchRuntime.TransactionAutoCompleteOnSessionClose%2A>가 `true`이고 활성 트랜잭션이 있으면 세션이 닫힐 때 트랜잭션이 완료됩니다. <xref:System.ServiceModel.Dispatcher.DispatchRuntime.TransactionAutoCompleteOnSessionClose%2A>가 `false`이면 활성 트랜잭션이 완료되지 않고 중단됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Type">
+      <MemberSignature Language="C#" Value="public Type Type { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Type Type" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.Type" />
+      <MemberSignature Language="VB.NET" Value="Public Property Type As Type" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Type ^ Type { Type ^ get(); void set(Type ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Type : Type with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.Type" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>계약 형식을 가져오거나 설정합니다.</summary>
+        <value>계약의 형식입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnhandledDispatchOperation">
+      <MemberSignature Language="C#" Value="public System.ServiceModel.Dispatcher.DispatchOperation UnhandledDispatchOperation { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.ServiceModel.Dispatcher.DispatchOperation UnhandledDispatchOperation" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.UnhandledDispatchOperation" />
+      <MemberSignature Language="VB.NET" Value="Public Property UnhandledDispatchOperation As DispatchOperation" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ServiceModel::Dispatcher::DispatchOperation ^ UnhandledDispatchOperation { System::ServiceModel::Dispatcher::DispatchOperation ^ get(); void set(System::ServiceModel::Dispatcher::DispatchOperation ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.UnhandledDispatchOperation : System.ServiceModel.Dispatcher.DispatchOperation with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.UnhandledDispatchOperation" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.ServiceModel.Dispatcher.DispatchOperation</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>인식되지 않은 메시지를 디스패치할 대상 작업을 가져오거나 설정합니다.</summary>
+        <value>인식되지 않은 메시지가 디스패치되는 대상 <see cref="T:System.ServiceModel.Dispatcher.DispatchOperation" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.ServiceModel.Dispatcher.DispatchRuntime.UnhandledDispatchOperation%2A>에 의해 반환되는 작업은 <xref:System.ServiceModel.OperationContractAttribute.Action%2A> 속성에서 "*"(별표)로 표시된 작업입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ValidateMustUnderstand">
+      <MemberSignature Language="C#" Value="public bool ValidateMustUnderstand { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ValidateMustUnderstand" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Dispatcher.DispatchRuntime.ValidateMustUnderstand" />
+      <MemberSignature Language="VB.NET" Value="Public Property ValidateMustUnderstand As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool ValidateMustUnderstand { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.ValidateMustUnderstand : bool with get, set" Usage="System.ServiceModel.Dispatcher.DispatchRuntime.ValidateMustUnderstand" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="P:System.ServiceModel.ServiceBehaviorAttribute.ValidateMustUnderstand" /> 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="P:System.ServiceModel.ServiceBehaviorAttribute.ValidateMustUnderstand" />의 값</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 예기치 않은 메시지 헤더가 오류 발생 조건이 되는지 여부를 결정합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

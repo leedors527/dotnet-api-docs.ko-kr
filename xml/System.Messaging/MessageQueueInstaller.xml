@@ -1,0 +1,899 @@
+<Type Name="MessageQueueInstaller" FullName="System.Messaging.MessageQueueInstaller">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7dbe8bf518a099b486dccf5894b519a1c16207c3" /><Meta Name="ms.sourcegitcommit" Value="756d085f27705e86604f1bba5f2086ee23761acf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="01/30/2019" /><Meta Name="ms.locfileid" Value="55380197" /></Metadata><TypeSignature Language="C#" Value="public class MessageQueueInstaller : System.Configuration.Install.ComponentInstaller" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit MessageQueueInstaller extends System.Configuration.Install.ComponentInstaller" />
+  <TypeSignature Language="DocId" Value="T:System.Messaging.MessageQueueInstaller" />
+  <TypeSignature Language="VB.NET" Value="Public Class MessageQueueInstaller&#xA;Inherits ComponentInstaller" />
+  <TypeSignature Language="C++ CLI" Value="public ref class MessageQueueInstaller : System::Configuration::Install::ComponentInstaller" />
+  <TypeSignature Language="F#" Value="type MessageQueueInstaller = class&#xA;    inherit ComponentInstaller" />
+  <AssemblyInfo>
+    <AssemblyName>System.Messaging</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Configuration.Install.ComponentInstaller</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>애플리케이션을 실행하는 데 필요한 큐를 설치하고 구성할 수 있도록 합니다. 이 클래스는 <see cref="T:System.Messaging.MessageQueue" />를 설치할 때 InstallUtil.exe와 같은 설치 유틸리티에서 호출됩니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Messaging.MessageQueueInstaller> 큐와 연결 된 레지스트리 값을 쓸 설치 유틸리티에서 사용 됩니다. 설치 유틸리티에 대 한 자세한 내용은 참조 하세요. [Installutil.exe (설치 관리자 도구)](~/docs/framework/tools/installutil-exe-installer-tool.md)합니다.  
+  
+ 큐를 설치 하려면에서 상속 되는 프로젝트 설치 관리자 클래스를 만듭니다는 <xref:System.Configuration.Install.Installer>를 설정 합니다 <xref:System.ComponentModel.RunInstallerAttribute> 클래스에 대 한 `true`합니다. 프로젝트 내에서 만들는 <xref:System.Messaging.MessageQueueInstaller> 설치에서 각 큐에 대 한 인스턴스 및 프로젝트 설치 관리자 클래스에 인스턴스를 추가 합니다.  
+  
+ 만들 때를 <xref:System.Messaging.MessageQueueInstaller> 인스턴스를 전달할 수 있습니다 필요에 따라 기존 <xref:System.Messaging.MessageQueue> (예를 들어 테스트 서버)에서는 <xref:System.Messaging.MessageQueueInstaller.%23ctor%2A> 생성자입니다. 이 방법은 자동으로 전달 된 큐의 설정이 복사 하 여 새 큐에 대 한 구성 설정을 제공 합니다. 속성을 수동으로 설정할 수 또는 <xref:System.Messaging.MessageQueueInstaller> 인스턴스 상태 및 기본 생성자를 호출 합니다.  
+  
+ 설치 유틸리티를 호출 하는 때를 찾습니다는 <xref:System.ComponentModel.RunInstallerAttribute>합니다. 있으면 `true`, 유틸리티 설치에 있는 모든 큐를 <xref:System.Configuration.Install.Installer.Installers%2A> 프로젝트 설치 관리자를 사용 하 여 연결 된 컬렉션입니다. 하는 경우 <xref:System.ComponentModel.RunInstallerAttribute> 는 `false`, 유틸리티 프로젝트 설치 관리자를 무시 합니다.  
+  
+ 다른 속성을 수정 하는 <xref:System.Messaging.MessageQueueInstaller> 인스턴스 앞 이나 뒤에 인스턴스를 추가 <xref:System.Configuration.Install.Installer.Installers%2A> 프로젝트 설치 관리자의 컬렉션입니다. 예를 들어 큐의 <xref:System.Messaging.MessageQueue.Path%2A> 설치 유틸리티를 실행 하기 전에 설정 해야 합니다.  
+  
+ 일반적으로 호출 하지 않으면 메서드는 <xref:System.Messaging.MessageQueueInstaller> 에서 코드 내에서 일반적으로 라고 installutil.exe 설치 유틸리티에서만 합니다. 유틸리티를 자동으로 호출 합니다 <xref:System.Messaging.MessageQueueInstaller.Install%2A> 메서드 호출 및 설치 프로세스 중 <xref:System.Messaging.MessageQueueInstaller.Commit%2A> 설치 예외를 throw 하지 않은 경우. 원하는를 필요한 경우 호출 하 여 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 예외를 생성 하는 개체입니다.  
+  
+ 프로젝트 설치 관리자를 사용 하는 애플리케이션의 설치 루틴 <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=nameWithType> 자동으로 설치 된 구성 요소에 대 한 정보를 유지 관리 합니다. 이 상태 정보는 지속적으로 각 업데이트 <xref:System.Messaging.MessageQueueInstaller> 인스턴스가 유틸리티에 의해 설치 됩니다. 일반적으로 명시적으로 상태 정보를 수정 하려면 코드에 대 한 필요는 없습니다.  
+  
+ ]]></format>
+    </remarks>
+    <related type="Article" href="~/docs/framework/tools/installutil-exe-installer-tool.md">Installutil.exe(설치 관리자 도구)</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Messaging.MessageQueueInstaller" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MessageQueueInstaller ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.MessageQueueInstaller.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; MessageQueueInstaller();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Messaging.MessageQueueInstaller" /> 클래스의 새 인스턴스를 초기화합니다. 인스턴스의 속성은 설정되지 않습니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MessageQueueInstaller (System.Messaging.MessageQueue componentToCopy);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Messaging.MessageQueue componentToCopy) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.MessageQueueInstaller.#ctor(System.Messaging.MessageQueue)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (componentToCopy As MessageQueue)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; MessageQueueInstaller(System::Messaging::MessageQueue ^ componentToCopy);" />
+      <MemberSignature Language="F#" Value="new System.Messaging.MessageQueueInstaller : System.Messaging.MessageQueue -&gt; System.Messaging.MessageQueueInstaller" Usage="new System.Messaging.MessageQueueInstaller componentToCopy" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="componentToCopy" Type="System.Messaging.MessageQueue" />
+      </Parameters>
+      <Docs>
+        <param name="componentToCopy"><see cref="T:System.Messaging.MessageQueue" /> 구성 요소이며, 이 구성 요소의 설정이 설치될 새 큐의 속성 설정을 결정합니다.</param>
+        <summary><see cref="T:System.Messaging.MessageQueueInstaller" /> 클래스의 새 인스턴스를 초기화하고, 설치에 대한 설정을 기존 <see cref="T:System.Messaging.MessageQueue" /> 인스턴스의 설정으로 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Authenticate">
+      <MemberSignature Language="C#" Value="public bool Authenticate { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Authenticate" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.Authenticate" />
+      <MemberSignature Language="VB.NET" Value="Public Property Authenticate As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool Authenticate { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.Authenticate : bool with get, set" Usage="System.Messaging.MessageQueueInstaller.Authenticate" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue(false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>설치될 큐에서 인증된 메시지만 허용하는지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>큐가 인증된 메시지만 허용하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인증 된 메시지만 허용 하는 큐에 인증 되지 않은 메시지를 보내면 메시지는 거부 됩니다. 보내는 애플리케이션을 설정 하 여 메시지를 보낸 알림을 요청할 수 있습니다는 <xref:System.Messaging.Message.AcknowledgeType%2A> 메시지에 대 한 합니다. 이 고, 그렇지 표시가 없습니다 메시지가 거부 된 배달 못 한 편지 큐에 보내기 하지 않으면 메시지가 손실 될 수 있도록 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BasePriority">
+      <MemberSignature Language="C#" Value="public short BasePriority { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int16 BasePriority" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.BasePriority" />
+      <MemberSignature Language="VB.NET" Value="Public Property BasePriority As Short" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property short BasePriority { short get(); void set(short value); };" />
+      <MemberSignature Language="F#" Value="member this.BasePriority : int16 with get, set" Usage="System.Messaging.MessageQueueInstaller.BasePriority" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue(0)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int16</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>네트워크를 통해 공개 큐의 메시지를 라우팅하는 데 사용되는 기본 우선 순위를 가져오거나 설정합니다.</summary>
+        <value>공개 큐에 보내진 모든 메시지에 대한 단일 기본 우선 순위입니다. 기본값은 0입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> 네트워크를 통해 큐의 메시지 라우팅에 사용 됩니다. 사용 된 <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> 다른 큐로 보낸 메시지에 대 한 보다 낮은 우선 순위를 더 높은 큐에 전송 된 메시지를 제공 합니다. 큐의 기본 우선 순위를 설정 하면 낮은 기본 우선 순위를 사용 하 여 큐에 전송 된 메시지의 보다 높은 우선 순위에 보낸 모든 메시지에 제공 됩니다. 큐의 기본 우선 순위는 큐에서 메시지를 읽는 방법 또는 큐에서 메시지 순서 효과가 없습니다.  
+  
+ <xref:System.Messaging.MessageQueueInstaller.BasePriority%2A> 공개 큐에만 도메인 컨트롤러를 통해 액세스할 수 있는 적용 됩니다 (즉, 공용 형식 이름을 사용). 공개 큐를 직접 액세스 및 개인 큐의 기본 우선 순위는 항상 0입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Category">
+      <MemberSignature Language="C#" Value="public Guid Category { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Guid Category" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.Category" />
+      <MemberSignature Language="VB.NET" Value="Public Property Category As Guid" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Guid Category { Guid get(); void set(Guid value); };" />
+      <MemberSignature Language="F#" Value="member this.Category : Guid with get, set" Usage="System.Messaging.MessageQueueInstaller.Category" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinmac-3.0">
+          <AttributeName>System.ComponentModel.TypeConverter(typeof(System.ComponentModel.GuidConverter))</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-1.1">
+          <AttributeName>System.ComponentModel.TypeConverter("System.ComponentModel.GuidConverter, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5">
+          <AttributeName>System.ComponentModel.TypeConverter("System.ComponentModel.GuidConverter, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.ComponentModel.TypeConverter("System.ComponentModel.GuidConverter, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Guid</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>구현에 관련된 큐 형식을 가져오거나 설정합니다.</summary>
+        <value>애플리케이션에서 큐의 사용 방법에 따라 큐를 분류할 수 있게 해주는 큐 범주 또는 메시지 큐 형식 식별자를 나타내는 <see cref="T:System.Guid" />입니다. 기본값은 <see langword="Guid.empty" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 큐 범주를 통해 애플리케이션 사용 되는 방식에 따라 연결 된 큐를 분류할 수 있습니다. <xref:System.Messaging.MessageQueue.Category%2A> null 참조일 수 있습니다. 또한 새 범주를 정의할 수 있습니다.  
+  
+ <xref:System.Messaging.MessageQueue.Category%2A> 속성은 메시지 큐 형식 식별자는 속성을 읽기/쓰기 이며 특정 큐를 사용 하 여 연결에 대 한 액세스를 제공 합니다. 사용할 수는 <xref:System.Guid.NewGuid%2A> 전체 고유 하 게 보장 되는 범주 값을 만들 방법 <xref:System.Guid> 값입니다. 그러나 것 수 없으며 다른 범주에 다른 모든 구별 하는 범주 값에만 필요 <xref:System.Guid> 값입니다. 예를 들어, 설정할 수 있습니다 합니다 <xref:System.Messaging.MessageQueue.Category%2A> 큐를 하나의 그룹에 대 한 {00000000-0000-0000-0000-000000000001} 하며 <xref:System.Messaging.MessageQueue.Category%2A> 다른 그룹에 대 한 {00000000-0000-0000-0000-000000000002}합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Commit">
+      <MemberSignature Language="C#" Value="public override void Commit (System.Collections.IDictionary savedState);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Commit(class System.Collections.IDictionary savedState) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.MessageQueueInstaller.Commit(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Commit (savedState As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Commit(System::Collections::IDictionary ^ savedState);" />
+      <MemberSignature Language="F#" Value="override this.Commit : System.Collections.IDictionary -&gt; unit" Usage="messageQueueInstaller.Commit savedState" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="savedState" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="savedState">컴퓨터의 설치 후 상태가 들어 있는 <see cref="T:System.Collections.IDictionary" />입니다.</param>
+        <summary><see cref="T:System.Messaging.MessageQueue" /> 메서드가 레지스트리에 쓴 <see cref="M:System.Messaging.MessageQueueInstaller.Install(System.Collections.IDictionary)" /> 설치 정보를 커밋하여 설치 과정을 완료합니다. 이 메서드는 자동으로 적합한 메서드를 호출하는 설치 도구에서 사용됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 일반적으로 호출 하지 않으면 메서드는 <xref:System.Messaging.MessageQueueInstaller> 에서 코드 내에서 일반적으로 라고 installutil.exe 설치 유틸리티에서만 합니다. 유틸리티를 자동으로 호출 된 <xref:System.Messaging.MessageQueueInstaller.Install%2A> 설치 프로세스 중 메서드. 설치는 이전에 설치 된 모든 구성 요소 설치 이전 상태로 다시 롤백됩니다 설치 하는 동안 설치 프로젝트 구성 요소에 오류가 있으면 트랜잭션. 이렇게 하려면 각 구성 요소를 호출 하 여 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 메서드.  
+  
+ 설치 프로젝트와 연관 된 모든 구성 요소를 설치 하 고 나면 발생 설치 유틸리티 설치를 커밋합니다. <xref:System.Messaging.MessageQueueInstaller.Commit%2A> 설치를 완료 합니다 <xref:System.Messaging.MessageQueue> 적절 한 초기 상태로 큐를 설정 하 여 합니다. 큐에서 지정 하는 경우는 <xref:System.Messaging.MessageQueueInstaller.Path%2A> 속성에서 이미 존재 하 고 메시지를 포함 <xref:System.Messaging.MessageQueueInstaller.Commit%2A> 메시지를 지웁니다. <xref:System.Messaging.MessageQueueInstaller.Commit%2A>를 대신 <xref:System.Messaging.MessageQueueInstaller.Install%2A>, 메시지를 롤백할 수 없으므로 메시지를 지웁니다.  
+  
+ 프로젝트 설치 관리자를 사용 하는 애플리케이션의 설치 루틴 <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=nameWithType> 자동으로 설치 된 구성 요소에 대 한 정보를 유지 관리 합니다. 에 전달 되는이 상태 정보 <xref:System.Messaging.MessageQueueInstaller.Commit%2A> 으로 `savedState` 유틸리티를 커밋하면 각 매개 변수를 계속 업데이트 됩니다 <xref:System.Messaging.MessageQueueInstaller> 인스턴스. 일반적으로 명시적으로이 상태 정보를 수정 하기 위해 코드에 대 한 필요는 없습니다. 큐를 지우면 <xref:System.Messaging.MessageQueueInstaller.Commit%2A> 로그 항목을 게시 합니다 `savedState` 설치와 연결 된입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Commit(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Rollback(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Uninstall(System.Collections.IDictionary)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CopyFromComponent">
+      <MemberSignature Language="C#" Value="public override void CopyFromComponent (System.ComponentModel.IComponent component);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void CopyFromComponent(class System.ComponentModel.IComponent component) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.MessageQueueInstaller.CopyFromComponent(System.ComponentModel.IComponent)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub CopyFromComponent (component As IComponent)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void CopyFromComponent(System::ComponentModel::IComponent ^ component);" />
+      <MemberSignature Language="F#" Value="override this.CopyFromComponent : System.ComponentModel.IComponent -&gt; unit" Usage="messageQueueInstaller.CopyFromComponent component" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="component" Type="System.ComponentModel.IComponent" />
+      </Parameters>
+      <Docs>
+        <param name="component"><see cref="T:System.ComponentModel.IComponent" />의 템플릿으로 사용할 <see cref="T:System.Messaging.MessageQueueInstaller" />입니다.</param>
+        <summary>설치하는 동안 메시지 큐에 필요한 <see cref="T:System.Messaging.MessageQueue" /> 구성 요소의 속성 값을 복사합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 일반적으로 호출 하지 않으면 메서드는 <xref:System.Messaging.MessageQueueInstaller> 에서 코드 내에서 일반적으로 라고 installutil.exe 설치 유틸리티에서만 합니다. <xref:System.Messaging.MessageQueueInstaller.CopyFromComponent%2A> 설치 유틸리티에서 속성 값을 설정 하는 데 사용 되는 <xref:System.Messaging.MessageQueueInstaller> 기존 값에 <xref:System.Messaging.MessageQueue>입니다.  
+  
+ 경우는 <xref:System.Messaging.MessageQueue.Path%2A> 의 <xref:System.Messaging.MessageQueue> 즉은 빈 문자열을 전달 ("")를 설정 해야 합니다는 <xref:System.Messaging.MessageQueue.Path%2A> 설치 관리자를 실행 하기 전에 비어 있지 않은 값으로 속성.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">이 <see cref="T:System.Messaging.MessageQueueInstaller" />와 관련된 구성 요소가 <see cref="T:System.Messaging.MessageQueue" />가 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EncryptionRequired">
+      <MemberSignature Language="C#" Value="public System.Messaging.EncryptionRequired EncryptionRequired { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Messaging.EncryptionRequired EncryptionRequired" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.EncryptionRequired" />
+      <MemberSignature Language="VB.NET" Value="Public Property EncryptionRequired As EncryptionRequired" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Messaging::EncryptionRequired EncryptionRequired { System::Messaging::EncryptionRequired get(); void set(System::Messaging::EncryptionRequired value); };" />
+      <MemberSignature Language="F#" Value="member this.EncryptionRequired : System.Messaging.EncryptionRequired with get, set" Usage="System.Messaging.MessageQueueInstaller.EncryptionRequired" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue(Mono.Cecil.CustomAttributeArgument)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Messaging.EncryptionRequired</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>큐에서 개인 메시지 또는 암호화된 메시지만 허용하는지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>큐에 보낼 메시지에 필요한 암호화 수준을 나타내는 <see cref="T:System.Messaging.EncryptionRequired" /> 값 중 하나입니다. 기본값은 <see langword="Optional" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 암호화 지정 되 면만 <xref:System.Messaging.Message.Body%2A> 메시지의 암호화 됩니다. 다른 속성을 같은 <xref:System.Messaging.Message.Label%2A>, 암호화 되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Install">
+      <MemberSignature Language="C#" Value="public override void Install (System.Collections.IDictionary stateSaver);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Install(class System.Collections.IDictionary stateSaver) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.MessageQueueInstaller.Install(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Install (stateSaver As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Install(System::Collections::IDictionary ^ stateSaver);" />
+      <MemberSignature Language="F#" Value="override this.Install : System.Collections.IDictionary -&gt; unit" Usage="messageQueueInstaller.Install stateSaver" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="stateSaver" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="stateSaver">커밋, 롤백 또는 제거 작업 수행에 필요한 정보를 저장하는 데 사용되는 <see cref="T:System.Collections.IDictionary" />입니다.</param>
+        <summary>설치를 수행하고 레지스트리에 메시지 큐 정보를 씁니다. 이 메서드는 자동으로 적합한 메서드를 호출하는 설치 도구에서 사용됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Messaging.MessageQueueInstaller.Install%2A> 메서드를 레지스트리에 메시지 큐 정보를 기록 하 고 연결 합니다 <xref:System.Messaging.MessageQueue> 지정 된 경로에 있는 큐를 사용 하 여 인스턴스를 <xref:System.Messaging.MessageQueueInstaller.Path%2A> 속성입니다. 큐 아직 없는 경우 <xref:System.Messaging.MessageQueueInstaller.Install%2A> 트랜잭션 큐를 만듭니다. <xref:System.Messaging.MessageQueueInstaller.Install%2A> 에 지정 된 기존 또는 새 큐 속성을 설정 합니다 <xref:System.Messaging.MessageQueueInstaller>합니다. 해당 속성의 다시 설정 됩니다 큐가 이미 있는 경우는 <xref:System.Messaging.MessageQueueInstaller>합니다. 기존 큐를 트랜잭션 없는 경우 삭제 되며 트랜잭션 큐가 다시 만들어집니다.  
+  
+> [!CAUTION]
+>  큐를 다시 만드는 데 필요한 경우 큐의 메시지 손실 됩니다.  
+  
+ 일반적으로 호출 하지 않으면 메서드는 <xref:System.Messaging.MessageQueueInstaller> 에서 코드 내에서 일반적으로 라고 installutil.exe 설치 유틸리티에서만 합니다. 유틸리티를 자동으로 호출 된 <xref:System.Messaging.MessageQueueInstaller.Install%2A> 설치 되 고 메시지 큐와 연결 된 레지스트리 정보를 기록 하는 설치 프로세스 중 메서드. 설치는 이전에 설치 된 모든 구성 요소 설치 이전 상태로 다시 롤백됩니다 설치 하는 동안 설치 프로젝트 구성 요소에 오류가 있으면 트랜잭션. 이렇게 하려면 각 구성 요소를 호출 하 여 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 메서드.  
+  
+ 설치 프로젝트와 연관 된 모든 구성 요소를 설치 하 고 나면 발생 설치 유틸리티 설치를 커밋합니다. <xref:System.Messaging.MessageQueueInstaller.Commit%2A> 설치를 완료 합니다 <xref:System.Messaging.MessageQueue> 적절 한 초기 상태로 큐를 설정 하 여 합니다. 큐에서 지정 하는 경우는 <xref:System.Messaging.MessageQueueInstaller.Path%2A> 속성에서 이미 존재 하 고 메시지를 포함 <xref:System.Messaging.MessageQueueInstaller.Commit%2A> 메시지를 지웁니다. <xref:System.Messaging.MessageQueueInstaller.Commit%2A>를 대신 <xref:System.Messaging.MessageQueueInstaller.Install%2A>, 메시지를 롤백할 수 없으므로 메시지를 지웁니다.  
+  
+ 프로젝트 설치 관리자를 사용 하는 애플리케이션의 설치 루틴 <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=nameWithType> 자동으로 설치 된 구성 요소에 대 한 정보를 유지 관리 합니다. 에 전달 되는이 상태 정보 <xref:System.Messaging.MessageQueueInstaller.Install%2A> 으로 `stateSaver` 각 유틸리티를 설치 하는 대로 매개 변수를 계속 업데이트 됩니다 <xref:System.Messaging.MessageQueueInstaller> 인스턴스. 일반적으로 명시적으로이 상태 정보를 수정 하기 위해 코드에 대 한 필요는 없습니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Commit(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Rollback(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Uninstall(System.Collections.IDictionary)" />
+        <altmember cref="T:System.Collections.IDictionary" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsEquivalentInstaller">
+      <MemberSignature Language="C#" Value="public override bool IsEquivalentInstaller (System.Configuration.Install.ComponentInstaller otherInstaller);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool IsEquivalentInstaller(class System.Configuration.Install.ComponentInstaller otherInstaller) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.MessageQueueInstaller.IsEquivalentInstaller(System.Configuration.Install.ComponentInstaller)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function IsEquivalentInstaller (otherInstaller As ComponentInstaller) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool IsEquivalentInstaller(System::Configuration::Install::ComponentInstaller ^ otherInstaller);" />
+      <MemberSignature Language="F#" Value="override this.IsEquivalentInstaller : System.Configuration.Install.ComponentInstaller -&gt; bool" Usage="messageQueueInstaller.IsEquivalentInstaller otherInstaller" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherInstaller" Type="System.Configuration.Install.ComponentInstaller" />
+      </Parameters>
+      <Docs>
+        <param name="otherInstaller">비교할 설치 관리자입니다.</param>
+        <summary>지정된 설치 관리자에서 해당 설치 관리자와 동일한 종류의 설치를 처리할 수 있는지 여부를 확인합니다.</summary>
+        <returns>이 설치 관리자 및 <paramref name="otherInstaller" /> 매개 변수로 지정된 설치 관리자에서 같은 종류의 설치를 처리할 수 있으면 <see langword="true" />를 반환하고, 그렇지 않으면 <see langword="false" />를 반환합니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 일반적으로 <xref:System.Configuration.Install.ComponentInstaller.IsEquivalentInstaller%2A> 반환 `true` 이 설치 관리자와 설치 관리자에서 지정 하는 경우에는 `otherInstaller` 매개 변수는 동일한 형식입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Label">
+      <MemberSignature Language="C#" Value="public string Label { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Label" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.Label" />
+      <MemberSignature Language="VB.NET" Value="Public Property Label As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Label { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Label : string with get, set" Usage="System.Messaging.MessageQueueInstaller.Label" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue("")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>큐에 대한 설명을 가져오거나 설정합니다.</summary>
+        <value>메시지 큐를 설명하는 레이블입니다. 기본값은 빈 문자열("")입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Messaging.MessageQueue.Label%2A> 속성이 큐에서 고유할 필요는 없습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><see cref="P:System.Messaging.MessageQueueInstaller.Label" />이 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="MaximumJournalSize">
+      <MemberSignature Language="C#" Value="public long MaximumJournalSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 MaximumJournalSize" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.MaximumJournalSize" />
+      <MemberSignature Language="VB.NET" Value="Public Property MaximumJournalSize As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property long MaximumJournalSize { long get(); void set(long value); };" />
+      <MemberSignature Language="F#" Value="member this.MaximumJournalSize : int64 with get, set" Usage="System.Messaging.MessageQueueInstaller.MaximumJournalSize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.ComponentModel.TypeConverter(typeof(System.Messaging.Design.SizeConverter))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>큐에 연결된 업무 일지의 최대 크기를 가져오거나 설정합니다.</summary>
+        <value>큐에서 제거된 메시지를 기록하는 업무 일지 큐의 최대 크기(KB)입니다. 메시지 큐에서는 기본적으로 업무 일지 크기에 제한을 두지 않습니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 큐를 만들 때 새 큐와 동일한 위치에 저널을 큐를 만듭니다 자동으로 메시지 큐. 큐 저널 큐에서 제거 되는 메시지 추적 사용 됩니다.  
+  
+ 두 가지 유형의 메시지를 추적 되지 않은 상태로 유지: 해당 받을 시간 타이머가 만료 되었기 때문에 큐에서 제거 된 파일과 큐에서 제거 됩니다.  
+  
+ 애플리케이션은 업무 일지 큐에 메시지를 보낼 수 없습니다. 그러나 큐는 더 이상 필요 없는 메시지 제거를 주기적으로 선택을 취소 해야 합니다. 메시지 큐가 상주 하는 컴퓨터에 대 한 할당량에 포함 하는 저널 큐 개수에 저장 합니다. (컴퓨터 할당량 관리자가 설정 됩니다.)  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MaximumQueueSize">
+      <MemberSignature Language="C#" Value="public long MaximumQueueSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 MaximumQueueSize" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.MaximumQueueSize" />
+      <MemberSignature Language="VB.NET" Value="Public Property MaximumQueueSize As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property long MaximumQueueSize { long get(); void set(long value); };" />
+      <MemberSignature Language="F#" Value="member this.MaximumQueueSize : int64 with get, set" Usage="System.Messaging.MessageQueueInstaller.MaximumQueueSize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.ComponentModel.TypeConverter(typeof(System.Messaging.Design.SizeConverter))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>큐의 최대 크기를 가져오거나 설정합니다.</summary>
+        <value>큐의 최대 크기입니다(단위: KB). 메시지 큐에서는 기본적으로 업무 일지 크기에 제한을 두지 않습니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 최대 큐 크기는 나중에 다시 설정할 수 있지만 일반적으로 큐 생성 시 설정 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MulticastAddress">
+      <MemberSignature Language="C#" Value="public string MulticastAddress { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string MulticastAddress" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.MulticastAddress" />
+      <MemberSignature Language="VB.NET" Value="Public Property MulticastAddress As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ MulticastAddress { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.MulticastAddress : string with get, set" Usage="System.Messaging.MessageQueueInstaller.MulticastAddress" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue("")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>MSMQ 3.0에서 도입되었습니다. 큐에 연결된 멀티캐스트 주소를 가져오거나 설정합니다.</summary>
+        <value>아래 형식으로 된 올바른 멀티캐스트 주소가 들어 있는 <see cref="T:System.String" />이거나, 큐가 멀티캐스트 주소에 연결되지 않았음을 나타내는 <see langword="null" />입니다.  
+  
+```  
+&lt;address&gt;:&lt;port&gt;  
+```</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.PlatformNotSupportedException">MSMQ 3.0이 설치되어 있지 않은 경우</exception>
+        <altmember cref="P:System.Messaging.MessageQueue.MulticastAddress" />
+      </Docs>
+    </Member>
+    <Member MemberName="Path">
+      <MemberSignature Language="C#" Value="public string Path { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Path" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.Path" />
+      <MemberSignature Language="VB.NET" Value="Public Property Path As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Path { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Path : string with get, set" Usage="System.Messaging.MessageQueueInstaller.Path" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue("")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.Editor("System.Messaging.Design.QueuePathEditor", "System.Drawing.Design.UITypeEditor, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.TypeConverter("System.Diagnostics.Design.StringValueConverter, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-1.1">
+          <AttributeName>System.ComponentModel.Editor("System.Messaging.Design.QueuePathEditor", "System.Drawing.Design.UITypeEditor, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-1.1">
+          <AttributeName>System.ComponentModel.TypeConverter("System.Diagnostics.Design.StringValueConverter, System.Design, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5">
+          <AttributeName>System.ComponentModel.Editor("System.Messaging.Design.QueuePathEditor", "System.Drawing.Design.UITypeEditor, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5">
+          <AttributeName>System.ComponentModel.TypeConverter("System.Diagnostics.Design.StringValueConverter, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 개체가 참조하는 큐의 위치를 가져오거나 설정합니다.</summary>
+        <value>네트워크에서 큐의 위치를 나타내는 경로입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 구문은 <xref:System.Messaging.MessageQueue.Path%2A> 속성 유형에 따라 큐의 해당 참조 합니다. 다음 표에서 다양 한 종류의 큐에 대 한 사용 해야 하는 구문을 보여 줍니다.  
+  
+|큐 유형|구문|  
+|----------------|------------|  
+|공개 큐|`machineName`\\`queueName`|  
+|개인 큐|`machineName`\\`Private$`\\`queueName`|  
+|저널 큐|`machineName`\\`queueName`\\`Journal$`|  
+|컴퓨터 저널 큐|`machineName`\\`Journal$`|  
+|컴퓨터 배달 못 한 편지 큐|`machineName`\\`Deadletter$`|  
+|컴퓨터 트랜잭션 배달 못 한 편지 큐|`machineName`\\`XactDeadletter$`|  
+  
+ 사용 하 여 "." 로컬 컴퓨터에 대 한 합니다.  
+  
+ 사용할 수도 있습니다는 <xref:System.Messaging.MessageQueue.FormatName%2A> 또는 <xref:System.Messaging.MessageQueue.Label%2A> 큐 경로 설명 하는 메시지 큐 애플리케이션 개체입니다. 다음 표에서 각 형식의 참조에 대 한 적절 한 구문을 보여 줍니다.  
+  
+|참조|구문|  
+|---------------|------------|  
+|형식 이름|FormatName: [ *형식 이름을* ]|  
+|레이블|레이블: [ *레이블* ]|  
+  
+ 큐 정의 하는 형식 이름을 사용 해야 합니다 오프 라인으로 작업 하는 경우 <xref:System.Messaging.MessageQueue.Path%2A>합니다. 주 도메인 컨트롤러를 확인할 수 없기 때문에 애플리케이션에서 예외가 throw 됩니다 그렇지 않으면 합니다 <xref:System.Messaging.MessageQueue.Path%2A> 에 <xref:System.Messaging.MessageQueue.FormatName%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">잘못된 구문 등의 이유로 인해 <see cref="P:System.Messaging.MessageQueueInstaller.Path" />에 잘못된 값이 설정된 경우  
+  
+또는 
+<see cref="P:System.Messaging.MessageQueueInstaller.Path" />이 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Permissions">
+      <MemberSignature Language="C#" Value="public System.Messaging.AccessControlList Permissions { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Messaging.AccessControlList Permissions" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.Permissions" />
+      <MemberSignature Language="VB.NET" Value="Public Property Permissions As AccessControlList" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Messaging::AccessControlList ^ Permissions { System::Messaging::AccessControlList ^ get(); void set(System::Messaging::AccessControlList ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Permissions : System.Messaging.AccessControlList with get, set" Usage="System.Messaging.MessageQueueInstaller.Permissions" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.Browsable(false)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Messaging.AccessControlList</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>큐에 연결된 권한을 가져오거나 설정합니다.</summary>
+        <value>큐에 대해 부여할 권한 및 트러스티를 지정하는 액세스 제어 항목이 하나 이상 포함된 <see cref="T:System.Messaging.AccessControlList" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로 공용 또는 개인 큐의 작성자가 전체 컨트롤 및 도메인 그룹 모든 권한이 큐 속성을 가져오고 사용 권한 가져오기, 큐에 작성 하 합니다. 메시지 큐를 찾을 때까지 현재 사용자 및 현재 시도 된 작업에 적용 되는 각 사용 권한 목록 항목에 액세스 합니다. 운영 체제 권한을 사용 하 여 사용자 거부는 권한 보다 우선적으로 적용 된 대로 다음을 수행 하면 합니다.  
+  
+ 생성 하는 경우는 <xref:System.Messaging.MessageQueueInstaller.Permissions%2A> 속성을 추가 <xref:System.Messaging.AccessControlEntry> 인스턴스를 프로그램 <xref:System.Messaging.AccessControlList> 컬렉션입니다. 각 액세스 제어 항목을 생성 하는 경우에 제네릭 또는 표준 액세스 권한을 지정할 수 있습니다. 큐에 대 한 권한을 다음의 조합일 수 있습니다.  
+  
+-   삭제  
+  
+-   보안 읽기  
+  
+-   보안 쓰기  
+  
+-   동기화  
+  
+-   소유자 수정  
+  
+-   읽기  
+  
+-   Write  
+  
+-   실행  
+  
+-   필수  
+  
+-   모두  
+  
+-   없음  
+  
+ 이러한 권리는 비트 OR를 사용 하 여 결합할 수 있는 비트 플래그 집합입니다.  
+  
+-   모든 권한  
+  
+-   메시지 삭제  
+  
+-   메시지를 수신 합니다.  
+  
+-   메시지 보기  
+  
+-   저널 메시지 받기  
+  
+-   큐 속성 가져오기  
+  
+-   큐 속성 설정  
+  
+-   사용 권한 가져오기  
+  
+-   사용 권한 설정  
+  
+-   큐 소유권  
+  
+-   메시지 작성  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Messaging.MessageQueue.SetPermissions(System.String,System.Messaging.MessageQueueAccessRights)" />
+      </Docs>
+    </Member>
+    <Member MemberName="Rollback">
+      <MemberSignature Language="C#" Value="public override void Rollback (System.Collections.IDictionary savedState);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Rollback(class System.Collections.IDictionary savedState) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.MessageQueueInstaller.Rollback(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Rollback (savedState As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Rollback(System::Collections::IDictionary ^ savedState);" />
+      <MemberSignature Language="F#" Value="override this.Rollback : System.Collections.IDictionary -&gt; unit" Usage="messageQueueInstaller.Rollback savedState" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="savedState" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="savedState">컴퓨터의 설치 전 상태가 들어 있는 <see cref="T:System.Collections.IDictionary" />입니다.</param>
+        <summary>설치 프로시저에서 레지스트리에 쓴 큐 정보를 롤백하여 컴퓨터를 설치 이전 상태로 복구합니다. 이 메서드는 자동으로 적합한 메서드를 호출하는 설치 도구에서 사용됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 취소할 때의 효과 <xref:System.Messaging.MessageQueueInstaller.Install%2A> 메서드. <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 설치 프로젝트의 모든 구성 요소 설치에 실패 하는 경우 호출 됩니다. <xref:System.Messaging.MessageQueueInstaller.Install%2A> 메서드를 만들거나 큐에 대 한 속성을 설정 합니다. <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 큐를 삭제 하거나 기존 큐의 속성을 사전 설치 값으로 다시 설정 합니다.  
+  
+ 일반적으로 호출 하지 않으면 메서드는 <xref:System.Messaging.MessageQueueInstaller> 에서 코드 내에서 일반적으로 라고 InstallUtil.exe 설치 유틸리티에서만 합니다. 유틸리티를 자동으로 호출 된 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 메서드 변경 내용을 취소 하려면 설치 오류가 발생 한 후 설치 프로세스를 이미 수행 합니다.  
+  
+ 프로젝트 설치 관리자를 사용 하는 애플리케이션의 설치 루틴 <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=nameWithType> 자동으로 설치 된 구성 요소에 대 한 정보를 유지 관리 합니다. 에 전달 되는이 상태 정보 <xref:System.Messaging.MessageQueueInstaller.Rollback%2A> 으로 `savedState` 유틸리티를 롤업 하는 대로 매개 변수를 계속 업데이트 됩니다 각 <xref:System.Messaging.MessageQueueInstaller> 인스턴스. 일반적으로 명시적으로이 상태 정보를 수정 하기 위해 코드에 대 한 필요는 없습니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Commit(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Install(System.Collections.IDictionary)" />
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Uninstall(System.Collections.IDictionary)" />
+        <altmember cref="T:System.Collections.IDictionary" />
+      </Docs>
+    </Member>
+    <Member MemberName="Transactional">
+      <MemberSignature Language="C#" Value="public bool Transactional { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool Transactional" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.Transactional" />
+      <MemberSignature Language="VB.NET" Value="Public Property Transactional As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool Transactional { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.Transactional : bool with get, set" Usage="System.Messaging.MessageQueueInstaller.Transactional" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue(false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>해당 큐가 트랜잭션의 일부로서 전달된 메시지만 허용하는지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>해당 큐가 트랜잭션의 일부로서 전달된 메시지만 허용하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 또는 트랜잭션을 사용 하지 않고 로컬 트랜잭션 큐에서 메시지를 검색할 수 있습니다. 트랜잭션 컨텍스트를 지정 하지 않으면 하는 경우 메시지 큐 단일 내부 트랜잭션에를 만듭니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Uninstall">
+      <MemberSignature Language="C#" Value="public override void Uninstall (System.Collections.IDictionary savedState);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void Uninstall(class System.Collections.IDictionary savedState) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Messaging.MessageQueueInstaller.Uninstall(System.Collections.IDictionary)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub Uninstall (savedState As IDictionary)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void Uninstall(System::Collections::IDictionary ^ savedState);" />
+      <MemberSignature Language="F#" Value="override this.Uninstall : System.Collections.IDictionary -&gt; unit" Usage="messageQueueInstaller.Uninstall savedState" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="savedState" Type="System.Collections.IDictionary" />
+      </Parameters>
+      <Docs>
+        <param name="savedState">컴퓨터의 설치 후 상태가 들어 있는 <see cref="T:System.Collections.IDictionary" />입니다.</param>
+        <summary>레지스트리에서 큐 정보를 제거하여 설치를 제거합니다. 이 메서드는 자동으로 적합한 메서드를 호출하는 설치 제거 도구에서 사용됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우는 <xref:System.Messaging.MessageQueueInstaller.UninstallAction%2A> 됩니다 `Remove`, <xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> 도 연결 된 큐를 삭제 합니다 <xref:System.Messaging.MessageQueue>.  
+  
+ 일반적으로 호출 하지 않으면 메서드는 <xref:System.Messaging.MessageQueueInstaller> 에서 코드 내에서 일반적으로 라고 InstallUtil.exe 설치 유틸리티에서만 (제거 모드에서). 유틸리티를 자동으로 호출 된 <xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> 설치 이전 상태로 설치가 영향을 받는 시스템 부분을 복원 하는 방법입니다. 여기에 제거 하 고 메시지 큐와 연결 된 레지스트리 정보를 삭제 합니다.  
+  
+ 애플리케이션의 설치 제거 루틴 프로젝트 설치 관리자의 <xref:System.Configuration.Install.Installer.Context%2A?displayProperty=nameWithType> 이미 설치 되어 있는 구성 요소에 대 한 정보를 자동으로 유지 관리 합니다. 에 전달 되는이 상태 정보 <xref:System.Messaging.MessageQueueInstaller.Uninstall%2A> 으로 `savedState` 유틸리티를 각각 제거 하는 대로 매개 변수를 계속 업데이트 됩니다 <xref:System.Messaging.MessageQueueInstaller> 인스턴스. 일반적으로 명시적으로이 상태 정보를 수정 하기 위해 코드에 대 한 필요는 없습니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Messaging.MessageQueueInstaller.Install(System.Collections.IDictionary)" />
+        <altmember cref="T:System.Collections.IDictionary" />
+      </Docs>
+    </Member>
+    <Member MemberName="UninstallAction">
+      <MemberSignature Language="C#" Value="public System.Configuration.Install.UninstallAction UninstallAction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Configuration.Install.UninstallAction UninstallAction" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.UninstallAction" />
+      <MemberSignature Language="VB.NET" Value="Public Property UninstallAction As UninstallAction" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Configuration::Install::UninstallAction UninstallAction { System::Configuration::Install::UninstallAction get(); void set(System::Configuration::Install::UninstallAction value); };" />
+      <MemberSignature Language="F#" Value="member this.UninstallAction : System.Configuration.Install.UninstallAction with get, set" Usage="System.Messaging.MessageQueueInstaller.UninstallAction" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue(Mono.Cecil.CustomAttributeArgument)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Configuration.Install.UninstallAction</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>설치 제거 시 설치 관리자가 큐에 대해 수행할 작업(예: 큐 제거, 설치 이전 상태로 복구, 또는 현재 설치된 상태로 유지)을 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Configuration.Install.UninstallAction" />가 제거될 때 큐를 어떤 상태로 둘 것인지를 나타내는 <see cref="T:System.Messaging.MessageQueue" /> 값 중 하나입니다. 기본값은 <see langword="Remove" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 큐를 설치할 때 필요에 따라 기존 큐를 사용할 수 있습니다. 이렇게 하면 큐 설치 이전 상태로 돌아갑니다 하거나 현재, 설치 후 상태로 유지 해야 하는지 여부를 결정 해야 합니다. 설치 전 상태로 큐를 반환 하려는 경우에 설치 시 큐에서 삭제 된 메시지는 복원 되지 않습니다. 연관 된 속성만 큐를 다시 설정할 수 있습니다는 <xref:System.Messaging.MessageQueueInstaller> 사전 설치 값입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Configuration.Install.UninstallAction" />
+      </Docs>
+    </Member>
+    <Member MemberName="UseJournalQueue">
+      <MemberSignature Language="C#" Value="public bool UseJournalQueue { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool UseJournalQueue" />
+      <MemberSignature Language="DocId" Value="P:System.Messaging.MessageQueueInstaller.UseJournalQueue" />
+      <MemberSignature Language="VB.NET" Value="Public Property UseJournalQueue As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool UseJournalQueue { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.UseJournalQueue : bool with get, set" Usage="System.Messaging.MessageQueueInstaller.UseJournalQueue" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Messaging</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.ComponentModel.DefaultValue(false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>큐에서 검색된 메시지가 연결된 업무 일지 큐로 복사되는지 여부를 나타내는 값을 가져오거나 설정합니다.</summary>
+        <value>큐에서 검색된 메시지가 업무 일지 큐에도 복사되도록 하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 저널 큐를 사용 하면 한 추적 메시지 큐에서 검색 된 후에 수 있습니다. 그러나 두 가지 유형의 메시지 추적 유지: 해당 받을 시간 타이머가 만료 되 면 큐에서 제거 된 및 큐에서 제거 되는 것입니다.  
+  
+ 저널 큐를 더 이상 필요 없는 메시지를 제거 하려면 주기적으로 지워야 합니다. 메시지를 저널이 있는 컴퓨터에 대 한 할당량에 포함 된 업무 일지 큐 수에 저장 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

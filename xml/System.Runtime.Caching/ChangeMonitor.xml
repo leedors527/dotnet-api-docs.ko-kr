@@ -1,0 +1,437 @@
+<Type Name="ChangeMonitor" FullName="System.Runtime.Caching.ChangeMonitor">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="aa8f739063475b844ca1c37c795d7728c6ae75a7" /><Meta Name="ms.sourcegitcommit" Value="c5fd6b431a16f0412349201a0e93a9eacddf4b35" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/14/2018" /><Meta Name="ms.locfileid" Value="53390055" /></Metadata><TypeSignature Language="C#" Value="public abstract class ChangeMonitor : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ChangeMonitor extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Runtime.Caching.ChangeMonitor" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ChangeMonitor&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ChangeMonitor abstract : IDisposable" />
+  <TypeSignature Language="F#" Value="type ChangeMonitor = class&#xA;    interface IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime.Caching</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>캐시 항목이 종속된 데이터의 상태 변경을 모니터링하는 파생된 사용자 지정 형식에 대한 기본 클래스를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Runtime.Caching.ChangeMonitor> 클래스는 특정 캐시 구현에 대해 특수화 된 파생된 모니터링 클래스에 기본 클래스로 사용 됩니다. <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스 캐시 항목을 의존 하는 데이터의 상태 변경을 모니터링 합니다. 예를 들어, 항목에는 내용이 캐시 된 파일 또는 데이터 엔터티를 수 있습니다. 파일 또는 데이터 엔터티를 업데이트 되 면 연결된 된 캐시 엔트리 변경 되어야 합니다. 모니터링할 수 있는 공통 항목 데이터 엔터티 (예: 데이터베이스 필드, 값, 행 또는 테이블), 다른 캐시 항목 및 파일 및 파일 특성을 포함 합니다.  
+  
+ 종속성이 변경에는 종속성의 상태에서 변경이 되었습니다. 일반적인 캐시 구현에서 면을 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스에 알립니다 종속성이 변경 하는 캐시, 캐시에 삽입 된 캐시 항목을 무효화 하는 등 필요한 작업을 수행 합니다.  
+  
+ 파생 된 <xref:System.Runtime.Caching.ChangeMonitor> 특정 다양 한 데이터 저장소에 대 한 종속성 변경을 모니터링 하려면 클래스를 사용자 지정할 수 있습니다. 예를 들어, 파일 시스템, 실제 메모리 또는 데이터베이스에 대 한 캐시 구현 됩니다. <xref:System.Runtime.Caching.ChangeMonitor> 클래스 캐시 외부에서 발생 하는 변경 내용을 검사 하 고 다음 변경 사항이 발생 하는 캐시를 경고 합니다.  
+  
+ 합니다 [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] 에서 파생 되는 다음 클래스가 포함 되어 있습니다 <xref:System.Runtime.Caching.ChangeMonitor> 클래스:  
+  
+-   <xref:System.Runtime.Caching.CacheEntryChangeMonitor>  
+  
+-   <xref:System.Runtime.Caching.FileChangeMonitor>  
+  
+-   <xref:System.Runtime.Caching.HostFileChangeMonitor>  
+  
+-   <xref:System.Runtime.Caching.SqlChangeMonitor>  
+  
+ 각이 클래스는 다양 한 유형의 종속성을 사용 하 여 작동합니다. 예를 들어 파생 <xref:System.Runtime.Caching.FileChangeMonitor> 클래스에는 캐시 항목이 종속 된 파일 시스템 데이터 (파일 및 폴더)에 대 한 캐시의 변경 내용을 모니터링 합니다.  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>이 형식은 스레드로부터 안전합니다.</threadsafe>
+    <block subset="none" type="overrides"><para>사용자 지정을 만드는 경우 캐시 구현 또는 파생 된 변경 모니터 유형, 특정 지침을 따라야 합니다. 다음 목록은 이러한 지침을 요약 합니다. 자세한 내용은 개별 메서드 또는 속성에 대 한 설명서를 참조 하세요.  
+  
+-파생된 클래스의 생성자에서 설정 해야 합니다는 <see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" /> 속성인 모니터링을 시작 하 고 호출 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 메서드가 반환 하기 전에 합니다. 생성자를 생성 하는 동안 오류가 발생 하 리소스를 삭제 해야 하는 경우만 호출할 수는 <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> 후 오버 로드는 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 하므로 메서드는 합니다 <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> 오버 로드를 발생 시킵니다는 <see cref="T:System.InvalidOperationException" /> 초기화가 완료 되지 않은 경우 예외입니다.  
+  
+-에서 변경이 발생 하는 경우 초기화 되기 전에 모니터링 되는 데이터 전체, 생성자를 호출 해야 합니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드를 호출 하기 전에 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 메서드.  
+  
+파생 된 이후 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 형식을 인스턴스화할 사용자 지정 모니터를 삽입 해야 <see cref="T:System.Runtime.Caching.ObjectCache" /> 구현 합니다. 변경 모니터를 사용 하 여 작업을 완료 하는 경우 호출 또는 <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드.  
+  
+-후를 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스를 삽입을 <see cref="T:System.Runtime.Caching.ObjectCache" /> 구현을 <see cref="T:System.Runtime.Caching.ObjectCache" /> 인스턴스 요구는 변경 모니터 삭제 됩니다. 삽입 유효 하지 않으며, 예외가 발생 하는 경우에 합니다 <see cref="T:System.Runtime.Caching.ObjectCache" /> 구현을 호출 해야 합니다는 <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> 오버 로드 합니다.  
+  
+-파생된 된 변경 모니터는 캐시에 삽입 된 후의 <see cref="T:System.Runtime.Caching.ObjectCache" /> 구현을 호출 해야 합니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />를 전달 하 여를 <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 개체입니다. <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 메서드를 한 번만 호출할 수 있습니다. 종속성이 변경 문제가 이미 발생 했다면 합니다 <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 인스턴스를 즉시 호출 됩니다 때 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 라고 합니다. 그렇지 않은 경우는 <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 인스턴스에 한 번만 호출 됩니다. 이 한 번 호출 발생 하거나 때를 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 때문에 메서드는 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스가 변경 검색 되거나를 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드를 호출는 <see cref="T:System.Runtime.Caching.ChangeMonitor" />, 중 먼저 발생 하 합니다.  
+  
+- <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 에서 제공 되는 인스턴스를 <see cref="T:System.Runtime.Caching.ObjectCache" /> 구현 해야 연결 된 캐시 엔트리를 제거 하 고 사용 하 여 이유를 지정 된 <see cref="F:System.Web.Caching.CacheItemRemovedReason.DependencyChanged" /> 열거형입니다.  
+  
+-A <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스를 호출할 수는 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드 캐시 구현이 호출 전에 하나 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 메서드 후 또는 합니다. 경우는 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드 전에 호출 됩니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 호출 되는 기본 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 이 발생 하는 캐시에 그 사실을 알리는 구현과 전달할 콜백 트리거할 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 즉시 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 가 호출 됩니다. 에 전달 되는 상태 데이터를 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드 변경 모니터에 의해 저장 되 고 이후에 전달할를 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 메서드 때는 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 메서드가 실행 됩니다.  
+  
+-는 변경 모니터를 구현 해야 합니다는 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 메서드. 자세한 내용은 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 메서드 설명서를 참조하세요.  
+  
+- <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드 오버 로드의 dispose를 호출 해야 합니다는 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스. Dispose를 호출 하는 것에 대 한 규칙 아래와 같습니다. 
+-삭제 하는 호출자의 책임이 항목이 캐시에 삽입 전에 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스.  
+  
+-한 번 캐시 항목 및 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 캐시에 연관 된 인스턴스는 전달, 캐시 구현자 되도록 해야 합니다는 <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> 삽입이 실패 하는 경우에 메서드가 호출 됩니다.  
+  
+항목 및 연결 된 after <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스를 캐시에 전달 되, 때문에 호출자가 종속성을 삭제 해야 할 때는 <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드가 호출 되 면 호출의 종속성이 변경 된 것 처럼 처리 됩니다. 결과적으로 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드가 자동으로 실행 됩니다.  
+  
+-이러한 규칙을 고려해 야 할 수행는 <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> 다음 방법 중 하나로 메서드를 호출 해야 합니다. 
+사용자를 호출 해야 합니다는 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드 오버 로드는 하지 않기로 결정 파생 된 변경 모니터 인스턴스 캐시에 삽입 합니다.  
+  
+-삽입이 실패 하면 구현 변경 모니터 인스턴스는 개체 캐시에 삽입 하려고 하지만 경우 캐시 구현이 호출을 담당 합니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 오버 로드 합니다. 삽입 시도가 예외를 발생 시키는 캐시 구현이 관련 된 모든 종속성을 삭제 해야 합니다.  
+  
+-캐시 엔트리가 제거 된 경우 캐시 구현이 종속성도 삭제 해야 합니다.  
+  
+-내부 구현의 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드를 자동으로 호출 합니다 <see cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드는 콜백을 호출 후이 통해 등록 된 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />합니다.  
+  
+ <block subset="none" type="note"><para>  
+ 경우에 이벤트 발생 하는 동안 dispose 메서드에 대 한이 자동 호출 발생 초기화는 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스가 이전에 완료 되었습니다.  
+  
+</para></block>  
+  
+ 파생 된 변경 모니터의 생성자가 호출 하는 경우는 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 메서드를 변경 모니터의 상태가 이미 변경 된 경우 (즉, 생성자가 여전히 활성화 하는 경우 이미 변경 된 모니터링 되는 상태)는 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 메서드는 변경 모니터의 자동으로 삭제 합니다.  
+  
+- <see cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" /> 속성 <see langword="true" /> 후 합니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드는 파생 된 변경 모니터 인스턴스에서 여부에 관계 없이 <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 개체에 대 한 호출에서 설정 된를 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 메서드 여부.</para></block>
+    <altmember cref="N:System.Web.Caching" />
+    <altmember cref="T:System.Runtime.Caching.ObjectCache" />
+    <related type="Article" href="https://msdn.microsoft.com/library/ac11c8ea-df5d-4de8-b315-9ccf1048b0ce">ASP.NET 캐싱</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ChangeMonitor ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ChangeMonitor();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Runtime.Caching.ChangeMonitor" /> 클래스의 새 인스턴스를 초기화합니다. 이 생성자는 파생 클래스의 생성자에서 호출되어 기본 클래스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Runtime.Caching.ChangeMonitor> 클래스 기본 생성자가 있습니다. 그러나 클래스에서에서 상속 되는 기본 <xref:System.Runtime.Caching.ChangeMonitor> 클래스 및 사용자 지정 변경 모니터링을 정의 동작 생성자에서 초기화를 수행 해야 합니다. 자세한 내용은 상속자 섹션에 대 한 참고를 참조 하세요.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>파생된 클래스의 생성자에서 설정 해야 합니다는 <see cref="P:System.Runtime.Caching.ChangeMonitor.UniqueId" /> 속성인 모니터링을 시작 하 고 호출 된 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 반환 하기 전에 클래스. 초기화 전에 종속성이 변경 (예: 캐시에 종속 된 캐시 키가 없는 경우) 완료 되 면 생성자를 호출 해야 합니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드를 호출 하기 전에 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 메서드. 생성자를 호출할 수 있습니다이 경우는 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드 후에 합니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 메서드를 호출 하기 때문에 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드에서 초기화 완료 되지 않으면 예외가 throw 됩니다.</para></block>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Runtime.Caching.ChangeMonitor" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드 릴리스를 사용 하는 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스와 관련 된 리소스입니다. 공용 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> (예: 초기화)에서 파생 된 변경 모니터 클래스의 키 수명 주기 이벤트를 사용 하 여 삭제 프로세스를 조정 하 고 릴리스를 메서드가 호출 되는 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스가 가비지 수집 될 수 있도록 인스턴스입니다. <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드는 관리 및 관리 되지 않는 리소스를 삭제 하기 위해 파생 된 변경 모니터 클래스에서 구현 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="changeMonitor.Dispose " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Runtime.Caching.ChangeMonitor" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드를 호출 하는 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드의 파생된 클래스 한 번만에 처음으로 호출 됩니다. 에 대 한 후속 호출을 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드 영향을 주지 않습니다. 메서드를 호출한 후 합니다 <xref:System.Runtime.Caching.ChangeMonitor.IsDisposed%2A> 속성이 `true`합니다.  
+  
+ 합니다 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 오버 로드의 dispose를 호출 해야 합니다는 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스. 다음은 dispose 메서드를 호출 하는 것에 대 한 규칙:  
+  
+-   삭제 해야 하는 호출자의 항목은 캐시에 삽입 하기 전에 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스.  
+  
+-   한 번 캐시 항목 및 <xref:System.Runtime.Caching.ChangeMonitor> 연관 된 인스턴스를 캐시에 있는지 확인 해야 하는 캐시 구현자에 전달 됩니다 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 삽입이 실패 하는 경우에 호출 됩니다.  
+  
+-   항목 및 연결 된 후 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스 캐시에 전달 된, 때문에 호출자에 게가 종속성을 삭제 해야 경우는 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드가 호출 되 면 호출의 종속성이 변경 된 것 처럼 처리 됩니다. 결과적으로 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드가 자동으로 실행 됩니다.  
+  
+-   이러한 규칙 고려는 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 다음 방법 중 하나로 메서드를 호출 해야 합니다.  
+  
+    -   사용자를 호출 해야 합니다는 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드 오버 로드는 하지 않기로 결정 파생 된 변경 모니터 인스턴스 캐시에 삽입 합니다.  
+  
+    -   캐시 구현이 호출을 담당 합니다 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 구현을 변경 모니터 인스턴스는 개체 캐시에 삽입 하려고 시도 하지만 삽입이 실패 하는 경우 오버 로드 합니다. 삽입 시도가 예외를 발생 시키는 캐시 구현이 관련 된 모든 종속성을 삭제 해야 합니다.  
+  
+    -   캐시 엔트리가 제거 된 경우 캐시 구현이 종속성도 삭제 해야 합니다.  
+  
+ 내부 구현을 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드를 자동으로 호출 합니다 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드는 콜백을 호출 후이 통해 등록 된는 <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> 메서드.  
+  
+> [!NOTE]
+>  경우에 이벤트 발생 하는 동안이 자동 dispose 발생의 초기화를 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스가 이전에 완료 되었습니다.  
+  
+ 파생 된 변경 모니터의 생성자가 호출 하는 경우는 <xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A> 메서드를 변경 모니터의 상태가 이미 변경 된 경우 (즉, 상태 모니터링 되는 이미 변경 생성자가 여전히 활성화 하는 경우) 다음 <xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A> 메서드는 변경 모니터를 자동으로 삭제 합니다.  
+  
+> [!NOTE]
+>  사용자를 호출 하지 않아야 합니다 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드. 그러나 메서드를 호출에서 사용자를 막을 수 없습니다. 따라서, 그럴 경우는 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드가 실행 됩니다. 이 경우 캐시 엔트리는 종속성이 변경 된 것 처럼 알림이 전송 됩니다.  
+  
+ 파생된 클래스를 재정의 하지 못하도록 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드를 메서드는 명시적 인터페이스 구현이 아닙니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">기본 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드를 호출한 파생된 변경 모니터 클래스에서 초기화가 완료되지 않았습니다.</exception>
+        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected abstract void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : bool -&gt; unit" Usage="changeMonitor.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">관리되는 리소스 및 관리되지 않는 리소스와 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스에 대한 모든 참조를 해제하려면 <see langword="true" />이고, 관리되지 않는 리소스만 해제하려면 <see langword="false" />입니다. <see langword="false" />가 전달되면 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 메서드가 <see langword="finalizer" /> 스레드에 의해 호출되고, 모든 외부 관리 참조가 이미 가비지 수집되었기 때문에 더 이상 유효하지 않습니다.</param>
+        <summary>모든 관리되는 리소스 및 관리되지 않는 리소스와 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스에 대한 모든 참조를 해제합니다. 이 오버로드는 파생된 변경 모니터 클래스에 의해 구현되어야 합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우 값 `disposing` 값은 `true`, 모든 관리 및 관리 되지 않는 리소스 삭제 되 고 파생 된 변경 모니터 인스턴스의 가비지 수집 될 수 있도록이 개체에 대 한 참조가 해제 됩니다. 반드시 기본 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드는 구현 된 호출 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드 한 번만 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>변경 모니터를 구현 해야 합니다는 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 오버 로드 모두 해제를 관리 하 고 관리 되지 않는 리소스 때 변수의 <paramref name="disposing" /> 는 <see langword="true" />합니다. <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 포함 된 메서드 오버 로드를 <paramref name="disposing" /> 의 값 <see langword="true" /> 라고 한 번만 즉, 인스턴스가 처음으로 삭제 될 때입니다. 변경 모니터를 호출 하지 않아야 합니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 오버 로드를 직접. 파생된 된 변경 모니터 공용 매개 변수 없이 호출할 수 있습니다 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드를 기본 <see cref="T:System.Runtime.Caching.ChangeMonitor" /> 클래스입니다.  
+  
+또는 변경 모니터 종료자 메서드를 구현할 수 있습니다. 이런 경우 종료자를 호출할 수 있습니다는 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose(System.Boolean)" /> 메서드 전달를 <paramref name="disposing" /> 의 값 <see langword="false" />합니다. 그러나 일반적으로 필요한 아닙니다. 종속성이 변경에 대 한 모니터링은 일반적으로 변경 모니터 인스턴스에 대 한 참조를 유지 하는 서비스에서 수행 됩니다. 참조가는 인스턴스가 가비지 수집 되지 않습니다 하 고 불필요 한 종료자 메서드를 사용 합니다. 종속성이 변경 되 면 메모리 누수를 방지 하는 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드 (하지 않는 한 초기화가 완료 되지)는 변경 모니터 인스턴스를 삭제 합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="HasChanged">
+      <MemberSignature Language="C#" Value="public bool HasChanged { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasChanged" />
+      <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.HasChanged" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property HasChanged As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool HasChanged { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.HasChanged : bool" Usage="System.Runtime.Caching.ChangeMonitor.HasChanged" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Runtime.Caching.ChangeMonitor" /> 클래스에서 모니터링하는 상태가 변경되었음을 나타내는 값을 가져옵니다.</summary>
+        <value><see cref="T:System.Runtime.Caching.ChangeMonitor" /> 인스턴스에서 모니터링하는 상태가 변경되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 파생된 된이 속성의 값을 확인할 수 있습니다 <xref:System.Runtime.Caching.ChangeMonitor> 클래스 종속성이 변경 되었는지 여부를 확인 합니다.  
+  
+ 값으로 설정 됩니다 `true` 종속성 변경이 발생할 경우 (즉는 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드가 호출 됩니다). 후는 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 의 값을 파생된 클래스에서 호출 됩니다 합니다 <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> 속성이 됩니다 `true`여부에 관계 없이 <xref:System.Runtime.Caching.OnChangedCallback> 인스턴스를 호출 하 여 통보 했습니다를 <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> 메서드.  
+  
+> [!NOTE]
+>  호출자가 확인할 수는 <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> 종속성 변경 되었는지 여부를 확인 하려면 속성입니다. 그러나 다중 스레드 환경에서 간단 하 고 유지 관리 하는 방법입니다 확인 하지 않고 데이터를 캐시 구현에 삽입 된 <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> 속성입니다. 캐시 구현에서 확인 해야 합니다는 <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> 속성이 하며 하지 삽입 수행 이거나 하나 이상의 연결 된 종속성이 이미 변경 된 경우 작업을 설정 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />
+        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
+      </Docs>
+    </Member>
+    <Member MemberName="InitializationComplete">
+      <MemberSignature Language="C#" Value="protected void InitializationComplete ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void InitializationComplete() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub InitializationComplete ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void InitializationComplete();" />
+      <MemberSignature Language="F#" Value="member this.InitializationComplete : unit -&gt; unit" Usage="changeMonitor.InitializationComplete " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스의 생성자에서 호출되어 초기화가 완료되었음을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 종속성이 파생된 클래스에서 초기화가 완료 되기 전에 변경 하는 경우 파생된 클래스의 생성자를 호출 해야 합니다 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드.  
+  
+ 경우는 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드가 호출 되는 <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> 속성으로 자동 설정 됩니다 `true` 변경 모니터에 의해 합니다. 변경 모니터의 생성자를 호출 하면 결과적으로 <xref:System.Runtime.Caching.ChangeMonitor.InitializationComplete%2A> 메서드를 기본 클래스를 자동으로 호출 합니다 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드. 초기화가 완료 하는 경우는 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드는 파생 된 변경 모니터 인스턴스를 자동으로 삭제 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>파생된 클래스의 생성자는 기본을 호출 해야 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 생성자를 반환 하기 전에 합니다. 파생된 클래스의 생성자를 호출할 수는 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드 후에 <see cref="M:System.Runtime.Caching.ChangeMonitor.InitializationComplete" /> 되므로 이라고는 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드에서 초기화 완료 되지 않으면 예외가 throw 됩니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="IsDisposed">
+      <MemberSignature Language="C#" Value="public bool IsDisposed { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsDisposed" />
+      <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.IsDisposed" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsDisposed As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsDisposed { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsDisposed : bool" Usage="System.Runtime.Caching.ChangeMonitor.IsDisposed" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Runtime.Caching.ChangeMonitor" /> 클래스의 파생 인스턴스가 삭제되었는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>인스턴스가 삭제되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 속성이 설정 되어 `true` 기본 후 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 메서드 호출을 <xref:System.Runtime.Caching.ChangeMonitor.Dispose%2A> 인스턴스를 삭제 하는 파생된 클래스에서 메서드.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="NotifyOnChanged">
+      <MemberSignature Language="C#" Value="public void NotifyOnChanged (System.Runtime.Caching.OnChangedCallback onChangedCallback);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void NotifyOnChanged(class System.Runtime.Caching.OnChangedCallback onChangedCallback) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void NotifyOnChanged(System::Runtime::Caching::OnChangedCallback ^ onChangedCallback);" />
+      <MemberSignature Language="F#" Value="member this.NotifyOnChanged : System.Runtime.Caching.OnChangedCallback -&gt; unit" Usage="changeMonitor.NotifyOnChanged onChangedCallback" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="onChangedCallback" Type="System.Runtime.Caching.OnChangedCallback" />
+      </Parameters>
+      <Docs>
+        <param name="onChangedCallback">종속성이 변경되었을 때 호출되는 메서드에 대한 참조입니다.</param>
+        <summary>종속성이 변경되었을 때 콜백을 등록하고 <see cref="T:System.Runtime.Caching.ObjectCache" /> 대리자를 통해 <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 인스턴스를 알리기 위해 캐시 구현자에 의해 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 캐시 구현자는 변경 모니터 자체를 연결 하는 데이 메서드를 사용 합니다. 전달 하는 경우 연결한 하나 이상의 캐시 항목을 사용 하 여 모니터를 변경,는 <xref:System.Runtime.Caching.CacheItemPolicy> 채워진된 변경 모니터 속성 캐시 항목을 사용 하 여 인스턴스. 반복에 대 한 지원 변경 모니터는 캐시 구현자는를 <xref:System.Runtime.Caching.CacheItemPolicy.ChangeMonitors%2A> 속성 및 등록을 <xref:System.Runtime.Caching.OnChangedCallback> 각 대리자 발견 되는 모니터를 변경 합니다.  
+  
+ 때문에 <xref:System.Runtime.Caching.OnChangedCallback> 는 선택적 상태 매개 변수를 포함 하는 대리자, 구체적인 변경 모니터 구현은 선택적 상태 정보를 전달할 수 있습니다. 캐시 구현 자가 콜백의 일부로 전달 하는 사용자 지정 변경 모니터 상태의 유형에 따라 명시적 종속성을 사용할 수 있는지 여부를 결정 합니다.  
+  
+> [!NOTE]
+>  기본 캐시 확장성 API에 상태 형식에는 명시적 종속성에 대 한 요구 사항이 있습니다.  
+  
+ 구현의 합니다 <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> 메서드를 자동으로 시 모니터의 상태가 이미 변경 되었는지 여부를 결정 <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> 메서드가 호출 됩니다. 경우는 <xref:System.Runtime.Caching.ChangeMonitor.HasChanged%2A> 속성은 `true`, 메서드를 자동으로 호출 합니다 합니다 <xref:System.Runtime.Caching.OnChangedCallback> 통해 등록 된 이벤트 처리기는 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드. 이 캐시 구현이 캐시 구현이 모니터를 가져오고 자체를 최대 연결 시간에는 변경 모니터를 만드는 시점부터 기본 모니터링된 상태가 변경 되었습니다 수 있기 때문에 발생 합니다. 상태 변경 되었는지 여부 이미 다음에 전달 되는 개체를 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드는 `null`합니다.  
+  
+ <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> 메서드는 한 번만 호출할 수 있으며 후속 호출에서 예외가 throw 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">콜백 메서드가 이미 호출되었습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="onChangedCallback" />가 <see langword="null" />인 경우</exception>
+        <block subset="none" type="overrides"><para>1.  호출 해야 합니다는 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 종속성 변경 알림을 받을 방법입니다. 종속성이 변경 문제가 이미 발생 했다면 합니다 <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 인스턴스를 호출할 때 <see cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" /> 라고 합니다. 이 고, 그렇지는 <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 인스턴스에 한 번 호출 됩니다 때를 <see cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" /> 메서드는 때나를 <see cref="M:System.Runtime.Caching.ChangeMonitor.Dispose" /> 메서드를 호출 중 먼저 발생 합니다. <see cref="T:System.Runtime.Caching.OnChangedCallback" /> 캐시 구현에서 제공 하는 인스턴스 캐시 엔트리를 제거 하며 다시 원래 캐시 호출자에 게 업데이트 이벤트를 변경 해야 하는 캐시 호출자가 요청 된 경우 발생 합니다.  
+  
+2.  개체 캐시 구현 종속성이 변경에 연관 된 캐시 엔트리를 제거 해야 합니다.</para></block>
+        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
+      </Docs>
+    </Member>
+    <Member MemberName="OnChanged">
+      <MemberSignature Language="C#" Value="protected void OnChanged (object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void OnChanged(object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Runtime.Caching.ChangeMonitor.OnChanged(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub OnChanged (state As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void OnChanged(System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="member this.OnChanged : obj -&gt; unit" Usage="changeMonitor.OnChanged state" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="state">변경 이벤트에 대한 데이터입니다. 이 값은 <see langword="null" />일 수 있습니다.</param>
+        <summary>종속성이 변경될 때 이벤트를 발생시킬 수 있도록 파생 클래스에서 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 일반적으로 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드 종속성이 변경 될 때 호출 됩니다. <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 변경 모니터 인스턴스의 삭제 되지만 삭제 콜백을 이미 호출 되지 않았습니다 하는 경우에 발생 하는 경우에 메서드 호출 됩니다.  
+  
+ 경우는 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 전에 메서드가 호출 되는 <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> 를 호출 하 여 상태 데이터를 메서드 호출를 <xref:System.Runtime.Caching.ChangeMonitor.OnChanged%2A> 메서드는 캐시 구현에 의해 저장 됩니다. 또한 콜백을 <xref:System.Runtime.Caching.OnChangedCallback> 메서드는 즉시 호출 됩니다 때는 <xref:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged%2A> 메서드가 실행 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="Overload:System.Runtime.Caching.ChangeMonitor.Dispose" />
+        <altmember cref="M:System.Runtime.Caching.ChangeMonitor.NotifyOnChanged(System.Runtime.Caching.OnChangedCallback)" />
+        <altmember cref="P:System.Runtime.Caching.ChangeMonitor.HasChanged" />
+      </Docs>
+    </Member>
+    <Member MemberName="UniqueId">
+      <MemberSignature Language="C#" Value="public abstract string UniqueId { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string UniqueId" />
+      <MemberSignature Language="DocId" Value="P:System.Runtime.Caching.ChangeMonitor.UniqueId" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property UniqueId As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property System::String ^ UniqueId { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.UniqueId : string" Usage="System.Runtime.Caching.ChangeMonitor.UniqueId" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Caching</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Runtime.Caching.ChangeMonitor" /> 클래스 인스턴스를 나타내는 값을 가져옵니다.</summary>
+        <value>변경 모니터 인스턴스의 식별자입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A> 속성 값 일반적으로 구성 됩니다 종속성 연결 이름의 문자열 데이터의 고유 하 게 하 여 모니터링 되는 데이터 식별자는 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스. 값을 <xref:System.Runtime.Caching.ChangeMonitor.UniqueId%2A> 속성은 문자열입니다. 문자열 값의 고유 ID를 할당 되는 <xref:System.Runtime.Caching.ChangeMonitor> 인스턴스.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>속성을 재정의 하 여 속성의 문자열 값에 대 한 사용자 지정 구현을 고유 ID를 할당 하기 위해 정의할 수 있습니다.</para></block>
+        <block subset="none" type="overrides"><para>파생된 클래스의 생성자에서 속성의 값을 설정 해야 합니다.</para></block>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

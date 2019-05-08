@@ -1,0 +1,1174 @@
+<Type Name="TraceSource" FullName="System.Diagnostics.TraceSource">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0f28ef5eca9523cc53cab30cd635198ecf4754d4" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58706433" /></Metadata><TypeSignature Language="C#" Value="public class TraceSource" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit TraceSource extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Diagnostics.TraceSource" />
+  <TypeSignature Language="VB.NET" Value="Public Class TraceSource" />
+  <TypeSignature Language="C++ CLI" Value="public ref class TraceSource" />
+  <TypeSignature Language="F#" Value="type TraceSource = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>코드 실행을 추적하고 추적 메시지를 소스와 연결하는 데 필요한 메서드 및 속성 집합을 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource> 클래스는 응용 프로그램과 연결될 수 있는 추적을 만들기 위해 응용 프로그램에서 사용됩니다. <xref:System.Diagnostics.TraceSource>는 추적 이벤트, 추적 데이터 및 문제 정보 추적을 쉽게 할 수 있도록 추적 메서드를 제공합니다. 추적 출력 <xref:System.Diagnostics.TraceSource> 구성 파일 설정으로 제어할 수 있습니다. 구성 파일은 응용 프로그램의 실행을 사용 하 여 폴더에 있으며 추가.config 파일 이름 확장명을 사용 하 여 응용 프로그램의 이름이입니다. 예를 들어 TraceSourceSample.exe에 대 한 구성 파일의 이름은 TraceSourceSample.exe.config 합니다. 추적 정보를 보내야 하는 위치 및 수준의 작업 추적 하는 것을 확인 하려면 구성 파일을 사용할 수 있습니다. 다음 예제에서는 샘플 응용 프로그램 구성 파일의 내용을 보여 줍니다.  
+  
+```xml  
+<configuration>  
+  <system.diagnostics>  
+    <sources>  
+      <source name="TraceTest" switchName="SourceSwitch"   
+        switchType="System.Diagnostics.SourceSwitch" >  
+        <listeners>  
+          <add name="console" />  
+          <remove name ="Default" />  
+        </listeners>  
+      </source>  
+    </sources>  
+    <switches>  
+      <!-- You can set the level at which tracing is to occur -->  
+      <add name="SourceSwitch" value="Warning" />  
+        <!-- You can turn tracing off -->  
+        <!--add name="SourceSwitch" value="Off" -->  
+    </switches>  
+    <sharedListeners>  
+      <add name="console"   
+        type="System.Diagnostics.ConsoleTraceListener"   
+        initializeData="false"/>  
+    </sharedListeners>  
+    <trace autoflush="true" indentsize="4">  
+      <listeners>  
+        <add name="console" />  
+      </listeners>  
+    </trace>  
+  </system.diagnostics>  
+</configuration>  
+```  
+  
+ <xref:System.Diagnostics.TraceSource> 클래스는 일반적으로 응용 프로그램의 이름 원본의 이름으로 식별 됩니다.  특정 구성 요소에서 들어오는 추적 메시지를 쉽게 식별할 수는 구성 요소에서 들어오는 모든 메시지를 허용 하 여 특정 추적 소스를 시작할 수 있습니다.  
+  
+ <xref:System.Diagnostics.TraceSource> 추적 메서드를 정의 하지만 실제로 생성 하 고 추적 데이터를 저장 하기 위한 특정 메커니즘을 제공 하지 않습니다. 추적 데이터는 추적 소스에 의해 로드 될 수 있는 플러그 인은 추적 수신기에 의해 생성 됩니다.  
+  
+> [!NOTE]
+>  종료 하는 동안 추적 메서드를 호출 하지 않습니다. 이렇게 하면는 <xref:System.ObjectDisposedException> throw 됩니다.  
+  
+ 추가 하거나 제거 하 여 추적 출력의 대상 사용자를 지정할 수 있습니다 <xref:System.Diagnostics.TraceListener> 에 저장 된 컬렉션의 인스턴스는 <xref:System.Diagnostics.TraceSource.Listeners%2A?displayProperty=nameWithType> 속성입니다. 인스턴스를 사용 하 여 추적 출력은 생성 하는 기본적으로 <xref:System.Diagnostics.DefaultTraceListener> 클래스입니다. 앞의 구성 파일 예제를 제거 하는 방법을 보여 줍니다는 <xref:System.Diagnostics.DefaultTraceListener> 추가 <xref:System.Diagnostics.ConsoleTraceListener> 추적 소스에 대 한 추적 출력을 생성 합니다. 자세한 내용은 [ &lt;수신기&gt; ](~/docs/framework/configure-apps/file-schema/trace-debug/listeners-element-for-source.md) 하 고 [ &lt;sharedListeners&gt;](~/docs/framework/configure-apps/file-schema/trace-debug/sharedlisteners-element.md)합니다.  
+  
+> [!NOTE]
+>  추적 수신기를 추가 합니다 <xref:System.Diagnostics.TraceSource.Listeners%2A> 컬렉션 추적 수신기에서 사용 하는 리소스를 사용할 수 없는 경우 추적 하는 동안 throw 된 예외가 발생할 수 있습니다. 조건 및 throw 된 예외 추적 수신기에 따라 다르며이 항목의 열거할 수 없습니다. 전화를 걸 수 유용할 수 있습니다는 <xref:System.Diagnostics.TraceSource> 의 메서드 `try` / `catch` 요소를 감지 하 여 추적 수신기에서 예외를 처리 합니다.  
+  
+ <xref:System.Diagnostics.SourceSwitch> 클래스는 추적 출력을 동적으로 제어 하는 방법을 제공 합니다. 앞의 예제 구성 파일의 수준 추적이 발생 하는 컨트롤을 추적 소스에서 추적을 해제할 수 있습니다 하는 방법을 보여 줍니다.  응용 프로그램을 다시 컴파일하지 않고도 소스 스위치 값을 수정할 수 있습니다. 구성 파일을 사용 하 여 스위치를 설정 하는 내용은 <xref:System.Diagnostics.Switch> 고 [방법: 만들기, 초기화 및 추적 스위치 구성](~/docs/framework/debug-trace-profile/how-to-create-initialize-and-configure-trace-switches.md)합니다.  
+  
+> [!NOTE]
+>  응용 프로그램을 중지 했다가 다시 시작 응용 프로그램에서 실행 되는 동안 구성 파일을 수정 하는 경우 또는 <xref:System.Diagnostics.Trace.Refresh%2A> 새 설정이 적용 되기 전에 메서드를 호출 해야 합니다.  
+  
+ <xref:System.Diagnostics.TraceEventType> 열거형 추적 메시지 이벤트 유형을 정의 하는 데 사용 됩니다. 추적을 사용 하 여 필터링 된 <xref:System.Diagnostics.TraceEventType> 추적 수신기가 추적 메시지를 생성 해야 하는 경우를 확인 하려면.  
+  
+ 추적 수신기에 추적 필터를 통해 필터링의 추가 계층을 선택할 수도 있습니다.  수신기를 호출 하는 추적 수신기에 필터를 연결된 하는 경우는 <xref:System.Diagnostics.TraceFilter.ShouldTrace%2A> 메서드 추적 정보를 생성 하는지 여부를 확인 하려면 해당 필터를 합니다.  
+  
+ 추적 수신기의 값을 사용 합니다 <xref:System.Diagnostics.Trace> 클래스 속성 <xref:System.Diagnostics.Trace.Indent%2A>를 <xref:System.Diagnostics.Trace.IndentSize%2A>, 및 <xref:System.Diagnostics.Trace.AutoFlush%2A> 추적 출력 형식에 합니다. 구성 파일 특성을 사용 하 여 설정 합니다 <xref:System.Diagnostics.Trace.Indent%2A>, <xref:System.Diagnostics.Trace.IndentSize%2A>, 및 <xref:System.Diagnostics.Trace.AutoFlush%2A> 속성. 다음 예제에서는 합니다 <xref:System.Diagnostics.Trace.AutoFlush%2A> 속성을 `false` 하며 <xref:System.Diagnostics.Trace.IndentSize%2A> 속성을 3으로 합니다.  
+  
+```xml  
+<configuration>  
+  <system.diagnostics>  
+    <trace autoflush="false" indentsize="3" />  
+  </system.diagnostics>  
+</configuration>  
+```  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Diagnostics.TraceSource> 추적 수신기에 전달 하는 클래스입니다.  이 예제에는 스위치 및 필터 사용을 방법도 보여 줍니다.  
+  
+ [!code-cpp[System.Diagnostics.TraceSource2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CPP/tracesource2.cpp#1)]
+ [!code-csharp[System.Diagnostics.TraceSource2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#1)]
+ [!code-vb[System.Diagnostics.TraceSource2#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>이 형식은 스레드로부터 안전합니다.</threadsafe>
+    <related type="Article" href="~/docs/framework/configure-apps/file-schema/trace-debug/index.md">추적 및 디버그 설정 스키마</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Diagnostics.TraceSource" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TraceSource (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.#ctor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TraceSource(System::String ^ name);" />
+      <MemberSignature Language="F#" Value="new System.Diagnostics.TraceSource : string -&gt; System.Diagnostics.TraceSource" Usage="new System.Diagnostics.TraceSource name" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">소스의 이름이며, 이 이름은 대개 응용 프로그램의 이름입니다.</param>
+        <summary>지정된 소스 이름을 사용하여 <see cref="T:System.Diagnostics.TraceSource" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 추적을 식별 하는 원본 이름 사용 됩니다. 사용 되는 <xref:System.Diagnostics.SourceFilter> 추적 수신기를 추적을 생성 해야 하는지 여부를 확인 하려면. 원본 이름에 대 한 응용 프로그램의 이름을 사용 하는 것이 좋습니다.  
+  
+> [!NOTE]
+>  새로 만들 필요는 없습니다 <xref:System.Diagnostics.TraceSource> 각 추적 요청에 대 한 인스턴스. 만들 <xref:System.Diagnostics.TraceSource> 인스턴스 및 응용 프로그램에 대 한 모든 추적 요청에 사용 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Diagnostics.TraceSource.%23ctor%2A> 새 생성자 <xref:System.Diagnostics.TraceSource> 개체입니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#9](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#9)]
+ [!code-vb[System.Diagnostics.TraceSource2#9](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#9)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="name" />가 빈 문자열("")인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public TraceSource (string name, System.Diagnostics.SourceLevels defaultLevel);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Diagnostics.SourceLevels defaultLevel) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.#ctor(System.String,System.Diagnostics.SourceLevels)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, defaultLevel As SourceLevels)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; TraceSource(System::String ^ name, System::Diagnostics::SourceLevels defaultLevel);" />
+      <MemberSignature Language="F#" Value="new System.Diagnostics.TraceSource : string * System.Diagnostics.SourceLevels -&gt; System.Diagnostics.TraceSource" Usage="new System.Diagnostics.TraceSource (name, defaultLevel)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="defaultLevel" Type="System.Diagnostics.SourceLevels" />
+      </Parameters>
+      <Docs>
+        <param name="name">소스의 이름이며, 이 이름은 대개 응용 프로그램의 이름입니다.</param>
+        <param name="defaultLevel">추적할 기본 소스 수준을 지정하는 열거형 값의 비트 조합입니다.</param>
+        <summary>지정된 소스 이름과 추적이 발생할 기본 소스 수준을 사용하여 <see cref="T:System.Diagnostics.TraceSource" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 추적을 식별 하는 원본 이름 사용 됩니다. 사용할 수는 <xref:System.Diagnostics.SourceSwitch> 추적이 발생 하는 경우를 결정 하 및를 <xref:System.Diagnostics.SourceFilter> 추적 생성 여부를 결정 합니다. 기본 소스 수준을에서 사용 되는 <xref:System.Diagnostics.EventTypeFilter> 추적할 메시지의 소스 수준에 따라 추적 발생 하는 경우를 확인 하려면.  
+  
+> [!NOTE]
+>  새로 만들 필요는 없습니다 <xref:System.Diagnostics.TraceSource> 각 추적 요청에 대 한 인스턴스. 만들 <xref:System.Diagnostics.TraceSource> 인스턴스 및 응용 프로그램에 대 한 모든 추적 요청에 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="name" />가 빈 문자열("")인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Attributes">
+      <MemberSignature Language="C#" Value="public System.Collections.Specialized.StringDictionary Attributes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Specialized.StringDictionary Attributes" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.TraceSource.Attributes" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Attributes As StringDictionary" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Specialized::StringDictionary ^ Attributes { System::Collections::Specialized::StringDictionary ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Attributes : System.Collections.Specialized.StringDictionary" Usage="System.Diagnostics.TraceSource.Attributes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Specialized.StringDictionary</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>애플리케이션 구성 파일에 정의된 사용자 지정 스위치 특성을 가져옵니다.</summary>
+        <value>추적 스위치의 사용자 지정 특성이 포함된 <see cref="T:System.Collections.Specialized.StringDictionary" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.Attributes%2A> 속성 응용 프로그램의 구성 파일에서 참조 하는 사용자 지정 특성을 식별 합니다. 참조 되지 않은 사용자 지정 특성을 열거 되지 않습니다. 클래스에서 상속 되는 <xref:System.Diagnostics.TraceSource> 클래스를 재정의 하 여 사용자 지정 특성을 추가할 수는 <xref:System.Diagnostics.Switch.GetSupportedAttributes%2A?displayProperty=nameWithType> 메서드 및 사용자 지정 특성 이름의 문자열 배열을 반환 합니다.  
+  
+ 다음은 사용자 지정 특성을 지정 하는 추적 소스 요소의 샘플 `SecondTraceSourceAttribute`:  
+  
+```xml  
+<sources>  
+  <source name="TraceTest" switchName="TestSourceSwitch"   
+    switchType="Testing.MySourceSwitch, TraceSample"   
+    SecondTraceSourceAttribute="two">  
+  </source>  
+</sources>  
+```  
+  
+   
+  
+## Examples  
+ 다음 코드 샘플에 대 한 사용자 지정 특성을 표시 하는 방법을 보여 줍니다는 <xref:System.Diagnostics.TraceSource>합니다.  이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#14](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#14)]
+ [!code-vb[System.Diagnostics.TraceSource2#14](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#14)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Close">
+      <MemberSignature Language="C#" Value="public void Close ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Close() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.Close" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Close ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Close();" />
+      <MemberSignature Language="F#" Value="member this.Close : unit -&gt; unit" Usage="traceSource.Close " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>추적 수신기 컬렉션에 있는 모든 추적 수신기를 닫습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.Close%2A> 메서드 호출을 <xref:System.Diagnostics.TraceListener.Close%2A> 에서 각 추적 수신기의 메서드는 <xref:System.Diagnostics.TraceSource.Listeners%2A> 컬렉션입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다는 <xref:System.Diagnostics.TraceSource.Close%2A> 메서드를 컬렉션에 있는 모든 수신기를 닫습니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#33](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#33)]
+ [!code-vb[System.Diagnostics.TraceSource2#33](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#33)]  
+  
+ ]]></format>
+        </remarks>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">에 관리 되지 않는 코드를 사용 하 여 작동 합니다. 요청 값: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; 연관 된 열거형: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />합니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName="Flush">
+      <MemberSignature Language="C#" Value="public void Flush ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Flush() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.Flush" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Flush ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Flush();" />
+      <MemberSignature Language="F#" Value="member this.Flush : unit -&gt; unit" Usage="traceSource.Flush " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>추적 수신기 컬렉션에 있는 모든 추적 수신기를 플러시합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.Flush%2A> 메서드 호출을 <xref:System.Diagnostics.TraceListener.Flush%2A> 에서 각 추적 수신기의 메서드는 <xref:System.Diagnostics.TraceSource.Listeners%2A> 컬렉션입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다는 <xref:System.Diagnostics.TraceSource.Flush%2A> 메서드를 컬렉션에 있는 모든 수신기를 플러시합니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#33](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#33)]
+ [!code-vb[System.Diagnostics.TraceSource2#33](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#33)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">종료하는 동안 이벤트를 추적하려고 했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSupportedAttributes">
+      <MemberSignature Language="C#" Value="protected internal virtual string[] GetSupportedAttributes ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance string[] GetSupportedAttributes() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.GetSupportedAttributes" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overridable Function GetSupportedAttributes () As String()" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual cli::array &lt;System::String ^&gt; ^ GetSupportedAttributes();" />
+      <MemberSignature Language="F#" Value="abstract member GetSupportedAttributes : unit -&gt; string[]&#xA;override this.GetSupportedAttributes : unit -&gt; string[]" Usage="traceSource.GetSupportedAttributes " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>추적 소스에서 지원하는 사용자 지정 특성을 가져옵니다.</summary>
+        <returns>추적 수신기에서 지원하는 사용자 지정 특성의 이름을 지정하는 문자열 배열을 반환하며, 사용자 지정 특성이 없으면 <see langword="null" />을 반환합니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현 <xref:System.Diagnostics.TraceSource.GetSupportedAttributes%2A> 반환 `null`합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Diagnostics.TraceSource.GetSupportedAttributes%2A> 에 대 한 사용자 지정 특성을 식별 하는 메서드를 `MyTraceSource` 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource#33](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource/CS/program.cs#33)]
+ [!code-vb[System.Diagnostics.TraceSource#33](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource/VB/program.vb#33)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>상속 하는 경우는 <see cref="T:System.Diagnostics.TraceSource" /> 클래스나 파생된 클래스에서 재정의할 수 있습니다는 <see cref="M:System.Diagnostics.TraceSource.GetSupportedAttributes" /> 클래스에 대 한 사용자 지정 특성을 제공 하는 방법입니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="Listeners">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.TraceListenerCollection Listeners { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Diagnostics.TraceListenerCollection Listeners" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.TraceSource.Listeners" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Listeners As TraceListenerCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::TraceListenerCollection ^ Listeners { System::Diagnostics::TraceListenerCollection ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Listeners : System.Diagnostics.TraceListenerCollection" Usage="System.Diagnostics.TraceSource.Listeners" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.TraceListenerCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>추적 소스에 대한 추적 수신기의 컬렉션을 가져옵니다.</summary>
+        <value>소스와 연관된 활성 추적 수신기를 포함하는 <see cref="T:System.Diagnostics.TraceListenerCollection" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성을 사용 하 여 액세스 하 고 추적 수신기에 대 한 작업을 수행 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">에 관리 되지 않는 코드를 사용 하 여 작동 합니다. 요청 값: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; 연관 된 열거형: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />합니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.TraceSource.Name" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Name As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Name { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Name : string" Usage="System.Diagnostics.TraceSource.Name" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>추적 소스의 이름을 가져옵니다.</summary>
+        <value>추적 소스의 이름입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이름 설정 되어를 `name` 생성자에 매개 변수를 전달 합니다. 사용 하 여 추적 소스를 참조할 수는 `name` 구성 파일에는 특성입니다.  
+  
+ 다음 XML 요소 참조 하는 구성 파일에 추적 소스를 보여 줍니다.  
+  
+```xml  
+<configuration>  
+  <system.diagnostics>  
+    <sources>  
+      <source name="TraceTest">  
+      </source>  
+    </sources>  
+  </system.diagnostics>  
+</configuration>  
+```  
+  
+   
+  
+## Examples  
+ 다음 코드 샘플에는 생성자 호출에서 추적 소스 이름을 지정 하는 방법을 보여 줍니다.  이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#9](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#9)]
+ [!code-vb[System.Diagnostics.TraceSource2#9](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#9)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Switch">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.SourceSwitch Switch { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Diagnostics.SourceSwitch Switch" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.TraceSource.Switch" />
+      <MemberSignature Language="VB.NET" Value="Public Property Switch As SourceSwitch" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::SourceSwitch ^ Switch { System::Diagnostics::SourceSwitch ^ get(); void set(System::Diagnostics::SourceSwitch ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Switch : System.Diagnostics.SourceSwitch with get, set" Usage="System.Diagnostics.TraceSource.Switch" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.SourceSwitch</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>소스 스위치 값을 가져오거나 설정합니다.</summary>
+        <value>소스 스위치 값을 나타내는 <see cref="T:System.Diagnostics.SourceSwitch" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.Switch%2A> 속성 추적 소스에서 수신기를 호출 하기 전에 메시지 필터링 할 수 있습니다.  
+  
+ 추적 호출을 생성 또는 무시 하는지 여부를 확인 하는 스위치 사용 됩니다. 각 추적 메서드를 호출 합니다 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 메서드의 <xref:System.Diagnostics.SourceSwitch> 추적을 사용 하 여 계속 진행 여부를 결정 합니다. 호출 반환 하는 경우 `true`, 수신기에서 호출 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><see cref="P:System.Diagnostics.TraceSource.Switch" />이 <see langword="null" />로 설정됩니다.</exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">에 관리 되지 않는 코드를 사용 하 여 작동 합니다. 요청 값: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />; 연관 된 열거형: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />합니다.</permission>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TraceData">
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 추적 데이터를 씁니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TraceData">
+      <MemberSignature Language="C#" Value="public void TraceData (System.Diagnostics.TraceEventType eventType, int id, object data);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TraceData(valuetype System.Diagnostics.TraceEventType eventType, int32 id, object data) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.TraceData(System.Diagnostics.TraceEventType,System.Int32,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TraceData (eventType As TraceEventType, id As Integer, data As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TraceData(System::Diagnostics::TraceEventType eventType, int id, System::Object ^ data);" />
+      <MemberSignature Language="F#" Value="member this.TraceData : System.Diagnostics.TraceEventType * int * obj -&gt; unit" Usage="traceSource.TraceData (eventType, id, data)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.Diagnostics.Conditional("TRACE")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="eventType" Type="System.Diagnostics.TraceEventType" />
+        <Parameter Name="id" Type="System.Int32" />
+        <Parameter Name="data" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="eventType">추적 데이터의 이벤트를 지정하는 열거형 값 중 하나입니다.</param>
+        <param name="id">이벤트의 숫자 식별자입니다.</param>
+        <param name="data">추적 데이터입니다.</param>
+        <summary>지정된 이벤트 형식, 이벤트 식별자 및 추적 데이터를 사용하여 <see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 추적 데이터를 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.TraceData%2A> 메서드, like는 <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 메서드, 자동화 된 도구를 위한 것 이지만 예외 인스턴스를 추적 하는 등의 추가 개체에 연결할 수도 있습니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceData%2A> 메서드 호출을 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A?displayProperty=nameWithType> 메서드를 <xref:System.Diagnostics.SourceSwitch> 에서 반환 된 개체는 <xref:System.Diagnostics.TraceSource.Switch%2A> 속성. 하는 경우 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 반환 `true`를 <xref:System.Diagnostics.TraceSource.TraceData%2A> 해당 호출 <xref:System.Diagnostics.TraceListener.TraceData%2A> 모든 수신기 메서드. 그렇지 않으면 <xref:System.Diagnostics.TraceSource.TraceData%2A> 수신기 메서드를 호출 하지 않고 반환 합니다.  
+  
+> [!NOTE]
+>  합니다 <xref:System.Diagnostics.EventLogTraceListener> 개체가 최대 제한 `id` 65,535 값입니다. 경우는 `id` 65,535, 지정 된 값 보다는 <xref:System.Diagnostics.EventLogTraceListener> 65,535를 사용 하 여 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Diagnostics.TraceSource.TraceData%28System.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.Object%29> 메서드를 필터링 하 고 수신기에 추적 메시지를 전달 합니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#28](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#28)]
+ [!code-vb[System.Diagnostics.TraceSource2#28](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#28)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">종료하는 동안 이벤트를 추적하려고 했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TraceData">
+      <MemberSignature Language="C#" Value="public void TraceData (System.Diagnostics.TraceEventType eventType, int id, params object[] data);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TraceData(valuetype System.Diagnostics.TraceEventType eventType, int32 id, object[] data) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.TraceData(System.Diagnostics.TraceEventType,System.Int32,System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TraceData (eventType As TraceEventType, id As Integer, ParamArray data As Object())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TraceData(System::Diagnostics::TraceEventType eventType, int id, ... cli::array &lt;System::Object ^&gt; ^ data);" />
+      <MemberSignature Language="F#" Value="member this.TraceData : System.Diagnostics.TraceEventType * int * obj[] -&gt; unit" Usage="traceSource.TraceData (eventType, id, data)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.Diagnostics.Conditional("TRACE")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="eventType" Type="System.Diagnostics.TraceEventType" />
+        <Parameter Name="id" Type="System.Int32" />
+        <Parameter Name="data" Type="System.Object[]">
+          <Attributes>
+            <Attribute FrameworkAlternate="netcore-1.0">
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="eventType">추적 데이터의 이벤트를 지정하는 열거형 값 중 하나입니다.</param>
+        <param name="id">이벤트의 숫자 식별자입니다.</param>
+        <param name="data">추적 데이터를 포함하는 개체 배열입니다.</param>
+        <summary>지정된 이벤트 형식, 이벤트 식별자 및 추적 데이터 배열을 사용하여 <see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 추적 데이터를 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.TraceData%2A> 메서드, like는 <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 메서드, 자동화 된 도구를 위한 것 이지만 예외 인스턴스 추적에는 스택 추적 등의 추가 개체에 연결할 수도 있습니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceData%2A> 메서드 호출을 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 메서드를 <xref:System.Diagnostics.SourceSwitch> 에서 반환 된 개체는 <xref:System.Diagnostics.TraceSource.Switch%2A> 속성. 하는 경우 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 반환 `true`를 <xref:System.Diagnostics.TraceSource.TraceData%2A> 해당 호출 <xref:System.Diagnostics.TraceListener.TraceData%2A> 모든 수신기 메서드. 그렇지 않으면 <xref:System.Diagnostics.TraceSource.TraceData%2A> 수신기 메서드를 호출 하지 않고 반환 합니다.  
+  
+> [!NOTE]
+>  합니다 <xref:System.Diagnostics.EventLogTraceListener> 개체가 최대 제한 `id` 65,535 값입니다. 경우는 `id` 65,535, 지정 된 값 보다는 <xref:System.Diagnostics.EventLogTraceListener> 65,535를 사용 하 여 개체입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">종료하는 동안 이벤트를 추적하려고 했습니다.</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TraceEvent">
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 추적 이벤트 메시지를 씁니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TraceEvent">
+      <MemberSignature Language="C#" Value="public void TraceEvent (System.Diagnostics.TraceEventType eventType, int id);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TraceEvent(valuetype System.Diagnostics.TraceEventType eventType, int32 id) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.TraceEvent(System.Diagnostics.TraceEventType,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TraceEvent (eventType As TraceEventType, id As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TraceEvent(System::Diagnostics::TraceEventType eventType, int id);" />
+      <MemberSignature Language="F#" Value="member this.TraceEvent : System.Diagnostics.TraceEventType * int -&gt; unit" Usage="traceSource.TraceEvent (eventType, id)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.Diagnostics.Conditional("TRACE")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="eventType" Type="System.Diagnostics.TraceEventType" />
+        <Parameter Name="id" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="eventType">추적 데이터의 이벤트를 지정하는 열거형 값 중 하나입니다.</param>
+        <param name="id">이벤트의 숫자 식별자입니다.</param>
+        <summary>지정된 이벤트 형식 및 이벤트 식별자를 사용하여 <see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 추적 이벤트 메시지를 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 메서드가 도구에서 자동으로 처리할 수 있는 이벤트를 추적 하기에 적합 합니다. 예를 들어, 모니터링 도구는 특정 원본에서 특정 이벤트를 추적 하는 경우 관리자로 알릴 수 있습니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 메서드 호출을 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 메서드를 <xref:System.Diagnostics.SourceSwitch> 에서 반환 된 개체는 <xref:System.Diagnostics.TraceSource.Switch%2A> 속성. 하는 경우 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 반환 `true`를 <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 해당 호출 <xref:System.Diagnostics.TraceListener.TraceEvent%2A> 메서드의 각 수신기입니다. 그렇지 않으면 <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 수신기 메서드를 호출 하지 않고 반환 합니다.  
+  
+ 추적 내용에는 특정 수신기입니다. 메서드는 수신기 구현에 의해 재정의 되지 않으면 기본 출력 추적 소스, 해당 숫자 id 및 이벤트 종류의 이름입니다.  추가 추적 수신기의 종속 된 <xref:System.Diagnostics.TraceListener.TraceOutputOptions%2A> 속성 값입니다.  
+  
+> [!NOTE]
+>  합니다 <xref:System.Diagnostics.EventLogTraceListener> 개체가 최대 제한 `id` 65,535 값입니다. 경우는 `id` 지정 된 값을 65,535 보다 큽니다.는 <xref:System.Diagnostics.EventLogTraceListener> 65,535를 사용 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Diagnostics.TraceSource.TraceEvent%28System.Diagnostics.TraceEventType%2CSystem.Int32%29> 수신기에 추적 이벤트를 전달 하는 방법입니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#17](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#17)]
+ [!code-vb[System.Diagnostics.TraceSource2#17](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#17)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">종료하는 동안 이벤트를 추적하려고 했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TraceEvent">
+      <MemberSignature Language="C#" Value="public void TraceEvent (System.Diagnostics.TraceEventType eventType, int id, string message);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TraceEvent(valuetype System.Diagnostics.TraceEventType eventType, int32 id, string message) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.TraceEvent(System.Diagnostics.TraceEventType,System.Int32,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TraceEvent (eventType As TraceEventType, id As Integer, message As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TraceEvent(System::Diagnostics::TraceEventType eventType, int id, System::String ^ message);" />
+      <MemberSignature Language="F#" Value="member this.TraceEvent : System.Diagnostics.TraceEventType * int * string -&gt; unit" Usage="traceSource.TraceEvent (eventType, id, message)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.Diagnostics.Conditional("TRACE")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="eventType" Type="System.Diagnostics.TraceEventType" />
+        <Parameter Name="id" Type="System.Int32" />
+        <Parameter Name="message" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="eventType">추적 데이터의 이벤트를 지정하는 열거형 값 중 하나입니다.</param>
+        <param name="id">이벤트의 숫자 식별자입니다.</param>
+        <param name="message">기록할 추적 메시지입니다.</param>
+        <summary>지정된 이벤트 형식, 이벤트 식별자 및 메시지를 사용하여 <see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 추적 이벤트 메시지를 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 메서드가 도구에서 자동으로 처리할 수 있는 이벤트를 추적 하기에 적합 합니다. 예를 들어, 모니터링 도구는 특정 원본에서 특정 이벤트를 추적 하는 경우 관리자로 알릴 수 있습니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 메서드 호출을 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 메서드를 <xref:System.Diagnostics.SourceSwitch> 에서 반환 된 개체는 <xref:System.Diagnostics.TraceSource.Switch%2A> 속성. 하는 경우 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 반환 `true`를 <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 해당 호출 <xref:System.Diagnostics.TraceListener.TraceEvent%2A> 메서드의 각 수신기입니다. 그렇지 않으면 <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 수신기 메서드를 호출 하지 않고 반환 합니다.  
+  
+ 추적 내용에는 특정 수신기입니다. 메서드는 수신기 구현에 의해 재정의 되지 않으면 기본 출력 추적 소스, 해당 숫자 id, 이벤트 유형 및 메시지의 이름입니다.  추가 추적 수신기의 종속 된 <xref:System.Diagnostics.TraceListener.TraceOutputOptions%2A> 속성 값입니다.  
+  
+> [!NOTE]
+>  합니다 <xref:System.Diagnostics.EventLogTraceListener> 개체가 최대 제한 `id` 65,535 값입니다. 경우는 `id` 65,535, 지정 된 값 보다는 <xref:System.Diagnostics.EventLogTraceListener> 65,535를 사용 하 여 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Diagnostics.TraceSource.TraceEvent%28System.Diagnostics.TraceEventType%2CSystem.Int32%29> 수신기에 추적 이벤트를 전달 하는 방법입니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#18](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#18)]
+ [!code-vb[System.Diagnostics.TraceSource2#18](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#18)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">종료하는 동안 이벤트를 추적하려고 했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TraceEvent">
+      <MemberSignature Language="C#" Value="public void TraceEvent (System.Diagnostics.TraceEventType eventType, int id, string format, params object[] args);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TraceEvent(valuetype System.Diagnostics.TraceEventType eventType, int32 id, string format, object[] args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.TraceEvent(System.Diagnostics.TraceEventType,System.Int32,System.String,System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TraceEvent (eventType As TraceEventType, id As Integer, format As String, ParamArray args As Object())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TraceEvent(System::Diagnostics::TraceEventType eventType, int id, System::String ^ format, ... cli::array &lt;System::Object ^&gt; ^ args);" />
+      <MemberSignature Language="F#" Value="member this.TraceEvent : System.Diagnostics.TraceEventType * int * string * obj[] -&gt; unit" Usage="traceSource.TraceEvent (eventType, id, format, args)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.Diagnostics.Conditional("TRACE")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="eventType" Type="System.Diagnostics.TraceEventType" />
+        <Parameter Name="id" Type="System.Int32" />
+        <Parameter Name="format" Type="System.String" />
+        <Parameter Name="args" Type="System.Object[]">
+          <Attributes>
+            <Attribute FrameworkAlternate="netcore-1.0">
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="eventType">추적 데이터의 이벤트를 지정하는 열거형 값 중 하나입니다.</param>
+        <param name="id">이벤트의 숫자 식별자입니다.</param>
+        <param name="format"><paramref name="args" /> 배열의 개체에 해당하는 0개 이상의 형식 항목과 결합된 텍스트를 포함하는 복합 형식 문자열입니다.</param>
+        <param name="args">형식을 지정할 개체를 0개 이상 포함하는 <see langword="object" /> 배열입니다.</param>
+        <summary>지정된 이벤트 형식, 이벤트 식별자, 인수 배열 및 형식을 사용하여 <see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 추적 이벤트를 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 대 한 자세한 내용은 합니다 `format` 매개 변수를 참조 하세요 [합성 서식 지정](~/docs/standard/base-types/composite-formatting.md)합니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 메서드가 도구에서 자동으로 처리할 수 있는 이벤트를 추적 하기에 적합 합니다. 예를 들어, 모니터링 도구는 특정 원본에서 특정 이벤트를 추적 하는 경우 관리자로 알릴 수 있습니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 메서드 호출을 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 메서드를 <xref:System.Diagnostics.SourceSwitch> 에서 반환 된 개체는 <xref:System.Diagnostics.TraceSource.Switch%2A> 속성. 하는 경우 <xref:System.Diagnostics.SourceSwitch.ShouldTrace%2A> 반환 `true`를 <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 해당 호출 <xref:System.Diagnostics.TraceListener.TraceEvent%2A> 메서드의 각 수신기입니다. 그렇지 않으면 <xref:System.Diagnostics.TraceSource.TraceEvent%2A> 수신기 메서드를 호출 하지 않고 반환 합니다.  
+  
+ 추적 내용에는 특정 수신기입니다. 기본값 <xref:System.Diagnostics.TraceListener.TraceEvent%28System.Diagnostics.TraceEventCache%2CSystem.String%2CSystem.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.String%2CSystem.Object%5B%5D%29> 메서드 원본 이름, 이벤트 유형 및 숫자 id를 추적 헤더에서는 다음 호출을 기록 합니다 <xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=nameWithType> 메서드를 전달를 `format` 문자열 및 `args` 배열 및 사용 하 여를 <xref:System.Globalization.CultureInfo.InvariantCulture?displayProperty=nameWithType> 서식을 지정 하려면 속성을 메시지 출력으로 문자열입니다.  
+  
+> [!NOTE]
+>  합니다 <xref:System.Diagnostics.EventLogTraceListener> 개체가 최대 제한 `id` 65,535 값입니다. 경우는 `id` 65,535, 지정 된 값 보다는 <xref:System.Diagnostics.EventLogTraceListener> 65,535를 사용 하 여 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Diagnostics.TraceSource.TraceEvent%28System.Diagnostics.TraceEventType%2CSystem.Int32%29> 수신기에 추적 이벤트를 전달 하는 방법입니다. 이 코드 예제는에 대해 제공 된 큰 예제의 일부는 <xref:System.Diagnostics.TraceSource> 클래스입니다.  
+  
+ [!code-csharp[System.Diagnostics.TraceSource2#24](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/CS/program.cs#24)]
+ [!code-vb[System.Diagnostics.TraceSource2#24](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.TraceSource2/VB/program.vb#24)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="format" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.FormatException"><paramref name="format" />이 잘못되었습니다.  
+  
+또는 
+형식을 지정할 인수를 나타내는 숫자가 0보다 작거나, 형식을 지정할 해당 개체의 수보다 크거나 같은 경우</exception>
+        <exception cref="T:System.ObjectDisposedException">종료하는 동안 이벤트를 추적하려고 했습니다.</exception>
+        <related type="Article" href="~/docs/standard/base-types/composite-formatting.md">복합 형식 지정</related>
+        <related type="Article" href="~/docs/standard/base-types/standard-numeric-format-strings.md">표준 숫자 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/custom-numeric-format-strings.md">사용자 지정 숫자 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/standard-date-and-time-format-strings.md">표준 DateTime 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/custom-date-and-time-format-strings.md">사용자 지정 DateTime 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/enumeration-format-strings.md">열거형 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/formatting-types.md">.NET의 서식 지정 형식</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TraceInformation">
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 정보 메시지를 씁니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TraceInformation">
+      <MemberSignature Language="C#" Value="public void TraceInformation (string message);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TraceInformation(string message) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.TraceInformation(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TraceInformation (message As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TraceInformation(System::String ^ message);" />
+      <MemberSignature Language="F#" Value="member this.TraceInformation : string -&gt; unit" Usage="traceSource.TraceInformation message" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.Diagnostics.Conditional("TRACE")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="message" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="message">쓸 알림 메시지입니다.</param>
+        <summary>지정된 메시지를 사용하여 <see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 알림 메시지를 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.TraceInformation%2A> 메서드는 사용자 및 tools가 아니라 읽도록 정보 메시지를 제공 합니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceInformation%28System.String%29> 호출을 <xref:System.Diagnostics.TraceSource.TraceEvent%28System.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.String%29> 메서드를 설정 `eventType` 에 <xref:System.Diagnostics.TraceEventType.Information?displayProperty=nameWithType> 메시지 문자열로 정보 메시지를 전달 합니다. 합니다 <xref:System.Diagnostics.TraceSource.TraceEvent%28System.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.String%29> 메서드를 호출 합니다 <xref:System.Diagnostics.TraceListener.TraceEvent%28System.Diagnostics.TraceEventCache%2CSystem.String%2CSystem.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.String%29> 메서드의 각 추적 수신기입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">종료하는 동안 이벤트를 추적하려고 했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TraceInformation">
+      <MemberSignature Language="C#" Value="public void TraceInformation (string format, params object[] args);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TraceInformation(string format, object[] args) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.TraceInformation(System.String,System.Object[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TraceInformation (format As String, ParamArray args As Object())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TraceInformation(System::String ^ format, ... cli::array &lt;System::Object ^&gt; ^ args);" />
+      <MemberSignature Language="F#" Value="member this.TraceInformation : string * obj[] -&gt; unit" Usage="traceSource.TraceInformation (format, args)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.Diagnostics.Conditional("TRACE")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="format" Type="System.String" />
+        <Parameter Name="args" Type="System.Object[]">
+          <Attributes>
+            <Attribute FrameworkAlternate="netcore-1.0">
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="format"><paramref name="args" /> 배열의 개체에 해당하는 0개 이상의 형식 항목과 결합된 텍스트를 포함하는 복합 형식 문자열입니다.</param>
+        <param name="args">형식을 지정할 개체를 0개 이상 포함하는 배열입니다.</param>
+        <summary>지정된 개체 배열과 형식 지정 정보를 사용하여 <see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 알림 메시지를 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 에 대 한 자세한 내용은 합니다 `format` 매개 변수를 참조 하세요 [합성 서식 지정](~/docs/standard/base-types/composite-formatting.md)합니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceInformation%2A> 메서드는 사용자 및 tools가 아니라 읽도록 정보 메시지를 제공 합니다.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceInformation%28System.String%2CSystem.Object%5B%5D%29> 호출을 <xref:System.Diagnostics.TraceSource.TraceEvent%28System.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.String%2CSystem.Object%5B%5D%29> 메서드를 설정 `eventType` 에 <xref:System.Diagnostics.TraceEventType.Information?displayProperty=nameWithType> 서식 정보를 개체 배열로 메시지 콘텐츠를 전달 합니다. 합니다 <xref:System.Diagnostics.TraceSource.TraceEvent%28System.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.String%2CSystem.Object%5B%5D%29> 메서드를 호출 합니다 <xref:System.Diagnostics.TraceListener.TraceEvent%28System.Diagnostics.TraceEventCache%2CSystem.String%2CSystem.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.String%2CSystem.Object%5B%5D%29> 메서드의 각 추적 수신기입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="format" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.FormatException"><paramref name="format" />이 잘못되었습니다.  
+  
+또는 
+형식을 지정할 인수를 나타내는 숫자가 0보다 작거나, 형식을 지정할 해당 개체의 수보다 크거나 같은 경우</exception>
+        <exception cref="T:System.ObjectDisposedException">종료하는 동안 이벤트를 추적하려고 했습니다.</exception>
+        <related type="Article" href="~/docs/standard/base-types/composite-formatting.md">복합 형식 지정</related>
+        <related type="Article" href="~/docs/standard/base-types/standard-numeric-format-strings.md">표준 숫자 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/custom-numeric-format-strings.md">사용자 지정 숫자 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/standard-date-and-time-format-strings.md">표준 DateTime 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/custom-date-and-time-format-strings.md">사용자 지정 DateTime 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/enumeration-format-strings.md">열거형 형식 문자열</related>
+        <related type="Article" href="~/docs/standard/base-types/formatting-types.md">.NET의 서식 지정 형식</related>
+      </Docs>
+    </Member>
+    <Member MemberName="TraceTransfer">
+      <MemberSignature Language="C#" Value="public void TraceTransfer (int id, string message, Guid relatedActivityId);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void TraceTransfer(int32 id, string message, valuetype System.Guid relatedActivityId) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.TraceSource.TraceTransfer(System.Int32,System.String,System.Guid)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub TraceTransfer (id As Integer, message As String, relatedActivityId As Guid)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void TraceTransfer(int id, System::String ^ message, Guid relatedActivityId);" />
+      <MemberSignature Language="F#" Value="member this.TraceTransfer : int * string * Guid -&gt; unit" Usage="traceSource.TraceTransfer (id, message, relatedActivityId)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.TraceSource</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netstandard-2.1">
+          <AttributeName>System.Diagnostics.Conditional("TRACE")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="id" Type="System.Int32" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="message" Type="System.String" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+        <Parameter Name="relatedActivityId" Type="System.Guid" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="id">이벤트의 숫자 식별자입니다.</param>
+        <param name="message">기록할 추적 메시지입니다.</param>
+        <param name="relatedActivityId">관련 동작을 식별하는 구조체입니다.</param>
+        <summary>지정된 숫자 식별자, 메시지 및 관련 작업 식별자를 사용하여 <see cref="P:System.Diagnostics.TraceSource.Listeners" /> 컬렉션의 추적 수신기에 추적 전송 메시지를 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.TraceSource.TraceTransfer%2A> 메서드 호출을 <xref:System.Diagnostics.TraceListener.TraceTransfer%2A> 에서 각 추적 수신기의 메서드는 <xref:System.Diagnostics.TraceSource.Listeners%2A> 추적 정보를 기록 하는 속성. 기본값 <xref:System.Diagnostics.TraceListener.TraceTransfer%2A> 자료의 메서드 <xref:System.Diagnostics.TraceListener> 클래스는 <xref:System.Diagnostics.TraceListener.TraceEvent%28System.Diagnostics.TraceEventCache%2CSystem.String%2CSystem.Diagnostics.TraceEventType%2CSystem.Int32%2CSystem.String%29?displayProperty=nameWithType> 설정 하는 호출을 처리 하는 방법 `eventType` 를 <xref:System.Diagnostics.TraceEventType.Transfer?displayProperty=nameWithType> 의 문자열 표현을 추가 합니다 `relatedActivityId` GUID를 `message`.  
+  
+ <xref:System.Diagnostics.TraceSource.TraceTransfer%2A> 논리 작업에 사용할 것을 <xref:System.Diagnostics.CorrelationManager>입니다. `relatedActivityId` 관련 된 매개 변수를 <xref:System.Diagnostics.CorrelationManager.ActivityId%2A> 의 속성을 <xref:System.Diagnostics.CorrelationManager> 개체입니다. 두 번째 활동 로그를 호출 하 여 전송 논리 작업을 하나의 작업에서 시작 하 고 간에 전송 하는 경우는 <xref:System.Diagnostics.TraceSource.TraceTransfer%2A> 메서드. <xref:System.Diagnostics.TraceSource.TraceTransfer%2A> 호출 이전 id로 새 작업 id를 연결 합니다. 이 기능의 가장 가능성이 높은 소비자가 여러 작업에 걸쳐 있는 논리적 작업을 보고할 수 있는 추적 뷰어.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Diagnostics.XmlWriterTraceListener" />
+        <altmember cref="T:System.Diagnostics.EventSchemaTraceListener" />
+        <altmember cref="T:System.Diagnostics.DelimitedListTraceListener" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

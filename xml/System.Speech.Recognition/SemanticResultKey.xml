@@ -1,0 +1,374 @@
+<Type Name="SemanticResultKey" FullName="System.Speech.Recognition.SemanticResultKey">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="8575672daa1b47341a5318fbc03fee7083638d8a" /><Meta Name="ms.sourcegitcommit" Value="4ee26ac79338b0bf99fa1e0913e8a06b21994d8e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/26/2019" /><Meta Name="ms.locfileid" Value="58457486" /></Metadata><TypeSignature Language="C#" Value="public class SemanticResultKey" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SemanticResultKey extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Recognition.SemanticResultKey" />
+  <TypeSignature Language="VB.NET" Value="Public Class SemanticResultKey" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SemanticResultKey" />
+  <TypeSignature Language="F#" Value="type SemanticResultKey = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Diagnostics.DebuggerDisplay("{_semanticKey.DebugSummary}")</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary><see cref="T:System.Speech.Recognition.SemanticResultValue" />를 정의하기 위해 키 문자열을 <see cref="T:System.Speech.Recognition.SemanticValue" />와 연결합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ System.Speech 식 의미 체계의 기본 단위는는 <xref:System.Speech.Recognition.SemanticValue>, 되는 키/값 쌍입니다.  
+  
+ 사용 하 여 <xref:System.Speech.Recognition.SemanticResultKey> 개체를 태그 할 <xref:System.Speech.Recognition.SemanticResultValue> 에 포함 된 인스턴스의 <xref:System.Speech.Recognition.GrammarBuilder> 개체를 문자열 값에서 쉽게 액세스할 수 있도록 <xref:System.Speech.Recognition.SemanticValue> 인식 인스턴스에서 합니다.  
+  
+ 사용할 수 있습니다 <xref:System.Speech.Recognition.SemanticResultValue> 및 <xref:System.Speech.Recognition.SemanticResultKey> 개체와 함께에서 <xref:System.Speech.Recognition.GrammarBuilder> 및 <xref:System.Speech.Recognition.Choices> 개체, 음성 인식 문법에 대 한 의미 체계 구조를 정의 합니다. 인식 결과의 의미 체계 정보에 액세스 하려면의 인스턴스를 가져올 <xref:System.Speech.Recognition.SemanticValue> 를 통해 합니다 <xref:System.Speech.Recognition.RecognizedPhrase.Semantics%2A> 속성을 <xref:System.Speech.Recognition.RecognizedPhrase>입니다.  
+  
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Speech.Recognition.Grammar> "암호를..."을 와일드 카드를 사용 하 여 실제 입력에서 일치 하는 있는 폼의 암호 입력을 인식 하도록 합니다.  
+  
+ 의미 체계 키로 사용 하는 와일드 카드에서 태그를 지정 하며 <xref:System.Speech.Recognition.Grammar.SpeechRecognized> 처리기가 태그는 암호 입력이 발생 했음을 확인할 수 있는지 여부를 확인 합니다.  
+  
+```csharp  
+private void pwdGrammar()   
+{  
+  GrammarBuilder pwdBuilder = new GrammarBuilder("My Password is");  
+  GrammarBuilder wildcardBuilder = new GrammarBuilder();  
+  wildcardBuilder.AppendWildcard();  
+  SemanticResultKey wildcardKey= new SemanticResultKey("Password", wildcardBuilder);  
+  pwdBuilder+=wildcardKey;  
+  Grammar grammar = new Grammar(pwdBuilder);  
+  grammar.Name = "Password input";  
+  
+  grammar.SpeechRecognized += delegate(object sender, SpeechRecognizedEventArgs eventArgs)   
+  {  
+    SemanticValue semantics = eventArgs.Result.Semantics;  
+    RecognitionResult result=eventArgs.Result;  
+  
+    if (!semantics.ContainsKey("Password"))   
+    {  
+      SpeechUI.SendTextFeedback(eventArgs.Result, "No Password Provided", false);  
+    }  
+    else   
+    {  
+      RecognizedAudio pwdAudio = result.GetAudioForWordRange(result.Words[3], result.Words[result.Words.Count - 1]);  
+      MemoryStream pwdMemoryStream = new MemoryStream();  
+      pwdAudio.WriteToAudioStream(pwdMemoryStream);  
+      if (!IsValidPwd(pwdMemoryStream))   
+      {  
+        string badPwd = System.IO.Path.GetTempPath() + "BadPwd" + (new Random()).Next().ToString() + ".wav";  
+        FileStream waveStream = new FileStream(badPwd, FileMode.Create);  
+        pwdAudio.WriteToWaveStream(waveStream);  
+        waveStream.Flush();  
+        waveStream.Close();  
+        SpeechUI.SendTextFeedback(eventArgs.Result, "Invalid Password", false);  
+  
+      }  
+    }  
+  };  
+  grammar.Enabled = true;  
+  _recognizer.LoadGrammar(grammar);  
+  UpdateGrammarTree(_grammarTreeView, _recognizer);  
+  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Speech.Recognition.SemanticValue" />
+    <altmember cref="T:System.Speech.Recognition.SemanticResultValue" />
+    <related type="Article" href="https://docs.microsoft.com/previous-versions/office/developer/speech-technologies/hh361587(v%3doffice.14)">SemanticResultKey를 사용 하 여는 SemanticResultValue 추출</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Speech.Recognition.SemanticResultKey" />의 인스턴스를 생성하고 키를 문법 구성 요소에 연결합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 생성자에 <xref:System.Speech.Recognition.SemanticResultKey> 텍스트 태그 (의미 체계 키) 및 음성 인식 문법을 추가할 문법 구성 요소 집합을 지정 합니다.  
+  
+ 문법 구성 요소 수의 배열로 지정할 <xref:System.Speech.Recognition.GrammarBuilder> 개체 또는 배열로 <xref:System.String> 인스턴스.  
+  
+ 인식의 문법 구성 요소를 사용 하면 반환 된 액세스할 수 있습니다 <xref:System.Speech.Recognition.SemanticValue> 의 생성자에 제공 된 텍스트 태그를 사용 하 여 <xref:System.Speech.Recognition.SemanticResultKey> 의미 키로 합니다. 합니다 <xref:System.Speech.Recognition.SemanticValue.Value%2A> 의 속성을 <xref:System.Speech.Recognition.SemanticValue> 인스턴스 정의에 사용 된 문법 구성 요소에 의해 결정 됩니다 <xref:System.Speech.Recognition.SemanticResultKey>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SemanticResultKey (string semanticResultKey, params System.Speech.Recognition.GrammarBuilder[] builders);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string semanticResultKey, class System.Speech.Recognition.GrammarBuilder[] builders) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Recognition.SemanticResultKey.#ctor(System.String,System.Speech.Recognition.GrammarBuilder[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (semanticResultKey As String, ParamArray builders As GrammarBuilder())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SemanticResultKey(System::String ^ semanticResultKey, ... cli::array &lt;System::Speech::Recognition::GrammarBuilder ^&gt; ^ builders);" />
+      <MemberSignature Language="F#" Value="new System.Speech.Recognition.SemanticResultKey : string * System.Speech.Recognition.GrammarBuilder[] -&gt; System.Speech.Recognition.SemanticResultKey" Usage="new System.Speech.Recognition.SemanticResultKey (semanticResultKey, builders)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="semanticResultKey" Type="System.String" />
+        <Parameter Name="builders" Type="System.Speech.Recognition.GrammarBuilder[]">
+          <Attributes>
+            <Attribute FrameworkAlternate="netframework-3.0">
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="semanticResultKey"><paramref name="builders" /> 인수로 지정된 <see cref="T:System.Speech.Recognition.SemanticValue" /> 개체와 연결된 <see cref="T:System.Speech.Recognition.GrammarBuilder" /> 인스턴스에 액세스할 때 의미 키로 사용할 태그입니다.</param>
+        <param name="builders"><paramref name="semanticResultKey" />에 정의된 태그를 사용하여 액세스할 수 있는 <see cref="T:System.Speech.Recognition.SemanticValue" /> 개체와 연결된 문법 구성 요소의 배열입니다.</param>
+        <summary>음성 인식 문법을 만드는 데 사용하는 하나 이상의 <see cref="T:System.Speech.Recognition.GrammarBuilder" /> 개체에 의미 키를 할당합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 암시적 변환으로 인해 합니다 `builders` 인수가 지원 <xref:System.Speech.Recognition.SemanticResultValue>, <xref:System.Speech.Recognition.SemanticResultKey>, <xref:System.Speech.Recognition.Choices>, 및 <xref:System.String> 개체도 합니다. 암시적 변환에 대 한 자세한 내용은 참조 하세요. <xref:System.Speech.Recognition.GrammarBuilder.op_Implicit%2A>합니다.  
+  
+ 인식 작업을 수행할 때 합니다 <xref:System.Speech.Recognition.GrammarBuilder> 에서 제공 하는 개체는 `builders` 인수를 순차적으로 처리 됩니다. 예를 들어 경우 다음 <xref:System.Speech.Recognition.SemanticResultValue> 생성 하는 데 사용 되는 <xref:System.Speech.Recognition.Grammar>, 인식 엔진에 대 한 입력 시퀀스를 인식 하려면에서 "the quick brown fox" 단어를 포함 해야 합니다.  
+  
+```csharp  
+SemanticResultKey stringTest=new SemanticResultKey(  
+    "stringTest", new GrammarBuilder[] {  
+    new GrammarBuilder("the"),  
+    new GrammarBuilder("quick"),  
+    new GrammarBuilder("brown"),  
+    new GrammarBuilder("fox")});  
+```  
+  
+ 합니다 `semanticResultKey` 사용 되는 태그를 포함 하는 인수에 액세스 하려면를 <xref:System.Speech.Recognition.SemanticValue> 반환 될 수 있습니다.  
+  
+ <xref:System.Speech.Recognition.SemanticValue.Value%2A> 의 <xref:System.Speech.Recognition.SemanticValue> 에 의해 결정 됩니다 합니다 <xref:System.Speech.Recognition.GrammarBuilder> 에서 제공 하는 인스턴스는 `builders` 매개 변수입니다.  
+  
+ 경우는 <xref:System.Speech.Recognition.GrammarBuilder> 개체의 인스턴스가 없는 정의 포함 <xref:System.Speech.Recognition.SemanticResultValue>의 값을 <xref:System.Speech.Recognition.SemanticValue> 는 `null`합니다.  
+  
+ 경우는 <xref:System.Speech.Recognition.GrammarBuilder> 에서 제공 하는 개체를 `builders` 매개 변수는 태그가 지정 되지 않은 제공 (연관 되지 않은 <xref:System.Speech.Recognition.SemanticResultKey> 개체) <xref:System.Speech.Recognition.SemanticResultValue> 인식 논리로의 해당 인스턴스에 사용 되는 인스턴스에 <xref:System.Speech.Recognition.SemanticResultValue> 를 정의 합니다 <xref:System.Speech.Recognition.SemanticValue.Value%2A>의 속성을 <xref:System.Speech.Recognition.SemanticValue> 는 생성 됩니다.  
+  
+ 1 이어야 하며 하나만 태그 없음 <xref:System.Speech.Recognition.SemanticResultValue> 의 인스턴스를 <xref:System.Speech.Recognition.GrammarBuilder> 지정 된 개체는 `builders` 매개 변수입니다. 여러 인스턴스가 없는 경우 <xref:System.Speech.Recognition.SemanticResultValue> 연관 된를 <xref:System.Speech.Recognition.SemanticResultKey>, 각 시도가 집합의 값을 <xref:System.Speech.Recognition.SemanticValue> 인식 결과에서 생성 합니다. 이 허용 되지 않으며, 인식기를 사용 하려고 할 때 예외가 발생 합니다는 <xref:System.Speech.Recognition.Grammar> 등을 사용 하 여 만든를 <xref:System.Speech.Recognition.SemanticResultKey> 인스턴스.  
+  
+ 인스턴스의 <xref:System.Speech.Recognition.SemanticResultValue> 에 포함 된를 <xref:System.Speech.Recognition.GrammarBuilder> 지정 된 개체를 `builders` 매개 변수 및 다른 관련 이미 <xref:System.Speech.Recognition.SemanticResultKey> 현재에 영향을 주지 <xref:System.Speech.Recognition.SemanticResultKey> 인스턴스.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Speech.Recognition.Grammar> "암호를..."을 와일드 카드를 사용 하 여 실제 입력에서 일치 하는 있는 폼의 암호 입력을 인식 하도록 합니다.  
+  
+ 와일드 카드에서 태그가 지정 되는 <xref:System.Speech.Recognition.SpeechRecognizer> 키 값이 "Password"입니다. <xref:System.Speech.Recognition.Grammar.SpeechRecognized> 처리기가이 태그의 존재 여부 확인, 암호의 오디오 입력을 가져옵니다 하 고 암호를 확인 합니다.  
+  
+```csharp  
+private void pwdGrammar()   
+{  
+  GrammarBuilder pwdBuilder = new GrammarBuilder("My Password is");  
+  GrammarBuilder wildcardBuilder = new GrammarBuilder();  
+  wildcardBuilder.AppendWildcard();  
+  SemanticResultKey wildcardKey= new SemanticResultKey("Password", wildcardBuilder);  
+  pwdBuilder+=wildcardKey;  
+  Grammar grammar = new Grammar(pwdBuilder);  
+  grammar.Name = "Password input";  
+  
+  grammar.SpeechRecognized +=   
+    delegate(object sender, SpeechRecognizedEventArgs eventArgs)   
+    {  
+      SemanticValue semantics = eventArgs.Result.Semantics;  
+      RecognitionResult result=eventArgs.Result;  
+  
+      if (!semantics.ContainsKey("Password"))   
+      {  
+        SpeechUI.SendTextFeedback(eventArgs.Result, "No Password Provided", false);  
+      }  
+      else   
+      {  
+        RecognizedAudio pwdAudio = result.GetAudioForWordRange(  
+                  result.Words[3],  
+                  result.Words[result.Words.Count - 1]);  
+                  MemoryStream pwdMemoryStream = new MemoryStream();  
+                  pwdAudio.WriteToAudioStream(pwdMemoryStream);  
+        if (!IsValidPwd(pwdMemoryStream))   
+        {  
+          string badPwd = System.IO.Path.GetTempPath() + "BadPwd" + (new Random()).Next().ToString() + ".wav";  
+          FileStream waveStream = new FileStream(badPwd, FileMode.Create);    
+          pwdAudio.WriteToWaveStream(waveStream);  
+          waveStream.Flush();  
+          waveStream.Close();  
+          SpeechUI.SendTextFeedback(eventArgs.Result, "Invalid Password", false);      
+        }  
+      }  
+    };  
+  
+  grammar.Enabled = true;  
+  _recognizer.LoadGrammar(grammar);  
+  UpdateGrammarTree(_grammarTreeView, _recognizer);  
+  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SemanticResultKey (string semanticResultKey, params string[] phrases);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string semanticResultKey, string[] phrases) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Recognition.SemanticResultKey.#ctor(System.String,System.String[])" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (semanticResultKey As String, ParamArray phrases As String())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SemanticResultKey(System::String ^ semanticResultKey, ... cli::array &lt;System::String ^&gt; ^ phrases);" />
+      <MemberSignature Language="F#" Value="new System.Speech.Recognition.SemanticResultKey : string * string[] -&gt; System.Speech.Recognition.SemanticResultKey" Usage="new System.Speech.Recognition.SemanticResultKey (semanticResultKey, phrases)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="semanticResultKey" Type="System.String" />
+        <Parameter Name="phrases" Type="System.String[]">
+          <Attributes>
+            <Attribute FrameworkAlternate="netframework-3.0">
+              <AttributeName>System.ParamArray</AttributeName>
+            </Attribute>
+          </Attributes>
+        </Parameter>
+      </Parameters>
+      <Docs>
+        <param name="semanticResultKey"><paramref name="phrases" /> 인수로 지정된 <see cref="T:System.String" /> 개체와 연결된 <see cref="T:System.Speech.Recognition.SemanticValue" /> 인스턴스에 액세스하는 데 사용할 태그입니다.</param>
+        <param name="phrases">결부된 텍스트가 <paramref name="semanticResultKey" />에서 정의된 태그에 액세스 가능한 <see cref="T:System.String" /> 개체와 연결된, 하나 이상의 <see cref="T:System.Speech.Recognition.SemanticValue" /> 개체</param>
+        <summary>음성 인식 문법을 만드는 데 사용하는 하나 이상의 <see cref="T:System.String" /> 인스턴스에 의미 키를 할당합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인식 작업을 수행할 때 합니다 <xref:System.String> 에서 사용 되는 개체는 `phrases` 매개 변수를 순차적으로 처리 됩니다. 예를 들어 경우 다음 <xref:System.Speech.Recognition.SemanticResultValue> 생성 하는 데 사용 되는 <xref:System.Speech.Recognition.Grammar>, 인식 엔진에 대 한 입력 시퀀스를 인식 하려면에서 "the quick brown fox" 단어를 포함 해야 합니다.  
+  
+```csharp  
+SemanticResultKey stringTest=new SemanticResultKey("stringTest",   
+                                new string[] {  
+                                               "the",  
+                                               "quick",  
+                                               "brown",  
+                                               "fox"});  
+```  
+  
+ `semanticResultKey` 사용 되는 키를 결정 하는 인수에 액세스 하려면는 <xref:System.Speech.Recognition.SemanticValue> 반환 될 수 있습니다.  
+  
+ 생성 하는 경우는 <xref:System.Speech.Recognition.Grammar> 를 사용 하 여는 <xref:System.Speech.Recognition.GrammarBuilder> 문자열 개체의 배열 사용 하 여 의미 체계 키가 포함 된 개체를 <xref:System.Speech.Recognition.SemanticValue.Value%2A> 의 <xref:System.Speech.Recognition.SemanticValue> 인식에 사용할 문자열을 인식 작업으로 생성 됩니다. 앞의 예제에서 즉 <xref:System.Speech.Recognition.SemanticValue.Value%2A> "the quick brown fox"는 것입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Speech.Recognition.Grammar> 에서 <xref:System.Speech.Recognition.GrammarBuilder> 사용 하는 개체를 <xref:System.Speech.Recognition.SemanticResultKey>, 배열을 정의한 <xref:System.String> 개체.  
+  
+ 사용 하 여 인식 엔진을 <xref:System.Speech.Recognition.Grammar> 는 만든 "빨강 녹색 파란색 0 color" 구를 인식 합니다. 의미 체계를 <xref:System.Speech.Recognition.RecognizedPhrase> 반환한 인식 될를 <xref:System.Speech.Recognition.SemanticValue> 사용 하 여는 <xref:System.Speech.Recognition.SemanticValue.Value%2A> "파란색 빨강 녹색" 합니다. 액세스할 수는 <xref:System.Speech.Recognition.SemanticValue> "code" 태그를 사용 하 여 합니다.  
+  
+ 때문에 `SemanticResultValue("zero", 5)` 에 추가 합니다 <xref:System.Speech.Recognition.GrammarBuilder>, 루트 <xref:System.Speech.Recognition.SemanticValue> 개체는 <xref:System.Speech.Recognition.RecognizedPhrase> 5의 값이 포함 됩니다.  
+  
+```csharp  
+private void keyTest()   
+{  
+  // Say "color red green blue zero"  
+  GrammarBuilder gb = new GrammarBuilder("color") +  
+                        new SemanticResultKey("code",   
+                          (new string[] {"red", "green", "blue"})) +  
+                        new SemanticResultValue("zero", 5);  
+  Grammar g = new Grammar(gb);  
+  g.Name = "keyTest";  
+  _recognizer.LoadGrammar(g);  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToGrammarBuilder">
+      <MemberSignature Language="C#" Value="public System.Speech.Recognition.GrammarBuilder ToGrammarBuilder ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Speech.Recognition.GrammarBuilder ToGrammarBuilder() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Recognition.SemanticResultKey.ToGrammarBuilder" />
+      <MemberSignature Language="VB.NET" Value="Public Function ToGrammarBuilder () As GrammarBuilder" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Speech::Recognition::GrammarBuilder ^ ToGrammarBuilder();" />
+      <MemberSignature Language="F#" Value="member this.ToGrammarBuilder : unit -&gt; System.Speech.Recognition.GrammarBuilder" Usage="semanticResultKey.ToGrammarBuilder " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Recognition.GrammarBuilder</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 <see cref="T:System.Speech.Recognition.GrammarBuilder" /> 인스턴스에서 생성된 <see cref="T:System.Speech.Recognition.SemanticResultKey" />의 인스턴스를 반환합니다.</summary>
+        <returns>현재 <see langword="SemanticResultKey" /> 인스턴스에서 생성된 <see cref="T:System.Speech.Recognition.GrammarBuilder" />의 인스턴스입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 <xref:System.Speech.Recognition.SemanticResultValue.ToGrammarBuilder%2A> 사용 하는 것을 <xref:System.Speech.Recognition.GrammarBuilder> 사용 하는 생성자 <xref:System.Speech.Recognition.SemanticResultKey> 인수로 (<xref:System.Speech.Recognition.GrammarBuilder.%23ctor%28System.Speech.Recognition.SemanticResultKey%29>).  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Speech.Recognition.Grammar> 배경색을 변경 하는 명령은 지 원하는 개체입니다.  
+  
+ A <xref:System.Speech.Recognition.Choices> 개체 (`colorChoice`)를 사용 하 여 채워집니다 배경색에 대 한 옵션 목록을 포함 하는 <xref:System.Speech.Recognition.Choices.Add%28System.Speech.Recognition.GrammarBuilder%5B%5D%29> 메서드를 <xref:System.Speech.Recognition.GrammarBuilder> 인스턴스. <xref:System.Speech.Recognition.GrammarBuilder> 인스턴스를 통해 가져온 합니다 <xref:System.Speech.Recognition.SemanticResultKey.ToGrammarBuilder> 메서드는 <xref:System.Speech.Recognition.SemanticResultValue> 색 문자열에서 생성 된 개체.  
+  
+ A <xref:System.Speech.Recognition.GrammarBuilder> 를 호출 하 여 가져옵니다 <xref:System.Speech.Recognition.SemanticResultKey.ToGrammarBuilder> 에 <xref:System.Speech.Recognition.SemanticResultKey> 의미 체계 선택 항목을 키로 사용 되는 인스턴스 `colorChoice`합니다.  
+  
+```csharp  
+  
+private Grammar CreateGrammarBuilderRGBSemantics()   
+{  
+  
+  // Create a set of choices, each a lookup from a color name to RGB.  
+  // Choices constructors do not take SemanticResultValue parameters, so cast   
+  // the SemanticResultValue to GrammarBuilder.  
+  Choices colorChoice = new Choices();  
+  foreach (string colorName in System.Enum.GetNames(typeof(KnownColor)))   
+  {  
+    SemanticResultValue colorValue=new SemanticResultValue(colorName, Color.FromName(colorName).ToArgb());  
+  
+    // Use implicit conversion of SemanticResultValue to GrammarBuilder.  
+    colorChoice.Add(colorValue.ToGrammarBuilder());      
+  }  
+  SemanticResultKey choiceKey = new SemanticResultKey("rgb", colorChoice);  
+  GrammarBuilder choiceBuilder = choiceKey.ToGrammarBuilder();  
+  
+  // Create two intermediate grammars with introductory phrase and the color choice.  
+  GrammarBuilder makeBackgroundBuilder = "Make background";  
+  makeBackgroundBuilder.Append(choiceBuilder);  
+  
+  GrammarBuilder configureBackgroundBuilder = new GrammarBuilder("Configure background as");  
+  configureBackgroundBuilder.Append((new SemanticResultKey("rgb", colorChoice)).ToGrammarBuilder());  
+  
+  // Create the Grammar object, which recognizes either intermediate grammar.  
+  Grammar grammar = new Grammar(new Choices(new GrammarBuilder[] {makeBackgroundBuilder, configureBackgroundBuilder}));  
+  grammar.Name = "Make Background /Configure background as";  
+  
+  return grammar;  
+}  
+  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

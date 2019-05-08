@@ -1,0 +1,478 @@
+<Type Name="WorkflowPersistenceService" FullName="System.Workflow.Runtime.Hosting.WorkflowPersistenceService">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6cbc9cd683f0346f1532afdb1709c1ce11dec398" /><Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="11/17/2018" /><Meta Name="ms.locfileid" Value="51935419" /></Metadata><TypeSignature Language="C#" Value="public abstract class WorkflowPersistenceService : System.Workflow.Runtime.Hosting.WorkflowRuntimeService" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit WorkflowPersistenceService extends System.Workflow.Runtime.Hosting.WorkflowRuntimeService" />
+  <TypeSignature Language="DocId" Value="T:System.Workflow.Runtime.Hosting.WorkflowPersistenceService" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class WorkflowPersistenceService&#xA;Inherits WorkflowRuntimeService" />
+  <TypeSignature Language="C++ CLI" Value="public ref class WorkflowPersistenceService abstract : System::Workflow::Runtime::Hosting::WorkflowRuntimeService" />
+  <TypeSignature Language="F#" Value="type WorkflowPersistenceService = class&#xA;    inherit WorkflowRuntimeService" />
+  <AssemblyInfo>
+    <AssemblyName>System.Workflow.Runtime</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Workflow.Runtime.Hosting.WorkflowRuntimeService</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+      <AttributeName>System.Obsolete("The System.Workflow.* types are deprecated.  Instead, please use the new types from System.Activities.*")</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>모든 지속성 서비스가 파생되는 추상 기본 클래스입니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  [!INCLUDE[DeprecatedContent](~/includes/deprecatedcontent-md.md)]  
+  
+ 워크플로가 실행되는 동안 특정 조건이 발생하면 워크플로 런타임 엔진이 워크플로 인스턴스에 대한 상태 정보를 유지합니다. 예를 들어 원자성 트랜잭션이 완료될 때, 워크플로 인스턴스가 유휴 상태가 될 때, 호스트가 워크플로 인스턴스에서 <xref:System.Workflow.Runtime.WorkflowInstance.Unload%2A?displayProperty=nameWithType>를 호출할 때 또는 워크플로 인스턴스가 종료되거나 완료될 때 지속성이 발생할 수 있습니다. 워크플로 런타임 엔진 의미 체계에서 지속성이 발생해야 함을 나타내는 경우 워크플로 런타임 엔진은 지속성 서비스가 제공하는 메서드를 호출하여 워크플로 인스턴스에 대한 상태 정보를 저장합니다. 마찬가지로 워크플로 런타임 엔진은 이전에 유지된 워크플로 인스턴스를 복원해야 하는 경우 지속성 서비스가 제공한 메서드를 호출하여 이 상태 정보를 로드합니다. 워크플로 런타임 엔진은 지속성 수행 시기와 관련해서 모든 의미 체계를 처리합니다. 지속성 서비스는 실제로 워크플로 상태 정보를 데이터 저장소로 저장 및 로드하거나 데이터 저장소로부터 저장 및 로드하는 작업을 처리합니다.  
+  
+ <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService> 클래스에서 클래스를 파생시켜 유지 서비스를 만들 수 있습니다.  <xref:System.Workflow.Runtime.WorkflowRuntime.AddService%2A>를 호출하거나 응용 프로그램 구성 파일에 해당 항목을 만들어 워크플로 런타임 엔진에 유지 서비스를 추가할 수 있습니다. <xref:System.Workflow.Runtime.WorkflowRuntime>에 하나의 지속성 서비스만 포함되어야 합니다. Windows Workflow Foundation에서는 있는 그대로 사용하거나 확장할 수 있는 기본 유지 서비스인 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> 클래스를 제공합니다.  
+  
+ 워크플로 런타임 엔진에는 다른 프로세스에서 실행되는 지속성 서비스가 단일 데이터 저장소에 액세스할 수 있는 환경에서 사용할 워크플로 상태 정보를 잠그기 위한 의미 체계가 있습니다. <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService> 클래스는 이와 같은 워크플로 런타임 엔진의 기능을 지원하기 위하여 워크플로 인스턴스의 상태 정보를 데이터 저장소에서 잠글지 여부를 지정하는 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.SaveWorkflowInstanceState%2A>에 대한 매개 변수를 제공하고 이전에 잠긴 워크플로 상태 정보를 잠금 해제하는 메서드 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.UnlockWorkflowInstanceState%2A>를 제공합니다. 잠금을 구현하는 유지 서비스에서 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.LoadWorkflowInstanceState%2A>를 호출하면 워크플로 인스턴스에 대한 상태 정보가 잠겨야 합니다.  
+  
+ 지속성 서비스는 데이터 저장소에 상태 정보를 저장하지 못하거나 데이터 저장소에서 상태 정보를 로드하지 못할 경우 <xref:System.Workflow.Runtime.Hosting.PersistenceException>을 throw해야 합니다. 워크플로 런타임 엔진에서는 이러한 동작을 예상합니다.  
+  
+ 영속 저장소를 사용하여 워크플로 상태 정보를 저장하는 서비스에 대해 일괄 처리 메커니즘이 제공됩니다. 이 경우 유지 서비스에서 사용하는 영속 저장소와 워크플로 런타임 엔진의 내부 상태 간에 일관성을 유지하는 것이 중요합니다. <xref:System.Workflow.Runtime.IPendingWork> 인터페이스에서 정의한 기능을 서비스에 추가한 다음 데이터 저장소에 대한 변경 내용을 작업 항목으로 <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>에 추가하여 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A>가 제공하는 워크플로 트랜잭션 일괄 처리에 참여할 수 있습니다. 영속 저장소 자체에서 <xref:System.Transactions.IEnlistmentNotification> 인터페이스를 구현해야 하므로 트랜잭션 롤백 시에도 워크플로 정보가 잘못 유지되지 않습니다. 자세한 내용은 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.SaveCompletedContextActivity%2A> 또는 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.SaveWorkflowInstanceState%2A>를 참조하세요.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected WorkflowPersistenceService ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; WorkflowPersistenceService();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 구현되는 경우에는 <see cref="T:System.Workflow.Runtime.Hosting.WorkflowPersistenceService" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제에서는 `SqlWorkflowPersistenceService`에서 파생된 `WorkflowPersistenceService` 클래스의 인스턴스를 만드는 방법을 보여 줍니다. 이 예제는 Program.cs 클래스에 있는 Nested Exception Handlers SDK 샘플의 일부입니다.  자세한 내용은 참조는 [Nested Exception Handlers 샘플](https://msdn.microsoft.com/library/d1da0209-842b-41c8-9b7c-0cbaa1034265)합니다.  
+  
+ [!code-csharp[WF_Samples#161](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets11.cs#161)]
+ [!code-vb[WF_Samples#161](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets11.vb#161)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetDefaultSerializedForm">
+      <MemberSignature Language="C#" Value="protected static byte[] GetDefaultSerializedForm (System.Workflow.ComponentModel.Activity activity);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig unsigned int8[] GetDefaultSerializedForm(class System.Workflow.ComponentModel.Activity activity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetDefaultSerializedForm(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static cli::array &lt;System::Byte&gt; ^ GetDefaultSerializedForm(System::Workflow::ComponentModel::Activity ^ activity);" />
+      <MemberSignature Language="F#" Value="static member GetDefaultSerializedForm : System.Workflow.ComponentModel.Activity -&gt; byte[]" Usage="System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetDefaultSerializedForm activity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="activity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="activity">serialize된 형식이 요청되는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary><see cref="T:System.Workflow.ComponentModel.Activity" />의 serialize된 기본 형식을 검색합니다.</summary>
+        <returns><see cref="T:System.Workflow.ComponentModel.Activity" />의 serialize된 기본 형식입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIsBlocked">
+      <MemberSignature Language="C#" Value="protected internal static bool GetIsBlocked (System.Workflow.ComponentModel.Activity rootActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblystatic hidebysig bool GetIsBlocked(class System.Workflow.ComponentModel.Activity rootActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetIsBlocked(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Shared Function GetIsBlocked (rootActivity As Activity) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; static bool GetIsBlocked(System::Workflow::ComponentModel::Activity ^ rootActivity);" />
+      <MemberSignature Language="F#" Value="static member GetIsBlocked : System.Workflow.ComponentModel.Activity -&gt; bool" Usage="System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetIsBlocked rootActivity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rootActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="rootActivity">워크플로 인스턴스의 루트 활동입니다.</param>
+        <summary>지정된 활동의 차단 여부를 나타냅니다.</summary>
+        <returns>지정된 활동이 차단되어 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSuspendOrTerminateInfo">
+      <MemberSignature Language="C#" Value="protected internal static string GetSuspendOrTerminateInfo (System.Workflow.ComponentModel.Activity rootActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblystatic hidebysig string GetSuspendOrTerminateInfo(class System.Workflow.ComponentModel.Activity rootActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetSuspendOrTerminateInfo(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Shared Function GetSuspendOrTerminateInfo (rootActivity As Activity) As String" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; static System::String ^ GetSuspendOrTerminateInfo(System::Workflow::ComponentModel::Activity ^ rootActivity);" />
+      <MemberSignature Language="F#" Value="static member GetSuspendOrTerminateInfo : System.Workflow.ComponentModel.Activity -&gt; string" Usage="System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetSuspendOrTerminateInfo rootActivity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rootActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="rootActivity">워크플로 인스턴스의 루트 활동입니다.</param>
+        <summary>지정된 활동의 종료 또는 일시 중단 정보를 검색합니다.</summary>
+        <returns>종료 또는 일시 중단 정보를 포함하는 <see cref="T:System.String" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetWorkflowStatus">
+      <MemberSignature Language="C#" Value="protected internal static System.Workflow.Runtime.WorkflowStatus GetWorkflowStatus (System.Workflow.ComponentModel.Activity rootActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblystatic hidebysig valuetype System.Workflow.Runtime.WorkflowStatus GetWorkflowStatus(class System.Workflow.ComponentModel.Activity rootActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetWorkflowStatus(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Shared Function GetWorkflowStatus (rootActivity As Activity) As WorkflowStatus" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; static System::Workflow::Runtime::WorkflowStatus GetWorkflowStatus(System::Workflow::ComponentModel::Activity ^ rootActivity);" />
+      <MemberSignature Language="F#" Value="static member GetWorkflowStatus : System.Workflow.ComponentModel.Activity -&gt; System.Workflow.Runtime.WorkflowStatus" Usage="System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetWorkflowStatus rootActivity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.Runtime.WorkflowStatus</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rootActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="rootActivity">워크플로 인스턴스의 루트 활동입니다.</param>
+        <summary>워크플로의 상태를 검색합니다.</summary>
+        <returns>워크플로의 상태를 나타내는 <see cref="T:System.Workflow.Runtime.WorkflowStatus" /> 열거형 값입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadCompletedContextActivity">
+      <MemberSignature Language="C#" Value="protected internal abstract System.Workflow.ComponentModel.Activity LoadCompletedContextActivity (Guid scopeId, System.Workflow.ComponentModel.Activity outerActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance class System.Workflow.ComponentModel.Activity LoadCompletedContextActivity(valuetype System.Guid scopeId, class System.Workflow.ComponentModel.Activity outerActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.LoadCompletedContextActivity(System.Guid,System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Function LoadCompletedContextActivity (scopeId As Guid, outerActivity As Activity) As Activity" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract System::Workflow::ComponentModel::Activity ^ LoadCompletedContextActivity(Guid scopeId, System::Workflow::ComponentModel::Activity ^ outerActivity);" />
+      <MemberSignature Language="F#" Value="abstract member LoadCompletedContextActivity : Guid * System.Workflow.ComponentModel.Activity -&gt; System.Workflow.ComponentModel.Activity" Usage="workflowPersistenceService.LoadCompletedContextActivity (scopeId, outerActivity)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.ComponentModel.Activity</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="scopeId" Type="System.Guid" />
+        <Parameter Name="outerActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="scopeId">완료된 범위의 <see cref="T:System.Guid" />입니다.</param>
+        <param name="outerActivity">완료된 범위를 포함하는 활동을 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary>파생 클래스에서 구현되는 경우 지정한 완료된 범위를 다시 메모리에 로드합니다.</summary>
+        <returns>완료된 범위를 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 워크플로 런타임 엔진은 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.LoadCompletedContextActivity%2A>를 사용하여 보정을 구현합니다. 완료된 범위의 동일한 복사본을 복원해야 합니다. 이렇게 하려면 데이터 저장소에 있는 완료된 범위의 표현에서 올바른 <xref:System.IO.Stream>을 복원해야 합니다. 그런 다음 이 <xref:System.IO.Stream>을 <xref:System.Workflow.ComponentModel.Activity.Load%2A>의 오버로드된 메서드 중 하나로 전달하여 범위의 deserialization을 수행해야 합니다.  
+  
+ 지속성 서비스는 데이터 저장소에서 완료된 범위를 로드할 수 없는 경우 해당 메시지와 함께 <xref:System.Workflow.Runtime.Hosting.PersistenceException>을 throw해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 `LoadCompletedContextActivity` 메서드의 구현 방법을 보여 줍니다. 이 예제는 FilePersistenceService.cs 파일에 있는 Custom Persistence Service 샘플의 일부입니다. 자세한 내용은 [Custom Persistence Service 샘플](https://msdn.microsoft.com/library/869dfadf-5298-4551-bc80-f4cf7918729d)합니다.  
+  
+ [!code-csharp[WF_Samples#269](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets24.cs#269)]
+ [!code-vb[WF_Samples#269](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets24.vb#269)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadWorkflowInstanceState">
+      <MemberSignature Language="C#" Value="protected internal abstract System.Workflow.ComponentModel.Activity LoadWorkflowInstanceState (Guid instanceId);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance class System.Workflow.ComponentModel.Activity LoadWorkflowInstanceState(valuetype System.Guid instanceId) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.LoadWorkflowInstanceState(System.Guid)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Function LoadWorkflowInstanceState (instanceId As Guid) As Activity" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract System::Workflow::ComponentModel::Activity ^ LoadWorkflowInstanceState(Guid instanceId);" />
+      <MemberSignature Language="F#" Value="abstract member LoadWorkflowInstanceState : Guid -&gt; System.Workflow.ComponentModel.Activity" Usage="workflowPersistenceService.LoadWorkflowInstanceState instanceId" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.ComponentModel.Activity</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="instanceId" Type="System.Guid" />
+      </Parameters>
+      <Docs>
+        <param name="instanceId">워크플로 인스턴스 루트 활동의 <see cref="T:System.Guid" />입니다.</param>
+        <summary>파생 클래스에서 구현되는 경우 지정된 워크플로 인스턴스 상태를 다시 메모리에 로드합니다.</summary>
+        <returns>워크플로 인스턴스의 루트 활동을 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 활동의 동일한 복사본을 복원해야 합니다. 이렇게 하려면 데이터 저장소에 있는 워크플로 인스턴스 표현에서 올바른 <xref:System.IO.Stream>을 복원해야 합니다. 그런 다음 이 <xref:System.IO.Stream>을 오버로드된 <xref:System.Workflow.ComponentModel.Activity.Load%2A> 메서드 중 하나로 전달하여 워크플로 인스턴스 상태를 deserialize해야 합니다. 지속성 서비스가 데이터 저장소에서 워크플로 인스턴스 상태를 로드할 수 없는 경우 해당 메시지와 함께 <xref:System.Workflow.Runtime.Hosting.PersistenceException>을 throw해야 합니다.  
+  
+ 워크플로 런타임 엔진은 잠금 의미 체계를 구현하여 데이터 저장소에 저장된 워크플로 인스턴스 상태에 대한 액세스를 제한합니다. 워크플로 인스턴스 상태는 여러 프로세스에서 실행되는 지속성 서비스로 액세스할 수 있습니다. 잠금 의미 체계는 두 개의 다른 프로세스에서 실행되는 지속성 서비스가 동일한 워크플로 인스턴스를 동시에 메모리에 로드할 수 없도록 디자인되었습니다. 지속성 서비스가 지원하도록 디자인된 환경 유형에 따라 이 기능의 지원 여부를 선택할 수 있습니다. 런타임 잠금 의미 체계를 지원하도록 선택하면 이 워크플로 인스턴스 상태가 이전에 다른 프로세스에서 잠긴 경우 <xref:System.Workflow.Runtime.WorkflowOwnershipException>을 throw해야 합니다. 그렇지 않으면 데이터 저장소의 워크플로 인스턴스 상태에 대한 액세스를 잠가야 합니다. <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.UnlockWorkflowInstanceState%2A>를 호출하거나 unlock 매개 변수를 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.SaveWorkflowInstanceState%2A>로 설정하고 `true`를 호출하여 워크플로 인스턴스 상태를 잠금 해제할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 `LoadWorkflowInstanceState` 메서드의 구현 방법을 보여 줍니다. 이 예제는 FilePersistenceService.cs 파일에 있는 Custom Persistence Service 샘플의 일부입니다. 자세한 내용은 [Custom Persistence Service 샘플](https://msdn.microsoft.com/library/869dfadf-5298-4551-bc80-f4cf7918729d)합니다.  
+  
+ [!code-csharp[WF_Samples#266](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets24.cs#266)]
+ [!code-vb[WF_Samples#266](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets24.vb#266)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RestoreFromDefaultSerializedForm">
+      <MemberSignature Language="C#" Value="protected static System.Workflow.ComponentModel.Activity RestoreFromDefaultSerializedForm (byte[] activityBytes, System.Workflow.ComponentModel.Activity outerActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Workflow.ComponentModel.Activity RestoreFromDefaultSerializedForm(unsigned int8[] activityBytes, class System.Workflow.ComponentModel.Activity outerActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.RestoreFromDefaultSerializedForm(System.Byte[],System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function RestoreFromDefaultSerializedForm (activityBytes As Byte(), outerActivity As Activity) As Activity" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Workflow::ComponentModel::Activity ^ RestoreFromDefaultSerializedForm(cli::array &lt;System::Byte&gt; ^ activityBytes, System::Workflow::ComponentModel::Activity ^ outerActivity);" />
+      <MemberSignature Language="F#" Value="static member RestoreFromDefaultSerializedForm : byte[] * System.Workflow.ComponentModel.Activity -&gt; System.Workflow.ComponentModel.Activity" Usage="System.Workflow.Runtime.Hosting.WorkflowPersistenceService.RestoreFromDefaultSerializedForm (activityBytes, outerActivity)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.ComponentModel.Activity</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="activityBytes" Type="System.Byte[]" />
+        <Parameter Name="outerActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="activityBytes"><see cref="T:System.Workflow.ComponentModel.Activity" />의 serialize된 형식입니다.</param>
+        <param name="outerActivity">복원할 <see cref="T:System.Workflow.ComponentModel.Activity" />를 포함하는 외부 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary>serialize된 형식에서 <see cref="T:System.Workflow.ComponentModel.Activity" />를 복원합니다.</summary>
+        <returns>복원된 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제에서는 `RestoreFromDefaultSerializedForm` 메서드의 구현 방법을 보여 줍니다. 이 예제는 FilePersistenceService.cs 파일에 있는 Custom Persistence Service 샘플의 일부입니다. 자세한 내용은 [Custom Persistence Service 샘플](https://msdn.microsoft.com/library/869dfadf-5298-4551-bc80-f4cf7918729d)합니다.  
+  
+ [!code-csharp[WF_Samples#269](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets24.cs#269)]
+ [!code-vb[WF_Samples#269](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets24.vb#269)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveCompletedContextActivity">
+      <MemberSignature Language="C#" Value="protected internal abstract void SaveCompletedContextActivity (System.Workflow.ComponentModel.Activity activity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void SaveCompletedContextActivity(class System.Workflow.ComponentModel.Activity activity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.SaveCompletedContextActivity(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract void SaveCompletedContextActivity(System::Workflow::ComponentModel::Activity ^ activity);" />
+      <MemberSignature Language="F#" Value="abstract member SaveCompletedContextActivity : System.Workflow.ComponentModel.Activity -&gt; unit" Usage="workflowPersistenceService.SaveCompletedContextActivity activity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="activity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="activity">완료된 범위를 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary>파생 클래스에서 구현되는 경우 지정한 완료된 범위를 데이터 저장소에 저장합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 워크플로 런타임 엔진은 보정을 구현하기 위해 완료된 범위 활동의 상태를 저장합니다. 오버로드된 <xref:System.Workflow.ComponentModel.Activity.Save%2A> 메서드 중 하나를 호출하여 `activity`를 <xref:System.IO.Stream>으로 serialize해야 합니다. 그런 다음 데이터 저장소에 쓰기 전에 추가로 <xref:System.IO.Stream>을 처리하도록 선택할 수 있습니다. 그러나 워크플로 런타임 엔진이 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.LoadCompletedContextActivity%2A>를 호출할 때 활동의 동일한 복사본을 복원해야 합니다.  
+  
+ 워크플로 인스턴스가 완료되거나 종료될 때 데이터 저장소에서 해당 범위를 필요하지 않은 것으로 표시하려면 완료된 범위를 바깥쪽 워크플로 인스턴스와 연결할 수 있어야 합니다. 따라서 완료된 범위와 연결된 워크플로 인스턴스의 <xref:System.Guid>도 저장해야 합니다. 이 값은 <xref:System.Workflow.Runtime.WorkflowInstance.InstanceId%2A>와 연결된 <xref:System.Workflow.Runtime.WorkflowInstance>의 `activity` 속성에서 가져올 수 있습니다.  
+  
+ <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.LoadCompletedContextActivity%2A>는 완료된 범위의 <xref:System.Guid>를 매개 변수로 사용합니다. 따라서 <xref:System.Workflow.ComponentModel.ActivityExecutionContext.ContextGuid%2A>와 연결된 `activity` 속성도 저장해야 합니다. 이 속성은 <xref:System.Workflow.ComponentModel.Activity.ActivityContextGuidProperty>의 `activity` 필드를 통해 참조할 수 있습니다.  
+  
+ 영속 저장소를 사용하는 지속성 서비스를 구현하는 경우 워크플로 런타임 엔진의 내부 상태와 일관성을 유지하려면 워크플로 트랜잭션 일괄 처리에 참여하여 영속 저장소에 대한 실제 쓰기를 워크플로 커밋 점까지 지연해야 합니다. 일괄 처리에 참여하려면 데이터베이스에 대해 보류 중인 변경 내용을 나타내는 작업 항목을 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A> 속성에 추가하고 지속성 서비스에 <xref:System.Workflow.Runtime.IPendingWork> 인터페이스를 구현합니다.  
+  
+ 완료된 범위를 데이터 저장소에 저장할 수 없는 경우 해당 오류 메시지와 함께 <xref:System.Workflow.Runtime.Hosting.PersistenceException>을 throw해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 `SaveCompletedContextActivity` 메서드의 구현 방법을 보여 줍니다. 이 예제는 FilePersistenceService.cs 파일에 있는 Custom Persistence Service 샘플의 일부입니다. 자세한 내용은 [Custom Persistence Service 샘플](https://msdn.microsoft.com/library/869dfadf-5298-4551-bc80-f4cf7918729d)합니다.  
+  
+ [!code-csharp[WF_Samples#268](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets24.cs#268)]
+ [!code-vb[WF_Samples#268](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets24.vb#268)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveWorkflowInstanceState">
+      <MemberSignature Language="C#" Value="protected internal abstract void SaveWorkflowInstanceState (System.Workflow.ComponentModel.Activity rootActivity, bool unlock);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void SaveWorkflowInstanceState(class System.Workflow.ComponentModel.Activity rootActivity, bool unlock) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.SaveWorkflowInstanceState(System.Workflow.ComponentModel.Activity,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Sub SaveWorkflowInstanceState (rootActivity As Activity, unlock As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract void SaveWorkflowInstanceState(System::Workflow::ComponentModel::Activity ^ rootActivity, bool unlock);" />
+      <MemberSignature Language="F#" Value="abstract member SaveWorkflowInstanceState : System.Workflow.ComponentModel.Activity * bool -&gt; unit" Usage="workflowPersistenceService.SaveWorkflowInstanceState (rootActivity, unlock)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rootActivity" Type="System.Workflow.ComponentModel.Activity" />
+        <Parameter Name="unlock" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="rootActivity">워크플로 인스턴스의 루트 활동입니다.</param>
+        <param name="unlock">워크플로 인스턴스를 잠그지 않아야 하면 <see langword="true" />이고, 워크플로 인스턴스를 잠가야 하면 <see langword="false" />입니다.</param>
+        <summary>파생 클래스에서 구현되는 경우 워크플로 인스턴스 상태를 데이터 저장소에 저장합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 오버로드된 <xref:System.Workflow.ComponentModel.Activity.Save%2A> 메서드 중 하나를 호출하여 `rootActivity`를 <xref:System.IO.Stream>으로 serialize해야 합니다. 데이터 저장소에 쓰기 전에 <xref:System.IO.Stream>을 추가로 처리하도록 선택할 수 있습니다. 그러나 워크플로 런타임 엔진이 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.LoadWorkflowInstanceState%2A>를 호출할 때 루트 활동의 동일한 복사본을 복원해야 합니다. 워크플로 인스턴스 상태를 데이터 저장소에 저장할 수 없는 경우 해당 오류 메시지와 함께 <xref:System.Workflow.Runtime.Hosting.PersistenceException>을 throw해야 합니다.  
+  
+ 워크플로 런타임 엔진은 잠금 의미 체계를 제공하여 데이터 저장소에 저장된 워크플로 인스턴스 상태에 대한 액세스를 제한합니다. 워크플로 인스턴스 상태는 호스트에서 실행되고 동일한 데이터 저장소를 가리키는 지속성 서비스로 액세스할 수 있습니다. 잠금 의미 체계는 두 개의 다른 워크플로 런타임에서 실행되는 지속성 서비스가 동일한 워크플로 인스턴스를 동시에 메모리에 로드할 수 없도록 디자인되었습니다. 지속성 서비스가 지원하도록 디자인된 환경 유형에 따라 이 기능의 지원 여부를 선택할 수 있습니다. 런타임 잠금 의미 체계를 지원하도록 선택하면 지속성 서비스가 이전에 다른 지속성 서비스에서 잠긴 워크플로 인스턴스 상태를 저장하려고 시도하는 경우 <xref:System.Workflow.Runtime.WorkflowOwnershipException>을 throw해야 합니다. `unlock`이 `true`이면 저장 후 워크플로 인스턴스 상태에 대한 액세스를 잠금 해제해야 합니다.  
+  
+ <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.LoadWorkflowInstanceState%2A>는 워크플로 인스턴스의 <xref:System.Guid>를 매개 변수로 사용합니다. 따라서 이 <xref:System.Guid>를 저장해야 합니다. 이 <xref:System.Guid>를 사용하여 워크플로 인스턴스를 완료된 범위의 저장된 상태와 연결할 수도 있습니다. 워크플로 인스턴스가 완료될 때 완료된 범위를 필요하지 않은 것으로 표시할 수 있으려면 이 작업을 수행해야 합니다.  
+  
+ 워크플로 런타임 엔진은 워크플로 인스턴스가 최종적으로 완료되거나 종료될 때 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.SaveWorkflowInstanceState%2A>를 호출합니다. 따라서 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.GetWorkflowStatus%2A>가 <xref:System.Workflow.Runtime.WorkflowStatus.Completed> 또는 <xref:System.Workflow.Runtime.WorkflowStatus.Terminated>와 같으면 워크플로 인스턴스 및 연결된 모든 완료된 범위를 데이터 저장소에서 안전하게 삭제할 수 있습니다. 또는 <xref:System.Workflow.Runtime.WorkflowRuntime.WorkflowCompleted> 또는 <xref:System.Workflow.Runtime.WorkflowRuntime.WorkflowTerminated> 이벤트를 구독하여 워크플로 인스턴스와 연결된 레코드를 안전하게 삭제할 수 있는 시기를 확인할 수 있습니다. 실제로 데이터 저장소에서 레코드를 삭제할지 여부는 구현에 따라 달라집니다.  
+  
+ 영속 저장소를 사용하는 지속성 서비스를 구현하는 경우 워크플로 런타임 엔진의 내부 상태와 일관성을 유지하려면 워크플로 트랜잭션 일괄 처리에 참여하여 영속 저장소에 대한 실제 쓰기를 워크플로 커밋 점까지 지연해야 합니다. 일괄 처리에 참여하려면 영속 저장소에 대해 보류 중인 변경 내용을 나타내는 작업 항목을 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A> 속성에 추가하고 지속성 서비스에 <xref:System.Workflow.Runtime.IPendingWork> 인터페이스를 구현합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 `SaveWorkflowInstanceState` 메서드의 구현 방법을 보여 줍니다. 이 예제는 FilePersistenceService.cs 파일에 있는 Custom Persistence Service 샘플의 일부입니다. 자세한 내용은 [Custom Persistence Service 샘플](https://msdn.microsoft.com/library/869dfadf-5298-4551-bc80-f4cf7918729d)합니다.  
+  
+ [!code-csharp[WF_Samples#264](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets24.cs#264)]
+ [!code-vb[WF_Samples#264](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets24.vb#264)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnloadOnIdle">
+      <MemberSignature Language="C#" Value="protected internal abstract bool UnloadOnIdle (System.Workflow.ComponentModel.Activity activity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance bool UnloadOnIdle(class System.Workflow.ComponentModel.Activity activity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.UnloadOnIdle(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract bool UnloadOnIdle(System::Workflow::ComponentModel::Activity ^ activity);" />
+      <MemberSignature Language="F#" Value="abstract member UnloadOnIdle : System.Workflow.ComponentModel.Activity -&gt; bool" Usage="workflowPersistenceService.UnloadOnIdle activity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="activity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="activity">완료된 범위를 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary>워크플로가 유휴 상태일 때 언로드할지 여부를 결정합니다.</summary>
+        <returns><see langword="true" />이면 워크플로 런타임 엔진은 지정된 워크플로가 유휴 상태일 때 언로드합니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제에서는 `UnloadOnIdle` 메서드의 구현 방법을 보여 줍니다. 이 예제는 FilePersistenceService.cs 파일에 있는 Custom Persistence Service 샘플의 일부입니다. 자세한 내용은 [Custom Persistence Service 샘플](https://msdn.microsoft.com/library/869dfadf-5298-4551-bc80-f4cf7918729d)합니다.  
+  
+ [!code-csharp[WF_Samples#270](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets24.cs#270)]
+ [!code-vb[WF_Samples#270](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets24.vb#270)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnlockWorkflowInstanceState">
+      <MemberSignature Language="C#" Value="protected internal abstract void UnlockWorkflowInstanceState (System.Workflow.ComponentModel.Activity rootActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void UnlockWorkflowInstanceState(class System.Workflow.ComponentModel.Activity rootActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.UnlockWorkflowInstanceState(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Sub UnlockWorkflowInstanceState (rootActivity As Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract void UnlockWorkflowInstanceState(System::Workflow::ComponentModel::Activity ^ rootActivity);" />
+      <MemberSignature Language="F#" Value="abstract member UnlockWorkflowInstanceState : System.Workflow.ComponentModel.Activity -&gt; unit" Usage="workflowPersistenceService.UnlockWorkflowInstanceState rootActivity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rootActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="rootActivity">워크플로 인스턴스의 루트 활동입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 워크플로 인스턴스 상태를 잠금 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 추상이므로 잠금 및 잠금 해제에 대한 기본 구현을 포함하지 않습니다.  
+  
+ 사용자 지정 지속성 서비스를 구현하는 동안 잠금 체계를 구현하려면 이 메서드를 재정의하고 unlock 매개 변수의 값을 기반으로 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService.SaveWorkflowInstanceState%2A> 메서드에 잠금-잠금 해제 메커니즘을 제공해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 `UnlockWorkflowInstanceState` 메서드의 구현 방법을 보여 줍니다. 이 예제는 FilePersistenceService.cs 파일에 있는 Custom Persistence Service 샘플의 일부입니다. 자세한 내용은 [Custom Persistence Service 샘플](https://msdn.microsoft.com/library/869dfadf-5298-4551-bc80-f4cf7918729d)합니다.  
+  
+ [!code-csharp[WF_Samples#267](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets24.cs#267)]
+ [!code-vb[WF_Samples#267](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets24.vb#267)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,310 @@
+<Type Name="XObjectChange" FullName="System.Xml.Linq.XObjectChange">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="dbf966035bc2eeb91a8d6f2bb7a66f1d6a6a5457" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58749663" /></Metadata><TypeSignature Language="C#" Value="public enum XObjectChange" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed XObjectChange extends System.Enum" />
+  <TypeSignature Language="DocId" Value="T:System.Xml.Linq.XObjectChange" />
+  <TypeSignature Language="VB.NET" Value="Public Enum XObjectChange" />
+  <TypeSignature Language="C++ CLI" Value="public enum class XObjectChange" />
+  <TypeSignature Language="F#" Value="type XObjectChange = " />
+  <AssemblyInfo>
+    <AssemblyName>System.Xml.XDocument</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.10.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Xml.Linq</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Enum</BaseTypeName>
+  </Base>
+  <Docs>
+    <summary><see cref="T:System.Xml.Linq.XObject" />에 대한 이벤트가 발생할 때 이벤트 형식을 지정합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이렇게 `enum` 에 대 한 이벤트가 발생할 때 이벤트 유형을 지정는 <xref:System.Xml.Linq.XObject>합니다.  
+  
+ XML 트리를 수정 하는 모든 작업은 일련의 기본을 나눕니다. 네 가지 기본 유형이 있습니다. 기본 형식 (Add 및 Remove)의 두 컬렉션에 대해 수행 됩니다. (이름 및 값)의 두 인스턴스에서 수행 됩니다. 이러한 각 기본이 작업에 대 한 해당 이벤트가 있습니다.  
+  
+ 예기치 않은 결과가 발생할 수 있습니다이 작업을 수행 하기 때문에 이러한 이벤트 중 하나에서 XML 트리를 수정 하는 경우 주의 해야 합니다. 예를 들어, 표시 되 면을 <xref:System.Xml.Linq.XObject.Changing> 이벤트 및 이벤트를 처리 하는 동안 트리에서 노드를 제거 하면 받을 수는 <xref:System.Xml.Linq.XObject.Changed> 이벤트입니다. 이벤트가 처리 되는 경우에 이벤트를 수신 하는 노드를 포함 하는 것과 다른 XML 트리를 수정할 수 수정이 이벤트가 발생 한 특정 노드가 영향을 주지 않습니다 제공 같은 트리를 수정 하려면도 유효 합니다. 그러나 이벤트를 수신 하는 노드가 포함 된 트리의 영역을 수정 하면 트리에 영향과 받은 이벤트를 정의 되지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 요소 트리에 추가 하 여 이벤트를 발생 시킵니다.  
+  
+```csharp  
+XElement root = new XElement("Root", "content");  
+root.Changing += (sender, e) =>  
+    {  
+        Console.WriteLine("Changing event raised");  
+        Console.WriteLine("  Sender: " + sender.GetType());  
+        Console.WriteLine("  Changing: " + e.ObjectChange);  
+    };  
+root.Changed += (sender, e) =>  
+    {  
+        Console.WriteLine("Changed event raised");  
+        Console.WriteLine("  Sender: " + sender.GetType());  
+        Console.WriteLine("  Changed: " + e.ObjectChange);  
+    };  
+root.Add(new XElement("Child", "child content"));  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+Changing event raised  
+  Sender: System.Xml.Linq.XElement  
+  Changing: Add  
+Changed event raised  
+  Sender: System.Xml.Linq.XElement  
+  Changed: Add  
+```  
+  
+ 다음 예제에서는 트리에서 요소를 제거 하 여 이벤트를 발생 시킵니다.  
+  
+```csharp  
+XElement root = new XElement("Root",  
+    new XElement("Child", "content")  
+);  
+root.Changing += (sender, e) =>  
+    {  
+        Console.WriteLine("Changing event raised");  
+        Console.WriteLine("  Sender: " + sender.GetType());  
+        Console.WriteLine("  Changing: " + e.ObjectChange);  
+    };  
+root.Changed += (sender, e) =>  
+    {  
+        Console.WriteLine("Changed event raised");  
+        Console.WriteLine("  Sender: " + sender.GetType());  
+        Console.WriteLine("  Changed: " + e.ObjectChange);  
+    };  
+root.Element("Child").Remove();  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+Changing event raised  
+  Sender: System.Xml.Linq.XElement  
+  Changing: Remove  
+Changed event raised  
+  Sender: System.Xml.Linq.XElement  
+  Changed: Remove  
+```  
+  
+ 다음 예제에서는 요소의 이름을 변경 하 여 이벤트를 발생 시킵니다.  
+  
+```csharp  
+XElement root = new XElement("Root", "content");  
+root.Changing += (sender, e) =>  
+    {  
+        Console.WriteLine("Changing event raised");  
+        Console.WriteLine("  Sender: " + sender.GetType());  
+        Console.WriteLine("  Changing: " + e.ObjectChange);  
+    };  
+root.Changed += (sender, e) =>  
+    {  
+        Console.WriteLine("Changed event raised");  
+        Console.WriteLine("  Sender: " + sender.GetType());  
+        Console.WriteLine("  Changed: " + e.ObjectChange);  
+    };  
+root.Name = "NewName";  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+Changing event raised  
+  Sender: System.Xml.Linq.XElement  
+  Changing: Name  
+Changed event raised  
+  Sender: System.Xml.Linq.XElement  
+  Changed: Name  
+```  
+  
+ 다음 예제에서는 특성의 값을 설정 하 여 이벤트를 발생 시킵니다.  
+  
+```csharp  
+XElement root = new XElement("Root",  
+    new XAttribute("Att", "att value")  
+);  
+root.Changing += (sender, e) =>  
+    {  
+        Console.WriteLine("Changing event raised");  
+        Console.WriteLine("  Sender: " + sender.GetType());  
+        Console.WriteLine("  Changing: " + e.ObjectChange);  
+    };  
+root.Changed += (sender, e) =>  
+    {  
+        Console.WriteLine("Changed event raised");  
+        Console.WriteLine("  Sender: " + sender.GetType());  
+        Console.WriteLine("  Changed: " + e.ObjectChange);  
+    };  
+root.FirstAttribute.Value = "new contents";  
+```  
+  
+ 이 예제는 다음과 같은 출력을 생성합니다.  
+  
+```  
+Changing event raised  
+  Sender: System.Xml.Linq.XAttribute  
+  Changing: Value  
+Changed event raised  
+  Sender: System.Xml.Linq.XAttribute  
+  Changed: Value  
+```  
+  
+ ]]></format>
+    </remarks>
+    <related type="Article" href="https://msdn.microsoft.com/library/f0fe21e9-ee43-4a55-b91a-0800e5782c13">LINQ to XML</related>
+  </Docs>
+  <Members>
+    <Member MemberName="Add">
+      <MemberSignature Language="C#" Value="Add" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Xml.Linq.XObjectChange Add = int32(0)" />
+      <MemberSignature Language="DocId" Value="F:System.Xml.Linq.XObjectChange.Add" />
+      <MemberSignature Language="VB.NET" Value="Add" />
+      <MemberSignature Language="C++ CLI" Value="Add" />
+      <MemberSignature Language="F#" Value="Add = 0" Usage="System.Xml.Linq.XObjectChange.Add" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.Linq.XObjectChange</ReturnType>
+      </ReturnValue>
+      <MemberValue>0</MemberValue>
+      <Docs>
+        <summary><see cref="T:System.Xml.Linq.XObject" />에 추가되었거나 추가될 <see cref="T:System.Xml.Linq.XContainer" />입니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="Name" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Xml.Linq.XObjectChange Name = int32(2)" />
+      <MemberSignature Language="DocId" Value="F:System.Xml.Linq.XObjectChange.Name" />
+      <MemberSignature Language="VB.NET" Value="Name" />
+      <MemberSignature Language="C++ CLI" Value="Name" />
+      <MemberSignature Language="F#" Value="Name = 2" Usage="System.Xml.Linq.XObjectChange.Name" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.Linq.XObjectChange</ReturnType>
+      </ReturnValue>
+      <MemberValue>2</MemberValue>
+      <Docs>
+        <summary>이름이 변경되었거나 변경될 <see cref="T:System.Xml.Linq.XObject" />입니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="Remove">
+      <MemberSignature Language="C#" Value="Remove" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Xml.Linq.XObjectChange Remove = int32(1)" />
+      <MemberSignature Language="DocId" Value="F:System.Xml.Linq.XObjectChange.Remove" />
+      <MemberSignature Language="VB.NET" Value="Remove" />
+      <MemberSignature Language="C++ CLI" Value="Remove" />
+      <MemberSignature Language="F#" Value="Remove = 1" Usage="System.Xml.Linq.XObjectChange.Remove" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.Linq.XObjectChange</ReturnType>
+      </ReturnValue>
+      <MemberValue>1</MemberValue>
+      <Docs>
+        <summary><see cref="T:System.Xml.Linq.XObject" />에서 제거되었거나 제거될 <see cref="T:System.Xml.Linq.XContainer" />입니다.</summary>
+      </Docs>
+    </Member>
+    <Member MemberName="Value">
+      <MemberSignature Language="C#" Value="Value" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Xml.Linq.XObjectChange Value = int32(3)" />
+      <MemberSignature Language="DocId" Value="F:System.Xml.Linq.XObjectChange.Value" />
+      <MemberSignature Language="VB.NET" Value="Value" />
+      <MemberSignature Language="C++ CLI" Value="Value" />
+      <MemberSignature Language="F#" Value="Value = 3" Usage="System.Xml.Linq.XObjectChange.Value" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.Linq.XObjectChange</ReturnType>
+      </ReturnValue>
+      <MemberValue>3</MemberValue>
+      <Docs>
+        <summary>변경되었거나 변경될 <see cref="T:System.Xml.Linq.XObject" />의 값입니다. 또한 빈 요소의 serialization이 변경된 경우(빈 태그가 시작/끝 태그 쌍으로 변경되었거나 그 반대로 변경된 경우) 이 이벤트가 발생합니다.</summary>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

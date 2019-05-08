@@ -1,0 +1,2581 @@
+<Type Name="SignedXml" FullName="System.Security.Cryptography.Xml.SignedXml">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="079e48bf43a937108d2ea68a3b2a558a36577827" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56775328" /></Metadata><TypeSignature Language="C#" Value="public class SignedXml" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SignedXml extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.Xml.SignedXml" />
+  <TypeSignature Language="VB.NET" Value="Public Class SignedXml" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SignedXml" />
+  <TypeSignature Language="F#" Value="type SignedXml = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Security</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+    <AssemblyVersion>4.0.2.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>XML 서명을 쉽게 만들도록 하기 위해 핵심 XML 서명 개체에 래퍼를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.SignedXml> 클래스는 World Wide Web Consortium (W3C)의.NET Framework 구현 [XML 서명 구문 및 처리 사양](https://www.w3.org/TR/xmldsig-core/), XMLDSIG (XML 디지털 서명) 라고도 합니다.  XMLDSIG는 표준 기반 이며 상호 운용 가능한 방식으로 서명 하 고 XML 문서 또는에서 리소스 URI (Uniform Identifier) 사용 하 여 주소 지정할 수 있는 기타 데이터의 일부나 전부를 확인 합니다.  
+  
+ 사용 된 <xref:System.Security.Cryptography.Xml.SignedXml> 표준 방식으로 서명 된 애플리케이션 또는 조직 간의 XML 데이터를 공유 해야 할 경우에 클래스입니다.  이 클래스를 사용 하 여 서명 된 모든 데이터에 따라 XMLDSIG W3C 사양 구현 하 여 확인할 수 있습니다.  
+  
+ <xref:System.Security.Cryptography.Xml.SignedXml> 클래스를 사용 하면 다음과 같은 세 가지 XML 디지털 서명 만들 수 있습니다.  
+  
+|서명 유형|설명|  
+|--------------------|-----------------|  
+|엔벌로프된 서명|서명 중인 XML 요소 내에서 서명이 포함 되어 있습니다.|  
+|엔벌로핑 서명|내에 포함 된 서명 된 XML은 <`Signature`> 요소입니다.|  
+|내부 분리 된 서명|서명 및 서명 된 XML 동일한 문서에서 있고 모두 서로 포함 합니다.|  
+  
+ 별도 XML 문서에서 데이터 및 서명 되 면 되는 외부 분리 된 서명 이라는 서명 하는 네 번째 유형의 이기도 합니다. 외부 분리 된 서명에서 지원 되지 않습니다는 <xref:System.Security.Cryptography.Xml.SignedXml> 클래스입니다.  
+  
+## <a name="the-structure-of-an--xml-signature"></a>XML 서명의 구조  
+ XMLDSIG 만듭니다는 <`Signature`> XML 문서 또는 URI에서 주소를 지정할 수 있는 기타 데이터의 디지털 서명을 포함 하는 요소입니다.  <`Signature`> 요소는 서명을 확인 하는 키를 찾을 수 있는 위치에 대 한 정보를 포함할 수도 있습니다 및 서명에 사용 된 암호화 알고리즘입니다. 기본 구조는 다음과 같습니다.  
+  
+```xml  
+  
+<Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">  
+    <SignedInfo>  
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>  
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>  
+      <Reference URI="">  
+        <Transforms>  
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>  
+        </Transforms>  
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>  
+        <DigestValue>Base64EncodedValue==</DigestValue>  
+      </Reference>  
+    </SignedInfo>  
+    <SignatureValue>AnotherBase64EncodedValue===</SignatureValue>  
+  </Signature>  
+  
+```  
+  
+ 이 구조체의 주요 부분은 다음과 같습니다.  
+  
+ <`CanonicalizationMethod`> 요소  
+ 다시 작성 하기 위한 규칙을 지정 합니다 `Signature` 서명 유효성 검사에 대 한 바이트 XML/텍스트에서 요소입니다. .NET Framework의 기본값은 https://www.w3.org/TR/2001/REC-xml-c14n-20010315, 신뢰할 수 있는 알고리즘을 식별 합니다. 이 요소가 표시 되는 <xref:System.Security.Cryptography.Xml.SignedInfo.CanonicalizationMethod%2A?displayProperty=nameWithType> 속성입니다.  
+  
+ <`SignatureMethod`> 요소  
+ 서명 생성 및 유효성 검사를 적용 하는 데 사용 된 알고리즘을 지정 된 <`Signature`> 요소에 값을 생성할 <`SignatureValue`>. 값을 위의 예에서 http://www.w3.org/2000/09/xmldsig#rsa-sha1 하 게 식별 하는 RSA PKCS1 sha-1 서명 합니다. 이 요소가 표시 되는 <xref:System.Security.Cryptography.Xml.SignedXml.SignatureMethod%2A> 속성입니다.  
+  
+ <`SignatureValue`> 요소  
+ 에 대 한 암호화 서명을 지정 합니다 <`Signature`> 요소입니다. 하는 경우이 서명을 확인 하지 않습니다, 다음의 몇 가지 부분을 <`Signature`> 블록 훼손 되었는지 및 문서가 잘못 된 것으로 간주 됩니다. 으로 <`CanonicalizationMethod`> 값은 신뢰할 수 있는 경우이 값은 항상 변조를 방지 합니다. 이 요소가 표시 되는 <xref:System.Security.Cryptography.Xml.SignedXml.SignatureValue%2A> 속성입니다.  
+  
+ 합니다 `URI` 특성을 <`Reference`> 요소  
+ URI 참조를 사용 하 여 데이터 개체를 지정 합니다. 이 특성은 표현 된 <xref:System.Security.Cryptography.Xml.Reference.Uri%2A?displayProperty=nameWithType> 속성입니다.  
+  
+-   지정 하지 않으면를 `URI` 특성, 즉, 설정 합니다 <xref:System.Security.Cryptography.Xml.Reference.Uri%2A?displayProperty=nameWithType> 속성을 `null`, 수신 애플리케이션 개체의 id를 알아야 예상 되는 것을 의미 합니다. 대부분의 경우에는 `null` URI 예외가 throw 됩니다. 사용 하지 마십시오는 `null` URI, 애플리케이션에 필요한 프로토콜을 사용 하 여 상호 운용 하지 않는 한 합니다.  
+  
+-   설정의 `URI` 서명는 문서의 루트 요소는 특성을 빈 문자열로 나타냅니다 엔벌로프된 서명의 형태입니다.  
+  
+-   경우 변수의 `URI` 특성 #, 시작 후 값을 현재 문서에서 요소를 해결 해야 합니다. 지원 되는 서명 형식 (엔벌로프된 서명, 서명 또는 내부 분리 된 서명 엔벌로핑) 중 하나를 사용 하 여이 폼을 사용할 수 있습니다.  
+  
+-   명제는 외부 리소스 분리 서명을 것으로 간주 됩니다 및에서 지원 되지 않습니다는 <xref:System.Security.Cryptography.Xml.SignedXml> 클래스입니다.  
+  
+ <`Transforms`> 요소  
+ 정렬 된 목록을 포함 <`Transform`> 서명자 가져오는 방법을 데이터 개체를 설명 하는 요소가 digested 되었습니다. 변환 알고리즘은 비슷한 다시 작성 하지 않고 정규화 방법는 <`Signature`> 요소에서 식별 된 콘텐츠가 다시 작성 합니다 `URI` 특성을 <`Reference`> 요소. <`Transforms`> 요소가에서 표시 되는 <xref:System.Security.Cryptography.Xml.TransformChain> 클래스입니다.  
+  
+-   각 변환 알고리즘은 XML (XPath 노드 집합) 또는 바이트 입력으로 사용 하도록 정의 됩니다. 현재 데이터의 형식을 변환 입력된 요구 사항이 다를 경우 변환 규칙이 적용 됩니다.  
+  
+-   각 변환 알고리즘은 XML 또는 바이트 출력으로 생성 하도록 정의 됩니다.  
+  
+-   경우 마지막 변환 알고리즘의 출력입니다 (바이트)에서 정의 되지 않은, 없습니다 변환 된 지정 된 경우 [정식화 메서드](https://www.w3.org/TR/2001/REC-xml-c14n-20010315) 는 암시적 변환으로 사용 됩니다 (다른 알고리즘에 지정 된 경우에는 <`CanonicalizationMethod`> 요소).  
+  
+-   값 http://www.w3.org/2000/09/xmldsig#enveloped-signature 변환 알고리즘 인코딩합니다 제거로 해석 되는 규칙은 <`Signature`> 문서에서 요소입니다. 이 고, 그렇지는 엔벌로프된 서명 검증 도구를 서명을 포함 하 여 문서를 다이제스트는 하지만 서명자는 있는 digested 문서 서명을 적용 되기 전에 다른 답변을 선행 합니다.  
+  
+ <`DigestMethod`> 요소  
+ 식별 하 여 변환 된 내용에 적용할 다이제스트 (암호화 해시) 메서드를 식별 합니다 `URI` 특성을 <`Reference`> 요소. 표시 되는 <xref:System.Security.Cryptography.Xml.Reference.DigestMethod%2A?displayProperty=nameWithType> 속성입니다.  
+  
+## <a name="choosing-a-canonicalization-method"></a>정규화 방법 선택  
+ 다른 값을 사용 해야 하는 사양와의 상호 운용, 하지 않는 한 값인 C14N XML 1.0 알고리즘에는.NET Framework에서 기본 정형화 메서드를 사용 하는 것이 좋습니다 https://www.w3.org/TR/2001/REC-xml-c14n-20010315합니다. 암시적 최종 변환을 적용 하 고 있기 때문에 특히 C14N XML 1.0 알고리즘 XMLDSIG, 모든 구현에서 지원 되는 데 필요 합니다.  
+  
+ 정형화 알고리즘 유지 메모 지는 버전이 있습니다. 정형화 메서드 주석 유지 "는 것에 서명" 원칙을 위반 하 하기 때문에 권장 되지 않습니다. 설명,를 <`Signature`> 요소 서명을 수행 하는 방법에 대 한 처리 논리를 변경 되지 않으며, 단순히 어떤 서명 값이 있습니다. 해시 충돌이 발생 하는 강제 적용 하는 공격자가 불필요 한 자유롭게 포함된 제공 되도록 주석을 사용 하는 약한 서명 알고리즘, 함께 사용 하면 가판대 변조 된 문서를 수행 합니다.  .NET Framework에서 기본 제공 canonicalizers만 기본적으로 지원 됩니다. 참조 추가 또는 사용자 지정 canonicalizers를 지원 합니다 <xref:System.Security.Cryptography.Xml.SignedXml.SafeCanonicalizationMethods%2A> 속성입니다. 문서에서 표시 되는 컬렉션에 없는 정식화 메서드를 사용 하는 경우는 <xref:System.Security.Cryptography.Xml.SignedXml.SafeCanonicalizationMethods%2A> 속성을 해당 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드는 반환 `false`합니다.  
+  
+> [!NOTE]
+>  매우 안전한 애플리케이션에서 사용 하는 서명자를 예상 하지 않습니다 모든 값을 제거할 수는 <xref:System.Security.Cryptography.Xml.SignedXml.SafeCanonicalizationMethods%2A> 컬렉션입니다.  
+  
+## <a name="are-the-reference-values-safe-from-tampering"></a>변조 로부터 안전 하 게 참조 값은?  
+ 예를 <`Reference`> 값은 변조 로부터 안전 하 게 합니다.  확인 하는.NET framework는 <`SignatureValue`> 중 하나를 처리 하기 전에 계산 된 <`Reference`> 값 및 이와 관련 된 변환 및 잠재적으로 악의적인 처리 지침을 방지 하려면 초기 중단 됩니다.  
+  
+## <a name="choosing-the-elements-to-sign"></a>서명할 요소를 선택 합니다.  
+ 값을 사용 하는 것이 좋습니다 ""에 대 한 합니다 `URI` 특성 (설정할지를 <xref:System.Security.Cryptography.Xml.Reference.Uri%2A> 속성을 빈 문자열로) 가능한 경우. 즉, 전체 문서는 전체 문서 조작 으로부터 보호 되는 다이제스트 계산에 대 한 것으로 간주 됩니다.  
+  
+ 보려는 흔히 `URI` 앵커 #foo를 해당 ID 특성은 "foo" 요소에 참조와 같은 형식의 값입니다. 그러나 컨텍스트가 아닌 대상 요소의 콘텐츠만 포함 하기 때문에 변조 될이 쉽습니다. 이러한 구분이 XML 서명 래핑 (XSW)으로 알려져 있습니다.  
+  
+ 애플리케이션에서 (있는 경우에 일반적인 다루는 XML) 주석 수 의미 체계를 사용 해야 합니다 "#xpointer(/)" 대신 "", "#foo" 대신 "#xpointer(id('foo'))" 하 고 있습니다. #Xpointer 버전 짧은 이름 폼 설명을 제외 하는 동안 주석을 포함 한로 해석 됩니다.  
+  
+ 부분적 으로만 보호 되는 문서를 수락 해야 하 고 동일한 콘텐츠를 참조 하도록 하려는 경우 서명을 보호 하는, 사용 된 <xref:System.Security.Cryptography.Xml.SignedXml.GetIdElement%2A> 메서드.  
+  
+## <a name="security-considerations-about-the-keyinfo-element"></a>KeyInfo 요소에 대 한 보안 고려 사항  
+ 선택적 데이터 <`KeyInfo`> 요소 (즉,는 <xref:System.Security.Cryptography.Xml.SignedXml.KeyInfo%2A> 속성), 서명의 유효성을 검사할 키를 포함 하는 트러스트 해서는 안 됩니다.  
+  
+ 특히 때에서 합니다 <xref:System.Security.Cryptography.Xml.SignedXml.KeyInfo%2A> 완전 RSA, DSA 또는 ECDSA 공개 키를 나타내는 값, 문서와 변조 되었는지 수 불구 하 고는 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드 서명이 잘못 되었음을 보고 합니다.  이 변조만 수행 하는 엔터티 새 키를 생성 하 고 다시 변조 된 문서를 새 키로 서명 해야 하기 때문에 발생할 수 있습니다. 따라서 공개 키가 예상 값을 확인 하는 애플리케이션, 하지 않는 한 변조 된 것 처럼 문서 처리 합니다. 이렇게 하려면 애플리케이션이 문서 내에 포함 된 공개 키를 검사 하 고 문서 컨텍스트에 대 한 알려진된 값의 목록을 확인 합니다. 예를 들어, 알려진된 사용자가 발급 될 문서를 인식할 수 없습니다, 하는 경우 해당 사용자가 사용 되는 알려진된 키의 목록에 대 한 키를 확인할는 있습니다.  
+  
+ 사용 하 여 문서를 처리 한 후 키를 확인할 수도 있습니다는 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignatureReturningKey%2A> 메서드를 사용 하는 대신는 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드. 그러나 최적의 보안을 위해 키를 먼저 확인 해야 합니다.  
+  
+ 또는 공개 키를 등록 된 사용자를 시도 하는 것이 좋습니다. 대신에 포함 된 내용 읽기를 <`KeyInfo`> 요소입니다.  
+  
+## <a name="security-considerations-about-the-x509data-element"></a>X509Data 요소에 대 한 보안 고려 사항  
+ 선택적 <`X509Data`> 요소는 자식을 <`KeyInfo`> 요소 개와 하나 이상의 X509 인증서 또는 X509에 대 한 식별자 인증서. 데이터를 <`X509Data`> 요소 또한 기본적으로 트러스트 해서는 안 됩니다.  
+  
+ 포함된 된 문서를 확인 하는 동안 <`X509Data`> 요소를.NET Framework 확인만 데이터 X509 확인 되는 인증서 문서 서명의 유효성을 검사할 해당 공개 키를 성공적으로 사용할 수 있습니다. 호출 달리 합니다 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드를 `verifySignatureOnly` 매개 변수 설정 `false`및 체인 트러스트 되지 않은 옵션을 선택 하 고 만료 없이 확인 해지 확인 하지 않습니다. 애플리케이션 자체 인증서를 추출 하 고 전달 하는 경우에는 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드를 `verifySignatureOnly` 매개 변수 설정 `false`, 즉 문서 변조를 방지 하기 위해 부족 합니다. 유효성 검사를 계속 합니다. 인증서는 여전히 서명 문서에 대 한 적절 한 것으로 확인 해야 합니다.  
+  
+ 포함된 된 서명 인증서를 사용 하 여 유용한 키 회전 전략을 여부를 제공할 수에 <`X509Data`> 섹션 또는 문서 콘텐츠입니다. 이 방법을 사용 하면 애플리케이션 인증서를 수동으로 추출 해야 및 유사한 유효성 검사를 수행:  
+  
+-   인증서가 발급 체인을 통해 직접 또는 여는 인증 기관 (CA) 해당 공용 인증서는 애플리케이션에 포함 됩니다.  
+  
+     알려진된 주체 이름과 같은 추가 검사를 하지 않고 OS가 제공한 트러스트 목록을 사용 하 여 부족의 변조를 방지 하기 위해 <xref:System.Security.Cryptography.Xml.SignedXml>합니다.  
+  
+-   문서 서명 시 만료 되지 않은 확인 된 인증서 (또는 "지금"에 대 한 거의 실시간 문서 처리).  
+  
+-   수명이 긴 인증서 해지를 지 원하는 CA에서 발급 한 인증서 해지 되지 않았는지 확인 합니다.  
+  
+-   인증서 주체는 현재 문서에 적합 한 것으로 확인 됩니다.  
+  
+## <a name="choosing-the-transform-algorithm"></a>Transform 알고리즘 선택  
+ 에 특정 값 (예: XrML)을 결정 하는 사양으로 상호 작용 하는, 사양에 따라 해야 합니다.  엔벌로프된 서명 된 경우 (때와 같이 전체 문서를 서명)를 사용 해야 합니다 http://www.w3.org/2000/09/xmldsig#enveloped-signature (나타내는 <xref:System.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform> 클래스). 암시적 C14N XML 변환도 지정할 수 있지만 필요는 없습니다.  엔벌로핑 또는 분리 된 서명에 대 한 없는 변환은 필요 합니다. 모든 암시적 C14N XML 변환을 담당합니다.  
+  
+ 보안 업데이트를 사용 하 여에서 도입 된를 [Microsoft 보안 공지 MS16 035](https://docs.microsoft.com/security-updates/securitybulletins/2016/ms16-035),.NET Framework가 변환 될 수 있는 제한 발생하는신뢰할수없는변환을사용하여기본적으로문서확인에사용되는<xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A>항상 반환할 `false`합니다. 특히 변환 (XML에 자식 요소로 지정 됨) 하는 추가 입력을 요구 하는 악의적인 사용자는 해당 한 장애의 영향력 한 남용이 인해 더 이상 허용 됩니다. W3C는 이러한 제한의 영향을 받는 두 가지 기본 변환을 XPath 및 XSLT 변환을 방지 권고 합니다.  
+  
+## <a name="the-problem-with-external-references"></a>외부 참조를 사용 하 여 문제  
+ 애플리케이션은 외부 참조는 현재 컨텍스트에 대 한 적절 한 것 처럼 보일 하는 것을 확인 하지 않으며, 경우 이러한 악용 될 수 있습니다 (서비스 거부, 분산 리플렉션 서비스 거부, 정보를 포함 하는 많은 보안 취약점을 제공 하는 방식 공개 서명 바이패스 하며 원격 코드 실행) 합니다. 애플리케이션 유효성을 검사할 외부 참조 URI 인 경우에 두 번 로드 되는 리소스의 문제가 남아는:와 애플리케이션을 읽을 때 한 번씩 때 <xref:System.Security.Cryptography.Xml.SignedXml> 읽고 있습니다. 애플리케이션 읽기 및 문서 확인 동일한 콘텐츠를 포함 하는 단계는 보장 되지 않습니다 이므로 서명을 신뢰성을 제공 하지 않습니다.  
+  
+ 외부 참조의 위험 <xref:System.Security.Cryptography.Xml.SignedXml> 는 외부 참조가 발견 되 면 예외가 throw 됩니다.  이 문제에 대 한 자세한 내용은 참조 하세요. [기술 자료 문서 3148821](https://support.microsoft.com/en-us/kb/3148821)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 로그인 엔벌로프된 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/CPP/exampleenvelope.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/CS/exampleenvelope.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/VB/exampleenvelope.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 XML 문서의 단일 요소를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/VB/sample.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <related type="ExternalDocumentation" href="http://www.w3.org/TR/xmldsig-bestpractices">XML 서명 모범 사례</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SignedXml ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SignedXml();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에는 로그인 엔벌로프된 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[XMLDSIG - Signature - Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR/XMLDSIG - Signature - Detached/CPP/sample.cpp#1)]
+ [!code-csharp[XMLDSIG - Signature - Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR/XMLDSIG - Signature - Detached/CS/sample.cs#1)]
+ [!code-vb[XMLDSIG - Signature - Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/XMLDSIG - Signature - Detached/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 XML 문서의 단일 요소를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SignedXml (System.Xml.XmlDocument document);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xml.XmlDocument document) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.#ctor(System.Xml.XmlDocument)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (document As XmlDocument)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SignedXml(System::Xml::XmlDocument ^ document);" />
+      <MemberSignature Language="F#" Value="new System.Security.Cryptography.Xml.SignedXml : System.Xml.XmlDocument -&gt; System.Security.Cryptography.Xml.SignedXml" Usage="new System.Security.Cryptography.Xml.SignedXml document" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="document" Type="System.Xml.XmlDocument" />
+      </Parameters>
+      <Docs>
+        <param name="document"><see cref="T:System.Xml.XmlDocument" />의 새 인스턴스를 초기화하는 데 사용할 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체입니다.</param>
+        <summary>지정된 XML 문서에서 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에는 로그인 엔벌로프된 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[XMLDSIG - Signature - Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR/XMLDSIG - Signature - Detached/CPP/sample.cpp#1)]
+ [!code-csharp[XMLDSIG - Signature - Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR/XMLDSIG - Signature - Detached/CS/sample.cs#1)]
+ [!code-vb[XMLDSIG - Signature - Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/XMLDSIG - Signature - Detached/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 XML 문서의 단일 요소를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="document" /> 매개 변수가 <see langword="null" />인 경우  
+  
+또는 
+<paramref name="document" /> 매개 변수에 null <see cref="P:System.Xml.XmlDocument.DocumentElement" /> 속성이 포함된 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SignedXml (System.Xml.XmlElement elem);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xml.XmlElement elem) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.#ctor(System.Xml.XmlElement)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (elem As XmlElement)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SignedXml(System::Xml::XmlElement ^ elem);" />
+      <MemberSignature Language="F#" Value="new System.Security.Cryptography.Xml.SignedXml : System.Xml.XmlElement -&gt; System.Security.Cryptography.Xml.SignedXml" Usage="new System.Security.Cryptography.Xml.SignedXml elem" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="elem" Type="System.Xml.XmlElement" />
+      </Parameters>
+      <Docs>
+        <param name="elem"><see cref="T:System.Xml.XmlElement" />의 새 인스턴스를 초기화하는 데 사용할 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체입니다.</param>
+        <summary>지정된 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체에서 <see cref="T:System.Xml.XmlElement" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="elem" /> 매개 변수가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AddObject">
+      <MemberSignature Language="C#" Value="public void AddObject (System.Security.Cryptography.Xml.DataObject dataObject);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddObject(class System.Security.Cryptography.Xml.DataObject dataObject) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.AddObject(System.Security.Cryptography.Xml.DataObject)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AddObject(System::Security::Cryptography::Xml::DataObject ^ dataObject);" />
+      <MemberSignature Language="F#" Value="member this.AddObject : System.Security.Cryptography.Xml.DataObject -&gt; unit" Usage="signedXml.AddObject dataObject" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dataObject" Type="System.Security.Cryptography.Xml.DataObject" />
+      </Parameters>
+      <Docs>
+        <param name="dataObject">서명할 개체 목록에 추가할 <see cref="T:System.Security.Cryptography.Xml.DataObject" /> 개체입니다.</param>
+        <summary>서명할 개체 목록에 <see cref="T:System.Security.Cryptography.Xml.DataObject" /> 개체를 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.SignedXml.AddObject%2A> 메서드를 추가 <`Object`> 로그인 할 개체를 나타내는 요소는 <`Signature`> 요소의 XML 디지털 서명 합니다.  
+  
+ <xref:System.Security.Cryptography.Xml.SignedXml.AddObject%2A> 내부적으로 호출 합니다 <xref:System.Security.Cryptography.Xml.Signature.AddObject%2A> 메서드의 <xref:System.Security.Cryptography.Xml.Signature> 캡슐화 하는 개체는 <xref:System.Security.Cryptography.Xml.SignedXml> 개체.  추가할 수도 있습니다는 <xref:System.Security.Cryptography.Xml.DataObject> 직접 호출 하 여 개체를 <xref:System.Security.Cryptography.Xml.Signature.AddObject%2A> 메서드에서 <xref:System.Security.Cryptography.Xml.SignedXml.Signature%2A> 속성입니다.  
+  
+ XML 디지털 서명 하는 방법에 대 한 자세한 내용은 XMLDSIG 사양을 www.w3.org/TR/xmldsig-core/에서 사용할 수 있는 참조 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 계산 및 XML 서명 합니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml-AddObject-AddReference#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml-AddObject-AddReference/CPP/example.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml-AddObject-AddReference#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml-AddObject-AddReference/CS/example.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml-AddObject-AddReference#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml-AddObject-AddReference/VB/example.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddReference">
+      <MemberSignature Language="C#" Value="public void AddReference (System.Security.Cryptography.Xml.Reference reference);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddReference(class System.Security.Cryptography.Xml.Reference reference) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.AddReference(System.Security.Cryptography.Xml.Reference)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AddReference(System::Security::Cryptography::Xml::Reference ^ reference);" />
+      <MemberSignature Language="F#" Value="member this.AddReference : System.Security.Cryptography.Xml.Reference -&gt; unit" Usage="signedXml.AddReference reference" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reference" Type="System.Security.Cryptography.Xml.Reference" />
+      </Parameters>
+      <Docs>
+        <param name="reference">XML 디지털 서명을 만드는 데 사용할 다이제스트 메서드, 다이제스트 값 및 변환을 설명하는 <see cref="T:System.Security.Cryptography.Xml.Reference" /> 개체입니다.</param>
+        <summary><see cref="T:System.Security.Cryptography.Xml.Reference" /> 개체를 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체에 추가하여 XML 디지털 서명을 만드는 데 사용할 다이제스트 메서드, 다이제스트 값 및 변환을 설명합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.SignedXml.AddReference%2A> 메서드를 추가 <`Reference`> 요소는 <xref:System.Security.Cryptography.Xml.SignedXml> 다이제스트 메서드, 다이제스트 값 및 XML 디지털 서명을 만드는 데 사용 하는 변환을 설명 하는 개체입니다.  <`Reference`> 요소는 하위 요소는 <`SignedInfo`> 요소입니다.  
+  
+ <xref:System.Security.Cryptography.Xml.SignedXml.AddReference%2A> 내부적으로 호출 합니다 <xref:System.Security.Cryptography.Xml.SignedInfo.AddReference%2A> 메서드의 <xref:System.Security.Cryptography.Xml.SignedInfo> 캡슐화 하는 개체는 <xref:System.Security.Cryptography.Xml.SignedXml> 개체.  추가할 수도 있습니다는 <xref:System.Security.Cryptography.Xml.Reference> 직접 호출 하 여 개체를 <xref:System.Security.Cryptography.Xml.SignedInfo.AddReference%2A> 메서드에서 <xref:System.Security.Cryptography.Xml.SignedXml.SignedInfo%2A> 속성입니다.  
+  
+ XML 디지털 서명 하는 방법에 대 한 자세한 내용은 XMLDSIG 사양을 www.w3.org/TR/xmldsig-core/에서 사용할 수 있는 참조 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 로그인 엔벌로프된 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[XMLDSIG - Signature - Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR/XMLDSIG - Signature - Detached/CPP/sample.cpp#1)]
+ [!code-csharp[XMLDSIG - Signature - Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR/XMLDSIG - Signature - Detached/CS/sample.cs#1)]
+ [!code-vb[XMLDSIG - Signature - Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/XMLDSIG - Signature - Detached/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 XML 문서의 단일 요소를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="CheckSignature">
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 확인하는지 여부를 결정합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CheckSignature">
+      <MemberSignature Language="C#" Value="public bool CheckSignature ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CheckSignature() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.CheckSignature" />
+      <MemberSignature Language="VB.NET" Value="Public Function CheckSignature () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CheckSignature();" />
+      <MemberSignature Language="F#" Value="member this.CheckSignature : unit -&gt; bool" Usage="signedXml.CheckSignature " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 서명에 공개 키 사용을 확인하는지 여부를 결정합니다.</summary>
+        <returns><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 확인하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 또한 서명 값과 참조 다이제스트를 계산합니다.  
+  
+ XML 문서는 X.509 서명으로 서명 된 경우는 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드 확인에 적합 한 인증서에 대 한 "AddressBook" 저장소를 검색 합니다. 예를 들어, 인증서에서 키 식별자 SKI (주체)를 참조 하는 경우는 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드는이 SKI 사용 하 여 인증서를 선택 하 고 사용해 하나씩까지 인증서를 확인할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 로그인 엔벌로프된 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/CPP/exampleenvelope.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/CS/exampleenvelope.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/VB/exampleenvelope.vb#1)]  
+  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/CPP/exampledetached.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/CS/exampledetached.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/VB/exampledetached.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 XML 문서의 단일 요소를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">서명에서 공개 키의 <see cref="P:System.Security.Cryptography.AsymmetricAlgorithm.SignatureAlgorithm" /> 속성이 <see cref="P:System.Security.Cryptography.Xml.SignedXml.SignatureMethod" /> 속성과 일치하지 않는 경우  
+  
+또는 
+서명 설명을 만들 수 없는 경우  
+  
+-또는- 
+해시 알고리즘을 만들 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CheckSignature">
+      <MemberSignature Language="C#" Value="public bool CheckSignature (System.Security.Cryptography.AsymmetricAlgorithm key);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CheckSignature(class System.Security.Cryptography.AsymmetricAlgorithm key) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.CheckSignature(System.Security.Cryptography.AsymmetricAlgorithm)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CheckSignature (key As AsymmetricAlgorithm) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CheckSignature(System::Security::Cryptography::AsymmetricAlgorithm ^ key);" />
+      <MemberSignature Language="F#" Value="member this.CheckSignature : System.Security.Cryptography.AsymmetricAlgorithm -&gt; bool" Usage="signedXml.CheckSignature key" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="key" Type="System.Security.Cryptography.AsymmetricAlgorithm" />
+      </Parameters>
+      <Docs>
+        <param name="key"><see cref="T:System.Security.Cryptography.AsymmetricAlgorithm" /> 속성을 확인하는 데 사용할 키를 보유하는 <see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성을 구현한 것입니다.</param>
+        <summary><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 지정된 키를 확인하는지 여부를 결정합니다.</summary>
+        <returns><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 지정된 키를 확인하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/CPP/exampledetached.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/CS/exampledetached.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/VB/exampledetached.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로프된 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/CPP/exampleenvelope.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/CS/exampleenvelope.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/VB/exampleenvelope.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="key" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="key" /> 매개 변수의 <see cref="P:System.Security.Cryptography.AsymmetricAlgorithm.SignatureAlgorithm" /> 속성이 <see cref="P:System.Security.Cryptography.Xml.SignedXml.SignatureMethod" /> 속성과 일치하지 않는 경우  
+  
+또는 
+서명 설명을 만들 수 없는 경우  
+  
+-또는- 
+해시 알고리즘을 만들 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CheckSignature">
+      <MemberSignature Language="C#" Value="public bool CheckSignature (System.Security.Cryptography.KeyedHashAlgorithm macAlg);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CheckSignature(class System.Security.Cryptography.KeyedHashAlgorithm macAlg) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.CheckSignature(System.Security.Cryptography.KeyedHashAlgorithm)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CheckSignature (macAlg As KeyedHashAlgorithm) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CheckSignature(System::Security::Cryptography::KeyedHashAlgorithm ^ macAlg);" />
+      <MemberSignature Language="F#" Value="member this.CheckSignature : System.Security.Cryptography.KeyedHashAlgorithm -&gt; bool" Usage="signedXml.CheckSignature macAlg" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="macAlg" Type="System.Security.Cryptography.KeyedHashAlgorithm" />
+      </Parameters>
+      <Docs>
+        <param name="macAlg"><see cref="T:System.Security.Cryptography.KeyedHashAlgorithm" /> 속성을 확인하는 데 사용할 MAC를 보유하는 <see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" />을 구현한 것입니다.</param>
+        <summary><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 지정된 MAC(메시지 인증 코드) 알고리즘을 확인하는지 여부를 결정합니다.</summary>
+        <returns><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 지정된 MAC를 확인하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached/CPP/xmldsigdetachedkeyedhashalg.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached/CS/xmldsigdetachedkeyedhashalg.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached/VB/xmldsigdetachedkeyedhashalg.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope/CPP/xmldsigenvkeyedhashalg.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope/CS/xmldsigenvkeyedhashalg.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope/VB/xmldsigenvkeyedhashalg.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="macAlg" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">지정된 <see cref="P:System.Security.Cryptography.HashAlgorithm.HashSize" /> 개체의 <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm" /> 속성이 유효하지 않은 경우  
+  
+또는 
+<see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 <see langword="null" />일 경우(이 속성은  
+  
+또는 
+서명을 검사하는 데 사용되는 암호화 변환을 만들 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CheckSignature">
+      <MemberSignature Language="C#" Value="public bool CheckSignature (System.Security.Cryptography.X509Certificates.X509Certificate2 certificate, bool verifySignatureOnly);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CheckSignature(class System.Security.Cryptography.X509Certificates.X509Certificate2 certificate, bool verifySignatureOnly) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.CheckSignature(System.Security.Cryptography.X509Certificates.X509Certificate2,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CheckSignature (certificate As X509Certificate2, verifySignatureOnly As Boolean) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CheckSignature(System::Security::Cryptography::X509Certificates::X509Certificate2 ^ certificate, bool verifySignatureOnly);" />
+      <MemberSignature Language="F#" Value="member this.CheckSignature : System.Security.Cryptography.X509Certificates.X509Certificate2 * bool -&gt; bool" Usage="signedXml.CheckSignature (certificate, verifySignatureOnly)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="certificate" Type="System.Security.Cryptography.X509Certificates.X509Certificate2" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+        <Parameter Name="verifySignatureOnly" Type="System.Boolean" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="certificate"><see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2" /> 속성을 확인하는 데 사용할 <see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 개체입니다.</param>
+        <param name="verifySignatureOnly">서명만 확인하면 <see langword="true" />이고, 서명과 인증서를 모두 확인하면 <see langword="false" />입니다.</param>
+        <summary><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 지정된 <see cref="T:System.Security.Cryptography.X509Certificates.X509Certificate2" /> 개체를 확인하는지 여부를 결정하고, 선택적으로 인증서가 유효한지 여부도 결정합니다.</summary>
+        <returns>서명이 유효한 경우 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.  
+  
+또는 
+ 서명과 인증서가 유효하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ .NET Framework 버전 1.1에서는 X.509 인증서 확인 되지 않습니다.  버전 2.0 이상에서는 X.509 인증서 확인 됩니다.  
+  
+ .NET Framework의 2.0 이상 버전에서을 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드 확인에 적합 한 인증서에 대 한 "AddressBook" 저장소를 검색 합니다. 예를 들어, 인증서에서 키 식별자 SKI (주체)를 참조 하는 경우는 <xref:System.Security.Cryptography.Xml.SignedXml.CheckSignature%2A> 메서드는이 SKI 사용 하 여 인증서를 선택 하 고 사용해 하나씩까지 인증서를 확인할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 인증서 저장소에서 X.509 인증서를 사용 하 여 서명 하 고 XML 문서를 확인 합니다.  
+  
+ [!code-csharp[Security.Cryptography.Xml.SignedXml.CheckSignature(X509Certificate2,Boolean)#1](~/samples/snippets/csharp/VS_Snippets_CLR/Security.Cryptography.Xml.SignedXml.CheckSignature/cs/sample.cs#1)]
+ [!code-vb[Security.Cryptography.Xml.SignedXml.CheckSignature(X509Certificate2,Boolean)#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Security.Cryptography.Xml.SignedXml.CheckSignature/vb/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="certificate" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="certificate" /> 매개 변수에 대한 서명 설명을 만들 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="CheckSignatureReturningKey">
+      <MemberSignature Language="C#" Value="public bool CheckSignatureReturningKey (out System.Security.Cryptography.AsymmetricAlgorithm signingKey);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CheckSignatureReturningKey([out] class System.Security.Cryptography.AsymmetricAlgorithm&amp; signingKey) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.CheckSignatureReturningKey(System.Security.Cryptography.AsymmetricAlgorithm@)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CheckSignatureReturningKey (ByRef signingKey As AsymmetricAlgorithm) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CheckSignatureReturningKey([Runtime::InteropServices::Out] System::Security::Cryptography::AsymmetricAlgorithm ^ % signingKey);" />
+      <MemberSignature Language="F#" Value="member this.CheckSignatureReturningKey :  -&gt; bool" Usage="signedXml.CheckSignatureReturningKey signingKey" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="signingKey" Type="System.Security.Cryptography.AsymmetricAlgorithm" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="signingKey">이 메서드가 반환되면 서명의 공개 키를 보유하는 <see cref="T:System.Security.Cryptography.AsymmetricAlgorithm" />의 구현을 포함합니다. 이 매개 변수는 초기화되지 않은 상태로 전달됩니다.</param>
+        <summary><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 서명에 공개 키 사용을 확인하는지 여부를 결정합니다.</summary>
+        <returns><see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 속성이 서명에서 공개 키 사용을 확인하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXML_CheckReturnValue_Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXML_CheckReturnValue_Detached/CPP/exampledetached.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXML_CheckReturnValue_Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXML_CheckReturnValue_Detached/CS/exampledetached.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXML_CheckReturnValue_Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXML_CheckReturnValue_Detached/VB/exampledetached.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXML_CheckReturnValue_Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXML_CheckReturnValue_Envelope/CPP/exampleenvelope.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXML_CheckReturnValue_Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXML_CheckReturnValue_Envelope/CS/exampleenvelope.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXML_CheckReturnValue_Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXML_CheckReturnValue_Envelope/VB/exampleenvelope.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="signingKey" /> 매개 변수가 null인 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">서명에서 공개 키의 <see cref="P:System.Security.Cryptography.AsymmetricAlgorithm.SignatureAlgorithm" /> 속성이 <see cref="P:System.Security.Cryptography.Xml.SignedXml.SignatureMethod" /> 속성과 일치하지 않는 경우  
+  
+또는 
+서명 설명을 만들 수 없는 경우  
+  
+-또는- 
+해시 알고리즘을 만들 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="ComputeSignature">
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>XML 디지털 서명을 계산합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="ComputeSignature">
+      <MemberSignature Language="C#" Value="public void ComputeSignature ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ComputeSignature() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.ComputeSignature" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ComputeSignature ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ComputeSignature();" />
+      <MemberSignature Language="F#" Value="member this.ComputeSignature : unit -&gt; unit" Usage="signedXml.ComputeSignature " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>XML 디지털 서명을 계산합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.SignedXml.ComputeSignature%2A> 메서드는 XML 디지털 서명을 만들고 다양 한 필요한 XML 요소를 생성 합니다.  
+  
+ 서명할 데이터를 설정 해야 하며 <xref:System.Security.Cryptography.Xml.SignedXml.SigningKey%2A> 이 메서드를 호출 하기 전에 속성입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML-XMLDsigDetached#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/CPP/xmldsigdetach.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML-XMLDsigDetached#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/CS/xmldsigdetach.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML-XMLDsigDetached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/VB/xmldsigdetach.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML-XMLDsigEnvelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigEnvelope/CPP/xmldsigenv.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML-XMLDsigEnvelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigEnvelope/CS/xmldsigenv.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML-XMLDsigEnvelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigEnvelope/VB/xmldsigenv.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><see cref="P:System.Security.Cryptography.Xml.SignedXml.SigningKey" /> 속성이 <see langword="null" />일 경우(이 속성은  
+  
+또는 
+<see cref="P:System.Security.Cryptography.Xml.SignedXml.SigningKey" /> 속성이 <see cref="T:System.Security.Cryptography.DSA" /> 개체나 <see cref="T:System.Security.Cryptography.RSA" /> 개체가 아닌 경우  
+  
+또는 
+키를 로드할 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ComputeSignature">
+      <MemberSignature Language="C#" Value="public void ComputeSignature (System.Security.Cryptography.KeyedHashAlgorithm macAlg);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ComputeSignature(class System.Security.Cryptography.KeyedHashAlgorithm macAlg) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.ComputeSignature(System.Security.Cryptography.KeyedHashAlgorithm)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ComputeSignature (macAlg As KeyedHashAlgorithm)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ComputeSignature(System::Security::Cryptography::KeyedHashAlgorithm ^ macAlg);" />
+      <MemberSignature Language="F#" Value="member this.ComputeSignature : System.Security.Cryptography.KeyedHashAlgorithm -&gt; unit" Usage="signedXml.ComputeSignature macAlg" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="macAlg" Type="System.Security.Cryptography.KeyedHashAlgorithm" />
+      </Parameters>
+      <Docs>
+        <param name="macAlg"><see cref="T:System.Security.Cryptography.KeyedHashAlgorithm" /> 속성의 값을 계산하는 데 사용되는 MAC를 보유하는 <see cref="P:System.Security.Cryptography.Xml.SignedXml.Signature" /> 개체입니다.</param>
+        <summary>지정된 MAC(메시지 인증 코드) 알고리즘을 사용하여 XML 디지털 서명을 계산합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.SignedXml.ComputeSignature%2A> 메서드는 지정된 된 MAC 알고리즘을 사용 하 여 XML 디지털 서명을 만들고 다양 한 필요한 XML 요소를 생성 합니다.  
+  
+ 이 메서드를 호출 하기 전에 서명 데이터를 설정 해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached/CPP/xmldsigdetachedkeyedhashalg.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached/CS/xmldsigdetachedkeyedhashalg.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Detached/VB/xmldsigdetachedkeyedhashalg.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope/CPP/xmldsigenvkeyedhashalg.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope/CS/xmldsigenvkeyedhashalg.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-KeyedHash-Envelope/VB/xmldsigenvkeyedhashalg.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="macAlg" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="macAlg" /> 매개 변수로 지정된 <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm" /> 개체가 <see cref="T:System.Security.Cryptography.HMACSHA1" />의 인스턴스가 아닌 경우  
+  
+또는 
+지정된 <see cref="P:System.Security.Cryptography.HashAlgorithm.HashSize" /> 개체의 <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm" /> 속성이 유효하지 않은 경우  
+  
+또는 
+서명을 검사하는 데 사용되는 암호화 변환을 만들 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EncryptedXml">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.Xml.EncryptedXml EncryptedXml { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.Xml.EncryptedXml EncryptedXml" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.EncryptedXml" />
+      <MemberSignature Language="VB.NET" Value="Public Property EncryptedXml As EncryptedXml" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::Xml::EncryptedXml ^ EncryptedXml { System::Security::Cryptography::Xml::EncryptedXml ^ get(); void set(System::Security::Cryptography::Xml::EncryptedXml ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.EncryptedXml : System.Security.Cryptography.Xml.EncryptedXml with get, set" Usage="System.Security.Cryptography.Xml.SignedXml.EncryptedXml" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.Xml.EncryptedXml</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 암호화 처리 규칙을 정의하는 <see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 개체를 가져오거나 설정합니다.</summary>
+        <value>XML 암호화 처리 규칙을 정의하는 <see cref="T:System.Security.Cryptography.Xml.EncryptedXml" /> 개체입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetIdElement">
+      <MemberSignature Language="C#" Value="public virtual System.Xml.XmlElement GetIdElement (System.Xml.XmlDocument document, string idValue);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Xml.XmlElement GetIdElement(class System.Xml.XmlDocument document, string idValue) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.GetIdElement(System.Xml.XmlDocument,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetIdElement (document As XmlDocument, idValue As String) As XmlElement" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Xml::XmlElement ^ GetIdElement(System::Xml::XmlDocument ^ document, System::String ^ idValue);" />
+      <MemberSignature Language="F#" Value="abstract member GetIdElement : System.Xml.XmlDocument * string -&gt; System.Xml.XmlElement&#xA;override this.GetIdElement : System.Xml.XmlDocument * string -&gt; System.Xml.XmlElement" Usage="signedXml.GetIdElement (document, idValue)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.XmlElement</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="document" Type="System.Xml.XmlDocument" />
+        <Parameter Name="idValue" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="document"><see cref="T:System.Xml.XmlDocument" /> 개체를 검색할 <see cref="T:System.Xml.XmlElement" /> 개체입니다.</param>
+        <param name="idValue"><see cref="T:System.Xml.XmlElement" /> 개체에서 검색할 <see cref="T:System.Xml.XmlDocument" /> 개체의 ID입니다.</param>
+        <summary>지정된 <see cref="T:System.Xml.XmlElement" /> 개체에서 지정된 ID를 가진 <see cref="T:System.Xml.XmlDocument" /> 개체를 반환합니다.</summary>
+        <returns>지정된 <see cref="T:System.Xml.XmlElement" /> 개체에서 지정된 ID를 가진 <see cref="T:System.Xml.XmlDocument" /> 개체이며, 찾을 수 없는 경우에는 <see langword="null" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetPublicKey">
+      <MemberSignature Language="C#" Value="protected virtual System.Security.Cryptography.AsymmetricAlgorithm GetPublicKey ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Security.Cryptography.AsymmetricAlgorithm GetPublicKey() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.GetPublicKey" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetPublicKey () As AsymmetricAlgorithm" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Security::Cryptography::AsymmetricAlgorithm ^ GetPublicKey();" />
+      <MemberSignature Language="F#" Value="abstract member GetPublicKey : unit -&gt; System.Security.Cryptography.AsymmetricAlgorithm&#xA;override this.GetPublicKey : unit -&gt; System.Security.Cryptography.AsymmetricAlgorithm" Usage="signedXml.GetPublicKey " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.AsymmetricAlgorithm</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>서명의 공개 키를 반환합니다.</summary>
+        <returns>서명의 공개 키를 포함하는 <see cref="T:System.Security.Cryptography.AsymmetricAlgorithm" /> 개체이며, 키를 찾을 수 없는 경우에는 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.SignedXml.GetPublicKey%2A> 메서드가 반환 되는 <xref:System.Security.Cryptography.AsymmetricAlgorithm> XML 디지털 서명을 확인 하는 데 사용할 수 있는 공개 키를 포함 하는 개체입니다.  
+  
+ 키 중 하나 여야 합니다는 <xref:System.Security.Cryptography.DSA> 요소나 <xref:System.Security.Cryptography.RSA> 키입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><see cref="P:System.Security.Cryptography.Xml.SignedXml.KeyInfo" /> 속성이 <see langword="null" />일 경우(이 속성은</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetXml">
+      <MemberSignature Language="C#" Value="public System.Xml.XmlElement GetXml ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Xml.XmlElement GetXml() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.GetXml" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetXml () As XmlElement" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Xml::XmlElement ^ GetXml();" />
+      <MemberSignature Language="F#" Value="member this.GetXml : unit -&gt; System.Xml.XmlElement" Usage="signedXml.GetXml " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.XmlElement</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체의 XML 표현을 반환합니다.</summary>
+        <returns><see cref="T:System.Security.Cryptography.Xml.Signature" />의 XML 표현입니다.</returns>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><see cref="P:System.Security.Cryptography.Xml.SignedXml.SignedInfo" /> 속성이 <see langword="null" />일 경우(이 속성은  
+  
+또는 
+<see cref="P:System.Security.Cryptography.Xml.SignedXml.SignatureValue" /> 속성이 <see langword="null" />일 경우(이 속성은</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="KeyInfo">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.Xml.KeyInfo KeyInfo { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.Xml.KeyInfo KeyInfo" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.KeyInfo" />
+      <MemberSignature Language="VB.NET" Value="Public Property KeyInfo As KeyInfo" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::Xml::KeyInfo ^ KeyInfo { System::Security::Cryptography::Xml::KeyInfo ^ get(); void set(System::Security::Cryptography::Xml::KeyInfo ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.KeyInfo : System.Security.Cryptography.Xml.KeyInfo with get, set" Usage="System.Security.Cryptography.Xml.SignedXml.KeyInfo" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.Xml.KeyInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.Cryptography.Xml.KeyInfo" /> 개체의 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체를 가져오거나 설정합니다.</summary>
+        <value>현재 <see cref="T:System.Security.Cryptography.Xml.KeyInfo" /> 개체의 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.SignedXml.KeyInfo%2A> 속성이 나타내는 <`KeyInfo`> 요소를 사용 하 여 XML 디지털 서명을 <xref:System.Security.Cryptography.Xml.KeyInfo> 속성 내에 포함 된 개체입니다.  <`KeyInfo`> 요소는 하위 요소는 <`Signature`> 요소입니다.  
+  
+ 사용 된 <xref:System.Security.Cryptography.Xml.SignedXml.KeyInfo%2A> 를 XML 문서 유효성 검사에 필요한 키를 식별 하기 위한 키 관련 정보를 포함 하는 속성입니다.  
+  
+ 에 대 한 자세한 내용은 `<KeyInfo>` 요소인 www.w3.org/TR/xmldsig-core/에서 사용할 수 있는 XMLDSIG 사양을 참조 하십시오.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Security.Cryptography.Xml.KeyInfo> 유니버설 리소스 식별자 (URI)로 표현 하는 리소스를 서명 하는 경우 개체입니다.  이 예제에서는 새 파일에 서명을 저장 합니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML-XMLDsigDetached#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/CPP/xmldsigdetach.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML-XMLDsigDetached#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/CS/xmldsigdetach.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML-XMLDsigDetached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/VB/xmldsigdetach.vb#1)]  
+  
+ 다음 코드 예제에서는 <xref:System.Security.Cryptography.Xml.KeyInfo> XML 문서에 서명 하는 경우 개체입니다.  이 예제에서는 새 파일에 서명을 저장 합니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML-XMLDsigEnvelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigEnvelope/CPP/xmldsigenv.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML-XMLDsigEnvelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigEnvelope/CS/xmldsigenv.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML-XMLDsigEnvelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigEnvelope/VB/xmldsigenv.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadXml">
+      <MemberSignature Language="C#" Value="public void LoadXml (System.Xml.XmlElement value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void LoadXml(class System.Xml.XmlElement value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.Xml.SignedXml.LoadXml(System.Xml.XmlElement)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub LoadXml (value As XmlElement)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void LoadXml(System::Xml::XmlElement ^ value);" />
+      <MemberSignature Language="F#" Value="member this.LoadXml : System.Xml.XmlElement -&gt; unit" Usage="signedXml.LoadXml value" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Xml.XmlElement" />
+      </Parameters>
+      <Docs>
+        <param name="value"><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 상태를 로드하는 데 사용할 XML 요소입니다.</param>
+        <summary>XML 요소에서 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 상태를 로드합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다는 <xref:System.Security.Cryptography.Xml.SignedXml.LoadXml%2A> XML 문서를 확인 하는 방법입니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML-XMLDsigDetached#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/CPP/xmldsigdetach.cpp#3)]
+ [!code-csharp[System.Security.Cryptography.XML-XMLDsigDetached#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/CS/xmldsigdetach.cs#3)]
+ [!code-vb[System.Security.Cryptography.XML-XMLDsigDetached#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML-XMLDsigDetached/VB/xmldsigdetach.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="value" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="value" /> 매개 변수에 유효한 <see cref="P:System.Security.Cryptography.Xml.SignedXml.SignatureValue" /> 속성이 포함되지 않은 경우  
+  
+또는 
+<paramref name="value" /> 매개 변수에 유효한 <see cref="P:System.Security.Cryptography.Xml.SignedXml.SignedInfo" /> 속성이 포함되지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="m_signature">
+      <MemberSignature Language="C#" Value="protected System.Security.Cryptography.Xml.Signature m_signature;" />
+      <MemberSignature Language="ILAsm" Value=".field family class System.Security.Cryptography.Xml.Signature m_signature" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.m_signature" />
+      <MemberSignature Language="VB.NET" Value="Protected m_signature As Signature " />
+      <MemberSignature Language="C++ CLI" Value="protected: System::Security::Cryptography::Xml::Signature ^ m_signature;" />
+      <MemberSignature Language="F#" Value="val mutable m_signature : System.Security.Cryptography.Xml.Signature" Usage="System.Security.Cryptography.Xml.SignedXml.m_signature" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.Xml.Signature</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.Cryptography.Xml.Signature" /> 개체의 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체를 나타냅니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="m_strSigningKeyName">
+      <MemberSignature Language="C#" Value="protected string m_strSigningKeyName;" />
+      <MemberSignature Language="ILAsm" Value=".field family string m_strSigningKeyName" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.m_strSigningKeyName" />
+      <MemberSignature Language="VB.NET" Value="Protected m_strSigningKeyName As String " />
+      <MemberSignature Language="C++ CLI" Value="protected: System::String ^ m_strSigningKeyName;" />
+      <MemberSignature Language="F#" Value="val mutable m_strSigningKeyName : string" Usage="System.Security.Cryptography.Xml.SignedXml.m_strSigningKeyName" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체 서명에 사용할 설치된 키의 이름을 나타냅니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Resolver">
+      <MemberSignature Language="C#" Value="public System.Xml.XmlResolver Resolver { set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xml.XmlResolver Resolver" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.Resolver" />
+      <MemberSignature Language="VB.NET" Value="Public Property Resolver As XmlResolver" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xml::XmlResolver ^ Resolver {  void set(System::Xml::XmlResolver ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Resolver : System.Xml.XmlResolver" Usage="System.Security.Cryptography.Xml.SignedXml.Resolver" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinmac-3.0;netframework-4.8">
+          <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Xml.XmlResolver</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재의 <see cref="T:System.Xml.XmlResolver" /> 개체를 설정합니다.</summary>
+        <value>현재 <see cref="T:System.Xml.XmlResolver" /> 개체입니다. 기본값은 <see cref="T:System.Xml.XmlSecureResolver" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Xml.XmlResolver> 클래스에서 한 리소스 URI (Uniform Identifier)를 명명 된 외부 XML 리소스를 확인 합니다. XML 파일의 소스를 신뢰 하지 않는다면, XML 파일의 URI에서 이름이 지정 하는 컴퓨터 리소스에 액세스를 허용 하지 않을 수 있습니다. 사용할 수는 <xref:System.Security.Cryptography.Xml.SignedXml.Resolver%2A> XML 파일 다른을 지정 하 여 컴퓨터 리소스를 갖는 액세스 수준을 제어 하려면 속성 <xref:System.Xml.XmlResolver> 개체입니다. 모든 액세스를 허용 하지 않을 경우이 속성을 설정할 수 있습니다 `null` (`Nothing` Visual Basic에서).  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SafeCanonicalizationMethods">
+      <MemberSignature Language="C#" Value="public System.Collections.ObjectModel.Collection&lt;string&gt; SafeCanonicalizationMethods { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ObjectModel.Collection`1&lt;string&gt; SafeCanonicalizationMethods" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.SafeCanonicalizationMethods" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SafeCanonicalizationMethods As Collection(Of String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::ObjectModel::Collection&lt;System::String ^&gt; ^ SafeCanonicalizationMethods { System::Collections::ObjectModel::Collection&lt;System::String ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SafeCanonicalizationMethods : System.Collections.ObjectModel.Collection&lt;string&gt;" Usage="System.Security.Cryptography.Xml.SignedXml.SafeCanonicalizationMethods" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ObjectModel.Collection&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>정규화 알고리즘이 명시적으로 허용되는 메서드의 이름을 가져옵니다.</summary>
+        <value>정식 XML을 안전하게 생성하는 메서드 이름의 컬렉션입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 정형화 메서드는 해당 정규 형식에 XML 문서를 변환합니다. 정식 XML에 대 한 자세한 내용은 참조 하세요. [정식 XML](http://www.w3.org/TR/xml-c14n) W3C 웹 사이트입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Signature">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.Xml.Signature Signature { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.Xml.Signature Signature" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.Signature" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Signature As Signature" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::Xml::Signature ^ Signature { System::Security::Cryptography::Xml::Signature ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Signature : System.Security.Cryptography.Xml.Signature" Usage="System.Security.Cryptography.Xml.SignedXml.Signature" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.Xml.Signature</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.Cryptography.Xml.Signature" /> 개체의 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체를 가져옵니다.</summary>
+        <value>현재 <see cref="T:System.Security.Cryptography.Xml.Signature" /> 개체의 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.SignedXml.Signature%2A> 속성이 나타내는 <`Signature`> 요소를 사용 하 여 XML 디지털 서명을 <xref:System.Security.Cryptography.Xml.Signature> 속성 내에 포함 된 개체입니다.  <`Signature`> 요소는 XML 디지털 서명 만들고 확인에 사용 되는 루트 요소입니다.  
+  
+ 사용 하 여는 <xref:System.Security.Cryptography.Xml.SignedXml.Signature%2A> 검색할 속성을 <xref:System.Security.Cryptography.Xml.Signature> 개체에서 사용 하는 <xref:System.Security.Cryptography.Xml.SignedXml> 개체입니다.  
+  
+ 에 대 한 자세한 내용은 `<Signature>` 요소인 www.w3.org/TR/xmldsig-core/에서 사용할 수 있는 XMLDSIG 사양을 참조 하십시오.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Security.Cryptography.Xml.SignedXml.Signature%2A> 속성을 서명 하 고는 엔벌로프된 서명을 사용 하 여 전체 XML 문서를 확인 합니다.  
+  
+ [!code-cpp[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.Signature - Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.Signature - Envelope/VB/sample.vb#1)]  
+  
+ 다음 코드 예제에서는 <xref:System.Security.Cryptography.Xml.SignedXml.Signature%2A> 속성 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 합니다.  
+  
+ [!code-cpp[XMLDSIG - Signature - Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR/XMLDSIG - Signature - Detached/CPP/sample.cpp#1)]
+ [!code-csharp[XMLDSIG - Signature - Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR/XMLDSIG - Signature - Detached/CS/sample.cs#1)]
+ [!code-vb[XMLDSIG - Signature - Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/XMLDSIG - Signature - Detached/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignatureFormatValidator">
+      <MemberSignature Language="C#" Value="public Func&lt;System.Security.Cryptography.Xml.SignedXml,bool&gt; SignatureFormatValidator { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Func`2&lt;class System.Security.Cryptography.Xml.SignedXml, bool&gt; SignatureFormatValidator" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.SignatureFormatValidator" />
+      <MemberSignature Language="VB.NET" Value="Public Property SignatureFormatValidator As Func(Of SignedXml, Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Func&lt;System::Security::Cryptography::Xml::SignedXml ^, bool&gt; ^ SignatureFormatValidator { Func&lt;System::Security::Cryptography::Xml::SignedXml ^, bool&gt; ^ get(); void set(Func&lt;System::Security::Cryptography::Xml::SignedXml ^, bool&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SignatureFormatValidator : Func&lt;System.Security.Cryptography.Xml.SignedXml, bool&gt; with get, set" Usage="System.Security.Cryptography.Xml.SignedXml.SignatureFormatValidator" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Func&lt;System.Security.Cryptography.Xml.SignedXml,System.Boolean&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 서명의 서식(암호화 보안 아님) 유효성을 검사하기 위해 호출할 대리자를 가져옵니다.</summary>
+        <value>서식이 허용되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 특정 변환에만 사용 하거나는 서명을 사용 하는 특정 해시 알고리즘을 사용할 수 있습니다.  
+  
+ 속성을 설정 `null` 에서 모든 서명 형식 유효성 검사를 제거 합니다 <xref:System.Security.Cryptography.Xml.SignedXml> 개체입니다.  
+  
+ 원하는 경우 개체의 현재 대리자 및 체인을 참조할 수도 있습니다.  
+  
+ 입력된 매개 변수로 제공한 대리자를 받을 형식 유효성 검사기를 설정 하는 경우는 <xref:System.Security.Cryptography.Xml.SignedXml> 확인할 개체 및 부울 값을 반환 `true` 형식, 허용 되는 경우 `false` 없는 경우. 대리자가 반환 하는 경우 `false` 어떤 이유로 <xref:System.Security.Cryptography.Xml.SignedXml> 개체 XML 서명을 잘못 되었음을 보고 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignatureLength">
+      <MemberSignature Language="C#" Value="public string SignatureLength { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SignatureLength" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.SignatureLength" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SignatureLength As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SignatureLength { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SignatureLength : string" Usage="System.Security.Cryptography.Xml.SignedXml.SignatureLength" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체의 서명 길이를 가져옵니다.</summary>
+        <value>현재 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체의 서명 길이입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignatureMethod">
+      <MemberSignature Language="C#" Value="public string SignatureMethod { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SignatureMethod" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.SignatureMethod" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SignatureMethod As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SignatureMethod { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SignatureMethod : string" Usage="System.Security.Cryptography.Xml.SignedXml.SignatureMethod" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체의 서명 메서드를 가져옵니다.</summary>
+        <value>현재 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체의 서명 메서드입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Cryptography.Xml.SignedXml.SignatureMethod%2A> 속성이 나타내는 합니다 <`SignatureMethod`> 요소의 속성 내에 포함 된 리소스 URI (Uniform Identifier) 문자열을 사용 하 여 XML 디지털 서명 합니다. <`SignatureMethod`> 요소는 하위 요소는 <`SignedInfo`> 요소입니다.  
+  
+ 사용 하 여는 <xref:System.Security.Cryptography.Xml.SignedXml.SignatureMethod%2A> 검색할 속성을 <`SignatureMethod`> URI 사용 하는 <xref:System.Security.Cryptography.Xml.SignedXml> 개체. 이 속성은 읽기 전용입니다. 프로그래밍 방식으로 URI를 지정 하는 방법에 대 한 자세한 내용은 <`SignatureMethod`> 요소에 참조를 <xref:System.Security.Cryptography.Xml.SignedInfo.SignatureMethod%2A> 속성.  
+  
+ 에 대 한 자세한 내용은 `<SignatureMethod>` 요소인 www.w3.org/TR/xmldsig-core/에서 사용할 수 있는 XMLDSIG 사양을 참조 하십시오.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignatureValue">
+      <MemberSignature Language="C#" Value="public byte[] SignatureValue { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] SignatureValue" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.SignatureValue" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SignatureValue As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property cli::array &lt;System::Byte&gt; ^ SignatureValue { cli::array &lt;System::Byte&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SignatureValue : byte[]" Usage="System.Security.Cryptography.Xml.SignedXml.SignatureValue" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체의 서명 값을 가져옵니다.</summary>
+        <value>현재 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체의 서명 값이 들어 있는 바이트 배열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.SignedXml.SignatureValue%2A> 속성이 나타내는 합니다 <`SignatureValue`> 요소의 속성에 포함 된 바이트 배열을 사용 하 여 XML 디지털 서명 합니다.  <`SignatureValue`> 요소는 하위 요소는 <`Signature>` 요소입니다.  
+  
+ 사용 된 <xref:System.Security.Cryptography.Xml.SignedXml.SignatureValue%2A> XML 디지털 서명의 값을 검색 하는 속성입니다.  성공적으로 호출 하는 경우에 자동으로이 속성이 채워집니다는 <xref:System.Security.Cryptography.Xml.SignedXml.ComputeSignature%2A> 메서드.  
+  
+ 에 대 한 자세한 내용은 `<SignatureValue>` 요소인 www.w3.org/TR/xmldsig-core/에서 사용할 수 있는 XMLDSIG 사양을 참조 하십시오.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SignedInfo">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.Xml.SignedInfo SignedInfo { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.Xml.SignedInfo SignedInfo" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.SignedInfo" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SignedInfo As SignedInfo" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::Xml::SignedInfo ^ SignedInfo { System::Security::Cryptography::Xml::SignedInfo ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SignedInfo : System.Security.Cryptography.Xml.SignedInfo" Usage="System.Security.Cryptography.Xml.SignedXml.SignedInfo" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.Xml.SignedInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.Cryptography.Xml.SignedInfo" /> 개체의 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체를 가져옵니다.</summary>
+        <value>현재 <see cref="T:System.Security.Cryptography.Xml.SignedInfo" /> 개체의 <see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.Xml.SignedXml.SignedInfo%2A> 속성이 나타내는 합니다 <`SignedInfo`> 요소의 속성에 포함 된 바이트 배열을 사용 하 여 XML 디지털 서명 합니다.  <`SignedInfo`> 요소는 하위 요소는 <`Signature>` 요소입니다.  
+  
+ 사용 하 여는 <xref:System.Security.Cryptography.Xml.SignedXml.SignedInfo%2A> 검색할 속성을 <xref:System.Security.Cryptography.Xml.SignedInfo> 에서 사용 되는 개체는 <xref:System.Security.Cryptography.Xml.SignedXml> XML 디지털 서명을 만들 개체입니다.  
+  
+ 에 대 한 자세한 내용은 `<SignedInfo>` 요소인 www.w3.org/TR/xmldsig-core/에서 사용할 수 있는 XMLDSIG 사양을 참조 하십시오.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SigningKey">
+      <MemberSignature Language="C#" Value="public System.Security.Cryptography.AsymmetricAlgorithm SigningKey { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.AsymmetricAlgorithm SigningKey" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.SigningKey" />
+      <MemberSignature Language="VB.NET" Value="Public Property SigningKey As AsymmetricAlgorithm" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Security::Cryptography::AsymmetricAlgorithm ^ SigningKey { System::Security::Cryptography::AsymmetricAlgorithm ^ get(); void set(System::Security::Cryptography::AsymmetricAlgorithm ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SigningKey : System.Security.Cryptography.AsymmetricAlgorithm with get, set" Usage="System.Security.Cryptography.Xml.SignedXml.SigningKey" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.AsymmetricAlgorithm</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체 서명에 사용된 비대칭 알고리즘 키를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체 서명에 사용된 비대칭 알고리즘 키입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Security.Cryptography.Xml.SignedXml.SigningKey%2A> XML 디지털 서명을 만드는 데 사용할 비대칭 키를 지정 하는 속성입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에는 로그인 엔벌로프된 서명을 사용 하 여 전체 XML 문서를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/CPP/exampleenvelope.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/CS/exampleenvelope.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Envelope/VB/exampleenvelope.vb#1)]  
+  
+ 다음 코드 예제에 서명 하 고 분리 된 서명을 사용 하 여 리소스 URI (Uniform Identifier) 주소 지정 가능 개체를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/CPP/exampledetached.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/CS/exampledetached.cs#1)]
+ [!code-vb[System.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.XML.SignedXml.ComputeSig-Check-AsymetricAlg-Detached/VB/exampledetached.vb#1)]  
+  
+ 다음 코드 예제에는 로그인 엔벌로핑 서명을 사용 하 여 XML 문서의 단일 요소를 확인 하는 방법을 보여 줍니다.  
+  
+ [!code-cpp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/CS/sample.cs#1)]
+ [!code-vb[Cryptography.XML.SignVerifyEnvelope - Specify Element#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.SignVerifyEnvelope - Specify Element/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SigningKeyName">
+      <MemberSignature Language="C#" Value="public string SigningKeyName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SigningKeyName" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.Xml.SignedXml.SigningKeyName" />
+      <MemberSignature Language="VB.NET" Value="Public Property SigningKeyName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ SigningKeyName { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SigningKeyName : string with get, set" Usage="System.Security.Cryptography.Xml.SignedXml.SigningKeyName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체 서명에 사용할 설치된 키의 이름을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Security.Cryptography.Xml.SignedXml" /> 개체 서명에 사용할 설치된 키의 이름입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDecryptionTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDecryptionTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDecryptionTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDecryptionTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDecryptionTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDecryptionTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDecryptionTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDecryptionTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 모드 해독 변환에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDecryptionTransformUrl> 필드는 "http://www.w3.org/2002/07/decrypt#XML"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2002/07/decrypt#XML합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigBase64TransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigBase64TransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigBase64TransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigBase64TransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigBase64TransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigBase64TransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigBase64TransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigBase64TransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Base 64 변환에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigBase64TransformUrl> 필드는 "http://www.w3.org/2000/09/xmldsig#base64"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigBase64Transform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigBase64TransformUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2000/09/xmldsig#base64합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 멤버를 사용 하는 방법에 설명 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigBase64Transform> 클래스입니다.  
+  
+ [!code-cpp[System.Security.Cryptography.Xml.XmlDsigBase64Transform#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigBase64Transform/CPP/members.cpp#2)]
+ [!code-csharp[System.Security.Cryptography.Xml.XmlDsigBase64Transform#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigBase64Transform/CS/members.cs#2)]
+ [!code-vb[System.Security.Cryptography.Xml.XmlDsigBase64Transform#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigBase64Transform/VB/members.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigC14NTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigC14NTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigC14NTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigC14NTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigC14NTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigC14NTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>정규 XML 변환에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NTransformUrl> 필드는 `http://www.w3.org/TR/2001/REC-xml-c14n-20010315`합니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigC14NTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NTransformUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C)을 참조 하세요 [정식 XML](https://www.w3.org/TR/2001/REC-xml-c14n-20010315) 사양입니다.  
+  
+ 이 필드에 동일한 값으로는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationUrl> 필드입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는의 멤버를 호출 하는 방법에 설명 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigC14NTransform> 클래스입니다.  
+  
+ [!code-cpp[System.Security.Cryptography.XML.XMLDsigC14NTransform#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigC14NTransform/CPP/members.cpp#2)]
+ [!code-csharp[System.Security.Cryptography.XML.XMLDsigC14NTransform#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigC14NTransform/CS/members.cs#2)]
+ [!code-vb[System.Security.Cryptography.XML.XMLDsigC14NTransform#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigC14NTransform/VB/members.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigC14NWithCommentsTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigC14NWithCommentsTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigC14NWithCommentsTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NWithCommentsTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigC14NWithCommentsTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigC14NWithCommentsTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigC14NWithCommentsTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NWithCommentsTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>설명이 있는 정규 XML 변환에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NWithCommentsTransformUrl> 필드는 `http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments`합니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigC14NWithCommentsTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NWithCommentsTransformUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C)을 참조 하세요 [정식 XML](https://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments) 사양입니다.  
+  
+ 이 필드에 동일한 값으로는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationWithCommentsUrl> 필드입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigCanonicalizationUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigCanonicalizationUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigCanonicalizationUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigCanonicalizationUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigCanonicalizationUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigCanonicalizationUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 정규화 알고리즘에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationUrl> 필드는 `http://www.w3.org/TR/2001/REC-xml-c14n-20010315`합니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigC14NTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C)을 참조 하세요 [정식 XML](https://www.w3.org/TR/2001/REC-xml-c14n-20010315) 사양입니다.  
+  
+ 이 필드에 동일한 값으로는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NTransformUrl> 필드입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigCanonicalizationWithCommentsUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigCanonicalizationWithCommentsUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigCanonicalizationWithCommentsUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationWithCommentsUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigCanonicalizationWithCommentsUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigCanonicalizationWithCommentsUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigCanonicalizationWithCommentsUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationWithCommentsUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 정규화 알고리즘에 대한 URI(Uniform Resource Identifier)를 나타내고 설명을 포함합니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationWithCommentsUrl> 필드는 `http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments`합니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigC14NWithCommentsTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigCanonicalizationWithCommentsUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C)을 참조 하세요 [정식 XML](https://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments) 사양입니다.  
+  
+ 이 필드에 동일한 값으로는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigC14NWithCommentsTransformUrl> 필드입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigDSAUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigDSAUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigDSAUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigDSAUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigDSAUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigDSAUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigDSAUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigDSAUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 <see cref="T:System.Security.Cryptography.DSA" /> 알고리즘에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigDSAUrl> 필드는 "http://www.w3.org/2000/09/xmldsig#dsa-sha1"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2000/09/xmldsig#dsa-sha1합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigEnvelopedSignatureTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigEnvelopedSignatureTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigEnvelopedSignatureTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigEnvelopedSignatureTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigEnvelopedSignatureTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigEnvelopedSignatureTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigEnvelopedSignatureTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigEnvelopedSignatureTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>엔벌로프된 서명 변환에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigEnvelopedSignatureTransformUrl> 필드는 "http://www.w3.org/2000/09/xmldsig#enveloped-signature"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigEnvelopedSignatureTransformUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2000/09/xmldsig#enveloped-signature합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 멤버를 사용 하는 방법에 설명 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform> 클래스입니다.  
+  
+ [!code-cpp[System.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform/cpp/members.cpp#2)]
+ [!code-csharp[System.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform/CS/members.cs#2)]
+ [!code-vb[System.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform/VB/members.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigExcC14NTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigExcC14NTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigExcC14NTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigExcC14NTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigExcC14NTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigExcC14NTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigExcC14NTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigExcC14NTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>배타적 XML 정규화에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigExcC14NTransformUrl> 필드는 "http://www.w3.org/2001/10/xml-exc-c14n#"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigExcC14NTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigExcC14NTransformUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2001/10/xml-exc-c14n#합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에 로그인 하 여 XML 문서를 확인 하는 방법을 보여 줍니다는 <xref:System.Security.Cryptography.Xml.XmlDsigExcC14NTransform> 클래스입니다.  이 샘플에는 봉투 (envelope) 서명을 만듭니다.  
+  
+ [!code-cpp[Cryptography.Xml.XmlDsigExcC14NTransform#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XmlDsigExcC14NTransform/CPP/example.cpp#1)]
+ [!code-csharp[Cryptography.Xml.XmlDsigExcC14NTransform#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XmlDsigExcC14NTransform/CS/example.cs#1)]
+ [!code-vb[Cryptography.Xml.XmlDsigExcC14NTransform#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XmlDsigExcC14NTransform/VB/example.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigExcC14NWithCommentsTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigExcC14NWithCommentsTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigExcC14NWithCommentsTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigExcC14NWithCommentsTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigExcC14NWithCommentsTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigExcC14NWithCommentsTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigExcC14NWithCommentsTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigExcC14NWithCommentsTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>설명이 있는 배타적 XML 정규화에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigExcC14NWithCommentsTransformUrl> 필드는 "http://www.w3.org/2001/10/xml-exc-c14n#WithComments"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigExcC14NWithCommentsTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigExcC14NWithCommentsTransformUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2001/10/xml-exc-c14n#WithComments합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에 로그인 하 여 XML 문서를 확인 하는 방법을 보여 줍니다는 <xref:System.Security.Cryptography.Xml.XmlDsigExcC14NWithCommentsTransform> 클래스입니다.  이 샘플에는 봉투 (envelope) 서명을 만듭니다.  
+  
+ [!code-cpp[Cryptography.Xml.XmlDsigExcC14NWithCommentsTransform#1](~/samples/snippets/cpp/VS_Snippets_CLR/Cryptography.XML.XmlDsigExcC14NWithCommentsTransform/CPP/sample.cpp#1)]
+ [!code-csharp[Cryptography.Xml.XmlDsigExcC14NWithCommentsTransform#1](~/samples/snippets/csharp/VS_Snippets_CLR/Cryptography.XML.XmlDsigExcC14NWithCommentsTransform/CS/sample.cs#1)]
+ [!code-vb[Cryptography.Xml.XmlDsigExcC14NWithCommentsTransform#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/Cryptography.XML.XmlDsigExcC14NWithCommentsTransform/VB/sample.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigHMACSHA1Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigHMACSHA1Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigHMACSHA1Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigHMACSHA1Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigHMACSHA1Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigHMACSHA1Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigHMACSHA1Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigHMACSHA1Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 <see cref="T:System.Security.Cryptography.HMACSHA1" /> 알고리즘에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigHMACSHA1Url> 필드는 "http://www.w3.org/2000/09/xmldsig#hmac-sha1"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2000/09/xmldsig#hmac-sha1합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigMinimalCanonicalizationUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigMinimalCanonicalizationUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigMinimalCanonicalizationUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigMinimalCanonicalizationUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigMinimalCanonicalizationUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigMinimalCanonicalizationUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigMinimalCanonicalizationUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigMinimalCanonicalizationUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 최소 표준 정규화 알고리즘에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigMinimalCanonicalizationUrl> 필드는 "http://www.w3.org/2000/09/xmldsig#minimal"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2000/09/xmldsig#minimal합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigNamespaceUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigNamespaceUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigNamespaceUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigNamespaceUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigNamespaceUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigNamespaceUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigNamespaceUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigNamespaceUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 네임스페이스에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigNamespaceUrl> 필드는 "http://www.w3.org/2000/09/xmldsig#"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2000/09/xmldsig#합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigRSASHA1Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigRSASHA1Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigRSASHA1Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA1Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigRSASHA1Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigRSASHA1Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigRSASHA1Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA1Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 <see cref="T:System.Security.Cryptography.RSA" /> 서명 메서드에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA1Url> 필드는 "http://www.w3.org/2000/09/xmldsig#rsa-sha1"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2000/09/xmldsig#rsa-sha1합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigRSASHA256Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigRSASHA256Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigRSASHA256Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA256Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigRSASHA256Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigRSASHA256Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigRSASHA256Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA256Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 <see cref="T:System.Security.Cryptography.RSA" /> SHA-256 서명 방법 변형에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA256Url> 필드는 "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 하세요 [ https://www.w3.org/2001/04/xmldsig-more#rsa-sha256 ](https://www.w3.org/2001/04/xmldsig-more#rsa-sha256)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigRSASHA384Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigRSASHA384Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigRSASHA384Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA384Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigRSASHA384Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigRSASHA384Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigRSASHA384Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA384Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 <see cref="T:System.Security.Cryptography.RSA" /> SHA-384 서명 방법 변형에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA384Url> 필드는 "http://www.w3.org/2001/04/xmldsig-more#rsa-sha384"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 하세요 [ https://www.w3.org/2001/04/xmldsig-more#rsa-sha384 ](https://www.w3.org/2001/04/xmldsig-more#rsa-sha384)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigRSASHA512Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigRSASHA512Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigRSASHA512Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA512Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigRSASHA512Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigRSASHA512Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigRSASHA512Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA512Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 <see cref="T:System.Security.Cryptography.RSA" /> SHA-512 서명 방법 변형에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigRSASHA512Url> 필드는 "http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 하세요 [ https://www.w3.org/2001/04/xmldsig-more#rsa-sha512 ](https://www.w3.org/2001/04/xmldsig-more#rsa-sha512)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigSHA1Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigSHA1Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigSHA1Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA1Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigSHA1Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigSHA1Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigSHA1Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA1Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 <see cref="T:System.Security.Cryptography.SHA1" /> 다이제스트 방법에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA1Url> 필드는 "http://www.w3.org/2000/09/xmldsig#sha1"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/2000/09/xmldsig#sha1합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigSHA256Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigSHA256Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigSHA256Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA256Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigSHA256Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigSHA256Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigSHA256Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA256Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 <see cref="T:System.Security.Cryptography.SHA256" /> 다이제스트 방법에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA256Url> 필드는 "http://www.w3.org/2001/04/xmlenc#sha256"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 하세요 [ http://www.w3.org/2001/04/xmlenc#sha256 ](http://www.w3.org/2001/04/xmlenc#sha256)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigSHA384Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigSHA384Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigSHA384Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA384Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigSHA384Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigSHA384Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigSHA384Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA384Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 <see cref="T:System.Security.Cryptography.SHA384" /> 다이제스트 방법에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA384Url> 필드는 "http://www.w3.org/2001/04/xmldsig-more#sha384"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 하세요 [ https://www.w3.org/2001/04/xmldsig-more#sha384 ](https://www.w3.org/2001/04/xmldsig-more#sha384)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigSHA512Url">
+      <MemberSignature Language="C#" Value="public const string XmlDsigSHA512Url;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigSHA512Url" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA512Url" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigSHA512Url As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigSHA512Url;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigSHA512Url : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA512Url" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XML 디지털 서명을 위한 표준 <see cref="T:System.Security.Cryptography.SHA512" /> 다이제스트 방법에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigSHA512Url> 필드는 "http://www.w3.org/2001/04/xmlenc#sha512"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 하세요 [ http://www.w3.org/2001/04/xmlenc#sha512 ](http://www.w3.org/2001/04/xmlenc#sha512)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigXPathTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigXPathTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigXPathTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigXPathTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigXPathTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigXPathTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigXPathTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigXPathTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XPath(XML Path Language)에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigXPathTransformUrl> 필드는 "http://www.w3.org/TR/1999/REC-xpath-19991116"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigXPathTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigXPathTransformUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/TR/1999/REC-xpath-19991116합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는의 멤버를 호출 하는 방법에 설명 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigXPathTransform> 클래스입니다.  
+  
+ [!code-csharp[System.Security.Cryptography.Xml.XmlDsigXPathTransform#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigXPathTransform/CS/members.cs#2)]
+ [!code-vb[System.Security.Cryptography.Xml.XmlDsigXPathTransform#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigXPathTransform/VB/members.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlDsigXsltTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlDsigXsltTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlDsigXsltTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlDsigXsltTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlDsigXsltTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlDsigXsltTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlDsigXsltTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlDsigXsltTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XSLT 변환에 대한 URI(Uniform Resource Identifier)를 나타냅니다. 이 필드는 상수입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigXsltTransformUrl> 필드는 "http://www.w3.org/TR/1999/REC-xslt-19991116"입니다.  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigXsltTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlDsigXsltTransformUrl> 필드입니다.  
+  
+ 자세한 내용은 World Wide Web Consortium (W3C) 사양을 참조 http://www.w3.org/TR/1999/REC-xslt-19991116합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 멤버를 사용 하는 방법에 설명 합니다 <xref:System.Security.Cryptography.Xml.XmlDsigXsltTransform> 클래스입니다.  
+  
+ [!code-cpp[System.Security.Cryptography.Xml.XmlDsigXsltTransform#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigXsltTransform/CPP/members.cpp#2)]
+ [!code-csharp[System.Security.Cryptography.Xml.XmlDsigXsltTransform#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigXsltTransform/CS/members.cs#2)]
+ [!code-vb[System.Security.Cryptography.Xml.XmlDsigXsltTransform#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.Cryptography.Xml.XmlDsigXsltTransform/VB/members.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="XmlLicenseTransformUrl">
+      <MemberSignature Language="C#" Value="public const string XmlLicenseTransformUrl;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal string XmlLicenseTransformUrl" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.Xml.SignedXml.XmlLicenseTransformUrl" />
+      <MemberSignature Language="VB.NET" Value="Public Const XmlLicenseTransformUrl As String " />
+      <MemberSignature Language="C++ CLI" Value="public: System::String ^ XmlLicenseTransformUrl;" />
+      <MemberSignature Language="F#" Value="val mutable XmlLicenseTransformUrl : string" Usage="System.Security.Cryptography.Xml.SignedXml.XmlLicenseTransformUrl" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Xml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>서명을 위해 XrML 라이선스를 정규화하는 데 사용할 라이선스 변환 알고리즘에 대한 URI(Uniform Resource Identifier)를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 <xref:System.Security.Cryptography.Xml.SignedXml.XmlLicenseTransformUrl> 필드는 "urn: mpeg:mpeg21:2003:01-REL-R-NS:licenseTransform"  
+  
+ 이 필드를 사용 하 여 편리 하 게 URI 특성 XMLDSIG에 사용 되는 요소 중 하나에 값을 제공 합니다.  
+  
+ 합니다 <xref:System.Security.Cryptography.Xml.XmlLicenseTransform> 클래스에서 설명 된 변환을 구현 하는 <xref:System.Security.Cryptography.Xml.SignedXml.XmlLicenseTransformUrl> 필드입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

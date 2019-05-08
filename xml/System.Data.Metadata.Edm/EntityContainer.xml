@@ -1,0 +1,472 @@
+<Type Name="EntityContainer" FullName="System.Data.Metadata.Edm.EntityContainer">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="cd84884972be937846f0f115cfce728b525a2425" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58548057" /></Metadata><TypeSignature Language="C#" Value="public sealed class EntityContainer : System.Data.Metadata.Edm.GlobalItem" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit EntityContainer extends System.Data.Metadata.Edm.GlobalItem" />
+  <TypeSignature Language="DocId" Value="T:System.Data.Metadata.Edm.EntityContainer" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class EntityContainer&#xA;Inherits GlobalItem" />
+  <TypeSignature Language="C++ CLI" Value="public ref class EntityContainer sealed : System::Data::Metadata::Edm::GlobalItem" />
+  <TypeSignature Language="F#" Value="type EntityContainer = class&#xA;    inherit GlobalItem" />
+  <AssemblyInfo>
+    <AssemblyName>System.Data.Entity</AssemblyName>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Data.Metadata.Edm.GlobalItem</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>개념적 모델의 엔터티 컨테이너를 나타냅니다. <see cref="T:System.Data.Metadata.Edm.EntityContainer" />는 엔터티 집합 및 연결 집합의 논리적 그룹입니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 개념적인 측면에서 <xref:System.Data.Metadata.Edm.EntityContainer> 클래스는 저장소 메타데이터 스키마에서 데이터베이스 개체에 매핑되는 컨테이너를 나타냅니다. 저장소의 측면에서 <xref:System.Data.Metadata.Edm.EntityContainer> 클래스는 모델을 기반으로 빌드된 응용 프로그램에서 데이터를 유지하는 테이블 및/또는 키 관계에 대한 설명을 나타냅니다. 개념적 모델의 엔터티 컨테이너에 대 한 자세한 내용은 참조 하세요. [엔터티 컨테이너 (EDM)](https://msdn.microsoft.com/library/9afa762f-59b8-4a70-b76d-89d90760144c)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 샘플에서는 연결에서 메타데이터 작업 영역을 가져온 다음 이 메타데이터 작업 영역을 사용하여 지정된 데이터 모델의 엔터티 컨테이너에 대한 정보를 검색하는 방법을 보여 줍니다. 메타데이터 작업 영역은 메타데이터 검색을 지원하는 런타임 서비스 구성 요소입니다.  
+  
+ 코드 샘플에서는 <xref:System.Data.Metadata.Edm.DataSpace.CSpace> 및 <xref:System.Data.Metadata.Edm.DataSpace.SSpace>를 사용하여 모델을 지정합니다. <xref:System.Data.Metadata.Edm.DataSpace.CSpace>는 개념적 모델의 기본 이름을 나타냅니다. <xref:System.Data.Metadata.Edm.DataSpace.SSpace>는 저장소 모델의 기본 이름을 나타냅니다.  
+  
+ `GetEntityContainers` 엔터티 컨테이너의 컬렉션을 가져옵니다 메서드와 각 엔터티 집합을 가져오고 지정된 된 컨테이너에 설정 하는 연결 컬렉션을 반복 합니다. 코드 샘플에서 제공 되는 AdventureWorks 모델을 사용 합니다 [Adventure Works 모델 (EDM)](https://msdn.microsoft.com/library/da87d29e-8c89-4310-bbac-5cbd062930a7) 항목입니다. 응용 프로그램 구성 파일의 예제를 보려면 [응용 프로그램 (EDM)에서 Adventure Works 개체 모델](https://msdn.microsoft.com/library/84c01270-90ba-467b-ad24-df10c1ca8f45)합니다.  
+  
+```csharp  
+using System;  
+using System.Data;  
+using System.Data.EntityClient;  
+using System.Data.Metadata.Edm;  
+using System.Collections.ObjectModel;  
+  
+class GetEntityContainerExample  
+{  
+  static void Main()  
+  {  
+    try  
+    {  
+       // Establish a connection to the underlying data provider by   
+       // using the connection string specified in the config file.  
+       using (EntityConnection connection =  
+          new EntityConnection("Name=AdventureWorksEntities"))  
+       {  
+         // Open the connection.  
+         connection.Open();  
+  
+         // Access the metadata workspace.  
+         MetadataWorkspace workspace =   
+            connection.GetMetadataWorkspace();  
+  
+         // Get the entity containers in the conceptual model.  
+         GetEntityContainers(workspace, DataSpace.CSpace);  
+  
+         // Get the entity containers in the storage model.  
+             GetEntityContainers(workspace, DataSpace.SSpace);  
+       }  
+    }  
+    catch (MetadataException exceptionMetadata)  
+    {  
+      Console.WriteLine("MetadataException: {0}",   
+                       exceptionMetadata.Message);  
+    }  
+    catch (System.Data.MappingException exceptionMapping)  
+    {  
+      Console.WriteLine("MappingException: {0}",  
+                       exceptionMapping.Message);  
+    }  
+  }  
+  
+  public static void GetEntityContainers(  
+      MetadataWorkspace workspace, DataSpace model)  
+  {  
+    // Get a collection of the entity containers.  
+    ReadOnlyCollection<EntityContainer> containers =   
+         workspace.GetItems<EntityContainer>(model);  
+  
+    // Iterate through the collection to get each entity container.  
+    foreach (EntityContainer container in containers)  
+    {  
+       Console.WriteLine("EntityContainer Name: {0} ",   
+                        container.Name);  
+  
+       // EntitySetBase is a super type for   
+       // EntitySets and RelationshipSets.   
+       // Iterate through the collection to get each EntitySetBase.  
+       foreach (EntitySetBase baseSet in container.BaseEntitySets)  
+       {  
+          // Check if this instance is an EntitySet.  
+          if (baseSet is EntitySet)  
+          {  
+             Console.WriteLine(  
+                "  EntitySet Name: {0} , EntityType Name: {1} ",  
+                baseSet.Name, baseSet.ElementType.FullName);  
+          }  
+  
+         // RelationshipSet is a super type for AssociationSet.  
+         // Check if this instance is an AssociationSet.  
+         if (baseSet is AssociationSet)  
+         {  
+            Console.WriteLine(  
+               "  AssociationSet Name: {0} , " +  
+               "AssociationType Name: {1} ",  
+                baseSet.Name, baseSet.ElementType.FullName);  
+  
+            // Get the AssociationSet.  
+            AssociationSet associationSet =   
+                  baseSet as AssociationSet;  
+  
+            // Iterate through the collection to get   
+            // each AssociatedSetEnd.  
+            foreach (AssociationSetEnd end in   
+               associationSet.AssociationSetEnds)  
+            {  
+               Console.WriteLine(  
+                  "   EntitySet Name: {0} , Name: {1} ",  
+                  end.EntitySet, end.Name);  
+            }  
+         }  
+      }  
+    }  
+  }  
+}  
+```  
+  
+```vb  
+Imports System  
+Imports System.Collections.ObjectModel  
+Imports System.Data  
+Imports System.Data.EntityClient  
+Imports System.Data.Metadata.Edm  
+  
+Class GetEntityContainerExample  
+  Public Shared Sub Main()  
+    Try  
+      ' Establish a connection to the underlying data provider by   
+      ' using the connection string specified in the config file.  
+      Using connection As EntityConnection = _  
+        New EntityConnection("Name=AdventureWorksEntities")  
+  
+        ' Open the connection.  
+        connection.Open()  
+  
+        ' Access the metadata workspace.  
+        Dim workspace As MetadataWorkspace = _  
+           connection.GetMetadataWorkspace  
+  
+        ' Get the entity containers in the conceptual model.  
+        GetEntityContainers(workspace, DataSpace.CSpace)  
+  
+        ' Get the entity containers in the storage model.  
+        GetEntityContainers(workspace, DataSpace.SSpace)  
+      End Using  
+    Catch exceptionMetadata As MetadataException  
+       Console.WriteLine("MetadataException: {0}", _  
+          exceptionMetadata.Message)  
+    Catch exceptionMapping As MappingException  
+       Console.WriteLine("MappingException: {0}", _  
+          exceptionMapping.Message)  
+     End Try  
+  End Sub  
+  
+  Public Shared Sub GetEntityContainers( _  
+    ByVal workspace As MetadataWorkspace, ByVal model As DataSpace)  
+  
+    ' Get a collection of the entity containers.  
+    Dim containers As ReadOnlyCollection(Of EntityContainer) = _  
+       workspace.GetItems(Of EntityContainer)(model)  
+  
+    ' Iterate through the collection to get each entity container.  
+    Dim container As EntityContainer  
+    For Each container In containers  
+      Console.WriteLine("EntityContainer Name: {0} ", container.Name)  
+  
+      ' EntitySetBase is a super type for   
+      ' EntitySets and RelationshipSets.   
+      ' Iterate through the collection to get each EntitySetBase.  
+      Dim baseSet As EntitySetBase  
+      For Each baseSet In container.BaseEntitySets  
+         ' Check if this instance is an EntitySet.  
+         If TypeOf baseSet Is EntitySet Then  
+           Console.WriteLine( _  
+              "  EntitySet Name: {0} , EntityType Name: {1} ", _  
+              baseSet.Name, baseSet.ElementType.FullName)  
+          End If  
+  
+          ' RelationshipSet is a super type for AssociationSet.  
+          ' Check if this instance is an AssociationSet.  
+          If TypeOf baseSet Is AssociationSet Then  
+            Console.WriteLine( _  
+              "  AssociationSet Name: {0} , " + _  
+              "AssociationType Name: {1} ", _  
+              baseSet.Name, baseSet.ElementType.FullName)  
+  
+            ' Get the AssociationSet.  
+            Dim associationSet As AssociationSet = _  
+               TryCast(baseSet, AssociationSet)  
+  
+            ' Iterate through the collection to get   
+            '  each AssociatedSetEnd.  
+            Dim endMember As AssociationSetEnd  
+            For Each endMember In associationSet.AssociationSetEnds  
+              Console.WriteLine( _  
+                 "   EntitySet Name: {0} , Name: {1} ", _  
+                 endMember.EntitySet, endMember.Name)  
+            Next  
+          End If  
+      Next  
+    Next  
+  End Sub  
+End Class  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="BaseEntitySets">
+      <MemberSignature Language="C#" Value="public System.Data.Metadata.Edm.ReadOnlyMetadataCollection&lt;System.Data.Metadata.Edm.EntitySetBase&gt; BaseEntitySets { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Data.Metadata.Edm.ReadOnlyMetadataCollection`1&lt;class System.Data.Metadata.Edm.EntitySetBase&gt; BaseEntitySets" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Metadata.Edm.EntityContainer.BaseEntitySets" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property BaseEntitySets As ReadOnlyMetadataCollection(Of EntitySetBase)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Data::Metadata::Edm::ReadOnlyMetadataCollection&lt;System::Data::Metadata::Edm::EntitySetBase ^&gt; ^ BaseEntitySets { System::Data::Metadata::Edm::ReadOnlyMetadataCollection&lt;System::Data::Metadata::Edm::EntitySetBase ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.BaseEntitySets : System.Data.Metadata.Edm.ReadOnlyMetadataCollection&lt;System.Data.Metadata.Edm.EntitySetBase&gt;" Usage="System.Data.Metadata.Edm.EntityContainer.BaseEntitySets" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Data.Metadata.Edm.ReadOnlyMetadataCollection&lt;System.Data.Metadata.Edm.EntitySetBase&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Data.Metadata.Edm.EntityContainer" />에 포함된 엔터티 집합과 연결 집합의 목록을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Data.Metadata.Edm.ReadOnlyMetadataCollection`1" />에 포함된 엔터티 집합과 연결 집합의 목록을 포함하는 <see cref="T:System.Data.Metadata.Edm.EntityContainer" /> 개체입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BuiltInTypeKind">
+      <MemberSignature Language="C#" Value="public override System.Data.Metadata.Edm.BuiltInTypeKind BuiltInTypeKind { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.Metadata.Edm.BuiltInTypeKind BuiltInTypeKind" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Metadata.Edm.EntityContainer.BuiltInTypeKind" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property BuiltInTypeKind As BuiltInTypeKind" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Data::Metadata::Edm::BuiltInTypeKind BuiltInTypeKind { System::Data::Metadata::Edm::BuiltInTypeKind get(); };" />
+      <MemberSignature Language="F#" Value="member this.BuiltInTypeKind : System.Data.Metadata.Edm.BuiltInTypeKind" Usage="System.Data.Metadata.Edm.EntityContainer.BuiltInTypeKind" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.Metadata.Edm.BuiltInTypeKind</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Data.Metadata.Edm.EntityContainer" />의 기본 제공 형식 유형을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Data.Metadata.Edm.BuiltInTypeKind" />의 기본 제공 형식 유형을 나타내는 <see cref="T:System.Data.Metadata.Edm.EntityContainer" /> 개체입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FunctionImports">
+      <MemberSignature Language="C#" Value="public System.Data.Metadata.Edm.ReadOnlyMetadataCollection&lt;System.Data.Metadata.Edm.EdmFunction&gt; FunctionImports { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Data.Metadata.Edm.ReadOnlyMetadataCollection`1&lt;class System.Data.Metadata.Edm.EdmFunction&gt; FunctionImports" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Metadata.Edm.EntityContainer.FunctionImports" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property FunctionImports As ReadOnlyMetadataCollection(Of EdmFunction)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Data::Metadata::Edm::ReadOnlyMetadataCollection&lt;System::Data::Metadata::Edm::EdmFunction ^&gt; ^ FunctionImports { System::Data::Metadata::Edm::ReadOnlyMetadataCollection&lt;System::Data::Metadata::Edm::EdmFunction ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.FunctionImports : System.Data.Metadata.Edm.ReadOnlyMetadataCollection&lt;System.Data.Metadata.Edm.EdmFunction&gt;" Usage="System.Data.Metadata.Edm.EntityContainer.FunctionImports" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Data.Metadata.Edm.ReadOnlyMetadataCollection&lt;System.Data.Metadata.Edm.EdmFunction&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Data.Metadata.Edm.EdmFunction" /> 요소의 컬렉션을 지정합니다. 각 함수에는 데이터베이스에 있는 저장 프로시저나 엔터티와 그 속성에 매핑되는 해당 <c>CommandText</c>에 대한 정보가 포함됩니다.</summary>
+        <value><see cref="T:System.Data.Metadata.Edm.ReadOnlyMetadataCollection`1" /> 요소가 포함된 <see cref="T:System.Data.Metadata.Edm.EdmFunction" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetEntitySetByName">
+      <MemberSignature Language="C#" Value="public System.Data.Metadata.Edm.EntitySet GetEntitySetByName (string name, bool ignoreCase);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Data.Metadata.Edm.EntitySet GetEntitySetByName(string name, bool ignoreCase) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Metadata.Edm.EntityContainer.GetEntitySetByName(System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetEntitySetByName (name As String, ignoreCase As Boolean) As EntitySet" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Data::Metadata::Edm::EntitySet ^ GetEntitySetByName(System::String ^ name, bool ignoreCase);" />
+      <MemberSignature Language="F#" Value="member this.GetEntitySetByName : string * bool -&gt; System.Data.Metadata.Edm.EntitySet" Usage="entityContainer.GetEntitySetByName (name, ignoreCase)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.Metadata.Edm.EntitySet</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="ignoreCase" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="name">검색할 엔터티 집합의 이름입니다.</param>
+        <param name="ignoreCase">대/소문자를 구분하지 않고 검색하려면 <see langword="true" />로 설정하고, 그렇지 않으면 <see langword="false" />로 설정합니다.</param>
+        <summary>지정된 엔터티 집합 이름을 사용하여 <see cref="T:System.Data.Metadata.Edm.EntitySet" /> 개체를 반환합니다.</summary>
+        <returns>지정된 이름의 엔터티 집합을 나타내는 <see cref="T:System.Data.Metadata.Edm.EntitySet" /> 개체입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetRelationshipSetByName">
+      <MemberSignature Language="C#" Value="public System.Data.Metadata.Edm.RelationshipSet GetRelationshipSetByName (string name, bool ignoreCase);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Data.Metadata.Edm.RelationshipSet GetRelationshipSetByName(string name, bool ignoreCase) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Metadata.Edm.EntityContainer.GetRelationshipSetByName(System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetRelationshipSetByName (name As String, ignoreCase As Boolean) As RelationshipSet" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Data::Metadata::Edm::RelationshipSet ^ GetRelationshipSetByName(System::String ^ name, bool ignoreCase);" />
+      <MemberSignature Language="F#" Value="member this.GetRelationshipSetByName : string * bool -&gt; System.Data.Metadata.Edm.RelationshipSet" Usage="entityContainer.GetRelationshipSetByName (name, ignoreCase)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.Metadata.Edm.RelationshipSet</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="ignoreCase" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="name">검색할 관계 집합의 이름입니다.</param>
+        <param name="ignoreCase">대/소문자를 구분하지 않고 검색하려면 <see langword="true" />로 설정하고, 그렇지 않으면 <see langword="false" />로 설정합니다.</param>
+        <summary>지정된 관계 집합 이름을 사용하여 <see cref="T:System.Data.Metadata.Edm.RelationshipSet" /> 개체를 반환합니다.</summary>
+        <returns>지정된 이름의 관계 집합을 나타내는 <see cref="T:System.Data.Metadata.Edm.RelationshipSet" /> 개체입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Metadata.Edm.EntityContainer.Name" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Name As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Name { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Name : string" Usage="System.Data.Metadata.Edm.EntityContainer.Name" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Data.Metadata.Edm.EntityContainer" />의 이름을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Data.Metadata.Edm.EntityContainer" />의 이름입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Metadata.Edm.EntityContainer.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberSignature Language="F#" Value="override this.ToString : unit -&gt; string" Usage="entityContainer.ToString " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Data.Metadata.Edm.EntityContainer" />의 이름을 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Data.Metadata.Edm.EntityContainer" />의 이름입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryGetEntitySetByName">
+      <MemberSignature Language="C#" Value="public bool TryGetEntitySetByName (string name, bool ignoreCase, out System.Data.Metadata.Edm.EntitySet entitySet);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryGetEntitySetByName(string name, bool ignoreCase, [out] class System.Data.Metadata.Edm.EntitySet&amp; entitySet) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Metadata.Edm.EntityContainer.TryGetEntitySetByName(System.String,System.Boolean,System.Data.Metadata.Edm.EntitySet@)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryGetEntitySetByName (name As String, ignoreCase As Boolean, ByRef entitySet As EntitySet) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryGetEntitySetByName(System::String ^ name, bool ignoreCase, [Runtime::InteropServices::Out] System::Data::Metadata::Edm::EntitySet ^ % entitySet);" />
+      <MemberSignature Language="F#" Value="member this.TryGetEntitySetByName : string * bool *  -&gt; bool" Usage="entityContainer.TryGetEntitySetByName (name, ignoreCase, entitySet)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="ignoreCase" Type="System.Boolean" />
+        <Parameter Name="entitySet" Type="System.Data.Metadata.Edm.EntitySet" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="name">검색할 엔터티 집합의 이름입니다.</param>
+        <param name="ignoreCase">대/소문자를 구분하지 않고 검색하려면 <see langword="true" />로 설정하고, 그렇지 않으면 <see langword="false" />로 설정합니다.</param>
+        <param name="entitySet">이 메서드가 반환될 때 <see cref="T:System.Data.Metadata.Edm.EntitySet" /> 개체를 포함합니다. 해당 엔터티 집합이 없으면 이 출력 매개 변수에는 null이 들어 있습니다.</param>
+        <summary>지정된 엔터티 집합 이름을 사용하여 <see cref="T:System.Data.Metadata.Edm.EntitySet" /> 개체를 반환합니다.</summary>
+        <returns>검색 조건과 일치하는 엔터티 집합이 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryGetRelationshipSetByName">
+      <MemberSignature Language="C#" Value="public bool TryGetRelationshipSetByName (string name, bool ignoreCase, out System.Data.Metadata.Edm.RelationshipSet relationshipSet);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool TryGetRelationshipSetByName(string name, bool ignoreCase, [out] class System.Data.Metadata.Edm.RelationshipSet&amp; relationshipSet) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Metadata.Edm.EntityContainer.TryGetRelationshipSetByName(System.String,System.Boolean,System.Data.Metadata.Edm.RelationshipSet@)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TryGetRelationshipSetByName (name As String, ignoreCase As Boolean, ByRef relationshipSet As RelationshipSet) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool TryGetRelationshipSetByName(System::String ^ name, bool ignoreCase, [Runtime::InteropServices::Out] System::Data::Metadata::Edm::RelationshipSet ^ % relationshipSet);" />
+      <MemberSignature Language="F#" Value="member this.TryGetRelationshipSetByName : string * bool *  -&gt; bool" Usage="entityContainer.TryGetRelationshipSetByName (name, ignoreCase, relationshipSet)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Entity</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="ignoreCase" Type="System.Boolean" />
+        <Parameter Name="relationshipSet" Type="System.Data.Metadata.Edm.RelationshipSet" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="name">검색할 관계 집합의 이름입니다.</param>
+        <param name="ignoreCase">대/소문자를 구분하지 않고 검색하려면 <see langword="true" />로 설정하고, 그렇지 않으면 <see langword="false" />로 설정합니다.</param>
+        <param name="relationshipSet">이 메서드가 반환될 때 <see cref="T:System.Data.Metadata.Edm.RelationshipSet" /> 개체를 포함합니다.</param>
+        <summary>지정된 관계 집합 이름을 사용하여 <see cref="T:System.Data.Metadata.Edm.RelationshipSet" /> 개체를 반환합니다.</summary>
+        <returns>검색 조건과 일치하는 관계 집합이 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

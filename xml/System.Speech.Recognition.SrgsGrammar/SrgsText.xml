@@ -1,0 +1,192 @@
+<Type Name="SrgsText" FullName="System.Speech.Recognition.SrgsGrammar.SrgsText">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="ff343a43e2979dccf22467cf45e98f34334ebde0" /><Meta Name="ms.sourcegitcommit" Value="4ee26ac79338b0bf99fa1e0913e8a06b21994d8e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/26/2019" /><Meta Name="ms.locfileid" Value="58457812" /></Metadata><TypeSignature Language="C#" Value="public class SrgsText : System.Speech.Recognition.SrgsGrammar.SrgsElement" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit SrgsText extends System.Speech.Recognition.SrgsGrammar.SrgsElement" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Recognition.SrgsGrammar.SrgsText" />
+  <TypeSignature Language="VB.NET" Value="Public Class SrgsText&#xA;Inherits SrgsElement" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SrgsText : System::Speech::Recognition::SrgsGrammar::SrgsElement" />
+  <TypeSignature Language="F#" Value="type SrgsText = class&#xA;    inherit SrgsElement" />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Speech.Recognition.SrgsGrammar.SrgsElement</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Diagnostics.DebuggerDisplay("{DebuggerDisplayString ()}")</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>System.Serializable</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>W3C(월드 와이드 웹 컨소시엄) <see href="https://www.w3.org/TR/speech-grammar/">Speech Recognition Grammar Specification(SRGS) 버전 1.0</see>에 의해 정의된 문법 요소의 텍스트 내용을 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Speech.Recognition.SrgsGrammar.SrgsText> 클래스 SRGS 요소 태그의 집합 내에서 텍스트를 나타냅니다. 경우는 <xref:System.Speech.Recognition.SrgsGrammar.SrgsItem> 개체를 생성을 <xref:System.String> 매개 변수를 <xref:System.Speech.Recognition.SrgsGrammar.SrgsText> 개체를 만든 해당 <xref:System.Speech.Recognition.SrgsGrammar.SrgsText.Text%2A> 해당 매개 변수의 값으로 초기화 하는 속성입니다. <xref:System.Speech.Recognition.SrgsGrammar.SrgsText.Text%2A> 개체에 추가 되는 <xref:System.Speech.Recognition.SrgsGrammar.SrgsItem.Elements%2A> 컬렉션에는 <xref:System.Speech.Recognition.SrgsGrammar.SrgsItem> 개체입니다.  
+  
+   
+  
+## Examples  
+ 다음 C# 코드 예제를 사용 하는 방법에 설명 합니다 <xref:System.Speech.Recognition.SrgsGrammar.SrgsText> 클래스의 텍스트 콘텐츠를 수정 하려면 <xref:System.Speech.Recognition.SrgsGrammar.SrgsItem> 개체입니다. 처음 텍스트 값을 변경 하는 예제는 <xref:System.Speech.Recognition.SrgsGrammar.SrgsItem> 개체 (`Large`, `Larger`, 및 `Largest`)를 `Small`를 `Medium`, 및 `Large`, 각각.  
+  
+```csharp  
+  
+// Create SrgsItem objects and specify their text.  
+SrgsItem smallItem = new SrgsItem("Large");  
+SrgsItem mediumItem = new SrgsItem("Larger");  
+SrgsItem largeItem = new SrgsItem("Largest");  
+  
+SrgsText textOfItem = null;  
+  
+//  Change the text of smallItem.  
+if (smallItem.Elements[0] is SrgsText)  
+{  
+  textOfItem = smallItem.Elements[0] as SrgsText;  
+  textOfItem.Text = "Small";  
+}  
+  
+//  Change the text of mediumItem.  
+if (mediumItem.Elements[0] is SrgsText)  
+{  
+  textOfItem = mediumItem.Elements[0] as SrgsText;  
+  textOfItem.Text = "Medium";  
+}  
+  
+// Change the text of largeItem.  
+if (largeItem.Elements[0] is SrgsText)  
+{  
+  textOfItem = largeItem.Elements[0] as SrgsText;  
+  textOfItem.Text = "Large";  
+}  
+  
+// Create an SrgsOneOf object and add smallItem, mediumItem,   
+// and largeItem as alternatives.  
+SrgsOneOf itemSize = new SrgsOneOf(new SrgsItem[]   
+  { smallItem, mediumItem, largeItem });  
+  
+// Create a new SrgsRule from the SrgsOneOf object, and specify its identifier.  
+SrgsRule size = new SrgsRule("Sizes", itemSize);  
+  
+// Create an SrgsDocument object.  
+// Add the SrgsRule object to the collection of rules and make it the root rule.  
+SrgsDocument document = new SrgsDocument();   
+document.Rules.Add(size);  
+document.Root = size;  
+  
+// Write the SrgsDocument to an XML grammar file.  
+string srgsDocumentFile = Path.Combine(Path.GetTempPath(), "srgsDocumentFile.xml");  
+XmlWriter writer = XmlWriter.Create(srgsDocumentFile);  
+document.WriteSrgs(writer);  
+writer.Close();  
+```  
+  
+ 에서는 다음 방법을의 텍스트를 수정 합니다 <xref:System.Speech.Recognition.SrgsGrammar.SrgsItem> 개체도 표시 됩니다 `item` 출력 XML 문법 파일의 요소입니다.  
+  
+```xml  
+<!-- SRGS XML Fragment -->  
+<one-of>  
+  <item>Small</item>  
+  <item>Medium</item>  
+  <item>Large</item>  
+</one-of>  
+  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Speech.Recognition.SrgsGrammar.SrgsItem" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsText" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SrgsText ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Recognition.SrgsGrammar.SrgsText.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SrgsText();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsText" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이것은 대 한 기본 생성자는 <xref:System.Speech.Recognition.SrgsGrammar.SrgsText> 클래스입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SrgsText (string text);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string text) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Speech.Recognition.SrgsGrammar.SrgsText.#ctor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (text As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SrgsText(System::String ^ text);" />
+      <MemberSignature Language="F#" Value="new System.Speech.Recognition.SrgsGrammar.SrgsText : string -&gt; System.Speech.Recognition.SrgsGrammar.SrgsText" Usage="new System.Speech.Recognition.SrgsGrammar.SrgsText text" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="text" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="text"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsText.Text" /> 인스턴스에  <see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsText" /> 속성을 설정하는 데 사용되는 값입니다.</param>
+        <summary>인스턴스의 텍스트를 지정하여 <see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsText" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="text" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Text">
+      <MemberSignature Language="C#" Value="public string Text { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Text" />
+      <MemberSignature Language="DocId" Value="P:System.Speech.Recognition.SrgsGrammar.SrgsText.Text" />
+      <MemberSignature Language="VB.NET" Value="Public Property Text As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Text { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Text : string with get, set" Usage="System.Speech.Recognition.SrgsGrammar.SrgsText.Text" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsText" /> 클래스 인스턴스 내에 포함된 텍스트를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Speech.Recognition.SrgsGrammar.SrgsText" /> 인스턴스에 포함된 텍스트입니다.</value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><see cref="P:System.Speech.Recognition.SrgsGrammar.SrgsText.Text" />를 <see langword="null" />로 설정하려고 한 경우</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

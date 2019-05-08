@@ -1,0 +1,130 @@
+<Type Name="SpeechRecognitionRejectedEventArgs" FullName="System.Speech.Recognition.SpeechRecognitionRejectedEventArgs">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="58886ff3fba92ee38158a0b634dd1c8bac8ae2de" /><Meta Name="ms.sourcegitcommit" Value="756d085f27705e86604f1bba5f2086ee23761acf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="01/30/2019" /><Meta Name="ms.locfileid" Value="55339104" /></Metadata><TypeSignature Language="C#" Value="public class SpeechRecognitionRejectedEventArgs : System.Speech.Recognition.RecognitionEventArgs" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit SpeechRecognitionRejectedEventArgs extends System.Speech.Recognition.RecognitionEventArgs" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Recognition.SpeechRecognitionRejectedEventArgs" />
+  <TypeSignature Language="VB.NET" Value="Public Class SpeechRecognitionRejectedEventArgs&#xA;Inherits RecognitionEventArgs" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SpeechRecognitionRejectedEventArgs : System::Speech::Recognition::RecognitionEventArgs" />
+  <TypeSignature Language="F#" Value="type SpeechRecognitionRejectedEventArgs = class&#xA;    inherit RecognitionEventArgs" />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Speech.Recognition.RecognitionEventArgs</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Serializable</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary><see cref="E:System.Speech.Recognition.SpeechRecognizer.SpeechRecognitionRejected" /> 및 <see cref="E:System.Speech.Recognition.SpeechRecognitionEngine.SpeechRecognitionRejected" /> 이벤트에 대한 정보를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 `SpeechRecognitionRejected` 이벤트를 발생 합니다 <xref:System.Speech.Recognition.SpeechRecognizer> 및 <xref:System.Speech.Recognition.SpeechRecognitionEngine> 클래스입니다.  
+  
+ **SpeechRecognitionRejected** 허용할 충분히 높은 신뢰성 점수는 인식 작업에서 대체 하나도 경우 음성 인식 엔진에 의해 이벤트가 생성 됩니다. 거부 된 구에 대 한 자세한 정보를 통해 사용할 수는 <xref:System.Speech.Recognition.RecognitionEventArgs.Result%2A> 속성입니다.  
+  
+ **SpeechRecognitionRejectedEventArgs** 에서 파생 <xref:System.Speech.Recognition.RecognitionEventArgs>합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 "재즈 범주의 artist 목록을 표시" 또는 "앨범 절대적인 표시"와 같은 구를 인식 합니다. 이 예제에서는 사용에 대 한 처리기를 <xref:System.Speech.Recognition.SpeechRecognizer.SpeechRecognitionRejected> 음성 입력 성공적인 인식을 생성 하는 데 충분 한 신뢰를 사용 하 여 문법의 내용에 일치 시킬 수 없는 경우 콘솔에서 알림을 표시 하는 이벤트입니다.  
+  
+```  
+using System;  
+using System.Speech.Recognition;  
+  
+namespace SampleRecognition  
+{  
+  class Program  
+  {  
+    static void Main(string[] args)  
+  
+    // Initialize a shared speech recognition engine.  
+    {  
+      using (SpeechRecognizer recognizer =  
+         new SpeechRecognizer())  
+      {  
+  
+        // Create a grammar.  
+        //  Create lists of alternative choices.  
+        Choices listTypes = new Choices(new string[] { "albums", "artists" });  
+        Choices genres = new Choices(new string[] {   
+          "blues", "classical", "gospel", "jazz", "rock" });  
+  
+        //  Create a GrammarBuilder object and assemble the grammar components.  
+        GrammarBuilder mediaMenu = new GrammarBuilder("Display");  
+        mediaMenu.Append("the list of", 0, 1);  
+        mediaMenu.Append(listTypes);  
+        mediaMenu.Append("in the", 0, 1);  
+        mediaMenu.Append(genres);  
+        mediaMenu.Append("category", 0, 1);  
+  
+        //  Build a Grammar object from the GrammarBuilder.  
+        Grammar mediaMenuGrammar = new Grammar(mediaMenu);  
+        mediaMenuGrammar.Name = "Media Chooser";  
+  
+        // Attach event handlers.  
+        recognizer.LoadGrammarCompleted +=  
+          new EventHandler<LoadGrammarCompletedEventArgs>(recognizer_LoadGrammarCompleted);  
+        recognizer.SpeechRecognized +=  
+          new EventHandler<SpeechRecognizedEventArgs>(recognizer_SpeechRecognized);  
+        recognizer.SpeechRecognitionRejected +=   
+          new EventHandler<SpeechRecognitionRejectedEventArgs>(recognizer_SpeechRecognitionRejected);  
+  
+        // Load the grammar object to the recognizer.  
+        recognizer.LoadGrammarAsync(mediaMenuGrammar);  
+  
+        // Keep the console window open.  
+        Console.ReadLine();  
+      }  
+    }  
+  
+    // Handle the SpeechRecognitionRejected event.  
+    static void recognizer_SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e)  
+    {  
+      Console.WriteLine("Speech input was rejected.");  
+      foreach (RecognizedPhrase phrase in e.Result.Alternates)  
+      {  
+        Console.WriteLine("  Rejected phrase: " + phrase.Text);  
+        Console.WriteLine("  Confidence score: " + phrase.Confidence);  
+      }  
+    }  
+  
+    // Handle the LoadGrammarCompleted event.  
+    static void recognizer_LoadGrammarCompleted(object sender, LoadGrammarCompletedEventArgs e)  
+    {  
+      Console.WriteLine("Grammar loaded: " + e.Grammar.Name);  
+    }  
+  
+    // Handle the SpeechRecognized event.  
+    static void recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)  
+    {  
+      Console.WriteLine("Speech recognized: " + e.Result.Text);  
+    }  
+  }  
+}  
+  
+```  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Speech.Recognition.RecognitionEventArgs" />
+    <altmember cref="T:System.Speech.Recognition.RecognitionResult" />
+    <altmember cref="E:System.Speech.Recognition.SpeechRecognizer.SpeechRecognitionRejected" />
+    <altmember cref="E:System.Speech.Recognition.SpeechRecognitionEngine.SpeechRecognitionRejected" />
+    <altmember cref="E:System.Speech.Recognition.SpeechRecognizer.SpeechRecognized" />
+    <altmember cref="E:System.Speech.Recognition.SpeechRecognitionEngine.SpeechRecognized" />
+    <altmember cref="T:System.Speech.Recognition.SpeechRecognizedEventArgs" />
+    <altmember cref="E:System.Speech.Recognition.SpeechRecognizer.SpeechHypothesized" />
+    <altmember cref="E:System.Speech.Recognition.SpeechRecognitionEngine.SpeechHypothesized" />
+    <altmember cref="T:System.Speech.Recognition.SpeechHypothesizedEventArgs" />
+  </Docs>
+  <Members />
+</Type>

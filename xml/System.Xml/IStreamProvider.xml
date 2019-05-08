@@ -1,0 +1,132 @@
+<Type Name="IStreamProvider" FullName="System.Xml.IStreamProvider">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="62a39be8fe51095a9ef8b3e39a6bf4f5cea2eeb9" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58686635" /></Metadata><TypeSignature Language="C#" Value="public interface IStreamProvider" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IStreamProvider" />
+  <TypeSignature Language="DocId" Value="T:System.Xml.IStreamProvider" />
+  <TypeSignature Language="VB.NET" Value="Public Interface IStreamProvider" />
+  <TypeSignature Language="C++ CLI" Value="public interface class IStreamProvider" />
+  <TypeSignature Language="F#" Value="type IStreamProvider = interface" />
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime.Serialization</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime.Serialization.Xml</AssemblyName>
+    <AssemblyVersion>4.1.3.0</AssemblyVersion>
+    <AssemblyVersion>4.1.4.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Docs>
+    <summary>스트림을 제공하는 클래스에서 구현할 수 있는 인터페이스를 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ XML 작성기에 스트리밍된 본문이 포함된 보내는 메시지를 쓸 때 <xref:System.ServiceModel.Channels.Message>는 <xref:System.ServiceModel.Channels.Message.OnWriteBodyContents%28System.Xml.XmlDictionaryWriter%29> 구현에서 다음과 유사한 호출의 시퀀스를 사용합니다.  
+  
+-   스트림 앞에 필요한 정보를 씁니다(예: 여는 XML 태그).  
+  
+-   스트림을 씁니다.  
+  
+-   스트림 뒤에 필요한 정보를 씁니다(예: 닫는 XML 태그).  
+  
+ 이는 텍스트 XML 인코딩과 유사한 인코딩을 사용하여 작동합니다. 그러나 XML infoset 정보(예: XML 요소의 시작 및 끝 태그)를 요소 내에 포함된 데이터와 함께 사용하지 않는 일부 인코딩이 있습니다. 예를 들어 MTOM 인코딩에서 메시지는 여러 부분으로 나누어집니다. 하나의 부분에는 실제 요소 콘텐츠의 다른 부분에 대한 참조가 포함될 수 있는 XML infoset이 포함됩니다. XML infoset이 일반적으로 스트리밍된 콘텐츠와 비교하여 작으므로 infoset을 버퍼링하고 쓴 다음 스트리밍된 방법으로 콘텐츠를 쓰는 것이 좋습니다. 즉, 이는 닫는 요소 태그가 작성될 때까지는 스트림을 쓰면 안 된다는 것을 의미합니다.  
+  
+ 이를 위해 <xref:System.Xml.IStreamProvider> 인터페이스가 사용됩니다. 인터페이스에는 작성할 스트림을 반환하는 <xref:System.Xml.IStreamProvider.GetStream> 메서드가 있습니다. <xref:System.ServiceModel.Channels.Message.OnWriteBodyContents%28System.Xml.XmlDictionaryWriter%29> 에서 스트리밍된 메시지 본문을 쓰는 올바른 방법은 다음과 같습니다.  
+  
+-   스트림 앞에 필요한 정보를 씁니다(예: 여는 XML 태그).  
+  
+-   쓸 스트림을 반환하는 `WriteValue` 구현과 함께 <xref:System.Xml.XmlDictionaryWriter> 를 사용하는 <xref:System.Xml.IStreamProvider>에서 `IStreamProvider` 오버로드를 호출합니다.  
+  
+-   스트림 뒤에 필요한 정보를 씁니다(예: 닫는 XML 태그).  
+  
+ 이 방법을 사용하면 <xref:System.Xml.IStreamProvider.GetStream> 을 호출하고 스트리밍된 데이터를 작성할 때 XML 작성기를 선택할 수 있습니다. 예를 들어 텍스트 및 이진 XML 작성기는 이를 즉각 호출하고 시작 및 끝 태그 사이에서 스트리밍된 콘텐츠를 작성합니다. MTOM 작성기는 메시지의 적절한 일부를 쓸 준비가 되면 나중에 <xref:System.Xml.IStreamProvider.GetStream> 을 호출할지 결정할 수 있습니다.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="GetStream">
+      <MemberSignature Language="C#" Value="public System.IO.Stream GetStream ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IO.Stream GetStream() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.IStreamProvider.GetStream" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStream () As Stream" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::IO::Stream ^ GetStream();" />
+      <MemberSignature Language="F#" Value="abstract member GetStream : unit -&gt; System.IO.Stream" Usage="iStreamProvider.GetStream " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Xml</AssemblyName>
+        <AssemblyVersion>4.1.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IO.Stream</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>스트림을 가져옵니다.</summary>
+        <returns><see cref="T:System.IO.Stream" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 작성할 스트림을 반환하는 데 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ReleaseStream">
+      <MemberSignature Language="C#" Value="public void ReleaseStream (System.IO.Stream stream);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void ReleaseStream(class System.IO.Stream stream) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.IStreamProvider.ReleaseStream(System.IO.Stream)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ReleaseStream(System::IO::Stream ^ stream);" />
+      <MemberSignature Language="F#" Value="abstract member ReleaseStream : System.IO.Stream -&gt; unit" Usage="iStreamProvider.ReleaseStream stream" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.Serialization.Xml</AssemblyName>
+        <AssemblyVersion>4.1.3.0</AssemblyVersion>
+        <AssemblyVersion>4.1.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="stream" Type="System.IO.Stream" />
+      </Parameters>
+      <Docs>
+        <param name="stream">해제되는 스트림입니다.</param>
+        <summary>출력할 스트림을 해제합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

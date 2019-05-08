@@ -1,0 +1,944 @@
+<Type Name="WorkflowInstance" FullName="System.Activities.Hosting.WorkflowInstance">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d3f9599fb8a859242cf5b1b2a1ae36d9717ba339" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57936825" /></Metadata><TypeSignature Language="C#" Value="public abstract class WorkflowInstance" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract WorkflowInstance extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Activities.Hosting.WorkflowInstance" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class WorkflowInstance" />
+  <TypeSignature Language="C++ CLI" Value="public ref class WorkflowInstance abstract" />
+  <TypeSignature Language="F#" Value="type WorkflowInstance = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Activities</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary><see cref="T:System.Activities.Hosting.WorkflowInstance" />는 워크플로 프로그램 실행을 위한 인스턴스별 경량 런타임입니다. 새 워크플로 인스턴스를 만들도록 생성하거나 기존 인스턴스 상태에서 생성할 수 있습니다. <see cref="T:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl" />이 노출하는 API는 상위 수준의 작업을 구현할 수 있는 최소 런타임 컨트롤 집합입니다. 이 API 집합은 전체 범위의 런타임 기능을 나타냅니다. <see cref="T:System.Activities.Hosting.WorkflowInstance" />는 추상 클래스이며 동기화, 지속성, 추적 및 확장명과 같은 호스트 기능을 제공하기 위해 호스트의 추상 메서드 구현을 사용합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Activities.Hosting.WorkflowInstance>는 단일 스레드이며 호스트가 모든 액세스를 동기화한다고 가정합니다. 동시에 여러 API를 호출하려고 하면 <xref:System.InvalidOperationException>이 throw됩니다.  
+  
+ 내부적으로 <xref:System.Activities.Hosting.WorkflowInstance> 두 가지 상태: 실행 중인 및 일시 중지 합니다. 런타임이 일시 중지됨에서 실행 중으로 전환시킬 수 있는 유일한 방법은 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Run%2A>을 호출하는 것입니다. 일시 중지를 제외한 모든 동작은 런타임이 일시 중지된 동안에만 수행할 수 있습니다. 다음과 같은 경우 런타임이 자발적으로 일시 중지됩니다.  
+  
+-   런타임에 치명적인 오류가 발생한 경우. 일시 중지됨으로 전환하도록 신호를 보내지 않는 <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A>를 통해 호스트가 신호를 받은 후 <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A>를 통해 알림을 받습니다.  
+  
+-   워크플로의 예외가 catch되지 않았으며 루트를 이스케이프한 경우. 호스트가 <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyUnhandledException%2A> 메서드를 통해 알림을 받습니다.  
+  
+-   스케줄러에서 작업 항목이 모두 실행되었으며 현재 <xref:System.Activities.Hosting.WorkflowInstanceState.Idle>인 경우. 호스트가 <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A> 메서드를 통해 알림을 받습니다. 인스턴스가 유휴 상태이거나 인스턴스가 완료되어 스케줄러에서 작업 항목이 모두 실행되었을 수 있습니다. <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.State%2A> 속성의 <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> 값을 사용하여 두 상태를 구분할 수 있습니다.  
+  
+ 호스트는 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.RequestPause%2A> 속성에서 반환된 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.PauseWhenPersistable%2A> 인스턴스의 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl> 또는 <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> 메서드를 호출하여 실행 중에서 일시 중지됨으로의 변경을 요청할 수 있습니다. 호스트가 OnNotify* 또는 <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A>를 특정 일시 중지 호출과 상호 연결해서는 안 됨을 의미하는 특정 응답이 이 요청에 있다고 간주해서는 안 됩니다. 일시 중지 요청에 대한 응답으로 런타임이 일시 중지됨으로 전환되고 스케줄러에 보류 중인 작업 항목이 있는 동안 <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A>를 호출할 수 있습니다. <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.State%2A> 속성의 <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> 값을 사용하여 스케줄러에 더 이상 작업이 없는지 또는 일시 중지 요청에 의해 스케줄러가 중단되었는지를 확인할 수 있습니다.  
+  
+ <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.RequestPause%2A> 속성에서 반환된 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl> 인스턴스의 <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> 메서드는 <xref:System.Activities.Hosting.WorkflowInstance>가 실행 중 상태에 있는 동안 호출할 수 있는 유일한 메서드입니다. 다른 모든 메서드를 호출하면 <xref:System.InvalidOperationException>이 throw됩니다. <xref:System.Activities.Hosting.WorkflowInstance>가 한 상태에서 다른 상태로 전환되는 방식에 대한 규칙을 고려하여 실행 중 및 일시 중지됨의 공용 개념을 다음과 같이 정의할 수 있습니다.  
+  
+-   실행-에 대 한 호출 간의 상태 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Run%2A> 및 다음 workflowinstance.onnotify * 합니다.  
+  
+-   일시 중지-마지막 workflowinstance.onnotify *와 다음 호출 간의 상태 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Run%2A>합니다.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Activities.Hosting.WorkflowInstance" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected WorkflowInstance (System.Activities.Activity workflowDefinition);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class System.Activities.Activity workflowDefinition) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.#ctor(System.Activities.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New (workflowDefinition As Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; WorkflowInstance(System::Activities::Activity ^ workflowDefinition);" />
+      <MemberSignature Language="F#" Value="new System.Activities.Hosting.WorkflowInstance : System.Activities.Activity -&gt; System.Activities.Hosting.WorkflowInstance" Usage="new System.Activities.Hosting.WorkflowInstance workflowDefinition" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="workflowDefinition" Type="System.Activities.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="workflowDefinition">워크플로를 정의하는 작업입니다.</param>
+        <summary>지정한 워크플로 정의를 사용하여 <see cref="T:System.Activities.Hosting.WorkflowInstance" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected WorkflowInstance (System.Activities.Activity workflowDefinition, System.Activities.WorkflowIdentity definitionIdentity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor(class System.Activities.Activity workflowDefinition, class System.Activities.WorkflowIdentity definitionIdentity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.#ctor(System.Activities.Activity,System.Activities.WorkflowIdentity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New (workflowDefinition As Activity, definitionIdentity As WorkflowIdentity)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; WorkflowInstance(System::Activities::Activity ^ workflowDefinition, System::Activities::WorkflowIdentity ^ definitionIdentity);" />
+      <MemberSignature Language="F#" Value="new System.Activities.Hosting.WorkflowInstance : System.Activities.Activity * System.Activities.WorkflowIdentity -&gt; System.Activities.Hosting.WorkflowInstance" Usage="new System.Activities.Hosting.WorkflowInstance (workflowDefinition, definitionIdentity)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="workflowDefinition" Type="System.Activities.Activity" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="definitionIdentity" Type="System.Activities.WorkflowIdentity" Index="1" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="workflowDefinition">워크플로를 정의하는 작업입니다.</param>
+        <param name="definitionIdentity">정의 ID입니다.</param>
+        <summary>지정된 워크플로 정의 및 정의 ID를 사용하여 <see cref="T:System.Activities.Hosting.WorkflowInstance" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginFlushTrackingRecords">
+      <MemberSignature Language="C#" Value="protected IAsyncResult BeginFlushTrackingRecords (TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance class System.IAsyncResult BeginFlushTrackingRecords(valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.BeginFlushTrackingRecords(System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Function BeginFlushTrackingRecords (timeout As TimeSpan, callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; IAsyncResult ^ BeginFlushTrackingRecords(TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="member this.BeginFlushTrackingRecords : TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="workflowInstance.BeginFlushTrackingRecords (timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="callback" Type="System.AsyncCallback" Index="1" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="state" Type="System.Object" Index="2" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">이 기간이 지난 후 시도를 중단할 기간입니다.</param>
+        <param name="callback">추적 작업이 완료되었을 때 호출할 메서드입니다.</param>
+        <param name="state">비동기 작업에 대한 정보입니다.</param>
+        <summary>보류 중인 추적 레코드를 추적 참가자에게 비동기적으로 보내기 위해 워크플로 런타임에서 호출됩니다.</summary>
+        <returns>현재 추적 작업의 상태입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Controller">
+      <MemberSignature Language="C#" Value="protected System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl Controller { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Activities.Hosting.WorkflowInstance/WorkflowInstanceControl Controller" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Hosting.WorkflowInstance.Controller" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property Controller As WorkflowInstance.WorkflowInstanceControl" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Activities::Hosting::WorkflowInstance::WorkflowInstanceControl Controller { System::Activities::Hosting::WorkflowInstance::WorkflowInstanceControl get(); };" />
+      <MemberSignature Language="F#" Value="member this.Controller : System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl" Usage="System.Activities.Hosting.WorkflowInstance.Controller" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.Hosting.WorkflowInstance+WorkflowInstanceControl</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl" />의 <see cref="T:System.Activities.Hosting.WorkflowInstance" /> 인스턴스를 가져옵니다.</summary>
+        <value>이 워크플로 인스턴스의 컨트롤러 인스턴스입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DefinitionIdentity">
+      <MemberSignature Language="C#" Value="public System.Activities.WorkflowIdentity DefinitionIdentity { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Activities.WorkflowIdentity DefinitionIdentity" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Hosting.WorkflowInstance.DefinitionIdentity" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DefinitionIdentity As WorkflowIdentity" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Activities::WorkflowIdentity ^ DefinitionIdentity { System::Activities::WorkflowIdentity ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.DefinitionIdentity : System.Activities.WorkflowIdentity" Usage="System.Activities.Hosting.WorkflowInstance.DefinitionIdentity" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.WorkflowIdentity</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Activities.Hosting.WorkflowInstance" />의 정의 ID를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Activities.Hosting.WorkflowInstance" />의 정의 ID입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DisposeExtensions">
+      <MemberSignature Language="C#" Value="protected void DisposeExtensions ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void DisposeExtensions() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.DisposeExtensions" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub DisposeExtensions ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void DisposeExtensions();" />
+      <MemberSignature Language="F#" Value="member this.DisposeExtensions : unit -&gt; unit" Usage="workflowInstance.DisposeExtensions " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="M:System.IDisposable.Dispose" />을 구현하는 모든 확장에 대해 <see cref="T:System.IDisposable" />를 호출합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EndFlushTrackingRecords">
+      <MemberSignature Language="C#" Value="protected void EndFlushTrackingRecords (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void EndFlushTrackingRecords(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.EndFlushTrackingRecords(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub EndFlushTrackingRecords (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void EndFlushTrackingRecords(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="member this.EndFlushTrackingRecords : IAsyncResult -&gt; unit" Usage="workflowInstance.EndFlushTrackingRecords result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="result">비동기 추적 작업의 상태입니다.</param>
+        <summary>추적 작업을 종료하기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FlushTrackingRecords">
+      <MemberSignature Language="C#" Value="protected void FlushTrackingRecords (TimeSpan timeout);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void FlushTrackingRecords(valuetype System.TimeSpan timeout) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.FlushTrackingRecords(System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub FlushTrackingRecords (timeout As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void FlushTrackingRecords(TimeSpan timeout);" />
+      <MemberSignature Language="F#" Value="member this.FlushTrackingRecords : TimeSpan -&gt; unit" Usage="workflowInstance.FlushTrackingRecords timeout" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="timeout" Type="System.TimeSpan" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="timeout">이 기간이 지난 후 시도를 중단할 기간입니다.</param>
+        <summary>보류 중인 추적 레코드를 추적 참가자에게 보내기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetActivitiesBlockingUpdate">
+      <MemberSignature Language="C#" Value="protected static System.Collections.Generic.IList&lt;System.Activities.DynamicUpdate.ActivityBlockingUpdate&gt; GetActivitiesBlockingUpdate (object deserializedRuntimeState, System.Activities.DynamicUpdate.DynamicUpdateMap updateMap);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Collections.Generic.IList`1&lt;class System.Activities.DynamicUpdate.ActivityBlockingUpdate&gt; GetActivitiesBlockingUpdate(object deserializedRuntimeState, class System.Activities.DynamicUpdate.DynamicUpdateMap updateMap) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.GetActivitiesBlockingUpdate(System.Object,System.Activities.DynamicUpdate.DynamicUpdateMap)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function GetActivitiesBlockingUpdate (deserializedRuntimeState As Object, updateMap As DynamicUpdateMap) As IList(Of ActivityBlockingUpdate)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Collections::Generic::IList&lt;System::Activities::DynamicUpdate::ActivityBlockingUpdate ^&gt; ^ GetActivitiesBlockingUpdate(System::Object ^ deserializedRuntimeState, System::Activities::DynamicUpdate::DynamicUpdateMap ^ updateMap);" />
+      <MemberSignature Language="F#" Value="static member GetActivitiesBlockingUpdate : obj * System.Activities.DynamicUpdate.DynamicUpdateMap -&gt; System.Collections.Generic.IList&lt;System.Activities.DynamicUpdate.ActivityBlockingUpdate&gt;" Usage="System.Activities.Hosting.WorkflowInstance.GetActivitiesBlockingUpdate (deserializedRuntimeState, updateMap)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IList&lt;System.Activities.DynamicUpdate.ActivityBlockingUpdate&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="deserializedRuntimeState" Type="System.Object" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="updateMap" Type="System.Activities.DynamicUpdate.DynamicUpdateMap" Index="1" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="deserializedRuntimeState">deserialize된 런타임 상태입니다.</param>
+        <param name="updateMap">업데이트 맵입니다.</param>
+        <summary>워크플로 업데이트를 차단하는 동작 목록을 검색합니다.</summary>
+        <returns>업데이트를 차단하는 동작 목록입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetExtension&lt;T&gt;">
+      <MemberSignature Language="C#" Value="protected internal T GetExtension&lt;T&gt; () where T : class;" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig instance !!T GetExtension&lt;class T&gt;() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.GetExtension``1" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Function GetExtension(Of T As Class) () As T" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA;generic &lt;typename T&gt;&#xA; where T : class T GetExtension();" />
+      <MemberSignature Language="F#" Value="member this.GetExtension : unit -&gt; 'T (requires 'T : null)" Usage="workflowInstance.GetExtension " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>T</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters />
+      <Docs>
+        <typeparam name="T">찾을 확장의 형식입니다.</typeparam>
+        <summary>지정한 형식의 확장을 반환합니다.</summary>
+        <returns>지정한 형식의 확장입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetExtensions&lt;T&gt;">
+      <MemberSignature Language="C#" Value="protected internal System.Collections.Generic.IEnumerable&lt;T&gt; GetExtensions&lt;T&gt; () where T : class;" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig instance class System.Collections.Generic.IEnumerable`1&lt;!!T&gt; GetExtensions&lt;class T&gt;() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.GetExtensions``1" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Function GetExtensions(Of T As Class) () As IEnumerable(Of T)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA;generic &lt;typename T&gt;&#xA; where T : class System::Collections::Generic::IEnumerable&lt;T&gt; ^ GetExtensions();" />
+      <MemberSignature Language="F#" Value="member this.GetExtensions : unit -&gt; seq&lt;'T (requires 'T : null)&gt; (requires 'T : null)" Usage="workflowInstance.GetExtensions " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IEnumerable&lt;T&gt;</ReturnType>
+      </ReturnValue>
+      <TypeParameters>
+        <TypeParameter Name="T">
+          <Constraints>
+            <ParameterAttribute>ReferenceTypeConstraint</ParameterAttribute>
+          </Constraints>
+        </TypeParameter>
+      </TypeParameters>
+      <Parameters />
+      <Docs>
+        <typeparam name="T">찾을 확장의 형식입니다.</typeparam>
+        <summary>지정한 형식에 대해 찾은 모든 확장을 반환합니다.</summary>
+        <returns>지정한 형식에 대해 찾은 모든 확장입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HostEnvironment">
+      <MemberSignature Language="C#" Value="public System.Activities.LocationReferenceEnvironment HostEnvironment { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Activities.LocationReferenceEnvironment HostEnvironment" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Hosting.WorkflowInstance.HostEnvironment" />
+      <MemberSignature Language="VB.NET" Value="Public Property HostEnvironment As LocationReferenceEnvironment" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Activities::LocationReferenceEnvironment ^ HostEnvironment { System::Activities::LocationReferenceEnvironment ^ get(); void set(System::Activities::LocationReferenceEnvironment ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.HostEnvironment : System.Activities.LocationReferenceEnvironment with get, set" Usage="System.Activities.Hosting.WorkflowInstance.HostEnvironment" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Activities.LocationReferenceEnvironment</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>워크플로 인스턴스의 인수 및 변수에 대한 루트 환경을 가져오거나 설정합니다.</summary>
+        <value>워크플로 인스턴스의 인수 및 변수에 대 한 루트 환경입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 워크플로 인스턴스를 초기화 한 후이 속성을 설정 하는 경우 및 <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> 반환 `true`, <xref:System.InvalidOperationException> throw 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Id">
+      <MemberSignature Language="C#" Value="public abstract Guid Id { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Guid Id" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Hosting.WorkflowInstance.Id" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Id As Guid" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property Guid Id { Guid get(); };" />
+      <MemberSignature Language="F#" Value="member this.Id : Guid" Usage="System.Activities.Hosting.WorkflowInstance.Id" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Guid</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>워크플로 인스턴스의 고유 식별자를 가져옵니다.</summary>
+        <value>워크플로 인스턴스의 고유 식별자입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Initialize">
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>워크플로 인스턴스를 초기화하기 위해 호스트에 의해 호출됩니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Initialize">
+      <MemberSignature Language="C#" Value="protected void Initialize (object deserializedRuntimeState);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void Initialize(object deserializedRuntimeState) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.Initialize(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub Initialize (deserializedRuntimeState As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void Initialize(System::Object ^ deserializedRuntimeState);" />
+      <MemberSignature Language="F#" Value="member this.Initialize : obj -&gt; unit" Usage="workflowInstance.Initialize deserializedRuntimeState" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="deserializedRuntimeState" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="deserializedRuntimeState">워크플로를 실행하는 데 사용되는 런타임 상태입니다.</param>
+        <summary>워크플로 런타임 상태를 사용하여 워크플로 인스턴스를 초기화하기 위해 호스트에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Initialize">
+      <MemberSignature Language="C#" Value="protected void Initialize (System.Collections.Generic.IDictionary&lt;string,object&gt; workflowArgumentValues, System.Collections.Generic.IList&lt;System.Activities.Handle&gt; workflowExecutionProperties);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void Initialize(class System.Collections.Generic.IDictionary`2&lt;string, object&gt; workflowArgumentValues, class System.Collections.Generic.IList`1&lt;class System.Activities.Handle&gt; workflowExecutionProperties) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.Initialize(System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IList{System.Activities.Handle})" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub Initialize (workflowArgumentValues As IDictionary(Of String, Object), workflowExecutionProperties As IList(Of Handle))" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void Initialize(System::Collections::Generic::IDictionary&lt;System::String ^, System::Object ^&gt; ^ workflowArgumentValues, System::Collections::Generic::IList&lt;System::Activities::Handle ^&gt; ^ workflowExecutionProperties);" />
+      <MemberSignature Language="F#" Value="member this.Initialize : System.Collections.Generic.IDictionary&lt;string, obj&gt; * System.Collections.Generic.IList&lt;System.Activities.Handle&gt; -&gt; unit" Usage="workflowInstance.Initialize (workflowArgumentValues, workflowExecutionProperties)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="workflowArgumentValues" Type="System.Collections.Generic.IDictionary&lt;System.String,System.Object&gt;" />
+        <Parameter Name="workflowExecutionProperties" Type="System.Collections.Generic.IList&lt;System.Activities.Handle&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="workflowArgumentValues">인수 이름으로 키가 지정된 워크플로에 대한 입력 매개 변수입니다.</param>
+        <param name="workflowExecutionProperties">워크플로 실행 속성의 목록입니다.</param>
+        <summary>인수 값과 실행 속성을 사용하여 워크플로 인스턴스를 초기화하기 위해 호스트에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Initialize">
+      <MemberSignature Language="C#" Value="protected void Initialize (object deserializedRuntimeState, System.Activities.DynamicUpdate.DynamicUpdateMap updateMap);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void Initialize(object deserializedRuntimeState, class System.Activities.DynamicUpdate.DynamicUpdateMap updateMap) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.Initialize(System.Object,System.Activities.DynamicUpdate.DynamicUpdateMap)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub Initialize (deserializedRuntimeState As Object, updateMap As DynamicUpdateMap)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void Initialize(System::Object ^ deserializedRuntimeState, System::Activities::DynamicUpdate::DynamicUpdateMap ^ updateMap);" />
+      <MemberSignature Language="F#" Value="member this.Initialize : obj * System.Activities.DynamicUpdate.DynamicUpdateMap -&gt; unit" Usage="workflowInstance.Initialize (deserializedRuntimeState, updateMap)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="deserializedRuntimeState" Type="System.Object" Index="0" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="updateMap" Type="System.Activities.DynamicUpdate.DynamicUpdateMap" Index="1" FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="deserializedRuntimeState">워크플로를 실행하는 데 사용되는 런타임 상태입니다.</param>
+        <param name="updateMap">업데이트 맵입니다.</param>
+        <summary>워크플로 런타임 상태 및 업데이트 맵을 사용하여 워크플로 인스턴스를 초기화하기 위해 호스트에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsReadOnly">
+      <MemberSignature Language="C#" Value="protected bool IsReadOnly { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsReadOnly" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Hosting.WorkflowInstance.IsReadOnly" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property IsReadOnly As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property bool IsReadOnly { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsReadOnly : bool" Usage="System.Activities.Hosting.WorkflowInstance.IsReadOnly" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>워크플로 인스턴스가 초기화되었는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>워크플로 인스턴스가 초기화되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginAssociateKeys">
+      <MemberSignature Language="C#" Value="protected internal abstract IAsyncResult OnBeginAssociateKeys (System.Collections.Generic.ICollection&lt;System.Runtime.DurableInstancing.InstanceKey&gt; keys, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance class System.IAsyncResult OnBeginAssociateKeys(class System.Collections.Generic.ICollection`1&lt;class System.Runtime.DurableInstancing.InstanceKey&gt; keys, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnBeginAssociateKeys(System.Collections.Generic.ICollection{System.Runtime.DurableInstancing.InstanceKey},System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Function OnBeginAssociateKeys (keys As ICollection(Of InstanceKey), callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract IAsyncResult ^ OnBeginAssociateKeys(System::Collections::Generic::ICollection&lt;System::Runtime::DurableInstancing::InstanceKey ^&gt; ^ keys, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member OnBeginAssociateKeys : System.Collections.Generic.ICollection&lt;System.Runtime.DurableInstancing.InstanceKey&gt; * AsyncCallback * obj -&gt; IAsyncResult" Usage="workflowInstance.OnBeginAssociateKeys (keys, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keys" Type="System.Collections.Generic.ICollection&lt;System.Runtime.DurableInstancing.InstanceKey&gt;" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="keys">이 워크플로 인스턴스와 연결할 인스턴스 키입니다.</param>
+        <param name="callback">작업이 완료될 때 호출할 메서드입니다.</param>
+        <param name="state">비동기 작업에 대한 정보를 포함하는 애플리케이션별 선택적 개체입니다.</param>
+        <summary>새 인스턴스 키를 이 인스턴스와 연결해야 함을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <returns>비동기 연결 키 작업에 대한 참조입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginFlushTrackingRecords">
+      <MemberSignature Language="C#" Value="protected virtual IAsyncResult OnBeginFlushTrackingRecords (AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.IAsyncResult OnBeginFlushTrackingRecords(class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnBeginFlushTrackingRecords(System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function OnBeginFlushTrackingRecords (callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual IAsyncResult ^ OnBeginFlushTrackingRecords(AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member OnBeginFlushTrackingRecords : AsyncCallback * obj -&gt; IAsyncResult&#xA;override this.OnBeginFlushTrackingRecords : AsyncCallback * obj -&gt; IAsyncResult" Usage="workflowInstance.OnBeginFlushTrackingRecords (callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="callback">추적 작업이 완료되었을 때 호출할 메서드입니다.</param>
+        <param name="state">비동기 작업에 대한 정보입니다.</param>
+        <summary>보류 중인 추적 레코드를 추적 참가자에게 플러시하도록 호스트에 요청하는 비동기 호출입니다.</summary>
+        <returns>현재 추적 작업의 상태입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginPersist">
+      <MemberSignature Language="C#" Value="protected internal abstract IAsyncResult OnBeginPersist (AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance class System.IAsyncResult OnBeginPersist(class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnBeginPersist(System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Function OnBeginPersist (callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract IAsyncResult ^ OnBeginPersist(AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member OnBeginPersist : AsyncCallback * obj -&gt; IAsyncResult" Usage="workflowInstance.OnBeginPersist (callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="callback">지속 작업이 완료되었을 때 호출될 메서드입니다.</param>
+        <param name="state">비동기 작업에 대한 정보를 포함하는 애플리케이션별 선택적 개체입니다.</param>
+        <summary>호스트에 워크플로를 지속하도록 요청하는 비동기 호출입니다.</summary>
+        <returns>현재 지속 작업에 대한 참조입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeginResumeBookmark">
+      <MemberSignature Language="C#" Value="protected internal abstract IAsyncResult OnBeginResumeBookmark (System.Activities.Bookmark bookmark, object value, TimeSpan timeout, AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance class System.IAsyncResult OnBeginResumeBookmark(class System.Activities.Bookmark bookmark, object value, valuetype System.TimeSpan timeout, class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnBeginResumeBookmark(System.Activities.Bookmark,System.Object,System.TimeSpan,System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract IAsyncResult ^ OnBeginResumeBookmark(System::Activities::Bookmark ^ bookmark, System::Object ^ value, TimeSpan timeout, AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberSignature Language="F#" Value="abstract member OnBeginResumeBookmark : System.Activities.Bookmark * obj * TimeSpan * AsyncCallback * obj -&gt; IAsyncResult" Usage="workflowInstance.OnBeginResumeBookmark (bookmark, value, timeout, callback, state)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="bookmark" Type="System.Activities.Bookmark" />
+        <Parameter Name="value" Type="System.Object" />
+        <Parameter Name="timeout" Type="System.TimeSpan" />
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="bookmark">다시 시작할 책갈피입니다.</param>
+        <param name="value"><see cref="T:System.Activities.Bookmark" />를 만든 작업에 전달될 데이터입니다.</param>
+        <param name="timeout">작업이 취소되고 <see cref="T:System.TimeoutException" />이 throw되기 전에 다시 시작 작업을 완료해야 하는 간격입니다.</param>
+        <param name="callback">다시 시작 작업이 완료되었을 때 호출될 메서드입니다.</param>
+        <param name="state">비동기 작업에 대한 정보를 포함하는 애플리케이션별 선택적 개체입니다.</param>
+        <summary>책갈피 다시 시작 작업이 시작되고 있음을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <returns>비동기 다시 시작 작업에 대한 참조입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnDisassociateKeys">
+      <MemberSignature Language="C#" Value="protected internal abstract void OnDisassociateKeys (System.Collections.Generic.ICollection&lt;System.Runtime.DurableInstancing.InstanceKey&gt; keys);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void OnDisassociateKeys(class System.Collections.Generic.ICollection`1&lt;class System.Runtime.DurableInstancing.InstanceKey&gt; keys) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnDisassociateKeys(System.Collections.Generic.ICollection{System.Runtime.DurableInstancing.InstanceKey})" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Sub OnDisassociateKeys (keys As ICollection(Of InstanceKey))" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract void OnDisassociateKeys(System::Collections::Generic::ICollection&lt;System::Runtime::DurableInstancing::InstanceKey ^&gt; ^ keys);" />
+      <MemberSignature Language="F#" Value="abstract member OnDisassociateKeys : System.Collections.Generic.ICollection&lt;System.Runtime.DurableInstancing.InstanceKey&gt; -&gt; unit" Usage="workflowInstance.OnDisassociateKeys keys" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="keys" Type="System.Collections.Generic.ICollection&lt;System.Runtime.DurableInstancing.InstanceKey&gt;" />
+      </Parameters>
+      <Docs>
+        <param name="keys">연결을 끊을 키의 목록입니다.</param>
+        <summary>특정 인스턴스 키 집합을 이 인스턴스와 더 이상 연결하지 않도록 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndAssociateKeys">
+      <MemberSignature Language="C#" Value="protected internal abstract void OnEndAssociateKeys (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void OnEndAssociateKeys(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnEndAssociateKeys(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Sub OnEndAssociateKeys (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract void OnEndAssociateKeys(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member OnEndAssociateKeys : IAsyncResult -&gt; unit" Usage="workflowInstance.OnEndAssociateKeys result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result">비동기 연결 키 작업에 대한 참조입니다.</param>
+        <summary>연결 키 작업이 완료되었음을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndFlushTrackingRecords">
+      <MemberSignature Language="C#" Value="protected virtual void OnEndFlushTrackingRecords (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnEndFlushTrackingRecords(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnEndFlushTrackingRecords(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnEndFlushTrackingRecords (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnEndFlushTrackingRecords(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member OnEndFlushTrackingRecords : IAsyncResult -&gt; unit&#xA;override this.OnEndFlushTrackingRecords : IAsyncResult -&gt; unit" Usage="workflowInstance.OnEndFlushTrackingRecords result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result">추적 레코드 플러시 비동기 작업의 상태입니다.</param>
+        <summary>추적 레코드 플러시 작업이 완료되었음을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndPersist">
+      <MemberSignature Language="C#" Value="protected internal abstract void OnEndPersist (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void OnEndPersist(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnEndPersist(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Sub OnEndPersist (result As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract void OnEndPersist(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member OnEndPersist : IAsyncResult -&gt; unit" Usage="workflowInstance.OnEndPersist result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result">비동기 지속 작업에 대한 참조입니다.</param>
+        <summary>지속 작업이 완료되었음을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnEndResumeBookmark">
+      <MemberSignature Language="C#" Value="protected internal abstract System.Activities.BookmarkResumptionResult OnEndResumeBookmark (IAsyncResult result);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance valuetype System.Activities.BookmarkResumptionResult OnEndResumeBookmark(class System.IAsyncResult result) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnEndResumeBookmark(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Function OnEndResumeBookmark (result As IAsyncResult) As BookmarkResumptionResult" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract System::Activities::BookmarkResumptionResult OnEndResumeBookmark(IAsyncResult ^ result);" />
+      <MemberSignature Language="F#" Value="abstract member OnEndResumeBookmark : IAsyncResult -&gt; System.Activities.BookmarkResumptionResult" Usage="workflowInstance.OnEndResumeBookmark result" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Activities.BookmarkResumptionResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="result" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="result">책갈피 다시 시작 비동기 작업에 대한 참조입니다.</param>
+        <summary>책갈피 다시 시작 작업이 완료되었음을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <returns><see cref="T:System.Activities.Bookmark" /> 다시 시작 작업의 결과를 나타내는 열거형 값 중 하나입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnNotifyPaused">
+      <MemberSignature Language="C#" Value="protected abstract void OnNotifyPaused ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnNotifyPaused() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused" />
+      <MemberSignature Language="VB.NET" Value="Protected MustOverride Sub OnNotifyPaused ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void OnNotifyPaused();" />
+      <MemberSignature Language="F#" Value="abstract member OnNotifyPaused : unit -&gt; unit" Usage="workflowInstance.OnNotifyPaused " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>워크플로 인스턴스가 실행 중 상태에서 일시 중지됨 상태로 전환되었음을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnNotifyUnhandledException">
+      <MemberSignature Language="C#" Value="protected abstract void OnNotifyUnhandledException (Exception exception, System.Activities.Activity source, string sourceInstanceId);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnNotifyUnhandledException(class System.Exception exception, class System.Activities.Activity source, string sourceInstanceId) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnNotifyUnhandledException(System.Exception,System.Activities.Activity,System.String)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; abstract void OnNotifyUnhandledException(Exception ^ exception, System::Activities::Activity ^ source, System::String ^ sourceInstanceId);" />
+      <MemberSignature Language="F#" Value="abstract member OnNotifyUnhandledException : Exception * System.Activities.Activity * string -&gt; unit" Usage="workflowInstance.OnNotifyUnhandledException (exception, source, sourceInstanceId)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="exception" Type="System.Exception" />
+        <Parameter Name="source" Type="System.Activities.Activity" />
+        <Parameter Name="sourceInstanceId" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="exception">처리되지 않은 예외입니다.</param>
+        <param name="source">예외를 throw한 작업입니다.</param>
+        <param name="sourceInstanceId">예외를 throw한 작업을 나타내는 <see cref="T:System.Activities.ActivityInstance" />의 고유 식별자입니다.</param>
+        <summary>워크플로 인스턴스에서 처리되지 않은 예외가 발생했음을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnRequestAbort">
+      <MemberSignature Language="C#" Value="protected internal abstract void OnRequestAbort (Exception reason);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void OnRequestAbort(class System.Exception reason) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.OnRequestAbort(System.Exception)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride Sub OnRequestAbort (reason As Exception)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract void OnRequestAbort(Exception ^ reason);" />
+      <MemberSignature Language="F#" Value="abstract member OnRequestAbort : Exception -&gt; unit" Usage="workflowInstance.OnRequestAbort reason" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="reason" Type="System.Exception" />
+      </Parameters>
+      <Docs>
+        <param name="reason">워크플로 인스턴스의 중단 원인입니다.</param>
+        <summary>워크플로 인스턴스에 대한 중단 작업이 요청되었음을 호스트에 알리기 위해 워크플로 런타임에 의해 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A>를 호출한 후에는 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl>를 제외한 대부분의 <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Abort%2A> API가 <xref:System.InvalidOperationException>을 throw합니다. <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A>를 호출한 후 호스트가 중단을 충족시킬 수 있는 상태로 전환되어야 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterExtensionManager">
+      <MemberSignature Language="C#" Value="protected void RegisterExtensionManager (System.Activities.Hosting.WorkflowInstanceExtensionManager extensionManager);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void RegisterExtensionManager(class System.Activities.Hosting.WorkflowInstanceExtensionManager extensionManager) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.RegisterExtensionManager(System.Activities.Hosting.WorkflowInstanceExtensionManager)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub RegisterExtensionManager (extensionManager As WorkflowInstanceExtensionManager)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void RegisterExtensionManager(System::Activities::Hosting::WorkflowInstanceExtensionManager ^ extensionManager);" />
+      <MemberSignature Language="F#" Value="member this.RegisterExtensionManager : System.Activities.Hosting.WorkflowInstanceExtensionManager -&gt; unit" Usage="workflowInstance.RegisterExtensionManager extensionManager" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="extensionManager" Type="System.Activities.Hosting.WorkflowInstanceExtensionManager" />
+      </Parameters>
+      <Docs>
+        <param name="extensionManager">등록할 확장 관리자입니다.</param>
+        <summary>지정한 확장 관리자를 등록하고, 필요한 모든 확장이 있는지 확인하고, 사용할 확장 컬렉션을 초기화하기 위해 호스트에 의해 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 형식별로 확장에 키가 지정되며, 호스트 제공 확장은 제공될 경우 항상 사용됩니다. <xref:System.Activities.Hosting.WorkflowInstanceExtensionManager.Add%2A>를 통해 추가된 확장은 개체의 런타임 형식을 형식 키로 사용합니다. 통해 추가 된 확장 공급자 <xref:System.Activities.Hosting.WorkflowInstanceExtensionManager.Add%2A> 의 decared 형식 T를 사용 하 여\<T >를 형식 키로 합니다. 선언된 형식에 대한 호스트 확장이 있거나 AddDefaultExtensionProvider를 통해 제공된 보다 광범위한 형식 공급자가 있는 경우 다양한 *ActivityMetadata.AddDefaultExtensionProvider 메서드를 통해 작업에서 제공한 확장명 공급자가 삭제됩니다. 예를 들어, 경우 Func\<StreamWriter > 제공 및 Func\<TextWriter > 제공 된만 Func\<StreamWriter > 유지 됩니다). *ActivityMetadata.RequireExtension을 호출하여 표시된 작업에 필요한 확장이 컬렉션에 없는 경우 <xref:System.Activities.ValidationException>이 throw됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SupportsInstanceKeys">
+      <MemberSignature Language="C#" Value="protected internal abstract bool SupportsInstanceKeys { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SupportsInstanceKeys" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Hosting.WorkflowInstance.SupportsInstanceKeys" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend MustOverride ReadOnly Property SupportsInstanceKeys As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; abstract property bool SupportsInstanceKeys { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.SupportsInstanceKeys : bool" Usage="System.Activities.Hosting.WorkflowInstance.SupportsInstanceKeys" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>호스트가 <see cref="P:System.Runtime.DurableInstancing.InstanceView.InstanceKeys" /> 및 런타임 인스턴스의 연결을 지원하는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>호스트가 <see cref="P:System.Runtime.DurableInstancing.InstanceView.InstanceKeys" />와 워크플로 인스턴스의 연결을 지원하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SynchronizationContext">
+      <MemberSignature Language="C#" Value="public System.Threading.SynchronizationContext SynchronizationContext { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Threading.SynchronizationContext SynchronizationContext" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Hosting.WorkflowInstance.SynchronizationContext" />
+      <MemberSignature Language="VB.NET" Value="Public Property SynchronizationContext As SynchronizationContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Threading::SynchronizationContext ^ SynchronizationContext { System::Threading::SynchronizationContext ^ get(); void set(System::Threading::SynchronizationContext ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.SynchronizationContext : System.Threading.SynchronizationContext with get, set" Usage="System.Activities.Hosting.WorkflowInstance.SynchronizationContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.SynchronizationContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>워크플로 인스턴스 예약에 사용되는 <see cref="T:System.Threading.SynchronizationContext" />를 가져오거나 설정합니다.</summary>
+        <value>워크플로 인스턴스 예약에 사용되는 동기화 컨텍스트입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 워크플로 인스턴스를 초기화 한 후이 속성을 설정 하는 경우 및 <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> 반환 `true`, <xref:System.InvalidOperationException> throw 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ThrowIfReadOnly">
+      <MemberSignature Language="C#" Value="protected void ThrowIfReadOnly ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void ThrowIfReadOnly() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Activities.Hosting.WorkflowInstance.ThrowIfReadOnly" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub ThrowIfReadOnly ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void ThrowIfReadOnly();" />
+      <MemberSignature Language="F#" Value="member this.ThrowIfReadOnly : unit -&gt; unit" Usage="workflowInstance.ThrowIfReadOnly " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.InvalidOperationException" />로 확인하여 워크플로 인스턴스가 초기화되었으면 <see cref="P:System.Activities.Hosting.WorkflowInstance.IsReadOnly" />을 throw합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 하는 경우 <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> 반환 `true`에 <xref:System.InvalidOperationException> throw 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WorkflowDefinition">
+      <MemberSignature Language="C#" Value="public System.Activities.Activity WorkflowDefinition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Activities.Activity WorkflowDefinition" />
+      <MemberSignature Language="DocId" Value="P:System.Activities.Hosting.WorkflowInstance.WorkflowDefinition" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property WorkflowDefinition As Activity" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Activities::Activity ^ WorkflowDefinition { System::Activities::Activity ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.WorkflowDefinition : System.Activities.Activity" Usage="System.Activities.Hosting.WorkflowInstance.WorkflowDefinition" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Activities</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Activities.Activity</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>워크플로 인스턴스의 워크플로 정의를 가져옵니다.</summary>
+        <value>워크플로 인스턴스의 워크플로 정의입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

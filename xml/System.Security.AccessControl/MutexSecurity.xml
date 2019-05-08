@@ -1,0 +1,960 @@
+<Type Name="MutexSecurity" FullName="System.Security.AccessControl.MutexSecurity">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="3742a81ed90bf46af65f8fa8162b35cf95cc775e" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56787886" /></Metadata><TypeSignature Language="C#" Value="public sealed class MutexSecurity : System.Security.AccessControl.NativeObjectSecurity" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit MutexSecurity extends System.Security.AccessControl.NativeObjectSecurity" />
+  <TypeSignature Language="DocId" Value="T:System.Security.AccessControl.MutexSecurity" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class MutexSecurity&#xA;Inherits NativeObjectSecurity" />
+  <TypeSignature Language="C++ CLI" Value="public ref class MutexSecurity sealed : System::Security::AccessControl::NativeObjectSecurity" />
+  <TypeSignature Language="F#" Value="type MutexSecurity = class&#xA;    inherit NativeObjectSecurity" />
+  <AssemblyInfo>
+    <AssemblyName>System.Threading.AccessControl</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.2.0</AssemblyVersion>
+    <AssemblyVersion>4.0.3.0</AssemblyVersion>
+    <AssemblyVersion>4.0.4.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Security.AccessControl.NativeObjectSecurity</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1">
+      <AttributeName>System.Security.SecurityCritical</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>명명된 뮤텍스의 Windows 액세스 제어 보안을 나타냅니다. 이 클래스는 상속될 수 없습니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.AccessControl.MutexSecurity> 개체는 명명 된 시스템 뮤텍스에 대 한 액세스 권한을 지정 하 고 액세스 시도 감사 하는 방법을 지정 합니다. 뮤텍스에 대 한 액세스 권한을 나타내는 각 액세스 규칙을 사용 하 여 규칙으로 표시 됩니다는 <xref:System.Security.AccessControl.MutexAccessRule> 개체입니다. 각 감사 규칙은 표현 된 <xref:System.Security.AccessControl.MutexAuditRule> 개체입니다.  
+  
+ 이 미러링 각 보안 개체에 최대 하나의 임의 액세스 제어 목록 (DACL) 보안된 개체 및 최대 하나의 시스템 액세스 제어 목록 (SACL) 되는 액세스를 지정 하는 액세스를 제어 하는 기본 Windows 보안 시스템 시도 감사 합니다. DACL과 SACL는 액세스 및 사용자 및 그룹에 대 한 감사를 지정 하는 액세스 제어 항목 (ACE) 목록을 정렬 하는 데 사용 됩니다. A <xref:System.Security.AccessControl.MutexAccessRule> 또는 <xref:System.Security.AccessControl.MutexAuditRule> 개체는 둘 이상의 ACE를 나타낼 수 있습니다.  
+  
+> [!NOTE]
+>  <xref:System.Threading.Mutex> 로컬 뮤텍스 또는 명명된 된 시스템 뮤텍스 개체를 나타낼 수 있습니다. Windows 액세스 제어 보안은 명명 된 시스템 뮤텍스에 대해서만 의미가 있습니다.  
+  
+ <xref:System.Security.AccessControl.MutexSecurity>, <xref:System.Security.AccessControl.MutexAccessRule>, 및 <xref:System.Security.AccessControl.MutexAuditRule> 클래스 Acl 및 Ace의 구현 세부 정보를 숨깁니다. 그러면 17 다양 한 ACE 형식과 올바르게 상속 및 전파 액세스 권한 유지 관리의 복잡성을 무시할 수 있습니다. 이러한 개체는 또한 다음과 같은 일반적인 액세스 제어 오류를 방지 하기 위해 설계 되었습니다.  
+  
+-   Null DACL을 사용 하 여 보안 설명자를 만드는 중입니다. DACL null 참조에는 모든 사용자를 잠재적 서비스 거부 공격을 만드는 개체에 대 한 액세스 규칙을 추가할 수 있습니다. 새 <xref:System.Security.AccessControl.MutexSecurity> 개체는 항상 모든 사용자에 대 한 모든 액세스를 거부 하는 빈 DACL을 사용 하 여 시작 합니다.  
+  
+-   Ace의 정식 순서 위반 합니다. DACL의 ACE 목록이 정식 순서 대로 유지 되지 않으면, 사용자가 실수로에 부여 될 수 액세스 보안된 개체입니다. 예를 들어, 거부 된 액세스 권한은 항상 액세스 권한이 허용된 하기 전에 나타나야 합니다. <xref:System.Security.AccessControl.MutexSecurity> 개체는 내부적으로 올바른 순서를 유지 합니다.  
+  
+-   리소스 관리자 제어만 해야 하는 보안 설명자 플래그를 조작 합니다.  
+  
+-   잘못 된 조합 ACE 플래그를 만드는 중입니다.  
+  
+-   상속 된 Ace를 조작 합니다. 상속 및 전파 액세스 규칙과 감사 규칙의 변경에 대 한 응답에서 리소스 관리자에 의해 처리 됩니다.  
+  
+-   Acl에 의미 없는 Ace를 삽입 합니다.  
+  
+ .NET 보안 개체에 의해 지원 되지 않습니다만 기능 대부분의 같은 애플리케이션 개발자는 피해 야 하는 위험한 작업 같습니다.  
+  
+-   리소스 관리자가 일반적으로 수행 되는 하위 수준 작업입니다.  
+  
+-   추가 하거나 정식 순서를 유지 하지 않는 방식으로 액세스 제어 항목을 제거 합니다.  
+  
+ 명명 된 뮤텍스에 대 한 Windows 액세스 제어 보안을 수정 하려면 사용 합니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> 메서드를를 <xref:System.Security.AccessControl.MutexSecurity> 개체입니다. 추가 및 규칙을 제거 하 여 보안 개체를 수정 하 고 다음 사용 된 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType> 다시 연결 하는 방법입니다.  
+  
+> [!IMPORTANT]
+>  변경한을 <xref:System.Security.AccessControl.MutexSecurity> 호출할 때까지 개체의 명명된 된 뮤텍스에 액세스 수준을 주지 않습니다는 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType> 변경 된 보안 개체에서 명명 된 뮤텍스를 할당 하는 방법입니다.  
+  
+ 뮤텍스에서 액세스 제어 보안을 다른 위치로 복사를 사용 합니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> 메서드를를 <xref:System.Security.AccessControl.MutexSecurity> 된 첫 번째 뮤텍스에 대 한 액세스 및 감사 규칙을 나타내는 개체를 사용 하 여는 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType> 메서드나 를허용하는생성자<xref:System.Security.AccessControl.MutexSecurity>두 번째 뮤텍스 해당 규칙에 할당할 개체입니다.  
+  
+ 보안 설명자 정의 언어 (SDDL)에 대 한 투자를 사용 하 여 사용자가 사용할 수는 <xref:System.Security.AccessControl.ObjectSecurity.SetSecurityDescriptorSddlForm%2A> 명명된 된 뮤텍스를에 대 한 액세스 규칙을 설정 하는 방법 및 <xref:System.Security.AccessControl.ObjectSecurity.GetSecurityDescriptorSddlForm%2A> SDDL 형식의 액세스 규칙을 나타내는 문자열을 가져오는 방법입니다. 이 새로운 개발에 권장 되지 않습니다.  
+  
+> [!NOTE]
+>  Windows 98 또는 Windows Millennium Edition에 대 한 동기화 개체에 대 한 보안 지원 되지 않습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 구분 <xref:System.Security.AccessControl.AccessControlType.Allow> 규칙 및 <xref:System.Security.AccessControl.AccessControlType.Deny> 규칙과 호환 규칙에 권한의 조합을 보여 줍니다. 이 예에서는 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity> 개체를 허용 하 고 현재 사용자에 대 한 다양 한 권한을 거부 하는 규칙을 추가 하 고 결과 쌍 규칙을 표시 합니다. 이 예제에서는 그런 다음 현재 사용자에 대 한 새 권한을 허용 하 고 새 권한이 기존 병합 되는 표시 하 고 결과 표시 <xref:System.Security.AccessControl.AccessControlType.Allow> 규칙입니다.  
+  
+> [!NOTE]
+>  이 예제에서는 보안 개체를 연결 하지 않습니다는 <xref:System.Threading.Mutex> 개체입니다. 보안 개체를 연결 하는 예제를 찾을 수 있습니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> 고 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType>입니다.  
+  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.AddAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.AddAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/VB/source.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Security.AccessControl.MutexAccessRule" />
+    <altmember cref="T:System.Security.AccessControl.MutexAuditRule" />
+    <altmember cref="T:System.Security.AccessControl.MutexRights" />
+    <altmember cref="M:System.Threading.Mutex.GetAccessControl" />
+    <altmember cref="M:System.Threading.Mutex.SetAccessControl(System.Security.AccessControl.MutexSecurity)" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Security.AccessControl.MutexSecurity" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MutexSecurity ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; MutexSecurity();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>기본값을 사용하여 <see cref="T:System.Security.AccessControl.MutexSecurity" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 새 <xref:System.Security.AccessControl.MutexSecurity> 개체는 항상 모든 사용자에 대 한 모든 액세스를 거부 되는 빈 임의 액세스 목록 (DACL)를 사용 하 여 시작 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">이 클래스는 Windows 98 또는 Windows Millennium Edition에서 지원되지 않습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public MutexSecurity (string name, System.Security.AccessControl.AccessControlSections includeSections);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Security.AccessControl.AccessControlSections includeSections) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.#ctor(System.String,System.Security.AccessControl.AccessControlSections)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, includeSections As AccessControlSections)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; MutexSecurity(System::String ^ name, System::Security::AccessControl::AccessControlSections includeSections);" />
+      <MemberSignature Language="F#" Value="new System.Security.AccessControl.MutexSecurity : string * System.Security.AccessControl.AccessControlSections -&gt; System.Security.AccessControl.MutexSecurity" Usage="new System.Security.AccessControl.MutexSecurity (name, includeSections)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="includeSections" Type="System.Security.AccessControl.AccessControlSections" />
+      </Parameters>
+      <Docs>
+        <param name="name">액세스 제어 보안 규칙을 검색할 시스템 뮤텍스의 이름입니다.</param>
+        <param name="includeSections">검색할 섹션을 지정하는 <see cref="T:System.Security.AccessControl.AccessControlSections" /> 플래그의 조합입니다.</param>
+        <summary>지정한 이름의 시스템 뮤텍스에서 지정한 액세스 제어 보안 규칙 섹션으로 <see cref="T:System.Security.AccessControl.MutexSecurity" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자를 사용 하면 먼저 만들지 않고 명명 된 시스템 뮤텍스에 대 한 액세스 제어 보안을 가져올 수 있습니다는 <xref:System.Threading.Mutex> 개체입니다.  
+  
+ 명명 된 시스템 개체를 사용 하 여 작업할 때 주의가 필요 합니다. 명명 된 시스템 개체 인지 `name` 뮤텍스 없는, 액세스 제어 보안이 검색 될 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.IO.FileNotFoundException">지정된 이름의 시스템 개체가 없는 경우</exception>
+        <exception cref="T:System.NotSupportedException">이 클래스는 Windows 98 또는 Windows Millennium Edition에서 지원되지 않습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AccessRightType">
+      <MemberSignature Language="C#" Value="public override Type AccessRightType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Type AccessRightType" />
+      <MemberSignature Language="DocId" Value="P:System.Security.AccessControl.MutexSecurity.AccessRightType" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property AccessRightType As Type" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property Type ^ AccessRightType { Type ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.AccessRightType : Type" Usage="System.Security.AccessControl.MutexSecurity.AccessRightType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Security.AccessControl.MutexSecurity" /> 클래스가 액세스 권한을 나타내는 데 사용하는 열거형을 가져옵니다.</summary>
+        <value><see cref="T:System.Type" /> 열거형을 나타내는 <see cref="T:System.Security.AccessControl.MutexRights" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스는 <xref:System.Security.AccessControl.ObjectSecurity> 재정의 클래스를 <xref:System.Security.AccessControl.ObjectSecurity.AccessRightType%2A> 속성 및 액세스 권한을 나타내는 데 사용 하는 형식 반환 합니다. 배열 또는 여러 유형의 보안 개체를 포함 하는 컬렉션을 사용 하 여 작업할 때 각 보안 개체에 사용할 올바른 열거형 형식을 확인 하려면이 속성을 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AccessRuleFactory">
+      <MemberSignature Language="C#" Value="public override System.Security.AccessControl.AccessRule AccessRuleFactory (System.Security.Principal.IdentityReference identityReference, int accessMask, bool isInherited, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AccessControlType type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Security.AccessControl.AccessRule AccessRuleFactory(class System.Security.Principal.IdentityReference identityReference, int32 accessMask, bool isInherited, valuetype System.Security.AccessControl.InheritanceFlags inheritanceFlags, valuetype System.Security.AccessControl.PropagationFlags propagationFlags, valuetype System.Security.AccessControl.AccessControlType type) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.AccessRuleFactory(System.Security.Principal.IdentityReference,System.Int32,System.Boolean,System.Security.AccessControl.InheritanceFlags,System.Security.AccessControl.PropagationFlags,System.Security.AccessControl.AccessControlType)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Security::AccessControl::AccessRule ^ AccessRuleFactory(System::Security::Principal::IdentityReference ^ identityReference, int accessMask, bool isInherited, System::Security::AccessControl::InheritanceFlags inheritanceFlags, System::Security::AccessControl::PropagationFlags propagationFlags, System::Security::AccessControl::AccessControlType type);" />
+      <MemberSignature Language="F#" Value="override this.AccessRuleFactory : System.Security.Principal.IdentityReference * int * bool * System.Security.AccessControl.InheritanceFlags * System.Security.AccessControl.PropagationFlags * System.Security.AccessControl.AccessControlType -&gt; System.Security.AccessControl.AccessRule" Usage="mutexSecurity.AccessRuleFactory (identityReference, accessMask, isInherited, inheritanceFlags, propagationFlags, type)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.AccessControl.AccessRule</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="identityReference" Type="System.Security.Principal.IdentityReference" />
+        <Parameter Name="accessMask" Type="System.Int32" />
+        <Parameter Name="isInherited" Type="System.Boolean" />
+        <Parameter Name="inheritanceFlags" Type="System.Security.AccessControl.InheritanceFlags" />
+        <Parameter Name="propagationFlags" Type="System.Security.AccessControl.PropagationFlags" />
+        <Parameter Name="type" Type="System.Security.AccessControl.AccessControlType" />
+      </Parameters>
+      <Docs>
+        <param name="identityReference">규칙을 적용할 사용자 또는 그룹을 식별하는 <see cref="T:System.Security.Principal.IdentityReference" />입니다.</param>
+        <param name="accessMask">정수로 캐스팅된 허용하거나 거부할 액세스 권한을 지정하는 <see cref="T:System.Security.AccessControl.MutexRights" /> 값의 비트 조합입니다.</param>
+        <param name="isInherited">명명된 뮤텍스에는 계층이 없으므로 의미가 없습니다.</param>
+        <param name="inheritanceFlags">명명된 뮤텍스에는 계층이 없으므로 의미가 없습니다.</param>
+        <param name="propagationFlags">명명된 뮤텍스에는 계층이 없으므로 의미가 없습니다.</param>
+        <param name="type">권한 허용 여부를 지정하는 <see cref="T:System.Security.AccessControl.AccessControlType" /> 값 중 하나입니다.</param>
+        <summary>지정된 액세스 권한, 액세스 제어 및 플래그로 지정한 사용자의 새 액세스 제어 규칙을 만듭니다.</summary>
+        <returns>지정한 사용자의 지정한 권한을 나타내는 <see cref="T:System.Security.AccessControl.MutexAccessRule" /> 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 액세스 제어 규칙 만들기에 대 한 권장 되는 방법은 생성자를 사용 하는 것은 <xref:System.Security.AccessControl.MutexAccessRule> 클래스입니다.  
+  
+> [!NOTE]
+>  상속 및 전파 플래그는 명명 된 뮤텍스에 대 한 의미가, 이지만 여전히 지정할 수 있습니다. 권장 되지는 않습니다, 어렵게 불필요 하 게 유지 관리 규칙의 예를 들어 호환 될 수 있는 규칙의 조합은 방해 하 여 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="accessMask" />, <paramref name="inheritanceFlags" />, <paramref name="propagationFlags" /> 또는 <paramref name="type" />에 잘못된 값을 지정하는 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="identityReference" />가 <see langword="null" />입니다.  
+  
+또는 
+ <paramref name="accessMask" />가 0입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="identityReference" />의 형식이 <see cref="T:System.Security.Principal.SecurityIdentifier" />도 아니고 <see cref="T:System.Security.Principal.NTAccount" />와 같이 <see cref="T:System.Security.Principal.SecurityIdentifier" /> 형식으로 변환할 수 있는 형식도 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AccessRuleType">
+      <MemberSignature Language="C#" Value="public override Type AccessRuleType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Type AccessRuleType" />
+      <MemberSignature Language="DocId" Value="P:System.Security.AccessControl.MutexSecurity.AccessRuleType" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property AccessRuleType As Type" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property Type ^ AccessRuleType { Type ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.AccessRuleType : Type" Usage="System.Security.AccessControl.MutexSecurity.AccessRuleType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Security.AccessControl.MutexSecurity" /> 클래스가 액세스 규칙을 나타내는 데 사용하는 형식을 가져옵니다.</summary>
+        <value><see cref="T:System.Type" /> 클래스를 나타내는 <see cref="T:System.Security.AccessControl.MutexAccessRule" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스는 <xref:System.Security.AccessControl.ObjectSecurity> 재정의 클래스를 <xref:System.Security.AccessControl.ObjectSecurity.AccessRuleType%2A> 속성과 액세스 규칙을 나타내는 데 사용 하는 형식 반환 합니다. 배열 또는 여러 유형의 보안 개체를 포함 하는 컬렉션을 사용 하 여 작업할 때 사용할 각 보안 개체에 대 한 올바른 액세스 규칙을 확인 하려면이 속성을 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddAccessRule">
+      <MemberSignature Language="C#" Value="public void AddAccessRule (System.Security.AccessControl.MutexAccessRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddAccessRule(class System.Security.AccessControl.MutexAccessRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.AddAccessRule(System.Security.AccessControl.MutexAccessRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AddAccessRule (rule As MutexAccessRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AddAccessRule(System::Security::AccessControl::MutexAccessRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.AddAccessRule : System.Security.AccessControl.MutexAccessRule -&gt; unit" Usage="mutexSecurity.AddAccessRule rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">추가할 액세스 제어 규칙입니다.</param>
+        <summary>새 규칙을 병합할 수 있는 일치하는 액세스 제어 규칙을 검색합니다. 아무 것도 발견되지 않으면 새 규칙을 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.AccessControl.MutexSecurity.AddAccessRule%2A> 메서드를 사용 하 여 동일한 사용자 또는 그룹 및 동일한 규칙에 대 한 검색 <xref:System.Security.AccessControl.AccessControlType> 으로 `rule`입니다. 일치 항목이 없는 경우, `rule` 추가 됩니다. 일치 하는 규칙 발견 되 면 rights in `rule` 기존 규칙을 사용 하 여 병합 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제를 구분 <xref:System.Security.AccessControl.AccessControlType.Allow> 규칙 및 <xref:System.Security.AccessControl.AccessControlType.Deny> 규칙과 호환 규칙에 권한의 조합을 보여 줍니다. 이 예에서는 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity> 개체를 허용 하 고 현재 사용자에 대 한 다양 한 권한을 거부 하는 규칙을 추가 하 고 결과 쌍 규칙을 표시 합니다. 이 예제에서는 그런 다음 현재 사용자에 대 한 새 권한을 허용 하 고 새 권한이 기존 병합 되는 표시 하 고 결과 표시 <xref:System.Security.AccessControl.AccessControlType.Allow> 규칙입니다.  
+  
+> [!NOTE]
+>  이 예제에서는 보안 개체를 연결 하지 않습니다는 <xref:System.Threading.Mutex> 개체입니다. 보안 개체를 연결 하는 예제를 찾을 수 있습니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType>합니다.  
+  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.AddAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.AddAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.AddAccessRule/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Security.Principal.IdentityNotMappedException"><paramref name="rule" />은 알려진 ID에 매핑할 수 없습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AddAuditRule">
+      <MemberSignature Language="C#" Value="public void AddAuditRule (System.Security.AccessControl.MutexAuditRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddAuditRule(class System.Security.AccessControl.MutexAuditRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.AddAuditRule(System.Security.AccessControl.MutexAuditRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AddAuditRule (rule As MutexAuditRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AddAuditRule(System::Security::AccessControl::MutexAuditRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.AddAuditRule : System.Security.AccessControl.MutexAuditRule -&gt; unit" Usage="mutexSecurity.AddAuditRule rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">추가할 감사 규칙입니다. 이 규칙에서 지정하는 사용자가 검색을 결정합니다.</param>
+        <summary>새 규칙을 병합할 수 있는 감사 규칙을 검색합니다. 아무 것도 발견되지 않으면 새 규칙을 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.AccessControl.MutexSecurity.AddAuditRule%2A> 메서드를 같은 사용자 또는 그룹을 사용 하 여 규칙 검색 `rule`합니다. 일치 항목이 없는 경우, `rule` 추가 됩니다. 일치 하는 규칙 발견 되 면에서 플래그 `rule` 기존 규칙에 병합 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AuditRuleFactory">
+      <MemberSignature Language="C#" Value="public override System.Security.AccessControl.AuditRule AuditRuleFactory (System.Security.Principal.IdentityReference identityReference, int accessMask, bool isInherited, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AuditFlags flags);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Security.AccessControl.AuditRule AuditRuleFactory(class System.Security.Principal.IdentityReference identityReference, int32 accessMask, bool isInherited, valuetype System.Security.AccessControl.InheritanceFlags inheritanceFlags, valuetype System.Security.AccessControl.PropagationFlags propagationFlags, valuetype System.Security.AccessControl.AuditFlags flags) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.AuditRuleFactory(System.Security.Principal.IdentityReference,System.Int32,System.Boolean,System.Security.AccessControl.InheritanceFlags,System.Security.AccessControl.PropagationFlags,System.Security.AccessControl.AuditFlags)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Security::AccessControl::AuditRule ^ AuditRuleFactory(System::Security::Principal::IdentityReference ^ identityReference, int accessMask, bool isInherited, System::Security::AccessControl::InheritanceFlags inheritanceFlags, System::Security::AccessControl::PropagationFlags propagationFlags, System::Security::AccessControl::AuditFlags flags);" />
+      <MemberSignature Language="F#" Value="override this.AuditRuleFactory : System.Security.Principal.IdentityReference * int * bool * System.Security.AccessControl.InheritanceFlags * System.Security.AccessControl.PropagationFlags * System.Security.AccessControl.AuditFlags -&gt; System.Security.AccessControl.AuditRule" Usage="mutexSecurity.AuditRuleFactory (identityReference, accessMask, isInherited, inheritanceFlags, propagationFlags, flags)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.AccessControl.AuditRule</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="identityReference" Type="System.Security.Principal.IdentityReference" />
+        <Parameter Name="accessMask" Type="System.Int32" />
+        <Parameter Name="isInherited" Type="System.Boolean" />
+        <Parameter Name="inheritanceFlags" Type="System.Security.AccessControl.InheritanceFlags" />
+        <Parameter Name="propagationFlags" Type="System.Security.AccessControl.PropagationFlags" />
+        <Parameter Name="flags" Type="System.Security.AccessControl.AuditFlags" />
+      </Parameters>
+      <Docs>
+        <param name="identityReference">규칙을 적용할 사용자 또는 그룹을 식별하는 <see cref="T:System.Security.Principal.IdentityReference" />입니다.</param>
+        <param name="accessMask">정수로 캐스팅된 감사할 액세스 권한을 지정하는 <see cref="T:System.Security.AccessControl.MutexRights" /> 값의 비트 조합입니다.</param>
+        <param name="isInherited">명명된 대기 핸들에는 계층이 없으므로 의미가 없습니다.</param>
+        <param name="inheritanceFlags">명명된 대기 핸들에는 계층이 없으므로 의미가 없습니다.</param>
+        <param name="propagationFlags">명명된 대기 핸들에는 계층이 없으므로 의미가 없습니다.</param>
+        <param name="flags">성공 또는 실패한 액세스를 감사할지 아니면 둘 다 감사할지를 지정하는 <see cref="T:System.Security.AccessControl.AuditFlags" /> 값의 비트 조합입니다.</param>
+        <summary>새 감사 규칙을 만들어 규칙을 적용할 사용자, 감사할 액세스 권한 및 감사 규칙을 트리거할 결과를 지정합니다.</summary>
+        <returns>지정한 사용자의 지정한 감사 규칙을 나타내는 <see cref="T:System.Security.AccessControl.MutexAuditRule" /> 개체입니다. 메서드의 반환 형식은 기본 클래스 <see cref="T:System.Security.AccessControl.AuditRule" />이지만 반환 값은 파생 클래스로 안전하게 캐스팅할 수 있습니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 감사 규칙을 만들기 위한 권장된 방법의 생성자를 사용 하는 것은 <xref:System.Security.AccessControl.MutexAuditRule> 클래스입니다.  
+  
+> [!NOTE]
+>  상속 및 전파 플래그는 명명 된 뮤텍스에 대 한 의미가, 이지만 여전히 지정할 수 있습니다. 권장 되지는 않습니다, 어렵게 불필요 하 게 유지 관리 규칙의 예를 들어 호환 될 수 있는 규칙의 조합은 방해 하 여 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="accessMask" />, <paramref name="inheritanceFlags" />, <paramref name="propagationFlags" /> 또는 <paramref name="flags" />에 잘못된 값을 지정하는 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="identityReference" />가 <see langword="null" />입니다.  
+  
+또는 
+ <paramref name="accessMask" />가 0입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="identityReference" />의 형식이 <see cref="T:System.Security.Principal.SecurityIdentifier" />도 아니고 <see cref="T:System.Security.Principal.NTAccount" />와 같이 <see cref="T:System.Security.Principal.SecurityIdentifier" /> 형식으로 변환할 수 있는 형식도 아닌 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AuditRuleType">
+      <MemberSignature Language="C#" Value="public override Type AuditRuleType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Type AuditRuleType" />
+      <MemberSignature Language="DocId" Value="P:System.Security.AccessControl.MutexSecurity.AuditRuleType" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property AuditRuleType As Type" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property Type ^ AuditRuleType { Type ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.AuditRuleType : Type" Usage="System.Security.AccessControl.MutexSecurity.AuditRuleType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Security.AccessControl.MutexSecurity" /> 클래스에서 감사 규칙을 나타내는 데 사용하는 형식을 가져옵니다.</summary>
+        <value><see cref="T:System.Type" /> 클래스를 나타내는 <see cref="T:System.Security.AccessControl.MutexAuditRule" /> 개체입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스는 <xref:System.Security.AccessControl.ObjectSecurity> 재정의 클래스를 <xref:System.Security.AccessControl.ObjectSecurity.AuditRuleType%2A> 속성과 감사 권한을 나타내는 데 사용 하는 형식 반환 합니다. 배열 또는 여러 유형의 보안 개체를 포함 하는 컬렉션을 사용 하 여 작업할 때 각 보안 개체에 사용할 올바른 감사 규칙을 확인 하려면이 속성을 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAccessRule">
+      <MemberSignature Language="C#" Value="public bool RemoveAccessRule (System.Security.AccessControl.MutexAccessRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool RemoveAccessRule(class System.Security.AccessControl.MutexAccessRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.RemoveAccessRule(System.Security.AccessControl.MutexAccessRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Function RemoveAccessRule (rule As MutexAccessRule) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool RemoveAccessRule(System::Security::AccessControl::MutexAccessRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.RemoveAccessRule : System.Security.AccessControl.MutexAccessRule -&gt; bool" Usage="mutexSecurity.RemoveAccessRule rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">검색할 사용자 및 <see cref="T:System.Security.AccessControl.MutexAccessRule" />을 비롯하여 일치하는 규칙(있다면)과 호환되어야 하는 상속 및 전파 플래그 집합을 지정하는 <see cref="T:System.Security.AccessControl.AccessControlType" />입니다. 발견된 경우 호환되는 규칙에서 제거할 권한을 지정합니다.</param>
+        <summary>지정한 규칙과 사용자 및 <see cref="T:System.Security.AccessControl.AccessControlType" />(허용 또는 거부)이 같고 상속 및 전파 플래그가 호환되는 액세스 제어 규칙을 검색합니다. 그러한 규칙이 있으면 지정한 액세스 규칙에 포함된 권한이 규칙에서 제거됩니다.</summary>
+        <returns>호환 가능한 규칙이 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 <xref:System.Security.AccessControl.MutexSecurity> 동일한 사용자와 동일한 규칙에 대 한 검색 됩니다 <xref:System.Security.AccessControl.AccessControlType> 값 `rule`합니다. 없는 이러한 규칙을 찾을 수 없는 작업을 수행 및 메서드 반환 `false`합니다. 일치 하는 규칙 발견 되 면 해당 상속 및 호환성 플래그에 지정 된 플래그를 사용 하 여 호환성을 위해 검사할지 `rule`합니다. 호환 가능한 규칙이 있으면 아무런 작업도 및 메서드 반환 `false`합니다. 에 지정 된 호환 플래그를 가진 규칙이 없으면 권한은 `rule` 호환 되는 규칙에서 제거 됩니다 메서드에서 반환 `true`합니다. 경우 `rule` 호환 되는 규칙에 포함 되지 않은 권한을 지정, 해당 권리에 대해 아무런 동작이 발생 합니다. 현재에서 전체 규칙을 제거할 모든 권리를 호환 되는 규칙에서 제거 하면 <xref:System.Security.AccessControl.MutexSecurity> 개체입니다.  
+  
+> [!IMPORTANT]
+>  뮤텍스의 액세스 규칙에 대 한 상속 및 전파 플래그를 만들어 지정할 수 있지만 <xref:System.Security.AccessControl.MutexSecurity.AccessRuleFactory%2A> 메서드를 권장 하지 않습니다. 상속 및 전파는 명명 된 뮤텍스에 대 한 아무런 의미가 및 액세스 규칙의 유지 관리가 더욱 복잡 하 게 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRule%2A> 에서 권한을 제거 하는 메서드를 <xref:System.Security.AccessControl.AccessControlType.Allow> 의 규칙을 <xref:System.Security.AccessControl.MutexSecurity> 개체. 또한 다른 권한이 표시 `rule` 무시 됩니다.  
+  
+ 이 예에서는 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity> 개체 및 현재 사용자에 대 한 다양 한 권한을 허용 및 거부 하는 규칙을 추가 합니다. 허용 되는 권한에 포함 <xref:System.Security.AccessControl.MutexRights.Modify>하십시오 <xref:System.Security.AccessControl.MutexRights.ReadPermissions>, 및 <xref:System.Security.AccessControl.MutexRights.Synchronize>합니다. 현재 사용자에 대 한 새 규칙을 만듭니다 포함 하 여 <xref:System.Security.AccessControl.MutexRights.ReadPermissions> 및 <xref:System.Security.AccessControl.MutexRights.TakeOwnership> 권한, 사용 하 여 해당 규칙을 사용 하는 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRule%2A> 제거 하는 방법 <xref:System.Security.AccessControl.MutexRights.ReadPermissions> 에서 <xref:System.Security.AccessControl.AccessControlType.Allow> 의 규칙는 <xref:System.Security.AccessControl.MutexSecurity> 개체. 불필요 한 <xref:System.Security.AccessControl.MutexRights.TakeOwnership> 에서 마우스 오른쪽 단추로 `rule` 무시 됩니다.  
+  
+> [!NOTE]
+>  이 예제에서는 보안 개체를 연결 하지 않습니다는 <xref:System.Threading.Mutex> 개체입니다. 보안 개체를 연결 하는 예제를 찾을 수 있습니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> 고 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType>입니다.  
+  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRule/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAccessRuleAll">
+      <MemberSignature Language="C#" Value="public void RemoveAccessRuleAll (System.Security.AccessControl.MutexAccessRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveAccessRuleAll(class System.Security.AccessControl.MutexAccessRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll(System.Security.AccessControl.MutexAccessRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAccessRuleAll (rule As MutexAccessRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAccessRuleAll(System::Security::AccessControl::MutexAccessRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.RemoveAccessRuleAll : System.Security.AccessControl.MutexAccessRule -&gt; unit" Usage="mutexSecurity.RemoveAccessRuleAll rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">검색할 사용자 및 <see cref="T:System.Security.AccessControl.MutexAccessRule" />을 지정하는 <see cref="T:System.Security.AccessControl.AccessControlType" />입니다. 이 규칙에서 지정한 모든 권한은 무시됩니다.</param>
+        <summary>지정한 규칙과 사용자 및 <see cref="T:System.Security.AccessControl.AccessControlType" />(허용 또는 거부)이 같은 모든 액세스 제어 규칙을 검색하여 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 <xref:System.Security.AccessControl.MutexSecurity> 개체가 있는 동일한 사용자와 동일한 규칙에 대 한 검색 됩니다 <xref:System.Security.AccessControl.AccessControlType> 값 `rule`합니다. 지정한 모든 권한은 `rule` 이 검색을 수행 하는 경우 무시 됩니다. 일치 하는 규칙이 없습니다 발견 되 면 아무런 동작이 발생 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예에서는 합니다 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll%2A> 사용자와 일치 하는 모든 규칙을 제거 하는 메서드 및 <xref:System.Security.AccessControl.AccessControlType>, 권한을 무시 합니다.  
+  
+ 이 예에서는 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity> 개체를 허용 하 고 현재 사용자에 대 한 다양 한 권한을 거부 하는 규칙을 추가 하 고 다음에 추가 권한을 병합 합니다 <xref:System.Security.AccessControl.AccessControlType.Allow> 규칙. 현재 사용자가 소유권을 허용 하 고 해당 규칙을 사용 하 여 제거 하는 새 규칙을 만듭니다는 <xref:System.Security.AccessControl.AccessControlType.Allow> 에서 규칙을 <xref:System.Security.AccessControl.MutexSecurity> 개체입니다.  
+  
+> [!NOTE]
+>  이 예제에서는 보안 개체를 연결 하지 않습니다는 <xref:System.Threading.Mutex> 개체입니다. 보안 개체를 연결 하는 예제를 찾을 수 있습니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> 고 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType>입니다.  
+  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleAll/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAccessRuleSpecific">
+      <MemberSignature Language="C#" Value="public void RemoveAccessRuleSpecific (System.Security.AccessControl.MutexAccessRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveAccessRuleSpecific(class System.Security.AccessControl.MutexAccessRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific(System.Security.AccessControl.MutexAccessRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAccessRuleSpecific (rule As MutexAccessRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAccessRuleSpecific(System::Security::AccessControl::MutexAccessRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.RemoveAccessRuleSpecific : System.Security.AccessControl.MutexAccessRule -&gt; unit" Usage="mutexSecurity.RemoveAccessRuleSpecific rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">제거할 <see cref="T:System.Security.AccessControl.MutexAccessRule" />입니다.</param>
+        <summary>지정한 규칙과 정확히 일치하는 액세스 제어 규칙을 검색하여 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 규칙은 정확히 일치 하는 경우에 제거 됩니다 `rule` 모든 세부 정보에 플래그를 포함 합니다. 사용자가 같은 다른 규칙 및 <xref:System.Security.AccessControl.AccessControlType> 영향을 받지 않습니다.  
+  
+> [!IMPORTANT]
+>  규칙을 나타내는 하나 또는 자세한 기본 액세스 제어 항목 (ACE) 및 이러한 항목은 분할 되거나 사용자에 대 한 액세스 보안 규칙을 수정 하는 경우 필요에 따라 조합 합니다. 따라서 규칙을 더 이상 있을 경우에서 추가 될 때 특정 형식에는 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> 메서드는 제거할 수 없습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에 따르면는 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> 메서드는 정확 하 게 일치 규칙을 제거 하기 위해 필요 하 고 권한을 허용 및 거부 하는 규칙은 서로 독립적입니다.  
+  
+ 이 예에서는 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity> 개체를 허용 하 고 현재 사용자에 대 한 다양 한 권한을 거부 하는 규칙을 추가 하 고 다음에 추가 권한을 병합 합니다 <xref:System.Security.AccessControl.AccessControlType.Allow> 액세스 규칙. 그런 다음 원래 전달 <xref:System.Security.AccessControl.AccessControlType.Allow> 규칙을 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> 메서드와 아무 것도 삭제를 나타내는 결과 표시 합니다. 일치 하는 규칙을 구성 합니다 <xref:System.Security.AccessControl.AccessControlType.Allow> 의 규칙을 <xref:System.Security.AccessControl.MutexSecurity> 개체를 사용 하 여 성공적으로 <xref:System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific%2A> 규칙을 제거 하는 방법.  
+  
+> [!NOTE]
+>  이 예제에서는 보안 개체를 연결 하지 않습니다는 <xref:System.Threading.Mutex> 개체입니다. 보안 개체를 연결 하는 예제를 찾을 수 있습니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> 고 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType>입니다.  
+  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.RemoveAccessRuleSpecific/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAuditRule">
+      <MemberSignature Language="C#" Value="public bool RemoveAuditRule (System.Security.AccessControl.MutexAuditRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool RemoveAuditRule(class System.Security.AccessControl.MutexAuditRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.RemoveAuditRule(System.Security.AccessControl.MutexAuditRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Function RemoveAuditRule (rule As MutexAuditRule) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool RemoveAuditRule(System::Security::AccessControl::MutexAuditRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.RemoveAuditRule : System.Security.AccessControl.MutexAuditRule -&gt; bool" Usage="mutexSecurity.RemoveAuditRule rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">검색할 사용자 및 일치하는 규칙(있다면)이 호환되어야 하는 상속 및 전파 플래그 집합을 지정하는 <see cref="T:System.Security.AccessControl.MutexAuditRule" />입니다. 발견된 경우 호환되는 규칙에서 제거할 권한을 지정합니다.</param>
+        <summary>지정한 규칙과 사용자가 같고 상속 및 전파 플래그가 호환되는 감사 제어 규칙을 검색합니다. 호환되는 규칙이 있으면 지정한 규칙에 포함된 권한이 규칙에서 제거됩니다.</summary>
+        <returns>호환 가능한 규칙이 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 <xref:System.Security.AccessControl.MutexSecurity> 사용자가 같은 있는 감사 규칙을 검색 하는 `rule`합니다. 없는 이러한 규칙을 찾을 수 없는 작업을 수행 및 메서드 반환 `false`합니다. 일치 하는 규칙 발견 되 면 해당 상속 및 호환성 플래그에 지정 된 플래그를 사용 하 여 호환성을 위해 검사할지 `rule`합니다. 호환 가능한 규칙이 있으면 아무런 작업도 및 메서드 반환 `false`합니다. 에 지정 된 호환 플래그를 가진 규칙이 없으면 권한은 `rule` 호환 되는 규칙에서 제거 됩니다 메서드에서 반환 `true`합니다. 경우 `rule` 호환 되는 규칙에 포함 되지 않은 권한을 지정, 해당 권리에 대해 아무런 동작이 발생 합니다. 현재에서 전체 규칙을 제거할 모든 권리를 호환 되는 규칙에서 제거 하면 <xref:System.Security.AccessControl.MutexSecurity> 개체입니다.  
+  
+> [!IMPORTANT]
+>  뮤텍스 감사 규칙의 상속 및 전파 플래그를 만들어 지정할 수 있지만 <xref:System.Security.AccessControl.MutexSecurity.AccessRuleFactory%2A> 메서드를 권장 하지 않습니다. 상속 및 전파는 명명 된 뮤텍스에 대 한 아무런 의미가 및 감사 규칙의 유지 관리가 더욱 복잡 하 게 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAuditRuleAll">
+      <MemberSignature Language="C#" Value="public void RemoveAuditRuleAll (System.Security.AccessControl.MutexAuditRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveAuditRuleAll(class System.Security.AccessControl.MutexAuditRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.RemoveAuditRuleAll(System.Security.AccessControl.MutexAuditRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAuditRuleAll (rule As MutexAuditRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAuditRuleAll(System::Security::AccessControl::MutexAuditRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.RemoveAuditRuleAll : System.Security.AccessControl.MutexAuditRule -&gt; unit" Usage="mutexSecurity.RemoveAuditRuleAll rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">검색할 사용자를 지정하는 <see cref="T:System.Security.AccessControl.MutexAuditRule" />입니다. 이 규칙에서 지정한 모든 권한은 무시됩니다.</param>
+        <summary>지정한 규칙과 같은 사용자를 가진 모든 감사 규칙을 검색하고 해당 규칙이 있을 경우 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 <xref:System.Security.AccessControl.MutexSecurity> 와 동일한 사용자에 게는 감사 규칙을 검색 하는 `rule`합니다. 지정한 모든 권한은 `rule` 이 검색을 수행 하는 경우 무시 됩니다. 모든 일치 규칙 제거 됩니다. 일치 하는 규칙이 없습니다 발견 되 면 아무런 동작이 발생 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAuditRuleSpecific">
+      <MemberSignature Language="C#" Value="public void RemoveAuditRuleSpecific (System.Security.AccessControl.MutexAuditRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveAuditRuleSpecific(class System.Security.AccessControl.MutexAuditRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.RemoveAuditRuleSpecific(System.Security.AccessControl.MutexAuditRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAuditRuleSpecific (rule As MutexAuditRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAuditRuleSpecific(System::Security::AccessControl::MutexAuditRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.RemoveAuditRuleSpecific : System.Security.AccessControl.MutexAuditRule -&gt; unit" Usage="mutexSecurity.RemoveAuditRuleSpecific rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">제거할 <see cref="T:System.Security.AccessControl.MutexAuditRule" />입니다.</param>
+        <summary>지정한 규칙과 정확히 일치하는 감사 규칙을 검색하여 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 규칙은 정확히 일치 하는 경우에 제거 됩니다 `rule` 모든 세부 정보에 플래그를 포함 합니다. 동일한 사용자에 대 한 다른 감사 규칙을 받지 않습니다.  
+  
+> [!IMPORTANT]
+>  규칙을 나타내는 하나 또는 자세한 기본 액세스 제어 항목 (ACE) 및 이러한 항목은 분할 되거나 사용자에 대 한 감사 보안 규칙을 수정 하는 경우 필요에 따라 조합 합니다. 따라서 규칙을 더 이상 있을 경우에서 추가 될 때 특정 형식에는 <xref:System.Security.AccessControl.MutexSecurity.RemoveAuditRuleSpecific%2A> 메서드는 제거할 수 없습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetAccessRule">
+      <MemberSignature Language="C#" Value="public void ResetAccessRule (System.Security.AccessControl.MutexAccessRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResetAccessRule(class System.Security.AccessControl.MutexAccessRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.ResetAccessRule(System.Security.AccessControl.MutexAccessRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ResetAccessRule (rule As MutexAccessRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ResetAccessRule(System::Security::AccessControl::MutexAccessRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.ResetAccessRule : System.Security.AccessControl.MutexAccessRule -&gt; unit" Usage="mutexSecurity.ResetAccessRule rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">추가할 <see cref="T:System.Security.AccessControl.MutexAccessRule" />입니다. 이 규칙에서 지정하는 사용자가 이 규칙이 추가되기 전에 제거할 규칙을 결정합니다.</param>
+        <summary><see cref="T:System.Security.AccessControl.AccessControlType" />과 상관없이 지정한 규칙과 사용자가 같은 모든 액세스 제어 규칙을 제거한 다음 지정한 규칙을 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용자가 지정한 규칙과 일치 액세스 규칙이 있는 경우 `rule` 추가 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 방법을 <xref:System.Security.AccessControl.MutexSecurity.ResetAccessRule%2A> 메서드는 일치 하는 지정 된 규칙과 일치 하는 사용자에 대 한 모든 규칙을 대체 합니다.  
+  
+ 이 예에서는 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity> 개체 및 현재 사용자에 대 한 다양 한 권한을 허용 및 거부 하는 규칙을 추가 합니다. 현재 사용자에 게 전체 권한을 허용 하 고 사용 하는 새 규칙을 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity.ResetAccessRule%2A> 새 규칙을 사용 하 여 기존 규칙을 모두 대체 하는 방법입니다.  
+  
+> [!NOTE]
+>  이 예제에서는 보안 개체를 연결 하지 않습니다는 <xref:System.Threading.Mutex> 개체입니다. 보안 개체를 연결 하는 예제를 찾을 수 있습니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> 고 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType>입니다.  
+  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.ResetAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.ResetAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.ResetAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.ResetAccessRule/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SetAccessRule">
+      <MemberSignature Language="C#" Value="public void SetAccessRule (System.Security.AccessControl.MutexAccessRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetAccessRule(class System.Security.AccessControl.MutexAccessRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.SetAccessRule(System.Security.AccessControl.MutexAccessRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetAccessRule (rule As MutexAccessRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetAccessRule(System::Security::AccessControl::MutexAccessRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.SetAccessRule : System.Security.AccessControl.MutexAccessRule -&gt; unit" Usage="mutexSecurity.SetAccessRule rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAccessRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">추가할 <see cref="T:System.Security.AccessControl.MutexAccessRule" />입니다. 이 규칙의 사용자 및 <see cref="T:System.Security.AccessControl.AccessControlType" />은 이 규칙이 추가되기 전에 제거할 규칙을 결정합니다.</param>
+        <summary>지정된 규칙과 사용자 및 <see cref="T:System.Security.AccessControl.AccessControlType" />(허용 또는 거부)이 같은 모든 액세스 제어 규칙을 제거한 다음 지정한 규칙을 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 지정한 규칙에 있으면 <xref:System.Security.AccessControl.AccessControlType.Allow>,이 메서드의 결과 모두 제거 하는 <xref:System.Security.AccessControl.AccessControlType.Allow> 지정한 규칙으로 바꿔 지정된 된 사용자에 대 한 규칙입니다. 지정된 된 규칙에 있으면 <xref:System.Security.AccessControl.AccessControlType.Deny>모든 <xref:System.Security.AccessControl.AccessControlType.Deny> 지정된 된 사용자에 대 한 규칙은 지정 된 규칙을 사용 하 여 대체 됩니다.  
+  
+ 규칙이 있는 경우 없는 사용자와 <xref:System.Security.AccessControl.AccessControlType> 지정한 규칙과 일치 `rule` 추가 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 하는 방법을 <xref:System.Security.AccessControl.MutexSecurity.SetAccessRule%2A> 메서드 모두 사용자를 일치 하는 모든 규칙을 제거 하며 <xref:System.Security.AccessControl.AccessControlType> 의 `rule`를 대체 하 여 `rule`입니다.  
+  
+ 이 예에서는 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity> 개체 및 현재 사용자에 대 한 다양 한 권한을 허용 및 거부 하는 규칙을 추가 합니다. 현재 사용자에 게 전체 권한을 허용 하 고 사용 하는 새 규칙을 만듭니다는 <xref:System.Security.AccessControl.MutexSecurity.SetAccessRule%2A> 로 기존 방법 새 규칙을 사용 하 여 규칙을 허용 합니다. 액세스를 거부 하는 규칙을 받지 않습니다.  
+  
+> [!NOTE]
+>  이 예제에서는 보안 개체를 연결 하지 않습니다는 <xref:System.Threading.Mutex> 개체입니다. 보안 개체를 연결 하는 예제를 찾을 수 있습니다 <xref:System.Threading.Mutex.GetAccessControl%2A?displayProperty=nameWithType> 고 <xref:System.Threading.Mutex.SetAccessControl%2A?displayProperty=nameWithType>입니다.  
+  
+ [!code-csharp[System.Security.AccessControl.MutexSecurity.SetAccessRule#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.SetAccessRule/CS/source.cs#1)]
+ [!code-vb[System.Security.AccessControl.MutexSecurity.SetAccessRule#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.AccessControl.MutexSecurity.SetAccessRule/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SetAuditRule">
+      <MemberSignature Language="C#" Value="public void SetAuditRule (System.Security.AccessControl.MutexAuditRule rule);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetAuditRule(class System.Security.AccessControl.MutexAuditRule rule) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.AccessControl.MutexSecurity.SetAuditRule(System.Security.AccessControl.MutexAuditRule)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetAuditRule (rule As MutexAuditRule)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetAuditRule(System::Security::AccessControl::MutexAuditRule ^ rule);" />
+      <MemberSignature Language="F#" Value="override this.SetAuditRule : System.Security.AccessControl.MutexAuditRule -&gt; unit" Usage="mutexSecurity.SetAuditRule rule" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Threading.AccessControl</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.2.0</AssemblyVersion>
+        <AssemblyVersion>4.0.3.0</AssemblyVersion>
+        <AssemblyVersion>4.0.4.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rule" Type="System.Security.AccessControl.MutexAuditRule" />
+      </Parameters>
+      <Docs>
+        <param name="rule">추가할 <see cref="T:System.Security.AccessControl.MutexAuditRule" />입니다. 이 규칙에서 지정하는 사용자가 이 규칙이 추가되기 전에 제거할 규칙을 결정합니다.</param>
+        <summary><see cref="T:System.Security.AccessControl.AuditFlags" /> 과 상관없이 지정한 규칙과 사용자가 같은 모든 감사 규칙을 제거한 다음 지정한 규칙을 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용자가 지정한 규칙과 일치 감사 규칙이 있는 경우 `rule` 추가 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="rule" />가 <see langword="null" />입니다.</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

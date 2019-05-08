@@ -1,0 +1,2153 @@
+<Type Name="HttpClient" FullName="System.Net.Http.HttpClient">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="1deca3c650aa448d02a22e7c674181575d0a3a8f" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58705731" /></Metadata><TypeSignature Language="C#" Value="public class HttpClient : System.Net.Http.HttpMessageInvoker" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit HttpClient extends System.Net.Http.HttpMessageInvoker" />
+  <TypeSignature Language="DocId" Value="T:System.Net.Http.HttpClient" />
+  <TypeSignature Language="VB.NET" Value="Public Class HttpClient&#xA;Inherits HttpMessageInvoker" />
+  <TypeSignature Language="C++ CLI" Value="public ref class HttpClient : System::Net::Http::HttpMessageInvoker" />
+  <TypeSignature Language="F#" Value="type HttpClient = class&#xA;    inherit HttpMessageInvoker" />
+  <AssemblyInfo>
+    <AssemblyName>System.Net.Http</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Net.Http.HttpMessageInvoker</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>URI로 식별되는 리소스에서 HTTP 요청을 보내고 HTTP 응답을 받기 위한 기본 클래스를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.Http.HttpClient> 클래스 인스턴스는 HTTP 요청을 보내는 세션으로 작동 합니다. <xref:System.Net.Http.HttpClient> 인스턴스가 해당 인스턴스에서 실행 된 모든 요청에 적용 하는 설정의 컬렉션입니다. 또한 모든 <xref:System.Net.Http.HttpClient> 인스턴스에서 자체 연결 풀에서 다른 실행 된 요청에서 해당 요청을 격리 <xref:System.Net.Http.HttpClient> 인스턴스.  
+  
+ <xref:System.Net.Http.HttpClient> 도 구체적인 HTTP 클라이언트에 대 한 기본 클래스로 작동 합니다. 예를 들어 수 Facebook 웹 서비스와 관련 된 추가 메서드를 제공 하는 FacebookHttpClient (GetFriends 메서드, 예를 들어). 파생된 클래스는 클래스의 가상 메서드를 재정의 하지 않습니다. 대신, 받아들이는 생성자 오버 로드를 사용 하 여 <xref:System.Net.Http.HttpMessageHandler> 어떠한 전처리 또는 후 요청 처리 대신 구성 합니다.
+  
+ .NET Framework 및 Mono에서 기본적으로 <xref:System.Net.HttpWebRequest> 서버로 요청을 전송 하는 데 사용 됩니다. 이 동작을 수행 하는 생성자 오버 로드 중 하나에 다른 채널을 지정 하 여 수정할 수는 <xref:System.Net.Http.HttpMessageHandler> 매개 변수로 인스턴스. 인증 또는 캐시와 같은 기능이 필요한 경우 <xref:System.Net.Http.WebRequestHandler> 생성자에 전달 될 인스턴스 수 및 설정을 구성 하는 데 사용 될 수 있습니다. 반환 된 처리기를 수행 하는 생성자 오버 로드 중 하나에 전달할 수는 <xref:System.Net.Http.HttpMessageHandler> 매개 변수입니다.  
+  
+ 앱을 사용 하는 경우 <xref:System.Net.Http.HttpClient> 및 관련 클래스는 <xref:System.Net.Http> 네임 스페이스에서 많은 양의 데이터 (50 메가바이트 또는 그 이상)를 다운로드 하 고 앱 해야 이러한 다운로드를 스트림 하는 기본 버퍼링을 사용 하지. 기본 버퍼링을 사용 하는 경우 클라이언트 메모리 사용량이 매우 큰, 성능 저하 잠재적으로 인해 크게 됩니다.  
+  
+ 다음 메서드는 스레드로부터 안전 합니다.  
+  
+1.  <xref:System.Net.Http.HttpClient.CancelPendingRequests%2A>  
+  
+2.  <xref:System.Net.Http.HttpClient.DeleteAsync%2A>  
+  
+3.  <xref:System.Net.Http.HttpClient.GetAsync%2A>  
+  
+4.  <xref:System.Net.Http.HttpClient.GetByteArrayAsync%2A>  
+  
+5.  <xref:System.Net.Http.HttpClient.GetStreamAsync%2A>  
+  
+6.  <xref:System.Net.Http.HttpClient.GetStringAsync%2A>  
+  
+7.  <xref:System.Net.Http.HttpClient.PostAsync%2A>  
+  
+8.  <xref:System.Net.Http.HttpClient.PutAsync%2A>  
+  
+9. <xref:System.Net.Http.HttpClient.SendAsync%2A>  
+  
+ <xref:System.Net.Http.HttpClient> 한 번 인스턴스화되면 응용 프로그램의 수명 내내 다시 사용 될 것입니다. 모든 요청에 대 한 HttpClient 클래스를 인스턴스화 과도 한 부하에서 사용 가능한 소켓 수가 소진 되어 있습니다. 그러면 SocketException 오류입니다. 다음은 올바르게 HttpClient를 사용 하는 예제입니다.  
+  
+```csharp
+public class GoodController : ApiController
+{
+    // OK
+    private static readonly HttpClient HttpClient;
+
+    static GoodController()
+    {
+        HttpClient = new HttpClient();
+    }
+}
+```  
+  
+<xref:System.Net.Http.HttpClient> 는 실행 하는 각 플랫폼에서 사용할 수 있는 하위 수준 기능을 래핑하는 상위 수준 API.
+
+각 플랫폼에서 <xref:System.Net.Http.HttpClient> 가장 사용 가능한 전송 사용 하려고 합니다.
+
+| **호스트/런타임**            | **백 엔드**                                                                               |
+| --------------------------- | ----------------------------------------------------------------------------------------- |
+| Windows/.NET Framework      | <xref:System.Net.HttpWebRequest>                                                          |
+| Windows/Mono                | <xref:System.Net.HttpWebRequest>                                                          |
+| Windows/UWP                 | Windows 네이티브 <xref:System.Net.Http.WinHttpHandler> (HTTP 2.0 지원)                   |
+| Windows/.NET Core 1.0-2.0   | Windows 네이티브 <xref:System.Net.Http.WinHttpHandler> (HTTP 2.0 지원)                   |
+| Android/Xamarin             | 빌드 타임에 선택 합니다. 사용 하 여 <xref:System.Net.HttpWebRequest> 또는 Android의 네이티브를 사용 하도록 구성 [`HttpURLConnection`](https://developer.xamarin.com/api/type/Java.Net.HttpURLConnection/) |
+| iOS, tvOS, watchOS/Xamarin  | 빌드 타임에 선택 합니다. 사용할 수 있습니다 <xref:System.Net.HttpWebRequest> Apple을 사용 하도록 구성 하거나 [ `NSUrlSession` ](https://developer.xamarin.com/api/type/MonoTouch.Foundation.NSUrlSession/) (HTTP 2.0 지원) |
+| macOS/Xamarin               | 빌드 타임에 선택 합니다. 사용할 수 있습니다 <xref:System.Net.HttpWebRequest> Apple을 사용 하도록 구성 하거나 [ `NSUrlSession` ](https://developer.xamarin.com/api/type/MonoTouch.Foundation.NSUrlSession/) (HTTP 2.0 지원) |
+| macOS/Mono                  | <xref:System.Net.HttpWebRequest>                                                          |
+| macOS/.NET Core 1.0-2.0     | `libcurl`-기반 HTTP 전송 (HTTP 2.0 지원)                                         |
+| Linux/Mono                  | <xref:System.Net.HttpWebRequest>                                                          |
+| Linux/.NET Core 1.0-2.0     | `libcurl`-기반 HTTP 전송 (HTTP 2.0 지원)                                         |
+| .NET core 2.1 이상     | <xref:System.Net.Http.SocketsHttpHandler?displayProperty=nameWithType>                    |
+
+사용자에 대 한 특정 전송을 구성할 수도 있습니다 <xref:System.Net.Http.HttpClient> 를 호출 하 여 합니다 <xref:System.Net.Http.HttpClient.%23ctor*> 사용 하는 생성자는 <xref:System.Net.Http.HttpMessageHandler>합니다.
+
+### <a name="httpclient-and-net-core"></a>HttpClient 및.NET Core
+
+.NET Core 2.1을 사용 하 여 시작 합니다 <xref:System.Net.Http.SocketsHttpHandler?displayProperty=nameWithType> 클래스 대신 `HttpClientHandler` 와 같은 상위 수준 HTTP 네트워킹 클래스에 의해 사용 되는 구현을 제공 `HttpClient`합니다. 사용 <xref:System.Net.Http.SocketsHttpHandler> 여러 장점을 제공 합니다.
+
+- 이전 구현보다 월등히 향상된 성능.
+
+- 배포 및 서비스를 간소화 하는 플랫폼 종속성을 제거 합니다. 예를 들어 `libcurl` Linux 용 macOS 및.NET Core에 대 한.NET Core에 대 한 종속성은 더 이상.
+
+- 모든.NET 플랫폼에서 일관 된 동작입니다.
+
+이 변경이 바람직하지 않은, 경우에 이전을 사용 하도록 응용 프로그램을 구성할 수 있습니다 <xref:System.Net.Http.HttpClientHandler?displayProperty=nameWithType> 대신 다양 한 방법으로에서:
+
+- 호출 하 여는 <xref:System.AppContext.SetSwitch%2A?displayProperty=nameWithType> 같이 메서드:
+
+   ```csharp
+   AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", false);
+   ```
+
+   ```vb
+   AppContext.SetSwitch("System.Net.Http.UseSocketsHttpHandler", False)
+   ``` 
+- 정의 하 여 합니다 `System.Net.Http.UseSocketsHttpHandler` 스위치를 *. netcore.runtimeconfig.json* 구성 파일:
+
+  ```json
+  "runtimeOptions": {
+    "configProperties": {
+        "System.Net.Http.UseSocketsHttpHandler": false
+    }
+  }
+  ```
+  
+- 라는 환경 변수를 정의 하 여 `DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER` 로 설정 하 고 `false` 또는 0입니다.
+
+## Examples  
+ [!code-csharp[System.Net.Http.HttpClient#1](~/samples/snippets/csharp/VS_Snippets_Misc/system.net.http.httpclient/cs/source.cs#1)]  
+  
+ 앞의 코드 예제를 사용 하는 `async Task Main()` 진입점입니다. 해당 기능은 C# 7.1 이상 필요합니다.
+ 
+ ]]></format>
+    </remarks>
+    <related type="ExternalDocumentation" href="https://go.microsoft.com/fwlink/?LinkID=245696">웹 서비스에 연결</related>
+    <related type="ExternalDocumentation" href="https://go.microsoft.com/fwlink/?LinkId=245697">빠른 시작: HttpClient를 사용 하 여 연결</related>
+    <related type="ExternalDocumentation" href="https://go.microsoft.com/fwlink/?LinkId=245699">HttpClient 처리기를 사용 하는 방법</related>
+    <related type="ExternalDocumentation" href="https://go.microsoft.com/fwlink/?LinkId=245698">HttpClient 연결을 보호 하는 방법</related>
+    <related type="ExternalDocumentation" href="https://go.microsoft.com/fwlink/?LinkId=242550">HttpClient 샘플</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Net.Http.HttpClient" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Net.Http.HttpClient> 한 번 인스턴스화되면 응용 프로그램의 수명 내내 다시 사용 될 것입니다. 모든 요청에 대 한 HttpClient 클래스를 인스턴스화 과도 한 부하에서 사용 가능한 소켓 수가 소진 되어 있습니다. 그러면 SocketException 오류입니다. 다음은 올바르게 HttpClient를 사용 하는 예제입니다.  
+  
+```csharp  
+public class GoodController : ApiController  
+{  
+    // OK  
+    private static readonly HttpClient HttpClient;  
+  
+    static GoodController()  
+    {  
+        HttpClient = new HttpClient();  
+    }  
+}  
+  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HttpClient ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; HttpClient();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Net.Http.HttpClient" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HttpClient (System.Net.Http.HttpMessageHandler handler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Net.Http.HttpMessageHandler handler) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.#ctor(System.Net.Http.HttpMessageHandler)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (handler As HttpMessageHandler)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; HttpClient(System::Net::Http::HttpMessageHandler ^ handler);" />
+      <MemberSignature Language="F#" Value="new System.Net.Http.HttpClient : System.Net.Http.HttpMessageHandler -&gt; System.Net.Http.HttpClient" Usage="new System.Net.Http.HttpClient handler" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handler" Type="System.Net.Http.HttpMessageHandler" />
+      </Parameters>
+      <Docs>
+        <param name="handler">요청을 보내는 데 사용할 HTTP 처리기 스택입니다.</param>
+        <summary>특정 처리기를 사용하여 <see cref="T:System.Net.Http.HttpClient" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `handler` 호출 하 여 삭제 됩니다 [HttpClient.Dispose](xref:System.Net.Http.HttpMessageInvoker.Dispose)합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="handler" />이 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public HttpClient (System.Net.Http.HttpMessageHandler handler, bool disposeHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Net.Http.HttpMessageHandler handler, bool disposeHandler) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.#ctor(System.Net.Http.HttpMessageHandler,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (handler As HttpMessageHandler, disposeHandler As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; HttpClient(System::Net::Http::HttpMessageHandler ^ handler, bool disposeHandler);" />
+      <MemberSignature Language="F#" Value="new System.Net.Http.HttpClient : System.Net.Http.HttpMessageHandler * bool -&gt; System.Net.Http.HttpClient" Usage="new System.Net.Http.HttpClient (handler, disposeHandler)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="handler" Type="System.Net.Http.HttpMessageHandler" />
+        <Parameter Name="disposeHandler" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="handler"><see cref="T:System.Net.Http.HttpMessageHandler" />는 HTTP 응답 메시지 처리를 담당합니다.</param>
+        <param name="disposeHandler">[HttpClient.Dispose](xref:System.Net.Http.HttpMessageInvoker.Dispose)에 의해 내부 처리기를 삭제해야 하는 경우 <see langword="true" />이고, 내부 처리기를 다시 사용하려고 하는 경우 <see langword="false" />입니다.</param>
+        <summary>특정 처리기를 사용하여 <see cref="T:System.Net.Http.HttpClient" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="handler" />이 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="BaseAddress">
+      <MemberSignature Language="C#" Value="public Uri BaseAddress { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Uri BaseAddress" />
+      <MemberSignature Language="DocId" Value="P:System.Net.Http.HttpClient.BaseAddress" />
+      <MemberSignature Language="VB.NET" Value="Public Property BaseAddress As Uri" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Uri ^ BaseAddress { Uri ^ get(); void set(Uri ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.BaseAddress : Uri with get, set" Usage="System.Net.Http.HttpClient.BaseAddress" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Uri</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청을 보낼 때 사용된 인터넷 리소스의 URI(Uniform Resource Identifier)의 기준 주소를 가져오거나 설정합니다.</summary>
+        <value>요청을 보낼 때 사용된 인터넷 리소스의 URI(Uniform Resource Identifier)의 기준 주소입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 보내면를 <xref:System.Net.Http.HttpRequestMessage> 상대 Uri를 사용 하 여 메시지 Uri에 추가 됩니다는 <xref:System.Net.Http.HttpClient.BaseAddress%2A> 속성을 절대 Uri를 만듭니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CancelPendingRequests">
+      <MemberSignature Language="C#" Value="public void CancelPendingRequests ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void CancelPendingRequests() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.CancelPendingRequests" />
+      <MemberSignature Language="VB.NET" Value="Public Sub CancelPendingRequests ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void CancelPendingRequests();" />
+      <MemberSignature Language="F#" Value="member this.CancelPendingRequests : unit -&gt; unit" Usage="httpClient.CancelPendingRequests " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 인스턴스에서 보류 중인 모든 요청을 취소합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 호출한 후의 <xref:System.Net.Http.HttpClient> 추가 요청을 실행 하는 인스턴스 현재 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DefaultRequestHeaders">
+      <MemberSignature Language="C#" Value="public System.Net.Http.Headers.HttpRequestHeaders DefaultRequestHeaders { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Net.Http.Headers.HttpRequestHeaders DefaultRequestHeaders" />
+      <MemberSignature Language="DocId" Value="P:System.Net.Http.HttpClient.DefaultRequestHeaders" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DefaultRequestHeaders As HttpRequestHeaders" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Net::Http::Headers::HttpRequestHeaders ^ DefaultRequestHeaders { System::Net::Http::Headers::HttpRequestHeaders ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.DefaultRequestHeaders : System.Net.Http.Headers.HttpRequestHeaders" Usage="System.Net.Http.HttpClient.DefaultRequestHeaders" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Net.Http.Headers.HttpRequestHeaders</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>각 요청과 함께 보내야 하는 헤더를 가져옵니다.</summary>
+        <value>각 요청과 함께 보내야 하는 헤더입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 속성을 설정 하는 헤더를 다시 요청 메시지에서 설정할 필요가 없습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="DeleteAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>DELETE 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="DeleteAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; DeleteAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; DeleteAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.DeleteAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeleteAsync (requestUri As String) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ DeleteAsync(System::String ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.DeleteAsync : string -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.DeleteAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>DELETE 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; DeleteAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; DeleteAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.DeleteAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeleteAsync (requestUri As Uri) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ DeleteAsync(Uri ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.DeleteAsync : Uri -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.DeleteAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>DELETE 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; DeleteAsync (string requestUri, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; DeleteAsync(string requestUri, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.DeleteAsync(System.String,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ DeleteAsync(System::String ^ requestUri, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.DeleteAsync : string * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.DeleteAsync (requestUri, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>취소 토큰이 포함된 지정한 URI에 DELETE 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; DeleteAsync (Uri requestUri, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; DeleteAsync(class System.Uri requestUri, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.DeleteAsync(System.Uri,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ DeleteAsync(Uri ^ requestUri, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.DeleteAsync : Uri * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.DeleteAsync (requestUri, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>취소 토큰이 포함된 지정한 URI에 DELETE 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="override this.Dispose : bool -&gt; unit" Usage="httpClient.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">관리되는 리소스와 관리되지 않는 리소스를 모두 해제하려면 <see langword="true" />, 관리되지 않는 리소스만 해제하려면 <see langword="false" />입니다.</param>
+        <summary><see cref="T:System.Net.Http.HttpClient" />에서 사용하는 관리되지 않는 리소스를 해제하고 관리되는 리소스를 선택적으로 삭제할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 공용 `Dispose()` 메서드 및 <xref:System.Object.Finalize%2A> 메서드. `Dispose()` 보호 된 호출 `Dispose(Boolean)` 메서드를 `disposing` 매개 변수 설정 `true`합니다. <xref:System.Object.Finalize%2A> 호출 `Dispose` 사용 하 여 `disposing` 로 `false`합니다.  
+  
+ `disposing` 매개 변수가 `true`인 경우 이 메서드는 이 <xref:System.Net.Http.HttpClient>에서 참조하는 관리 개체가 보유하고 있는 리소스를 모두 해제합니다. 이 메서드는 참조되는 각 개체의 `Dispose()` 메서드를 호출합니다.  
+  
+ 이 메서드를 호출 하는 경우는 <xref:System.Net.Http.HttpClient.CancelPendingRequests%2A> 메서드는 보류 중인 모든 요청을 중단 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>GET 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 작업을 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAsync (requestUri As String) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(System::String ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.GetAsync : string -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.GetAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>GET 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAsync (requestUri As Uri) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(Uri ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.GetAsync : Uri -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.GetAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>GET 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (string requestUri, System.Net.Http.HttpCompletionOption completionOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(string requestUri, valuetype System.Net.Http.HttpCompletionOption completionOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Net.Http.HttpCompletionOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAsync (requestUri As String, completionOption As HttpCompletionOption) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(System::String ^ requestUri, System::Net::Http::HttpCompletionOption completionOption);" />
+      <MemberSignature Language="F#" Value="member this.GetAsync : string * System.Net.Http.HttpCompletionOption -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.GetAsync (requestUri, completionOption)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="completionOption">작업이 완료된 것으로 간주해야 할 때를 나타내는 HTTP 완료 옵션 값입니다.</param>
+        <summary>HTTP 완료 옵션이 포함된 지정한 URI에 GET 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 기준으로 완료 개체는 `completionOption` 부분 또는 전체 (콘텐츠 포함) 응답을 읽은 후 매개 변수입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (string requestUri, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(string requestUri, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(System::String ^ requestUri, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.GetAsync : string * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.GetAsync (requestUri, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>취소 토큰이 포함된 지정한 URI에 GET 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (Uri requestUri, System.Net.Http.HttpCompletionOption completionOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(class System.Uri requestUri, valuetype System.Net.Http.HttpCompletionOption completionOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Net.Http.HttpCompletionOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAsync (requestUri As Uri, completionOption As HttpCompletionOption) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(Uri ^ requestUri, System::Net::Http::HttpCompletionOption completionOption);" />
+      <MemberSignature Language="F#" Value="member this.GetAsync : Uri * System.Net.Http.HttpCompletionOption -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.GetAsync (requestUri, completionOption)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="completionOption">작업이 완료된 것으로 간주해야 할 때를 나타내는 HTTP 완료 옵션 값입니다.</param>
+        <summary>HTTP 완료 옵션이 포함된 지정한 URI에 GET 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 기준으로 완료 개체는 `completionOption` 부분 또는 전체 (콘텐츠 포함) 응답을 읽은 후 매개 변수입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (Uri requestUri, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(class System.Uri requestUri, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(Uri ^ requestUri, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.GetAsync : Uri * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.GetAsync (requestUri, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>취소 토큰이 포함된 지정한 URI에 GET 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (string requestUri, System.Net.Http.HttpCompletionOption completionOption, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(string requestUri, valuetype System.Net.Http.HttpCompletionOption completionOption, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.String,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(System::String ^ requestUri, System::Net::Http::HttpCompletionOption completionOption, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.GetAsync : string * System.Net.Http.HttpCompletionOption * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.GetAsync (requestUri, completionOption, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="completionOption">작업이 완료된 것으로 간주해야 할 때를 나타내는 HTTP 완료 옵션 값입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>HTTP 완료 옵션 및 취소 토큰을 사용하여 지정한 URL에 비동기 작업으로 GET 요청을 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 기준으로 완료 개체는 `completionOption` 부분 또는 전체 (콘텐츠 포함) 응답을 읽은 후 매개 변수입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; GetAsync (Uri requestUri, System.Net.Http.HttpCompletionOption completionOption, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; GetAsync(class System.Uri requestUri, valuetype System.Net.Http.HttpCompletionOption completionOption, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetAsync(System.Uri,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ GetAsync(Uri ^ requestUri, System::Net::Http::HttpCompletionOption completionOption, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.GetAsync : Uri * System.Net.Http.HttpCompletionOption * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.GetAsync (requestUri, completionOption, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="completionOption">작업이 완료된 것으로 간주해야 할 때를 나타내는 HTTP 완료 옵션 값입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>HTTP 완료 옵션 및 취소 토큰을 사용하여 지정한 URL에 비동기 작업으로 GET 요청을 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 기준으로 완료 개체는 `completionOption` 부분 또는 전체 (콘텐츠 포함) 응답을 읽은 후 매개 변수입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetByteArrayAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 바이트 배열로 응답 본문을 반환합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 작업을 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetByteArrayAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;byte[]&gt; GetByteArrayAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;unsigned int8[]&gt; GetByteArrayAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetByteArrayAsync (requestUri As String) As Task(Of Byte())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;cli::array &lt;System::Byte&gt; ^&gt; ^ GetByteArrayAsync(System::String ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.GetByteArrayAsync : string -&gt; System.Threading.Tasks.Task&lt;byte[]&gt;" Usage="httpClient.GetByteArrayAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Byte[]&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 바이트 배열로 응답 본문을 반환합니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체는 전체 응답 본문을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetByteArrayAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;byte[]&gt; GetByteArrayAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;unsigned int8[]&gt; GetByteArrayAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetByteArrayAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetByteArrayAsync (requestUri As Uri) As Task(Of Byte())" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;cli::array &lt;System::Byte&gt; ^&gt; ^ GetByteArrayAsync(Uri ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.GetByteArrayAsync : Uri -&gt; System.Threading.Tasks.Task&lt;byte[]&gt;" Usage="httpClient.GetByteArrayAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Byte[]&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 바이트 배열로 응답 본문을 반환합니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체는 전체 응답 본문을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetStreamAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 스트림으로 응답 본문을 반환합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 작업을 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetStreamAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.IO.Stream&gt; GetStreamAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.IO.Stream&gt; GetStreamAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetStreamAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStreamAsync (requestUri As String) As Task(Of Stream)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::IO::Stream ^&gt; ^ GetStreamAsync(System::String ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.GetStreamAsync : string -&gt; System.Threading.Tasks.Task&lt;System.IO.Stream&gt;" Usage="httpClient.GetStreamAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.IO.Stream&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 스트림으로 응답 본문을 반환합니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 응답 헤더를 읽은 후 완료 됩니다. 이 메서드는 읽기 하지 않거나 응답 본문을 버퍼링 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetStreamAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.IO.Stream&gt; GetStreamAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.IO.Stream&gt; GetStreamAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetStreamAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStreamAsync (requestUri As Uri) As Task(Of Stream)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::IO::Stream ^&gt; ^ GetStreamAsync(Uri ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.GetStreamAsync : Uri -&gt; System.Threading.Tasks.Task&lt;System.IO.Stream&gt;" Usage="httpClient.GetStreamAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.IO.Stream&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 스트림으로 응답 본문을 반환합니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 응답 헤더를 읽은 후 완료 됩니다. 이 메서드는 읽기 하지 않거나 응답 본문을 버퍼링 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetStringAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 문자열로 응답 본문을 반환합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetStringAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;string&gt; GetStringAsync (string requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;string&gt; GetStringAsync(string requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetStringAsync(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStringAsync (requestUri As String) As Task(Of String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::String ^&gt; ^ GetStringAsync(System::String ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.GetStringAsync : string -&gt; System.Threading.Tasks.Task&lt;string&gt;" Usage="httpClient.GetStringAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 문자열로 응답 본문을 반환합니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체는 전체 응답 본문을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="GetStringAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;string&gt; GetStringAsync (Uri requestUri);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;string&gt; GetStringAsync(class System.Uri requestUri) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.GetStringAsync(System.Uri)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetStringAsync (requestUri As Uri) As Task(Of String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::String ^&gt; ^ GetStringAsync(Uri ^ requestUri);" />
+      <MemberSignature Language="F#" Value="member this.GetStringAsync : Uri -&gt; System.Threading.Tasks.Task&lt;string&gt;" Usage="httpClient.GetStringAsync requestUri" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0">
+          <AttributeName>System.Diagnostics.DebuggerStepThrough</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <summary>GET 요청을 지정된 URI에 보내고 비동기 작업에서 문자열로 응답 본문을 반환합니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체는 전체 응답 본문을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="MaxResponseContentBufferSize">
+      <MemberSignature Language="C#" Value="public long MaxResponseContentBufferSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 MaxResponseContentBufferSize" />
+      <MemberSignature Language="DocId" Value="P:System.Net.Http.HttpClient.MaxResponseContentBufferSize" />
+      <MemberSignature Language="VB.NET" Value="Public Property MaxResponseContentBufferSize As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property long MaxResponseContentBufferSize { long get(); void set(long value); };" />
+      <MemberSignature Language="F#" Value="member this.MaxResponseContentBufferSize : int64 with get, set" Usage="System.Net.Http.HttpClient.MaxResponseContentBufferSize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>응답 콘텐츠를 읽을 경우 버퍼링할 최대 바이트 수를 가져오거나 설정합니다.</summary>
+        <value>응답 콘텐츠를 읽을 경우 버퍼링할 최대 바이트 수입니다. 이 속성의 기본값은 2GB입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 앱을 설정할 수는 <xref:System.Net.Http.HttpClient.MaxResponseContentBufferSize%2A> 낮은 값으로 응답을 읽는 동안 버퍼에 대 한 응답의 크기를 제한 하는 속성입니다. 응답 콘텐츠 크기 보다 크면는 <xref:System.Net.Http.HttpClient.MaxResponseContentBufferSize%2A> 속성인 예외가 throw 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">지정된 크기가 0보다 작거나 같은 경우</exception>
+        <exception cref="T:System.InvalidOperationException">작업이 이미 현재 인스턴스에서 시작된 경우</exception>
+        <exception cref="T:System.ObjectDisposedException">현재 인스턴스가 삭제된 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PatchAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PatchAsync (string requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PatchAsync(string requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PatchAsync(System.String,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PatchAsync (requestUri As String, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PatchAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberSignature Language="F#" Value="member this.PatchAsync : string * System.Net.Http.HttpContent -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PatchAsync (requestUri, content)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" Index="0" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" Index="1" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">To be added.</param>
+        <param name="content">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PatchAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PatchAsync (Uri requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PatchAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PatchAsync (requestUri As Uri, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PatchAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberSignature Language="F#" Value="member this.PatchAsync : Uri * System.Net.Http.HttpContent -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PatchAsync (requestUri, content)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" Index="0" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" Index="1" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">To be added.</param>
+        <param name="content">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PatchAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PatchAsync (string requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PatchAsync(string requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PatchAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PatchAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.PatchAsync : string * System.Net.Http.HttpContent * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PatchAsync (requestUri, content, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" Index="0" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" Index="1" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" Index="2" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">To be added.</param>
+        <param name="content">To be added.</param>
+        <param name="cancellationToken">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PatchAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PatchAsync (Uri requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PatchAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PatchAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PatchAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.PatchAsync : Uri * System.Net.Http.HttpContent * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PatchAsync (requestUri, content, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" Index="0" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" Index="1" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" Index="2" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">To be added.</param>
+        <param name="content">To be added.</param>
+        <param name="cancellationToken">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="PostAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>POST 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="PostAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PostAsync (string requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PostAsync(string requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PostAsync (requestUri As String, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PostAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberSignature Language="F#" Value="member this.PostAsync : string * System.Net.Http.HttpContent -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PostAsync (requestUri, content)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="content">서버로 전송된 HTTP 요청 콘텐츠입니다.</param>
+        <summary>POST 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PostAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PostAsync (Uri requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PostAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PostAsync (requestUri As Uri, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PostAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberSignature Language="F#" Value="member this.PostAsync : Uri * System.Net.Http.HttpContent -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PostAsync (requestUri, content)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="content">서버로 전송된 HTTP 요청 콘텐츠입니다.</param>
+        <summary>POST 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PostAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PostAsync (string requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PostAsync(string requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PostAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PostAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.PostAsync : string * System.Net.Http.HttpContent * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PostAsync (requestUri, content, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="content">서버로 전송된 HTTP 요청 콘텐츠입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>취소 토큰이 포함된 POST 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PostAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PostAsync (Uri requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PostAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PostAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PostAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.PostAsync : Uri * System.Net.Http.HttpContent * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PostAsync (requestUri, content, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="content">서버로 전송된 HTTP 요청 콘텐츠입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>취소 토큰이 포함된 POST 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="PutAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>PUT 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="PutAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PutAsync (string requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PutAsync(string requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PutAsync (requestUri As String, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PutAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberSignature Language="F#" Value="member this.PutAsync : string * System.Net.Http.HttpContent -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PutAsync (requestUri, content)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="content">서버로 전송된 HTTP 요청 콘텐츠입니다.</param>
+        <summary>PUT 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PutAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PutAsync (Uri requestUri, System.Net.Http.HttpContent content);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PutAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent)" />
+      <MemberSignature Language="VB.NET" Value="Public Function PutAsync (requestUri As Uri, content As HttpContent) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PutAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content);" />
+      <MemberSignature Language="F#" Value="member this.PutAsync : Uri * System.Net.Http.HttpContent -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PutAsync (requestUri, content)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="content">서버로 전송된 HTTP 요청 콘텐츠입니다.</param>
+        <summary>PUT 요청을 지정된 URI에 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PutAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PutAsync (string requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PutAsync(string requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PutAsync(System.String,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PutAsync(System::String ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.PutAsync : string * System.Net.Http.HttpContent * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PutAsync (requestUri, content, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.String" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="content">서버로 전송된 HTTP 요청 콘텐츠입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>취소 토큰이 포함된 PUT 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PutAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; PutAsync (Uri requestUri, System.Net.Http.HttpContent content, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; PutAsync(class System.Uri requestUri, class System.Net.Http.HttpContent content, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.PutAsync(System.Uri,System.Net.Http.HttpContent,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ PutAsync(Uri ^ requestUri, System::Net::Http::HttpContent ^ content, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="member this.PutAsync : Uri * System.Net.Http.HttpContent * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.PutAsync (requestUri, content, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="requestUri" Type="System.Uri" />
+        <Parameter Name="content" Type="System.Net.Http.HttpContent" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="requestUri">요청이 전송되는 URI입니다.</param>
+        <param name="content">서버로 전송된 HTTP 요청 콘텐츠입니다.</param>
+        <param name="cancellationToken">취소의 통지를 받기 위해 다른 개체나 스레드에서 사용할 수 있는 취소 토큰입니다.</param>
+        <summary>취소 토큰이 포함된 PUT 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 (콘텐츠 포함)는 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="requestUri" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="SendAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>HTTP 요청을 비동기 작업으로 보냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="SendAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; SendAsync (System.Net.Http.HttpRequestMessage request);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; SendAsync(class System.Net.Http.HttpRequestMessage request) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage)" />
+      <MemberSignature Language="VB.NET" Value="Public Function SendAsync (request As HttpRequestMessage) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ SendAsync(System::Net::Http::HttpRequestMessage ^ request);" />
+      <MemberSignature Language="F#" Value="override this.SendAsync : System.Net.Http.HttpRequestMessage -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.SendAsync request" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Net.Http.HttpRequestMessage" />
+      </Parameters>
+      <Docs>
+        <param name="request">보낼 HTTP 요청 메시지입니다.</param>
+        <summary>HTTP 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 콘텐츠를 비롯 한 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SendAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; SendAsync (System.Net.Http.HttpRequestMessage request, System.Net.Http.HttpCompletionOption completionOption);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; SendAsync(class System.Net.Http.HttpRequestMessage request, valuetype System.Net.Http.HttpCompletionOption completionOption) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpCompletionOption)" />
+      <MemberSignature Language="VB.NET" Value="Public Function SendAsync (request As HttpRequestMessage, completionOption As HttpCompletionOption) As Task(Of HttpResponseMessage)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ SendAsync(System::Net::Http::HttpRequestMessage ^ request, System::Net::Http::HttpCompletionOption completionOption);" />
+      <MemberSignature Language="F#" Value="override this.SendAsync : System.Net.Http.HttpRequestMessage * System.Net.Http.HttpCompletionOption -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.SendAsync (request, completionOption)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Net.Http.HttpRequestMessage" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+      </Parameters>
+      <Docs>
+        <param name="request">보낼 HTTP 요청 메시지입니다.</param>
+        <param name="completionOption">작업을 완료해야 할 경우(응답을 사용할 수 있게 된 즉시 또는 전체 응답 내용을 읽은 후).</param>
+        <summary>HTTP 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 값에 따라 합니다 `completionOption` 매개 변수, 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 수 또는 콘텐츠를 비롯 한 전체 응답 읽기는 즉시 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SendAsync">
+      <MemberSignature Language="C#" Value="public override System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; SendAsync (System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; SendAsync(class System.Net.Http.HttpRequestMessage request, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ SendAsync(System::Net::Http::HttpRequestMessage ^ request, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="override this.SendAsync : System.Net.Http.HttpRequestMessage * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.SendAsync (request, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Net.Http.HttpRequestMessage" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="request">보낼 HTTP 요청 메시지입니다.</param>
+        <param name="cancellationToken">작업을 취소할 취소 토큰입니다.</param>
+        <summary>HTTP 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 콘텐츠를 비롯 한 전체 응답을 읽은 후 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SendAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt; SendAsync (System.Net.Http.HttpRequestMessage request, System.Net.Http.HttpCompletionOption completionOption, System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task`1&lt;class System.Net.Http.HttpResponseMessage&gt; SendAsync(class System.Net.Http.HttpRequestMessage request, valuetype System.Net.Http.HttpCompletionOption completionOption, valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Net.Http.HttpClient.SendAsync(System.Net.Http.HttpRequestMessage,System.Net.Http.HttpCompletionOption,System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task&lt;System::Net::Http::HttpResponseMessage ^&gt; ^ SendAsync(System::Net::Http::HttpRequestMessage ^ request, System::Net::Http::HttpCompletionOption completionOption, System::Threading::CancellationToken cancellationToken);" />
+      <MemberSignature Language="F#" Value="override this.SendAsync : System.Net.Http.HttpRequestMessage * System.Net.Http.HttpCompletionOption * System.Threading.CancellationToken -&gt; System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;" Usage="httpClient.SendAsync (request, completionOption, cancellationToken)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task&lt;System.Net.Http.HttpResponseMessage&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="request" Type="System.Net.Http.HttpRequestMessage" />
+        <Parameter Name="completionOption" Type="System.Net.Http.HttpCompletionOption" />
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="request">보낼 HTTP 요청 메시지입니다.</param>
+        <param name="completionOption">작업을 완료해야 할 경우(응답을 사용할 수 있게 된 즉시 또는 전체 응답 내용을 읽은 후).</param>
+        <param name="cancellationToken">작업을 취소할 취소 토큰입니다.</param>
+        <summary>HTTP 요청을 비동기 작업으로 보냅니다.</summary>
+        <returns>비동기 작업(operation)을 나타내는 작업(task) 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 작업을 차단 하지 않습니다. 값에 따라 합니다 `completionOption` 매개 변수, 반환 된 <xref:System.Threading.Tasks.Task%601> 개체 수 또는 콘텐츠를 비롯 한 전체 응답 읽기는 즉시 완료 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="request" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">요청 메시지를 <see cref="T:System.Net.Http.HttpClient" /> 인스턴스에서 이미 전송한 경우</exception>
+        <exception cref="T:System.Net.Http.HttpRequestException">네트워크 연결, DNS 오류, 서버 인증서 유효성 검사 또는 시간 초과와 같은 기본 문제로 인해 요청이 실패한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Timeout">
+      <MemberSignature Language="C#" Value="public TimeSpan Timeout { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan Timeout" />
+      <MemberSignature Language="DocId" Value="P:System.Net.Http.HttpClient.Timeout" />
+      <MemberSignature Language="VB.NET" Value="Public Property Timeout As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan Timeout { TimeSpan get(); void set(TimeSpan value); };" />
+      <MemberSignature Language="F#" Value="member this.Timeout : TimeSpan with get, set" Usage="System.Net.Http.HttpClient.Timeout" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Net.Http</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>요청 시간 제한 범위 내에서 대기할 기간을 가져오거나 설정합니다.</summary>
+        <value>요청 시간 제한 범위 내에서 대기할 기간입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본값은 100,000밀리초(100초)입니다.  
+  
+ 시간 제한이 무한을 설정 하려면 속성 값을 설정 <xref:System.Threading.Timeout.InfiniteTimeSpan>합니다.  
+  
+ 도메인 이름 시스템 (DNS) 쿼리는 최대 15 초 반환할 또는 제한 시간 걸릴 수 있습니다. 요청 확인이 필요 하는 호스트 이름을 포함 하 고 설정한 경우 <xref:System.Net.Http.HttpClient.Timeout%2A> 값 보다 작거나 15 초 걸릴 수 있습니다 이전 15 초 이상는 <xref:System.Net.WebException> 요청에서 제한 시간을 나타내기 위해 throw 되는 합니다.  
+  
+ 이 사용 하 여 모든 요청에 대 한 동일한 시간 제한을 적용할 <xref:System.Net.Http.HttpClient> 인스턴스.  사용 하 여 개별 요청에 대 한 다양 한 시간 제한을 설정할 수도 있습니다는 <xref:System.Threading.CancellationTokenSource> 작업 합니다. 만 더 짧은 두 가지 시간 제한을 적용 되는 참고 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">지정한 제한 시간이 0보다 작거나 같고 <see cref="F:System.Threading.Timeout.InfiniteTimeSpan" />이 아닌 경우</exception>
+        <exception cref="T:System.InvalidOperationException">작업이 이미 현재 인스턴스에서 시작된 경우</exception>
+        <exception cref="T:System.ObjectDisposedException">현재 인스턴스가 삭제된 경우</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

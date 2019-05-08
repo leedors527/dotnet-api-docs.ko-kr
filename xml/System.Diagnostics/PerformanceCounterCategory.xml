@@ -1,0 +1,1791 @@
+<Type Name="PerformanceCounterCategory" FullName="System.Diagnostics.PerformanceCounterCategory">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="cf3581fcfcda06d44d445a28270c0adf5dc7d608" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56790551" /></Metadata><TypeSignature Language="C#" Value="public sealed class PerformanceCounterCategory" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit PerformanceCounterCategory extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Diagnostics.PerformanceCounterCategory" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class PerformanceCounterCategory" />
+  <TypeSignature Language="C++ CLI" Value="public ref class PerformanceCounterCategory sealed" />
+  <TypeSignature Language="F#" Value="type PerformanceCounterCategory = class" />
+  <AssemblyInfo>
+    <AssemblyName>System</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>성능 카운터의 범주를 정의하는 성능 개체를 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!IMPORTANT]
+>  만들거나 성능 카운터를 삭제 하는 명명된 된 뮤텍스를 사용 하 여 기본 코드를 동기화가 필요 합니다. 높은 권한이 필요한 애플리케이션을 명명 된 뮤텍스를 잠그는 경우 만들거나 성능 카운터를 삭제 하려고 하면 애플리케이션이 잠금이 해제 될 때까지 응답을 중지 합니다. 이 문제를 방지 하려면 부여 해서는 안 <xref:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode> 신뢰할 수 없는 코드는 권한입니다. 또한 <xref:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode> 권한에서 잠재적으로 다른 사용 권한을 무시 하 고 신뢰할 수 있는 코드에만 부여 해야 합니다.  
+  
+ 합니다 <xref:System.Diagnostics.PerformanceCounterCategory> 인스턴스의 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A> 성능 개체에 대 한 분야 성능 뷰어 애플리케이션의 카운터 추가 대화 상자에에서 속성이 표시 됩니다.  
+  
+ <xref:System.Diagnostics.PerformanceCounterCategory> 클래스는 컴퓨터에서 카운터 및 범주와 상호 작용 하는 여러 가지 방법을 제공 합니다. <xref:System.Diagnostics.PerformanceCounterCategory.Create%2A> 메서드를 사용 하면 사용자 지정 범주를 정의할 수 있습니다. <xref:System.Diagnostics.PerformanceCounterCategory.Delete%2A> 메서드는 컴퓨터에서 범주를 제거 하는 방법을 제공 합니다. 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.GetCategories%2A> 메서드를 사용 하면 범주 목록을 볼 수 있습니다 하는 동안 <xref:System.Diagnostics.PerformanceCounterCategory.ReadCategory%2A> 단일 범주와 관련 된 모든 카운터 및 인스턴스 데이터를 검색 합니다.  
+  
+ 성능 카운터는 애플리케이션에 대 한 성능 데이터를 게시합니다. 범주 (예: 프로세서, 디스크 및 메모리) 물리적 구성 요소 및 시스템 개체 (예: 프로세스, 스레드)에 포함 됩니다. 시스템 카운터 같은 성능 개체와 관련 된 일반적인 중점을 나타내는 범주에 그룹화 됩니다. 인스턴스를 만들 때의 <xref:System.Diagnostics.PerformanceCounter> 클래스를 먼저 지정할 범주는 구성 요소를 상호 작용 하 고 다음 범주에서 카운터를 선택 합니다.  
+  
+ 예를 들어, 하나의 Windows 카운터 범주는 메모리 범주입니다. 이 범주 내의 시스템 카운터는 사용 가능한 바이트의 수 및 캐시 하는 바이트 수와 같은 메모리 내 데이터를 추적 합니다. 애플리케이션에서 캐시 된 바이트를 사용 하려는 경우 인스턴스의 만듭니다는 <xref:System.Diagnostics.PerformanceCounter> 구성 요소를 Memory 범주에 연결 하 고 해당 범주 (이 예제의 경우 캐시 된 바이트)에 적절 한 카운터를 선택 합니다.  
+  
+ 시스템에서 카운터 범주를 추가로 사용할 수 있습니다, 있지만 수는 아마도 상호 작용 하는 가장 자주 범주에는 캐시, 메모리, 개체, 실제 디스크, 프로세스, 프로세서, 서버, 시스템 및 스레드 범주는 합니다.  
+  
+> [!IMPORTANT]
+>  합니다 <xref:System.Diagnostics.PerformanceCounter.RemoveInstance%2A> 의 메서드는 <xref:System.Diagnostics.PerformanceCounter> 클래스는 카운터를 해제 하 고 카운터의 인스턴스를 다시는 다시 사용할 수 있도록 옵션을 해당 범주에 대 한 선택입니다. 다른 프로세스 또는 코드의 다른 일부를 카운터 인스턴스를 작성 하는 경우 경합을 일으킬 수 있습니다.  
+  
+> [!NOTE]
+>  애플리케이션을 설치 하는 동안, 애플리케이션의 실행 중이 아니라 새 성능 카운터 범주를 만들 수 있음을 것이 좋습니다. 이렇게 하면 운영 체제 등록 된 성능 카운터 범주의 목록을 새로 고칠 수 있습니다. 목록 새로 고치지 않은, 범주를 사용 하려는 시도가 실패 합니다.  
+  
+> [!NOTE]
+>  성능 카운터 범주와 함께 설치 된 [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)] 자체 메모리가 있는 각 성능 카운터 범주를 사용 하 여 별도 공유 메모리를 사용 합니다. 레지스트리 키 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services FileMappingSize 라는 DWORD를 만들어 별도 공유 메모리의 크기를 지정할 수 있습니다\\*\<범주 이름 >* \ 성능을 제공 합니다. FileMappingSize 값 범주의 공유 메모리 크기 설정 됩니다. 기본 크기는 10 진수 131072입니다. FileMappingSize 값 없는 경우는 `fileMappingSize` 특성에 대 한 값을 `performanceCounters` 합니다 Machine.config 파일에 지정 된 요소를 사용할 구성 파일을 처리에 대 한 추가 오버 헤드를 유발 합니다. 레지스트리에서 파일 매핑 크기를 설정 하 여 애플리케이션 시작에 대 한 성능 향상을 이룰 수 있습니다. 파일 매핑 크기에 대 한 자세한 내용은 참조 하세요. [ &lt;performanceCounters&gt;](~/docs/framework/configure-apps/file-schema/trace-debug/performancecounters-element.md)합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 확인 여부를 <xref:System.Diagnostics.PerformanceCounter> 고 <xref:System.Diagnostics.PerformanceCounterCategory> 로컬 컴퓨터 또는 다른 컴퓨터에 존재 합니다. 이러한 개체는 로컬 컴퓨터에 존재 하지 않는 경우 예제를 선택적으로 만듭니다. 사용 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.Exists%2A> 결정 하는 방법 여부를 <xref:System.Diagnostics.PerformanceCounterCategory> 존재 합니다.  경우는 <xref:System.Diagnostics.PerformanceCounterCategory> 존재 하지 않는 및 카운터 이름이 없는 지정 하지 않거나 컴퓨터가 원격 컴퓨터 인 경우에 예제 종료 합니다.  
+  
+ 경우는 <xref:System.Diagnostics.PerformanceCounter> 이름이 제공 된,이 예제에서는 사용을 <xref:System.Diagnostics.PerformanceCounterCategory.CounterExists%2A> 메서드 사용자에 게 결과 표시 합니다. 경우는 <xref:System.Diagnostics.PerformanceCounter> 존재 하지 않는 사용자를 삭제 하 고 다시 만들 수는 <xref:System.Diagnostics.PerformanceCounterCategory> 새 <xref:System.Diagnostics.PerformanceCounter>합니다. 사용자가 그렇게 하는 경우 범주를 사용 하 여 삭제를 <xref:System.Diagnostics.PerformanceCounterCategory.Delete%2A> 메서드.  
+  
+ 요청 된 경우이 예에서는 이제 만듭니다 새 <xref:System.Diagnostics.PerformanceCounterCategory> 하 고 <xref:System.Diagnostics.PerformanceCounter> 사용 하 여를 <xref:System.Diagnostics.PerformanceCounterCategory.Create%2A> 메서드. 예제에서는 인스턴스 이름이 지정 되는 경우는 <xref:System.Diagnostics.PerformanceCounterCategory.InstanceExists%2A> 메서드 결과 표시 합니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.Class#27](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.Class/CS/perfcountercatcreateexist.cs#27)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.Class#27](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.Class/VB/perfcountercatcreateexist.vb#27)]  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+    <altmember cref="T:System.Diagnostics.CounterCreationDataCollection" />
+    <altmember cref="T:System.Diagnostics.CounterSample" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PerformanceCounterCategory ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; PerformanceCounterCategory();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 클래스의 새 인스턴스를 초기화하고 <see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 속성을 비운 다음 <see cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" /> 속성을 로컬 컴퓨터로 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A> 속성은이 연결 하기 전에 설정 되어야 <xref:System.Diagnostics.PerformanceCounterCategory> 서버의 성능 개체를 사용 하 여 인스턴스. 그러지 않으면 예외가 throw됩니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 허용을 <xref:System.Diagnostics.PerformanceCounterCategory> 이름 및 명령줄에서 컴퓨터 이름입니다.  생성 된 <xref:System.Diagnostics.PerformanceCounterCategory> 해당 속성을 표시 한 다음 제공 된 매개 변수 개수에 대 한 적절 한 생성자 오버 로드를 사용 하 여 합니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.OtherMembers#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/CS/perfcountercatctor.cs#4)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.OtherMembers#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/VB/perfcountercatctor.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PerformanceCounterCategory (string categoryName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string categoryName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.#ctor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (categoryName As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; PerformanceCounterCategory(System::String ^ categoryName);" />
+      <MemberSignature Language="F#" Value="new System.Diagnostics.PerformanceCounterCategory : string -&gt; System.Diagnostics.PerformanceCounterCategory" Usage="new System.Diagnostics.PerformanceCounterCategory categoryName" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">이 <see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 인스턴스에 연결할 성능 카운터 범주 또는 성능 개체의 이름입니다.</param>
+        <summary><see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 클래스의 새 인스턴스를 초기화하고 <see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 속성을 지정한 값으로 설정한 다음 <see cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" /> 속성을 로컬 컴퓨터로 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 허용을 <xref:System.Diagnostics.PerformanceCounterCategory> 이름 및 명령줄에서 컴퓨터 이름입니다. 생성 된 <xref:System.Diagnostics.PerformanceCounterCategory> 해당 속성을 표시 한 다음 제공 된 매개 변수 개수에 대 한 적절 한 생성자 오버 로드를 사용 하 여 합니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.OtherMembers#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/CS/perfcountercatctor.cs#4)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.OtherMembers#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/VB/perfcountercatctor.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" />이 빈 문자열("")인 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" />이 <see langword="null" />인 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">범주 이름 등의 범주 정보를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public PerformanceCounterCategory (string categoryName, string machineName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string categoryName, string machineName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.#ctor(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (categoryName As String, machineName As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; PerformanceCounterCategory(System::String ^ categoryName, System::String ^ machineName);" />
+      <MemberSignature Language="F#" Value="new System.Diagnostics.PerformanceCounterCategory : string * string -&gt; System.Diagnostics.PerformanceCounterCategory" Usage="new System.Diagnostics.PerformanceCounterCategory (categoryName, machineName)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" />
+        <Parameter Name="machineName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">이 <see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 인스턴스에 연결할 성능 카운터 범주 또는 성능 개체의 이름입니다.</param>
+        <param name="machineName">성능 카운터 범주 및 관련 카운터가 있는 컴퓨터입니다.</param>
+        <summary><see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 클래스의 새 인스턴스를 초기화하고 <see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />과 <see cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" /> 속성을 지정한 값으로 설정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 허용을 <xref:System.Diagnostics.PerformanceCounterCategory> 이름 및 명령줄에서 컴퓨터 이름입니다. 생성 된 <xref:System.Diagnostics.PerformanceCounterCategory> 해당 속성을 표시 한 다음 제공 된 매개 변수 개수에 대 한 적절 한 생성자 오버 로드를 사용 하 여 합니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.OtherMembers#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/CS/perfcountercatctor.cs#4)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.OtherMembers#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/VB/perfcountercatctor.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" />이 빈 문자열("")인 경우  
+  
+또는 
+<paramref name="machineName" /> 구문이 잘못된 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" />이 <see langword="null" />인 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">컴퓨터 이름과 범주 등의 범주 정보를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryHelp">
+      <MemberSignature Language="C#" Value="public string CategoryHelp { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string CategoryHelp" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.PerformanceCounterCategory.CategoryHelp" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CategoryHelp As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ CategoryHelp { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.CategoryHelp : string" Usage="System.Diagnostics.PerformanceCounterCategory.CategoryHelp" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>범주의 도움말 텍스트를 가져옵니다.</summary>
+        <value>이 범주가 측정하는 성능 개체에 대한 설명입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Diagnostics.PerformanceCounterCategory> 사용 하 여는 <xref:System.Diagnostics.PerformanceCounterCategory.%23ctor>합니다. 라는 사용자에 게 메시지를 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory> 및 컴퓨터 이름을 설정한 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A> 및 <xref:System.Diagnostics.PerformanceCounterCategory.MachineName%2A> 입력 된 값에서 속성. 다음 값을 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A>, <xref:System.Diagnostics.PerformanceCounterCategory.MachineName%2A>, 및 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryHelp%2A> 속성 또는 해당 하는 경우 오류 메시지를 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory> 액세스할 수 없습니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.OtherMembers#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/CS/perfCounterCatProps.cs#8)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.OtherMembers#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/VB/perfcountercatprops.vb#8)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 속성이 <see langword="null" />일 경우(이 속성은 범주 도움말을 가져오기 전에 범주 이름을 설정해야 합니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+        <altmember cref="P:System.Diagnostics.PerformanceCounter.CounterHelp" />
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryName">
+      <MemberSignature Language="C#" Value="public string CategoryName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string CategoryName" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+      <MemberSignature Language="VB.NET" Value="Public Property CategoryName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ CategoryName { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.CategoryName : string with get, set" Usage="System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 범주를 정의하는 성능 개체의 이름을 가져오거나 설정합니다.</summary>
+        <value>이 <see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 인스턴스에 연결할 성능 카운터 범주 또는 성능 개체의 이름입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Diagnostics.PerformanceCounterCategory> 사용 하 여는 <xref:System.Diagnostics.PerformanceCounterCategory.%23ctor>합니다. 라는 사용자에 게 메시지를 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory> 및 컴퓨터 이름을 설정한 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A> 및 <xref:System.Diagnostics.PerformanceCounterCategory.MachineName%2A> 입력 된 값에서 속성. 다음 값을 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A>, <xref:System.Diagnostics.PerformanceCounterCategory.MachineName%2A>, 및 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryHelp%2A> 속성 또는 해당 하는 경우 오류 메시지를 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory> 액세스할 수 없습니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.OtherMembers#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/CS/perfCounterCatProps.cs#8)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.OtherMembers#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/VB/perfcountercatprops.vb#8)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />이 빈 문자열("")인 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />이 <see langword="null" />인 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="CategoryType">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.PerformanceCounterCategoryType CategoryType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Diagnostics.PerformanceCounterCategoryType CategoryType" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.PerformanceCounterCategory.CategoryType" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CategoryType As PerformanceCounterCategoryType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::PerformanceCounterCategoryType CategoryType { System::Diagnostics::PerformanceCounterCategoryType get(); };" />
+      <MemberSignature Language="F#" Value="member this.CategoryType : System.Diagnostics.PerformanceCounterCategoryType" Usage="System.Diagnostics.PerformanceCounterCategory.CategoryType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounterCategoryType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>성능 카운터 범주 형식을 가져옵니다.</summary>
+        <value><see cref="T:System.Diagnostics.PerformanceCounterCategoryType" /> 값 중 하나입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Diagnostics.PerformanceCounterCategory.CategoryType%2A> 속성을 나타냅니다 여부는 <xref:System.Diagnostics.PerformanceCounterCategory> 개체 인스턴스를 여러 개 있을 수 있습니다. 가능한 값은 <xref:System.Diagnostics.PerformanceCounterCategoryType.MultiInstance>하십시오 <xref:System.Diagnostics.PerformanceCounterCategoryType.SingleInstance>, 또는 <xref:System.Diagnostics.PerformanceCounterCategoryType.Unknown>합니다.  
+  
+ 성능 카운터 범주는 방법은 두 가지가: 단일 인스턴스 및 다중 인스턴스. 기본적으로 범주 경우 단일 인스턴스를 만들어 다른 인스턴스가 추가 되 면 다중 인스턴스가 됩니다. 범주는 애플리케이션 설정 되 고 인스턴스가 런타임에 추가 되 면 생성 됩니다. .NET Framework 버전 1.0 및 1.1에서는 아닙니다 성능 카운터 범주가 다중 인스턴스 인지 알고 있어야 하는 데 필요한 또는 단일 인스턴스. 에 [!INCLUDE[dnprdnext](~/includes/dnprdnext-md.md)], <xref:System.Diagnostics.PerformanceCounterCategoryType> 열거형 성능 카운터를 여러 인스턴스를 가질 수 있는지 여부를 나타내는 데 사용 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="CounterExists">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>지정한 카운터가 특정 범주로 등록되었는지 여부를 확인합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CounterExists">
+      <MemberSignature Language="C#" Value="public bool CounterExists (string counterName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool CounterExists(string counterName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.CounterExists(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CounterExists (counterName As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool CounterExists(System::String ^ counterName);" />
+      <MemberSignature Language="F#" Value="member this.CounterExists : string -&gt; bool" Usage="performanceCounterCategory.CounterExists counterName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="counterName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="counterName">찾을 성능 카운터의 이름입니다.</param>
+        <summary>지정한 카운터가 <see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />과 <see cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" /> 속성이 나타내는 이 범주에 등록되었는지 여부를 확인합니다.</summary>
+        <returns>카운터가 <see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 및 <see cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" /> 속성에 지정된 범주에 등록되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 설정 해야 합니다는 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A> 이 메서드를 호출 하기 전에 속성입니다. 그러지 않으면 예외가 throw됩니다.  
+  
+ 설정 하지 않은 경우는 <xref:System.Diagnostics.PerformanceCounterCategory.MachineName%2A> 속성에이 메서드는 로컬 컴퓨터를 사용 하 여 (".").  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 확인 하는지 여부를 <xref:System.Diagnostics.PerformanceCounter> 존재 합니다. 범주 이름, 카운터 이름 및 컴퓨터 이름에서에서 가져옵니다 명령줄에 제공 되는 경우. 만듭니다는 <xref:System.Diagnostics.PerformanceCounterCategory> 적절 한 사용 하 여 <xref:System.Diagnostics.PerformanceCounterCategory.%23ctor%2A>입니다. 사용 하 여는 <xref:System.Diagnostics.PerformanceCounterCategory.CounterExists%28System.String%29> 결정 하는 방법 여부를 지정 된 <xref:System.Diagnostics.PerformanceCounter> 있고, 사용자에 게 알립니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.ExistMembers#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/CS/perfcountercatobjexists.cs#4)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.ExistMembers#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/VB/perfcountercatobjcountexists.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="counterName" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 속성이 설정되어 있지 않은 경우</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.InstanceExists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="CounterExists">
+      <MemberSignature Language="C#" Value="public static bool CounterExists (string counterName, string categoryName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool CounterExists(string counterName, string categoryName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.CounterExists(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function CounterExists (counterName As String, categoryName As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool CounterExists(System::String ^ counterName, System::String ^ categoryName);" />
+      <MemberSignature Language="F#" Value="static member CounterExists : string * string -&gt; bool" Usage="System.Diagnostics.PerformanceCounterCategory.CounterExists (counterName, categoryName)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="counterName" Type="System.String" />
+        <Parameter Name="categoryName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="counterName">찾을 성능 카운터의 이름입니다.</param>
+        <param name="categoryName">지정한 성능 카운터와 관련된 성능 카운터 범주 또는 성능 개체의 이름입니다.</param>
+        <summary>지정한 카운터가 로컬 컴퓨터의 지정한 범주에 등록되었는지 여부를 확인합니다.</summary>
+        <returns>카운터가 로컬 컴퓨터의 지정한 범주에 등록되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 확인 하는지 여부를 <xref:System.Diagnostics.PerformanceCounter> 존재 합니다. 범주 이름, 카운터 이름 및 컴퓨터 이름에서에서 가져옵니다 명령줄에 제공 되는 경우. 정적 오버 로드를 사용 하 여는 <xref:System.Diagnostics.PerformanceCounterCategory.CounterExists%2A> 결정 하는 방법 여부를 지정 된 <xref:System.Diagnostics.PerformanceCounter> 에서 이름이 <xref:System.Diagnostics.PerformanceCounterCategory>합니다. 오버 로드는 컴퓨터 이름을 제공 여부에 따라 선택 됩니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.ExistMembers#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/CS/perfcountercatstatcounterexists.cs#8)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.ExistMembers#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/VB/perfcountercatstatcountexists.vb#8)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" />이 <see langword="null" />인 경우  
+  
+또는 
+<paramref name="counterName" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" />이 빈 문자열("")인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">범주 이름이 없습니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.InstanceExists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="CounterExists">
+      <MemberSignature Language="C#" Value="public static bool CounterExists (string counterName, string categoryName, string machineName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool CounterExists(string counterName, string categoryName, string machineName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.CounterExists(System.String,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function CounterExists (counterName As String, categoryName As String, machineName As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool CounterExists(System::String ^ counterName, System::String ^ categoryName, System::String ^ machineName);" />
+      <MemberSignature Language="F#" Value="static member CounterExists : string * string * string -&gt; bool" Usage="System.Diagnostics.PerformanceCounterCategory.CounterExists (counterName, categoryName, machineName)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="counterName" Type="System.String" />
+        <Parameter Name="categoryName" Type="System.String" />
+        <Parameter Name="machineName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="counterName">찾을 성능 카운터의 이름입니다.</param>
+        <param name="categoryName">지정한 성능 카운터와 관련된 성능 카운터 범주 또는 성능 개체의 이름입니다.</param>
+        <param name="machineName">성능 카운터 범주 및 관련 카운터가 있는 컴퓨터의 이름입니다.</param>
+        <summary>지정한 카운터가 원격 컴퓨터의 지정한 범주에 등록되었는지 여부를 확인합니다.</summary>
+        <returns>카운터가 지정한 컴퓨터의 지정한 범주에 등록되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 확인 하는지 여부를 <xref:System.Diagnostics.PerformanceCounter> 존재 합니다. 범주 이름, 카운터 이름 및 컴퓨터 이름에서에서 가져옵니다 명령줄에 제공 되는 경우. 정적 오버 로드를 사용 하 여는 <xref:System.Diagnostics.PerformanceCounterCategory.CounterExists%2A> 결정 하는 방법 여부를 지정 된 <xref:System.Diagnostics.PerformanceCounter> 에서 이름이 <xref:System.Diagnostics.PerformanceCounterCategory>합니다. 오버 로드는 컴퓨터 이름을 제공 여부에 따라 선택 됩니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.ExistMembers#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/CS/perfcountercatstatcounterexists.cs#8)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.ExistMembers#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/VB/perfcountercatstatcountexists.vb#8)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" />이 <see langword="null" />인 경우  
+  
+또는 
+<paramref name="counterName" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" />이 빈 문자열("")인 경우  
+  
+또는 
+<paramref name="machineName" />가 잘못되었습니다.</exception>
+        <exception cref="T:System.InvalidOperationException">범주 이름이 없습니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.InstanceExists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Create">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>사용자 지정 성능 카운터 범주와 하나 이상의 카운터를 시스템에 등록합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.Diagnostics.PerformanceCounterCategory Create (string categoryName, string categoryHelp, System.Diagnostics.CounterCreationDataCollection counterData);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Diagnostics.PerformanceCounterCategory Create(string categoryName, string categoryHelp, class System.Diagnostics.CounterCreationDataCollection counterData) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.Create(System.String,System.String,System.Diagnostics.CounterCreationDataCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (categoryName As String, categoryHelp As String, counterData As CounterCreationDataCollection) As PerformanceCounterCategory" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Diagnostics::PerformanceCounterCategory ^ Create(System::String ^ categoryName, System::String ^ categoryHelp, System::Diagnostics::CounterCreationDataCollection ^ counterData);" />
+      <MemberSignature Language="F#" Value="static member Create : string * string * System.Diagnostics.CounterCreationDataCollection -&gt; System.Diagnostics.PerformanceCounterCategory" Usage="System.Diagnostics.PerformanceCounterCategory.Create (categoryName, categoryHelp, counterData)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinmac-3.0">
+          <AttributeName>System.Obsolete("Use another overload that uses PerformanceCounterCategoryType instead")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.1;netcore-2.2;dotnet-plat-ext-2.2;netcore-3.0">
+          <AttributeName>System.Obsolete("This method has been deprecated.  Please use System.Diagnostics.PerformanceCounterCategory.Create(string categoryName, string categoryHelp, PerformanceCounterCategoryType categoryType, CounterCreationDataCollection counterData) instead.  http://go.microsoft.com/fwlink/?linkid=14202")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="dotnet-plat-ext-3.0">
+          <AttributeName>System.Obsolete("This method has been deprecated.  Please use System.Diagnostics.PerformanceCounterCategory.Create(string categoryName, string categoryHelp, PerformanceCounterCategoryType categoryType, CounterCreationDataCollection counterData) instead.  https://go.microsoft.com/fwlink/?linkid=14202")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounterCategory</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" />
+        <Parameter Name="categoryHelp" Type="System.String" />
+        <Parameter Name="counterData" Type="System.Diagnostics.CounterCreationDataCollection" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">만들어서 시스템에 등록할 사용자 지정 성능 카운터 범주의 이름입니다.</param>
+        <param name="categoryHelp">사용자 지정 범주에 대한 설명입니다.</param>
+        <param name="counterData">새 범주의 일부로 만들 카운터를 지정하는 <see cref="T:System.Diagnostics.CounterCreationDataCollection" />입니다.</param>
+        <summary>지정한 카운터를 포함하는 사용자 지정 성능 카운터 범주를 로컬 컴퓨터에 등록합니다.</summary>
+        <returns>새 사용자 지정 범주 또는 성능 개체와 관련된 <see cref="T:System.Diagnostics.PerformanceCounterCategory" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 확인 여부를 <xref:System.Diagnostics.PerformanceCounterCategory> "orders" 라는 개체가 있습니다. 만드는 그렇지 않은 경우에 <xref:System.Diagnostics.PerformanceCounterCategory> 사용 하 여 개체를 <xref:System.Diagnostics.CounterCreationDataCollection> 두 가지 성능 카운터를 포함 하는 개체입니다.  
+  
+ [!code-cpp[PerfCounter_ccd#1](~/samples/snippets/cpp/VS_Snippets_CLR/PerfCounter_ccd/CPP/ccd.cpp#1)]
+ [!code-csharp[PerfCounter_ccd#1](~/samples/snippets/csharp/VS_Snippets_CLR/PerfCounter_ccd/CS/ccd.cs#1)]
+ [!code-vb[PerfCounter_ccd#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/PerfCounter_ccd/VB/ccd.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="counterData" /> 컬렉션에 지정된 카운터 이름이 <see langword="null" />이거나 빈 문자열("")인 경우  
+  
+또는 
+지정된 카운터가 <paramref name="counterData" /> 컬렉션에 이미 있는 경우  
+  
+또는 
+<paramref name="counterName" /> 매개 변수 구문이 잘못된 경우. 구문에 백슬래시 문자("\\")가 포함되었거나 구문의 길이가 80자를 넘은 것 같습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">범주가 이미 로컬 컴퓨터에 있는 경우  
+  
+또는 
+<paramref name="counterData" /> 컬렉션의 레이아웃이 기본 카운터에 맞지 않는 경우. <see langword="AverageCount64" />, <see langword="AverageTimer32" />, <see langword="CounterMultiTimer" />, <see langword="CounterMultiTimerInverse" />, <see langword="CounterMultiTimer100Ns" />, <see langword="CounterMultiTimer100NsInverse" />, <see langword="RawFraction" />, <see langword="SampleFraction" /> 또는 <see langword="SampleCounter" /> 형식의 카운터 바로 다음에는 기본 카운터 형식(<see langword="AverageBase" />, <see langword="MultiBase" />, <see langword="RawBase" /> 또는 <see langword="SampleBase" />)중 하나가 와야 합니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주에서 관리 작업을 수행 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Administer" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Delete(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+        <altmember cref="T:System.Diagnostics.CounterCreationDataCollection" />
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.Diagnostics.PerformanceCounterCategory Create (string categoryName, string categoryHelp, System.Diagnostics.PerformanceCounterCategoryType categoryType, System.Diagnostics.CounterCreationDataCollection counterData);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Diagnostics.PerformanceCounterCategory Create(string categoryName, string categoryHelp, valuetype System.Diagnostics.PerformanceCounterCategoryType categoryType, class System.Diagnostics.CounterCreationDataCollection counterData) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.Create(System.String,System.String,System.Diagnostics.PerformanceCounterCategoryType,System.Diagnostics.CounterCreationDataCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (categoryName As String, categoryHelp As String, categoryType As PerformanceCounterCategoryType, counterData As CounterCreationDataCollection) As PerformanceCounterCategory" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Diagnostics::PerformanceCounterCategory ^ Create(System::String ^ categoryName, System::String ^ categoryHelp, System::Diagnostics::PerformanceCounterCategoryType categoryType, System::Diagnostics::CounterCreationDataCollection ^ counterData);" />
+      <MemberSignature Language="F#" Value="static member Create : string * string * System.Diagnostics.PerformanceCounterCategoryType * System.Diagnostics.CounterCreationDataCollection -&gt; System.Diagnostics.PerformanceCounterCategory" Usage="System.Diagnostics.PerformanceCounterCategory.Create (categoryName, categoryHelp, categoryType, counterData)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounterCategory</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+        <Parameter Name="categoryHelp" Type="System.String" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+        <Parameter Name="categoryType" Type="System.Diagnostics.PerformanceCounterCategoryType" Index="2" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+        <Parameter Name="counterData" Type="System.Diagnostics.CounterCreationDataCollection" Index="3" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">만들어서 시스템에 등록할 사용자 지정 성능 카운터 범주의 이름입니다.</param>
+        <param name="categoryHelp">사용자 지정 범주에 대한 설명입니다.</param>
+        <param name="categoryType"><see cref="T:System.Diagnostics.PerformanceCounterCategoryType" /> 값 중 하나입니다.</param>
+        <param name="counterData">새 범주의 일부로 만들 카운터를 지정하는 <see cref="T:System.Diagnostics.CounterCreationDataCollection" />입니다.</param>
+        <summary>지정한 카운터를 포함하는 사용자 지정 성능 카운터 범주를 로컬 컴퓨터에 등록합니다.</summary>
+        <returns>새 사용자 지정 범주 또는 성능 개체와 관련된 <see cref="T:System.Diagnostics.PerformanceCounterCategory" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `categoryType` 성능 카운터 범주가 단일 인스턴스 인지 아니면 다중 인스턴스 매개 변수를 지정 합니다. 기본적으로 범주 경우 단일 인스턴스를 만들어 다른 인스턴스가 추가 되 면 다중 인스턴스가 됩니다. 범주는 애플리케이션 설정 되 고 인스턴스가 런타임에 추가 되 면 생성 됩니다. .NET Framework 버전 1.0 및 1.1에서는 아닙니다 성능 카운터 범주가 다중 인스턴스 인지 알고 있어야 하는 데 필요한 또는 단일 인스턴스. 에 [!INCLUDE[dnprdnext](~/includes/dnprdnext-md.md)], <xref:System.Diagnostics.PerformanceCounterCategoryType> 열거형 성능 카운터를 여러 인스턴스를 가질 수 있는지 여부를 나타내는 데 사용 됩니다.  
+  
+ 성능 카운터 범주와 함께 설치 된 [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)] 자체 메모리가 있는 각 성능 카운터 범주를 사용 하 여 별도 공유 메모리를 사용 합니다.  레지스트리 키 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services FileMappingSize 라는 DWORD를 만들어 별도 공유 메모리의 크기를 지정할 수 있습니다\\*\<범주 이름 >* \ 성능을 제공 합니다. FileMappingSize 값 범주의 공유 메모리 크기 설정 됩니다. 기본 크기는 10 진수 131072입니다. FileMappingSize 값 없는 경우는 `fileMappingSize` 특성에 대 한 값을 `performanceCounters` 합니다 Machine.config 파일에 지정 된 요소를 사용할 구성 파일을 처리에 대 한 추가 오버 헤드를 유발 합니다. 레지스트리에서 파일 매핑 크기를 설정 하 여 애플리케이션 시작에 대 한 성능 향상을 이룰 수 있습니다.  
+  
+> [!NOTE]
+>  애플리케이션을 설치 하는 동안, 애플리케이션의 실행 중이 아니라 새 성능 카운터 범주를 만들 수 있음을 것이 좋습니다. 이렇게 하면 운영 체제 등록 된 성능 카운터 범주의 목록을 새로 고칠 수 있습니다. 목록 새로 고치지 않은, 범주를 사용 하려는 시도가 실패 합니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Diagnostics.PerformanceCounterCategory.Create%2A> 메서드. 초당 주문 수에 대 한 다중 인스턴스 성능 카운터 범주를 사용자 지정을 만드는 방법을 보여 줍니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategoryType#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategoryType/CS/program.cs#2)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategoryType#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategoryType/VB/program.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="counterData" /> 컬렉션에 지정된 카운터 이름이 <see langword="null" />이거나 빈 문자열("")인 경우  
+  
+또는 
+지정된 카운터가 <paramref name="counterData" /> 컬렉션에 이미 있는 경우  
+  
+또는 
+ <paramref name="counterName" />에 잘못된 구문이 있는 경우. 구문에 백슬래시 문자("\\")가 포함되었거나 구문의 길이가 80자를 넘은 것 같습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" />가 <see langword="null" />입니다.  
+  
+또는 
+ <paramref name="counterData" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="categoryType" /> 값이 <see langword="MultiInstance" />, <see langword="SingleInstance" /> 또는 <see langword="Unknown" /> 값의 범위를 벗어난 경우</exception>
+        <exception cref="T:System.InvalidOperationException">범주가 이미 로컬 컴퓨터에 있는 경우  
+  
+또는 
+<paramref name="counterData" /> 컬렉션의 레이아웃이 기본 카운터에 맞지 않는 경우. <see langword="AverageCount64" />, <see langword="AverageTimer32" />, <see langword="CounterMultiTimer" />, <see langword="CounterMultiTimerInverse" />, <see langword="CounterMultiTimer100Ns" />, <see langword="CounterMultiTimer100NsInverse" />, <see langword="RawFraction" />, <see langword="SampleFraction" /> 또는 <see langword="SampleCounter" /> 형식의 카운터 바로 다음에는 기본 카운터 형식(<see langword="AverageBase" />, <see langword="MultiBase" />, <see langword="RawBase" /> 또는 <see langword="SampleBase" />)중 하나가 와야 합니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주에서 관리 작업을 수행 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Administer" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Delete(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+        <altmember cref="T:System.Diagnostics.CounterCreationDataCollection" />
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.Diagnostics.PerformanceCounterCategory Create (string categoryName, string categoryHelp, string counterName, string counterHelp);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Diagnostics.PerformanceCounterCategory Create(string categoryName, string categoryHelp, string counterName, string counterHelp) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.Create(System.String,System.String,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (categoryName As String, categoryHelp As String, counterName As String, counterHelp As String) As PerformanceCounterCategory" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Diagnostics::PerformanceCounterCategory ^ Create(System::String ^ categoryName, System::String ^ categoryHelp, System::String ^ counterName, System::String ^ counterHelp);" />
+      <MemberSignature Language="F#" Value="static member Create : string * string * string * string -&gt; System.Diagnostics.PerformanceCounterCategory" Usage="System.Diagnostics.PerformanceCounterCategory.Create (categoryName, categoryHelp, counterName, counterHelp)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinmac-3.0">
+          <AttributeName>System.Obsolete("Use another overload that uses PerformanceCounterCategoryType instead")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;dotnet-plat-ext-2.1;netcore-2.1;netcore-2.2;dotnet-plat-ext-2.2;netcore-3.0">
+          <AttributeName>System.Obsolete("This method has been deprecated.  Please use System.Diagnostics.PerformanceCounterCategory.Create(string categoryName, string categoryHelp, PerformanceCounterCategoryType categoryType, string counterName, string counterHelp) instead.  http://go.microsoft.com/fwlink/?linkid=14202")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="dotnet-plat-ext-3.0">
+          <AttributeName>System.Obsolete("This method has been deprecated.  Please use System.Diagnostics.PerformanceCounterCategory.Create(string categoryName, string categoryHelp, PerformanceCounterCategoryType categoryType, string counterName, string counterHelp) instead.  https://go.microsoft.com/fwlink/?linkid=14202")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounterCategory</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" />
+        <Parameter Name="categoryHelp" Type="System.String" />
+        <Parameter Name="counterName" Type="System.String" />
+        <Parameter Name="counterHelp" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">만들어서 시스템에 등록할 사용자 지정 성능 카운터 범주의 이름입니다.</param>
+        <param name="categoryHelp">사용자 지정 범주에 대한 설명입니다.</param>
+        <param name="counterName">새 범주의 일부로 만들 <see langword="NumberOfItems32" /> 형식의 새 카운터 이름입니다.</param>
+        <param name="counterHelp">새 사용자 지정 범주와 관련된 카운터에 대한 설명입니다.</param>
+        <summary><see langword="NumberOfItems32" /> 형식의 단일 카운터를 포함하는 사용자 지정 성능 카운터 범주를 로컬 컴퓨터에 등록합니다.</summary>
+        <returns>새 시스템 범주 또는 성능 개체와 관련된 <see cref="T:System.Diagnostics.PerformanceCounterCategory" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Diagnostics.PerformanceCounterCategory> 및 단일 <xref:System.Diagnostics.PerformanceCounter> 를 사용 하 여 각각에 대 한 도움말 텍스트를 사용 하 여를 <xref:System.Diagnostics.PerformanceCounterCategory.Create%28System.String%2CSystem.String%2CSystem.String%2CSystem.String%29> 메서드.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.OtherMembers#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/CS/perfcountercatcreate.cs#2)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.OtherMembers#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/VB/perfcountercatcreate.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="counterName" />이 <see langword="null" />이거나 빈 문자열("")인 경우  
+  
+또는 
+<paramref name="counterName" />이 지정한 카운터가 이미 있는 경우  
+  
+또는 
+ <paramref name="counterName" />에 잘못된 구문이 있는 경우. 구문에 백슬래시 문자("\\")가 포함되었거나 구문의 길이가 80자를 넘은 것 같습니다.</exception>
+        <exception cref="T:System.InvalidOperationException">범주가 이미 로컬 컴퓨터에 있는 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" />가 <see langword="null" />입니다.  
+  
+또는 
+ <paramref name="counterHelp" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주에서 관리 작업을 수행 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Administer" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Delete(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+        <altmember cref="P:System.Diagnostics.PerformanceCounter.CounterHelp" />
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.Diagnostics.PerformanceCounterCategory Create (string categoryName, string categoryHelp, System.Diagnostics.PerformanceCounterCategoryType categoryType, string counterName, string counterHelp);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Diagnostics.PerformanceCounterCategory Create(string categoryName, string categoryHelp, valuetype System.Diagnostics.PerformanceCounterCategoryType categoryType, string counterName, string counterHelp) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.Create(System.String,System.String,System.Diagnostics.PerformanceCounterCategoryType,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (categoryName As String, categoryHelp As String, categoryType As PerformanceCounterCategoryType, counterName As String, counterHelp As String) As PerformanceCounterCategory" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Diagnostics::PerformanceCounterCategory ^ Create(System::String ^ categoryName, System::String ^ categoryHelp, System::Diagnostics::PerformanceCounterCategoryType categoryType, System::String ^ counterName, System::String ^ counterHelp);" />
+      <MemberSignature Language="F#" Value="static member Create : string * string * System.Diagnostics.PerformanceCounterCategoryType * string * string -&gt; System.Diagnostics.PerformanceCounterCategory" Usage="System.Diagnostics.PerformanceCounterCategory.Create (categoryName, categoryHelp, categoryType, counterName, counterHelp)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounterCategory</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+        <Parameter Name="categoryHelp" Type="System.String" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+        <Parameter Name="categoryType" Type="System.Diagnostics.PerformanceCounterCategoryType" Index="2" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+        <Parameter Name="counterName" Type="System.String" Index="3" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+        <Parameter Name="counterHelp" Type="System.String" Index="4" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinmac-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">만들어서 시스템에 등록할 사용자 지정 성능 카운터 범주의 이름입니다.</param>
+        <param name="categoryHelp">사용자 지정 범주에 대한 설명입니다.</param>
+        <param name="categoryType">범주가 <see cref="F:System.Diagnostics.PerformanceCounterCategoryType.MultiInstance" />, <see cref="F:System.Diagnostics.PerformanceCounterCategoryType.SingleInstance" /> 또는 <see cref="F:System.Diagnostics.PerformanceCounterCategoryType.Unknown" />인지를 지정하는 <see cref="T:System.Diagnostics.PerformanceCounterCategoryType" /> 값 중 하나입니다.</param>
+        <param name="counterName">새 범주의 일부로 만들 새 카운터의 이름입니다.</param>
+        <param name="counterHelp">새 사용자 지정 범주와 관련된 카운터에 대한 설명입니다.</param>
+        <summary><see cref="F:System.Diagnostics.PerformanceCounterType.NumberOfItems32" /> 형식의 단일 카운터를 포함하는 사용자 지정 성능 카운터 범주를 로컬 컴퓨터에 등록합니다.</summary>
+        <returns>새 시스템 범주 또는 성능 개체와 관련된 <see cref="T:System.Diagnostics.PerformanceCounterCategory" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `categoryType` 성능 카운터 범주가 단일 인스턴스 인지 아니면 다중 인스턴스 매개 변수를 지정 합니다. 기본적으로 범주 경우 단일 인스턴스를 만들어 다른 인스턴스가 추가 되 면 다중 인스턴스가 됩니다. 범주는 애플리케이션 설정 되 고 인스턴스가 런타임에 추가 되 면 생성 됩니다. .NET Framework 버전 1.0 및 1.1에서는 아닙니다 성능 카운터 범주가 다중 인스턴스 인지 알고 있어야 하는 데 필요한 또는 단일 인스턴스. 에 [!INCLUDE[dnprdnext](~/includes/dnprdnext-md.md)], <xref:System.Diagnostics.PerformanceCounterCategoryType> 열거형 성능 카운터를 여러 인스턴스를 가질 수 있는지 여부를 나타내는 데 사용 됩니다.  
+  
+ 성능 카운터 범주와 함께 설치 된 [!INCLUDE[dnprdnlong](~/includes/dnprdnlong-md.md)] 자체 메모리가 있는 각 성능 카운터 범주를 사용 하 여 별도 공유 메모리를 사용 합니다. 레지스트리 키 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services FileMappingSize 라는 DWORD를 만들어 별도 공유 메모리의 크기를 지정할 수 있습니다\\*\<범주 이름 >* \ 성능을 제공 합니다. FileMappingSize 값 범주의 공유 메모리 크기 설정 됩니다. 기본 크기는 10 진수 131072입니다. FileMappingSize 값 없는 경우는 `fileMappingSize` 특성에 대 한 값을 `performanceCounters` 합니다 Machine.config 파일에 지정 된 요소를 사용할 구성 파일을 처리에 대 한 추가 오버 헤드를 유발 합니다. 레지스트리에서 파일 매핑 크기를 설정 하 여 애플리케이션 시작에 대 한 성능 향상을 이룰 수 있습니다.  
+  
+> [!NOTE]
+>  애플리케이션을 설치 하는 동안, 애플리케이션의 실행 중이 아니라 새 성능 카운터 범주를 만들 수 있음을 것이 좋습니다. 이렇게 하면 운영 체제 등록 된 성능 카운터 범주의 목록을 새로 고칠 수 있습니다. 목록 새로 고치지 않은, 범주를 사용 하려는 시도가 실패 합니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 <xref:System.Diagnostics.PerformanceCounterCategory.Create%2A> 메서드. 사용자 지정, 단일 인스턴스 성능 카운터 범주를 만드는 방법을 보여 줍니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategoryType#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategoryType/CS/program.cs#3)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategoryType#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategoryType/VB/program.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="counterName" />이 <see langword="null" />이거나 빈 문자열("")인 경우  
+  
+또는 
+<paramref name="counterName" />이 지정한 카운터가 이미 있는 경우  
+  
+또는 
+ <paramref name="counterName" />에 잘못된 구문이 있는 경우. 구문에 백슬래시 문자("\\")가 포함되었거나 구문의 길이가 80자를 넘은 것 같습니다.</exception>
+        <exception cref="T:System.InvalidOperationException">범주가 이미 로컬 컴퓨터에 있는 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" />가 <see langword="null" />입니다.  
+  
+또는 
+ <paramref name="counterHelp" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주에서 관리 작업을 수행 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Administer" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Delete(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+        <altmember cref="T:System.Diagnostics.CounterCreationDataCollection" />
+      </Docs>
+    </Member>
+    <Member MemberName="Delete">
+      <MemberSignature Language="C#" Value="public static void Delete (string categoryName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Delete(string categoryName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.Delete(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub Delete (categoryName As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void Delete(System::String ^ categoryName);" />
+      <MemberSignature Language="F#" Value="static member Delete : string -&gt; unit" Usage="System.Diagnostics.PerformanceCounterCategory.Delete categoryName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">삭제할 사용자 지정 성능 카운터 범주의 이름입니다.</param>
+        <summary>로컬 컴퓨터에서 범주와 관련 카운터를 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 시스템에서 사용자 지정 성능 카운터 범주를 삭제할 수 있습니다. 범주에서 카운터를 삭제할 수 없습니다. 이렇게 하려면 범주를 삭제 하 고 유지 하려는 카운터를 사용 하 여 범주를 다시 만듭니다. 예외를 방지 하려면 범주를 삭제 하기 전에 있는지 확인 합니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.Delete%2A> 메서드를 삭제는 <xref:System.Diagnostics.PerformanceCounterCategory> 및 <xref:System.Diagnostics.PerformanceCounter> 포함 된 개체입니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.OtherMembers#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/CS/perfCounterCatDelete.cs#6)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.OtherMembers#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/VB/perfcountercatdelete.vb#6)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" /> 매개 변수 구문이 잘못된 경우. 구문에 백슬래시 문자("\\")가 포함되었거나 구문의 길이가 80자를 넘은 것 같습니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이 범주가 사용자 지정 범주가 아니므로 삭제될 수 없는 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Administer" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Create(System.String,System.String,System.Diagnostics.CounterCreationDataCollection)" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Exists">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>범주가 시스템에 등록되었는지 여부를 확인합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Exists">
+      <MemberSignature Language="C#" Value="public static bool Exists (string categoryName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool Exists(string categoryName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Exists (categoryName As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool Exists(System::String ^ categoryName);" />
+      <MemberSignature Language="F#" Value="static member Exists : string -&gt; bool" Usage="System.Diagnostics.PerformanceCounterCategory.Exists categoryName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">찾을 성능 카운터 범주의 이름입니다.</param>
+        <summary>범주가 로컬 시스템에 등록되었는지 여부를 확인합니다.</summary>
+        <returns>범주가 등록되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Diagnostics.PerformanceCounterCategory.Exists%2A> 메서드 컴퓨터의 모든 성능 카운터 있는지 검사 하는 동안 성능이 상당히 저하 될 수 있습니다. 성능 카운터로만 작성 하는 경우에 애플리케이션이 설치 되어 있고 범주가 있다고 가정 카운터에 액세스할 때 성능 카운터를 만들어 성능 카운터에 대 한 전체 검색을 방지할 수 있습니다. 성능 카운터에서 읽을 때 성능 카운터 검색 하지 않으려면 방법이 없습니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 확인 여부를 <xref:System.Diagnostics.PerformanceCounterCategory> "orders" 라는 개체가 있습니다. 만드는 그렇지 않은 경우에 <xref:System.Diagnostics.PerformanceCounterCategory> 사용 하 여 개체를 <xref:System.Diagnostics.CounterCreationDataCollection> 두 가지 성능 카운터를 포함 하는 개체입니다.  
+  
+ [!code-cpp[PerfCounter_ccd#1](~/samples/snippets/cpp/VS_Snippets_CLR/PerfCounter_ccd/CPP/ccd.cpp#1)]
+ [!code-csharp[PerfCounter_ccd#1](~/samples/snippets/csharp/VS_Snippets_CLR/PerfCounter_ccd/CS/ccd.cs#1)]
+ [!code-vb[PerfCounter_ccd#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/PerfCounter_ccd/VB/ccd.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" /> 매개 변수가 빈 문자열("")입니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.CounterExists(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.InstanceExists(System.String)" />
+      </Docs>
+    </Member>
+    <Member MemberName="Exists">
+      <MemberSignature Language="C#" Value="public static bool Exists (string categoryName, string machineName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool Exists(string categoryName, string machineName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Exists (categoryName As String, machineName As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool Exists(System::String ^ categoryName, System::String ^ machineName);" />
+      <MemberSignature Language="F#" Value="static member Exists : string * string -&gt; bool" Usage="System.Diagnostics.PerformanceCounterCategory.Exists (categoryName, machineName)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="categoryName" Type="System.String" />
+        <Parameter Name="machineName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="categoryName">찾을 성능 카운터 범주의 이름입니다.</param>
+        <param name="machineName">해당 범주에 대해 조사할 컴퓨터의 이름입니다.</param>
+        <summary>범주가 지정한 컴퓨터에 등록되었는지 여부를 확인합니다.</summary>
+        <returns>범주가 등록되었으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Diagnostics.PerformanceCounterCategory.Exists%2A> 메서드 컴퓨터의 모든 성능 카운터 있는지 검사 하는 동안 성능이 상당히 저하 될 수 있습니다. 성능 카운터로만 작성 하는 경우에 애플리케이션이 설치 되어 있고 범주가 있다고 가정 카운터에 액세스할 때 성능 카운터를 만들어 성능 카운터에 대 한 전체 검색을 방지할 수 있습니다. 성능 카운터에서 읽을 때 성능 카운터 검색 하지 않으려면 방법이 없습니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 확인 여부를 <xref:System.Diagnostics.PerformanceCounterCategory> 개체인 `Orders` 존재 합니다. 존재 하지 않는 경우이 예에서는 만듭니다는 <xref:System.Diagnostics.PerformanceCounterCategory> 사용 하 여 개체를 <xref:System.Diagnostics.CounterCreationDataCollection> 두 가지 성능 카운터를 포함 하는 개체입니다.  
+  
+ [!code-cpp[PerfCounter_ccd#1](~/samples/snippets/cpp/VS_Snippets_CLR/PerfCounter_ccd/CPP/ccd.cpp#1)]
+ [!code-csharp[PerfCounter_ccd#1](~/samples/snippets/csharp/VS_Snippets_CLR/PerfCounter_ccd/CS/ccd.cs#1)]
+ [!code-vb[PerfCounter_ccd#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/PerfCounter_ccd/VB/ccd.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="categoryName" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" /> 매개 변수가 빈 문자열("")입니다.  
+  
+또는 
+<paramref name="machineName" /> 매개 변수가 잘못된 경우</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.IO.IOException">네트워크 경로를 찾을 수 없는 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">호출자에게 필요한 권한이 없는 경우  
+  
+또는 
+관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.CounterExists(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.InstanceExists(System.String)" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetCategories">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>컴퓨터에 등록된 성능 카운터 범주의 목록을 검색합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetCategories">
+      <MemberSignature Language="C#" Value="public static System.Diagnostics.PerformanceCounterCategory[] GetCategories ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Diagnostics.PerformanceCounterCategory[] GetCategories() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.GetCategories" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetCategories () As PerformanceCounterCategory()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Diagnostics::PerformanceCounterCategory ^&gt; ^ GetCategories();" />
+      <MemberSignature Language="F#" Value="static member GetCategories : unit -&gt; System.Diagnostics.PerformanceCounterCategory[]" Usage="System.Diagnostics.PerformanceCounterCategory.GetCategories " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounterCategory[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>로컬 컴퓨터에 등록된 성능 카운터 범주의 목록을 검색합니다.</summary>
+        <returns>로컬 컴퓨터에 등록된 범주를 나타내는 <see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 개체의 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.GetCategories%2A> 배열을 반환 하는 방법 <xref:System.Diagnostics.PerformanceCounterCategory> 로컬 컴퓨터 또는 지정된 된 컴퓨터에서 개체입니다. 변환 된 <xref:System.Diagnostics.PerformanceCounterCategory> 배열 정렬 한 후 사용자에 대 한 표시는 범주 이름의 배열입니다. <xref:System.Diagnostics.PerformanceCounterCategory.GetCategories%2A> 오버 로드를 컴퓨터 이름 지정 여부에 따라 선택 됩니다.  
+  
+ [!code-cpp[System.Diagnostics.PerformanceCounterCategory.GetMembers#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/cpp/perfcountergetcat.cpp#2)]
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.GetMembers#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/CS/perfcountergetcat.cs#2)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.GetMembers#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/VB/perfcountercatgetcat.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCategories">
+      <MemberSignature Language="C#" Value="public static System.Diagnostics.PerformanceCounterCategory[] GetCategories (string machineName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Diagnostics.PerformanceCounterCategory[] GetCategories(string machineName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.GetCategories(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetCategories (machineName As String) As PerformanceCounterCategory()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static cli::array &lt;System::Diagnostics::PerformanceCounterCategory ^&gt; ^ GetCategories(System::String ^ machineName);" />
+      <MemberSignature Language="F#" Value="static member GetCategories : string -&gt; System.Diagnostics.PerformanceCounterCategory[]" Usage="System.Diagnostics.PerformanceCounterCategory.GetCategories machineName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounterCategory[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="machineName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="machineName">조사할 컴퓨터입니다.</param>
+        <summary>지정한 컴퓨터에 등록된 성능 카운터 범주의 목록을 검색합니다.</summary>
+        <returns>지정한 컴퓨터에 등록된 범주를 나타내는 <see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 개체의 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 로컬 컴퓨터의 범주를 검색 하려면 다른 오버 로드를 사용 하거나 전달 "."와 `machineName` 매개 변수입니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.GetCategories%2A> 배열을 반환 하는 방법 <xref:System.Diagnostics.PerformanceCounterCategory> 로컬 컴퓨터 또는 지정된 된 컴퓨터에서 개체입니다. 변환 된 <xref:System.Diagnostics.PerformanceCounterCategory> 배열 정렬 한 후 사용자에 대 한 표시는 범주 이름의 배열입니다. <xref:System.Diagnostics.PerformanceCounterCategory.GetCategories%2A> 오버 로드를 컴퓨터 이름 지정 여부에 따라 선택 됩니다.  
+  
+ [!code-cpp[System.Diagnostics.PerformanceCounterCategory.GetMembers#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/cpp/perfcountergetcat.cpp#2)]
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.GetMembers#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/CS/perfcountergetcat.cs#2)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.GetMembers#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/VB/perfcountercatgetcat.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="machineName" /> 매개 변수가 잘못된 경우</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetCounters">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>이 성능 카운터 범주에서 카운터 목록을 검색합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetCounters">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.PerformanceCounter[] GetCounters ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Diagnostics.PerformanceCounter[] GetCounters() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.GetCounters" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetCounters () As PerformanceCounter()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Diagnostics::PerformanceCounter ^&gt; ^ GetCounters();" />
+      <MemberSignature Language="F#" Value="member this.GetCounters : unit -&gt; System.Diagnostics.PerformanceCounter[]" Usage="performanceCounterCategory.GetCounters " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounter[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>정확히 하나의 인스턴스가 포함된 성능 카운터 범주에서 카운터 목록을 검색합니다.</summary>
+        <returns>이러한 단일 인스턴스 성능 카운터 범주와 관련된 범주를 나타내는 <see cref="T:System.Diagnostics.PerformanceCounter" /> 개체의 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 성능 개체 인스턴스에 대 한 자세한 내용은 참조는 <xref:System.Diagnostics.PerformanceCounter> 클래스 개요입니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는의 목록을 가져옵니다 합니다 <xref:System.Diagnostics.PerformanceCounter> 개체는 <xref:System.Diagnostics.PerformanceCounterCategory>합니다. 먼저 만듭니다는 <xref:System.Diagnostics.PerformanceCounterCategory> 적절 한 생성자를 사용 하 여 컴퓨터 이름을 지정 여부에 기반 합니다. 사용 하 여는 <xref:System.Diagnostics.PerformanceCounterCategory.GetCounters%2A> 배열을 반환 하는 방법 <xref:System.Diagnostics.PerformanceCounter> 개체를 선택 하는 <xref:System.Diagnostics.PerformanceCounterCategory.GetCounters%2A> 인스턴스 이름을 지정 하는지 여부에 따라 오버 로드 합니다.  
+  
+ 이 <xref:System.Diagnostics.PerformanceCounterCategory.GetCounters> 오버 로드는 단일 인스턴스 범주를 사용 하 여 사용 하지 않으면 실패 합니다.  
+  
+ [!code-cpp[System.Diagnostics.PerformanceCounterCategory.GetMembers#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/cpp/perfcountercatgetcount.cpp#4)]
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.GetMembers#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/CS/perfcountercatgetcount.cs#4)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.GetMembers#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/VB/perfcountercatgetcount.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">범주가 단일 인스턴스가 아닌 경우</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.InvalidOperationException">범주에 연관된 인스턴스가 없는 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCounters">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.PerformanceCounter[] GetCounters (string instanceName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Diagnostics.PerformanceCounter[] GetCounters(string instanceName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.GetCounters(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetCounters (instanceName As String) As PerformanceCounter()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::Diagnostics::PerformanceCounter ^&gt; ^ GetCounters(System::String ^ instanceName);" />
+      <MemberSignature Language="F#" Value="member this.GetCounters : string -&gt; System.Diagnostics.PerformanceCounter[]" Usage="performanceCounterCategory.GetCounters instanceName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.PerformanceCounter[]</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="instanceName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="instanceName">관련 카운터 목록을 검색할 성능 개체 인스턴스입니다.</param>
+        <summary>인스턴스가 하나 이상 포함된 성능 카운터 범주에서 카운터 목록을 검색합니다.</summary>
+        <returns>이러한 성능 카운터 범주의 지정한 개체 인스턴스와 관련된 카운터를 나타내는 <see cref="T:System.Diagnostics.PerformanceCounter" /> 개체의 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 단일 인스턴스 범주를 나타내기 위해 빈 문자열을 전달 합니다 ("")에 대 한는 `instanceName` 매개 변수입니다.  
+  
+ 성능 개체 인스턴스에 대 한 자세한 내용은 참조는 <xref:System.Diagnostics.PerformanceCounter> 클래스 개요입니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는의 목록을 가져옵니다 합니다 <xref:System.Diagnostics.PerformanceCounter> 개체는 <xref:System.Diagnostics.PerformanceCounterCategory>합니다. 먼저 만듭니다는 <xref:System.Diagnostics.PerformanceCounterCategory> 적절 한 생성자를 사용 하 여 컴퓨터 이름을 지정 여부에 기반 합니다. 사용 하 여는 <xref:System.Diagnostics.PerformanceCounterCategory.GetCounters%2A> 배열을 반환 하는 방법 <xref:System.Diagnostics.PerformanceCounter> 개체를 선택 하는 <xref:System.Diagnostics.PerformanceCounterCategory.GetCounters%2A> 인스턴스 이름을 지정 하는지 여부에 따라 오버 로드 합니다.  
+  
+ 이 <xref:System.Diagnostics.PerformanceCounterCategory.GetCounters%28System.String%29> 오버 로드 인스턴스를 포함 하는 범주를 사용 하 여 사용 하지 않으면 실패 합니다.  
+  
+ [!code-cpp[System.Diagnostics.PerformanceCounterCategory.GetMembers#4](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/cpp/perfcountercatgetcount.cpp#4)]
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.GetMembers#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/CS/perfcountercatgetcount.cs#4)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.GetMembers#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/VB/perfcountercatgetcount.vb#4)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="instanceName" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이 <see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />의 <see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 속성을 설정하지 않은 경우  
+  
+또는 
+이 범주에 <paramref name="instanceName" /> 매개 변수에 의해 지정된 인스턴스가 없는 경우</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetInstanceNames">
+      <MemberSignature Language="C#" Value="public string[] GetInstanceNames ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string[] GetInstanceNames() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.GetInstanceNames" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetInstanceNames () As String()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; cli::array &lt;System::String ^&gt; ^ GetInstanceNames();" />
+      <MemberSignature Language="F#" Value="member this.GetInstanceNames : unit -&gt; string[]" Usage="performanceCounterCategory.GetInstanceNames " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String[]</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 범주와 관련된 성능 개체 인스턴스 목록을 검색합니다.</summary>
+        <returns>이 범주와 관련된 성능 개체 인스턴스 이름을 나타내는 문자열 배열이거나, 해당 범주에 성능 개체 인스턴스가 하나만 있는 경우 빈 문자열("")을 포함하는 단일 엔트리 배열입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는의 목록을 가져옵니다 합니다 <xref:System.Diagnostics.PerformanceCounter> 개체는 <xref:System.Diagnostics.PerformanceCounterCategory>합니다. 먼저 만듭니다는 <xref:System.Diagnostics.PerformanceCounterCategory> 컴퓨터 이름을 지정 하는지 여부에 따라 적절 한 생성자를 사용 하 여 개체입니다. 사용 하 여 <xref:System.Diagnostics.PerformanceCounterCategory.GetInstanceNames%2A> 배열로 인스턴스 이름을 반환할 <xref:System.String>를 정렬 하 고 표시 하는 합니다.  
+  
+ [!code-cpp[System.Diagnostics.PerformanceCounterCategory.GetMembers#6](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/cpp/perfcountercatgetinst.cpp#6)]
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.GetMembers#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/CS/perfcountercatgetinst.cs#6)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.GetMembers#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.GetMembers/VB/perfcountercatgetinst.vb#6)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 속성이 <see langword="null" />일 경우(이 속성은 속성을 설정하지 않았을 수도 있습니다.  
+  
+또는 
+범주에 연관된 인스턴스가 없는 경우</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+        <altmember cref="P:System.Diagnostics.PerformanceCounter.InstanceName" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="InstanceExists">
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>지정한 성능 개체 인스턴스가 범주에 포함되는지 여부를 확인합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="InstanceExists">
+      <MemberSignature Language="C#" Value="public bool InstanceExists (string instanceName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool InstanceExists(string instanceName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.InstanceExists(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function InstanceExists (instanceName As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool InstanceExists(System::String ^ instanceName);" />
+      <MemberSignature Language="F#" Value="member this.InstanceExists : string -&gt; bool" Usage="performanceCounterCategory.InstanceExists instanceName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="instanceName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="instanceName">이 성능 카운터 범주에서 검색할 성능 개체 인스턴스입니다.</param>
+        <summary>지정한 성능 개체 인스턴스가 이 <see cref="T:System.Diagnostics.PerformanceCounterCategory" /> 개체의 <see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 속성에 의해 식별된 범주에 있는지 여부를 확인합니다.</summary>
+        <returns>해당 범주에 지정한 성능 개체 인스턴스가 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 오버 로드 <xref:System.Diagnostics.PerformanceCounterCategory.InstanceExists%2A> 아닙니다 `static`합니다. 작성 해야 하는 <xref:System.Diagnostics.PerformanceCounterCategory> 개체 및 설정 하는 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A> 속성.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 확인 하는지 여부를 <xref:System.Diagnostics.PerformanceCounter> 인스턴스 내에 존재는 <xref:System.Diagnostics.PerformanceCounterCategory>합니다. 먼저 만듭니다는 <xref:System.Diagnostics.PerformanceCounterCategory> 컴퓨터 이름을 지정 하는지 여부에 따라 적절 한 생성자를 사용 하 여 개체입니다. 사용 하 여 <xref:System.Diagnostics.PerformanceCounterCategory.InstanceExists%28System.String%29> 있는지 여부를 지정 된 인스턴스가 없으면 사용자에 게 알리는 확인 하려면. 인스턴스 이름이 없는 지정 하는 경우 예제는 기본 단일 인스턴스 이름을 사용 합니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.ExistMembers#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/CS/perfcounterobjinstexists.cs#2)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.ExistMembers#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/VB/perfcountercatobjinstexists.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 속성이 <see langword="null" />일 경우(이 속성은 속성을 설정하지 않았을 수도 있습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="instanceName" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+        <altmember cref="P:System.Diagnostics.PerformanceCounter.InstanceName" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.CounterExists(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="InstanceExists">
+      <MemberSignature Language="C#" Value="public static bool InstanceExists (string instanceName, string categoryName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool InstanceExists(string instanceName, string categoryName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.InstanceExists(System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function InstanceExists (instanceName As String, categoryName As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool InstanceExists(System::String ^ instanceName, System::String ^ categoryName);" />
+      <MemberSignature Language="F#" Value="static member InstanceExists : string * string -&gt; bool" Usage="System.Diagnostics.PerformanceCounterCategory.InstanceExists (instanceName, categoryName)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="instanceName" Type="System.String" />
+        <Parameter Name="categoryName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="instanceName">검색할 성능 개체 인스턴스입니다.</param>
+        <param name="categoryName">검색할 성능 카운터 범주입니다.</param>
+        <summary>로컬 컴퓨터의 지정한 범주에 지정한 성능 개체 인스턴스가 있는지 여부를 확인합니다.</summary>
+        <returns>해당 범주에 지정한 성능 개체 인스턴스가 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 성능 개체 인스턴스를 특정 범주를 찾는 위치를 지정 하지 않고 컴퓨터에 있는지 여부를 결정 하는 것이 불가능 합니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 정적 오버 로드 <xref:System.Diagnostics.PerformanceCounterCategory.InstanceExists%2A> 결정할 여부를 지정 된 <xref:System.Diagnostics.PerformanceCounter> 인스턴스에 있는 <xref:System.Diagnostics.PerformanceCounterCategory>입니다. 오버 로드는 컴퓨터 이름이 지정 되었는지 여부에 따라 선택 됩니다. 인스턴스 이름이 없는 지정 하는 경우 예제는 기본 단일 인스턴스 이름을 사용 합니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.ExistMembers#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/CS/perfcountercatstatinstexists.cs#10)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.ExistMembers#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/VB/perfcountercatstatinstexists.vb#10)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="instanceName" /> 매개 변수가 <see langword="null" />인 경우  
+  
+또는 
+<paramref name="categoryName" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" /> 매개 변수가 빈 문자열("")입니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="P:System.Diagnostics.PerformanceCounter.InstanceName" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.CounterExists(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="InstanceExists">
+      <MemberSignature Language="C#" Value="public static bool InstanceExists (string instanceName, string categoryName, string machineName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool InstanceExists(string instanceName, string categoryName, string machineName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.InstanceExists(System.String,System.String,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function InstanceExists (instanceName As String, categoryName As String, machineName As String) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool InstanceExists(System::String ^ instanceName, System::String ^ categoryName, System::String ^ machineName);" />
+      <MemberSignature Language="F#" Value="static member InstanceExists : string * string * string -&gt; bool" Usage="System.Diagnostics.PerformanceCounterCategory.InstanceExists (instanceName, categoryName, machineName)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="instanceName" Type="System.String" />
+        <Parameter Name="categoryName" Type="System.String" />
+        <Parameter Name="machineName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="instanceName">검색할 성능 개체 인스턴스입니다.</param>
+        <param name="categoryName">검색할 성능 카운터 범주입니다.</param>
+        <param name="machineName">범주 인스턴스 쌍을 찾을 대상 컴퓨터의 이름입니다.</param>
+        <summary>지정한 컴퓨터의 지정한 범주에 지정한 성능 개체 인스턴스가 있는지 여부를 확인합니다.</summary>
+        <returns>해당 범주에 지정한 성능 개체 인스턴스가 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 성능 개체 인스턴스를 특정 범주를 찾는 위치를 지정 하지 않고 컴퓨터에 있는지 여부를 결정 하는 것이 불가능 합니다.  
+  
+ 사용할 수 있습니다 "." 로컬 컴퓨터를 지정 합니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 정적 오버 로드 <xref:System.Diagnostics.PerformanceCounterCategory.InstanceExists%2A> 결정할 여부를 지정 된 <xref:System.Diagnostics.PerformanceCounter> 인스턴스에 있는 <xref:System.Diagnostics.PerformanceCounterCategory>입니다. 오버 로드는 컴퓨터 이름이 지정 되었는지 여부에 따라 선택 됩니다. 인스턴스 이름이 없는 지정 하는 경우 예제는 기본 단일 인스턴스 이름을 사용 합니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.ExistMembers#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/CS/perfcountercatstatinstexists.cs#10)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.ExistMembers#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.ExistMembers/VB/perfcountercatstatinstexists.vb#10)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="instanceName" /> 매개 변수가 <see langword="null" />인 경우  
+  
+또는 
+<paramref name="categoryName" /> 매개 변수가 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="categoryName" /> 매개 변수가 빈 문자열("")입니다.  
+  
+또는 
+<paramref name="machineName" /> 매개 변수가 잘못된 경우</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="P:System.Diagnostics.PerformanceCounter.InstanceName" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.CounterExists(System.String)" />
+        <altmember cref="M:System.Diagnostics.PerformanceCounterCategory.Exists(System.String)" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="MachineName">
+      <MemberSignature Language="C#" Value="public string MachineName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string MachineName" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.PerformanceCounterCategory.MachineName" />
+      <MemberSignature Language="VB.NET" Value="Public Property MachineName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ MachineName { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.MachineName : string with get, set" Usage="System.Diagnostics.PerformanceCounterCategory.MachineName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 범주가 있는 컴퓨터의 이름을 가져오거나 설정합니다.</summary>
+        <value>성능 카운터 범주 및 관련 카운터가 있는 컴퓨터의 이름입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Diagnostics.PerformanceCounterCategory> 사용 하 여는 <xref:System.Diagnostics.PerformanceCounterCategory.%23ctor> 생성자입니다. 라는 사용자에 게 메시지를 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory> 및 컴퓨터 이름을 설정한 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A> 및 <xref:System.Diagnostics.PerformanceCounterCategory.MachineName%2A> 입력 된 값에서 속성. 다음 값을 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A>, <xref:System.Diagnostics.PerformanceCounterCategory.MachineName%2A>, 및 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryHelp%2A> 속성 또는 해당 하는 경우 오류 메시지를 표시 합니다 <xref:System.Diagnostics.PerformanceCounterCategory> 액세스할 수 없습니다.  
+  
+ [!code-csharp[System.Diagnostics.PerformanceCounterCategory.OtherMembers#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/CS/perfCounterCatProps.cs#8)]
+ [!code-vb[System.Diagnostics.PerformanceCounterCategory.OtherMembers#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.PerformanceCounterCategory.OtherMembers/VB/perfcountercatprops.vb#8)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><see cref="P:System.Diagnostics.PerformanceCounterCategory.MachineName" /> 구문이 잘못된 경우</exception>
+        <permission cref="T:System.Diagnostics.PerformanceCounterPermission">성능 카운터 범주를 읽는 합니다. 연관된 열거형: <see cref="F:System.Diagnostics.PerformanceCounterPermissionAccess.Read" /></permission>
+        <altmember cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" />
+        <altmember cref="T:System.Diagnostics.PerformanceCounter" />
+      </Docs>
+    </Member>
+    <Member MemberName="ReadCategory">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.InstanceDataCollectionCollection ReadCategory ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Diagnostics.InstanceDataCollectionCollection ReadCategory() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Diagnostics.PerformanceCounterCategory.ReadCategory" />
+      <MemberSignature Language="VB.NET" Value="Public Function ReadCategory () As InstanceDataCollectionCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Diagnostics::InstanceDataCollectionCollection ^ ReadCategory();" />
+      <MemberSignature Language="F#" Value="member this.ReadCategory : unit -&gt; System.Diagnostics.InstanceDataCollectionCollection" Usage="performanceCounterCategory.ReadCategory " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.PerformanceCounter</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="xamarinmac-3.0">
+          <AttributeName>System.MonoTODO</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.InstanceDataCollectionCollection</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 성능 카운터 범주와 관련된 카운터와 성능 개체 인스턴스를 모두 읽습니다.</summary>
+        <returns>해당 범주에 대한 카운터와 성능 개체 인스턴스 데이터가 들어 있는 <see cref="T:System.Diagnostics.InstanceDataCollectionCollection" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 설정 해야 합니다 <xref:System.Diagnostics.PerformanceCounterCategory.CategoryName%2A> 를 호출 하기 전에 속성 <xref:System.Diagnostics.PerformanceCounterCategory.ReadCategory%2A>합니다.  
+  
+ 한 번에 전체 범주를 읽고 시스템에 데이터를 제공 하는 방식으로 인해 단일 카운터를 읽는 만큼 효율적이 지 수 있습니다.  
+  
+> [!NOTE]
+>  성능 카운터를 읽는 Windows Vista 이상 버전에서는 Windows XP Professional x64 Edition 또는 Windows Server 2003 Performance Monitor Users 그룹의 구성원 이어야 하거나 관리자 권한이 있어야 합니다.  
+>   
+>  Windows Vista 이상 성능 카운터에 액세스 하 여 권한을 상승 시킬 것을 방지 하려면 직접를 Performance Monitor Users 그룹에 추가 합니다.  
+>   
+>  Windows Vista 이상에서는 UAC(사용자 계정 컨트롤)가 사용자 권한을 결정합니다. 기본 제공 Administrators 그룹의 멤버인 경우 두 개의 런타임 액세스 토큰(표준 사용자 액세스 토큰 및 관리자 액세스 토큰)이 할당됩니다. 기본적으로 표준 사용자 역할이 지정됩니다. 성능 카운터에 액세스 하는 코드를 실행 하려면 먼저 높여야 권한을 표준 사용자에서 관리자에 게 합니다. 애플리케이션 아이콘을 마우스 오른쪽 단추로 클릭하고 관리자로 실행하도록 지정하여 애플리케이션을 시작하면 이 작업을 수행할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제는 <xref:System.Diagnostics.PerformanceCounterCategory> 지정 된 <xref:System.Diagnostics.PerformanceCounterCategory> 이름입니다. 사용 하 여 <xref:System.Diagnostics.PerformanceCounterCategory.ReadCategory%2A> 반환할를 <xref:System.Diagnostics.InstanceDataCollectionCollection> 의 모든 인스턴스에 대해 인스턴스 데이터를 포함 하는 <xref:System.Diagnostics.PerformanceCounter> 내에서 개체를 <xref:System.Diagnostics.PerformanceCounterCategory>.  
+  
+ [!code-csharp[System.Diagnostics.InstanceData.CopyTo#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Diagnostics.InstanceData.CopyTo/CS/instdatacopyto.cs#6)]
+ [!code-vb[System.Diagnostics.InstanceData.CopyTo#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Diagnostics.InstanceData.CopyTo/VB/instdatacopyto.vb#6)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><see cref="P:System.Diagnostics.PerformanceCounterCategory.CategoryName" /> 속성이 <see langword="null" />일 경우(이 속성은 속성을 설정하지 않았을 수도 있습니다.</exception>
+        <exception cref="T:System.ComponentModel.Win32Exception">내부 시스템 API를 호출하지 못한 경우</exception>
+        <exception cref="T:System.UnauthorizedAccessException">관리자 권한 없이 실행되는 코드가 성능 카운터를 읽으려고 한 경우</exception>
+        <altmember cref="T:System.Diagnostics.InstanceDataCollectionCollection" />
+        <altmember cref="T:System.Diagnostics.InstanceDataCollection" />
+        <altmember cref="T:System.Diagnostics.InstanceData" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

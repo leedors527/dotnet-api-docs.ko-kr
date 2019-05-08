@@ -1,0 +1,392 @@
+<Type Name="EncoderFallbackBuffer" FullName="System.Text.EncoderFallbackBuffer">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="e141f420e0edf6d758c8945e920a86ecdb9ac315" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58721555" /></Metadata><TypeSignature Language="C#" Value="public abstract class EncoderFallbackBuffer" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit EncoderFallbackBuffer extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Text.EncoderFallbackBuffer" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class EncoderFallbackBuffer" />
+  <TypeSignature Language="C++ CLI" Value="public ref class EncoderFallbackBuffer abstract" />
+  <TypeSignature Language="F#" Value="type EncoderFallbackBuffer = class" />
+  <AssemblyInfo>
+    <AssemblyName>System.Text.Encoding</AssemblyName>
+    <AssemblyVersion>4.0.10.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime</AssemblyName>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>입력 문자를 인코드를 할 수 없을 경우 fallback 처리기가 인코더로 대체 문자열을 반환할 수 있는 버퍼를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인코딩을 유니코드 문자를 인코딩된 바이트 시퀀스로 사이 매핑을 정의합니다. 매핑이 없는 특정 문자에 대해 정의 된 입력된 문자를 출력 바이트 시퀀스로 변환 하는 인코딩 작업이 실패 합니다.  
+  
+ .NET Framework에는 오류 처리는 변환을 수행할 수 없는 경우 대체 (fallback) 라는 메커니즘을 제공 합니다. 모든 인코더 대체 (fallback) 처리기를 다음 구현 해야 합니다.  
+  
+-   파생 된 클래스로 표현 되는 인코더 대체 (fallback), 여 <xref:System.Text.EncoderFallback> 클래스입니다.  
+  
+-   파생 된 형식으로 표현 되는 인코더 대체 (fallback) 버퍼는 <xref:System.Text.EncoderFallbackBuffer> 변환 작업에는 문자열을 반환할 수 있는 클래스입니다.  
+  
+ 대체 변환 오류를 처리 하도록 세 가지 전략을 따르면 됩니다.  
+  
+-   가장 적합된 한 매핑입니다. 인코더 대체 (fallback) 버퍼는 입력된 문자에 대 한 근사치를 나타내는 문자열을 반환할 수 있습니다. .NET Framework에 가장 적합된 한 공용 하지 <xref:System.Text.EncoderFallbackBuffer> 구현 합니다.  
+  
+-   대체 합니다. 인코더 대체 (fallback) 버퍼는 물음표 등의 문자열을 반환할 수 있습니다 ("?"), 문자를 인코딩할 수를 나타내는입니다. .NET Framework에는 <xref:System.Text.EncoderReplacementFallback> 및 <xref:System.Text.EncoderReplacementFallbackBuffer> 클래스는 공용 교체 대체 (fallback) 버퍼 구현을 제공 합니다. 생성자는 <xref:System.Text.EncoderReplacementFallback> 클래스 대체 문자열을 정의할 수 있습니다.  
+  
+-   예외입니다. <xref:System.Text.EncoderFallbackBuffer> 구현을 나타내는 문자를 인코딩할 수 없는 인코딩 작업을 종료 예외를 throw 합니다. 이 경우 대체 (fallback) 처리기를 제공 해야 합니다는 <xref:System.Text.EncoderFallbackBuffer> 구현 하지만 인코더에 문자열을 반환 하지는 않습니다. .NET framework에서 <xref:System.Text.EncoderExceptionFallback> 및 <xref:System.Text.EncoderExceptionFallbackBuffer> 클래스를 throw 하는 공용 예외 대체 (fallback) 구현을 제공는 <xref:System.Text.EncoderFallbackException> 문자를 인코딩할 수 없습니다.  
+  
+ 버퍼는 <xref:System.Text.EncoderFallbackBuffer> 구현을 대체 (fallback) 인코더는 인코더에 대 한 응답에 반환 될 전체 문자열을 나타냅니다. 일반적으로 구현 반환할 인코더와 남은 문자 수를 반환할 다음 문자의 인덱스와 같은 상태 정보를 포함 합니다. 때문에 <xref:System.Text.EncoderFallbackBuffer> 추상 클래스는 최소한 다음 멤버를 구현 하는 파생된 클래스가 필요 합니다.  
+  
+-   오버 로드 된 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 문자를 인코딩할 수 없는 경우 인코더에서 호출 하는 메서드. 인코더 대체 (fallback) 버퍼 구현에 두 가지 정보를 전달 합니다: 문자 또는 인코딩할 수 없는 서로게이트 쌍 및 입력에서 문자의 인덱스입니다. 인코더 대체 (fallback) 예외 처리기에서 예외는이 메서드에서 throw 됩니다. 메서드가 반환 하는 고, 그렇지 `true` 대체 (fallback)를 제공 하는 경우 또는 `false` 그렇지 않은 경우.  
+  
+-   <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> 하는 경우 인코더에서 반복적으로 호출 되는 메서드를 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 메서드가 반환 되는 `true`합니다. 연속 호출에서 처리기는 해당 버퍼의 각 문자를 반환 해야 합니다. 모든 문자를 반환 하면 u+0000을 반환 합니다. 예외 처리기는 항상 u+0000을 반환합니다.  
+  
+-   <xref:System.Text.EncoderFallbackBuffer.MovePrevious%2A> 메서드를 버퍼에서 이전 위치로 마우스 포인터를 이동 하려고 하 고 이동의 성공 여부를 나타냅니다. 예외 처리기를 항상 반환 `false`합니다.  
+  
+-   <xref:System.Text.EncoderFallbackBuffer.Remaining%2A> 속성 인코더에 남은 문자 수를 나타냅니다. 예외 대체 (fallback) 처리기는 항상 0을 반환합니다.  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Text.EncoderFallback" />
+    <related type="Article" href="~/docs/standard/base-types/character-encoding.md">.NET Framework의 문자 인코딩</related>
+    <related type="ExternalDocumentation" href="https://code.msdn.microsoft.com/Cyrillic-to-Roman-f7e88b29">예제: 키릴 자모 로마 문자 전사 유틸리티</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected EncoderFallbackBuffer ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Text.EncoderFallbackBuffer.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; EncoderFallbackBuffer();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Text.EncoderFallbackBuffer" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Fallback">
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>원래 입력을 인코딩할 수 없는 경우 대체 문자열을 사용할 수 있는지 여부나 원래 입력을 무시해야 하는지 여부를 나타냅니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Fallback">
+      <MemberSignature Language="C#" Value="public abstract bool Fallback (char charUnknown, int index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Fallback(char charUnknown, int32 index) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Text.EncoderFallbackBuffer.Fallback(System.Char,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function Fallback (charUnknown As Char, index As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract bool Fallback(char charUnknown, int index);" />
+      <MemberSignature Language="F#" Value="abstract member Fallback : char * int -&gt; bool" Usage="encoderFallbackBuffer.Fallback (charUnknown, index)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="charUnknown" Type="System.Char" />
+        <Parameter Name="index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="charUnknown">입력 문자입니다.</param>
+        <param name="index">입력 버퍼에 있는 문자의 인덱스 위치입니다.</param>
+        <summary>파생 클래스에서 재정의될 때 지정된 입력 문자를 처리하도록 대체 버퍼를 준비합니다.</summary>
+        <returns>대체 버퍼에서 <paramref name="charUnknown" />을 처리할 수 있으면 <see langword="true" />이고, 대체 버퍼에서 <paramref name="charUnknown" />을 무시하면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Text.Encoding.GetBytes%2A?displayProperty=nameWithType> 하 고 <xref:System.Text.Encoder.Convert%2A?displayProperty=nameWithType> 메서드를 호출 <xref:System.Text.DecoderFallbackBuffer.Fallback%28System.Byte%5B%5D%2CSystem.Int32%29> 알 수 없는 입력된 문자를 인코딩할 수 없는 발생 하는 경우. 반환 값 `true` 대체 (fallback) 버퍼 호출 메서드를 호출 하는 입력된 문자를 처리할 수 있는지 나타냅니다는 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> 대체 (fallback) 버퍼의 각 문자를 가져오는 방법입니다. 개별 문자를 처리 하지 않으므로 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 메서드 예외 대체 (fallback) 처리기에서 예외를 throw 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Fallback">
+      <MemberSignature Language="C#" Value="public abstract bool Fallback (char charUnknownHigh, char charUnknownLow, int index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Fallback(char charUnknownHigh, char charUnknownLow, int32 index) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Text.EncoderFallbackBuffer.Fallback(System.Char,System.Char,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function Fallback (charUnknownHigh As Char, charUnknownLow As Char, index As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract bool Fallback(char charUnknownHigh, char charUnknownLow, int index);" />
+      <MemberSignature Language="F#" Value="abstract member Fallback : char * char * int -&gt; bool" Usage="encoderFallbackBuffer.Fallback (charUnknownHigh, charUnknownLow, index)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="charUnknownHigh" Type="System.Char" />
+        <Parameter Name="charUnknownLow" Type="System.Char" />
+        <Parameter Name="index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="charUnknownHigh">입력 쌍의 high surrogate입니다.</param>
+        <param name="charUnknownLow">입력 쌍의 low surrogate입니다.</param>
+        <param name="index">입력 버퍼에 있는 서로게이트 쌍의 인덱스 위치입니다.</param>
+        <summary>파생 클래스에서 재정의될 때 지정된 서로게이트 쌍을 처리하도록 대체 버퍼를 준비합니다.</summary>
+        <returns>대체 버퍼에서 <paramref name="charUnknownHigh" /> 및 <paramref name="charUnknownLow" />를 처리할 수 있으면 <see langword="true" />이고, 대체 버퍼에서 서로게이트 쌍을 무시하면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Text.Encoding.GetBytes%2A?displayProperty=nameWithType> 하 고 <xref:System.Text.Encoder.Convert%2A?displayProperty=nameWithType> 메서드를 호출 <xref:System.Text.EncoderFallbackBuffer.Fallback%28System.Char%2CSystem.Char%2CSystem.Int32%29> 는 입력에 서로게이트 쌍을 발생 하는 경우. 반환 값 `true` 대체 (fallback) 버퍼 호출 메서드를 호출 하면 서로게이트 쌍을 처리할 수 있는지 나타냅니다는 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> 대체 (fallback) 버퍼의 각 문자를 가져오는 방법입니다.  개별 문자를 처리 하지 않으므로 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 메서드 예외 대체 (fallback) 처리기에서 예외를 throw 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNextChar">
+      <MemberSignature Language="C#" Value="public abstract char GetNextChar ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance char GetNextChar() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Text.EncoderFallbackBuffer.GetNextChar" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function GetNextChar () As Char" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract char GetNextChar();" />
+      <MemberSignature Language="F#" Value="abstract member GetNextChar : unit -&gt; char" Usage="encoderFallbackBuffer.GetNextChar " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Char</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 재정의될 때 대체 버퍼에서 다음 문자를 검색합니다.</summary>
+        <returns>대체 버퍼에 있는 다음 문자입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인코딩 작업 호출을 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 메서드를 알 수 없는 문자 또는 입력에 서로게이트 쌍은 작업에서 발생 하는 경우. 교체 대체 (fallback)를 경우의 예를 들어 경우는 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 메서드가 반환 되는 `true`, 있는 대체 문자열을 알 수 없는 입력 대신 인코딩할 수 있습니다. 인코딩 작업 호출을 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> 메서드 반복적으로 한 번에 한 문자씩 대체 문자열을 가져옵니다. 인코더에 대체 (fallback) 버퍼의 모든 문자 반환 될 때를 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> 메서드에서 u+0000을 반환 해야 합니다.  
+  
+ 예외 대체 (fallback) 처리기는 <xref:System.Text.EncoderFallbackBuffer.GetNextChar%2A> 메서드에서 u+0000을 반환 해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="MovePrevious">
+      <MemberSignature Language="C#" Value="public abstract bool MovePrevious ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool MovePrevious() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Text.EncoderFallbackBuffer.MovePrevious" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function MovePrevious () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract bool MovePrevious();" />
+      <MemberSignature Language="F#" Value="abstract member MovePrevious : unit -&gt; bool" Usage="encoderFallbackBuffer.MovePrevious " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 재정의될 때 <see cref="M:System.Text.EncoderFallbackBuffer.GetNextChar" /> 메서드에 대한 다음 호출에서 데이터 버퍼의 현재 문자 위치 이전의 문자 위치에 액세스하도록 합니다.</summary>
+        <returns><see cref="M:System.Text.EncoderFallbackBuffer.MovePrevious" /> 작업이 성공적으로 수행되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 예외 대체 (fallback) 처리기 반환할지 `false`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Remaining">
+      <MemberSignature Language="C#" Value="public abstract int Remaining { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Remaining" />
+      <MemberSignature Language="DocId" Value="P:System.Text.EncoderFallbackBuffer.Remaining" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride ReadOnly Property Remaining As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract property int Remaining { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.Remaining : int" Usage="System.Text.EncoderFallbackBuffer.Remaining" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>파생 클래스에서 재정의될 때 처리되기 위해 남아 있는 현재 <see cref="T:System.Text.EncoderFallbackBuffer" /> 개체의 문자 수를 가져옵니다.</summary>
+        <value>아직 처리되지 않은 현재 대체 버퍼의 문자 수입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Text.EncoderFallbackBuffer.Fallback%2A> 메서드가 반환 `true` 경우 <xref:System.Text.EncoderFallbackBuffer.Remaining%2A> 0이 아닌 값입니다.  
+  
+ 예외 대체 (fallback) 처리기는 <xref:System.Text.DecoderFallbackBuffer.Remaining%2A> 메서드에서 0을 반환 해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Reset">
+      <MemberSignature Language="C#" Value="public virtual void Reset ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Reset() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Text.EncoderFallbackBuffer.Reset" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub Reset ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Reset();" />
+      <MemberSignature Language="F#" Value="abstract member Reset : unit -&gt; unit&#xA;override this.Reset : unit -&gt; unit" Usage="encoderFallbackBuffer.Reset " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Text.Encoding</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 대체 버퍼와 관련된 모든 데이터 및 상태 정보를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <block subset="none" type="overrides"><para>호출한 후 합니다 <see cref="M:System.Text.EncoderFallbackBuffer.Reset" /> 메서드를를 <see cref="P:System.Text.EncoderFallbackBuffer.Remaining" /> 속성에 0을 반환 해야 합니다 <see cref="M:System.Text.EncoderFallbackBuffer.GetNextChar" /> 메서드에서 u+0000을 반환 해야 및 <see cref="M:System.Text.EncoderFallbackBuffer.MovePrevious" /> 메서드는 반환 해야 <see langword="false" />.</para></block>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

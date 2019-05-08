@@ -1,0 +1,657 @@
+<Type Name="EventWrittenEventArgs" FullName="System.Diagnostics.Tracing.EventWrittenEventArgs">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d4544d22721a59c2075b87f8b84e045dd1dc58dc" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58681982" /></Metadata><TypeSignature Language="C#" Value="public class EventWrittenEventArgs : EventArgs" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit EventWrittenEventArgs extends System.EventArgs" />
+  <TypeSignature Language="DocId" Value="T:System.Diagnostics.Tracing.EventWrittenEventArgs" />
+  <TypeSignature Language="VB.NET" Value="Public Class EventWrittenEventArgs&#xA;Inherits EventArgs" />
+  <TypeSignature Language="C++ CLI" Value="public ref class EventWrittenEventArgs : EventArgs" />
+  <TypeSignature Language="F#" Value="type EventWrittenEventArgs = class&#xA;    inherit EventArgs" />
+  <AssemblyInfo>
+    <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.10.0</AssemblyVersion>
+    <AssemblyVersion>4.0.20.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.EventArgs</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary><see cref="M:System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)" /> 콜백에 데이터를 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+이벤트를 디스패치 됩니다 때마다를 <xref:System.Diagnostics.Tracing.EventListener>, <xref:System.Diagnostics.Tracing.EventListener.OnEventWritten%2A?displayProperty=nameWithType> 콜백 메서드가 호출 됩니다. 전달 되는 `EventWrittenEventArgs` 인스턴스 이벤트를 사용 하 여 연결 정보를 포함 합니다. 모든 속성 값을 `EventWrittenEventArgs` 클래스는 콜백 하는 동안에 유효 합니다. 
+
+개인에 대 한 추가 정보를 포함 하는 다음 섹션에서는 `EventWrittenEventArgs` 속성입니다.
+
+### <a name="activityid-property"></a>ActivityId 속성
+
+사용 하는 경우 <xref:System.Activities.Activity?displayProperty=nameWithType> 및 해당 파생된 클래스, 스레드가 연결 된 활동으로 표시할 수 있습니다. `ActivityId` 속성 이벤트를 기록 하는 스레드의 작업 ID를 반환 합니다. 이 경우 참고 스레드 활동에 있이 필요가 없습니다 반환 <xref:System.Guid.Empty?displayProperty=nameWithType>합니다.
+
+### <a name="osthreadid-and-timestamp-properties"></a>OSThreadId 및 타임 스탬프 속성 
+
+.NET Core 2.2 부터는 <xref:System.Diagnostics.Tracing.EventListener> 개체 (예: GC, JIT 및 스레드 풀 이벤트)에서 내보내는 이벤트 외에도 네이티브 런타임 이벤트를 구독할 수 있습니다 <xref:System.Diagnostics.Tracing.EventSource> 개체입니다. 이전 버전의.NET Core 및.NET Framework의 모든 버전에서는 스레드 ID 및 타임 스탬프를 수집할 수 있습니다 환경에서 디스패치 되기 때문에 이러한 내보낸 동일한 스레드에서 동기적으로 합니다. 일부 네이티브 런타임 이벤트 수 있지만 발송 동기적으로 합니다. 관리 되는 경우 GC 이벤트 등의 일부 이벤트를 내보냅니다. 스레드 실행이 일시 중단 합니다. 이러한 이벤트는 네이티브 코드에 버퍼링 되는 및 관리 코드를 다시 실행 되 면 디스패처 스레드에서 발송 됩니다. 이러한 이벤트는 버퍼링 하기 때문에 환경 검색할 안정적으로 스레드 ID 및 타임 스탬프를 사용할 수 없습니다. 스레드 ID를.NET Core 2.2 부터는이 인해 및 타임 스탬프 정보와의 멤버로 사용할 수는 `EventWrittenEventArgs` 클래스입니다.
+
+### <a name="relatedactivityid-property"></a>Relatedactivityid 라는 속성
+
+ 관련된 활동은 현재 강력 하 게 관련 된는 활동입니다. 일반적으로 현재 작업을 발생 시킨 두 동작 (사용 하 여 이벤트를 `Start` opcode 일반적으로이 작업을 수행) 또는 현재가 만든 활동 (사용 하 여 이벤트를 `Send` opcode 일반적으로이 작업을 수행). 를 사용 하는 경우는 `RelatedActivityID` 로깅을 수행 하는 메서드에 의해 명시적으로 전달 됩니다. 많은 이벤트를 전달 하지 않습니다는 `RelatedActivityId`,이 속성이 반환 하는 경우 <xref:System.Guid.Empty?displayProperty=nameWithType>합니다.
+
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="ActivityId">
+      <MemberSignature Language="C#" Value="public Guid ActivityId { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Guid ActivityId" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ActivityId As Guid" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Guid ActivityId { Guid get(); };" />
+      <MemberSignature Language="F#" Value="member this.ActivityId : Guid" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;netframework-4.8;netcore-2.0;dotnet-uwp-10.0">
+          <AttributeName>get: System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Guid</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트를 쓴 스레드의 작업 ID를 가져옵니다.</summary>
+        <value>이벤트를 쓴 스레드의 작업 ID입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Diagnostics.Tracing.EventWrittenEventArgs.RelatedActivityId" />
+        <altmember cref="M:System.Diagnostics.Tracing.EventSource.SetCurrentThreadActivityId(System.Guid)" />
+      </Docs>
+    </Member>
+    <Member MemberName="Channel">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.Tracing.EventChannel Channel { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Diagnostics.Tracing.EventChannel Channel" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Channel" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Channel As EventChannel" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::Tracing::EventChannel Channel { System::Diagnostics::Tracing::EventChannel get(); };" />
+      <MemberSignature Language="F#" Value="member this.Channel : System.Diagnostics.Tracing.EventChannel" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Channel" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.Tracing.EventChannel</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트의 채널을 가져옵니다.</summary>
+        <value>이벤트 채널입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EventId">
+      <MemberSignature Language="C#" Value="public int EventId { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 EventId" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.EventId" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property EventId As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int EventId { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.EventId : int" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.EventId" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트 식별자를 가져옵니다.</summary>
+        <value>이벤트 식별자입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EventName">
+      <MemberSignature Language="C#" Value="public string EventName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string EventName" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.EventName" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property EventName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ EventName { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.EventName : string" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.EventName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트의 이름을 가져옵니다.</summary>
+        <value>이벤트의 이름입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="EventSource">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.Tracing.EventSource EventSource { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Diagnostics.Tracing.EventSource EventSource" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.EventSource" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property EventSource As EventSource" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::Tracing::EventSource ^ EventSource { System::Diagnostics::Tracing::EventSource ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.EventSource : System.Diagnostics.Tracing.EventSource" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.EventSource" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.Tracing.EventSource</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트 소스 개체를 가져옵니다.</summary>
+        <value>이벤트 소스 개체입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Keywords">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.Tracing.EventKeywords Keywords { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Diagnostics.Tracing.EventKeywords Keywords" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Keywords" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Keywords As EventKeywords" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::Tracing::EventKeywords Keywords { System::Diagnostics::Tracing::EventKeywords get(); };" />
+      <MemberSignature Language="F#" Value="member this.Keywords : System.Diagnostics.Tracing.EventKeywords" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Keywords" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.Tracing.EventKeywords</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트에 대한 키워드를 가져옵니다.</summary>
+        <value>이벤트에 대한 키워드입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Level">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.Tracing.EventLevel Level { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Diagnostics.Tracing.EventLevel Level" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Level" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Level As EventLevel" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::Tracing::EventLevel Level { System::Diagnostics::Tracing::EventLevel get(); };" />
+      <MemberSignature Language="F#" Value="member this.Level : System.Diagnostics.Tracing.EventLevel" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Level" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.Tracing.EventLevel</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트의 수준을 가져옵니다.</summary>
+        <value>이벤트의 수준입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Message">
+      <MemberSignature Language="C#" Value="public string Message { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Message" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Message" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Message As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Message { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Message : string" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Message" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트의 메시지를 가져옵니다.</summary>
+        <value>이벤트의 메시지입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Opcode">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.Tracing.EventOpcode Opcode { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Diagnostics.Tracing.EventOpcode Opcode" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Opcode" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Opcode As EventOpcode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::Tracing::EventOpcode Opcode { System::Diagnostics::Tracing::EventOpcode get(); };" />
+      <MemberSignature Language="F#" Value="member this.Opcode : System.Diagnostics.Tracing.EventOpcode" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Opcode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.Tracing.EventOpcode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트의 작업 코드를 가져옵니다.</summary>
+        <value>이벤트의 작업 코드입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OSThreadId">
+      <MemberSignature Language="C#" Value="public long OSThreadId { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int64 OSThreadId" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.OSThreadId" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property OSThreadId As Long" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property long OSThreadId { long get(); };" />
+      <MemberSignature Language="F#" Value="member this.OSThreadId : int64" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.OSThreadId" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int64</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트를 작성한 OS 스레드에 대한 스레드 식별자를 가져옵니다. (.NET Core 2.2 이상만 해당)</summary>
+        <value>이벤트를 작성 하는 OS 스레드의 스레드 식별자입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Payload">
+      <MemberSignature Language="C#" Value="public System.Collections.ObjectModel.ReadOnlyCollection&lt;object&gt; Payload { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ObjectModel.ReadOnlyCollection`1&lt;object&gt; Payload" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Payload" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Payload As ReadOnlyCollection(Of Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::ObjectModel::ReadOnlyCollection&lt;System::Object ^&gt; ^ Payload { System::Collections::ObjectModel::ReadOnlyCollection&lt;System::Object ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Payload : System.Collections.ObjectModel.ReadOnlyCollection&lt;obj&gt;" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Payload" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ObjectModel.ReadOnlyCollection&lt;System.Object&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트의 페이로드를 가져옵니다.</summary>
+        <value>이벤트에 대한 페이로드입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PayloadNames">
+      <MemberSignature Language="C#" Value="public System.Collections.ObjectModel.ReadOnlyCollection&lt;string&gt; PayloadNames { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.ObjectModel.ReadOnlyCollection`1&lt;string&gt; PayloadNames" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.PayloadNames" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property PayloadNames As ReadOnlyCollection(Of String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::ObjectModel::ReadOnlyCollection&lt;System::String ^&gt; ^ PayloadNames { System::Collections::ObjectModel::ReadOnlyCollection&lt;System::String ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.PayloadNames : System.Collections.ObjectModel.ReadOnlyCollection&lt;string&gt;" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.PayloadNames" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.ObjectModel.ReadOnlyCollection&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 이벤트의 속성 이름을 나타내는 문자열 목록을 반환합니다.</summary>
+        <value><see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1" />를 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RelatedActivityId">
+      <MemberSignature Language="C#" Value="public Guid RelatedActivityId { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Guid RelatedActivityId" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.RelatedActivityId" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RelatedActivityId As Guid" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Guid RelatedActivityId { Guid get(); };" />
+      <MemberSignature Language="F#" Value="member this.RelatedActivityId : Guid" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.RelatedActivityId" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;netframework-4.8;netcore-2.0;dotnet-uwp-10.0">
+          <AttributeName>get: System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Guid</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 인스턴스에서 나타내는 작업과 관련된 작업의 식별자를 가져옵니다.</summary>
+        <value>관련 동작의 식별자이며, 관련 동작이 없는 경우 <see cref="F:System.Guid.Empty" />입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId" />
+        <altmember cref="M:System.Diagnostics.Tracing.EventSource.WriteEventWithRelatedActivityId(System.Int32,System.Guid,System.Object[])" />
+      </Docs>
+    </Member>
+    <Member MemberName="Tags">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.Tracing.EventTags Tags { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Diagnostics.Tracing.EventTags Tags" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Tags" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Tags As EventTags" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::Tracing::EventTags Tags { System::Diagnostics::Tracing::EventTags get(); };" />
+      <MemberSignature Language="F#" Value="member this.Tags : System.Diagnostics.Tracing.EventTags" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Tags" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.Tracing.EventTags</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>호출에 지정된 태그를 <see cref="M:System.Diagnostics.Tracing.EventSource.Write(System.String,System.Diagnostics.Tracing.EventSourceOptions)" /> 메서드로 반환합니다.</summary>
+        <value><see cref="T:System.Diagnostics.Tracing.EventTags" />를 반환합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Task">
+      <MemberSignature Language="C#" Value="public System.Diagnostics.Tracing.EventTask Task { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Diagnostics.Tracing.EventTask Task" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Task" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Task As EventTask" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Diagnostics::Tracing::EventTask Task { System::Diagnostics::Tracing::EventTask get(); };" />
+      <MemberSignature Language="F#" Value="member this.Task : System.Diagnostics.Tracing.EventTask" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Task" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Diagnostics.Tracing.EventTask</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트의 작업을 가져옵니다.</summary>
+        <value>이벤트에 대한 작업입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TimeStamp">
+      <MemberSignature Language="C#" Value="public DateTime TimeStamp { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.DateTime TimeStamp" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.TimeStamp" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property TimeStamp As DateTime" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property DateTime TimeStamp { DateTime get(); };" />
+      <MemberSignature Language="F#" Value="member this.TimeStamp : DateTime" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.TimeStamp" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.DateTime</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트가 처음 생성된 시간을 <see cref="System.DateTime" /> 타임스탬프로 가져옵니다. (.NET Core 2.2 이상만 해당)</summary>
+        <value>날짜 및 시간 이벤트가 기록 된 경우. 시스템을 최대한으로 정확 하 게 시도 합니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Version">
+      <MemberSignature Language="C#" Value="public byte Version { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8 Version" />
+      <MemberSignature Language="DocId" Value="P:System.Diagnostics.Tracing.EventWrittenEventArgs.Version" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Version As Byte" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Byte Version { System::Byte get(); };" />
+      <MemberSignature Language="F#" Value="member this.Version : byte" Usage="System.Diagnostics.Tracing.EventWrittenEventArgs.Version" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Diagnostics.Tracing</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.10.0</AssemblyVersion>
+        <AssemblyVersion>4.0.20.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이벤트의 버전을 가져옵니다.</summary>
+        <value>이벤트의 버전입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

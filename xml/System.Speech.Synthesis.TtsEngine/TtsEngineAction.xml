@@ -1,0 +1,342 @@
+<Type Name="TtsEngineAction" FullName="System.Speech.Synthesis.TtsEngine.TtsEngineAction">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="017dd66686a91dee14aaebc0e908714f316c6f4b" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58680979" /></Metadata><TypeSignature Language="C#" Value="public enum TtsEngineAction" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed TtsEngineAction extends System.Enum" />
+  <TypeSignature Language="DocId" Value="T:System.Speech.Synthesis.TtsEngine.TtsEngineAction" />
+  <TypeSignature Language="VB.NET" Value="Public Enum TtsEngineAction" />
+  <TypeSignature Language="C++ CLI" Value="public enum class TtsEngineAction" />
+  <TypeSignature Language="F#" Value="type TtsEngineAction = " />
+  <AssemblyInfo>
+    <AssemblyName>System.Speech</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Enum</BaseTypeName>
+  </Base>
+  <Docs>
+    <summary>지정된 <see langword="TextFragment" />를 렌더링하는 중에 가져올 SSML(Speech Synthesis Markup Language) 작업을 지정합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Speech.Synthesis.TtsEngine.TtsEngineAction> 서비스에 대 한 요청을 나타내는 <xref:System.Speech.Synthesis.TtsEngine.TextFragment>합니다. SSML 사양에서 요소에 해당 동작 및 반환 된 텍스트에서 구현 되는 <xref:System.Speech.Synthesis.TtsEngine.TextFragment.TextToSpeak%2A> 속성에는 <xref:System.Speech.Synthesis.TtsEngine.TextFragment>합니다.  
+  
+ <xref:System.Speech.Synthesis.TtsEngine.TtsEngineAction> 연관 된 값을 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 에서 반환 되는 <xref:System.Speech.Synthesis.TtsEngine.TextFragment.State%2A> 속성입니다.  
+  
+ 처리를 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineAction> 에서 반환 된 값을 <xref:System.Speech.Synthesis.TtsEngine.TextFragment.State%2A> 속성에 의해 처리 됩니다 음성 합성 구현의 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineSsml.Speak%2A> 에서 파생 된 클래스에 메서드가 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineSsml>합니다.  
+  
+   
+  
+## Examples  
+ 아래 예제에서 상속 하는 사용자 지정 음성 합성 구현의 일부인 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineSsml>, 및을 사용 하 여 <xref:System.Speech.Synthesis.TtsEngine.TextFragment>, <xref:System.Speech.Synthesis.TtsEngine.FragmentState>, 및 <xref:System.Speech.Synthesis.TtsEngine.TtsEventId>  
+  
+ 구현 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineSsml.Speak%2A>  
+  
+1.  배열을 받습니다 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 인스턴스 및 새 배열을 만듭니다 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 전달 되는 인스턴스는 `Speak` 기본 합성 엔진에서 메서드.  
+  
+2.  경우는 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineAction> 에서 열거형 값에서 찾을 <xref:System.Speech.Synthesis.TtsEngine.FragmentState.Action%2A> 속성에는 <xref:System.Speech.Synthesis.TtsEngine.FragmentState> 반환한를 <xref:System.Speech.Synthesis.TtsEngine.TextFragment.State%2A> 각각의 속성 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 인스턴스가 말하기를 구현  
+  
+    -   읽을 텍스트의 Americanism Britishisms 변환 합니다.  
+  
+    -   경우는 <xref:System.Speech.Synthesis.TtsEngine.ITtsEngineSite.EventInterest%2A> 속성을 <xref:System.Speech.Synthesis.TtsEngine.ITtsEngineSite.EventInterest%2A> 구현 지원 제공 하는 인터페이스를 <xref:System.Speech.Synthesis.TtsEngine.TtsEventId> 이벤트 유형, 신시사이저 진행 상황을 구동 하는 이벤트가 생성 됩니다.  
+  
+3.  이라고 하는 음성 렌더링 엔진이 수정 된 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 배열입니다.  
+  
+```  
+private const int WordBoundaryFlag = 1 << (int)TtsEventId.WordBoundary;  
+private readonly char[] spaces = new char[] { ' ', '\t', '\r', '\n' };  
+internal struct UsVsUk  
+{  
+  internal string UK;  
+  internal string US;  
+}  
+  
+override public void Speak (TextFragment [] frags, IntPtr wfx, ITtsEngineSite site)  
+{  
+  TextFragment [] newFrags=new TextFragment[frags.Length];  
+  
+  for (int i=0;i<frags.Length;i++){  
+    newFrags[i].State=frags[i].State;  
+    //truncate  
+    newFrags[i].TextToSpeak = frags[i].TextToSpeak.Substring(frags[i].TextOffset,  
+                               frags[i].TextLength);  
+    newFrags[i].TextLength = newFrags[i].TextToSpeak.Length;  
+    newFrags[i].TextOffset = 0;  
+    if (newFrags[i].State.Action == TtsEngineAction.Speak) {  
+      //Us to UK conversion  
+      foreach (UsVsUk term in TransList) {  
+      newFrags[i].TextToSpeak.Replace(term.US, term.UK);  
+      }  
+      //Generate progress meter events if supported  
+      if ((site.EventInterest & WordBoundaryFlag) != 0) {  
+      string[] subs = newFrags[i].TextToSpeak.Split(spaces);  
+  
+      foreach (string s in subs) {  
+        int offset = newFrags[i].TextOffset;  
+        SpeechEventInfo spEvent = new SpeechEventInfo((Int16)TtsEventId.WordBoundary,   
+                (Int16)EventParameterType.Undefined,   
+                 s.Length, new IntPtr(offset));  
+        offset += s.Length;  
+        if (s.Trim().Length > 0) {  
+          SpeechEventInfo[] events = new SpeechEventInfo[1];  
+          events[0] = spEvent;  
+          site.AddEvents(events, 1);  
+        }  
+      }  
+      }  
+    }  
+  }  
+  
+  _baseSynthesize.Speak(newFrags, wfx, site);  
+  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="Bookmark">
+      <MemberSignature Language="C#" Value="Bookmark" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.TtsEngineAction Bookmark = int32(3)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.TtsEngineAction.Bookmark" />
+      <MemberSignature Language="VB.NET" Value="Bookmark" />
+      <MemberSignature Language="C++ CLI" Value="Bookmark" />
+      <MemberSignature Language="F#" Value="Bookmark = 3" Usage="System.Speech.Synthesis.TtsEngine.TtsEngineAction.Bookmark" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.TtsEngineAction</ReturnType>
+      </ReturnValue>
+      <MemberValue>3</MemberValue>
+      <Docs>
+        <summary><see cref="T:System.Speech.Synthesis.TtsEngine.TextFragment" />가 책갈피 내용으로 사용됨을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ SSML 사양에서 `<mark>` XML 태그에 해당합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ParseUnknownTag">
+      <MemberSignature Language="C#" Value="ParseUnknownTag" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.TtsEngineAction ParseUnknownTag = int32(7)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.TtsEngineAction.ParseUnknownTag" />
+      <MemberSignature Language="VB.NET" Value="ParseUnknownTag" />
+      <MemberSignature Language="C++ CLI" Value="ParseUnknownTag" />
+      <MemberSignature Language="F#" Value="ParseUnknownTag = 7" Usage="System.Speech.Synthesis.TtsEngine.TtsEngineAction.ParseUnknownTag" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.TtsEngineAction</ReturnType>
+      </ReturnValue>
+      <MemberValue>7</MemberValue>
+      <Docs>
+        <summary>SSML 입에서 아무것도 확인 되지 않았음을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 연결 된 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 알 수 없는 XML 태그가 SSML 표준에 포함 되지 않습니다.  
+  
+ 이 입력 해석 되거나 합성 엔진의 판단에 따라 무시 될 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Pronounce">
+      <MemberSignature Language="C#" Value="Pronounce" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.TtsEngineAction Pronounce = int32(2)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.TtsEngineAction.Pronounce" />
+      <MemberSignature Language="VB.NET" Value="Pronounce" />
+      <MemberSignature Language="C++ CLI" Value="Pronounce" />
+      <MemberSignature Language="F#" Value="Pronounce = 2" Usage="System.Speech.Synthesis.TtsEngine.TtsEngineAction.Pronounce" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.TtsEngineAction</ReturnType>
+      </ReturnValue>
+      <MemberValue>2</MemberValue>
+      <Docs>
+        <summary>입력 <see cref="T:System.Speech.Synthesis.TtsEngine.TextFragment" /> 텍스트를 음소로 해석하도록 요청합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 정확한 발음으로 지정 된 합니다 <xref:System.Speech.Synthesis.TtsEngine.FragmentState.Phoneme%2A> 의 멤버는 <xref:System.Speech.Synthesis.TtsEngine.FragmentState> 에서 반환 된 개체를 <xref:System.Speech.Synthesis.TtsEngine.TextFragment.State%2A> 속성을 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 인스턴스.  
+  
+ SSML 사양에서 `<Phoneme>` XML 태그에 해당합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Silence">
+      <MemberSignature Language="C#" Value="Silence" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.TtsEngineAction Silence = int32(1)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.TtsEngineAction.Silence" />
+      <MemberSignature Language="VB.NET" Value="Silence" />
+      <MemberSignature Language="C++ CLI" Value="Silence" />
+      <MemberSignature Language="F#" Value="Silence = 1" Usage="System.Speech.Synthesis.TtsEngine.TtsEngineAction.Silence" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.TtsEngineAction</ReturnType>
+      </ReturnValue>
+      <MemberValue>1</MemberValue>
+      <Docs>
+        <summary><see cref="T:System.Speech.Synthesis.TtsEngine.TextFragment" />은 음성으로 렌더링 될 수 없는 텍스트를 포함함을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 여 silence 기간을 지정 합니다 <xref:System.Speech.Synthesis.TtsEngine.FragmentState.Duration%2A> he 소속 <xref:System.Speech.Synthesis.TtsEngine.FragmentState> 에서 반환 된 개체를 <xref:System.Speech.Synthesis.TtsEngine.TextFragment.State%2A> 속성을 <xref:System.Speech.Synthesis.TtsEngine.TextFragment> 인스턴스.  
+  
+ SSML 사양에서 `<Silence>` XML 태그에 해당합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Speak">
+      <MemberSignature Language="C#" Value="Speak" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.TtsEngineAction Speak = int32(0)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.TtsEngineAction.Speak" />
+      <MemberSignature Language="VB.NET" Value="Speak" />
+      <MemberSignature Language="C++ CLI" Value="Speak" />
+      <MemberSignature Language="F#" Value="Speak = 0" Usage="System.Speech.Synthesis.TtsEngine.TtsEngineAction.Speak" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.TtsEngineAction</ReturnType>
+      </ReturnValue>
+      <MemberValue>0</MemberValue>
+      <Docs>
+        <summary>관련된 <see cref="T:System.Speech.Synthesis.TtsEngine.TextFragment" />가 처리되고 발음될 것을 요청합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본값은 이것이 <xref:System.Speech.Synthesis.TtsEngine.TtsEngineAction> 에 대 한는 <xref:System.Speech.Synthesis.TtsEngine.TextFragment>,  
+  
+ SSML 사양에서 `<speak>` XML 태그에 해당합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SpellOut">
+      <MemberSignature Language="C#" Value="SpellOut" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.TtsEngineAction SpellOut = int32(4)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.TtsEngineAction.SpellOut" />
+      <MemberSignature Language="VB.NET" Value="SpellOut" />
+      <MemberSignature Language="C++ CLI" Value="SpellOut" />
+      <MemberSignature Language="F#" Value="SpellOut = 4" Usage="System.Speech.Synthesis.TtsEngine.TtsEngineAction.SpellOut" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.TtsEngineAction</ReturnType>
+      </ReturnValue>
+      <MemberValue>4</MemberValue>
+      <Docs>
+        <summary><see cref="T:System.Speech.Synthesis.TtsEngine.TextFragment" /> 속성을 통해 <see cref="P:System.Speech.Synthesis.TtsEngine.TextFragment.TextToSpeak" />에서 제공한 텍스트 값을 개별 문자로 합성할지를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 렌더링 영숫자 텍스트 뿐만 아니라 공백 이외의 문장 부호를 포함합니다.  
+  
+ 텍스트 조각 "word!" 예를 들어 연결 된 다음 으로 합성 될 해야 "w o r d 느낌표"입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StartParagraph">
+      <MemberSignature Language="C#" Value="StartParagraph" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.TtsEngineAction StartParagraph = int32(6)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.TtsEngineAction.StartParagraph" />
+      <MemberSignature Language="VB.NET" Value="StartParagraph" />
+      <MemberSignature Language="C++ CLI" Value="StartParagraph" />
+      <MemberSignature Language="F#" Value="StartParagraph = 6" Usage="System.Speech.Synthesis.TtsEngine.TtsEngineAction.StartParagraph" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.TtsEngineAction</ReturnType>
+      </ReturnValue>
+      <MemberValue>6</MemberValue>
+      <Docs>
+        <summary>단락의 상태를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ SSML 사양에서 `<p>` XML 태그에 해당합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="StartSentence">
+      <MemberSignature Language="C#" Value="StartSentence" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Speech.Synthesis.TtsEngine.TtsEngineAction StartSentence = int32(5)" />
+      <MemberSignature Language="DocId" Value="F:System.Speech.Synthesis.TtsEngine.TtsEngineAction.StartSentence" />
+      <MemberSignature Language="VB.NET" Value="StartSentence" />
+      <MemberSignature Language="C++ CLI" Value="StartSentence" />
+      <MemberSignature Language="F#" Value="StartSentence = 5" Usage="System.Speech.Synthesis.TtsEngine.TtsEngineAction.StartSentence" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Speech</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Speech.Synthesis.TtsEngine.TtsEngineAction</ReturnType>
+      </ReturnValue>
+      <MemberValue>5</MemberValue>
+      <Docs>
+        <summary>문장의 시작을 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ SSML 사양에서 `<s>` XML 태그에 해당합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

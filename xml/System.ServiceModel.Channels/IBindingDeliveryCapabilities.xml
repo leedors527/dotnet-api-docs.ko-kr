@@ -1,0 +1,242 @@
+<Type Name="IBindingDeliveryCapabilities" FullName="System.ServiceModel.Channels.IBindingDeliveryCapabilities">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="b11c5ba49a08999023892575d8675b15549f3766" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="37461544" /></Metadata><TypeSignature Language="C#" Value="public interface IBindingDeliveryCapabilities" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IBindingDeliveryCapabilities" />
+  <TypeSignature Language="DocId" Value="T:System.ServiceModel.Channels.IBindingDeliveryCapabilities" />
+  <TypeSignature Language="VB.NET" Value="Public Interface IBindingDeliveryCapabilities" />
+  <TypeSignature Language="C++ CLI" Value="public interface class IBindingDeliveryCapabilities" />
+  <TypeSignature Language="F#" Value="type IBindingDeliveryCapabilities = interface" />
+  <AssemblyInfo>
+    <AssemblyName>System.ServiceModel</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Docs>
+    <summary>클라이언트 및 서비스에 필요한 기능을 설명하고 광고하기 위해 바인딩이 구현해야 하는 인터페이스를 정의합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 클라이언트 및 서비스에 필요한 기능을 바인딩에서 제공하도록 계약의 일부로 규정할 수 있는 경우 바인딩에서 <xref:System.ServiceModel.Channels.IBindingDeliveryCapabilities> 인터페이스를 구현해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 `CalculatorService`가 메시지를 순서대로 배달하는 <xref:System.ServiceModel.WSHttpBinding>을 사용해야 합니다. 신뢰할 수 있는 세션과 대기 중 배달은 이 바인딩에서 기본적으로 사용되지 않지만, 사용하도록 설정할 수 있습니다.  
+  
+```csharp  
+<!-- Here is the configuration for a CalculatorService using a WSHttpBinding with ordered message delivery required. -->  
+<?xml version="1.0" encoding="utf-8" ?>  
+<configuration>  
+   <system.serviceModel>  
+      <services>  
+         <service   
+             type="Microsoft.ServiceModel.Samples.CalculatorService">  
+            <!-- Use base address provided by host and a WSHttpBinding named "Binding1" -->  
+            <endpoint address=""  
+                      binding="wsHttpBinding"  
+                      bindingConfiguration="Binding1"   
+                      contract="Microsoft.ServiceModel.Samples.ICalculator" />  
+         </service>  
+      </services>  
+  
+      <bindings>  
+         <wsHttpBinding>   
+            <binding name="Binding1">           
+               <!-- The next element enables a ReliableSession and required ordered delivery-->  
+      <reliableSession enabled="true" ordered="true"/>  
+      </binding>  
+         </wsHttpBinding>  
+      </bindings>  
+  
+   </system.serviceModel>  
+</configuration>  
+  
+// The CalculatorService configuration has enabled a reliable session  
+// with ordered delivery set to true. This means that the binding  
+// requirement for ordered delivery specified by the  
+// BindingRequirementsAttribute on the CalculatorService class  
+// implemented below will be satisfied by this WSHttpBinding.  
+  
+using System;  
+using System.ServiceModel;  
+  
+[ServiceContract]  
+interface ICalculatorService  
+{  
+  [OperationBehavior()]  
+  int Add(int a, int b);    
+  
+  [OperationContract]  
+  int Subtract(int a, int b);  
+}  
+  
+[BindingRequirements(  
+  QueuedDeliveryRequirements=RequirementsMode.Disallow,  
+  RequireOrderedDelivery=true  
+)]  
+class CalculatorService: ICalculatorService  
+{  
+  public int Add(int a, int b)  
+  {  
+    Console.WriteLine("Add called.");  
+    return a + b;   
+  }  
+  
+  public int Subtract(int a, int b)  
+  {  
+    Console.WriteLine("Subtract called.");  
+    return a - b;  
+  }  
+  
+  public int Multiply(int a, int b)  
+  {  
+    return a * b;  
+  }  
+}  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="AssuresOrderedDelivery">
+      <MemberSignature Language="C#" Value="public bool AssuresOrderedDelivery { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool AssuresOrderedDelivery" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.IBindingDeliveryCapabilities.AssuresOrderedDelivery" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property AssuresOrderedDelivery As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool AssuresOrderedDelivery { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.AssuresOrderedDelivery : bool" Usage="System.ServiceModel.Channels.IBindingDeliveryCapabilities.AssuresOrderedDelivery" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>바인딩에서 메시지를 보낸 순서대로 배달할 수 있는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>메시지를 보낸 순서대로 배달해야 하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 <xref:System.ServiceModel.Channels.IBindingDeliveryCapabilities.AssuresOrderedDelivery%2A> 속성 값은 서비스 설명을 런타임에 로드할 때 <xref:System.ServiceModel.DeliveryRequirementsAttribute.RequireOrderedDelivery%2A>에서 사용되며, 서비스에 대해 선택되거나 생성된 바인딩에서 순서대로 배달해야 하는 요구 사항을 충족하는지 여부를 결정합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 `CalculatorService`가 메시지를 순서대로 배달하는 <xref:System.ServiceModel.WSHttpBinding>을 사용해야 합니다. 신뢰할 수 있는 세션과 대기 중 배달은 이 바인딩에서 기본적으로 사용되지 않지만, 사용하도록 설정할 수 있습니다.  
+  
+```csharp  
+<!-- Here is the configuration for a CalculatorService using a WSHttpBinding with ordered message delivery required. -->  
+<?xml version="1.0" encoding="utf-8" ?>  
+<configuration>  
+   <system.serviceModel>  
+      <services>  
+         <service   
+             type="Microsoft.ServiceModel.Samples.CalculatorService">  
+            <!-- Use base address provided by host and a WSHttpBinding named "Binding1" -->  
+            <endpoint address=""  
+                      binding="wsHttpBinding"  
+                      bindingConfiguration="Binding1"   
+                      contract="Microsoft.ServiceModel.Samples.ICalculator" />  
+         </service>  
+      </services>  
+  
+      <bindings>  
+         <wsHttpBinding>   
+            <binding name="Binding1">           
+               <!-- The next element enables a ReliableSession and required ordered delivery-->  
+      <reliableSession enabled="true" ordered="true"/>  
+      </binding>  
+         </wsHttpBinding>  
+      </bindings>  
+  
+   </system.serviceModel>  
+</configuration>  
+  
+// The CalculatorService configuration has enabled a reliable session  
+// with ordered delivery set to true. This means that the binding  
+// requirement for ordered delivery specified by the  
+// BindingRequirementsAttribute on the CalculatorService class  
+// implemented below will be satisfied by this WSHttpBinding.  
+  
+using System;  
+using System.ServiceModel;  
+  
+[ServiceContract]  
+interface ICalculatorService  
+{  
+  [OperationBehavior()]  
+  int Add(int a, int b);    
+  
+  [OperationContract]  
+  int Subtract(int a, int b);  
+}  
+  
+[BindingRequirements(  
+  QueuedDeliveryRequirements=RequirementsMode.Disallow,  
+  RequireOrderedDelivery=true  
+)]  
+class CalculatorService: ICalculatorService  
+{  
+  public int Add(int a, int b)  
+  {  
+    Console.WriteLine("Add called.");  
+    return a + b;   
+  }  
+  
+  public int Subtract(int a, int b)  
+  {  
+    Console.WriteLine("Subtract called.");  
+    return a - b;  
+  }  
+  
+  public int Multiply(int a, int b)  
+  {  
+    return a * b;  
+  }  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="QueuedDelivery">
+      <MemberSignature Language="C#" Value="public bool QueuedDelivery { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool QueuedDelivery" />
+      <MemberSignature Language="DocId" Value="P:System.ServiceModel.Channels.IBindingDeliveryCapabilities.QueuedDelivery" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property QueuedDelivery As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool QueuedDelivery { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.QueuedDelivery : bool" Usage="System.ServiceModel.Channels.IBindingDeliveryCapabilities.QueuedDelivery" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.ServiceModel</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>바인딩이 대기 중 메시지 배달을 지원할 수 있는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>대기 중 메시지 배달이 지원되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 <xref:System.ServiceModel.Channels.IBindingDeliveryCapabilities.QueuedDelivery%2A> 속성 값은 서비스에 대한 설명을 런타임에 로드할 때 사용되며, 서비스에 대해 선택되거나 생성된 바인딩에서 대기 중 배달 요구 사항을 충족하는지 여부를 결정합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,667 @@
+<Type Name="XamlObjectWriter" FullName="System.Xaml.XamlObjectWriter">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="88e6ca45083f7c3b687072f89d33f2067088da08" /><Meta Name="ms.sourcegitcommit" Value="c5fd6b431a16f0412349201a0e93a9eacddf4b35" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/14/2018" /><Meta Name="ms.locfileid" Value="53390861" /></Metadata><TypeSignature Language="C#" Value="public class XamlObjectWriter : System.Xaml.XamlWriter, System.Xaml.IXamlLineInfoConsumer" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XamlObjectWriter extends System.Xaml.XamlWriter implements class System.Xaml.IXamlLineInfoConsumer" />
+  <TypeSignature Language="DocId" Value="T:System.Xaml.XamlObjectWriter" />
+  <TypeSignature Language="VB.NET" Value="Public Class XamlObjectWriter&#xA;Inherits XamlWriter&#xA;Implements IXamlLineInfoConsumer" />
+  <TypeSignature Language="C++ CLI" Value="public ref class XamlObjectWriter : System::Xaml::XamlWriter, System::Xaml::IXamlLineInfoConsumer" />
+  <TypeSignature Language="F#" Value="type XamlObjectWriter = class&#xA;    inherit XamlWriter&#xA;    interface IXamlLineInfoConsumer" />
+  <AssemblyInfo>
+    <AssemblyName>System.Xaml</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Xaml.XamlWriter</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Xaml.IXamlLineInfoConsumer</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>소스 XAML 노드 스트림에서 개체 그래프를 만듭니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `Write` 의 메서드 <xref:System.Xaml.XamlObjectWriter> 패턴을 구현 있도록를 <xref:System.Xaml.XamlObjectWriter> 사용 하는 <xref:System.Xaml.XamlWriter> 정의 되는 <xref:System.Xaml.XamlWriter.WriteNode%2A> 메서드. <xref:System.Xaml.XamlWriter.WriteNode%2A> 전환 하는 논리는 `Write` 메서드는 노드에 따라 형식은 판독기의 현재 위치에 있습니다.  
+  
+## <a name="scope"></a>범위  
+ A <xref:System.Xaml.XamlObjectWriter> 범위는 개념이, <xref:System.Xaml.XamlObjectWriter> 개념적 출력 개체 그래프에 대 한 참조 지점 유지 관리 합니다. 특정 범위에 대 한 특정 작업 올 바르 거 나 잘못 된 경우 수도 없는 작업 결과 생성 합니다. 예를 들어, 호출 하는 경우 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> 인스턴스로 이미 있는 개체의 초기화에 대 한 지시문 쓸 기본 구현에서는 예외를 throw 합니다.  
+  
+ 사용자 지정의 범위를 추적 하기 위한 가능한 기술 <xref:System.Xaml.XamlObjectWriter> 스택 또는 프레임 클래스를 사용 하 여 노드 작업을 정렬 합니다. 스택 또는 프레임을 추적할 수 푸시 및 팝 개체 모델 깊이 시작 하거나 종료 하는 각 수준에 대 한 동안은 <xref:System.Xaml.XamlObjectWriter> 개체 그래프를 작성 합니다.  
+  
+## <a name="callbacks"></a>콜백  
+ 중급 및 고급 지원 하기 위해 <xref:System.Xaml.XamlObjectWriter> 시나리오의 경우 개체 그래프를 작성 하는 메커니즘은 진입점을 제공 콜백 발생 하는 경우를 <xref:System.Xaml.XamlObjectWriter> 커밋 또는 특정 작업을 커밋 되려고 합니다. 일부 콜백을 설정에서 사용 되 고 개체 형식 또는 쓸; 멤버를 관련은 없지만 그러나 콜백 컨텍스트에서 사용할 수 있는 경우가 정보나 콜백을 통해 전송 되는 데이터는 이벤트입니다. 다음은 관련 콜백이 목록입니다.  
+  
+-   로 선언 된 콜백을 <xref:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler%2A> 범위가 새 개체를 이동할 때 호출 되는 <xref:System.ComponentModel.ISupportInitialize.BeginInit%2A> 생성된 된 각 개체에 대해 개체 수명의 단계입니다.  
+  
+-   로 선언 된 콜백을 <xref:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler%2A> 범위가 새 개체를 이동할 때 호출 되는 <xref:System.ComponentModel.ISupportInitialize.EndInit%2A> 생성된 된 각 개체에 대해 개체 수명의 단계입니다.  
+  
+-   로 선언 된 콜백 <xref:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler%2A> 범위 개체에서 시작 하 고 발생할 때 호출 되 면 첫 번째 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> 개체 범위를 호출 했지만 아직 커밋되지 않은.  
+  
+-   로 선언 된 콜백을 <xref:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler%2A> 범위 개체에서 시작 하 고 발생 하는 경우 호출 됩니다 때는 <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> 개체 범위를 호출 했지만 아직 커밋되지 않은 합니다.  
+  
+-   로 선언 된 콜백을 <xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A> 호출할 때 <xref:System.Xaml.XamlObjectWriter.OnSetValue%2A> 라고 합니다.  
+  
+## <a name="writing-dictionary-keys"></a>쓰기 사전 키  
+ 기본 구현의 <xref:System.Xaml.XamlObjectWriter> 의 제약 조건에서 형식 변환을 지원은 <xref:System.Collections.Generic.Dictionary%602> 사전 전에 내용이 개체 그래프에 추가 됩니다. 이런 방식으로 제네릭 사전 개체에 의해 런타임 시 입력 될 수 및 관련 제네릭 매칭 `Add` 및 인덱서 동작 합니다. 그러나 기본에 대해 구현 되 <xref:System.Xaml.XamlObjectWriter>,이 기능은 기본에서 개체 그래프를 만드는 동안만 존재 <xref:System.Collections.Generic.Dictionary%602> 클래스의 파생된 클래스에 <xref:System.Collections.Generic.Dictionary%602>입니다.  
+  
+## <a name="checks-for-disposed"></a>삭제 확인  
+ XAML 작성기는 지연 된 작업 또는 중간에 삭제 된 XAML 작성기 인스턴스에 대해 호출 위치에 잠재적으로 사용 됩니다. 다양 한 Api <xref:System.Xaml.XamlObjectWriter> throw 할 수 있습니다 <xref:System.ObjectDisposedException> 이러한 경우입니다.  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Xaml.XamlWriter" />
+    <altmember cref="T:System.Xaml.XamlObjectReader" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Xaml.XamlObjectWriter" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlObjectWriter (System.Xaml.XamlSchemaContext schemaContext);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xaml.XamlSchemaContext schemaContext) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (schemaContext As XamlSchemaContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlObjectWriter(System::Xaml::XamlSchemaContext ^ schemaContext);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlObjectWriter : System.Xaml.XamlSchemaContext -&gt; System.Xaml.XamlObjectWriter" Usage="new System.Xaml.XamlObjectWriter schemaContext" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+      </Parameters>
+      <Docs>
+        <param name="schemaContext">쓰기용 노드를 제공하는 XAML 판독기와 공유되는 XAML 스키마 컨텍스트입니다.</param>
+        <summary><see cref="T:System.Xaml.XamlObjectWriter" />에서 사용하는 XAML 스키마 컨텍스트를 사용하여 <see cref="T:System.Xaml.XamlReader" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="schemaContext" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlObjectWriter (System.Xaml.XamlSchemaContext schemaContext, System.Xaml.XamlObjectWriterSettings settings);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Xaml.XamlSchemaContext schemaContext, class System.Xaml.XamlObjectWriterSettings settings) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.#ctor(System.Xaml.XamlSchemaContext,System.Xaml.XamlObjectWriterSettings)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (schemaContext As XamlSchemaContext, settings As XamlObjectWriterSettings)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlObjectWriter(System::Xaml::XamlSchemaContext ^ schemaContext, System::Xaml::XamlObjectWriterSettings ^ settings);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlObjectWriter : System.Xaml.XamlSchemaContext * System.Xaml.XamlObjectWriterSettings -&gt; System.Xaml.XamlObjectWriter" Usage="new System.Xaml.XamlObjectWriter (schemaContext, settings)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+        <Parameter Name="settings" Type="System.Xaml.XamlObjectWriterSettings" />
+      </Parameters>
+      <Docs>
+        <param name="schemaContext">쓰기용 노드를 제공하는 XAML 판독기와 공유되는 XAML 스키마 컨텍스트입니다.</param>
+        <param name="settings"><see cref="T:System.Xaml.XamlObjectWriter" /> 동작 및 출력에 대한 특정 옵션을 지정하는 설정 개체입니다.</param>
+        <summary><see cref="T:System.Xaml.XamlObjectWriter" /> 및 해당 설정에서 사용하는 컨텍스트를 사용하여 <see cref="T:System.Xaml.XamlReader" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="schemaContext" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Clear">
+      <MemberSignature Language="C#" Value="public void Clear ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Clear() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.Clear" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Clear ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Clear();" />
+      <MemberSignature Language="F#" Value="member this.Clear : unit -&gt; unit" Usage="xamlObjectWriter.Clear " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>가능한 모든 프레임을 다시 설정하고 개체 그래프를 지웁니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected override void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="override this.Dispose : bool -&gt; unit" Usage="xamlObjectWriter.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">관리되는 리소스를 해제하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary><see cref="T:System.Xaml.XamlObjectWriter" />에서 사용하는 관리되지 않는 리소스를 해제하고, 관리되는 리소스를 선택적으로 해제할 수 있습니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAfterBeginInit">
+      <MemberSignature Language="C#" Value="protected virtual void OnAfterBeginInit (object value);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAfterBeginInit(object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnAfterBeginInit(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAfterBeginInit (value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAfterBeginInit(System::Object ^ value);" />
+      <MemberSignature Language="F#" Value="abstract member OnAfterBeginInit : obj -&gt; unit&#xA;override this.OnAfterBeginInit : obj -&gt; unit" Usage="xamlObjectWriter.OnAfterBeginInit value" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="value">보고할 개체입니다. 개체는 처리기를 호출할 때 <see cref="T:System.Xaml.XamlObjectEventArgs" />로 패키지됩니다.</param>
+        <summary>이 <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterBeginInitHandler" />에 대해 <see cref="T:System.Xaml.XamlObjectWriterSettings" />와 연결된 <see cref="T:System.Xaml.XamlObjectWriter" /> 메서드를 호출합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAfterEndInit">
+      <MemberSignature Language="C#" Value="protected virtual void OnAfterEndInit (object value);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAfterEndInit(object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnAfterEndInit(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAfterEndInit (value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAfterEndInit(System::Object ^ value);" />
+      <MemberSignature Language="F#" Value="abstract member OnAfterEndInit : obj -&gt; unit&#xA;override this.OnAfterEndInit : obj -&gt; unit" Usage="xamlObjectWriter.OnAfterEndInit value" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="value">보고할 개체입니다. 값은 처리기를 호출할 때 <see cref="T:System.Xaml.XamlObjectEventArgs" />로 패키지됩니다.</param>
+        <summary>이 <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterEndInitHandler" />에 대해 <see cref="T:System.Xaml.XamlObjectWriterSettings" />와 연결된 <see cref="T:System.Xaml.XamlObjectWriter" /> 메서드를 호출합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnAfterProperties">
+      <MemberSignature Language="C#" Value="protected virtual void OnAfterProperties (object value);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnAfterProperties(object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnAfterProperties(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnAfterProperties (value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnAfterProperties(System::Object ^ value);" />
+      <MemberSignature Language="F#" Value="abstract member OnAfterProperties : obj -&gt; unit&#xA;override this.OnAfterProperties : obj -&gt; unit" Usage="xamlObjectWriter.OnAfterProperties value" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="value">보고할 개체입니다. 이것은 처리기가 호출될 때 <see cref="T:System.Xaml.XamlObjectEventArgs" />로 패키지됩니다.</param>
+        <summary>이 <see cref="P:System.Xaml.XamlObjectWriterSettings.AfterPropertiesHandler" />에 대해 <see cref="T:System.Xaml.XamlObjectWriterSettings" />와 연결된 <see cref="T:System.Xaml.XamlObjectWriter" /> 참조 메서드를 호출합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnBeforeProperties">
+      <MemberSignature Language="C#" Value="protected virtual void OnBeforeProperties (object value);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnBeforeProperties(object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnBeforeProperties(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnBeforeProperties (value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnBeforeProperties(System::Object ^ value);" />
+      <MemberSignature Language="F#" Value="abstract member OnBeforeProperties : obj -&gt; unit&#xA;override this.OnBeforeProperties : obj -&gt; unit" Usage="xamlObjectWriter.OnBeforeProperties value" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="value">처리기가 호출될 때 <see cref="T:System.Xaml.XamlObjectEventArgs" />를 통해 전달될 값입니다.</param>
+        <summary>이 <see cref="P:System.Xaml.XamlObjectWriterSettings.BeforePropertiesHandler" />에 대해 <see cref="T:System.Xaml.XamlObjectWriterSettings" />와 연결된 <see cref="T:System.Xaml.XamlObjectWriter" /> 참조 메서드를 호출합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnSetValue">
+      <MemberSignature Language="C#" Value="protected virtual bool OnSetValue (object eventSender, System.Xaml.XamlMember member, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool OnSetValue(object eventSender, class System.Xaml.XamlMember member, object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.OnSetValue(System.Object,System.Xaml.XamlMember,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function OnSetValue (eventSender As Object, member As XamlMember, value As Object) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool OnSetValue(System::Object ^ eventSender, System::Xaml::XamlMember ^ member, System::Object ^ value);" />
+      <MemberSignature Language="F#" Value="abstract member OnSetValue : obj * System.Xaml.XamlMember * obj -&gt; bool&#xA;override this.OnSetValue : obj * System.Xaml.XamlMember * obj -&gt; bool" Usage="xamlObjectWriter.OnSetValue (eventSender, member, value)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="eventSender" Type="System.Object" />
+        <Parameter Name="member" Type="System.Xaml.XamlMember" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="eventSender">처리기에 소스로 보고할 개체입니다.</param>
+        <param name="member">설정할 속성의 이름으로, <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" />의 일부로 처리기에 전달됩니다.</param>
+        <param name="value"><paramref name="property" />로 명명된 속성에 대해 제공할 값입니다. 이 값은 <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" />의 일부로 처리기에 전달됩니다.</param>
+        <summary><see cref="P:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler" /> 이벤트 데이터의 <paramref name="handled" />가 <see langword="true" />가 아니면 이 작성기에 대해 <see cref="T:System.Xaml.XamlObjectWriterSettings" />와 연결된 <see cref="T:System.Windows.Markup.XamlSetValueEventArgs" /> 참조 메서드를 호출합니다.</summary>
+        <returns>연결된 처리기에 의해 설정된 부울 값이거나, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우는 `SetValue` XAML 작성기에 대 한 작업에 연결 된 처리기 (을 <xref:System.Xaml.XamlObjectWriterSettings.XamlSetValueHandler%2A> 에서 선언 된 <xref:System.Xaml.XamlObjectWriterSettings>),이 메서드가 만드는 새 <xref:System.Windows.Markup.XamlSetValueEventArgs> 처리기에 전달 합니다. 반환 값을 읽어 설정 됩니다는 <xref:System.Windows.Markup.XamlSetValueEventArgs.Handled%2A> 이벤트 데이터를 통해 전달 되는 값입니다. 호출이 반환 하는 경우 처리기 존재 하 고이 메서드가 호출 된 경우 `false`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Result">
+      <MemberSignature Language="C#" Value="public virtual object Result { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object Result" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlObjectWriter.Result" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property Result As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Object ^ Result { System::Object ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Result : obj" Usage="System.Xaml.XamlObjectWriter.Result" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>작성된 마지막 개체를 가져옵니다. 일반적으로 노드 스트림이 마지막에 있고 개체 그래프가 완료된 경우에만 호출됩니다.</summary>
+        <value>작성된 마지막 개체이거나 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 가장 일반적인 사용법 <xref:System.Xaml.XamlObjectWriter.Result%2A> 노드 스트림에서 해당 end에 있을 것으로 알려져 있고 개체 그래프가 완성 된 경우에 호출 하는 것입니다. 그렇지 않으면 개체 그래프를 완료 하지 않을 가능성이 이며 대부분의 플랫폼 시나리오에 유용 하지 않습니다.  
+  
+ <xref:System.Xaml.XamlObjectWriter.Result%2A> 호출한 후 즉시 호출 되 면 일반적으로 null이 아닌 값을만 포함 <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A>, 현재 범위 값을 제공 하는 개체 멤버의 경우.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RootNameScope">
+      <MemberSignature Language="C#" Value="public System.Windows.Markup.INameScope RootNameScope { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Markup.INameScope RootNameScope" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlObjectWriter.RootNameScope" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property RootNameScope As INameScope" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Markup::INameScope ^ RootNameScope { System::Windows::Markup::INameScope ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.RootNameScope : System.Windows.Markup.INameScope" Usage="System.Xaml.XamlObjectWriter.RootNameScope" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Markup.INameScope</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XAML 개체 작성기의 절대 노드 루트에 대해 XAML 이름 범위를 유지하는 <see cref="T:System.Windows.Markup.INameScope" /> 서비스를 가져옵니다.</summary>
+        <value>개체 작성기의 현재 루트에 대해 XAML 이름 범위를 유지하는 <see cref="T:System.Windows.Markup.INameScope" /> 서비스입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 개체 작성기 컨텍스트에서이 속성의 값을 가져올 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SchemaContext">
+      <MemberSignature Language="C#" Value="public override System.Xaml.XamlSchemaContext SchemaContext { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.XamlSchemaContext SchemaContext" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlObjectWriter.SchemaContext" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides ReadOnly Property SchemaContext As XamlSchemaContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Xaml::XamlSchemaContext ^ SchemaContext { System::Xaml::XamlSchemaContext ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.SchemaContext : System.Xaml.XamlSchemaContext" Usage="System.Xaml.XamlObjectWriter.SchemaContext" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlSchemaContext</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>활성 XAML 스키마 컨텍스트를 가져옵니다.</summary>
+        <value>XAML 스키마 컨텍스트입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ XAML 스키마 컨텍스트에서 가장 유용한 개체 쓰기 시나리오에 대 한 필요한 정보입니다. XAML 스키마 컨텍스트를 지원 형식에 대 한 유형 조회에 영향을 줍니다 및 지원 형식이 있는 어셈블리에 대 한 정보를 보유 합니다. 기본 XAML 스키마 컨텍스트는 CLR 형식 매핑 규칙을 기반으로 합니다. 프레임 워크는 일반적으로 어셈블리 로드 메커니즘은 프레임 워크의 프로그래밍 및 응용 프로그램 모델과 일치 하는지 확인 하기 위해 자체 XAML 스키마 컨텍스트를 제공 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetLineInfo">
+      <MemberSignature Language="C#" Value="public void SetLineInfo (int lineNumber, int linePosition);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void SetLineInfo(int32 lineNumber, int32 linePosition) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.SetLineInfo(System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetLineInfo (lineNumber As Integer, linePosition As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void SetLineInfo(int lineNumber, int linePosition);" />
+      <MemberSignature Language="F#" Value="abstract member SetLineInfo : int * int -&gt; unit&#xA;override this.SetLineInfo : int * int -&gt; unit" Usage="xamlObjectWriter.SetLineInfo (lineNumber, linePosition)" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="lineNumber" Type="System.Int32" />
+        <Parameter Name="linePosition" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="lineNumber">판독기에서의 줄 번호입니다.</param>
+        <param name="linePosition">판독기에서의 줄 위치입니다.</param>
+        <summary><see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" />를 구현하고 예외에 대한 줄 정보를 제공합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 서비스 메서드 코드에서 직접 호출할 수 없습니다. 그러나에서 파생된 된 클래스를 만드는 경우 <xref:System.Xaml.XamlObjectWriter> 및 줄 번호를 사용할 수 있는 컨텍스트를 보고서에 예상 또는 유용 하지 않음,이 메서드가 호출 될 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ShouldProvideLineInfo">
+      <MemberSignature Language="C#" Value="public bool ShouldProvideLineInfo { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool ShouldProvideLineInfo" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlObjectWriter.ShouldProvideLineInfo" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ShouldProvideLineInfo As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool ShouldProvideLineInfo { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.ShouldProvideLineInfo : bool" Usage="System.Xaml.XamlObjectWriter.ShouldProvideLineInfo" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Xaml.IXamlLineInfoConsumer.ShouldProvideLineInfo</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>줄 정보 서비스가 값을 제공해야 하는지, 그리고 이에 따라 관련이 있는 경우 <see cref="M:System.Xaml.IXamlLineInfoConsumer.SetLineInfo(System.Int32,System.Int32)" /> 메서드도 호출해야 하는지 여부를 보고하는 값을 가져옵니다.</summary>
+        <value>작성기에서 줄 정보가 사용되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 구현에서는 항상 `true`을 반환합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteEndMember">
+      <MemberSignature Language="C#" Value="public override void WriteEndMember ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteEndMember() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteEndMember" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteEndMember ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteEndMember();" />
+      <MemberSignature Language="F#" Value="override this.WriteEndMember : unit -&gt; unit" Usage="xamlObjectWriter.WriteEndMember " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 멤버 범위를 닫으며, 닫는 동안 멤버 범위의 값을 쓸 수도 있습니다. 새 범위가 멤버의 부모 개체 범위가 됩니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.Xaml.XamlObjectWriterException">이 호출과 이전 <see langword="StartMember" /> 사이에서 발생하는 값 노드에서 멤버 값을 만들지 못했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteEndObject">
+      <MemberSignature Language="C#" Value="public override void WriteEndObject ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteEndObject() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteEndObject" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteEndObject ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteEndObject();" />
+      <MemberSignature Language="F#" Value="override this.WriteEndObject : unit -&gt; unit" Usage="xamlObjectWriter.WriteEndObject " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>작성기에서 현재 개체 범위를 닫습니다. 새 개체 범위가 부모 멤버 범위가 됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 경우 `EndObject` 위치 범위를 루트 개체를 닫고, 새 개체 범위가 루트 범위가 됩니다.  
+  
+ 에 대 한 호출 <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> 아직 만들지 않은 경우 개체는 개체 멤버 초기화 텍스트 또는 초기화 매개 변수와 같은 필요한 초기화 pathway, 수 있기 때문입니다. 이러한 경우에 대 한 호출에 대 한 <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> 실제로 개체를 씁니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteGetObject">
+      <MemberSignature Language="C#" Value="public override void WriteGetObject ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteGetObject() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteGetObject" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteGetObject ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteGetObject();" />
+      <MemberSignature Language="F#" Value="override this.WriteGetObject : unit -&gt; unit" Usage="xamlObjectWriter.WriteGetObject " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>지정된 개체가 기본값이거나 부모 속성의 암시적인 값인 경우에 개념 <see langword="StartObject" />를 개체 그래프에 씁니다. 암시적 값은 입력 XAML 노드 집합에서 개체 값으로 지정되는 것이 아니라 XAML 스키마 컨텍스트에서 가져온 정보 및 지원 형식 정보에서 가져옵니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여 작성의 차이점 <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> 작성 하 고 <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> 결과 개체 그래프에서 볼 수 있습니다. <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> 형식의 인스턴스를 생성 하지 않습니다는 <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> API는 개체 그래프 생성할 수 있는 정보가 없습니다. 부모 속성; 초기화 될 때 개체를 만든 하는 대신 하므로 <xref:System.Xaml.XamlObjectWriter> 구성할 필요가 없습니다. 반면, <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> 해당 형식의 인스턴스 생성 및 개체 그래프에 삽입을 지정 합니다.  
+  
+ 프레임의 계열로 XAML 노드 스트림의 생각 하는 경우는 <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> 를 균형을 <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> 호출 합니다. 따라서 수 <xref:System.Xaml.XamlObjectWriter.WriteGetObject%2A> plus <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> 호출의 수와 같아야 <xref:System.Xaml.XamlObjectWriter.WriteEndObject%2A> XAML 노드 스트림의 전체 개체 작성 평가의 일부로 호출 합니다.  
+  
+ 개념 `StartObject` 개체 필요한 멤버를 쓸 기반 XAML 노드 스트림에서 개체 값 자체는 암시적 기본 경우에 있을 수 있습니다 개체 그래프에 암시적 개체 필요한에 위치 합니다. 일반적인 시나리오의이 발생 하는 경우 <xref:System.Xaml.XamlObjectWriter> 쓰기 멤버 노드를 컬렉션 속성을 초기화 하는 컬렉션에 대 한 암시적 컬렉션 속성을 소유 하는 개체를 만드는으로 부여 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteNamespace">
+      <MemberSignature Language="C#" Value="public override void WriteNamespace (System.Xaml.NamespaceDeclaration namespaceDeclaration);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteNamespace(class System.Xaml.NamespaceDeclaration namespaceDeclaration) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteNamespace(System.Xaml.NamespaceDeclaration)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteNamespace(System::Xaml::NamespaceDeclaration ^ namespaceDeclaration);" />
+      <MemberSignature Language="F#" Value="override this.WriteNamespace : System.Xaml.NamespaceDeclaration -&gt; unit" Usage="xamlObjectWriter.WriteNamespace namespaceDeclaration" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="namespaceDeclaration" Type="System.Xaml.NamespaceDeclaration" />
+      </Parameters>
+      <Docs>
+        <param name="namespaceDeclaration">작성할 네임스페이스 선언입니다.</param>
+        <summary>다음 개체 범위 또는 멤버 범위에 적용되는 네임스페이스 선언을 정의합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 현재 범위는 루트 범위, 개체 범위 또는 멤버 범위 경우 네임 스페이스 선언을 작성할 수 있습니다. 그러나 <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> 다음 중 하나를 호출 하기 전에 즉시 호출할 수 있습니다: <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A>를 <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A>, 또는 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A>합니다. 연속 <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> 대/소문자가 동일한 노드에서 여러 네임 스페이스 선언을 쓸입니다. 결국 <xref:System.Xaml.XamlObjectWriter.WriteStartObject%2A> 또는 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A> 호출 해야 합니다.  
+  
+ <xref:System.Xaml.XamlObjectWriter.WriteNamespace%2A> 사용 하지 않는 한 `Start` / `End` 메타포입니다. 멤버 알려져 및 특수 형식으로 표시할 필요가 없습니다 XAML 네임 스페이스에 CLR 표현 점에서 멤버가 있지만 <xref:System.Xaml.XamlMember> 확장성에 대 한 합니다. 값에 액세스 하는 <xref:System.Xaml.NamespaceDeclaration>, 액세스 해당 <xref:System.Xaml.NamespaceDeclaration.Namespace%2A> 및 <xref:System.Xaml.NamespaceDeclaration.Prefix%2A> 속성입니다.  
+  
+ 네임 스페이스 선언이 있을 수는 <xref:System.String.Empty?displayProperty=nameWithType> 접두사 값입니다. <xref:System.String.Empty?displayProperty=nameWithType> 접두사 기본 XAML 네임 스페이스 선언을 나타냅니다. 기본 접두사; 나타내는 null을 사용 하지 마세요  이 API에서 예외를 throw 합니다. 자세한 내용은 <xref:System.Xaml.NamespaceDeclaration>을 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="namespaceDeclaration" />이 <see langword="null" />인 경우</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="namespaceDeclaration" />의 구성 요소가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.Xaml.XamlObjectReaderException">잘못된 범위에서 XAML 네임스페이스 노드를 쓰려고 했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteStartMember">
+      <MemberSignature Language="C#" Value="public override void WriteStartMember (System.Xaml.XamlMember property);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteStartMember(class System.Xaml.XamlMember property) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteStartMember(System.Xaml.XamlMember)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteStartMember (property As XamlMember)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteStartMember(System::Xaml::XamlMember ^ property);" />
+      <MemberSignature Language="F#" Value="override this.WriteStartMember : System.Xaml.XamlMember -&gt; unit" Usage="xamlObjectWriter.WriteStartMember property" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="property" Type="System.Xaml.XamlMember" />
+      </Parameters>
+      <Docs>
+        <param name="property">작성할 XAML 속성입니다. 일반적으로 이 값은 XAML 노드 스트림의 중간 요소를 통해 XAML 판독기에서 가져옵니다.</param>
+        <summary>새 멤버 노드를 현재 개체 범위에 작성하고, 이 범위가 새 멤버 범위가 됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!TIP]
+>  에 대 한 보기를 <xref:System.Xaml.XamlDuplicateMemberException>, 동일한 XAML 속성은 입력 XAML 두 번 설정 하는 경우에 발생 합니다. 특성 구문 및 속성 요소 구문에서 동일한 속성 설정 된 경우 등의 간단한 경우에는 입력된 태그에서이 예외를 쉽게 볼 수 있습니다. 그러나 포착 하기 더 어려운 미묘한 사례를 추가로 발생할 수 있습니다. 예를 들어, 속성 연결 가능한 사용 및 인스턴스 사용을 모두 사용 하도록 설정 하면 및 XAML 앰비언트 속성을 포함 하는 경우 XAML 콘텐츠 속성을 설정 하는 경우이 예외가 발생할 수 있습니다. 개발 단계의 디버깅에서 태그 읽기 및 쓰기 개체 그래프를 연결 하는 중간 XAML 노드 표현 확인 하 여이 예외를 종종 찾을 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xaml.XamlObjectWriterException"><paramref name="property" />에서 <see cref="P:System.Xaml.XamlMember.IsUnknown" />을 <see langword="true" />로 설정한 경우  
+  
+또는 
+ <see cref="P:System.Xaml.XamlLanguage.UnknownContent" />가 통과되었으며, XAML 노드 스트림에 콘텐츠를 지원하지 않는 개체의 콘텐츠가 포함된 것을 나타냅니다.  
+  
+또는 
+잘못된 범위에서 시작 멤버를 쓰려고 했습니다.</exception>
+        <exception cref="T:System.Xaml.XamlDuplicateMemberException"><paramref name="property" />는 이미 부모 개체 범위에 명시적으로 설정된 속성을 지정합니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="property" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteStartObject">
+      <MemberSignature Language="C#" Value="public override void WriteStartObject (System.Xaml.XamlType xamlType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteStartObject(class System.Xaml.XamlType xamlType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteStartObject(System.Xaml.XamlType)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteStartObject(System::Xaml::XamlType ^ xamlType);" />
+      <MemberSignature Language="F#" Value="override this.WriteStartObject : System.Xaml.XamlType -&gt; unit" Usage="xamlObjectWriter.WriteStartObject xamlType" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="xamlType" Type="System.Xaml.XamlType" />
+      </Parameters>
+      <Docs>
+        <param name="xamlType">작성할 형식입니다. 일반적으로 XAML 판독기에서 이 값을 가져옵니다.</param>
+        <summary>개체 노드를 현재 범위에 작성하고, 이 범위를 새 개체 범위로 설정합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.Xaml.XamlObjectWriterException"><see cref="P:System.Xaml.XamlType.IsUnknown" /> 형식을 처리하는 중이며 개체를 만들 수 없습니다.  
+  
+또는 
+잘못된 범위에서 시작 개체를 쓰려고 했습니다.</exception>
+        <exception cref="T:System.Xaml.XamlParseException">루트 개체가 설정에 이미 제공된 경우 루트 개체를 쓰려고 했습니다.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="xamlType" />가 <see langword="null" />인 경우</exception>
+        <block subset="none" type="overrides"><para>새로운 인스턴스를 사용 하 여 컬렉션, 사전 또는 배열에 추가 해야 현재 범위가 컬렉션, 사전 또는 배열 안에 있으면는 <see langword="Add" /> 관련 형식의 메서드. 그렇지 않은 경우 멤버를 새 인스턴스로 할당 되어야 합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="WriteValue">
+      <MemberSignature Language="C#" Value="public override void WriteValue (object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void WriteValue(object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlObjectWriter.WriteValue(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub WriteValue (value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void WriteValue(System::Object ^ value);" />
+      <MemberSignature Language="F#" Value="override this.WriteValue : obj -&gt; unit" Usage="xamlObjectWriter.WriteValue value" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="value">작성할 값입니다.</param>
+        <summary>현재 멤버 범위에 값을 씁니다. 현재 범위가 컬렉션, 사전 또는 배열 개체 내에 있으면 값이 컬렉션, 사전 또는 배열에 추가되어야 합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.Xaml.XamlObjectWriterException">잘못된 범위에서 값을 쓰려고 했습니다.</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

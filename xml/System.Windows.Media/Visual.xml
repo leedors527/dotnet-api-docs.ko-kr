@@ -1,0 +1,1299 @@
+<Type Name="Visual" FullName="System.Windows.Media.Visual">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="30bd38d787a4decfa3275e31bdb7b8ef5395b649" /><Meta Name="ms.sourcegitcommit" Value="bac13a81377b1c4ebf3990e3287a6f1700f73751" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="57945717" /></Metadata><TypeSignature Language="C#" Value="public abstract class Visual : System.Windows.DependencyObject" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit Visual extends System.Windows.DependencyObject" />
+  <TypeSignature Language="DocId" Value="T:System.Windows.Media.Visual" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class Visual&#xA;Inherits DependencyObject" />
+  <TypeSignature Language="C++ CLI" Value="public ref class Visual abstract : System::Windows::DependencyObject" />
+  <TypeSignature Language="F#" Value="type Visual = class&#xA;    inherit DependencyObject&#xA;    interface DUCE.IResource" />
+  <AssemblyInfo>
+    <AssemblyName>PresentationCore</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Windows.DependencyObject</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>적중 테스트, 좌표 변환, 경계 상자 계산 등을 포함한 WPF의 렌더링 지원을 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Windows.Media.Visual> 클래스는 기본 추상화는 모든 <xref:System.Windows.FrameworkElement> 개체에서 파생 됩니다. 새 컨트롤을 작성 하기 위한 진입점으로도 사용 됩니다 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)], 여러 가지 방법으로 간주할 수의 창 핸들 (HWND)를 동등 개체로 및를 [!INCLUDE[TLA#tla_win32](~/includes/tlasharptla-win32-md.md)] 응용 프로그램 모델입니다.  
+  
+ 합니다 <xref:System.Windows.Media.Visual> 개체는 핵심 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 개체를 렌더링 지원을 제공 하는 역할입니다. 와 같은 사용자 인터페이스 컨트롤 <xref:System.Windows.Controls.Button> 및 <xref:System.Windows.Controls.TextBox>에서 파생 되는 <xref:System.Windows.Media.Visual> 클래스를 사용 하 여는 <xref:System.Windows.Media.Visual> 렌더링 데이터를 유지 하는 것에 대 한 속성을 정의 합니다. <xref:System.Windows.Media.Visual> 개체 다음에 대 한 지원을 제공 합니다.  
+  
+-   출력 표시: 시각적 개체의 serialize된 지속형 그리기 콘텐츠 렌더링  
+  
+-   변환: 시각적 개체에 대해 변환 수행  
+  
+-   클리핑: 시각적 개체에 대해 클리핑 영역 지원 제공  
+  
+-   적중 테스트: 지정 된 좌표 (지점) 또는 기 하 도형이 시각적 개체의 경계 내에 포함 되는지 여부를 결정 합니다.  
+  
+-   경계 상자 계산: 시각적 개체의 경계 사각형 결정  
+  
+ 아키텍처 측면에서 <xref:System.Windows.Media.Visual> 개체에 다른 응용 프로그램 개발 요구 사항에 대 한 지원이 포함 되어 있지 않습니다 / [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 즉시 렌더링과 같은 관련 되지 않은 기능:  
+  
+-   이벤트 처리  
+  
+-   레이아웃  
+  
+-   스타일  
+  
+-   데이터 바인딩  
+  
+-   전역화  
+  
+ <xref:System.Windows.Media.Visual> 추가 클래스 파생 될 수 공용 추상 클래스로 제공 됩니다. 다음 그림에 정의 된 기존 시각적 개체의 계층 구조는 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 아키텍처입니다.  
+  
+ ![시각적 개체에서 파생 된 클래스의 다이어그램](~/add/media/visualclass01.png "시각적 개체에서 파생 된 클래스의 다이어그램")  
+시각적 개체 클래스 계층 구조  
+  
+ 보호 구성원으로 정의 된 경우에 따라 <xref:System.Windows.Media.Visual> 파생에서 유사한 이름 사용 하 여 쉽게 액세스할 수 있는 멤버로 노출 되 <xref:System.Windows.UIElement> 클래스입니다.  
+  
+ 자세한 내용은 [WPF 그래픽 렌더링 개요](~/docs/framework/wpf/graphics-multimedia/wpf-graphics-rendering-overview.md)를 참조하세요.  
+  
+ <xref:System.Windows.Media.Visual> 수준의 횟수에 제한이 있습니다. .NET Framework의 이전 버전에서는이 최대 깊이 255 였습니다. 이 한도 시각적 트리에 여러 수준이 있는 일부 레이아웃에 적합 하지 않습니다.  
+  
+ [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)]의 최대 깊이 <xref:System.Windows.Media.Visual> 은 시각적 트리를 더욱 심층적으로 수 있도록 하는 합니다. 대부분의 응용 프로그램에서 많은 수준을 이동할 스택 공간이 않으며 결과 <xref:System.StackOverflowException> 레이아웃 중입니다. 기본 스택 크기에 대 한이 일반적으로 예외가 트리 깊이 약 800 중첩 190 정도에 해당 하는 경우 <xref:System.Windows.Controls.TreeViewItem> 개체입니다.  
+  
+ 응용 프로그램에서이 예외가 throw 됩니다. 자세히 시각적 트리에 있어야를 응용 프로그램의 스택 크기를 늘릴 수 있습니다. 컴파일 시 /STACK 옵션을 사용 하 여 또는 EDITBIN 유틸리티를 사용 하 여 스택의 크기를 늘릴 수 있습니다. 스택 크기를 늘리면 응용 프로그램의 성능에 영향을 줄 수 있습니다. 자세한 내용은 [스택 할당](https://go.microsoft.com/fwlink/?LinkId=165510) 하 고 [EDITBIN 옵션](https://go.microsoft.com/fwlink/?LinkId=165511)합니다.  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Windows.Media.VisualCollection" />
+    <altmember cref="T:System.Windows.Media.VisualTreeHelper" />
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected Visual ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; Visual();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" /> 클래스에서 파생된 개체의 기본 초기화를 제공합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="AddVisualChild">
+      <MemberSignature Language="C#" Value="protected void AddVisualChild (System.Windows.Media.Visual child);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void AddVisualChild(class System.Windows.Media.Visual child) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.AddVisualChild(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub AddVisualChild (child As Visual)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void AddVisualChild(System::Windows::Media::Visual ^ child);" />
+      <MemberSignature Language="F#" Value="member this.AddVisualChild : System.Windows.Media.Visual -&gt; unit" Usage="visual.AddVisualChild child" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="child">부모 시각적 개체에 추가할 자식 시각적 개체입니다.</param>
+        <summary>두 시각적 개체 사이의 부모/자식 관계를 정의합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Windows.Media.Visual.AddVisualChild%2A> 메서드 두 시각적 개체 사이의 부모-자식 관계를 설정 합니다. 시각적 자식 개체의 기본 저장소 구현에 대 한 큰 하위 수준 제어 해야 하는 경우이 메서드를 사용 해야 합니다. <xref:System.Windows.Media.VisualCollection> 자식 개체를 저장 하는 것에 대 한 기본 구현으로 사용할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 시각적 자식 개체의 사용자 지정 저장소 요구 사항을 정의 하는 방법을 보여 줍니다. 이 예제에서는 사용 합니다 <xref:System.Windows.Media.Visual.AddVisualChild%2A> 및 <xref:System.Windows.Media.Visual.RemoveVisualChild%2A> 시각적 부모 간의 부모-자식 관계를 설정 하는 메서드 및 `child`합니다. 올바르게 열거할 시각적 트리에 대 한 순서로 예제의 재정의 된 구현을 제공 하는 <xref:System.Windows.Media.Visual.GetVisualChild%2A> 메서드 및 <xref:System.Windows.Media.Visual.VisualChildrenCount%2A> 속성입니다.  
+  
+> [!NOTE]
+>  사용할 수 있지만 <xref:System.Windows.Media.VisualCollection> 부모-자식 시각적 개체 간의 관계를 만들려면 것이 더 효율적 하나의 자식만 부모에 연결 된 경우 사용자 고유의 사용자 지정 저장소 구현을 제공할 수 있습니다.  
+  
+ [!code-csharp[AddVisualChild#AddVisualChild01](~/samples/snippets/csharp/VS_Snippets_Wpf/AddVisualChild/CSharp/Window1.xaml.cs#addvisualchild01)]
+ [!code-vb[AddVisualChild#AddVisualChild01](~/samples/snippets/visualbasic/VS_Snippets_Wpf/AddVisualChild/visualbasic/window1.xaml.vb#addvisualchild01)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Media.VisualCollection" />
+      </Docs>
+    </Member>
+    <Member MemberName="FindCommonVisualAncestor">
+      <MemberSignature Language="C#" Value="public System.Windows.DependencyObject FindCommonVisualAncestor (System.Windows.DependencyObject otherVisual);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.DependencyObject FindCommonVisualAncestor(class System.Windows.DependencyObject otherVisual) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.FindCommonVisualAncestor(System.Windows.DependencyObject)" />
+      <MemberSignature Language="VB.NET" Value="Public Function FindCommonVisualAncestor (otherVisual As DependencyObject) As DependencyObject" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::DependencyObject ^ FindCommonVisualAncestor(System::Windows::DependencyObject ^ otherVisual);" />
+      <MemberSignature Language="F#" Value="member this.FindCommonVisualAncestor : System.Windows.DependencyObject -&gt; System.Windows.DependencyObject" Usage="visual.FindCommonVisualAncestor otherVisual" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="otherVisual" Type="System.Windows.DependencyObject" />
+      </Parameters>
+      <Docs>
+        <param name="otherVisual"><see cref="T:System.Windows.DependencyObject" /> 형식의 시각적 개체입니다.</param>
+        <summary>두 시각적 개체의 공통 상위 항목을 반환합니다.</summary>
+        <returns>시각적 개체와 <paramref name="otherVisual" />의 공통 상위 항목(있는 경우)이고, 그렇지 않으면 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 2D 및 3D 개체 전달할 수 있도록 일반적인 visual 상위 항목을 가질 수 있습니다는 <xref:System.Windows.Media.Media3D.Visual3D> 에 대 한 `otherVisual`합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetVisualChild">
+      <MemberSignature Language="C#" Value="protected virtual System.Windows.Media.Visual GetVisualChild (int index);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Windows.Media.Visual GetVisualChild(int32 index) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.GetVisualChild(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function GetVisualChild (index As Integer) As Visual" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Windows::Media::Visual ^ GetVisualChild(int index);" />
+      <MemberSignature Language="F#" Value="abstract member GetVisualChild : int -&gt; System.Windows.Media.Visual&#xA;override this.GetVisualChild : int -&gt; System.Windows.Media.Visual" Usage="visual.GetVisualChild index" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Visual</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="index"><see cref="T:System.Windows.Media.VisualCollection" />에 있는 시각적 개체의 인덱스입니다.</param>
+        <summary>부모 <see cref="T:System.Windows.Media.Visual" />에 있는 지정한 <see cref="T:System.Windows.Media.VisualCollection" />을 반환합니다.</summary>
+        <returns><see cref="T:System.Windows.Media.VisualCollection" />에서 지정된 <paramref name="index" /> 값에 있는 자식입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로 <xref:System.Windows.Media.Visual> 자식이 없습니다. 따라서 기본 구현에서는 항상 throw는 <xref:System.ArgumentOutOfRangeException>합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 재정의 된 구현을 정의 <xref:System.Windows.Media.Visual.GetVisualChild%2A>합니다.  
+  
+ [!code-csharp[DrawingVisualSample#102b](~/samples/snippets/csharp/VS_Snippets_Wpf/DrawingVisualSample/CSharp/Window1.xaml.cs#102b)]
+ [!code-vb[DrawingVisualSample#102b](~/samples/snippets/visualbasic/VS_Snippets_Wpf/DrawingVisualSample/visualbasic/window1.xaml.vb#102b)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>파생 된 클래스 <see cref="T:System.Windows.Media.Visual" /> 이 메서드를 재정의 해야 합니다 및는 <see cref="P:System.Windows.Media.Visual.VisualChildrenCount" /> 올바르게 열거할 시각적 트리에 대 한 속성입니다.</para></block>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="HitTestCore">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>점 또는 기하 도형 값이 시각적 개체의 경계 내에 있는지 확인합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="HitTestCore">
+      <MemberSignature Language="C#" Value="protected virtual System.Windows.Media.GeometryHitTestResult HitTestCore (System.Windows.Media.GeometryHitTestParameters hitTestParameters);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Windows.Media.GeometryHitTestResult HitTestCore(class System.Windows.Media.GeometryHitTestParameters hitTestParameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.HitTestCore(System.Windows.Media.GeometryHitTestParameters)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function HitTestCore (hitTestParameters As GeometryHitTestParameters) As GeometryHitTestResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Windows::Media::GeometryHitTestResult ^ HitTestCore(System::Windows::Media::GeometryHitTestParameters ^ hitTestParameters);" />
+      <MemberSignature Language="F#" Value="abstract member HitTestCore : System.Windows.Media.GeometryHitTestParameters -&gt; System.Windows.Media.GeometryHitTestResult&#xA;override this.HitTestCore : System.Windows.Media.GeometryHitTestParameters -&gt; System.Windows.Media.GeometryHitTestResult" Usage="visual.HitTestCore hitTestParameters" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.GeometryHitTestResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="hitTestParameters" Type="System.Windows.Media.GeometryHitTestParameters" />
+      </Parameters>
+      <Docs>
+        <param name="hitTestParameters">적중 테스트를 수행할 대상 <see cref="T:System.Windows.Media.GeometryHitTestParameters" />를 지정하는 <see cref="T:System.Windows.Media.Geometry" /> 개체입니다.</param>
+        <summary>기하 도형 값이 시각적 개체의 경계 내에 있는지 확인합니다.</summary>
+        <returns>적중 테스트 결과를 나타내는 <see cref="T:System.Windows.Media.GeometryHitTestResult" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 시각적 개체에 대 한 지원 하 여 적중 테스트 재정의 재정의할 수 있습니다는 <xref:System.Windows.Media.Visual.HitTestCore%2A> 메서드. 즉, 호출 하는 <xref:System.Windows.Media.VisualTreeHelper.HitTest%2A> 메서드를 재정의 된 구현 <xref:System.Windows.Media.Visual.HitTestCore%2A> 라고 합니다. 재정의 된 메서드는 좌표가 시각적 개체의 기 하 도형 밖에 있는 경우에 시각적 개체의 경계 사각형 내에 적중된 테스트를 포함 하는 경우 호출 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Windows.Media.Visual.HitTestCore%28System.Windows.Media.GeometryHitTestParameters%29> 메서드를 재정의하는 방법을 보여 줍니다. 이 메서드를 재정의 하려는 이유 중 하나는 적중된 테스트 프로세스 중 추가 기능을 제공 합니다.  
+  
+ [!code-csharp[HitTestingOverview#HitTestingOverviewSnippet13](~/samples/snippets/csharp/VS_Snippets_Wpf/HitTestingOverview/CSharp/GeometryHitTest.cs#hittestingoverviewsnippet13)]
+ [!code-vb[HitTestingOverview#HitTestingOverviewSnippet13](~/samples/snippets/visualbasic/VS_Snippets_Wpf/HitTestingOverview/visualbasic/geometryhittest.vb#hittestingoverviewsnippet13)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HitTestCore">
+      <MemberSignature Language="C#" Value="protected virtual System.Windows.Media.HitTestResult HitTestCore (System.Windows.Media.PointHitTestParameters hitTestParameters);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Windows.Media.HitTestResult HitTestCore(class System.Windows.Media.PointHitTestParameters hitTestParameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.HitTestCore(System.Windows.Media.PointHitTestParameters)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function HitTestCore (hitTestParameters As PointHitTestParameters) As HitTestResult" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Windows::Media::HitTestResult ^ HitTestCore(System::Windows::Media::PointHitTestParameters ^ hitTestParameters);" />
+      <MemberSignature Language="F#" Value="abstract member HitTestCore : System.Windows.Media.PointHitTestParameters -&gt; System.Windows.Media.HitTestResult&#xA;override this.HitTestCore : System.Windows.Media.PointHitTestParameters -&gt; System.Windows.Media.HitTestResult" Usage="visual.HitTestCore hitTestParameters" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.HitTestResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="hitTestParameters" Type="System.Windows.Media.PointHitTestParameters" />
+      </Parameters>
+      <Docs>
+        <param name="hitTestParameters">적중 테스트를 수행할 대상 <see cref="T:System.Windows.Media.PointHitTestParameters" />를 지정하는 <see cref="T:System.Windows.Point" /> 개체입니다.</param>
+        <summary>점 좌표 값이 시각적 개체의 경계 내에 있는지 확인합니다.</summary>
+        <returns>적중 테스트에서 반환되는 <see cref="T:System.Windows.Media.HitTestResult" />을 나타내는 <see cref="T:System.Windows.Media.Visual" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 적중 지원 시각적 개체에서 재정의 하 여 테스트를 재정의할 수 있습니다는 <xref:System.Windows.Media.Visual.HitTestCore%2A> 메서드. 즉, 호출 하는 <xref:System.Windows.Media.VisualTreeHelper.HitTest%2A> 메서드를 재정의 된 구현 <xref:System.Windows.Media.Visual.HitTestCore%2A> 라고 합니다. 재정의 된 메서드는 좌표가 시각적 개체의 기 하 도형 밖에 있는 경우에 시각적 개체의 경계 사각형 내에 적중된 테스트를 포함 하는 경우 호출 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 <xref:System.Windows.Media.Visual.HitTestCore%28System.Windows.Media.PointHitTestParameters%29> 메서드를 재정의하는 방법을 보여 줍니다. 이 메서드를 재정의 하려는 이유 중 하나는 적중된 테스트 프로세스 중 추가 기능을 제공 합니다.  
+  
+ [!code-csharp[HitTestingOverview#107](~/samples/snippets/csharp/VS_Snippets_Wpf/HitTestingOverview/CSharp/Window1.xaml.cs#107)]
+ [!code-vb[HitTestingOverview#107](~/samples/snippets/visualbasic/VS_Snippets_Wpf/HitTestingOverview/visualbasic/window1.xaml.vb#107)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsAncestorOf">
+      <MemberSignature Language="C#" Value="public bool IsAncestorOf (System.Windows.DependencyObject descendant);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool IsAncestorOf(class System.Windows.DependencyObject descendant) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.IsAncestorOf(System.Windows.DependencyObject)" />
+      <MemberSignature Language="VB.NET" Value="Public Function IsAncestorOf (descendant As DependencyObject) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool IsAncestorOf(System::Windows::DependencyObject ^ descendant);" />
+      <MemberSignature Language="F#" Value="member this.IsAncestorOf : System.Windows.DependencyObject -&gt; bool" Usage="visual.IsAncestorOf descendant" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="descendant" Type="System.Windows.DependencyObject" />
+      </Parameters>
+      <Docs>
+        <param name="descendant"><see cref="T:System.Windows.DependencyObject" /> 형식의 값입니다.</param>
+        <summary>시각적 개체가 하위 시각적 개체의 상위 항목인지 여부를 확인합니다.</summary>
+        <returns>시각적 개체가 <paramref name="descendant" />의 상위 항목이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsDescendantOf">
+      <MemberSignature Language="C#" Value="public bool IsDescendantOf (System.Windows.DependencyObject ancestor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool IsDescendantOf(class System.Windows.DependencyObject ancestor) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.IsDescendantOf(System.Windows.DependencyObject)" />
+      <MemberSignature Language="VB.NET" Value="Public Function IsDescendantOf (ancestor As DependencyObject) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool IsDescendantOf(System::Windows::DependencyObject ^ ancestor);" />
+      <MemberSignature Language="F#" Value="member this.IsDescendantOf : System.Windows.DependencyObject -&gt; bool" Usage="visual.IsDescendantOf ancestor" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ancestor" Type="System.Windows.DependencyObject" />
+      </Parameters>
+      <Docs>
+        <param name="ancestor"><see cref="T:System.Windows.DependencyObject" /> 형식의 값입니다.</param>
+        <summary>시각적 개체가 상위 시각적 개체의 하위 항목인지 여부를 확인합니다.</summary>
+        <returns>시각적 개체가 <paramref name="ancestor" />의 하위 항목이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnDpiChanged">
+      <MemberSignature Language="C#" Value="protected virtual void OnDpiChanged (System.Windows.DpiScale oldDpi, System.Windows.DpiScale newDpi);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void OnDpiChanged(valuetype System.Windows.DpiScale oldDpi, valuetype System.Windows.DpiScale newDpi) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.OnDpiChanged(System.Windows.DpiScale,System.Windows.DpiScale)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub OnDpiChanged (oldDpi As DpiScale, newDpi As DpiScale)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void OnDpiChanged(System::Windows::DpiScale oldDpi, System::Windows::DpiScale newDpi);" />
+      <MemberSignature Language="F#" Value="abstract member OnDpiChanged : System.Windows.DpiScale * System.Windows.DpiScale -&gt; unit&#xA;override this.OnDpiChanged : System.Windows.DpiScale * System.Windows.DpiScale -&gt; unit" Usage="visual.OnDpiChanged (oldDpi, newDpi)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="oldDpi" Type="System.Windows.DpiScale" Index="0" FrameworkAlternate="netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+        <Parameter Name="newDpi" Type="System.Windows.DpiScale" Index="1" FrameworkAlternate="netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
+      </Parameters>
+      <Docs>
+        <param name="oldDpi">이전 DPI 배율 설정입니다.</param>
+        <param name="newDpi">새 DPI 배율 설정입니다.</param>
+        <summary>이 뷰가 렌더링되는 DPI가 변경될 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisualChildrenChanged">
+      <MemberSignature Language="C#" Value="protected internal virtual void OnVisualChildrenChanged (System.Windows.DependencyObject visualAdded, System.Windows.DependencyObject visualRemoved);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void OnVisualChildrenChanged(class System.Windows.DependencyObject visualAdded, class System.Windows.DependencyObject visualRemoved) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.OnVisualChildrenChanged(System.Windows.DependencyObject,System.Windows.DependencyObject)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overridable Sub OnVisualChildrenChanged (visualAdded As DependencyObject, visualRemoved As DependencyObject)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual void OnVisualChildrenChanged(System::Windows::DependencyObject ^ visualAdded, System::Windows::DependencyObject ^ visualRemoved);" />
+      <MemberSignature Language="F#" Value="abstract member OnVisualChildrenChanged : System.Windows.DependencyObject * System.Windows.DependencyObject -&gt; unit&#xA;override this.OnVisualChildrenChanged : System.Windows.DependencyObject * System.Windows.DependencyObject -&gt; unit" Usage="visual.OnVisualChildrenChanged (visualAdded, visualRemoved)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="visualAdded" Type="System.Windows.DependencyObject" />
+        <Parameter Name="visualRemoved" Type="System.Windows.DependencyObject" />
+      </Parameters>
+      <Docs>
+        <param name="visualAdded">컬렉션에 추가된 <see cref="T:System.Windows.Media.Visual" />입니다.</param>
+        <param name="visualRemoved">컬렉션에서 제거된 <see cref="T:System.Windows.Media.Visual" />입니다.</param>
+        <summary>시각적 개체의 <see cref="T:System.Windows.Media.VisualCollection" />이 수정될 때 호출됩니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OnVisualParentChanged">
+      <MemberSignature Language="C#" Value="protected internal virtual void OnVisualParentChanged (System.Windows.DependencyObject oldParent);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig newslot virtual instance void OnVisualParentChanged(class System.Windows.DependencyObject oldParent) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.OnVisualParentChanged(System.Windows.DependencyObject)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overridable Sub OnVisualParentChanged (oldParent As DependencyObject)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; virtual void OnVisualParentChanged(System::Windows::DependencyObject ^ oldParent);" />
+      <MemberSignature Language="F#" Value="abstract member OnVisualParentChanged : System.Windows.DependencyObject -&gt; unit&#xA;override this.OnVisualParentChanged : System.Windows.DependencyObject -&gt; unit" Usage="visual.OnVisualParentChanged oldParent" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="oldParent" Type="System.Windows.DependencyObject" />
+      </Parameters>
+      <Docs>
+        <param name="oldParent"><see cref="T:System.Windows.DependencyObject" /> 개체의 이전 부모를 나타내는 <see cref="T:System.Windows.Media.Visual" /> 형식의 값입니다. <see cref="T:System.Windows.Media.Visual" /> 개체에 이전 부모가 없는 경우 매개 변수 값은 <see langword="null" />입니다.</param>
+        <summary>시각적 개체의 부모를 변경할 때 호출됩니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스 <xref:System.Windows.Media.Visual> 이 메서드를 재정의 하도록 선택할 수 있습니다.  
+  
+ 이 변경 보고서는 인스턴스를 제공 하는 "VisualParentChanged" 이벤트가 없습니다. 따라서 알림 시나리오를 처리 하 고 시나리오의 일부인 경우 알림의 인스턴스 버전을 제공 하려면이 메서드를 재정의 해야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 재정의 된 구현을 정의 <xref:System.Windows.Media.Visual.OnVisualParentChanged%2A>합니다.  
+  
+ [!code-csharp[VisualSnippets#VisualSnippet10](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml.cs#visualsnippet10)]
+ [!code-vb[VisualSnippets#VisualSnippet10](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualSnippets/visualbasic/window1.xaml.vb#visualsnippet10)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Media.Visual.VisualParent" />
+      </Docs>
+    </Member>
+    <Member MemberName="PointFromScreen">
+      <MemberSignature Language="C#" Value="public System.Windows.Point PointFromScreen (System.Windows.Point point);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Windows.Point PointFromScreen(valuetype System.Windows.Point point) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.PointFromScreen(System.Windows.Point)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Point PointFromScreen(System::Windows::Point point);" />
+      <MemberSignature Language="F#" Value="member this.PointFromScreen : System.Windows.Point -&gt; System.Windows.Point" Usage="visual.PointFromScreen point" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Point</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="point" Type="System.Windows.Point" />
+      </Parameters>
+      <Docs>
+        <param name="point">화면 좌표에 있는 <see cref="T:System.Windows.Point" /> 값입니다.</param>
+        <summary>화면 좌표에 있는 <see cref="T:System.Windows.Point" />를 <see cref="T:System.Windows.Point" />의 현재 좌표계를 나타내는 <see cref="T:System.Windows.Media.Visual" />로 변환합니다.</summary>
+        <returns><see cref="T:System.Windows.Point" />의 현재 좌표계를 나타내는 변환된 <see cref="T:System.Windows.Media.Visual" /> 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여를 <xref:System.Windows.Media.Visual.PointToScreen%2A> 변환할 메서드를 <xref:System.Windows.Point> 의 현재 좌표계를 나타내는 <xref:System.Windows.Media.Visual> 에 <xref:System.Windows.Point> 화면 좌표에서.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PointToScreen">
+      <MemberSignature Language="C#" Value="public System.Windows.Point PointToScreen (System.Windows.Point point);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Windows.Point PointToScreen(valuetype System.Windows.Point point) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.PointToScreen(System.Windows.Point)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Point PointToScreen(System::Windows::Point point);" />
+      <MemberSignature Language="F#" Value="member this.PointToScreen : System.Windows.Point -&gt; System.Windows.Point" Usage="visual.PointToScreen point" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Point</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="point" Type="System.Windows.Point" />
+      </Parameters>
+      <Docs>
+        <param name="point"><see cref="T:System.Windows.Point" />의 현재 좌표계를 나타내는 <see cref="T:System.Windows.Media.Visual" /> 값입니다.</param>
+        <summary><see cref="T:System.Windows.Point" />의 현재 좌표계를 나타내는 <see cref="T:System.Windows.Media.Visual" />를 화면 좌표에 있는 <see cref="T:System.Windows.Point" />로 변환합니다.</summary>
+        <returns>화면 좌표로 변환된 <see cref="T:System.Windows.Point" /> 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 하 여는 <xref:System.Windows.Media.Visual.PointFromScreen%2A> 변환 하는 메서드를 <xref:System.Windows.Point> 화면 좌표에 있는 <xref:System.Windows.Point> 의 현재 좌표계를 나타내는 <xref:System.Windows.Media.Visual>.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveVisualChild">
+      <MemberSignature Language="C#" Value="protected void RemoveVisualChild (System.Windows.Media.Visual child);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void RemoveVisualChild(class System.Windows.Media.Visual child) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.RemoveVisualChild(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub RemoveVisualChild (child As Visual)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void RemoveVisualChild(System::Windows::Media::Visual ^ child);" />
+      <MemberSignature Language="F#" Value="member this.RemoveVisualChild : System.Windows.Media.Visual -&gt; unit" Usage="visual.RemoveVisualChild child" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="child" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="child">부모 시각적 개체에서 제거할 자식 시각적 개체입니다.</param>
+        <summary>두 시각적 개체 사이의 부모/자식 관계를 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Windows.Media.Visual.RemoveVisualChild%2A> 메서드 두 시각적 개체 사이의 부모-자식 관계를 제거 합니다. 이 메서드를 함께 <xref:System.Windows.Media.Visual.AddVisualChild%2A> 시각적 자식 개체의 기본 저장소 구현에 대 한 큰 하위 수준 제어 해야 하는 경우 메서드를 사용 해야 합니다. <xref:System.Windows.Media.VisualCollection> 자식 개체를 저장 하는 것에 대 한 기본 구현으로 사용할 수 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 시각적 자식 개체의 사용자 지정 저장소 요구 사항을 정의 하는 방법을 보여 줍니다. 이 예제에서는 사용 합니다 <xref:System.Windows.Media.Visual.AddVisualChild%2A> 및 <xref:System.Windows.Media.Visual.RemoveVisualChild%2A> 시각적 부모 간의 부모-자식 관계를 설정 하는 메서드 및 `child`합니다. 올바르게 열거할 시각적 트리에 대 한 순서로 예제의 재정의 된 구현을 제공 하는 <xref:System.Windows.Media.Visual.GetVisualChild%2A> 메서드 및 <xref:System.Windows.Media.Visual.VisualChildrenCount%2A> 속성입니다.  
+  
+> [!NOTE]
+>  사용할 수 있지만 <xref:System.Windows.Media.VisualCollection> 부모-자식 시각적 개체 간의 관계를 만들려면 것이 더 효율적 하나의 자식만 부모에 연결 된 경우 사용자 고유의 사용자 지정 저장소 구현을 제공할 수 있습니다.  
+  
+ [!code-csharp[AddVisualChild#AddVisualChild01](~/samples/snippets/csharp/VS_Snippets_Wpf/AddVisualChild/CSharp/Window1.xaml.cs#addvisualchild01)]
+ [!code-vb[AddVisualChild#AddVisualChild01](~/samples/snippets/visualbasic/VS_Snippets_Wpf/AddVisualChild/visualbasic/window1.xaml.vb#addvisualchild01)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Media.VisualCollection" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="TransformToAncestor">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>좌표를 <see cref="T:System.Windows.Media.Visual" />에서 시각적 개체의 지정된 상위 항목으로 변환하는 데 사용할 수 있는 변환을 반환합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="TransformToAncestor">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Media3D.GeneralTransform2DTo3D TransformToAncestor (System.Windows.Media.Media3D.Visual3D ancestor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.Media3D.GeneralTransform2DTo3D TransformToAncestor(class System.Windows.Media.Media3D.Visual3D ancestor) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.TransformToAncestor(System.Windows.Media.Media3D.Visual3D)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TransformToAncestor (ancestor As Visual3D) As GeneralTransform2DTo3D" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::Media3D::GeneralTransform2DTo3D ^ TransformToAncestor(System::Windows::Media::Media3D::Visual3D ^ ancestor);" />
+      <MemberSignature Language="F#" Value="member this.TransformToAncestor : System.Windows.Media.Media3D.Visual3D -&gt; System.Windows.Media.Media3D.GeneralTransform2DTo3D" Usage="visual.TransformToAncestor ancestor" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Media3D.GeneralTransform2DTo3D</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ancestor" Type="System.Windows.Media.Media3D.Visual3D" />
+      </Parameters>
+      <Docs>
+        <param name="ancestor">좌표가 변환되는 <see cref="T:System.Windows.Media.Media3D.Visual3D" />입니다.</param>
+        <summary>좌표를 <see cref="T:System.Windows.Media.Visual" />에서 시각적 개체의 지정된 <see cref="T:System.Windows.Media.Media3D.Visual3D" /> 상위 항목으로 변환하는 데 사용할 수 있는 변환을 반환합니다.</summary>
+        <returns>좌표를 <see cref="T:System.Windows.Media.Visual" />에서 시각적 개체의 지정된 <see cref="T:System.Windows.Media.Media3D.Visual3D" /> 상위 항목으로 변환하는 데 사용할 수 있는 변환입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TransformToAncestor">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.GeneralTransform TransformToAncestor (System.Windows.Media.Visual ancestor);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.GeneralTransform TransformToAncestor(class System.Windows.Media.Visual ancestor) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.TransformToAncestor(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TransformToAncestor (ancestor As Visual) As GeneralTransform" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::GeneralTransform ^ TransformToAncestor(System::Windows::Media::Visual ^ ancestor);" />
+      <MemberSignature Language="F#" Value="member this.TransformToAncestor : System.Windows.Media.Visual -&gt; System.Windows.Media.GeneralTransform" Usage="visual.TransformToAncestor ancestor" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.GeneralTransform</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="ancestor" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="ancestor">좌표가 변환되는 <see cref="T:System.Windows.Media.Visual" />입니다.</param>
+        <summary>좌표를 <see cref="T:System.Windows.Media.Visual" />에서 시각적 개체의 지정된 <see cref="T:System.Windows.Media.Visual" /> 상위 항목으로 변환하는 데 사용할 수 있는 변환을 반환합니다.</summary>
+        <returns><see cref="T:System.Windows.Media.GeneralTransform" /> 형식의 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용할 수 있습니다는 <xref:System.Windows.Media.VisualTreeHelper.GetOffset%2A?displayProperty=nameWithType> 부모를 기준으로 시각적 개체의 오프셋을 검색 하는 방법입니다. 오프셋된 값이 포함 되어 반환 된 <xref:System.Windows.Vector> 값입니다.  
+  
+ [!code-csharp[VisualSnippets#VisualSnippet2](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml.cs#visualsnippet2)]
+ [!code-vb[VisualSnippets#VisualSnippet2](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualSnippets/visualbasic/window1.xaml.vb#visualsnippet2)]  
+  
+   
+  
+## Examples  
+ 다음 태그 예제는 <xref:System.Windows.Controls.TextBlock> 안에 두 개의 중첩 된 <xref:System.Windows.Controls.StackPanel> 개체입니다.  
+  
+ [!code-xaml[VisualSnippets#VisualSnippet7](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window2.xaml#visualsnippet7)]  
+  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다 합니다 <xref:System.Windows.Media.Visual.TransformToAncestor%2A> 의 오프셋을 검색 하는 메서드를 <xref:System.Windows.Controls.TextBlock> 포함 하는 기준으로 <xref:System.Windows.Window>입니다. 오프셋된 값이 포함 되어 반환 된 <xref:System.Windows.Media.GeneralTransform>합니다.  
+  
+ [!code-csharp[VisualSnippets#VisualSnippet5](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml.cs#visualsnippet5)]
+ [!code-vb[VisualSnippets#VisualSnippet5](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualSnippets/visualbasic/window1.xaml.vb#visualsnippet5)]  
+  
+ 오프셋을 고려 합니다 <xref:System.Windows.FrameworkElement.Margin%2A> 내의 포함 하는 모든 개체에 대 한 값 <xref:System.Windows.Window>합니다. 이 예에서 <xref:System.Windows.Vector.X%2A> 는 28, 및 <xref:System.Windows.Vector.Y%2A> 는 28입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="ancestor" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="ancestor" />가 시각적 개체의 상위 항목인 경우</exception>
+        <exception cref="T:System.InvalidOperationException">시각적 개체가 관련되지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TransformToDescendant">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.GeneralTransform TransformToDescendant (System.Windows.Media.Visual descendant);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.GeneralTransform TransformToDescendant(class System.Windows.Media.Visual descendant) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.TransformToDescendant(System.Windows.Media.Visual)" />
+      <MemberSignature Language="VB.NET" Value="Public Function TransformToDescendant (descendant As Visual) As GeneralTransform" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::GeneralTransform ^ TransformToDescendant(System::Windows::Media::Visual ^ descendant);" />
+      <MemberSignature Language="F#" Value="member this.TransformToDescendant : System.Windows.Media.Visual -&gt; System.Windows.Media.GeneralTransform" Usage="visual.TransformToDescendant descendant" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.GeneralTransform</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="descendant" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="descendant">좌표가 변환되는 <see cref="T:System.Windows.Media.Visual" />입니다.</param>
+        <summary>좌표를 <see cref="T:System.Windows.Media.Visual" />에서 지정된 시각적 개체 하위 항목으로 변환하는 데 사용할 수 있는 변환을 반환합니다.</summary>
+        <returns><see cref="T:System.Windows.Media.GeneralTransform" /> 형식의 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 태그 예제는 <xref:System.Windows.Controls.TextBlock> 에 포함 된를 <xref:System.Windows.Controls.StackPanel> 개체입니다.  
+  
+ [!code-xaml[VisualSnippets#VisualSnippet4](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml#visualsnippet4)]  
+  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다 합니다 <xref:System.Windows.Media.Visual.TransformToDescendant%2A> 의 오프셋을 검색 하는 메서드를 <xref:System.Windows.Controls.StackPanel> 해당 자식에 상대적인 <xref:System.Windows.Controls.TextBlock>합니다. 오프셋된 값이 포함 되어 반환 된 <xref:System.Windows.Media.GeneralTransform> 값입니다.  
+  
+ [!code-csharp[VisualSnippets#VisualSnippet9](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml.cs#visualsnippet9)]
+ [!code-vb[VisualSnippets#VisualSnippet9](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualSnippets/visualbasic/window1.xaml.vb#visualsnippet9)]  
+  
+ 오프셋을 고려 합니다 <xref:System.Windows.FrameworkElement.Margin%2A> 모든 개체에 대 한 값입니다. 이 예에서 <xref:System.Windows.Vector.X%2A> -4 이며, 및 <xref:System.Windows.Vector.Y%2A> -4 이며, 합니다. 부모 개체의 자식 개체를 기준으로 음수 오프셋 때문에 오프셋된 값은 음수 값입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="descendant" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentException">시각적 개체가 <paramref name="descendant" /> 시각적 개체의 상위 항목이 아닌 경우</exception>
+        <exception cref="T:System.InvalidOperationException">시각적 개체가 관련되지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TransformToVisual">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.GeneralTransform TransformToVisual (System.Windows.Media.Visual visual);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.GeneralTransform TransformToVisual(class System.Windows.Media.Visual visual) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Visual.TransformToVisual(System.Windows.Media.Visual)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::GeneralTransform ^ TransformToVisual(System::Windows::Media::Visual ^ visual);" />
+      <MemberSignature Language="F#" Value="member this.TransformToVisual : System.Windows.Media.Visual -&gt; System.Windows.Media.GeneralTransform" Usage="visual.TransformToVisual visual" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.GeneralTransform</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="visual" Type="System.Windows.Media.Visual" />
+      </Parameters>
+      <Docs>
+        <param name="visual">좌표가 변환되는 <see cref="T:System.Windows.Media.Visual" />입니다.</param>
+        <summary>좌표를 <see cref="T:System.Windows.Media.Visual" />에서 지정된 시각적 개체로 변환하는 데 사용할 수 있는 변환을 반환합니다.</summary>
+        <returns><see cref="T:System.Windows.Media.GeneralTransform" /> 형식의 값입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Windows.Media.Visual.TransformToAncestor%2A> 고 <xref:System.Windows.Media.Visual.TransformToDescendant%2A> 시각적 개체에 대 한 변환을 반환할 방법을 사용할 수도 있습니다.  
+  
+   
+  
+## Examples  
+ 다음 태그 예제는 <xref:System.Windows.Controls.TextBlock> 에 포함 된를 <xref:System.Windows.Controls.StackPanel> 개체입니다.  
+  
+ [!code-xaml[VisualSnippets#VisualSnippet4](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml#visualsnippet4)]  
+  
+ 다음 코드 예제를 사용 하는 방법을 보여 줍니다 합니다 <xref:System.Windows.Media.Visual.TransformToVisual%2A> 의 오프셋을 검색 하는 메서드를 <xref:System.Windows.Controls.StackPanel> 해당 자식에 상대적인 <xref:System.Windows.Controls.TextBlock>합니다. 오프셋된 값이 포함 되어 반환 된 <xref:System.Windows.Media.GeneralTransform> 값입니다.  
+  
+ [!code-csharp[VisualSnippets#VisualSnippet8](~/samples/snippets/csharp/VS_Snippets_Wpf/VisualSnippets/CSharp/Window1.xaml.cs#visualsnippet8)]
+ [!code-vb[VisualSnippets#VisualSnippet8](~/samples/snippets/visualbasic/VS_Snippets_Wpf/VisualSnippets/visualbasic/window1.xaml.vb#visualsnippet8)]  
+  
+ 오프셋을 고려 합니다 <xref:System.Windows.FrameworkElement.Margin%2A> 모든 개체에 대 한 값입니다. 이 예에서 <xref:System.Windows.Vector.X%2A> -4 이며, 및 <xref:System.Windows.Vector.Y%2A> -4 이며, 합니다. 부모 개체의 자식 개체를 기준으로 음수 오프셋 때문에 오프셋된 값은 음수 값입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="visual" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.InvalidOperationException">시각적 개체가 관련되지 않은 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualBitmapEffect">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Effects.BitmapEffect VisualBitmapEffect { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.Effects.BitmapEffect VisualBitmapEffect" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualBitmapEffect" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualBitmapEffect As BitmapEffect" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::Effects::BitmapEffect ^ VisualBitmapEffect {  protected public:&#xA;System::Windows::Media::Effects::BitmapEffect ^ get(); protected:&#xA; void set(System::Windows::Media::Effects::BitmapEffect ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualBitmapEffect : System.Windows.Media.Effects.BitmapEffect with get, set" Usage="System.Windows.Media.Visual.VisualBitmapEffect" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netcore-3.0">
+          <AttributeName>System.Obsolete("BitmapEffects are deprecated and no longer function.  Consider using Effects where appropriate instead.")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5">
+          <AttributeName>System.Obsolete("Avoid using BitmapEffects as they have very poor performance characteristics.  They will be deprecated in a future version.  Consider using the UIElement.Effect property and ShaderEffects where appropriate instead.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.BitmapEffect</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Effects.BitmapEffect" />에 대한 <see cref="T:System.Windows.Media.Visual" /> 값을 가져오거나 설정합니다.</summary>
+        <value>이 시각적 개체에 대한 비트맵 효과입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Windows.UIElement.BitmapEffect" />
+      </Docs>
+    </Member>
+    <Member MemberName="VisualBitmapEffectInput">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Effects.BitmapEffectInput VisualBitmapEffectInput { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.Effects.BitmapEffectInput VisualBitmapEffectInput" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualBitmapEffectInput" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualBitmapEffectInput As BitmapEffectInput" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::Effects::BitmapEffectInput ^ VisualBitmapEffectInput {  protected public:&#xA;System::Windows::Media::Effects::BitmapEffectInput ^ get(); protected:&#xA; void set(System::Windows::Media::Effects::BitmapEffectInput ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualBitmapEffectInput : System.Windows.Media.Effects.BitmapEffectInput with get, set" Usage="System.Windows.Media.Visual.VisualBitmapEffectInput" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netcore-3.0">
+          <AttributeName>System.Obsolete("BitmapEffects are deprecated and no longer function.  Consider using Effects where appropriate instead.")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-3.0;netframework-3.5">
+          <AttributeName>System.Obsolete("Avoid using BitmapEffects as they have very poor performance characteristics.  They will be deprecated in a future version.  Consider using the UIElement.Effect property and ShaderEffects where appropriate instead.")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.BitmapEffectInput</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Effects.BitmapEffectInput" />에 대한 <see cref="T:System.Windows.Media.Visual" /> 값을 가져오거나 설정합니다.</summary>
+        <value>이 시각적 개체에 대한 비트맵 효과 입력 값입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Windows.UIElement.BitmapEffectInput" />
+      </Docs>
+    </Member>
+    <Member MemberName="VisualBitmapScalingMode">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.BitmapScalingMode VisualBitmapScalingMode { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Media.BitmapScalingMode VisualBitmapScalingMode" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualBitmapScalingMode" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualBitmapScalingMode As BitmapScalingMode" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::BitmapScalingMode VisualBitmapScalingMode {  protected public:&#xA;System::Windows::Media::BitmapScalingMode get(); protected:&#xA; void set(System::Windows::Media::BitmapScalingMode value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualBitmapScalingMode : System.Windows.Media.BitmapScalingMode with get, set" Usage="System.Windows.Media.Visual.VisualBitmapScalingMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.BitmapScalingMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.BitmapScalingMode" />의 <see cref="T:System.Windows.Media.Visual" />를 가져오거나 설정합니다.</summary>
+        <value>의 <see cref="T:System.Windows.Media.BitmapScalingMode" /> 값입니다 <see cref="T:System.Windows.Media.Visual" />.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualCacheMode">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.CacheMode VisualCacheMode { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.CacheMode VisualCacheMode" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualCacheMode" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualCacheMode As CacheMode" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::CacheMode ^ VisualCacheMode {  protected public:&#xA;System::Windows::Media::CacheMode ^ get(); protected:&#xA; void set(System::Windows::Media::CacheMode ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualCacheMode : System.Windows.Media.CacheMode with get, set" Usage="System.Windows.Media.Visual.VisualCacheMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.CacheMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />의 캐시된 표현을 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Windows.Media.CacheMode" />의 캐시된 표현을 보유하는 <see cref="T:System.Windows.Media.Visual" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 설정 된 <xref:System.Windows.Media.Visual.VisualCacheMode%2A> 렌더링 시간이 많이 소요 되는 콘텐츠에 대 한 성능 향상을 위해 필요한 경우 속성입니다. 자세한 내용은 <xref:System.Windows.Media.BitmapCache>를 참조하십시오.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.UIElement.CacheMode" />
+        <altmember cref="P:System.Windows.Media.ContainerVisual.CacheMode" />
+        <altmember cref="T:System.Windows.Media.BitmapCache" />
+        <altmember cref="T:System.Windows.Media.BitmapCacheBrush" />
+      </Docs>
+    </Member>
+    <Member MemberName="VisualChildrenCount">
+      <MemberSignature Language="C#" Value="protected virtual int VisualChildrenCount { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 VisualChildrenCount" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualChildrenCount" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable ReadOnly Property VisualChildrenCount As Integer" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual property int VisualChildrenCount { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.VisualChildrenCount : int" Usage="System.Windows.Media.Visual.VisualChildrenCount" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />의 자식 요소 수를 가져옵니다.</summary>
+        <value>자식 요소 수입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본적으로 <xref:System.Windows.Media.Visual> 자식이 없습니다. 따라서 기본 구현에서는 항상 0을 반환합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 재정의 된 구현을 정의 <xref:System.Windows.Media.Visual.VisualChildrenCount%2A>합니다.  
+  
+ [!code-csharp[DrawingVisualSample#102a](~/samples/snippets/csharp/VS_Snippets_Wpf/DrawingVisualSample/CSharp/Window1.xaml.cs#102a)]
+ [!code-vb[DrawingVisualSample#102a](~/samples/snippets/visualbasic/VS_Snippets_Wpf/DrawingVisualSample/visualbasic/window1.xaml.vb#102a)]  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>파생 된 클래스 <see cref="T:System.Windows.Media.Visual" /> 이 속성을 재정의 해야 합니다 및는 <see cref="M:System.Windows.Media.Visual.GetVisualChild(System.Int32)" /> 메서드를 올바르게 열거할 시각적 트리에 대 한 합니다.</para></block>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualClearTypeHint">
+      <MemberSignature Language="C#" Value="protected internal System.Windows.Media.ClearTypeHint VisualClearTypeHint { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Media.ClearTypeHint VisualClearTypeHint" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualClearTypeHint" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Property VisualClearTypeHint As ClearTypeHint" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; property System::Windows::Media::ClearTypeHint VisualClearTypeHint { System::Windows::Media::ClearTypeHint get(); void set(System::Windows::Media::ClearTypeHint value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualClearTypeHint : System.Windows.Media.ClearTypeHint with get, set" Usage="System.Windows.Media.Visual.VisualClearTypeHint" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.ClearTypeHint</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>ClearType이 <see cref="T:System.Windows.Media.ClearTypeHint" />에서 렌더링되는 방법을 결정하는 <see cref="T:System.Windows.Media.Visual" />를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Windows.Media.ClearTypeHint" />의 <see cref="T:System.Windows.Media.Visual" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualClip">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Geometry VisualClip { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.Geometry VisualClip" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualClip" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualClip As Geometry" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::Geometry ^ VisualClip {  protected public:&#xA;System::Windows::Media::Geometry ^ get(); protected:&#xA; void set(System::Windows::Media::Geometry ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualClip : System.Windows.Media.Geometry with get, set" Usage="System.Windows.Media.Visual.VisualClip" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Geometry</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />의 클립 영역을 <see cref="T:System.Windows.Media.Geometry" /> 값으로 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Windows.Media.Geometry" /> 형식인 시각적 개체의 클립 영역 값입니다.</value>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="https://docs.microsoft.com/previous-versions/dotnet/netframework-3.5/ms746710(v=vs.90)">방법: 클립 영역 만들기</related>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualEdgeMode">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.EdgeMode VisualEdgeMode { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Media.EdgeMode VisualEdgeMode" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualEdgeMode" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualEdgeMode As EdgeMode" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::EdgeMode VisualEdgeMode {  protected public:&#xA;System::Windows::Media::EdgeMode get(); protected:&#xA; void set(System::Windows::Media::EdgeMode value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualEdgeMode : System.Windows.Media.EdgeMode with get, set" Usage="System.Windows.Media.Visual.VisualEdgeMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.EdgeMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />의 가장자리 모드를 <see cref="T:System.Windows.Media.EdgeMode" /> 값으로 가져오거나 설정합니다.</summary>
+        <value>시각적 개체의 <see cref="T:System.Windows.Media.EdgeMode" /> 값입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualEffect">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Effects.Effect VisualEffect { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.Effects.Effect VisualEffect" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualEffect" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualEffect As Effect" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::Effects::Effect ^ VisualEffect {  protected public:&#xA;System::Windows::Media::Effects::Effect ^ get(); protected:&#xA; void set(System::Windows::Media::Effects::Effect ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualEffect : System.Windows.Media.Effects.Effect with get, set" Usage="System.Windows.Media.Visual.VisualEffect" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.Effect</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />에 적용할 비트맵 효과를 가져오거나 설정합니다.</summary>
+        <value>비트맵 효과를 나타내는 <see cref="T:System.Windows.Media.Effects.Effect" />입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.ShaderEffect" />
+      </Docs>
+    </Member>
+    <Member MemberName="VisualOffset">
+      <MemberSignature Language="C#" Value="public System.Windows.Vector VisualOffset { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Vector VisualOffset" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualOffset" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualOffset As Vector" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Vector VisualOffset {  protected public:&#xA;System::Windows::Vector get(); protected:&#xA; void set(System::Windows::Vector value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualOffset : System.Windows.Vector with get, set" Usage="System.Windows.Media.Visual.VisualOffset" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Windows.Vector</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>시각적 개체의 오프셋 값을 가져오거나 설정합니다.</summary>
+        <value>오프셋 값을 지정하는 <see cref="T:System.Windows.Vector" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualOpacity">
+      <MemberSignature Language="C#" Value="public double VisualOpacity { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 VisualOpacity" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualOpacity" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualOpacity As Double" />
+      <MemberSignature Language="C++ CLI" Value="public:  property double VisualOpacity {  protected public:&#xA;double get(); protected:&#xA; void set(double value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualOpacity : double with get, set" Usage="System.Windows.Media.Visual.VisualOpacity" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />의 불투명도를 가져오거나 설정합니다.</summary>
+        <value>시각적 개체의 불투명도 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 불투명도 값을 <xref:System.Windows.Media.Visual> 0과 1 사이의 값으로 표현 됩니다. 값이 0 값이 1 이면 요소 완전히 불투명 하는 반면 요소 완전히 투명 하 고, 임을 나타냅니다. 값이 0.5 50% 불투명 하는 요소를 나타냅니다. 0 보다 작은 값은 0으로 취급 됩니다. 1 보다 큰 값을 1로 처리 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualOpacityMask">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Brush VisualOpacityMask { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.Brush VisualOpacityMask" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualOpacityMask" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualOpacityMask As Brush" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::Brush ^ VisualOpacityMask {  protected public:&#xA;System::Windows::Media::Brush ^ get(); protected:&#xA; void set(System::Windows::Media::Brush ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualOpacityMask : System.Windows.Media.Brush with get, set" Usage="System.Windows.Media.Visual.VisualOpacityMask" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Brush</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Brush" />의 불투명 마스크를 나타내는 <see cref="T:System.Windows.Media.Visual" /> 값을 가져오거나 설정합니다.</summary>
+        <value>시각적 개체의 불투명 마스크 값을 나타내는 <see cref="T:System.Windows.Media.Brush" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 불투명 마스크를 <xref:System.Windows.Media.Brush> 이 시각적 개체의 렌더링 된 콘텐츠에 대 한 모든 알파 채널 마스킹에 적용 되는 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualParent">
+      <MemberSignature Language="C#" Value="protected System.Windows.DependencyObject VisualParent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.DependencyObject VisualParent" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualParent" />
+      <MemberSignature Language="VB.NET" Value="Protected ReadOnly Property VisualParent As DependencyObject" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Windows::DependencyObject ^ VisualParent { System::Windows::DependencyObject ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.VisualParent : System.Windows.DependencyObject" Usage="System.Windows.Media.Visual.VisualParent" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>시각적 개체의 시각적 트리 부모를 가져옵니다.</summary>
+        <value>부모 <see cref="T:System.Windows.Media.Visual" />입니다.</value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Windows.FrameworkContentElement.Parent" />
+        <altmember cref="T:System.Windows.Media.VisualTreeHelper" />
+      </Docs>
+    </Member>
+    <Member MemberName="VisualScrollableAreaClip">
+      <MemberSignature Language="C#" Value="public Nullable&lt;System.Windows.Rect&gt; VisualScrollableAreaClip { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Nullable`1&lt;valuetype System.Windows.Rect&gt; VisualScrollableAreaClip" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualScrollableAreaClip" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualScrollableAreaClip As Nullable(Of Rect)" />
+      <MemberSignature Language="C++ CLI" Value="public:  property Nullable&lt;System::Windows::Rect&gt; VisualScrollableAreaClip {  protected public:&#xA;Nullable&lt;System::Windows::Rect&gt; get(); protected:&#xA; void set(Nullable&lt;System::Windows::Rect&gt; value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualScrollableAreaClip : Nullable&lt;System.Windows.Rect&gt; with get, set" Usage="System.Windows.Media.Visual.VisualScrollableAreaClip" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Nullable&lt;System.Windows.Rect&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />의 스크롤할 수 있는 클리핑된 영역을 가져오거나 설정합니다.</summary>
+        <value>스크롤할 수 있는 클리핑 영역을 나타내는 <see cref="T:System.Windows.Rect" />이거나 클리핑 영역이 할당되지 않은 경우 <see langword="null" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 설정 된 <xref:System.Windows.Media.Visual.VisualScrollableAreaClip%2A> 소프트웨어에서 렌더링할 때 스크롤 속성을 가속화 합니다. 원격 데스크톱을 통해 또는 가상 컴퓨터에서 실행 하는 등의 원격 렌더링 시나리오에서 유용 합니다. 부모 요소의 자식을 스크롤할 수는이 속성을 설정 합니다. 설정 된 <xref:System.Windows.Media.Visual.VisualScrollableAreaClip%2A> 렌더링은 하드웨어 가속 속성은 효과가 없습니다.  
+  
+ <xref:System.Windows.Media.Visual.VisualScrollableAreaClip%2A> 속성을 사용 하면 특정 고급 시나리오입니다. 다음 목록은 사용 하는 경우 적용 되는 주의 <xref:System.Windows.Media.Visual.VisualScrollableAreaClip%2A> 속성입니다.  
+  
+-   스크롤 영역의 배경을 불투명 이거나 아티팩트 스크롤 발생 합니다.  
+  
+-   <xref:System.Windows.Media.Visual.VisualScrollableAreaClip%2A> 속성은 WPF는 소프트웨어에서 렌더링할 때에 스크롤을 가속화 합니다. 예를 들어,이 경우 응용 프로그램은 원격 데스크톱을 통해 실행 하거나 가상 컴퓨터에서 로컬로 실행할 때 발생 합니다.  
+  
+-   하드웨어에서 렌더링 하는 경우에 스크롤 동작을 변경 되지 않습니다. 스크롤 동작의 차이 방지 하려면 보관 해야 합니다 <xref:System.Windows.Media.Visual.VisualScrollableAreaClip%2A> 하드웨어 및 소프트웨어를 모두 사용 하도록 설정 하는 속성입니다.  
+  
+-   회전 및 기울이기 변환 가속 스크롤을 비활성화합니다. Scale 변환과 스크롤된 영역 위에 가로 또는 세로 번역 제대로 작동 하 고 스크롤 가속을 해제 하지 않습니다.  
+  
+-   하위 트리를 변경 하거나 애니메이션을 통해 다시 그리기를 스크롤할 수 있는 영역의 일부를 트리거하면 예상 대로 작동 하지만 다시 영역에 대 한 가속 스크롤의 이점을 잃게 됩니다. 동일한 프레임 중 스크롤된 영역을 무효화 하는 애니메이션 스크롤 하는이 최적화의 장점을 제거 발생 합니다.  
+  
+-   <xref:System.Windows.Media.Visual.VisualScrollableAreaClip%2A> 사각형 안쪽 픽셀으로 맞춥니다. 따라서 스크롤 영역의 기본 크기는 항상 설정한 크기 보다 작거나 합니다.  
+  
+-   오프셋을 아래로 맞춥니다. 이 이전의 차이 기본 오프셋을 현재 기본 오프셋은 픽셀 정수 항상 의미 합니다.  
+  
+-   적중된 테스트는 픽셀까지 여 해제할 수 있습니다.  
+  
+-   레이아웃 반올림 켜야, 스크롤 가능한 영역 및 경계 창의 클라이언트 영역 가장자리 모눈으로 픽셀 경계를 올바르게 정렬 하는 것이 있기 때문에 있습니다.  
+  
+-   창 겹침된 가속 스크롤이 작동 하지 않습니다. 즉, windows는 AllowTransparency의 = = true window.windowstyle = = none, 및 등입니다.  
+  
+-   가속 스크롤 전체 창 렌더링 하는 동안 발생 하지 않습니다.  
+  
+-   가속 스크롤 창의 두 모니터를 포괄 하는 경우 작동 하지 않습니다.  
+  
+-   가속 스크롤이 있는 스크롤 요소의 부모 체인에서 중간 렌더링 대상 작동 하지 않습니다. 다음 목록은 몇 가지 중간 렌더링 대상입니다.  
+  
+    -   클립  
+  
+    -   효과  
+  
+    -   DrawingBrushes  
+  
+    -   VisualBrushes  
+  
+    -   OpacityMasks  
+  
+    -   Opacity  
+  
+-   프레임 마다 하나의 가속된 스크롤 발생할 수 있습니다. 여러 가속된 스크롤 영역에 있을 수 있지만 그 중 하나만 프레임 중 가속된 된 스크롤을 수행할 수 있습니다. 어떤 영역 스크롤되는 확정적이 지 않습니다.  
+  
+-   가속 스크롤 스크롤 영역 (z 좌표) 콘텐츠의 rest를 사용 하 여 스크롤되지 않는 위에 콘텐츠를 지원 합니다. 시스템 필요한 모든 변경 영역을 계산 하 고 가속화 된 scroll을 완료 하지만 스크롤된 실수로 부분으로 이동 네트워크를 통해 몇 가지 추가 비트맵 화면에서 올바른 위치로 다시 보냅니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualTextHintingMode">
+      <MemberSignature Language="C#" Value="protected internal System.Windows.Media.TextHintingMode VisualTextHintingMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Media.TextHintingMode VisualTextHintingMode" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualTextHintingMode" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Property VisualTextHintingMode As TextHintingMode" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; property System::Windows::Media::TextHintingMode VisualTextHintingMode { System::Windows::Media::TextHintingMode get(); void set(System::Windows::Media::TextHintingMode value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualTextHintingMode : System.Windows.Media.TextHintingMode with get, set" Usage="System.Windows.Media.Visual.VisualTextHintingMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.TextHintingMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />의 <see cref="T:System.Windows.Media.TextHintingMode" />를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Windows.Media.Visual" />에 적용된 <see cref="T:System.Windows.Media.TextHintingMode" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualTextRenderingMode">
+      <MemberSignature Language="C#" Value="protected internal System.Windows.Media.TextRenderingMode VisualTextRenderingMode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Media.TextRenderingMode VisualTextRenderingMode" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualTextRenderingMode" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Property VisualTextRenderingMode As TextRenderingMode" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; property System::Windows::Media::TextRenderingMode VisualTextRenderingMode { System::Windows::Media::TextRenderingMode get(); void set(System::Windows::Media::TextRenderingMode value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualTextRenderingMode : System.Windows.Media.TextRenderingMode with get, set" Usage="System.Windows.Media.Visual.VisualTextRenderingMode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.TextRenderingMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Visual" />의 <see cref="T:System.Windows.Media.TextRenderingMode" />를 가져오거나 설정합니다.</summary>
+        <value><see cref="T:System.Windows.Media.Visual" />에 적용된 <see cref="T:System.Windows.Media.TextRenderingMode" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualTransform">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Transform VisualTransform { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.Transform VisualTransform" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualTransform" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualTransform As Transform" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::Transform ^ VisualTransform {  protected public:&#xA;System::Windows::Media::Transform ^ get(); protected:&#xA; void set(System::Windows::Media::Transform ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualTransform : System.Windows.Media.Transform with get, set" Usage="System.Windows.Media.Visual.VisualTransform" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Transform</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Windows.Media.Transform" />에 대한 <see cref="T:System.Windows.Media.Visual" /> 값을 가져오거나 설정합니다.</summary>
+        <value>시각적 개체의 변환 값입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="VisualXSnappingGuidelines">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.DoubleCollection VisualXSnappingGuidelines { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.DoubleCollection VisualXSnappingGuidelines" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualXSnappingGuidelines" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualXSnappingGuidelines As DoubleCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::DoubleCollection ^ VisualXSnappingGuidelines {  protected public:&#xA;System::Windows::Media::DoubleCollection ^ get(); protected:&#xA; void set(System::Windows::Media::DoubleCollection ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualXSnappingGuidelines : System.Windows.Media.DoubleCollection with get, set" Usage="System.Windows.Media.Visual.VisualXSnappingGuidelines" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.DoubleCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>X 좌표(세로) 안내선 컬렉션을 가져오거나 설정합니다.</summary>
+        <value>시각적 개체의 X 좌표 안내선 컬렉션입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 픽셀 맞추기는 개체 가장자리 장치 관련 픽셀에서 렌더링 되도록 내용 레이아웃을 고정 하는 프로세스입니다. [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 그래픽 시스템에서는 해상도와 디바이스의 영향을 받지 않기 위해 디바이스 독립적 단위를 사용합니다. 각 디바이스 독립적 픽셀은 시스템의 [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] 설정에 맞게 자동으로 크기가 조정됩니다. 이를 통해 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 애플리케이션에서 다양한 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] 설정에 적합하게 크기를 조정할 수 있으며 자동으로 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)]를 인식할 수 있도록 합니다.  
+  
+ 그러나이 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] 독립성 앤티앨리어싱으로 인해 불규칙 한 가장자리 렌더링을 만들 수 있습니다. 일반적으로 흐리거나 "soft" 가장자리로 표시는 이러한 아티팩트는 가장자리의 위치가 장치 픽셀 사이가 아닌 장치 픽셀 가운데에 있을 때 발생할 수 있습니다. 이 문제를 해결 하기 위해 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] "맞춤선" 장치 픽셀 앤티 앨리어싱으로 인해 생성 된 부드러운 가장자리를 제거 하는 시각적 트리의 가장자리 개체에 대 한 방법을 제공 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Media.VisualTreeHelper.GetXSnappingGuidelines(System.Windows.Media.Visual)" />
+      </Docs>
+    </Member>
+    <Member MemberName="VisualYSnappingGuidelines">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.DoubleCollection VisualYSnappingGuidelines { protected internal get; protected set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.DoubleCollection VisualYSnappingGuidelines" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Visual.VisualYSnappingGuidelines" />
+      <MemberSignature Language="VB.NET" Value="Public Property VisualYSnappingGuidelines As DoubleCollection" />
+      <MemberSignature Language="C++ CLI" Value="public:  property System::Windows::Media::DoubleCollection ^ VisualYSnappingGuidelines {  protected public:&#xA;System::Windows::Media::DoubleCollection ^ get(); protected:&#xA; void set(System::Windows::Media::DoubleCollection ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.VisualYSnappingGuidelines : System.Windows.Media.DoubleCollection with get, set" Usage="System.Windows.Media.Visual.VisualYSnappingGuidelines" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.DoubleCollection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>Y 좌표(가로) 안내선 컬렉션을 가져오거나 설정합니다.</summary>
+        <value>시각적 개체의 Y 좌표 안내선 컬렉션입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 픽셀 맞추기는 개체 가장자리 장치 관련 픽셀에서 렌더링 되도록 내용 레이아웃을 고정 하는 프로세스입니다. [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 그래픽 시스템에서는 해상도와 디바이스의 영향을 받지 않기 위해 디바이스 독립적 단위를 사용합니다. 각 디바이스 독립적 픽셀은 시스템의 [!INCLUDE[TLA#tla_dpi](~/includes/tlasharptla-dpi-md.md)] 설정에 맞게 자동으로 크기가 조정됩니다. 이를 통해 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] 애플리케이션에서 다양한 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] 설정에 적합하게 크기를 조정할 수 있으며 자동으로 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)]를 인식할 수 있도록 합니다.  
+  
+ 그러나이 [!INCLUDE[TLA2#tla_dpi](~/includes/tla2sharptla-dpi-md.md)] 독립성 앤티앨리어싱으로 인해 불규칙 한 가장자리 렌더링을 만들 수 있습니다. 일반적으로 흐리거나 "soft" 가장자리로 표시는 이러한 아티팩트는 가장자리의 위치가 장치 픽셀 사이가 아닌 장치 픽셀 가운데에 있을 때 발생할 수 있습니다. 이 문제를 해결 하기 위해 [!INCLUDE[TLA2#tla_winclient](~/includes/tla2sharptla-winclient-md.md)] "맞춤선" 장치 픽셀 앤티 앨리어싱으로 인해 생성 된 부드러운 가장자리를 제거 하는 시각적 트리의 가장자리 개체에 대 한 방법을 제공 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Media.VisualTreeHelper.GetYSnappingGuidelines(System.Windows.Media.Visual)" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

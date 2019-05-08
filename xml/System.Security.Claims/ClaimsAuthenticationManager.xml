@@ -1,0 +1,146 @@
+<Type Name="ClaimsAuthenticationManager" FullName="System.Security.Claims.ClaimsAuthenticationManager">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="10292ce7dd245b3f3cdb26ecfc6eb397301111ad" /><Meta Name="ms.sourcegitcommit" Value="9e3550fb2088d4faf2043f0acb29da4555519937" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/12/2018" /><Meta Name="ms.locfileid" Value="53296477" /></Metadata><TypeSignature Language="C#" Value="public class ClaimsAuthenticationManager : System.IdentityModel.Configuration.ICustomIdentityConfiguration" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ClaimsAuthenticationManager extends System.Object implements class System.IdentityModel.Configuration.ICustomIdentityConfiguration" />
+  <TypeSignature Language="DocId" Value="T:System.Security.Claims.ClaimsAuthenticationManager" />
+  <TypeSignature Language="VB.NET" Value="Public Class ClaimsAuthenticationManager&#xA;Implements ICustomIdentityConfiguration" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ClaimsAuthenticationManager : System::IdentityModel::Configuration::ICustomIdentityConfiguration" />
+  <TypeSignature Language="F#" Value="type ClaimsAuthenticationManager = class&#xA;    interface ICustomIdentityConfiguration" />
+  <AssemblyInfo>
+    <AssemblyName>System.IdentityModel</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IdentityModel.Configuration.ICustomIdentityConfiguration</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>클레임 인증 관리자에 대한 기본 구현을 정의합니다. 클레임 인증 관리자는 실행이 애플리케이션 코드에 도달하기 전에 수신 주체에서 클레임 컬렉션에 처리 로직(필터링, 유효성 검사, 확장)을 적용하기 위한 장소를 클레임 처리 파이프라인에 제공합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 클레임 인증 관리자 제공 애플리케이션의 확장성 지점을 클레임의 유효성을 검사, 필터링, 수정 하는 데 사용할 수 있는 처리 파이프라인을 들어오는 클레임 또는 새 클레임을 나타내는 클레임 집합이 삽입 된 <xref:System.Security.Claims.ClaimsPrincipal> RP 하기 전에 애플리케이션 코드가 실행 됩니다. 사용자 지정 구현도 반환할 수 있습니다 <xref:System.Security.Claims.ClaimsPrincipal> RP 애플리케이션에 필요한 경우. 하지만 제공 하는 기본 구현을 <xref:System.Security.Claims.ClaimsAuthenticationManager> 클래스에서 클레임을 반환 합니다.는 <xref:System.Security.Claims.ClaimsPrincipal> 수정 되지 않은;이 클래스에서 파생 하 고 재정의할 수 있습니다를 <xref:System.Security.Claims.ClaimsAuthenticationManager.Authenticate%2A> 의 클레임을 수정 하는 방법의 <xref:System.Security.Claims.ClaimsPrincipal> (또는 사용자 지정을 반환할 <xref:System.Security.Claims.ClaimsPrincipal>).  
+  
+ 사용자 지정 클레임 인증 관리자를 만들기 위한 일반적인 이유 추가, 제거 또는 알려져 또는 RP 애플리케이션에서 더 잘 유지 관리 것 인 정보를 기반으로 하는 클레임을 변환 하는 것입니다. RP 애플리케이션에서 유지 관리 하 고 있는 이름 클레임의 값을 기반으로 클레임 인증 관리자에서 반환 된 클레임 보안 주체에 추가 하는 데이터 기 쇼핑 카트 애플리케이션의 고객 구매 기록을 수 유지 하는 예를 들어 합니다 들어오는 보안 주체입니다.  
+  
+ 사용 하도록 응용 프로그램을 구성할 수 있습니다는 `ClaimsAuthenticationManager` 를 사용 하 여 프로그래밍 방식으로 <xref:System.IdentityModel.Configuration.IdentityConfiguration> 클래스를 통해 구성 합니다 [ &lt;claimsAuthenticationManager&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/claimsauthenticationmanager.md) 요소 ( 자식 요소는 합니다 [ &lt;identityConfiguration&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/identityconfiguration.md) 요소). 재정의할 수 있습니다 합니다 <xref:System.Security.Claims.ClaimsAuthenticationManager.LoadCustomConfiguration%2A> 사용자 지정 자식 요소에 대 한 처리를 제공 하는 메서드는 `<claimsAuthenticationManager>` 요소는 사용자 지정 관리자를 구성할 수 있습니다. 기본 구현을 <xref:System.Security.Claims.ClaimsAuthenticationManager> 임의 자식 요소를 처리 하지 않습니다.  
+  
+ 클레임 인증 관리자를 사용 하도록 애플리케이션을 구성 하는 호출 되며 Windows Identity Foundation (WIF)으로 요청 파이프라인에서 확인 합니다.  
+  
+   
+  
+## Examples  
+ 다음 코드는 간단한 클레임 인증에서 들어오는 클레임에 대 한 모든 확인을 수행 하지 않고 들어오는 보안 주체에 역할 클레임을 추가 하는 관리자를 보여 줍니다. 
+  
+ [!code-csharp[WifWebApplication1#1](~/samples/snippets/csharp/VS_Snippets_Misc/wifwebapplication1/cs/myclaimsauthenticationmanager/simpleclaimsauthenticatonmanager.cs#1)]  
+  
+ 에서는 다음 XML은 `<claimsAuthenticationManager>` 요소입니다.  
+  
+```xml  
+<system.identityModel>  
+  <identityConfiguration>  
+    <claimsAuthenticationManager type="MyClaimsAuthenticationManager.SimpleClaimsAuthenticatonManager, MyClaimsAuthenticationManager" />  
+  
+    ...  
+  
+  </identityConfiguration>  
+</system.identityModel>  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ClaimsAuthenticationManager ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsAuthenticationManager.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ClaimsAuthenticationManager();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Claims.ClaimsAuthenticationManager" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Authenticate">
+      <MemberSignature Language="C#" Value="public virtual System.Security.Claims.ClaimsPrincipal Authenticate (string resourceName, System.Security.Claims.ClaimsPrincipal incomingPrincipal);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Claims.ClaimsPrincipal Authenticate(string resourceName, class System.Security.Claims.ClaimsPrincipal incomingPrincipal) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsAuthenticationManager.Authenticate(System.String,System.Security.Claims.ClaimsPrincipal)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function Authenticate (resourceName As String, incomingPrincipal As ClaimsPrincipal) As ClaimsPrincipal" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Security::Claims::ClaimsPrincipal ^ Authenticate(System::String ^ resourceName, System::Security::Claims::ClaimsPrincipal ^ incomingPrincipal);" />
+      <MemberSignature Language="F#" Value="abstract member Authenticate : string * System.Security.Claims.ClaimsPrincipal -&gt; System.Security.Claims.ClaimsPrincipal&#xA;override this.Authenticate : string * System.Security.Claims.ClaimsPrincipal -&gt; System.Security.Claims.ClaimsPrincipal" Usage="claimsAuthenticationManager.Authenticate (resourceName, incomingPrincipal)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Claims.ClaimsPrincipal</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resourceName" Type="System.String" />
+        <Parameter Name="incomingPrincipal" Type="System.Security.Claims.ClaimsPrincipal" />
+      </Parameters>
+      <Docs>
+        <param name="resourceName">요청 중인 리소스의 주소입니다.</param>
+        <param name="incomingPrincipal">리소스에 액세스하려는 인증된 사용자를 나타내는 클레임 보안 주체입니다.</param>
+        <summary>파생된 클래스에서 재정의된 경우 RP 애플리케이션의 요구 사항과 일관된 <see cref="T:System.Security.Claims.ClaimsPrincipal" /> 개체를 반환합니다. 기본 구현은 들어오는 <see cref="T:System.Security.Claims.ClaimsPrincipal" />을 수정하지 않습니다.</summary>
+        <returns>RP 애플리케이션에 필요한 모든 수정 사항을 포함하는 클레임 보안 주체입니다. 기본 구현은 들어오는 클레임 보안 주체를 수정하지 않고 반환합니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Claims.ClaimsAuthenticationManager.Authenticate%2A> 메서드는 필터링 하는 파생된 클래스에서이 메서드를 재정의할 수 있습니다 요청 처리 파이프라인에서 수정 하거나 클레임을 RP 응용 프로그램의 정책에 따라 클레임 보안 주체를 삽입 합니다. RP 애플리케이션의 요구 사항에 따라 반환할 수 있습니다도 사용자 지정 구현을 <xref:System.Security.Claims.ClaimsPrincipal>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadCustomConfiguration">
+      <MemberSignature Language="C#" Value="public virtual void LoadCustomConfiguration (System.Xml.XmlNodeList nodelist);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void LoadCustomConfiguration(class System.Xml.XmlNodeList nodelist) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Claims.ClaimsAuthenticationManager.LoadCustomConfiguration(System.Xml.XmlNodeList)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Sub LoadCustomConfiguration (nodelist As XmlNodeList)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void LoadCustomConfiguration(System::Xml::XmlNodeList ^ nodelist);" />
+      <MemberSignature Language="F#" Value="abstract member LoadCustomConfiguration : System.Xml.XmlNodeList -&gt; unit&#xA;override this.LoadCustomConfiguration : System.Xml.XmlNodeList -&gt; unit" Usage="claimsAuthenticationManager.LoadCustomConfiguration nodelist" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IdentityModel.Configuration.ICustomIdentityConfiguration.LoadCustomConfiguration(System.Xml.XmlNodeList)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.IdentityModel</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="nodelist" Type="System.Xml.XmlNodeList" />
+      </Parameters>
+      <Docs>
+        <param name="nodelist">사용자 지정 구성 요소입니다. 형식 <see cref="T:System.Xml.XmlElement" />의 목록에 있는 각 노드입니다.</param>
+        <summary>파생 클래스에서 재정의되는 경우 XML에서 사용자 지정 구성을 로드합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.Claims.ClaimsAuthenticationManager.LoadCustomConfiguration%2A> 구성 인프라에서 호출 됩니다. 이 메서드를 호출 하는 경우는 `nodelist` 최상위 자식 요소를 포함 하는 합니다 [ &lt;claimsAuthenticationManager&gt; ](~/docs/framework/configure-apps/file-schema/windows-identity-foundation/claimsauthenticationmanager.md) 구성 파일에서 요소입니다. 차례로 특성 또는 파생된 클래스에 대해 정의한 구성 스키마에 따라 자식 요소를 포함할 수 있습니다, 이러한 각 요소. 아래에 자식 요소가 표시 하는 경우는 `<claimsAuthenticationManager>` 구성 파일의 요소를이 메서드가 호출 되지 않습니다.  
+  
+ 기본 구현은 throw를 <xref:System.NotImplementedException>입니다. 구성 파일에서 클레임 인증 관리자의 초기화를 사용 하도록 설정 하려면 파생된 클래스에서이 메서드를 재정의 합니다. 예를 들어 구성 요소는 클레임 보안 주체를 인증 하는 경우 따라야 하는 정책을 설명할 수 있습니다. 또는는 추가 클레임 보안 주체에 추가 하려는 특성 저장소를 가리키도록 사용할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

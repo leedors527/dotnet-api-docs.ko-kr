@@ -1,0 +1,672 @@
+<Type Name="SqlWorkflowPersistenceService" FullName="System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="61f52a53524dc4a7e3941caeba7558f5b60f4cfa" /><Meta Name="ms.sourcegitcommit" Value="b0551d7828f015124aca601dbb64bd913cc5067d" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="12/13/2018" /><Meta Name="ms.locfileid" Value="53331547" /></Metadata><TypeSignature Language="C#" Value="public class SqlWorkflowPersistenceService : System.Workflow.Runtime.Hosting.WorkflowPersistenceService, System.Workflow.Runtime.IPendingWork" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SqlWorkflowPersistenceService extends System.Workflow.Runtime.Hosting.WorkflowPersistenceService implements class System.Workflow.Runtime.IPendingWork" />
+  <TypeSignature Language="DocId" Value="T:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" />
+  <TypeSignature Language="VB.NET" Value="Public Class SqlWorkflowPersistenceService&#xA;Inherits WorkflowPersistenceService&#xA;Implements IPendingWork" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SqlWorkflowPersistenceService : System::Workflow::Runtime::Hosting::WorkflowPersistenceService, System::Workflow::Runtime::IPendingWork" />
+  <TypeSignature Language="F#" Value="type SqlWorkflowPersistenceService = class&#xA;    inherit WorkflowPersistenceService&#xA;    interface IPendingWork" />
+  <AssemblyInfo>
+    <AssemblyName>System.Workflow.Runtime</AssemblyName>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Workflow.Runtime.Hosting.WorkflowPersistenceService</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.Workflow.Runtime.IPendingWork</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute FrameworkAlternate="netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+      <AttributeName>System.Obsolete("The System.Workflow.* types are deprecated.  Instead, please use the new types from System.Activities.*")</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>SQL 데이터베이스를 사용하여 워크플로 상태 정보를 저장하는 유지 서비스를 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+> [!NOTE]
+>  [!INCLUDE[DeprecatedContent](~/includes/deprecatedcontent-md.md)]  
+  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> 클래스는 제대로 작동하는 유지 서비스를 나타냅니다. 기본적으로 제공되는 이 서비스를 사용하면 워크플로 런타임 엔진에서 요청할 때 워크플로 인스턴스에 대한 워크플로 상태 정보를 유지하고 검색할 수 있습니다.  
+  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService>는 <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>에서 제공하는 워크플로 트랜잭션 일괄 처리 기능에 참여합니다. 즉, SQL 데이터베이스에 대해 보류 중인 쓰기를 나타내는 개체를 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A>에 추가하고 <xref:System.Workflow.Runtime.IPendingWork> 인터페이스를 구현합니다.  
+  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService>는 워크플로 인스턴스의 잠금을 지원합니다. 이 기능은 여러 워크플로 런타임에서 같은 데이터베이스를 공유할 때 사용됩니다. SQL 데이터베이스 테이블의 열은 워크플로 인스턴스가 워크플로 런타임에서 사용될 때마다 잠김 상태로 표시하는 데 사용됩니다. <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService>에서는 다른 런타임에서 "사용 중"인 상태로 표시되는 워크플로 인스턴스를 로드하지 않습니다. 일반적으로 이러한 잠금은 유휴 상태, 완료 또는 종료처럼 워크플로 인스턴스가 유지될 때 해제됩니다. 또한 일정 시간 동안 사용하지 않을 경우 자동으로 잠금이 해제될 수 있습니다. 이 사용하지 않는 기간은 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> 클래스의 생성자를 사용하여 설정할 수 있습니다.  구성 파일을 통해서도 설정할 수 있습니다.  
+  
+ 지 속성에 대 한 자세한 내용은 서비스 일반적으로, 참조는 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService> 클래스입니다.  
+  
+ 예를 들어 워크플로 인스턴스에 <xref:System.Workflow.Activities.DelayActivity>가 있는 경우에는 타이머가 포함될 수 있습니다. 타이머를 포함하는 워크플로의 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService>에서는 워크플로의 다음 타이머가 만료되는 시간을 기록합니다. <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService>에서는 데이터베이스를 주기적으로 폴링하여 타이머가 만료된 워크플로를 찾습니다. 폴링 간격의 빈도는 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> 생성자 또는 구성 파일을 사용하여 설정할 수 있습니다.  
+  
+> [!NOTE]
+>  워크플로 애플리케이션에 <xref:System.Workflow.Runtime.Tracking.SqlTrackingService>와 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService>를 모두 사용하는 경우 단일 데이터베이스를 지속성과 추적에 모두 사용하는 것이 좋습니다.  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SqlWorkflowPersistenceService (System.Collections.Specialized.NameValueCollection parameters);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Collections.Specialized.NameValueCollection parameters) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.#ctor(System.Collections.Specialized.NameValueCollection)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (parameters As NameValueCollection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlWorkflowPersistenceService(System::Collections::Specialized::NameValueCollection ^ parameters);" />
+      <MemberSignature Language="F#" Value="new System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService : System.Collections.Specialized.NameValueCollection -&gt; System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" Usage="new System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService parameters" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="parameters" Type="System.Collections.Specialized.NameValueCollection" />
+      </Parameters>
+      <Docs>
+        <param name="parameters">시작 매개 변수를 포함하는 <see cref="T:System.Collections.Specialized.NameValueCollection" />입니다.</param>
+        <summary>지정된 매개 변수를 사용하여 <see cref="T:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자는 워크플로 런타임 엔진이 애플리케이션 구성 파일에서 서비스를 로드할 때 호출됩니다. `NameValueCollection` 매개 변수를 사용하여 프로그래밍 방식으로 호출할 수도 있습니다. 유효한 매개 변수는 `ConnectionString`, `OwnershipTimeoutSeconds`, `UnloadOnIdle` 및 `EnableRetries`입니다. 매개 변수에 다른 키가 포함되어 있으면 <xref:System.ArgumentException>이 throw됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="parameters" />에 잘못된 데이터베이스 연결 문자열이 포함되어 있는 경우</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="parameters" />이 null 참조(Visual Basic의 경우 <see langword="Nothing" />)인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SqlWorkflowPersistenceService (string connectionString);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string connectionString) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.#ctor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (connectionString As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlWorkflowPersistenceService(System::String ^ connectionString);" />
+      <MemberSignature Language="F#" Value="new System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService : string -&gt; System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" Usage="new System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService connectionString" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="connectionString" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="connectionString">올바른 데이터베이스 연결 문자열입니다.</param>
+        <summary>데이터베이스 연결 문자열을 사용하여 <see cref="T:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="connectionString" />이 null 참조(Visual Basic의 경우 <see langword="Nothing" />)인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SqlWorkflowPersistenceService (string connectionString, bool unloadOnIdle, TimeSpan instanceOwnershipDuration, TimeSpan loadingInterval);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string connectionString, bool unloadOnIdle, valuetype System.TimeSpan instanceOwnershipDuration, valuetype System.TimeSpan loadingInterval) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.#ctor(System.String,System.Boolean,System.TimeSpan,System.TimeSpan)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (connectionString As String, unloadOnIdle As Boolean, instanceOwnershipDuration As TimeSpan, loadingInterval As TimeSpan)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SqlWorkflowPersistenceService(System::String ^ connectionString, bool unloadOnIdle, TimeSpan instanceOwnershipDuration, TimeSpan loadingInterval);" />
+      <MemberSignature Language="F#" Value="new System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService : string * bool * TimeSpan * TimeSpan -&gt; System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" Usage="new System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService (connectionString, unloadOnIdle, instanceOwnershipDuration, loadingInterval)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="connectionString" Type="System.String" />
+        <Parameter Name="unloadOnIdle" Type="System.Boolean" />
+        <Parameter Name="instanceOwnershipDuration" Type="System.TimeSpan" />
+        <Parameter Name="loadingInterval" Type="System.TimeSpan" />
+      </Parameters>
+      <Docs>
+        <param name="connectionString">올바른 데이터베이스 연결 문자열입니다.</param>
+        <param name="unloadOnIdle">워크플로가 유휴 상태일 때 언로드하면 <see langword="true" />입니다.</param>
+        <param name="instanceOwnershipDuration">유휴 워크플로에서 잠금이 유지되는 시간입니다.</param>
+        <param name="loadingInterval">유지 서비스가 데이터베이스에서 만료된 타이머가 있는 워크플로를 폴링하는 빈도입니다.</param>
+        <summary>데이터베이스 연결 문자열 및 다른 매개 변수를 사용하여 <see cref="T:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `instanceOwnershipDuration`의 값을 제공하는 이 생성자를 사용하여 잠금을 사용하도록 설정해야 합니다. 잠금을 사용하지 않는 유지 서비스를 만들려면 `instanceOwnershipDuration`을 지정하지 않는 다른 생성자를 사용합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="connectionString" />이 null 참조(Visual Basic의 경우 <see langword="Nothing" />)인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EnableRetries">
+      <MemberSignature Language="C#" Value="public bool EnableRetries { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool EnableRetries" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.EnableRetries" />
+      <MemberSignature Language="VB.NET" Value="Public Property EnableRetries As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool EnableRetries { bool get(); void set(bool value); };" />
+      <MemberSignature Language="F#" Value="member this.EnableRetries : bool with get, set" Usage="System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.EnableRetries" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" />에서 작업 일괄 처리 커밋을 다시 시도할지 여부를 지정하는 값을 가져오거나 설정합니다.</summary>
+        <value>서비스에서 작업 일괄 처리 커밋을 다시 시도해야 하면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다. 기본값은 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 다음 작업 항목은 일괄 처리할 수 없으며 `EnableRetries` 속성을 통해 트랜잭션 다시 시도를 처리해야 합니다.  
+  
+-   만료된 데이터베이스 타이머 폴링  
+  
+-   워크플로 인스턴스 상태 로드  
+  
+-   워크플로 런타임 엔진이 시작될 때 워크플로 인스턴스 다시 로드  
+  
+-   <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.GetAllWorkflows%2A>를 호출할 경우  
+  
+ 프로그래밍 방식으로 설정하는 것 외에도 구성 파일을 통해 이 기능을 사용할 수 있습니다. 구성 파일을 통해이 속성을 설정 하는 방법에 대 한 자세한 내용은 참조 하세요. [워크플로 구성 파일](https://msdn.microsoft.com/library/ada4bb90-6c9d-4f3d-a9d0-b559bb0f9909)합니다.  
+  
+ 작업 일괄 처리 트랜잭션을 다시 시도 하는 방법에 대 한 일반적인 정보를 참조 하세요 [워크플로의 상태 정보 일괄 처리](https://msdn.microsoft.com/library/ecda18ba-9140-4bd7-b13d-6787fdf5959d)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetAllWorkflows">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.IEnumerable&lt;System.Workflow.Runtime.Hosting.SqlPersistenceWorkflowInstanceDescription&gt; GetAllWorkflows ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Collections.Generic.IEnumerable`1&lt;class System.Workflow.Runtime.Hosting.SqlPersistenceWorkflowInstanceDescription&gt; GetAllWorkflows() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.GetAllWorkflows" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAllWorkflows () As IEnumerable(Of SqlPersistenceWorkflowInstanceDescription)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Collections::Generic::IEnumerable&lt;System::Workflow::Runtime::Hosting::SqlPersistenceWorkflowInstanceDescription ^&gt; ^ GetAllWorkflows();" />
+      <MemberSignature Language="F#" Value="member this.GetAllWorkflows : unit -&gt; seq&lt;System.Workflow.Runtime.Hosting.SqlPersistenceWorkflowInstanceDescription&gt;" Usage="sqlWorkflowPersistenceService.GetAllWorkflows " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IEnumerable&lt;System.Workflow.Runtime.Hosting.SqlPersistenceWorkflowInstanceDescription&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>모든 지속된 워크플로에 대한 인스턴스 설명을 검색합니다.</summary>
+        <returns>모든 지속된 워크플로 목록입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadCompletedContextActivity">
+      <MemberSignature Language="C#" Value="protected internal override System.Workflow.ComponentModel.Activity LoadCompletedContextActivity (Guid id, System.Workflow.ComponentModel.Activity outerActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance class System.Workflow.ComponentModel.Activity LoadCompletedContextActivity(valuetype System.Guid id, class System.Workflow.ComponentModel.Activity outerActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.LoadCompletedContextActivity(System.Guid,System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function LoadCompletedContextActivity (id As Guid, outerActivity As Activity) As Activity" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override System::Workflow::ComponentModel::Activity ^ LoadCompletedContextActivity(Guid id, System::Workflow::ComponentModel::Activity ^ outerActivity);" />
+      <MemberSignature Language="F#" Value="override this.LoadCompletedContextActivity : Guid * System.Workflow.ComponentModel.Activity -&gt; System.Workflow.ComponentModel.Activity" Usage="sqlWorkflowPersistenceService.LoadCompletedContextActivity (id, outerActivity)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.ComponentModel.Activity</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="id" Type="System.Guid" />
+        <Parameter Name="outerActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="id">범위 활동의 <see cref="T:System.Guid" />입니다.</param>
+        <param name="outerActivity">범위 활동을 포함하는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary>지정한 완료된 범위를 데이터베이스에서 검색합니다.</summary>
+        <returns>완료된 범위를 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 워크플로 런타임 엔진은 보정 중에 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.LoadCompletedContextActivity%2A>를 사용합니다. <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.LoadCompletedContextActivity%2A>는 워크플로 런타임 엔진에서만 호출되어야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><paramref name="id" />와 일치하는 범위를 데이터베이스에서 찾을 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadExpiredTimerWorkflowIds">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.IList&lt;Guid&gt; LoadExpiredTimerWorkflowIds ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Collections.Generic.IList`1&lt;valuetype System.Guid&gt; LoadExpiredTimerWorkflowIds() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.LoadExpiredTimerWorkflowIds" />
+      <MemberSignature Language="VB.NET" Value="Public Function LoadExpiredTimerWorkflowIds () As IList(Of Guid)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Collections::Generic::IList&lt;Guid&gt; ^ LoadExpiredTimerWorkflowIds();" />
+      <MemberSignature Language="F#" Value="member this.LoadExpiredTimerWorkflowIds : unit -&gt; System.Collections.Generic.IList&lt;Guid&gt;" Usage="sqlWorkflowPersistenceService.LoadExpiredTimerWorkflowIds " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IList&lt;System.Guid&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>만료된 타이머가 있는 워크플로의 ID 목록을 검색합니다.</summary>
+        <returns>만료된 타이머가 있는 워크플로의 ID 목록입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadingInterval">
+      <MemberSignature Language="C#" Value="public TimeSpan LoadingInterval { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.TimeSpan LoadingInterval" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.LoadingInterval" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property LoadingInterval As TimeSpan" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property TimeSpan LoadingInterval { TimeSpan get(); };" />
+      <MemberSignature Language="F#" Value="member this.LoadingInterval : TimeSpan" Usage="System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.LoadingInterval" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.TimeSpan</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>로딩 간격의 길이를 가져옵니다.</summary>
+        <value>유지 서비스가 데이터베이스에서 만료된 타이머가 있는 워크플로를 폴링하는 빈도입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본값은 2 분입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LoadWorkflowInstanceState">
+      <MemberSignature Language="C#" Value="protected internal override System.Workflow.ComponentModel.Activity LoadWorkflowInstanceState (Guid id);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance class System.Workflow.ComponentModel.Activity LoadWorkflowInstanceState(valuetype System.Guid id) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.LoadWorkflowInstanceState(System.Guid)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Function LoadWorkflowInstanceState (id As Guid) As Activity" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override System::Workflow::ComponentModel::Activity ^ LoadWorkflowInstanceState(Guid id);" />
+      <MemberSignature Language="F#" Value="override this.LoadWorkflowInstanceState : Guid -&gt; System.Workflow.ComponentModel.Activity" Usage="sqlWorkflowPersistenceService.LoadWorkflowInstanceState id" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Workflow.ComponentModel.Activity</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="id" Type="System.Guid" />
+      </Parameters>
+      <Docs>
+        <param name="id">워크플로 인스턴스 상태의 <see cref="T:System.Guid" />입니다.</param>
+        <summary>데이터베이스에서 지정된 워크플로 인스턴스 상태를 검색합니다.</summary>
+        <returns>워크플로 인스턴스의 루트 활동을 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.LoadWorkflowInstanceState%2A>는 워크플로 런타임 엔진에서만 호출되어야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException"><paramref name="id" />와 일치하는 워크플로 인스턴스 상태를 데이터베이스에서 찾을 수 없는 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="OnStarted">
+      <MemberSignature Language="C#" Value="protected override void OnStarted ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void OnStarted() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.OnStarted" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub OnStarted ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void OnStarted();" />
+      <MemberSignature Language="F#" Value="override this.OnStarted : unit -&gt; unit" Usage="sqlWorkflowPersistenceService.OnStarted " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>새 타이머를 시작하고 실행 중인 워크플로 인스턴스를 복구합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveCompletedContextActivity">
+      <MemberSignature Language="C#" Value="protected internal override void SaveCompletedContextActivity (System.Workflow.ComponentModel.Activity completedScopeActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void SaveCompletedContextActivity(class System.Workflow.ComponentModel.Activity completedScopeActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.SaveCompletedContextActivity(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub SaveCompletedContextActivity (completedScopeActivity As Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void SaveCompletedContextActivity(System::Workflow::ComponentModel::Activity ^ completedScopeActivity);" />
+      <MemberSignature Language="F#" Value="override this.SaveCompletedContextActivity : System.Workflow.ComponentModel.Activity -&gt; unit" Usage="sqlWorkflowPersistenceService.SaveCompletedContextActivity completedScopeActivity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="completedScopeActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="completedScopeActivity">완료된 범위를 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary>지정한 완료된 범위의 상태를 저장합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `completedScopeActivity`는 serialize되고 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A>에 추가됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SaveWorkflowInstanceState">
+      <MemberSignature Language="C#" Value="protected internal override void SaveWorkflowInstanceState (System.Workflow.ComponentModel.Activity rootActivity, bool unlock);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void SaveWorkflowInstanceState(class System.Workflow.ComponentModel.Activity rootActivity, bool unlock) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.SaveWorkflowInstanceState(System.Workflow.ComponentModel.Activity,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub SaveWorkflowInstanceState (rootActivity As Activity, unlock As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void SaveWorkflowInstanceState(System::Workflow::ComponentModel::Activity ^ rootActivity, bool unlock);" />
+      <MemberSignature Language="F#" Value="override this.SaveWorkflowInstanceState : System.Workflow.ComponentModel.Activity * bool -&gt; unit" Usage="sqlWorkflowPersistenceService.SaveWorkflowInstanceState (rootActivity, unlock)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rootActivity" Type="System.Workflow.ComponentModel.Activity" />
+        <Parameter Name="unlock" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="rootActivity">워크플로 인스턴스의 루트 활동입니다.</param>
+        <param name="unlock">워크플로 인스턴스를 잠그지 않아야 하면 <see langword="true" />이고, 워크플로 인스턴스를 잠가야 하면 <see langword="false" />입니다.</param>
+        <summary>지정한 워크플로 인스턴스 상태를 저장합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `rootActivity`는 serialize되고 <xref:System.Workflow.Runtime.WorkflowEnvironment.WorkBatch%2A>에 기록됩니다. 기본 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService>는 워크플로 인스턴스 상태의 잠금을 구현합니다. 사용자는 생성자에서 `instanceOwnershipDuration` 매개 변수를 구성해야 합니다. 이 값은 호스트가 인스턴스를 잠글 수 있는 시간 간격을 결정합니다. 여러 호스트에서 같은 유지 서비스 및 데이터베이스를 공유하는 경우 다른 호스트에서 이 간격 동안 인스턴스를 로드하려고 하면 <xref:System.Workflow.Runtime.WorkflowOwnershipException>이 발생합니다. 자세한 내용은 <xref:System.Workflow.Runtime.Hosting.WorkflowPersistenceService> 클래스를 참조하세요.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ServiceInstanceId">
+      <MemberSignature Language="C#" Value="public Guid ServiceInstanceId { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Guid ServiceInstanceId" />
+      <MemberSignature Language="DocId" Value="P:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.ServiceInstanceId" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ServiceInstanceId As Guid" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Guid ServiceInstanceId { Guid get(); };" />
+      <MemberSignature Language="F#" Value="member this.ServiceInstanceId : Guid" Usage="System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.ServiceInstanceId" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Guid</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>서비스 인스턴스 식별자를 가져옵니다.</summary>
+        <value>서비스 인스턴스 식별자입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본값은 `Guid.Empty`입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Start">
+      <MemberSignature Language="C#" Value="protected internal override void Start ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void Start() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.Start" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub Start ()" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void Start();" />
+      <MemberSignature Language="F#" Value="override this.Start : unit -&gt; unit" Usage="sqlWorkflowPersistenceService.Start " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService" />를 시작합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.Start%2A>는 워크플로 런타임 엔진에서만 호출되어야 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Stop">
+      <MemberSignature Language="C#" Value="protected internal override void Stop ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void Stop() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.Stop" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub Stop ()" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void Stop();" />
+      <MemberSignature Language="F#" Value="override this.Stop : unit -&gt; unit" Usage="sqlWorkflowPersistenceService.Stop " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>서비스 및 타이머를 중지합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Workflow.Runtime.IPendingWork.Commit">
+      <MemberSignature Language="C#" Value="void IPendingWork.Commit (System.Transactions.Transaction transaction, System.Collections.ICollection items);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Workflow.Runtime.IPendingWork.Commit(class System.Transactions.Transaction transaction, class System.Collections.ICollection items) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.System#Workflow#Runtime#IPendingWork#Commit(System.Transactions.Transaction,System.Collections.ICollection)" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.Workflow.Runtime.IPendingWork.Commit(System::Transactions::Transaction ^ transaction, System::Collections::ICollection ^ items) = System::Workflow::Runtime::IPendingWork::Commit;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Workflow.Runtime.IPendingWork.Commit(System.Transactions.Transaction,System.Collections.ICollection)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="transaction" Type="System.Transactions.Transaction" />
+        <Parameter Name="items" Type="System.Collections.ICollection" />
+      </Parameters>
+      <Docs>
+        <param name="transaction"><see cref="T:System.Transactions.Transaction" /></param>
+        <param name="items">데이터베이스에 쓸 작업 항목의 <see cref="T:System.Collections.ICollection" />입니다.</param>
+        <summary>serialize된 상태 개체의 <see cref="T:System.Collections.ICollection" />을 데이터베이스에 씁니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `items`에 포함된 serialize된 상태 개체를 데이터베이스에 씁니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Workflow.Runtime.Hosting.PersistenceException">데이터베이스에 쓰는 동안 오류가 발생한 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Workflow.Runtime.IPendingWork.Complete">
+      <MemberSignature Language="C#" Value="void IPendingWork.Complete (bool succeeded, System.Collections.ICollection items);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.Workflow.Runtime.IPendingWork.Complete(bool succeeded, class System.Collections.ICollection items) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.System#Workflow#Runtime#IPendingWork#Complete(System.Boolean,System.Collections.ICollection)" />
+      <MemberSignature Language="VB.NET" Value="Sub Complete (succeeded As Boolean, items As ICollection) Implements IPendingWork.Complete" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.Workflow.Runtime.IPendingWork.Complete(bool succeeded, System::Collections::ICollection ^ items) = System::Workflow::Runtime::IPendingWork::Complete;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Workflow.Runtime.IPendingWork.Complete(System.Boolean,System.Collections.ICollection)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="succeeded" Type="System.Boolean" />
+        <Parameter Name="items" Type="System.Collections.ICollection" />
+      </Parameters>
+      <Docs>
+        <param name="succeeded">커밋이 성공했으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <param name="items">serialize된 상태 개체의 <see cref="T:System.Collections.ICollection" />입니다.</param>
+        <summary>작업 일괄 처리를 완료하고 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService>의 기본 구현   
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.System%23Workflow%23Runtime%23IPendingWork%23Complete%2A>는 작동하지 않습니다. <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> 클래스에서 상속하여 확장하면 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.System%23Workflow%23Runtime%23IPendingWork%23Complete%2A>를 사용하여 구현에 표시된 `items`에서 필요한 작업을 수행할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.Workflow.Runtime.IPendingWork.MustCommit">
+      <MemberSignature Language="C#" Value="bool IPendingWork.MustCommit (System.Collections.ICollection items);" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance bool System.Workflow.Runtime.IPendingWork.MustCommit(class System.Collections.ICollection items) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.System#Workflow#Runtime#IPendingWork#MustCommit(System.Collections.ICollection)" />
+      <MemberSignature Language="VB.NET" Value="Function MustCommit (items As ICollection) As Boolean Implements IPendingWork.MustCommit" />
+      <MemberSignature Language="C++ CLI" Value=" virtual bool System.Workflow.Runtime.IPendingWork.MustCommit(System::Collections::ICollection ^ items) = System::Workflow::Runtime::IPendingWork::MustCommit;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Workflow.Runtime.IPendingWork.MustCommit(System.Collections.ICollection)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="items" Type="System.Collections.ICollection" />
+      </Parameters>
+      <Docs>
+        <param name="items">데이터베이스에 쓸 serialize된 상태 개체의 <see cref="T:System.Collections.ICollection" />입니다.</param>
+        <summary>serialize된 상태 개체 컬렉션을 데이터베이스에 쓸지 여부를 나타내는 값을 반환합니다.</summary>
+        <returns><see langword="true" />는 일괄 처리가 커밋되어야 함을 나타냅니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.System%23Workflow%23Runtime%23IPendingWork%23MustCommit(System.Collections.ICollection)>은 항상 `true`를 반환하여 워크플로 런타임 엔진이 일괄 처리에서 <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.System%23Workflow%23Runtime%23IPendingWork%23MustCommit(System.Collections.ICollection)>을 호출하도록 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnloadOnIdle">
+      <MemberSignature Language="C#" Value="protected internal override bool UnloadOnIdle (System.Workflow.ComponentModel.Activity activity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance bool UnloadOnIdle(class System.Workflow.ComponentModel.Activity activity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.UnloadOnIdle(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override bool UnloadOnIdle(System::Workflow::ComponentModel::Activity ^ activity);" />
+      <MemberSignature Language="F#" Value="override this.UnloadOnIdle : System.Workflow.ComponentModel.Activity -&gt; bool" Usage="sqlWorkflowPersistenceService.UnloadOnIdle activity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="activity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="activity">워크플로 인스턴스의 루트 활동을 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary>워크플로가 유휴 상태일 때 언로드되는지 여부를 나타내는 값을 반환합니다.</summary>
+        <returns>워크플로가 유휴 상태일 때 언로드되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnlockWorkflowInstanceState">
+      <MemberSignature Language="C#" Value="protected internal override void UnlockWorkflowInstanceState (System.Workflow.ComponentModel.Activity rootActivity);" />
+      <MemberSignature Language="ILAsm" Value=".method familyorassemblyhidebysig virtual instance void UnlockWorkflowInstanceState(class System.Workflow.ComponentModel.Activity rootActivity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService.UnlockWorkflowInstanceState(System.Workflow.ComponentModel.Activity)" />
+      <MemberSignature Language="VB.NET" Value="Protected Friend Overrides Sub UnlockWorkflowInstanceState (rootActivity As Activity)" />
+      <MemberSignature Language="C++ CLI" Value="protected public:&#xA; override void UnlockWorkflowInstanceState(System::Workflow::ComponentModel::Activity ^ rootActivity);" />
+      <MemberSignature Language="F#" Value="override this.UnlockWorkflowInstanceState : System.Workflow.ComponentModel.Activity -&gt; unit" Usage="sqlWorkflowPersistenceService.UnlockWorkflowInstanceState rootActivity" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Workflow.Runtime</AssemblyName>
+        <AssemblyVersion>3.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rootActivity" Type="System.Workflow.ComponentModel.Activity" />
+      </Parameters>
+      <Docs>
+        <param name="rootActivity">워크플로 인스턴스의 루트 활동을 나타내는 <see cref="T:System.Workflow.ComponentModel.Activity" />입니다.</param>
+        <summary>지정한 워크플로 인스턴스 상태에 대한 액세스의 잠금을 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 워크플로 런타임에서 지속성 없는 데이터 저장소의 워크플로 인스턴스 상태를 잠금 해제하는 데 사용되며 <xref:System.Workflow.Runtime.WorkflowInstance.Abort%2A>의 경우처럼 런타임에서 지속하지 않고 상태의 잠금을 해제해야 하는 경우 워크플로 런타임에서 호출됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

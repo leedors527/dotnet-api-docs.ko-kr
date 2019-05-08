@@ -1,0 +1,947 @@
+<Type Name="SecureString" FullName="System.Security.SecureString">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7b148e780cf09e6100de24389ca119039ce3229d" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58713703" /></Metadata><TypeSignature Language="C#" Value="public sealed class SecureString : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed SecureString extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Security.SecureString" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class SecureString&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SecureString sealed : IDisposable" />
+  <TypeSignature Language="F#" Value="type SecureString = class&#xA;    interface IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Security.SecureString</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>더 이상 필요 없게 되면 컴퓨터 메모리에서 삭제되는 텍스트처럼 기밀을 유지해야 하는 텍스트를 나타냅니다. 이 클래스는 상속될 수 없습니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+> [!IMPORTANT]
+>  사용 하는 권장 하지 않습니다는 `SecureString` 새로운 개발에 대 한 클래스입니다. 자세한 내용은 [SecureString을 사용 하지 말아야](https://github.com/dotnet/platform-compat/blob/master/docs/DE0001.md) github입니다.
+
+ <xref:System.Security.SecureString> 보안 조치를 제공 하는 문자열 형식이입니다. 일반 텍스트로 프로세스 메모리에 잠재적으로 중요 한 문자열을 저장 하지 않도록 하려고 합니다.  그러나 (참조 제한 사항에 대 한 합니다 [SecureString은 얼마나 안전?](#HowSecure) 섹션입니다.) 인스턴스의 값 <xref:System.Security.SecureString> 인스턴스가 초기화 될 때 또는 값을 수정할 때 내부 플랫폼에서 지원 되는 메커니즘을 사용 하 여 자동으로 보호 됩니다. 응용 프로그램 인스턴스를 변경할 수 없는 렌더링을 호출 하 여 더 이상 수정할 수는 <xref:System.Security.SecureString.MakeReadOnly%2A> 메서드.  
+  
+ 최대 길이 <xref:System.Security.SecureString> 인스턴스가 65,536 개의 문자입니다.  
+  
+> [!IMPORTANT]
+>  이 형식이 구현 하는 <xref:System.IDisposable> 인터페이스입니다. 형식의 인스턴스를 사용 하 여 마쳤으면 직접 또는 간접적으로으로 삭제 해야 있습니다. 직접 형식의 dispose 호출 해당 <xref:System.IDisposable.Dispose%2A> 의 메서드를 `try` / `catch` 블록입니다. 삭제 하지 직접, 언어 구문 같은 사용 `using` (C#에서) 또는 `Using` (Visual Basic에서는). 자세한 내용은 "를 사용 하는 개체는 구현 IDisposable" 섹션을 참조 하세요.를 <xref:System.IDisposable> 인터페이스 항목입니다.  
+  
+ <xref:System.Security.SecureString> 클래스 및 해당 멤버 COM에 표시 되지 않습니다. 자세한 내용은 <xref:System.Runtime.InteropServices.ComVisibleAttribute>를 참조하십시오.  
+  
+ 섹션 내용  
+  
+ [Vs는 문자열입니다. SecureString](#vsString)   
+ [SecureString 작업](#Ops)   
+ [SecureString 및 interop](#interop)   
+ [SecureString은 얼마나 안전?](#HowSecure)  
+  
+<a name="vsString"></a>   
+## <a name="string-versus-securestring"></a>SecureString 및 문자열  
+ 인스턴스는 <xref:System.String?displayProperty=nameWithType> 즉, 인스턴스가 읽기 전용인 지를 만든 후 언제 인스턴스 수를 예측할 수 없는; 클래스는 변경할 수 없는 더 이상 필요 없는 프로그래밍 방식으로 예약 될 가비지 컬렉션에 대 한 컴퓨터 메모리에서 삭제 합니다. 때문에 <xref:System.String?displayProperty=nameWithType> 인스턴스를 변경할 수 없는 경우, 기존 인스턴스를 수정 하는 작업은 실제로 조작 되도록의 복사본을 만듭니다. 따라서 경우는 <xref:System.String> 암호, 신용 카드 번호 또는 개인 데이터와 같은 중요 한 정보를 포함 하는 개체, 응용 프로그램 컴퓨터 메모리에서 데이터를 삭제할 수 없으므로 사용 후 정보 누설 될 위험이 있습니다 .  
+  
+ <xref:System.Security.SecureString> 개체는 비슷합니다는 <xref:System.String> 있는 텍스트 값 개체입니다. 그러나 값을 <xref:System.Security.SecureString> 메모리에 고정 되어 개체, 응용 프로그램 읽기 전용으로 표시 될 때까지 기본 운영 체제에서 제공 하는 암호화를 수정할 수와 같은 보호 메커니즘을 사용할 수 있고 컴퓨터 메모리에서 삭제할 수 있습니다 응용 프로그램 호출 하 여는 <xref:System.Security.SecureString.Dispose%2A> 메서드 또는.NET Framework 가비지 수집기에 의해 합니다.  
+  
+ 제한 사항에 대 한 내용은 합니다 <xref:System.Security.SecureString> 클래스를 참조 하십시오 합니다 [SecureString은 얼마나 안전?](#HowSecure) 섹션입니다.  
+  
+ [맨 위로 이동](#top)  
+  
+<a name="Ops"></a>   
+## <a name="securestring-operations"></a>SecureString 작업  
+ <xref:System.Security.SecureString> 클래스는 다음 작업을 수행할 수 있는 멤버를 포함 합니다.  
+  
+ 인스턴스화하는 <xref:System.Security.SecureString> 개체  
+ 인스턴스화하는 <xref:System.Security.SecureString> 매개 변수가 없는 생성자를 호출 하 여 개체입니다.  
+  
+ 추가 문자를 <xref:System.Security.SecureString> 개체  
+ 한 번에 단일 문자를 추가할 수 있습니다는 <xref:System.Security.SecureString> 개체를 호출 하 여 해당 <xref:System.Security.SecureString.AppendChar%2A> 또는 <xref:System.Security.SecureString.InsertAt%2A> 메서드.  
+  
+> [!IMPORTANT]
+>  A <xref:System.Security.SecureString> 개체에서 생성 되지 해야를 <xref:System.String>이므로 중요 한 데이터를 변경할 수 없는 작업의 메모리 지 속성 결과 따라 이미 <xref:System.String> 클래스입니다. 생성 하는 가장 좋은 방법은 <xref:System.Security.SecureString> 와 같은 관리 되지 않는 문자 타임 원본에서 개체는는 <xref:System.Console.ReadKey%2A?displayProperty=nameWithType> 메서드.  
+  
+ 문자를 제거는 <xref:System.Security.SecureString> 개체  
+ 호출 하 여 개별 문자를 바꿀 수 있습니다는 <xref:System.Security.SecureString.SetAt%2A> 메서드를 호출 하 여 개별 문자를 제거 합니다 <xref:System.Security.SecureString.RemoveAt%2A> 메서드 또는 모든 문자를 제거는 <xref:System.Security.SecureString> 호출 하 여 인스턴스를 <xref:System.Security.SecureString.Clear%2A> 메서드.  
+  
+ 확인 된 <xref:System.Security.SecureString> 읽기 전용 개체  
+ 문자열을 정의한 후는 <xref:System.Security.SecureString> 개체가 나타내는 호출 하면 해당 <xref:System.Security.SecureString.MakeReadOnly%2A> 읽기 전용 문자열을 설정 하는 방법입니다.  
+  
+ 에 대 한 정보를 가져오기는 <xref:System.Security.SecureString> 개체  
+ <xref:System.Security.SecureString> 클래스에는 문자열에 대 한 정보를 제공 하는 두 명의 멤버: 해당 <xref:System.Security.SecureString.Length%2A> 문자열에서 UTF16 인코딩된 코드 단위 수를 나타내는 속성 및 <xref:System.Security.SecureString.IsReadOnly%2A>, 인스턴스가 있는지 여부를 나타내는 메서드 읽기 전용입니다.  
+  
+ 할당 된 메모리를 해제 합니다 <xref:System.Security.SecureString> 인스턴스  
+ 때문에 <xref:System.Security.SecureString> 구현 합니다 <xref:System.IDisposable> 인터페이스를 호출 하 여 해당 메모리를 해제 합니다 <xref:System.Security.SecureString.Dispose%2A> 메서드.  
+  
+ 합니다 <xref:System.Security.SecureString> 클래스에는 검사, 비교, 또는 값으로 변환 하는 멤버가 없습니다를 <xref:System.Security.SecureString>입니다. 이러한 멤버가 없으므로 우발적 이거나 악의적인 노출 로부터 인스턴스의 값을 보호할 수 있습니다. 적절 한 멤버를 사용 합니다 <xref:System.Runtime.InteropServices.Marshal?displayProperty=nameWithType> 클래스와 같은 <xref:System.Runtime.InteropServices.Marshal.SecureStringToBSTR%2A> 의 값을 조작 하는 메서드인을 <xref:System.Security.SecureString> 개체입니다.  
+  
+ .NET Framework 클래스 라이브러리를 사용 하 여 일반적으로 <xref:System.Security.SecureString> 다음과 같은 방법으로 인스턴스:  
+  
+-   사용 하 여 프로세스에 대 한 암호 정보를 제공 하는 <xref:System.Diagnostics.ProcessStartInfo> 구조체 또는 오버 로드를 호출 하는 <xref:System.Diagnostics.Process.Start%2A?displayProperty=nameWithType> 형식의 매개 변수가 있는 메서드에 <xref:System.Security.SecureString>합니다.  
+  
+-   호출 하 여 네트워크 암호 정보를 제공 하는 <xref:System.Net.NetworkCredential> 형식의 매개 변수가 있는 클래스 생성자 <xref:System.Security.SecureString> 또는 사용 하 여는 <xref:System.Net.NetworkCredential.SecurePassword%2A?displayProperty=nameWithType> 속성입니다.  
+  
+-   호출 하 여 SQL Server 인증에 대 한 암호 정보를 제공 하는 <xref:System.Data.SqlClient.SqlCredential.%23ctor%2A?displayProperty=nameWithType> 생성자 또는 값을 검색 하는 <xref:System.Data.SqlClient.SqlCredential.Password%2A?displayProperty=nameWithType> 속성입니다.  
+  
+-   비관리 코드에 문자열로 전달. 자세한 내용은 참조는 [SecureString 및 interop](#interop) 섹션입니다.  
+  
+ [맨 위로 이동](#top)  
+  
+<a name="interop"></a>   
+## <a name="securestring-and-interop"></a>SecureString 및 interop  
+ 운영 체제에서 직접 지원 하지 않으므로 <xref:System.Security.SecureString>를 값으로 변환 해야 합니다는 <xref:System.Security.SecureString> 개체를 문자열 기본 메서드를 전달 하기 전에 필수 문자열 형식입니다.  <xref:System.Runtime.InteropServices.Marshal> 클래스에 5 개의 메서드는이 작업을 수행 합니다.  
+  
+-   <xref:System.Runtime.InteropServices.Marshal.SecureStringToBSTR%2A?displayProperty=nameWithType>를 변환 합니다 <xref:System.Security.SecureString> 문자열 com 인식 이진 문자열 (BSTR) 값  
+  
+-   <xref:System.Runtime.InteropServices.Marshal.SecureStringToCoTaskMemAnsi%2A?displayProperty=nameWithType> 및 <xref:System.Runtime.InteropServices.Marshal.SecureStringToGlobalAllocAnsi%2A?displayProperty=nameWithType>에 복사를 <xref:System.Security.SecureString> 문자열 관리 되지 않는 메모리는 ANSI 문자열 값입니다.  
+  
+-   <xref:System.Runtime.InteropServices.Marshal.SecureStringToCoTaskMemUnicode%2A?displayProperty=nameWithType> 및 <xref:System.Runtime.InteropServices.Marshal.SecureStringToCoTaskMemUnicode%2A?displayProperty=nameWithType>에 복사를 <xref:System.Security.SecureString> 문자열 관리 되지 않는 메모리에서 유니코드 문자열 값입니다.  
+  
+ 이러한 메서드의 관리 되지 않는 메모리에서 일반 텍스트 문자열을 만듭니다. 것을 비우고 해당 메모리를 확보 하 여 더 이상 필요 없는 즉시 개발자의 책임입니다. 각 문자열 변환과 메모리 할당 메서드에 해당 하는 메서드를 비우고 할당된 된 메모리:  
+  
+|할당 및 변환 메서드|0과 free 메서드|  
+|--------------------------------------|--------------------------|  
+|<xref:System.Runtime.InteropServices.Marshal.SecureStringToBSTR%2A?displayProperty=nameWithType>|<xref:System.Runtime.InteropServices.Marshal.ZeroFreeBSTR%2A?displayProperty=nameWithType>|  
+|<xref:System.Runtime.InteropServices.Marshal.SecureStringToCoTaskMemAnsi%2A?displayProperty=nameWithType>|<xref:System.Runtime.InteropServices.Marshal.ZeroFreeCoTaskMemAnsi%2A?displayProperty=nameWithType>|  
+|<xref:System.Runtime.InteropServices.Marshal.SecureStringToCoTaskMemUnicode%2A?displayProperty=nameWithType>|<xref:System.Runtime.InteropServices.Marshal.ZeroFreeCoTaskMemUnicode%2A?displayProperty=nameWithType>|  
+|<xref:System.Runtime.InteropServices.Marshal.SecureStringToGlobalAllocAnsi%2A?displayProperty=nameWithType>|<xref:System.Runtime.InteropServices.Marshal.ZeroFreeGlobalAllocAnsi%2A?displayProperty=nameWithType>|  
+|<xref:System.Runtime.InteropServices.Marshal.SecureStringToCoTaskMemUnicode%2A?displayProperty=nameWithType>|<xref:System.Runtime.InteropServices.Marshal.ZeroFreeGlobalAllocUnicode%2A?displayProperty=nameWithType>|  
+  
+ [맨 위로 이동](#top)  
+  
+<a name="HowSecure"></a>   
+## <a name="how-secure-is-securestring"></a>SecureString은 얼마나 안전?  
+ 제대로 만들어지면를 <xref:System.Security.SecureString> 보다 더 많은 데이터 보호를 제공 하는 인스턴스는 <xref:System.String>합니다. 문자 타임 원본에서 문자열을 만들 때 <xref:System.String> 여러 중간 메모리에 만듭니다. 반면 <xref:System.Security.SecureString> 바로 단일 인스턴스를 만듭니다.  가비지 수집이 <xref:System.String> 개체 명확 하지 않습니다. 또한 해당 메모리를 고정 되어 있지 않은, 때문에 가비지 수집기는 복사본 추가 <xref:System.String> 값을 이동 하 고 메모리를 압축 하는 경우. 메모리를 할당 하는 반면를 <xref:System.Security.SecureString> 개체가 고정 되어 및 호출 하 여 해당 메모리를 해제할 수는 <xref:System.Security.SecureString.Dispose%2A> 메서드.  
+  
+ 데이터에 저장 되지만 <xref:System.Security.SecureString> 인스턴스가에 저장 된 데이터 보다 더 안전를 <xref:System.String> 인스턴스를 얼마나 안전에 중요 한 제한이 있습니다를 <xref:System.Security.SecureString> 인스턴스가 있습니다. 여기에는 다음이 포함됩니다.  
+  
+ 플랫폼  
+ Windows 운영 체제의 콘텐츠는 <xref:System.Security.SecureString> 인스턴스의 내부 문자 배열 암호화 됩니다. 그러나 누락 된 Api 또는 주요 관리 문제를 인해 여부 암호화가 모든 플랫폼에서 사용할 수 없습니다. 이 플랫폼 종속성으로 인해 <xref:System.Security.SecureString> 비 Windows 플랫폼에서 내부 저장소를 암호화 하지 않습니다. 다른 기술은 추가 보호를 제공할 해당 플랫폼에 사용 됩니다.
+  
+ 기간  
+ 경우에를 <xref:System.Security.SecureString> 구현은 암호화를 활용 하려면 수에 할당 된 일반 텍스트를 <xref:System.Security.SecureString> 인스턴스는 다양 한 시간에 노출 될 수 있습니다.  
+  
+-   Windows 운영 체제 수준에서는 보안 문자열 구현을 제공 하지 않습니다,.NET Framework도 하기 때문에 사용 하기 위해 보안 문자열 값을 텍스트로 표현으로 변환 합니다.  
+  
+-   때마다 보안 문자열의 값은 수정 메서드에서 같은 <xref:System.Security.SecureString.AppendChar%2A> 또는 <xref:System.Security.SecureString.RemoveAt%2A>, 해당 암호를 해독 해야 (즉, 다시 일반 텍스트로 변환), 수정 및 다시 암호화 합니다.  
+  
+-   보안 문자열은 interop 호출에 사용 하는 경우 ANSI 문자열, 유니코드 문자열 또는 이진 문자열 (BSTR)을 변환 해야 합니다. 자세한 내용은 참조는 [SecureString 및 interop](#interop) 섹션입니다.  
+  
+ 시간 간격을 <xref:System.Security.SecureString> 인스턴스의 값은 노출 비교 단순히 단축 됩니다는 <xref:System.String> 클래스입니다.  
+  
+ 사용 및 저장소  
+ 보다 일반적으로 <xref:System.Security.SecureString> 클래스 보호 하거나 기밀로 유지 해야 하는 문자열 값에 대 한 저장소 메커니즘을 정의 합니다. 그러나.NET Framework 자체 외부에서 사용 현황 메커니즘이 없습니다 지원 <xref:System.Security.SecureString>합니다. 이 보안 문자열은 해당 대상에 의해 인식 될 수 있는 사용 가능한 형식 (일반적으로 일반 텍스트 형식)으로 변환 해야 하 고 암호 해독 및 변환 사용자 공간에서 발생 해야 한다고 나타냅니다.  
+  
+ 전반적으로 <xref:System.Security.SecureString> 보다 더 안전  <xref:System.String> /소문자 구분 문자열 데이터의 노출을 제한 하므로 합니다. 그러나 이러한 문자열 프로세스 또는 호스트 컴퓨터, 프로세스 덤프 또는 사용자가 볼 수 있는 스왑 파일을 실행 하 여 악의적인 프로세스와 같은 원시 메모리에 액세스할 수 있는 작업이 여전히 노출 될 수 있습니다. 사용 하는 대신 <xref:System.Security.SecureString> 암호를 보호 하는 것이 좋습니다 불투명 핸들은 프로세스 외부에서 저장 된 자격 증명을 사용 하도록 합니다.  
+  
+ [맨 위로 이동](#top)  
+  
+   
+  
+## Examples  
+ 다음 예제에 사용 하는 방법을 보여 줍니다.는 <xref:System.Security.SecureString> 새 프로세스를 시작 하려면 자격 증명으로 사용 하 여에 대 한 사용자의 암호를 보호 합니다.  
+  
+ [!code-csharp[System.Security.SecureString.Ctor#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.SecureString.Ctor/cs/ctor4.cs#4)]
+ [!code-vb[System.Security.SecureString.Ctor#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.SecureString.Ctor/vb/ctor4.vb#4)]  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Runtime.InteropServices.ComVisibleAttribute" />
+    <altmember cref="T:System.Runtime.InteropServices.Marshal" />
+    <altmember cref="T:System.Runtime.ConstrainedExecution.CriticalFinalizerObject" />
+    <altmember cref="T:System.IDisposable" />
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Security.SecureString" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SecureString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SecureString();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.SecureString" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 예제에서는 기본 (또는 매개 변수가 없는) 생성자를 인스턴스화하는 새 <xref:System.Security.SecureString> 개체입니다. 그런 다음 호출 하 여 <xref:System.Security.SecureString.AppendChar%2A> 문자의 배열에 추가 하는 방법.  
+  
+ [!code-cpp[System.Security.SecureString.Ctor#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.SecureString.Ctor/cpp/Ctor2.cpp#2)]
+ [!code-csharp[System.Security.SecureString.Ctor#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.SecureString.Ctor/cs/Ctor2.cs#2)]
+ [!code-vb[System.Security.SecureString.Ctor#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.SecureString.Ctor/vb/ctor2.vb#2)]  
+  
+ 다음 예제에서는 한 <xref:System.Security.SecureString> 값에서 개체를 <xref:System.String> 개체입니다.  
+  
+ [!code-cpp[System.Security.SecureString.Ctor#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Security.SecureString.Ctor/cpp/Ctor3.cpp#3)]
+ [!code-csharp[System.Security.SecureString.Ctor#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Security.SecureString.Ctor/cs/Ctor3.cs#3)]
+ [!code-vb[System.Security.SecureString.Ctor#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.Security.SecureString.Ctor/vb/Ctor3.vb#3)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">이 인스턴스의 값을 보호하거나 보호 해제하는 동안 오류가 발생했습니다.</exception>
+        <exception cref="T:System.NotSupportedException">이 작업이 이 플랫폼에서 지원되지 않습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public SecureString (char* value, int length);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(char* value, int32 length) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.#ctor(System.Char*,System.Int32)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; SecureString(char* value, int length);" />
+      <MemberSignature Language="F#" Value="new System.Security.SecureString : nativeptr&lt;char&gt; * int -&gt; System.Security.SecureString" Usage="new System.Security.SecureString (value, length)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netcore-2.2;netcore-3.0;netstandard-2.1">
+          <AttributeName>System.CLSCompliant(false)</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecurityCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="value" Type="System.Char*" />
+        <Parameter Name="length" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="value"><see cref="T:System.Char" /> 개체의 배열에 대한 포인터입니다.</param>
+        <param name="length">새 인스턴스에 포함할 <paramref name="value" />의 요소 수입니다.</param>
+        <summary><see cref="T:System.Char" /> 개체의 하위 배열에서 <see cref="T:System.Security.SecureString" /> 클래스의 새 인스턴스를 초기화합니다.  
+  
+이 생성자는 CLS 규격이 아닙니다. CLS 규격 대체 항목은 <see cref="M:System.Security.SecureString.#ctor" />입니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 생성자는 새 <xref:System.Security.SecureString> 개체에 있는 문자의 수를 `value` 에 지정 된 `length`; 인스턴스의 값이 다음 암호화 합니다.  
+  
+ C#에서는이 생성자는 안전 하지 않은 코드 컨텍스트에서 정의 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 새 인스턴스화합니다 <xref:System.Security.SecureString> 문자 배열에 해당 생성자에 대 한 포인터를 전달 하 여 개체입니다.  
+  
+ [!code-cpp[System.Security.SecureString.Ctor2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.security.securestring.ctor2/cpp/ctor1.cpp#1)]
+ [!code-csharp[System.Security.SecureString.Ctor2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.security.securestring.ctor2/cs/ctor1.cs#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="value" />가 <see langword="null" />입니다.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="length" />가 0보다 작거나 65,536보다 큽니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">이 보안 문자열 값을 보호하거나 보호 해제하는 동안 오류가 발생했습니다.</exception>
+        <exception cref="T:System.NotSupportedException">이 작업이 이 플랫폼에서 지원되지 않습니다.</exception>
+        <permission cref="T:System.Security.SecurityCriticalAttribute">직접 실행 호출자에 대 한 완전 신뢰가 필요 합니다. 이 멤버는 부분적으로 신뢰할 수 있는 또는 투명 코드에서 사용할 수 없습니다.</permission>
+      </Docs>
+    </Member>
+    <Member MemberName="AppendChar">
+      <MemberSignature Language="C#" Value="public void AppendChar (char c);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AppendChar(char c) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.AppendChar(System.Char)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AppendChar (c As Char)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AppendChar(char c);" />
+      <MemberSignature Language="F#" Value="member this.AppendChar : char -&gt; unit" Usage="secureString.AppendChar c" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netstandard-2.1">
+          <AttributeName>System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="c" Type="System.Char" />
+      </Parameters>
+      <Docs>
+        <param name="c">이 보안 문자열에 추가할 문자입니다.</param>
+        <summary>현재 보안 문자열의 끝에 문자를 추가합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 있는 경우이 보안 문자열의 값이; 보호 구현에는 암호화와 같은 보호 메커니즘을 사용 하는 경우 `c` 덧붙여집니다; 보안 문자열의 새 값은 다시 보호 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 하는 방법을 <xref:System.Security.SecureString.AppendChar%2A>, <xref:System.Security.SecureString.InsertAt%2A>를 <xref:System.Security.SecureString.RemoveAt%2A>를 <xref:System.Security.SecureString.SetAt%2A>, 및 <xref:System.Security.SecureString.Clear%2A> 메서드가 값에 영향을 <xref:System.Security.SecureString> 개체입니다.  
+  
+ [!code-cpp[SecureString.xAt#1](~/samples/snippets/cpp/VS_Snippets_CLR/SecureString.xAt/CPP/SecureString.xAt.cpp#1)]
+ [!code-csharp[SecureString.xAt#1](~/samples/snippets/csharp/VS_Snippets_CLR/SecureString.xAt/CS/xat.cs#1)]
+ [!code-vb[SecureString.xAt#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SecureString.xAt/VB/xat.vb#1)]  
+  
+ 다음 예제에서는 하는 방법을 <xref:System.Security.SecureString.AppendChar%2A> 고 <xref:System.Security.SecureString.RemoveAt%2A> 메서드를 사용 하 여 암호의 문자를 수집할 수 있습니다.  
+  
+ [!code-cpp[SecureString.xChar#1](~/samples/snippets/cpp/VS_Snippets_CLR/SecureString.xChar/CPP/SecureString.xChar.cpp#1)]
+ [!code-csharp[SecureString.xChar#1](~/samples/snippets/csharp/VS_Snippets_CLR/SecureString.xChar/CS/xchar.cs#1)]
+ [!code-vb[SecureString.xChar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SecureString.xChar/VB/xchar.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이 보안 문자열이 읽기 전용인 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">이 작업을 수행하면 이 보안 문자열의 길이가 65536문자보다 커집니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">이 보안 문자열 값을 보호하거나 보호 해제하는 동안 오류가 발생했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Clear">
+      <MemberSignature Language="C#" Value="public void Clear ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Clear() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.Clear" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Clear ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Clear();" />
+      <MemberSignature Language="F#" Value="member this.Clear : unit -&gt; unit" Usage="secureString.Clear " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 보안 문자열의 값을 삭제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 보안 문자열의 값을 포함 하는 컴퓨터 메모리는 0, 다음이 보안 문자열 값의 길이 0으로 설정 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 하는 방법을 <xref:System.Security.SecureString.AppendChar%2A>, <xref:System.Security.SecureString.InsertAt%2A>를 <xref:System.Security.SecureString.RemoveAt%2A>를 <xref:System.Security.SecureString.SetAt%2A>, 및 <xref:System.Security.SecureString.Clear%2A> 메서드가 값에 영향을 <xref:System.Security.SecureString> 개체입니다.  
+  
+ [!code-cpp[SecureString.xAt#1](~/samples/snippets/cpp/VS_Snippets_CLR/SecureString.xAt/CPP/SecureString.xAt.cpp#1)]
+ [!code-csharp[SecureString.xAt#1](~/samples/snippets/csharp/VS_Snippets_CLR/SecureString.xAt/CS/xat.cs#1)]
+ [!code-vb[SecureString.xAt#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SecureString.xAt/VB/xat.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이 보안 문자열이 읽기 전용인 경우</exception>
+        <altmember cref="P:System.Security.SecureString.Length" />
+      </Docs>
+    </Member>
+    <Member MemberName="Copy">
+      <MemberSignature Language="C#" Value="public System.Security.SecureString Copy ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Security.SecureString Copy() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.Copy" />
+      <MemberSignature Language="VB.NET" Value="Public Function Copy () As SecureString" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Security::SecureString ^ Copy();" />
+      <MemberSignature Language="F#" Value="member this.Copy : unit -&gt; System.Security.SecureString" Usage="secureString.Copy " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.SecureString</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 보안 문자열의 복사본을 만듭니다.</summary>
+        <returns>이 보안 문자열의 복제본입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인스턴스는 <xref:System.Security.SecureString> 는 읽기 전용으로 표시 되어 해당 인스턴스에 대 한 복사본 됩니다 읽기 전용입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">이 보안 문자열 값을 보호하거나 보호 해제하는 동안 오류가 발생했습니다.</exception>
+        <altmember cref="M:System.Security.SecureString.MakeReadOnly" />
+        <altmember cref="M:System.Security.SecureString.IsReadOnly" />
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="secureString.Dispose " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 <see cref="T:System.Security.SecureString" /> 개체에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.SecureString.Dispose%2A> 메서드는이 값을 포함 하는 할당된 된 메모리에 이진 0 씁니다 <xref:System.Security.SecureString> 개체를 만든 다음 할당 된 메모리를 해제 합니다.  
+  
+ 자세한 내용은 [가비지 수집](~/docs/standard/garbage-collection/index.md)합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertAt">
+      <MemberSignature Language="C#" Value="public void InsertAt (int index, char c);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InsertAt(int32 index, char c) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.InsertAt(System.Int32,System.Char)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub InsertAt (index As Integer, c As Char)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void InsertAt(int index, char c);" />
+      <MemberSignature Language="F#" Value="member this.InsertAt : int * char -&gt; unit" Usage="secureString.InsertAt (index, c)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netstandard-2.1">
+          <AttributeName>System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="c" Type="System.Char" />
+      </Parameters>
+      <Docs>
+        <param name="index"><paramref name="c" /> 매개 변수가 삽입될 인덱스 위치입니다.</param>
+        <param name="c">삽입할 문자입니다.</param>
+        <summary>이 보안 문자열의 지정한 인덱스 위치에 문자를 삽입합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인덱스는 0부터 시작 합니다. 이 보안 문자열에서 첫 번째 문자는 인덱스 위치 0입니다.  
+  
+ 있는 경우 보안 문자열의 값; 보호 된 구현을 암호화와 같은 보호 메커니즘을 사용 하는 경우 `c` 는 지정 된 인덱스 위치에 삽입 하는 새 값을 다시 보호 됩니다. <xref:System.Security.SecureString.InsertAt%2A> 메서드는 동일한 결과 생성 합니다 <xref:System.Security.SecureString.AppendChar%2A> 경우 보안 문자열의 끝 문자를 삽입 하는 메서드를를 `index` 의 매개 변수 <xref:System.Security.SecureString.InsertAt%2A> 이 인스턴스의 길이로.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 하는 방법을 <xref:System.Security.SecureString.AppendChar%2A>, <xref:System.Security.SecureString.InsertAt%2A>를 <xref:System.Security.SecureString.RemoveAt%2A>를 <xref:System.Security.SecureString.SetAt%2A>, 및 <xref:System.Security.SecureString.Clear%2A> 메서드가 값에 영향을 <xref:System.Security.SecureString> 개체입니다.  
+  
+ [!code-cpp[SecureString.xAt#1](~/samples/snippets/cpp/VS_Snippets_CLR/SecureString.xAt/CPP/SecureString.xAt.cpp#1)]
+ [!code-csharp[SecureString.xAt#1](~/samples/snippets/csharp/VS_Snippets_CLR/SecureString.xAt/CS/xat.cs#1)]
+ [!code-vb[SecureString.xAt#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SecureString.xAt/VB/xat.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이 보안 문자열이 읽기 전용인 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" />가 0보다 작거나 이 보안 문자열의 길이보다 큰 경우  
+  
+또는 
+이 작업을 수행하면 이 보안 문자열의 길이가 65536문자보다 커집니다.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">이 보안 문자열 값을 보호하거나 보호 해제하는 동안 오류가 발생했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="IsReadOnly">
+      <MemberSignature Language="C#" Value="public bool IsReadOnly ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool IsReadOnly() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.IsReadOnly" />
+      <MemberSignature Language="VB.NET" Value="Public Function IsReadOnly () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool IsReadOnly();" />
+      <MemberSignature Language="F#" Value="member this.IsReadOnly : unit -&gt; bool" Usage="secureString.IsReadOnly " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 보안 문자열이 읽기 전용으로 표시되었는지를 나타냅니다.</summary>
+        <returns>이 보안 문자열이 읽기 전용이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인스턴스 뒤 <xref:System.Security.SecureString> 읽기 전용으로 표시 되는 <xref:System.Security.SecureString.MakeReadOnly%2A> 인스턴스 throw의 값을 수정 하려고 하면 메서드는 <xref:System.InvalidOperationException>합니다. 사용 하 여는 <xref:System.Security.SecureString.IsReadOnly%2A> 테스트할 메서드 있는지 여부를 <xref:System.Security.SecureString> 수정 하기 전에 읽기 전용입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+        <altmember cref="M:System.Security.SecureString.MakeReadOnly" />
+      </Docs>
+    </Member>
+    <Member MemberName="Length">
+      <MemberSignature Language="C#" Value="public int Length { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Length" />
+      <MemberSignature Language="DocId" Value="P:System.Security.SecureString.Length" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Length As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Length { int get(); };" />
+      <MemberSignature Language="F#" Value="member this.Length : int" Usage="System.Security.SecureString.Length" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>get: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>현재 보안 문자열의 문자 수를 가져옵니다.</summary>
+        <value>이 보안 문자열에 있는 <see cref="T:System.Char" /> 개체의 수입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Security.SecureString.Length%2A> 속성의 수를 반환 합니다. <xref:System.Char> 이 인스턴스의 개체를 유니코드 문자 수가 없습니다. 둘 이상의 유니코드 문자를 나타낼 수 있습니다 <xref:System.Char> 개체입니다.  
+  
+ 최대 길이 <xref:System.Security.SecureString> 인스턴스가 65,536 개의 문자입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="MakeReadOnly">
+      <MemberSignature Language="C#" Value="public void MakeReadOnly ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void MakeReadOnly() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.MakeReadOnly" />
+      <MemberSignature Language="VB.NET" Value="Public Sub MakeReadOnly ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void MakeReadOnly();" />
+      <MemberSignature Language="F#" Value="member this.MakeReadOnly : unit -&gt; unit" Usage="secureString.MakeReadOnly " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 보안 문자열의 텍스트 값을 읽기 전용으로 만듭니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 텍스트 값의 인스턴스를 초기화를 <xref:System.Security.SecureString> 클래스를 <xref:System.Security.SecureString.%23ctor%2A> 생성자를 사용 하 여 값을 수정 하 고는 <xref:System.Security.SecureString.Clear%2A>, <xref:System.Security.SecureString.RemoveAt%2A>, <xref:System.Security.SecureString.SetAt%2A>, <xref:System.Security.SecureString.InsertAt%2A>, 및 <xref:System.Security.SecureString.AppendChar%2A> 메서드.  
+  
+ 사용 하 여 최종 수정을 수행한 후의 <xref:System.Security.SecureString.MakeReadOnly%2A> 인스턴스의 값을 변경할 수 없는 확인 하는 방법 (읽기 전용). 더 이상 throw를 수정 하려고 값은 읽기 전용으로 표시 되 면 후는 <xref:System.InvalidOperationException>합니다.  
+  
+ 호출의 효과 <xref:System.Security.SecureString.MakeReadOnly%2A> 영구적 때문에 <xref:System.Security.SecureString> 클래스는 보안 문자열은 수정 가능 하 게 다시 없는 방법을 제공 합니다. 사용 합니다 <xref:System.Security.SecureString.IsReadOnly%2A> 인스턴스에 있는지 여부를 테스트 하는 방법 <xref:System.Security.SecureString> 읽기 전용입니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 하는 방법을 <xref:System.Security.SecureString.AppendChar%2A> 고 <xref:System.Security.SecureString.RemoveAt%2A> 메서드를 사용 하 여 암호의 문자를 수집할 수 있습니다. 암호를 수집한 후 읽기 전용으로 구성 됩니다.  
+  
+ [!code-cpp[SecureString.xChar#1](~/samples/snippets/cpp/VS_Snippets_CLR/SecureString.xChar/CPP/SecureString.xChar.cpp#1)]
+ [!code-csharp[SecureString.xChar#1](~/samples/snippets/csharp/VS_Snippets_CLR/SecureString.xChar/CS/xchar.cs#1)]
+ [!code-vb[SecureString.xChar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SecureString.xChar/VB/xchar.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+        <altmember cref="M:System.Security.SecureString.IsReadOnly" />
+      </Docs>
+    </Member>
+    <Member MemberName="RemoveAt">
+      <MemberSignature Language="C#" Value="public void RemoveAt (int index);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RemoveAt(int32 index) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.RemoveAt(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RemoveAt (index As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RemoveAt(int index);" />
+      <MemberSignature Language="F#" Value="member this.RemoveAt : int -&gt; unit" Usage="secureString.RemoveAt index" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netstandard-2.1">
+          <AttributeName>System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="index">이 보안 문자열에서 문자의 인덱스 위치입니다.</param>
+        <summary>이 보안 문자열에서 지정한 인덱스 위치의 문자를 제거합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인덱스는 0부터 시작 합니다. 이 인스턴스에서 첫 번째 문자의 인덱스 위치 0에 있는 경우  
+  
+ 있는 경우이 보안 문자열의 값이; 보호 구현에는 암호화와 같은 보호 메커니즘을 사용 하는 경우 지정된 된 인덱스 위치에 있는 문자가 제거 됩니다. 그런 다음 새 값이 다시 보호 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 하는 방법을 <xref:System.Security.SecureString.AppendChar%2A>, <xref:System.Security.SecureString.InsertAt%2A>를 <xref:System.Security.SecureString.RemoveAt%2A>를 <xref:System.Security.SecureString.SetAt%2A>, 및 <xref:System.Security.SecureString.Clear%2A> 메서드가 값에 영향을 <xref:System.Security.SecureString> 개체입니다.  
+  
+ [!code-cpp[SecureString.xAt#1](~/samples/snippets/cpp/VS_Snippets_CLR/SecureString.xAt/CPP/SecureString.xAt.cpp#1)]
+ [!code-csharp[SecureString.xAt#1](~/samples/snippets/csharp/VS_Snippets_CLR/SecureString.xAt/CS/xat.cs#1)]
+ [!code-vb[SecureString.xAt#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SecureString.xAt/VB/xat.vb#1)]  
+  
+ 다음 예제에서는 하는 방법을 <xref:System.Security.SecureString.AppendChar%2A> 고 <xref:System.Security.SecureString.RemoveAt%2A> 메서드를 사용 하 여 암호의 문자를 수집할 수 있습니다.  
+  
+ [!code-cpp[SecureString.xChar#1](~/samples/snippets/cpp/VS_Snippets_CLR/SecureString.xChar/CPP/SecureString.xChar.cpp#1)]
+ [!code-csharp[SecureString.xChar#1](~/samples/snippets/csharp/VS_Snippets_CLR/SecureString.xChar/CS/xchar.cs#1)]
+ [!code-vb[SecureString.xChar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SecureString.xChar/VB/xchar.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이 보안 문자열이 읽기 전용인 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" />가 0보다 작거나 이 보안 문자열의 길이보다 크거나 같은 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">이 보안 문자열 값을 보호하거나 보호 해제하는 동안 오류가 발생했습니다.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="SetAt">
+      <MemberSignature Language="C#" Value="public void SetAt (int index, char c);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void SetAt(int32 index, char c) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.SecureString.SetAt(System.Int32,System.Char)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub SetAt (index As Integer, c As Char)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void SetAt(int index, char c);" />
+      <MemberSignature Language="F#" Value="member this.SetAt : int * char -&gt; unit" Usage="secureString.SetAt (index, c)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.SecureString</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime.InteropServices</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8;netstandard-2.1">
+          <AttributeName>System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptions</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="index" Type="System.Int32" />
+        <Parameter Name="c" Type="System.Char" />
+      </Parameters>
+      <Docs>
+        <param name="index">이 보안 문자열에서 기존 문자의 인덱스 위치입니다.</param>
+        <param name="c">기존 문자를 바꾸는 문자입니다.</param>
+        <summary>지정한 인덱스 위치의 기존 문자를 다른 문자로 바꿉니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 인덱스는 0부터 시작 합니다. 이 인스턴스에서 첫 번째 문자의 인덱스 위치 0에 있는 경우  
+  
+ 있는 경우 보안 문자열의 값; 보호 된 구현을 암호화와 같은 보호 메커니즘을 사용 하는 경우 `c` 는 지정 된 인덱스 위치에 할당 된 새 값을 다시 보호 됩니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 하는 방법을 <xref:System.Security.SecureString.AppendChar%2A>, <xref:System.Security.SecureString.InsertAt%2A>를 <xref:System.Security.SecureString.RemoveAt%2A>를 <xref:System.Security.SecureString.SetAt%2A>, 및 <xref:System.Security.SecureString.Clear%2A> 메서드가 값에 영향을 <xref:System.Security.SecureString> 개체입니다.  
+  
+ [!code-cpp[SecureString.xAt#1](~/samples/snippets/cpp/VS_Snippets_CLR/SecureString.xAt/CPP/SecureString.xAt.cpp#1)]
+ [!code-csharp[SecureString.xAt#1](~/samples/snippets/csharp/VS_Snippets_CLR/SecureString.xAt/CS/xat.cs#1)]
+ [!code-vb[SecureString.xAt#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/SecureString.xAt/VB/xat.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ObjectDisposedException">이 보안 문자열이 이미 삭제된 경우</exception>
+        <exception cref="T:System.InvalidOperationException">이 보안 문자열이 읽기 전용인 경우</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" />가 0보다 작거나 이 보안 문자열의 길이보다 크거나 같은 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">이 보안 문자열 값을 보호하거나 보호 해제하는 동안 오류가 발생했습니다.</exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

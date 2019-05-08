@@ -1,0 +1,371 @@
+<Type Name="ExportAttribute" FullName="System.Composition.ExportAttribute">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="c54ed27a174da1d0722cdaa812608e2966097692" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58551164" /></Metadata><TypeSignature Language="C#" Value="public class ExportAttribute : Attribute" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ExportAttribute extends System.Attribute" />
+  <TypeSignature Language="DocId" Value="T:System.Composition.ExportAttribute" />
+  <TypeSignature Language="VB.NET" Value="Public Class ExportAttribute&#xA;Inherits Attribute" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ExportAttribute : Attribute" />
+  <TypeSignature Language="F#" Value="type ExportAttribute = class&#xA;    inherit Attribute" />
+  <AssemblyInfo>
+    <AssemblyName>System.Composition.AttributedModel</AssemblyName>
+    <AssemblyVersion>1.0.31.0</AssemblyVersion>
+    <AssemblyVersion>1.0.32.0</AssemblyVersion>
+    <AssemblyVersion>1.0.33.0</AssemblyVersion>
+    <AssemblyVersion>1.0.34.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Attribute</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Attributes>
+    <Attribute FrameworkAlternate="netcore-1.1;netcore-2.0;dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0">
+      <AttributeName>System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Property, AllowMultiple=true, Inherited=false)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>형식, 속성, 필드 또는 메서드가 특정 내보내기를 제공하도록 지정합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+특성 사용 프로그래밍 모델, ExportAttribute 특성 선언는 파트 내보내기를 컴퍼지션 컨테이너는 특정 계약을 충족 하는 개체를 제공 합니다. 계약을 일치 하는 가져오기도 파트를 조합 하는 동안 내보낸된 개체에 의해 채워진 해당 종속성이 있습니다.
+
+ExportAttribute 특성은 전체 클래스 또는 속성, 필드 또는 클래스의 메서드를 적용할 수 있습니다. 전체 클래스에 적용 되는 경우 클래스의 인스턴스는 내보낸된 개체입니다. 클래스의 멤버에 적용 되는 경우 내보낸된 개체 멤버의 값이 됩니다.
+
+계약의 일치 여부는 계약 이름과 계약 형식이 기본적 결정 됩니다. 자세한 내용은 참조는 <xref:System.Composition.ImportAttribute> 참조 합니다. 
+
+
+
+## Examples  
+ 다음 예제에서는 세 가지 클래스와 일치 하는 3 개의 가져오기에 적용 되 고 ExportAttribute 보여 줍니다.  
+
+```csharp
+//Default export infers type and contract name from the
+//exported type.  This is the preferred method.
+[Export]
+public class MyExport1
+{
+    public String data = "Test Data 1.";
+}
+
+public class MyImporter1
+{
+    [Import]
+    public MyExport1 importedMember { get; set; }
+}
+
+public interface MyInterface
+{
+
+}
+
+//Specifying the contract type may be important if
+//you want to export a type other then the base type,
+//such as an interface.
+[Export(typeof(MyInterface))]
+public class MyExport2 : MyInterface
+{
+    public String data = "Test Data 2.";
+}
+
+public class MyImporter2
+{
+    //The import must match the contract type!
+    [Import(typeof(MyInterface))]
+    public MyExport2 importedMember { get; set; }
+}
+
+//Specifying a contract name should only be 
+//needed in rare cases. Usually, using metadata
+//is a better approach.
+[Export("MyContractName", typeof(MyInterface))]
+public class MyExport3 : MyInterface
+{
+    public String data = "Test Data 3.";
+}
+
+public class MyImporter3
+{
+    //Both contract name and type must match!
+    [Import("MyContractName", typeof(MyInterface))]
+    public MyExport3 importedMember { get; set; }
+}
+
+class Program
+{      
+
+    static void Main(string[] args)
+    {
+        AggregateCatalog catalog = new AggregateCatalog();
+        catalog.Catalogs.Add(new AssemblyCatalog(typeof(MyExport1).Assembly));
+        CompositionContainer _container = new CompositionContainer(catalog);
+        MyImporter1 test1 = new MyImporter1();
+        MyImporter2 test2 = new MyImporter2();
+        MyImporter3 test3 = new MyImporter3();
+        _container.SatisfyImportsOnce(test1);
+        _container.SatisfyImportsOnce(test2);
+        _container.SatisfyImportsOnce(test3);
+        Console.WriteLine(test1.importedMember.data);
+        Console.WriteLine(test2.importedMember.data);
+        Console.WriteLine(test3.importedMember.data);
+        Console.ReadLine();
+
+    }
+}
+```
+
+```vb
+'Default export infers type and contract name from the
+'exported type.  This is the preferred method.
+<Export()>
+Public Class MyExport1
+    Public ReadOnly Property data As String
+        Get
+            Return "Test Data 1."
+        End Get
+    End Property
+End Class
+
+Public Class MyImporter1
+
+    <Import()>
+    Public Property ImportedMember As MyExport1
+
+End Class
+
+Public Interface MyInterface
+
+End Interface
+
+'Specifying the contract type may be important if
+'you want to export a type other then the base type,
+'such as an interface.
+<Export(GetType(MyInterface))>
+Public Class MyExport2
+    Implements MyInterface
+    Public ReadOnly Property data As String
+        Get
+            Return "Test Data 2."
+        End Get
+    End Property
+End Class
+
+Public Class MyImporter2
+    'The import must match the contract type!
+    <Import(GetType(MyInterface))>
+    Public Property ImportedMember As MyExport2
+End Class
+
+'Specifying a contract name should only be 
+'needed in rare cases. Usually, using metadata
+'is a better approach.
+<Export("MyContractName", GetType(MyInterface))>
+Public Class MyExport3
+    Implements MyInterface
+    Public ReadOnly Property data As String
+        Get
+            Return "Test Data 3."
+        End Get
+    End Property
+End Class
+
+Public Class MyImporter3
+    'Both contract name and type must match!
+    <Import("MyContractName", GetType(MyInterface))>
+    Public Property ImportedMember As MyExport3
+End Class
+
+
+
+Sub Main()
+    Dim catalog As AggregateCatalog = New AggregateCatalog()
+    catalog.Catalogs.Add(New AssemblyCatalog(GetType(MyExport1).Assembly))
+    Dim container As CompositionContainer = New CompositionContainer(catalog)
+    Dim test1 As MyImporter1 = New MyImporter1()
+    Dim test2 As MyImporter2 = New MyImporter2()
+    Dim test3 As MyImporter3 = New MyImporter3()
+    container.SatisfyImportsOnce(test1)
+    container.SatisfyImportsOnce(test2)
+    container.SatisfyImportsOnce(test3)
+    Console.WriteLine(test1.ImportedMember.data)
+    Console.WriteLine(test2.ImportedMember.data)
+    Console.WriteLine(test3.ImportedMember.data)
+    Console.ReadLine()
+End Sub
+```
+
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ExportAttribute ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.ExportAttribute.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ExportAttribute();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.AttributedModel</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+        <AssemblyVersion>1.0.33.0</AssemblyVersion>
+        <AssemblyVersion>1.0.34.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>이 특성으로 표시된 형식이나 멤버를 기본 계약 이름으로 내보내 <see cref="T:System.Composition.ExportAttribute" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+이 특성으로 표시 된 메서드를 사용 하 여 계약 이름 또는 형식이 지정 해야 합니다 <xref:System.ComponentModel.Composition.ExportAttribute.%23ctor(System.String)> 또는 <xref:System.ComponentModel.Composition.ExportAttribute.%23ctor(System.Type)> 메서드.
+
+계약 이름을 사용 하 여 비교를 <xref:System.StringComparer.Ordinal> 대/소문자 구분, 비 언어적 비교를 수행 하는 속성입니다. 
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ExportAttribute (string contractName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string contractName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.ExportAttribute.#ctor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (contractName As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ExportAttribute(System::String ^ contractName);" />
+      <MemberSignature Language="F#" Value="new System.Composition.ExportAttribute : string -&gt; System.Composition.ExportAttribute" Usage="new System.Composition.ExportAttribute contractName" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.AttributedModel</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+        <AssemblyVersion>1.0.33.0</AssemblyVersion>
+        <AssemblyVersion>1.0.34.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="contractName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="contractName">이 특성으로 표시된 형식이나 멤버를 내보내는 데 사용되는 계약 이름이거나, 기본 계약 이름을 사용할 경우 <see langword="null" /> 또는 빈 문자열("")입니다.</param>
+        <summary>이 특성으로 표시된 형식이나 멤버를 지정된 계약 이름으로 내보내 <see cref="T:System.Composition.ExportAttribute" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+이 특성으로 표시 된 메서드를 사용 하 여 계약 이름 또는 형식이 지정 해야 합니다 <xref:System.ComponentModel.Composition.ExportAttribute.%23ctor(System.String)> 또는 <xref:System.ComponentModel.Composition.ExportAttribute.%23ctor(System.Type)> 메서드.
+
+계약 이름을 사용 하 여 비교를 <xref:System.StringComparer.Ordinal> 대/소문자 구분, 비 언어적 비교를 수행 하는 속성입니다. 
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ExportAttribute (Type contractType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Type contractType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.ExportAttribute.#ctor(System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (contractType As Type)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ExportAttribute(Type ^ contractType);" />
+      <MemberSignature Language="F#" Value="new System.Composition.ExportAttribute : Type -&gt; System.Composition.ExportAttribute" Usage="new System.Composition.ExportAttribute contractType" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.AttributedModel</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+        <AssemblyVersion>1.0.33.0</AssemblyVersion>
+        <AssemblyVersion>1.0.34.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="contractType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="contractType">이 특성으로 표시된 형식이나 멤버를 내보내는 데 사용되는 계약 이름이 파생되는 형식이거나, 기본 계약 이름을 사용할 경우 <see langword="null" />입니다.</param>
+        <summary>이 특성으로 표시된 형식이나 멤버를 지정된 형식에서 파생된 계약 이름으로 내보내 <see cref="T:System.Composition.ExportAttribute" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+이 특성으로 표시 된 메서드를 사용 하 여 계약 이름 또는 형식이 지정 해야 합니다 <xref:System.ComponentModel.Composition.ExportAttribute.%23ctor(System.String)> 또는 <xref:System.ComponentModel.Composition.ExportAttribute.%23ctor(System.Type)> 메서드.
+
+계약 이름을 사용 하 여 비교를 <xref:System.StringComparer.Ordinal> 대/소문자 구분, 비 언어적 비교를 수행 하는 속성입니다. 
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public ExportAttribute (string contractName, Type contractType);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string contractName, class System.Type contractType) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.ExportAttribute.#ctor(System.String,System.Type)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (contractName As String, contractType As Type)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; ExportAttribute(System::String ^ contractName, Type ^ contractType);" />
+      <MemberSignature Language="F#" Value="new System.Composition.ExportAttribute : string * Type -&gt; System.Composition.ExportAttribute" Usage="new System.Composition.ExportAttribute (contractName, contractType)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.AttributedModel</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+        <AssemblyVersion>1.0.33.0</AssemblyVersion>
+        <AssemblyVersion>1.0.34.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="contractName" Type="System.String" />
+        <Parameter Name="contractType" Type="System.Type" />
+      </Parameters>
+      <Docs>
+        <param name="contractName">이 특성으로 표시된 형식이나 멤버를 내보내는 데 사용되는 계약 이름이거나, 기본 계약 이름을 사용할 경우 <see langword="null" /> 또는 빈 문자열("")입니다.</param>
+        <param name="contractType">내보낼 형식입니다.</param>
+        <summary>지정된 형식을 지정된 계약 이름으로 내보내 <see cref="T:System.Composition.ExportAttribute" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContractName">
+      <MemberSignature Language="C#" Value="public string ContractName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ContractName" />
+      <MemberSignature Language="DocId" Value="P:System.Composition.ExportAttribute.ContractName" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ContractName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ ContractName { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ContractName : string" Usage="System.Composition.ExportAttribute.ContractName" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.AttributedModel</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+        <AssemblyVersion>1.0.33.0</AssemblyVersion>
+        <AssemblyVersion>1.0.34.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 특성으로 표시된 형식이나 멤버를 내보내는 데 사용되는 계약 이름을 가져옵니다.</summary>
+        <value>이 특성으로 표시된 형식이나 멤버를 내보내는 데 사용되는 계약 이름입니다. 기본값은 빈 문자열("")입니다.</value>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ContractType">
+      <MemberSignature Language="C#" Value="public Type ContractType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Type ContractType" />
+      <MemberSignature Language="DocId" Value="P:System.Composition.ExportAttribute.ContractType" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ContractType As Type" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property Type ^ ContractType { Type ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ContractType : Type" Usage="System.Composition.ExportAttribute.ContractType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.AttributedModel</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+        <AssemblyVersion>1.0.33.0</AssemblyVersion>
+        <AssemblyVersion>1.0.34.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Type</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 특성으로 표시된 멤버가 내보내는 계약 형식을 가져옵니다.</summary>
+        <value>제공되는 내보내기의 형식입니다. 기본값은 <see langword="null" />로, 이 내보내기가 연결된 멤버에서 형식을 찾아 가져옵니다.</value>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

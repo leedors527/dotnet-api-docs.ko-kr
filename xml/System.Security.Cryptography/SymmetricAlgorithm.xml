@@ -1,0 +1,1587 @@
+<Type Name="SymmetricAlgorithm" FullName="System.Security.Cryptography.SymmetricAlgorithm">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="4bfc328fc1d2e927e76db3ca75ca77afb8661c68" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58715779" /></Metadata><TypeSignature Language="C#" Value="public abstract class SymmetricAlgorithm : IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit SymmetricAlgorithm extends System.Object implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.SymmetricAlgorithm" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class SymmetricAlgorithm&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class SymmetricAlgorithm abstract : IDisposable" />
+  <TypeSignature Language="F#" Value="type SymmetricAlgorithm = class&#xA;    interface IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute FrameworkAlternate="netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netframework-4.8">
+      <AttributeName>System.Runtime.InteropServices.ComVisible(true)</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>모든 대칭 알고리즘의 구현에서 상속해야 하는 추상 기본 클래스를 나타냅니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스는 <xref:System.Security.Cryptography.SymmetricAlgorithm> 암호화 cbc (블록)를 호출 하는 연결 모드를 사용 하는 클래스 키가 있어야 하는 (<xref:System.Security.Cryptography.SymmetricAlgorithm.Key%2A>) 및 초기화 벡터 (<xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A>) 데이터의 암호화 변환을 수행 하 합니다.  중 하나를 사용 하 여 암호화 된 데이터를 해독 하는 <xref:System.Security.Cryptography.SymmetricAlgorithm> 설정한 클래스는 <xref:System.Security.Cryptography.SymmetricAlgorithm.Key%2A> 속성 및 <xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A> 암호화에 사용 된 동일한 값 속성입니다.  유용 하 게 대칭 알고리즘에 대 한 비밀 키 발신자와 수신자 에게만 알려져야 합니다.  
+  
+ <xref:System.Security.Cryptography.RijndaelManaged>를 <xref:System.Security.Cryptography.DESCryptoServiceProvider>, <xref:System.Security.Cryptography.RC2CryptoServiceProvider>, 및 <xref:System.Security.Cryptography.TripleDESCryptoServiceProvider> 대칭 알고리즘의 구현 됩니다.  
+  
+ 파생 된 클래스를 사용 하 여 때 충분 하지 않습니다, 단순히 강제로 가비지 수집할 개체를 사용 하 여 완료 한 후 보안의 관점에서 note 합니다. 명시적으로 호출 해야 합니다 <xref:System.Security.Cryptography.SymmetricAlgorithm.Clear%2A> 해제 되기 전에 개체 내에서 중요 한 데이터를 영구 개체에는 메서드. 가비지 수집 수집 된 개체의 내용을 지우지 않고 단순히 재할당에 대 한 사용 가능한 메모리 note 합니다. 따라서 할당 되지 않은 메모리의 가비지 수집된 개체에 포함 된 데이터는 메모리 힙의 존재할 수 여전히 있습니다. 암호화 개체의 경우이 데이터는 일반 텍스트 블록의 주요 데이터 등 중요 한 정보를 포함할 수 있습니다.  
+  
+ .NET Framework에서 구현 하는 중요 한 데이터를 보유 하는 모든 암호화 클래스를 `Clear` 메서드. 를 호출 하는 경우는 `Clear` 메서드는 개체 내에서 모든 중요 한 데이터를 0으로 덮어쓴 및 가비지 수집을 안전 하 게 될 수 있도록 한 다음 개체를 해제 합니다. 다음 호출 해야 개체를 0으로 설정 하 고 출시 되었습니다 합니다 `Dispose` 메서드를 `disposing` 매개 변수 설정 `True` 를 삭제 하기 위해 관리 되는 모든 및이 관리 되지 않는 개체에 연결 된 리소스입니다.  
+  
+   
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Security.Cryptography.RijndaelManaged> 지정 된 클래스 <xref:System.Security.Cryptography.SymmetricAlgorithm.Key%2A> 속성 및 초기화 벡터 (<xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A>)로 지정 된 파일을 암호화할 `inName`, 로지정된파일에암호화된결과출력`outName`. 합니다 `desKey` 고 `desIV` 메서드에 매개 변수는 8 바이트 배열입니다. 이 예제를 실행 하려면 설치 하는 높은 수준의 암호화 팩이 있어야 합니다.  
+  
+ [!code-cpp[Classic CryptoStream Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic CryptoStream Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic CryptoStream Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic CryptoStream Example/CS/source.cs#1)]
+ [!code-vb[Classic CryptoStream Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic CryptoStream Example/VB/source.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <block subset="none" type="overrides"><para>상속 하는 경우는 <see cref="T:System.Security.Cryptography.SymmetricAlgorithm" /> 클래스 멤버를 재정의 해야 합니다: <see cref="M:System.Security.Cryptography.SymmetricAlgorithm.CreateDecryptor(System.Byte[],System.Byte[])" />를 <see cref="M:System.Security.Cryptography.SymmetricAlgorithm.CreateEncryptor(System.Byte[],System.Byte[])" />를 <see cref="M:System.Security.Cryptography.SymmetricAlgorithm.GenerateIV" />, 및 <see cref="M:System.Security.Cryptography.SymmetricAlgorithm.GenerateKey" />합니다.</para></block>
+    <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected SymmetricAlgorithm ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; SymmetricAlgorithm();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.SymmetricAlgorithm" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 추상 클래스의 인스턴스를 만들 수 없습니다. 응용 프로그램 코드는 파생된 클래스의 새 인스턴스를 만듭니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">대칭 알고리즘에서 의 구현이 잘못된 경우</exception>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="BlockSize">
+      <MemberSignature Language="C#" Value="public virtual int BlockSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 BlockSize" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.BlockSize" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property BlockSize As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int BlockSize { int get(); void set(int value); };" />
+      <MemberSignature Language="F#" Value="member this.BlockSize : int with get, set" Usage="System.Security.Cryptography.SymmetricAlgorithm.BlockSize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>암호화 작업의 블록 크기(비트 단위)를 가져오거나 설정합니다.</summary>
+        <value>블록 크기(비트 단위)입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 블록 크기는 암호화 하거나 한 번에 해독할 수 있는 데이터의 기본 단위입니다. 연속 된 요소로; 블록 크기 보다 긴 메시지 처리 블록의 크기에 도달 하는 추가 비트를 사용 하 여 블록 크기 보다 짧은 메시지를 채워야 합니다. 유효한 블록 크기는 사용 된 대칭 알고리즘에 따라 결정 됩니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">블록 크기가 잘못된 경우</exception>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="BlockSizeValue">
+      <MemberSignature Language="C#" Value="protected int BlockSizeValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family int32 BlockSizeValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.BlockSizeValue" />
+      <MemberSignature Language="VB.NET" Value="Protected BlockSizeValue As Integer " />
+      <MemberSignature Language="C++ CLI" Value="protected: int BlockSizeValue;" />
+      <MemberSignature Language="F#" Value="val mutable BlockSizeValue : int" Usage="System.Security.Cryptography.SymmetricAlgorithm.BlockSizeValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>암호화 작업의 블록 크기(비트)를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 블록 크기는 암호화 하거나 한 번에 해독할 수 있는 데이터의 기본 단위입니다. 연속 된 요소로; 블록 크기 보다 긴 메시지 처리 블록의 크기에 도달 하는 추가 비트를 사용 하 여 블록 크기 보다 짧은 메시지를 채워야 합니다. 유효한 블록 크기는 사용 된 대칭 알고리즘에 따라 결정 됩니다.  
+  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.BlockSize%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Clear">
+      <MemberSignature Language="C#" Value="public void Clear ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Clear() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.Clear" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Clear ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Clear();" />
+      <MemberSignature Language="F#" Value="member this.Clear : unit -&gt; unit" Usage="symmetricAlgorithm.Clear " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.SymmetricAlgorithm" /> 클래스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 파생 된 클래스를 사용 하 여 때 충분 하지 않습니다, 단순히 강제로 가비지 수집할 개체를 사용 하 여 완료 한 후 보안의 관점에서 note 합니다. 명시적으로 호출 해야 합니다 <xref:System.Security.Cryptography.SymmetricAlgorithm.Clear%2A> 해제 되기 전에 개체 내에서 중요 한 데이터를 영구 개체에는 메서드. 가비지 수집 수집 된 개체의 내용을 지우지 않고 단순히 재할당에 대 한 사용 가능한 메모리 note 합니다. 따라서 할당 되지 않은 메모리의 가비지 수집된 개체에 포함 된 데이터는 메모리 힙의 존재할 수 여전히 있습니다. 암호화 개체의 경우이 데이터는 일반 텍스트 블록의 주요 데이터 등 중요 한 정보를 포함할 수 있습니다.  
+  
+ .NET Framework에서 구현 하는 중요 한 데이터를 보유 하는 모든 암호화 클래스를 `Clear` 메서드. 를 호출 하는 경우는 `Clear` 메서드는 개체 내에서 모든 중요 한 데이터를 0으로 덮어쓴 및 가비지 수집을 안전 하 게 될 수 있도록 한 다음 개체를 해제 합니다. 다음 호출 해야 개체를 0으로 설정 하 고 출시 되었습니다 합니다 `Dispose` 메서드를 `disposing` 매개 변수 설정 `True` 를 삭제 하기 위해 관리 되는 모든 및이 관리 되지 않는 개체에 연결 된 리소스입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Create">
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>대칭 알고리즘을 수행하는 데 사용되는 암호화 개체를 만듭니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.Security.Cryptography.SymmetricAlgorithm Create ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Security.Cryptography.SymmetricAlgorithm Create() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.Create" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create () As SymmetricAlgorithm" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Security::Cryptography::SymmetricAlgorithm ^ Create();" />
+      <MemberSignature Language="F#" Value="static member Create : unit -&gt; System.Security.Cryptography.SymmetricAlgorithm" Usage="System.Security.Cryptography.SymmetricAlgorithm.Create " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.SymmetricAlgorithm</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>대칭 알고리즘을 수행하는 데 사용되는 기본 암호화 개체를 만듭니다.</summary>
+        <returns>대칭 알고리즘을 수행하는 데 사용되는 기본 암호화 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ 다음 코드 예제에서는 합니다 <xref:System.Security.Cryptography.RijndaelManaged> 지정 된 클래스 <xref:System.Security.Cryptography.SymmetricAlgorithm.Key%2A> 속성 및 초기화 벡터 (<xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A>)로 지정 된 파일을 암호화할 `inName`, 로지정된파일에암호화된결과출력`outName`. 합니다 `desKey` 고 `desIV` 메서드에 매개 변수는 8 바이트 배열입니다. 이 예제를 실행 하려면 설치 하는 높은 수준의 암호화 팩이 있어야 합니다.  
+  
+ [!code-cpp[Classic CryptoStream Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic CryptoStream Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic CryptoStream Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic CryptoStream Example/CS/source.cs#1)]
+ [!code-vb[Classic CryptoStream Example#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_Classic/classic CryptoStream Example/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.Security.Cryptography.SymmetricAlgorithm Create (string algName);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Security.Cryptography.SymmetricAlgorithm Create(string algName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.Create(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (algName As String) As SymmetricAlgorithm" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Security::Cryptography::SymmetricAlgorithm ^ Create(System::String ^ algName);" />
+      <MemberSignature Language="F#" Value="static member Create : string -&gt; System.Security.Cryptography.SymmetricAlgorithm" Usage="System.Security.Cryptography.SymmetricAlgorithm.Create algName" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.SymmetricAlgorithm</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="algName" Type="System.String" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="algName">사용할 <see cref="T:System.Security.Cryptography.SymmetricAlgorithm" /> 클래스의 특정 구현 이름입니다.</param>
+        <summary>대칭 알고리즘을 수행하는 데 사용되는 지정된 암호화 개체를 만듭니다.</summary>
+        <returns>대칭 알고리즘을 수행하는 데 사용되는 암호화 개체입니다.</returns>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="CreateDecryptor">
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>대칭 암호 해독기 개체를 만듭니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CreateDecryptor">
+      <MemberSignature Language="C#" Value="public virtual System.Security.Cryptography.ICryptoTransform CreateDecryptor ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Cryptography.ICryptoTransform CreateDecryptor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.CreateDecryptor" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function CreateDecryptor () As ICryptoTransform" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Security::Cryptography::ICryptoTransform ^ CreateDecryptor();" />
+      <MemberSignature Language="F#" Value="abstract member CreateDecryptor : unit -&gt; System.Security.Cryptography.ICryptoTransform&#xA;override this.CreateDecryptor : unit -&gt; System.Security.Cryptography.ICryptoTransform" Usage="symmetricAlgorithm.CreateDecryptor " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.ICryptoTransform</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 <see cref="P:System.Security.Cryptography.SymmetricAlgorithm.Key" /> 속성 및 초기화 벡터(<see cref="P:System.Security.Cryptography.SymmetricAlgorithm.IV" />)를 사용하여 대칭 decryptor 개체를 만듭니다.</summary>
+        <returns>대칭 decryptor 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 사용 하 여 만든 암호화 된 메시지를 해독 합니다 <xref:System.Security.Cryptography.SymmetricAlgorithm.CreateEncryptor%2A> 동일한 서명을 사용 하 여 오버 로드 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateDecryptor">
+      <MemberSignature Language="C#" Value="public abstract System.Security.Cryptography.ICryptoTransform CreateDecryptor (byte[] rgbKey, byte[] rgbIV);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Cryptography.ICryptoTransform CreateDecryptor(unsigned int8[] rgbKey, unsigned int8[] rgbIV) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.CreateDecryptor(System.Byte[],System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function CreateDecryptor (rgbKey As Byte(), rgbIV As Byte()) As ICryptoTransform" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Security::Cryptography::ICryptoTransform ^ CreateDecryptor(cli::array &lt;System::Byte&gt; ^ rgbKey, cli::array &lt;System::Byte&gt; ^ rgbIV);" />
+      <MemberSignature Language="F#" Value="abstract member CreateDecryptor : byte[] * byte[] -&gt; System.Security.Cryptography.ICryptoTransform" Usage="symmetricAlgorithm.CreateDecryptor (rgbKey, rgbIV)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.ICryptoTransform</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rgbKey" Type="System.Byte[]" />
+        <Parameter Name="rgbIV" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="rgbKey">대칭 알고리즘에 사용할 비밀 키입니다.</param>
+        <param name="rgbIV">대칭 알고리즘에 사용할 초기화 벡터입니다.</param>
+        <summary>파생 클래스에서 재정의된 경우 지정된 <see cref="P:System.Security.Cryptography.SymmetricAlgorithm.Key" /> 속성 및 초기화 벡터(<see cref="P:System.Security.Cryptography.SymmetricAlgorithm.IV" />)를 사용하여 대칭 decryptor 개체를 만듭니다.</summary>
+        <returns>대칭 decryptor 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 사용 하 여 만든 암호화 된 메시지를 해독 합니다 <xref:System.Security.Cryptography.SymmetricAlgorithm.CreateEncryptor%2A> 동일한 매개 변수를 사용 하 여 오버 로드 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="CreateEncryptor">
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>대칭 암호기 개체를 만듭니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="CreateEncryptor">
+      <MemberSignature Language="C#" Value="public virtual System.Security.Cryptography.ICryptoTransform CreateEncryptor ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Cryptography.ICryptoTransform CreateEncryptor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.CreateEncryptor" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function CreateEncryptor () As ICryptoTransform" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Security::Cryptography::ICryptoTransform ^ CreateEncryptor();" />
+      <MemberSignature Language="F#" Value="abstract member CreateEncryptor : unit -&gt; System.Security.Cryptography.ICryptoTransform&#xA;override this.CreateEncryptor : unit -&gt; System.Security.Cryptography.ICryptoTransform" Usage="symmetricAlgorithm.CreateEncryptor " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.ICryptoTransform</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>현재 <see cref="P:System.Security.Cryptography.SymmetricAlgorithm.Key" /> 속성 및 초기화 벡터(<see cref="P:System.Security.Cryptography.SymmetricAlgorithm.IV" />)를 사용하여 대칭 encryptor 개체를 만듭니다.</summary>
+        <returns>대칭 encryptor 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 경우 현재 <xref:System.Security.Cryptography.SymmetricAlgorithm.Key%2A> 속성은 `null`서 <xref:System.Security.Cryptography.SymmetricAlgorithm.GenerateKey%2A> 메서드를 호출 하 여 새 임의 <xref:System.Security.Cryptography.SymmetricAlgorithm.Key%2A>합니다. 경우 현재 <xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A> 속성은 `null`서 <xref:System.Security.Cryptography.SymmetricAlgorithm.GenerateIV%2A> 메서드를 호출 하 여 새 임의 <xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A>합니다.  
+  
+ 사용 된 <xref:System.Security.Cryptography.SymmetricAlgorithm.CreateDecryptor%2A> 이 메서드의 결과 암호 해독에 동일한 서명을 사용 하 여 오버 로드 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서 반환 되는 변환 개체를 사용 하 여 문자열을 암호화 합니다 <xref:System.Security.Cryptography.SymmetricAlgorithm.CreateEncryptor%2A> 메서드.  
+  
+ [!code-cpp[System.Security.Cryptography.SymmetricAlgorithm#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.security.cryptography.symmetricalgorithm/cpp/encryptor.cpp#1)]
+ [!code-csharp[System.Security.Cryptography.SymmetricAlgorithm#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.security.cryptography.symmetricalgorithm/cs/encryptor.cs#1)]
+ [!code-vb[System.Security.Cryptography.SymmetricAlgorithm#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.security.cryptography.symmetricalgorithm/vb/encryptor.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="CreateEncryptor">
+      <MemberSignature Language="C#" Value="public abstract System.Security.Cryptography.ICryptoTransform CreateEncryptor (byte[] rgbKey, byte[] rgbIV);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Security.Cryptography.ICryptoTransform CreateEncryptor(unsigned int8[] rgbKey, unsigned int8[] rgbIV) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.CreateEncryptor(System.Byte[],System.Byte[])" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Function CreateEncryptor (rgbKey As Byte(), rgbIV As Byte()) As ICryptoTransform" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract System::Security::Cryptography::ICryptoTransform ^ CreateEncryptor(cli::array &lt;System::Byte&gt; ^ rgbKey, cli::array &lt;System::Byte&gt; ^ rgbIV);" />
+      <MemberSignature Language="F#" Value="abstract member CreateEncryptor : byte[] * byte[] -&gt; System.Security.Cryptography.ICryptoTransform" Usage="symmetricAlgorithm.CreateEncryptor (rgbKey, rgbIV)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.ICryptoTransform</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="rgbKey" Type="System.Byte[]" />
+        <Parameter Name="rgbIV" Type="System.Byte[]" />
+      </Parameters>
+      <Docs>
+        <param name="rgbKey">대칭 알고리즘에 사용할 비밀 키입니다.</param>
+        <param name="rgbIV">대칭 알고리즘에 사용할 초기화 벡터입니다.</param>
+        <summary>파생 클래스에서 재정의된 경우 지정된 <see cref="P:System.Security.Cryptography.SymmetricAlgorithm.Key" /> 속성 및 초기화 벡터(<see cref="P:System.Security.Cryptography.SymmetricAlgorithm.IV" />)를 사용하여 대칭 encryptor 개체를 만듭니다.</summary>
+        <returns>대칭 encryptor 개체입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 사용 된 <xref:System.Security.Cryptography.SymmetricAlgorithm.CreateDecryptor%2A> 이 메서드의 결과 암호 해독에 동일한 매개 변수를 사용 하 여 오버 로드 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Dispose">
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.SymmetricAlgorithm" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : unit -&gt; unit&#xA;override this.Dispose : unit -&gt; unit" Usage="symmetricAlgorithm.Dispose " />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.SymmetricAlgorithm" /> 클래스의 현재 인스턴스에서 사용하는 모든 리소스를 해제합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `Dispose` 사용을 마치면 <xref:System.Security.Cryptography.SymmetricAlgorithm>를 호출합니다. `Dispose` 메서드를 사용하면 <xref:System.Security.Cryptography.SymmetricAlgorithm>를 사용할 수 없게 됩니다. 호출한 후 `Dispose`에 대 한 모든 참조를 해제 해야 합니다 <xref:System.Security.Cryptography.SymmetricAlgorithm> 가비지 수집기에서 메모리를 회수할 수 있도록 하는 <xref:System.Security.Cryptography.SymmetricAlgorithm> 차지한 합니다.  
+  
+ 자세한 내용은 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md) 하 고 [Dispose 메서드 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.  
+  
+> [!NOTE]
+>  `Dispose`에 대한 마지막 참조를 해제하기 전에 반드시 <xref:System.Security.Cryptography.SymmetricAlgorithm>를 호출하십시오. 이렇게 하지 않으면 가비지 수집기가 <xref:System.Security.Cryptography.SymmetricAlgorithm> 개체의 `Finalize` 메서드를 호출할 때까지 사용 중인 리소스가 해제되지 않습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="protected virtual void Dispose (bool disposing);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance void Dispose(bool disposing) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.Dispose(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Sub Dispose (disposing As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual void Dispose(bool disposing);" />
+      <MemberSignature Language="F#" Value="abstract member Dispose : bool -&gt; unit&#xA;override this.Dispose : bool -&gt; unit" Usage="symmetricAlgorithm.Dispose disposing" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="disposing" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="disposing">관리되는 리소스와 관리되지 않는 리소스를 모두 해제하려면 <see langword="true" />로 설정하고, 관리되지 않는 리소스만 해제하려면 <see langword="false" />로 설정합니다.</param>
+        <summary><see cref="T:System.Security.Cryptography.SymmetricAlgorithm" />에서 사용하는 관리되지 않는 리소스를 해제하고, 관리되는 리소스를 선택적으로 해제할 수 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 공용 `Dispose()` 메서드 및 `Finalize` 메서드. `Dispose()` 보호 된 호출 `Dispose(Boolean)` 메서드를 `disposing` 매개 변수 설정 `true`합니다. `Finalize` 호출 `Dispose` 사용 하 여 `disposing` 로 `false`합니다.  
+  
+ `disposing` 매개 변수가 `true`인 경우 이 메서드는 이 <xref:System.Security.Cryptography.SymmetricAlgorithm>에서 참조하는 관리 개체가 보유하고 있는 리소스를 모두 해제합니다. 이 메서드는 참조되는 각 개체의 `Dispose()` 메서드를 호출합니다.  
+  
+ ]]></format>
+        </remarks>
+        <block subset="none" type="overrides"><para>
+            <see langword="Dispose" />는 다른 개체에서 여러 번 호출할 수 있습니다. 재정의 하는 경우 <see langword="Dispose(Boolean)" />대 한 이전 호출에서 삭제 된 개체를 참조 하지 않도록 주의 하십시오 <see langword="Dispose" />합니다. 구현 하는 방법에 대 한 자세한 내용은 <see langword="Dispose(Boolean)" />를 참조 하세요 [Dispose 메서드 구현](~/docs/standard/garbage-collection/implementing-dispose.md)합니다.  
+  
+에 대 한 자세한 내용은 <see langword="Dispose" /> 하 고 <see langword="Finalize" />를 참조 하세요 [관리 되지 않는 리소스 정리](~/docs/standard/garbage-collection/unmanaged.md)합니다.</para></block>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="FeedbackSize">
+      <MemberSignature Language="C#" Value="public virtual int FeedbackSize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 FeedbackSize" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.FeedbackSize" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property FeedbackSize As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int FeedbackSize { int get(); void set(int value); };" />
+      <MemberSignature Language="F#" Value="member this.FeedbackSize : int with get, set" Usage="System.Security.Cryptography.SymmetricAlgorithm.FeedbackSize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>암호화 작업의 피드백 크기(비트 단위)를 가져오거나 설정합니다.</summary>
+        <value>피드백 크기(비트 단위)입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 피드백 크기 연속 암호화 또는 해독 작업을 다시 공급 되는 데이터의 양을 결정 합니다. 피드백 크기가 블록 크기 보다 클 수 없습니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">피드백 크기가 블록 크기보다 큰 경우</exception>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="FeedbackSizeValue">
+      <MemberSignature Language="C#" Value="protected int FeedbackSizeValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family int32 FeedbackSizeValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.FeedbackSizeValue" />
+      <MemberSignature Language="VB.NET" Value="Protected FeedbackSizeValue As Integer " />
+      <MemberSignature Language="C++ CLI" Value="protected: int FeedbackSizeValue;" />
+      <MemberSignature Language="F#" Value="val mutable FeedbackSizeValue : int" Usage="System.Security.Cryptography.SymmetricAlgorithm.FeedbackSizeValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>암호화 작업의 피드백 크기(비트 단위)를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 피드백 크기 연속 암호화 또는 해독 작업을 다시 공급 되는 데이터의 양을 결정 합니다. 피드백 크기가 블록 크기 보다 클 수 없습니다.  
+  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.FeedbackSize%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~SymmetricAlgorithm ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!SymmetricAlgorithm ()" />
+      <MemberSignature Language="F#" Value="override this.Finalize : unit -&gt; unit" Usage="symmetricAlgorithm.Finalize " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 멤버는 <see cref="M:System.Object.Finalize" />를 재정의합니다. 자세한 내용은 해당 항목을 참조하세요.
+
+가비지 수집기에서 <see cref="T:System.Object" />를 회수하기 전에 <see cref="T:System.Object" />가 리소스를 해제하고 다른 정리 작업을 수행할 수 있게 합니다.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GenerateIV">
+      <MemberSignature Language="C#" Value="public abstract void GenerateIV ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GenerateIV() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.GenerateIV" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub GenerateIV ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void GenerateIV();" />
+      <MemberSignature Language="F#" Value="abstract member GenerateIV : unit -&gt; unit" Usage="symmetricAlgorithm.GenerateIV " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 재정의된 경우 알고리즘에 사용할 임의의 초기화 벡터(<see cref="P:System.Security.Cryptography.SymmetricAlgorithm.IV" />)를 생성합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 일반적으로 있습니다 이므로이 메서드를 사용 하지 않아도 `CreateEncryptor()` 또는 `CreateEncryptor(null, null)` 초기화 벡터 및 키를 모두 자동으로 생성 합니다. 그러나 사용 하려는는 <xref:System.Security.Cryptography.SymmetricAlgorithm.GenerateIV%2A> 다른 초기화 벡터를 사용 하는 대칭 알고리즘 인스턴스를 다시 사용 하는 방법입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="GenerateKey">
+      <MemberSignature Language="C#" Value="public abstract void GenerateKey ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void GenerateKey() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.GenerateKey" />
+      <MemberSignature Language="VB.NET" Value="Public MustOverride Sub GenerateKey ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; abstract void GenerateKey();" />
+      <MemberSignature Language="F#" Value="abstract member GenerateKey : unit -&gt; unit" Usage="symmetricAlgorithm.GenerateKey " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 재정의된 경우 알고리즘에 사용할 난수 키(<see cref="P:System.Security.Cryptography.SymmetricAlgorithm.Key" />)를 생성합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 일반적으로 있습니다 이므로이 메서드를 사용 하지 않아도 `CreateEncryptor()` 또는 `CreateEncryptor(null, null)` 초기화 벡터 및 키를 모두 자동으로 생성 합니다. 그러나 사용 하려는는 <xref:System.Security.Cryptography.SymmetricAlgorithm.GenerateKey%2A> 다른 키를 사용 하 여 대칭 알고리즘 인스턴스를 다시 사용 하는 방법입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="IV">
+      <MemberSignature Language="C#" Value="public virtual byte[] IV { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] IV" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.IV" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property IV As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property cli::array &lt;System::Byte&gt; ^ IV { cli::array &lt;System::Byte&gt; ^ get(); void set(cli::array &lt;System::Byte&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.IV : byte[] with get, set" Usage="System.Security.Cryptography.SymmetricAlgorithm.IV" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에 대한 초기화 벡터(<see cref="P:System.Security.Cryptography.SymmetricAlgorithm.IV" />)를 가져오거나 설정합니다.</summary>
+        <value>초기화 벡터입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A> 속성 중 하나의 새 인스턴스를 만들 때마다에 자동으로 새 임의 값을로 설정 됩니다는 <xref:System.Security.Cryptography.SymmetricAlgorithm> 클래스나 수동으로 호출 하는 경우는 <xref:System.Security.Cryptography.SymmetricAlgorithm.GenerateIV%2A> 메서드.  크기를 <xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A> 속성이 동일 해야는 <xref:System.Security.Cryptography.SymmetricAlgorithm.BlockSize%2A> 8로 나눈 값 속성입니다.  
+  
+ 파생 된 클래스는 <xref:System.Security.Cryptography.SymmetricAlgorithm> 암호화 cbc (블록)를 호출 하는 연결 모드를 사용 하는 클래스 키 및 초기화 벡터는 데이터에 대 한 암호화 변환을 수행 해야 합니다.  중 하나를 사용 하 여 암호화 된 데이터를 해독 하는 <xref:System.Security.Cryptography.SymmetricAlgorithm> 설정한 클래스는 <xref:System.Security.Cryptography.SymmetricAlgorithm.Key%2A> 속성 및 <xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A> 암호화에 사용 된 동일한 값 속성입니다.  
+  
+ 비밀 키가 주어진 *k*, 초기화 벡터를 사용 하지 않는 단순 블록 암호 암호화 텍스트의 동일한 출력 블록으로 일반 텍스트의 동일한 입력된 블록을 암호화 합니다. 일반 텍스트 스트림에 내에서 중복 된 블록이 있는 경우 암호화 텍스트 스트림에 내에서 중복 요소를 해야 합니다. 권한이 없는 사용자가 일반 텍스트 블록의 구조에 대 한 모든 것을 알고 경우 알려진된 암호화 텍스트 블록을 해독 및 키를 복구할 수도에 해당 정보를 사용할 수 있습니다. 이 문제를 해결 하려면 다음 블록을 암호화 하는 프로세스에 이전 블록의 내용은 mixed입니다. 따라서 두 개의 동일한 일반 텍스트 블록의 출력이 다릅니다. 이 기술은 이전 블록 다음 블록 암호화를 사용 하므로 초기화 벡터는 데이터의 첫 번째 블록을 암호화 해야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">초기화 벡터를 <see langword="null" />로 설정하려고 한 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">초기화 벡터를 잘못된 크기로 설정하려고 한 경우</exception>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="IVValue">
+      <MemberSignature Language="C#" Value="protected byte[] IVValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family unsigned int8[] IVValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.IVValue" />
+      <MemberSignature Language="VB.NET" Value="Protected IVValue As Byte() " />
+      <MemberSignature Language="C++ CLI" Value="protected: cli::array &lt;System::Byte&gt; ^ IVValue;" />
+      <MemberSignature Language="F#" Value="val mutable IVValue : byte[]" Usage="System.Security.Cryptography.SymmetricAlgorithm.IVValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에 대한 초기화 벡터(<see cref="P:System.Security.Cryptography.SymmetricAlgorithm.IV" />)를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.IV%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Key">
+      <MemberSignature Language="C#" Value="public virtual byte[] Key { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8[] Key" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.Key" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property Key As Byte()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property cli::array &lt;System::Byte&gt; ^ Key { cli::array &lt;System::Byte&gt; ^ get(); void set(cli::array &lt;System::Byte&gt; ^ value); };" />
+      <MemberSignature Language="F#" Value="member this.Key : byte[] with get, set" Usage="System.Security.Cryptography.SymmetricAlgorithm.Key" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에 대한 비밀 키를 가져오거나 설정합니다.</summary>
+        <value>대칭 알고리즘에 사용할 비밀 키입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 비밀 키 암호화 및 암호 해독에 사용 됩니다. 찾기가 성공 하려면 대칭 알고리즘에 대 한 비밀 키 발신자와 수신자 에게만 알려져야 합니다. 올바른 키 크기 특정 대칭 알고리즘 구현에 의해 지정 되 고에 나열 된는 <xref:System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizes%2A> 속성입니다.  
+  
+ 이 속성이 `null` 를 사용 하는 경우는 <xref:System.Security.Cryptography.SymmetricAlgorithm.GenerateKey%2A> 메서드가 호출 되어 새 임의 값을 만듭니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">키를 <see langword="null" />로 설정하려고 한 경우</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">키 크기가 잘못된 경우</exception>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="KeySize">
+      <MemberSignature Language="C#" Value="public virtual int KeySize { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 KeySize" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.KeySize" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property KeySize As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int KeySize { int get(); void set(int value); };" />
+      <MemberSignature Language="F#" Value="member this.KeySize : int with get, set" Usage="System.Security.Cryptography.SymmetricAlgorithm.KeySize" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에서 사용하는 비밀 키의 크기(비트 단위)를 가져오거나 설정합니다.</summary>
+        <value>대칭 알고리즘에서 사용하는 비밀 키의 크기(비트 단위)입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 올바른 키 크기 특정 대칭 알고리즘 구현에 의해 지정 되 고에 나열 된는 <xref:System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizes%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">키 크기가 잘못된 경우</exception>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="KeySizeValue">
+      <MemberSignature Language="C#" Value="protected int KeySizeValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family int32 KeySizeValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.KeySizeValue" />
+      <MemberSignature Language="VB.NET" Value="Protected KeySizeValue As Integer " />
+      <MemberSignature Language="C++ CLI" Value="protected: int KeySizeValue;" />
+      <MemberSignature Language="F#" Value="val mutable KeySizeValue : int" Usage="System.Security.Cryptography.SymmetricAlgorithm.KeySizeValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에서 사용하는 비밀 키의 크기(비트 단위)를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 올바른 키 크기 특정 대칭 알고리즘 구현에 의해 지정 되 고에 나열 된는 <xref:System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizes%2A> 속성입니다.  
+  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.KeySize%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="KeyValue">
+      <MemberSignature Language="C#" Value="protected byte[] KeyValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family unsigned int8[] KeyValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.KeyValue" />
+      <MemberSignature Language="VB.NET" Value="Protected KeyValue As Byte() " />
+      <MemberSignature Language="C++ CLI" Value="protected: cli::array &lt;System::Byte&gt; ^ KeyValue;" />
+      <MemberSignature Language="F#" Value="val mutable KeyValue : byte[]" Usage="System.Security.Cryptography.SymmetricAlgorithm.KeyValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Byte[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에 대한 비밀 키를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 비밀 키 암호화 및 암호 해독에 사용 됩니다. 찾기가 성공 하려면 대칭 알고리즘에 대 한 비밀 키 발신자와 수신자 에게만 알려져야 합니다. 올바른 키 크기 특정 대칭 알고리즘 구현에 의해 지정 되 고에 나열 된는 <xref:System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizes%2A> 속성입니다.  
+  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.Key%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="LegalBlockSizes">
+      <MemberSignature Language="C#" Value="public virtual System.Security.Cryptography.KeySizes[] LegalBlockSizes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.KeySizes[] LegalBlockSizes" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.LegalBlockSizes" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property LegalBlockSizes As KeySizes()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property cli::array &lt;System::Security::Cryptography::KeySizes ^&gt; ^ LegalBlockSizes { cli::array &lt;System::Security::Cryptography::KeySizes ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.LegalBlockSizes : System.Security.Cryptography.KeySizes[]" Usage="System.Security.Cryptography.SymmetricAlgorithm.LegalBlockSizes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.KeySizes[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에서 지원하는 블록 크기(비트 단위)를 가져옵니다.</summary>
+        <value>알고리즘에서 지원하는 블록 크기가 들어 있는 배열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 대칭 알고리즘에는이 배열에 있는 항목과 일치 하는 블록 크기만 지원 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 값을 보여 줍니다. <xref:System.Security.Cryptography.SymmetricAlgorithm.LegalBlockSizes%2A> 대칭 알고리즘에 대 한 합니다.  
+  
+ [!code-csharp[System.Security.Cryptography.SymmetricAlgorithm.BlockSize#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.security.cryptography.symmetricalgorithm.blocksize/cs/program.cs#1)]
+ [!code-vb[System.Security.Cryptography.SymmetricAlgorithm.BlockSize#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.security.cryptography.symmetricalgorithm.blocksize/vb/program.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="LegalBlockSizesValue">
+      <MemberSignature Language="C#" Value="protected System.Security.Cryptography.KeySizes[] LegalBlockSizesValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family class System.Security.Cryptography.KeySizes[] LegalBlockSizesValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.LegalBlockSizesValue" />
+      <MemberSignature Language="VB.NET" Value="Protected LegalBlockSizesValue As KeySizes() " />
+      <MemberSignature Language="C++ CLI" Value="protected: cli::array &lt;System::Security::Cryptography::KeySizes ^&gt; ^ LegalBlockSizesValue;" />
+      <MemberSignature Language="F#" Value="val mutable LegalBlockSizesValue : System.Security.Cryptography.KeySizes[]" Usage="System.Security.Cryptography.SymmetricAlgorithm.LegalBlockSizesValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.KeySizes[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에서 지원하는 블록 크기(비트 단위)를 지정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 대칭 알고리즘에는이 배열에 있는 항목과 일치 하는 블록 크기만 지원 합니다.  
+  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.LegalBlockSizes%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="LegalKeySizes">
+      <MemberSignature Language="C#" Value="public virtual System.Security.Cryptography.KeySizes[] LegalKeySizes { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Security.Cryptography.KeySizes[] LegalKeySizes" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizes" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable ReadOnly Property LegalKeySizes As KeySizes()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property cli::array &lt;System::Security::Cryptography::KeySizes ^&gt; ^ LegalKeySizes { cli::array &lt;System::Security::Cryptography::KeySizes ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.LegalKeySizes : System.Security.Cryptography.KeySizes[]" Usage="System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizes" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.KeySizes[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에서 지원하는 키 크기(비트 단위)를 가져옵니다.</summary>
+        <value>알고리즘에서 지원하는 키 크기가 들어 있는 배열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 대칭 알고리즘에는이 배열에 있는 항목과 일치 하는 키 크기만 지원 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 값을 보여 줍니다. <xref:System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizes%2A> 대칭 알고리즘에 대 한 합니다.  
+  
+ [!code-csharp[System.Security.Cryptography.SymmetricAlgorithm.BlockSize#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.security.cryptography.symmetricalgorithm.blocksize/cs/program.cs#1)]
+ [!code-vb[System.Security.Cryptography.SymmetricAlgorithm.BlockSize#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.security.cryptography.symmetricalgorithm.blocksize/vb/program.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="LegalKeySizesValue">
+      <MemberSignature Language="C#" Value="protected System.Security.Cryptography.KeySizes[] LegalKeySizesValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family class System.Security.Cryptography.KeySizes[] LegalKeySizesValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizesValue" />
+      <MemberSignature Language="VB.NET" Value="Protected LegalKeySizesValue As KeySizes() " />
+      <MemberSignature Language="C++ CLI" Value="protected: cli::array &lt;System::Security::Cryptography::KeySizes ^&gt; ^ LegalKeySizesValue;" />
+      <MemberSignature Language="F#" Value="val mutable LegalKeySizesValue : System.Security.Cryptography.KeySizes[]" Usage="System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizesValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.KeySizes[]</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에서 지원하는 키 크기(비트 단위)를 지정합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 대칭 알고리즘에는이 배열에 있는 항목과 일치 하는 키 크기만 지원 합니다.  
+  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.LegalKeySizes%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Mode">
+      <MemberSignature Language="C#" Value="public virtual System.Security.Cryptography.CipherMode Mode { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Security.Cryptography.CipherMode Mode" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.Mode" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property Mode As CipherMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Security::Cryptography::CipherMode Mode { System::Security::Cryptography::CipherMode get(); void set(System::Security::Cryptography::CipherMode value); };" />
+      <MemberSignature Language="F#" Value="member this.Mode : System.Security.Cryptography.CipherMode with get, set" Usage="System.Security.Cryptography.SymmetricAlgorithm.Mode" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.CipherMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘의 작업 모드를 가져오거나 설정합니다.</summary>
+        <value>대칭 알고리즘의 작업 모드입니다. 기본값은 <see cref="F:System.Security.Cryptography.CipherMode.CBC" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 참조 <xref:System.Security.Cryptography.CipherMode> 특정 모드에 대 한 열거형입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">암호화 모드가 <see cref="T:System.Security.Cryptography.CipherMode" /> 값 중 하나가 아닌 경우</exception>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ModeValue">
+      <MemberSignature Language="C#" Value="protected System.Security.Cryptography.CipherMode ModeValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family valuetype System.Security.Cryptography.CipherMode ModeValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.ModeValue" />
+      <MemberSignature Language="VB.NET" Value="Protected ModeValue As CipherMode " />
+      <MemberSignature Language="C++ CLI" Value="protected: System::Security::Cryptography::CipherMode ModeValue;" />
+      <MemberSignature Language="F#" Value="val mutable ModeValue : System.Security.Cryptography.CipherMode" Usage="System.Security.Cryptography.SymmetricAlgorithm.ModeValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.CipherMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에 사용된 암호화 모드를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 참조 <xref:System.Security.Cryptography.CipherMode> 특정 모드에 대 한 열거형입니다.  
+  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.Mode%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="Padding">
+      <MemberSignature Language="C#" Value="public virtual System.Security.Cryptography.PaddingMode Padding { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Security.Cryptography.PaddingMode Padding" />
+      <MemberSignature Language="DocId" Value="P:System.Security.Cryptography.SymmetricAlgorithm.Padding" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Property Padding As PaddingMode" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Security::Cryptography::PaddingMode Padding { System::Security::Cryptography::PaddingMode get(); void set(System::Security::Cryptography::PaddingMode value); };" />
+      <MemberSignature Language="F#" Value="member this.Padding : System.Security.Cryptography.PaddingMode with get, set" Usage="System.Security.Cryptography.SymmetricAlgorithm.Padding" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.PaddingMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에 사용된 패딩 모드를 가져오거나 설정합니다.</summary>
+        <value>대칭 알고리즘에 사용된 패딩 모드입니다. 기본값은 <see cref="F:System.Security.Cryptography.PaddingMode.PKCS7" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 대부분의 일반 텍스트 메시지 완전히 블록을 작성 하는 바이트 수로 구성 되어 있지 않습니다. 종종 마지막 블록에 맞게 바이트 수가 충분 하지 않습니다. 이 경우 패딩 문자열을 텍스트에 추가 됩니다. 예를 들어, 마지막 블록에만 40 비트 블록 길이 64 비트를 안쪽 여백 24 비트 추가 됩니다. 참조 된 <xref:System.Security.Cryptography.PaddingMode> 특정 모드에 대 한 열거형입니다.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">패딩 모드가 <see cref="T:System.Security.Cryptography.PaddingMode" /> 값 중 하나가 아닌 경우</exception>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingValue">
+      <MemberSignature Language="C#" Value="protected System.Security.Cryptography.PaddingMode PaddingValue;" />
+      <MemberSignature Language="ILAsm" Value=".field family valuetype System.Security.Cryptography.PaddingMode PaddingValue" />
+      <MemberSignature Language="DocId" Value="F:System.Security.Cryptography.SymmetricAlgorithm.PaddingValue" />
+      <MemberSignature Language="VB.NET" Value="Protected PaddingValue As PaddingMode " />
+      <MemberSignature Language="C++ CLI" Value="protected: System::Security::Cryptography::PaddingMode PaddingValue;" />
+      <MemberSignature Language="F#" Value="val mutable PaddingValue : System.Security.Cryptography.PaddingMode" Usage="System.Security.Cryptography.SymmetricAlgorithm.PaddingValue" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Security.Cryptography.PaddingMode</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>대칭 알고리즘에 사용된 패딩 모드를 나타냅니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 대부분의 일반 텍스트 메시지 완전히 블록을 작성 하는 바이트 수로 구성 되어 있지 않습니다. 종종 마지막 블록에 맞게 바이트 수가 충분 하지 않습니다. 이 경우 패딩 문자열을 텍스트에 추가 됩니다. 예를 들어, 마지막 블록에만 40 비트 블록 길이 64 비트를 안쪽 여백 24 비트 추가 됩니다. 참조 된 <xref:System.Security.Cryptography.PaddingMode> 특정 모드에 대 한 열거형입니다.  
+  
+ 이 필드는 <xref:System.Security.Cryptography.SymmetricAlgorithm.Padding%2A> 속성입니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="System.IDisposable.Dispose">
+      <MemberSignature Language="C#" Value="void IDisposable.Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance void System.IDisposable.Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.System#IDisposable#Dispose" />
+      <MemberSignature Language="VB.NET" Value="Sub Dispose () Implements IDisposable.Dispose" />
+      <MemberSignature Language="C++ CLI" Value=" virtual void System.IDisposable.Dispose() = IDisposable::Dispose;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Security.Cryptography.SymmetricAlgorithm" />에서 사용하는 관리되지 않는 리소스를 해제하고, 관리되는 리소스를 선택적으로 해제할 수 있습니다.</summary>
+        <remarks>To be added.</remarks>
+        <forInternalUseOnly />
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ValidKeySize">
+      <MemberSignature Language="C#" Value="public bool ValidKeySize (int bitLength);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool ValidKeySize(int32 bitLength) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.SymmetricAlgorithm.ValidKeySize(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function ValidKeySize (bitLength As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool ValidKeySize(int bitLength);" />
+      <MemberSignature Language="F#" Value="member this.ValidKeySize : int -&gt; bool" Usage="symmetricAlgorithm.ValidKeySize bitLength" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Primitives</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="bitLength" Type="System.Int32" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
+      </Parameters>
+      <Docs>
+        <param name="bitLength">올바른 키 크기를 확인하는 길이(비트 단위)입니다.</param>
+        <summary>지정된 키 크기를 현재 알고리즘에 사용할 수 있는지 여부를 결정합니다.</summary>
+        <returns>지정된 키 크기를 현재 알고리즘에 사용할 수 있으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="~/docs/standard/security/cryptographic-services.md">암호화 서비스</related>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

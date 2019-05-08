@@ -1,0 +1,1951 @@
+<Type Name="XamlMember" FullName="System.Xaml.XamlMember">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="a5bf358cf5bbfc2549fa0d48319a913cdf514495" /><Meta Name="ms.sourcegitcommit" Value="8e213bb5e6801f6e29861ba72664978ad00e34fa" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="02/18/2019" /><Meta Name="ms.locfileid" Value="56357734" /></Metadata><TypeSignature Language="C#" Value="public class XamlMember : IEquatable&lt;System.Xaml.XamlMember&gt;" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XamlMember extends System.Object implements class System.IEquatable`1&lt;class System.Xaml.XamlMember&gt;" />
+  <TypeSignature Language="DocId" Value="T:System.Xaml.XamlMember" />
+  <TypeSignature Language="VB.NET" Value="Public Class XamlMember&#xA;Implements IEquatable(Of XamlMember)" />
+  <TypeSignature Language="C++ CLI" Value="public ref class XamlMember : IEquatable&lt;System::Xaml::XamlMember ^&gt;" />
+  <TypeSignature Language="F#" Value="type XamlMember = class&#xA;    interface IEquatable&lt;XamlMember&gt;" />
+  <AssemblyInfo>
+    <AssemblyName>System.Xaml</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IEquatable&lt;System.Xaml.XamlMember&gt;</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>XAML 형식의 멤버에 대해 XAML 형식 시스템 식별자를 제공합니다. 멤버 노드를 처리하는 동안 XAML 판독기 및 XAML 작성기가 사용하는 식별자(XAML 판독기가 <see cref="F:System.Xaml.XamlNodeType.StartMember" />에 위치한 경우)이며, 일반 XAML 형식 시스템 논리에도 사용됩니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Xaml.XamlMember> XAML 멤버에 대 한 정보를 반환 하는 데 세 가지 방법론을 사용할 수 있습니다: 표준 공용 언어 런타임 (CLR) 리플렉션; 호출 내부 참조만 리플렉션 기술을 Api를 사용 하 여 액세스에 최적화 된 비트 플래그입니다. 또는 가상 호출의 재정의 `Lookup*` 가능한에서 제공 하는 API <xref:System.Xaml.XamlMember> 하위 클래스입니다. 대부분의.NET Framework XAML 서비스 Api 사용에 대 한 및 <xref:System.Xaml.XamlMember> API, 기본 XAML 스키마 컨텍스트를 사용 합니다. .NET Framework XAML 서비스에 대 한 기본 XAML 스키마 컨텍스트는 CLR 형식 시스템에 대 한 백업을 사용 합니다. 이 통해 XAML 판독기 및 XAML 작성기와 모든 형식 또는 정의 된 멤버 또는 사용할 수 있는 CLR 리플렉션 기술 작동 하도록 합니다.  
+  
+## <a name="lookup-apis-and-xamlmember-derived-classes"></a>조회 Api 및 XamlMember 파생 클래스  
+ <xref:System.Xaml.XamlMember> 여러 정의 클래스를 파생 하는 가상 멤버를 재정의할 수 있습니다. 이러한 멤버에 항상 문자열로 시작 하는 이름이 `Lookup`합니다. API의 나머지 부분에서는 다음 참조는 가상 메서드의 영향을 주는 속성의 이름을 합니다. 예를 들어, 한 <xref:System.Xaml.XamlMember> 파생된 클래스에서 재정의 될 수 있습니다 <xref:System.Xaml.XamlMember.LookupTargetType%2A> 어떤 기본 정의 속성에 영향을 줍니다 <xref:System.Xaml.XamlMember.TargetType%2A> 파생된 클래스에서 반환 합니다. 이러한 속성에 대 한 반환 값을 예측할 수 있습니다 <xref:System.Xaml.XamlMember> 파생 클래스의 이름을 관련 설명서를 참조 하 여 기존 또는 `Lookup*` 메서드.  
+  
+ 용도 `Lookup*` 메서드를 통합 하는 XAML 형식 시스템 확장 기술을 제공 하는 것은 <xref:System.Xaml.XamlMember> 기본 클래스입니다. 파생 시켜 <xref:System.Xaml.XamlMember> 재정의 `Lookup` 가상 멤버를 정의할 수 있습니다 XAML 스키마에 대 한 XAML 멤버의 개념 XAML 형식 시스템에서 지원 형식 시스템의 기술 세부 정보에 국한 되지 않고 있습니다. 또한이 체계를 제공 된 XAML 스키마 컨텍스트를 사용 하 고 원하는 결과 반환할 수 있습니다.  
+  
+ 예를 들어 고려해 야 합니다 <xref:System.Xaml.XamlMember> 속성 <xref:System.Xaml.XamlMember.IsWritePublic%2A>합니다. 이 속성에 사용 하는 등 작업 호출자에 게 알립니다는 <xref:System.Xaml.XamlWriter> serialization 대상 개체에서이 멤버에 대 한 값을 쓸 수에 대 한 합니다. 기본 구현에서 지원 CLR에 대 한 리플렉션 기술을 사용 하 여 쓰기 가능한 멤버 인지 확인 하는 프로세스가 이루어집니다 <xref:System.Type> 및 해당 멤버 (의 <xref:System.Reflection.MemberInfo>). 따라서 기본적으로 XAML 형식 시스템 CLR 형식 시스템에 종속 됩니다. 그러나의 XAML 형식 시스템 보고를 위해이 종속성을 제거할 수 있습니다 <xref:System.Xaml.XamlMember.IsWritePublic%2A> API를 재정의 하 여 <xref:System.Xaml.XamlMember.LookupIsWritePublic%2A>입니다. 재정의 내 기술, XAML 멤버의 쓰기 가능 인지 고정된 XAML 어휘, 또는 다양 한 다른 전략을 결정 하는 데에 최적화 된 마스터 조회 테이블에 관련 된 메타 데이터와 같은 다른 판단을 사용할 수 있습니다 프로그램 XAML 어휘입니다.  
+  
+## <a name="constructing-xamlmember-without-xaml-schema-context"></a>XAML 스키마 컨텍스트 없이 XamlMember를 생성합니다.  
+ 생성자의 대부분 <xref:System.Xaml.XamlMember> 필요를 <xref:System.Xaml.XamlSchemaContext> 초기화의 일부로. 합니다 <xref:System.Xaml.XamlSchemaContext> 필요한 많은 내부 이기도 <xref:System.Xaml.XamlSchemaContext> 지원 형식에서 전달 되는 정보를 가져오는 등의 작업을 합니다. 사용 중인 경우는 <xref:System.Xaml.XamlMember> API, 일반적으로 해야를 <xref:System.Xaml.XamlSchemaContext> 에서 사용할 수 있는 주변 생성 같은 <xref:System.Xaml.XamlWriter>. 이 경우에 전달할 수 있습니다는 <xref:System.Xaml.XamlSchemaContext> 통해 XAML 스키마 컨텍스트를 필요로 하는 모든 XAML 형식 시스템 호출에 대 한 참조입니다.  
+  
+ 하나의 특정 생성자 <xref:System.Xaml.XamlMember.%23ctor%28System.String%2CSystem.Xaml.XamlType%2CSystem.Boolean%29>, 필요 하지 않습니다는 <xref:System.Xaml.XamlSchemaContext>합니다. 그러나를 <xref:System.Xaml.XamlMember> 사용 하 여 생성 된 합니다 <xref:System.Xaml.XamlMember.%23ctor%28System.String%2CSystem.Xaml.XamlType%2CSystem.Boolean%29> 서명을 반환 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A>합니다.  
+  
+ 포함 하는 로드 경로 대 한 <xref:System.Xaml.XamlObjectWriter>, 개체 그래프에는 이러한 멤버를 쓸 수 없습니다. .NET Framework XAML 서비스 구현에서 사용 하는 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A?displayProperty=nameWithType> throw 호출을 <xref:System.Xaml.XamlObjectWriterException> 때 관련 <xref:System.Xaml.XamlMember> 보고서 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A>합니다.  
+  
+ 구성 하지 않아야는 <xref:System.Xaml.XamlMember> 의 값이 있는 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A> 구현에서 예외를 처리할 수 있습니다 <xref:System.Xaml.XamlObjectWriter>를 조정 하는 다른 방법을 만들어야 합니다 <xref:System.Xaml.XamlObjectWriter> 동작 합니다. 예를 들어, 다음 중 하나 이상의 구현의 true 수 있습니다.  
+  
+-   XAML 스키마 컨텍스트는 나중에 사용할 수 있습니다.  
+  
+-   멤버 호출자 패턴을 사용 합니다.  
+  
+-   의도적으로 재정의 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A?displayProperty=nameWithType> 사용자 지정 XAML 작성기에서.  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Xaml.XamlType" />
+    <altmember cref="T:System.Xaml.XamlDirective" />
+    <altmember cref="T:System.Xaml.XamlObjectWriter" />
+    <related type="Article" href="https://msdn.microsoft.com/library/7c11abec-1075-474c-9d9b-778e5dab21c3">XAML 노드 스트림 구조 및 개념 이해</related>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary><see cref="T:System.Xaml.XamlMember" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (System.Reflection.EventInfo eventInfo, System.Xaml.XamlSchemaContext schemaContext);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Reflection.EventInfo eventInfo, class System.Xaml.XamlSchemaContext schemaContext) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.Reflection.EventInfo,System.Xaml.XamlSchemaContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::Reflection::EventInfo ^ eventInfo, System::Xaml::XamlSchemaContext ^ schemaContext);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : System.Reflection.EventInfo * System.Xaml.XamlSchemaContext -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (eventInfo, schemaContext)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="eventInfo" Type="System.Reflection.EventInfo" />
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+      </Parameters>
+      <Docs>
+        <param name="eventInfo">이벤트 멤버를 나타내는 CLR 형식 시스템 <see cref="T:System.Reflection.EventInfo" />입니다.</param>
+        <param name="schemaContext">멤버를 정규화하는 <see cref="T:System.Xaml.XamlSchemaContext" /> 컨텍스트입니다.</param>
+        <summary>CLR 형식 시스템 <see cref="T:System.Xaml.XamlMember" /> 및 <see cref="T:System.Reflection.EventInfo" />를 사용하여 <see cref="T:System.Xaml.XamlSchemaContext" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 멤버가 이벤트 (이벤트 처리기 연결 지점 속성)을 나타내는 경우이 생성자를 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (System.Reflection.PropertyInfo propertyInfo, System.Xaml.XamlSchemaContext schemaContext);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Reflection.PropertyInfo propertyInfo, class System.Xaml.XamlSchemaContext schemaContext) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.Reflection.PropertyInfo,System.Xaml.XamlSchemaContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::Reflection::PropertyInfo ^ propertyInfo, System::Xaml::XamlSchemaContext ^ schemaContext);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : System.Reflection.PropertyInfo * System.Xaml.XamlSchemaContext -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (propertyInfo, schemaContext)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="propertyInfo" Type="System.Reflection.PropertyInfo" />
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+      </Parameters>
+      <Docs>
+        <param name="propertyInfo">속성 멤버를 나타내는 CLR 형식 시스템 <see cref="T:System.Reflection.PropertyInfo" />입니다.</param>
+        <param name="schemaContext">멤버를 정규화하는 <see cref="T:System.Xaml.XamlSchemaContext" /> 컨텍스트입니다.</param>
+        <summary>CLR 형식 시스템 <see cref="T:System.Xaml.XamlMember" /> 및 <see cref="T:System.Reflection.PropertyInfo" />를 사용하여 <see cref="T:System.Xaml.XamlSchemaContext" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 멤버 속성을 나타냅니다 (그리고 특히 않은 경우는 이벤트 처리기 연결) 하는 경우이 생성자를 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (System.Reflection.EventInfo eventInfo, System.Xaml.XamlSchemaContext schemaContext, System.Xaml.Schema.XamlMemberInvoker invoker);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Reflection.EventInfo eventInfo, class System.Xaml.XamlSchemaContext schemaContext, class System.Xaml.Schema.XamlMemberInvoker invoker) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.Reflection.EventInfo,System.Xaml.XamlSchemaContext,System.Xaml.Schema.XamlMemberInvoker)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::Reflection::EventInfo ^ eventInfo, System::Xaml::XamlSchemaContext ^ schemaContext, System::Xaml::Schema::XamlMemberInvoker ^ invoker);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : System.Reflection.EventInfo * System.Xaml.XamlSchemaContext * System.Xaml.Schema.XamlMemberInvoker -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (eventInfo, schemaContext, invoker)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="eventInfo" Type="System.Reflection.EventInfo" />
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+        <Parameter Name="invoker" Type="System.Xaml.Schema.XamlMemberInvoker" />
+      </Parameters>
+      <Docs>
+        <param name="eventInfo">이벤트 멤버를 나타내는 CLR 형식 시스템 <see cref="T:System.Reflection.EventInfo" />입니다.</param>
+        <param name="schemaContext">멤버를 정규화하는 <see cref="T:System.Xaml.XamlSchemaContext" /> 컨텍스트입니다.</param>
+        <param name="invoker"><see cref="T:System.Xaml.Schema.XamlMemberInvoker" />에 대한 런타임 리플렉션 호출을 처리하는 <see cref="T:System.Xaml.XamlMember" /> 구현입니다.</param>
+        <summary>CLR 형식 시스템 <see cref="T:System.Xaml.XamlMember" /> 및 <see cref="T:System.Reflection.EventInfo" />를 사용하여 <see cref="T:System.Xaml.XamlSchemaContext" /> 클래스의 새 인스턴스를 <see cref="T:System.Xaml.Schema.XamlMemberInvoker" /> 정보와 함께 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 멤버가 이벤트 (또는 이벤트 처리기 연결 지점 속성)을 나타내는 경우이 생성자를 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (System.Reflection.PropertyInfo propertyInfo, System.Xaml.XamlSchemaContext schemaContext, System.Xaml.Schema.XamlMemberInvoker invoker);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(class System.Reflection.PropertyInfo propertyInfo, class System.Xaml.XamlSchemaContext schemaContext, class System.Xaml.Schema.XamlMemberInvoker invoker) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.Reflection.PropertyInfo,System.Xaml.XamlSchemaContext,System.Xaml.Schema.XamlMemberInvoker)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::Reflection::PropertyInfo ^ propertyInfo, System::Xaml::XamlSchemaContext ^ schemaContext, System::Xaml::Schema::XamlMemberInvoker ^ invoker);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : System.Reflection.PropertyInfo * System.Xaml.XamlSchemaContext * System.Xaml.Schema.XamlMemberInvoker -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (propertyInfo, schemaContext, invoker)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="propertyInfo" Type="System.Reflection.PropertyInfo" />
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+        <Parameter Name="invoker" Type="System.Xaml.Schema.XamlMemberInvoker" />
+      </Parameters>
+      <Docs>
+        <param name="propertyInfo">속성 멤버를 나타내는 CLR 형식 시스템 <see cref="T:System.Reflection.PropertyInfo" />입니다.</param>
+        <param name="schemaContext">멤버를 정규화하는 <see cref="T:System.Xaml.XamlSchemaContext" /> 컨텍스트입니다.</param>
+        <param name="invoker"><see cref="T:System.Xaml.Schema.XamlMemberInvoker" />에 대한 런타임 호출을 처리하는 <see cref="T:System.Xaml.XamlMember" /> 구현입니다.</param>
+        <summary>리플렉션 <see cref="T:System.Xaml.XamlMember" /> 및 <see cref="T:System.Reflection.PropertyInfo" />를 사용하여 <see cref="T:System.Xaml.XamlSchemaContext" /> 클래스의 새 인스턴스를 <see cref="T:System.Xaml.Schema.XamlMemberInvoker" /> 정보와 함께 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 멤버 속성을 나타내는 경우에 한 대 한 이벤트 처리기 연결 되지 않은 경우이 생성자를 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (string attachableEventName, System.Reflection.MethodInfo adder, System.Xaml.XamlSchemaContext schemaContext);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string attachableEventName, class System.Reflection.MethodInfo adder, class System.Xaml.XamlSchemaContext schemaContext) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.String,System.Reflection.MethodInfo,System.Xaml.XamlSchemaContext)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (attachableEventName As String, adder As MethodInfo, schemaContext As XamlSchemaContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::String ^ attachableEventName, System::Reflection::MethodInfo ^ adder, System::Xaml::XamlSchemaContext ^ schemaContext);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : string * System.Reflection.MethodInfo * System.Xaml.XamlSchemaContext -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (attachableEventName, adder, schemaContext)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="attachableEventName" Type="System.String" />
+        <Parameter Name="adder" Type="System.Reflection.MethodInfo" />
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+      </Parameters>
+      <Docs>
+        <param name="attachableEventName">연결 가능한 이벤트의 문자열 이름입니다.</param>
+        <param name="adder">연결 가능한 멤버의 지원을 구현하는 처리기 <see langword="Add" /> 메서드에 대한 CLR 형식 시스템 <see cref="T:System.Reflection.MethodInfo" />입니다.</param>
+        <param name="schemaContext">멤버를 정규화하는 <see cref="T:System.Xaml.XamlSchemaContext" /> 컨텍스트입니다.</param>
+        <summary>연결 가능한 이벤트를 나타내는 <see cref="T:System.Xaml.XamlMember" />에 대해 <see cref="T:System.Xaml.XamlMember" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 멤버가 연결 가능한 이벤트 멤버를 나타내는 경우이 생성자를 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (string name, System.Xaml.XamlType declaringType, bool isAttachable);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, class System.Xaml.XamlType declaringType, bool isAttachable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.String,System.Xaml.XamlType,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, declaringType As XamlType, isAttachable As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::String ^ name, System::Xaml::XamlType ^ declaringType, bool isAttachable);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : string * System.Xaml.XamlType * bool -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (name, declaringType, isAttachable)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="declaringType" Type="System.Xaml.XamlType" />
+        <Parameter Name="isAttachable" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="name">멤버의 문자열 이름입니다.</param>
+        <param name="declaringType">선언 형식에 대한 <see cref="T:System.Xaml.XamlType" /> 정보입니다.</param>
+        <param name="isAttachable">멤버가 연결 가능하다는 것을 나타내려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</param>
+        <summary>문자열 이름을 사용하고 <see cref="T:System.Xaml.XamlMember" /> 정보를 선언하여 <see cref="T:System.Xaml.XamlType" /> 클래스의 새 인스턴스를 초기화합니다. 이 서명을 사용하여 생성된 <see cref="T:System.Xaml.XamlMember" />에는 중요한 제한이 있습니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ A <xref:System.Xaml.XamlMember> 사용 하 여 생성 된 합니다 <xref:System.Xaml.XamlMember.%23ctor%28System.String%2CSystem.Xaml.XamlType%2CSystem.Boolean%29> 서명을 반환 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A>합니다.  
+  
+ 포함 하는 로드 경로 대 한 <xref:System.Xaml.XamlObjectWriter>, 개체 그래프에는 이러한 멤버를 쓸 수 없습니다. .NET Framework XAML 서비스 구현에 사용 하는 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A?displayProperty=nameWithType> throw 호출을 <xref:System.Xaml.XamlObjectWriterException> 때 관련 <xref:System.Xaml.XamlMember> 보고서 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A>합니다.  
+  
+ 구성 하지 않아야는 <xref:System.Xaml.XamlMember> 사용 하 여 <xref:System.Xaml.XamlMember.IsUnknown%2A> `true` 구현에서 예외를 처리할 수 있습니다 <xref:System.Xaml.XamlObjectWriter>를 조정 하는 다른 방법을 만들어야 합니다 <xref:System.Xaml.XamlObjectWriter> 동작 합니다. 예를 들어, 다음 중 하나 이상의 구현의 true 수 있습니다.  
+  
+-   XAML 스키마 컨텍스트는 나중에 사용할 수 있습니다.  
+  
+-   멤버 호출자 패턴을 사용 합니다.  
+  
+-   의도적으로 재정의 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A?displayProperty=nameWithType> 사용자 지정 XAML 작성기에서.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="name" /> 또는 <paramref name="declaringType" />가 <see langword="null" />인 경우</exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (string attachablePropertyName, System.Reflection.MethodInfo getter, System.Reflection.MethodInfo setter, System.Xaml.XamlSchemaContext schemaContext);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string attachablePropertyName, class System.Reflection.MethodInfo getter, class System.Reflection.MethodInfo setter, class System.Xaml.XamlSchemaContext schemaContext) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.String,System.Reflection.MethodInfo,System.Reflection.MethodInfo,System.Xaml.XamlSchemaContext)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (attachablePropertyName As String, getter As MethodInfo, setter As MethodInfo, schemaContext As XamlSchemaContext)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::String ^ attachablePropertyName, System::Reflection::MethodInfo ^ getter, System::Reflection::MethodInfo ^ setter, System::Xaml::XamlSchemaContext ^ schemaContext);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : string * System.Reflection.MethodInfo * System.Reflection.MethodInfo * System.Xaml.XamlSchemaContext -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (attachablePropertyName, getter, setter, schemaContext)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="attachablePropertyName" Type="System.String" />
+        <Parameter Name="getter" Type="System.Reflection.MethodInfo" />
+        <Parameter Name="setter" Type="System.Reflection.MethodInfo" />
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+      </Parameters>
+      <Docs>
+        <param name="attachablePropertyName">연결 가능한 속성의 문자열 이름입니다.</param>
+        <param name="getter">연결 가능한 멤버의 지원을 구현하는 <see langword="get" /> 접근자에 대한 CLR 형식 시스템 <see cref="T:System.Reflection.MethodInfo" />입니다.</param>
+        <param name="setter">연결 가능한 멤버의 지원을 구현하는 <see langword="set" /> 접근자에 대한 CLR 형식 시스템 <see cref="T:System.Reflection.MethodInfo" />입니다.</param>
+        <param name="schemaContext">멤버를 정규화하는 <see cref="T:System.Xaml.XamlSchemaContext" /> 컨텍스트입니다.</param>
+        <summary>연결 가능한 속성을 나타내는 <see cref="T:System.Xaml.XamlMember" />에 대해 <see cref="T:System.Xaml.XamlMember" /> 클래스의 새 인스턴스를 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 멤버가 연결 가능한 속성을 나타내는 경우이 생성자를 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (string attachableEventName, System.Reflection.MethodInfo adder, System.Xaml.XamlSchemaContext schemaContext, System.Xaml.Schema.XamlMemberInvoker invoker);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string attachableEventName, class System.Reflection.MethodInfo adder, class System.Xaml.XamlSchemaContext schemaContext, class System.Xaml.Schema.XamlMemberInvoker invoker) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.String,System.Reflection.MethodInfo,System.Xaml.XamlSchemaContext,System.Xaml.Schema.XamlMemberInvoker)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (attachableEventName As String, adder As MethodInfo, schemaContext As XamlSchemaContext, invoker As XamlMemberInvoker)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::String ^ attachableEventName, System::Reflection::MethodInfo ^ adder, System::Xaml::XamlSchemaContext ^ schemaContext, System::Xaml::Schema::XamlMemberInvoker ^ invoker);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : string * System.Reflection.MethodInfo * System.Xaml.XamlSchemaContext * System.Xaml.Schema.XamlMemberInvoker -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (attachableEventName, adder, schemaContext, invoker)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="attachableEventName" Type="System.String" />
+        <Parameter Name="adder" Type="System.Reflection.MethodInfo" />
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+        <Parameter Name="invoker" Type="System.Xaml.Schema.XamlMemberInvoker" />
+      </Parameters>
+      <Docs>
+        <param name="attachableEventName">연결 가능한 이벤트의 문자열 이름입니다.</param>
+        <param name="adder">연결 가능한 멤버의 지원을 구현하는 처리기 <see langword="Add" /> 메서드에 대한 CLR 형식 시스템 <see cref="T:System.Reflection.MethodInfo" />입니다.</param>
+        <param name="schemaContext">멤버를 정규화하는 <see cref="T:System.Xaml.XamlSchemaContext" /> 컨텍스트입니다.</param>
+        <param name="invoker"><see cref="T:System.Xaml.Schema.XamlMemberInvoker" />에 대한 런타임 호출을 처리하는 <see cref="T:System.Xaml.XamlMember" /> 구현입니다.</param>
+        <summary>연결 가능한 이벤트를 나타내는 <see cref="T:System.Xaml.XamlMember" />에 대해 <see cref="T:System.Xaml.XamlMember" /> 클래스의 새 인스턴스를 <see cref="T:System.Xaml.Schema.XamlMemberInvoker" /> 정보와 함께 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 멤버가 연결 가능한 이벤트 멤버를 나타내는 경우이 생성자를 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public XamlMember (string attachablePropertyName, System.Reflection.MethodInfo getter, System.Reflection.MethodInfo setter, System.Xaml.XamlSchemaContext schemaContext, System.Xaml.Schema.XamlMemberInvoker invoker);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string attachablePropertyName, class System.Reflection.MethodInfo getter, class System.Reflection.MethodInfo setter, class System.Xaml.XamlSchemaContext schemaContext, class System.Xaml.Schema.XamlMemberInvoker invoker) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.#ctor(System.String,System.Reflection.MethodInfo,System.Reflection.MethodInfo,System.Xaml.XamlSchemaContext,System.Xaml.Schema.XamlMemberInvoker)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (attachablePropertyName As String, getter As MethodInfo, setter As MethodInfo, schemaContext As XamlSchemaContext, invoker As XamlMemberInvoker)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; XamlMember(System::String ^ attachablePropertyName, System::Reflection::MethodInfo ^ getter, System::Reflection::MethodInfo ^ setter, System::Xaml::XamlSchemaContext ^ schemaContext, System::Xaml::Schema::XamlMemberInvoker ^ invoker);" />
+      <MemberSignature Language="F#" Value="new System.Xaml.XamlMember : string * System.Reflection.MethodInfo * System.Reflection.MethodInfo * System.Xaml.XamlSchemaContext * System.Xaml.Schema.XamlMemberInvoker -&gt; System.Xaml.XamlMember" Usage="new System.Xaml.XamlMember (attachablePropertyName, getter, setter, schemaContext, invoker)" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="attachablePropertyName" Type="System.String" />
+        <Parameter Name="getter" Type="System.Reflection.MethodInfo" />
+        <Parameter Name="setter" Type="System.Reflection.MethodInfo" />
+        <Parameter Name="schemaContext" Type="System.Xaml.XamlSchemaContext" />
+        <Parameter Name="invoker" Type="System.Xaml.Schema.XamlMemberInvoker" />
+      </Parameters>
+      <Docs>
+        <param name="attachablePropertyName">연결 가능한 속성의 문자열 이름입니다.</param>
+        <param name="getter">연결 가능한 멤버의 지원을 구현하는 <see langword="get" /> 접근자에 대한 CLR 형식 시스템 <see cref="T:System.Reflection.MethodInfo" />입니다.</param>
+        <param name="setter">연결 가능한 멤버의 지원을 구현하는 <see langword="set" /> 접근자에 대한 CLR 형식 시스템 <see cref="T:System.Reflection.MethodInfo" />입니다.</param>
+        <param name="schemaContext">멤버를 정규화하는 <see cref="T:System.Xaml.XamlSchemaContext" /> 컨텍스트입니다.</param>
+        <param name="invoker"><see cref="T:System.Xaml.Schema.XamlMemberInvoker" />에 대한 런타임 호출을 처리하는 <see cref="T:System.Xaml.XamlMember" /> 구현입니다.</param>
+        <summary>연결 가능한 속성을 나타내는 <see cref="T:System.Xaml.XamlMember" />에 대해 <see cref="T:System.Xaml.XamlMember" /> 클래스의 새 인스턴스를 <see cref="T:System.Xaml.Schema.XamlMemberInvoker" /> 정보와 함께 초기화합니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 멤버가 연결 가능한 속성 멤버를 나타내는 경우이 생성자를 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DeclaringType">
+      <MemberSignature Language="C#" Value="public System.Xaml.XamlType DeclaringType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.XamlType DeclaringType" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.DeclaringType" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DeclaringType As XamlType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xaml::XamlType ^ DeclaringType { System::Xaml::XamlType ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.DeclaringType : System.Xaml.XamlType" Usage="System.Xaml.XamlMember.DeclaringType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlType" />와 연관된 멤버를 선언하는 형식의 <see cref="T:System.Xaml.XamlMember" />을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlType" />와 연관된 멤버를 선언하는 형식의 <see cref="T:System.Xaml.XamlMember" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 값은 일반적으로 초기화 하는 동안 설정 되며 일반적으로 없습니다 `null`합니다.  
+  
+> [!IMPORTANT]
+>  <xref:System.Xaml.XamlMember.DeclaringType%2A> 정보로 전달할 수에서 생성자 초기화 합니다. 기본 생성자에 대 한 초기화를 직접 호출 하 여 <xref:System.Xaml.XamlMember> 파생된 클래스가 기본 클래스에서 만든 값 확인 생략할 수 있습니다. 따라서이 더 이상 정렬 되도록 예상 되는 방식으로 기본 CLR 선언의 형식 시스템의 정보를 사용 하 여 파생 된 초기화 XAML 멤버의 보고 형식 멤버 관계 정보를 변경할 수 없습니다. 형식 정보를 선언 하는 보안에 중요 한 모든 검사에 대 한 기본 CLR 형식을 대신 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DeferringLoader">
+      <MemberSignature Language="C#" Value="public System.Xaml.Schema.XamlValueConverter&lt;System.Xaml.XamlDeferringLoader&gt; DeferringLoader { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.Schema.XamlValueConverter`1&lt;class System.Xaml.XamlDeferringLoader&gt; DeferringLoader" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.DeferringLoader" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DeferringLoader As XamlValueConverter(Of XamlDeferringLoader)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xaml::Schema::XamlValueConverter&lt;System::Xaml::XamlDeferringLoader ^&gt; ^ DeferringLoader { System::Xaml::Schema::XamlValueConverter&lt;System::Xaml::XamlDeferringLoader ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.DeferringLoader : System.Xaml.Schema.XamlValueConverter&lt;System.Xaml.XamlDeferringLoader&gt;" Usage="System.Xaml.XamlMember.DeferringLoader" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.Schema.XamlValueConverter&lt;System.Xaml.XamlDeferringLoader&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XAML 선언된 개체의 지연된 로드에 사용되는 <see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 개체를 가져옵니다.</summary>
+        <value>제네릭에 대한 <see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 제약 조건이 포함된 <see cref="T:System.Xaml.XamlDeferringLoader" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.DeferringLoader%2A> 호출 <xref:System.Xaml.XamlMember.LookupDeferringLoader%2A> 또는 메서드의 특정 재정의 합니다. 이 문제를 초기 내부 리플렉션 논리가 정보를 아직 설정 하지 않은 경우에 발생 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DependsOn">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.IList&lt;System.Xaml.XamlMember&gt; DependsOn { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.IList`1&lt;class System.Xaml.XamlMember&gt; DependsOn" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.DependsOn" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DependsOn As IList(Of XamlMember)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Generic::IList&lt;System::Xaml::XamlMember ^&gt; ^ DependsOn { System::Collections::Generic::IList&lt;System::Xaml::XamlMember ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.DependsOn : System.Collections.Generic.IList&lt;System.Xaml.XamlMember&gt;" Usage="System.Xaml.XamlMember.DependsOn" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IList&lt;System.Xaml.XamlMember&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Xaml.XamlMember" /> 개체의 목록을 가져옵니다. 초기화 순서에 대한 종속성 관계가 이 <see cref="T:System.Xaml.XamlMember" />를 기준으로 존재하는 경우 해당 멤버를 보고합니다.</summary>
+        <value><see cref="T:System.Xaml.XamlMember" /> 개체의 목록입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.DependsOn%2A> 호출 <xref:System.Xaml.XamlMember.LookupDependsOn%2A> 또는 메서드의 특정 재정의 합니다. 이 문제를 초기 내부 리플렉션 논리가 정보를 아직 설정 하지 않은 경우에 발생 합니다.  
+  
+ `DependsOn` 패턴을 의도적으로 XAML 일반적으로 일치 하지 않는 개체 모델 사례에 적용할 수 있습니다. 일반적인 XAML 규칙은 초기화 텍스트로 (또는 XAML 2009의 팩터리 메서드에) 전달 되지 않는 형식의 멤버 순서에 관계 없이 할당 수 있어야 합니다. 적용 하 여는 `DependsOn` 패턴을 멤버로 XAML 작성기에 지시할 수 있습니다 항상이 멤버 보다 먼저 참조 된 멤버를 처리 합니다. 현재 멤버의 값을 컨텍스트 또는 다른 멤버가 설정 되 면 에서만 사용할 수 있는 기타 정보에 필요한 상황에서이 패턴을 적용할 수 있습니다.  
+  
+ `DependsOn` 패턴을 신중 하 게 적용 하 고는 아키텍처 용도로 사용 되는 속성 시나리오에 대 한 예약 해야 합니다. 많은 종속성 될 XAML 처리가 느려질 수 있습니다. 또한 있기 순환 종속성을 생성 하는 경우에 XAML 처리 동작이 정의 되지 않습니다.  
+  
+ 예제 `DependsOn` 에서 특정 속성을 포함 하는 WPF에서 시나리오 <xref:System.Windows.Controls.ControlTemplate> 하 고 <xref:System.Windows.DataTemplate>의 <xref:System.Windows.Trigger>, 및 <xref:System.Windows.Setter>.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Markup.DependsOnAttribute" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Equals">
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>현재 개체가 다른 개체와 같은지 여부를 나타냅니다.</summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public override bool Equals (object obj);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool Equals(object obj) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.Equals(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function Equals (obj As Object) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool Equals(System::Object ^ obj);" />
+      <MemberSignature Language="F#" Value="override this.Equals : obj -&gt; bool" Usage="xamlMember.Equals obj" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="obj" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="obj">이 개체와 비교할 개체입니다.</param>
+        <summary>현재 개체가 다른 개체와 같은지 여부를 나타냅니다.</summary>
+        <returns>현재 개체가 <paramref name="obj" /> 매개 변수와 같으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Equals">
+      <MemberSignature Language="C#" Value="public bool Equals (System.Xaml.XamlMember other);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance bool Equals(class System.Xaml.XamlMember other) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.Equals(System.Xaml.XamlMember)" />
+      <MemberSignature Language="VB.NET" Value="Public Function Equals (other As XamlMember) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual bool Equals(System::Xaml::XamlMember ^ other);" />
+      <MemberSignature Language="F#" Value="override this.Equals : System.Xaml.XamlMember -&gt; bool" Usage="xamlMember.Equals other" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IEquatable`1.Equals(`0)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="other" Type="System.Xaml.XamlMember" />
+      </Parameters>
+      <Docs>
+        <param name="other">이 개체와 비교할 개체입니다.</param>
+        <summary>현재 개체가 동일한 형식의 다른 개체와 같은지 여부를 나타냅니다.</summary>
+        <returns>현재 개체가 <paramref name="other" /> 매개 변수와 같으면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetHashCode">
+      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetHashCode() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.GetHashCode" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function GetHashCode () As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int GetHashCode();" />
+      <MemberSignature Language="F#" Value="override this.GetHashCode : unit -&gt; int" Usage="xamlMember.GetHashCode " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>해당 개체의 해시 코드를 반환합니다.</summary>
+        <returns>정수 해시 코드입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetXamlNamespaces">
+      <MemberSignature Language="C#" Value="public virtual System.Collections.Generic.IList&lt;string&gt; GetXamlNamespaces ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.Collections.Generic.IList`1&lt;string&gt; GetXamlNamespaces() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.GetXamlNamespaces" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function GetXamlNamespaces () As IList(Of String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::Collections::Generic::IList&lt;System::String ^&gt; ^ GetXamlNamespaces();" />
+      <MemberSignature Language="F#" Value="abstract member GetXamlNamespaces : unit -&gt; System.Collections.Generic.IList&lt;string&gt;&#xA;override this.GetXamlNamespaces : unit -&gt; System.Collections.Generic.IList&lt;string&gt;" Usage="xamlMember.GetXamlNamespaces " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IList&lt;System.String&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 XAML 멤버가 있을 수 있는 XAML 네임스페이스의 목록을 반환합니다.</summary>
+        <returns>문자열로 제공되는 XAML 네임스페이스 식별자 목록입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현은 반환 합니다 <xref:System.Xaml.XamlType.GetXamlNamespaces%2A?displayProperty=nameWithType> 호출에서 결과 <xref:System.Xaml.XamlMember.DeclaringType%2A> 이 사용 하 여 연결 된 <xref:System.Xaml.XamlMember>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Invoker">
+      <MemberSignature Language="C#" Value="public System.Xaml.Schema.XamlMemberInvoker Invoker { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.Schema.XamlMemberInvoker Invoker" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.Invoker" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Invoker As XamlMemberInvoker" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xaml::Schema::XamlMemberInvoker ^ Invoker { System::Xaml::Schema::XamlMemberInvoker ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Invoker : System.Xaml.Schema.XamlMemberInvoker" Usage="System.Xaml.XamlMember.Invoker" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.Schema.XamlMemberInvoker</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.Schema.XamlMemberInvoker" />과 연결된 <see cref="T:System.Xaml.XamlMember" /> 구현을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.Schema.XamlMemberInvoker" />과 연결된 <see cref="T:System.Xaml.XamlMember" /> 구현입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `Invoker` 패턴은 고급 XAML 형식 시스템 확장 기술 합니다. `Invoker` 패턴은.NET Framework XAML 서비스에서 XAML 형식 시스템 정의 사용 하 여 다른 스키마 형식 매핑 동작을 삽입 하는 방법을 제공 합니다.  
+  
+ 경우는 <xref:System.Xaml.XamlMember.LookupInvoker%2A> 반환 재정의 `null`, 기본 구현을 반환 하는 경우 또는 `null` 없기 때문를 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 이 대 한 <xref:System.Xaml.XamlMember>의 <xref:System.Xaml.XamlMember.Invoker%2A> 속성에서 반환 <xref:System.Xaml.Schema.XamlMemberInvoker.UnknownInvoker%2A?displayProperty=nameWithType>.  
+  
+ <xref:System.Xaml.Schema.XamlMemberInvoker.UnknownInvoker%2A?displayProperty=nameWithType>가 기본값입니다. 이.NET Framework XAML 서비스 및 기본 XAML 스키마 컨텍스트를 사용 하는 관련 없는 재정의할 경우 대부분의 작업에 대해 true `Invoker` 패턴 XAML 형식 시스템 엔터티의 생성을 위해 전달 됩니다.  
+  
+ 호출 <xref:System.Xaml.XamlMember.Invoker%2A> 호출 <xref:System.Xaml.XamlMember.LookupInvoker%2A> 또는 메서드의 특정 재정의 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsAmbient">
+      <MemberSignature Language="C#" Value="public bool IsAmbient { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsAmbient" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsAmbient" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsAmbient As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsAmbient { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsAmbient : bool" Usage="System.Xaml.XamlMember.IsAmbient" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 앰비언트 속성으로 보고되는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 앰비언트 속성으로 보고되면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.IsAmbient%2A> 호출 <xref:System.Xaml.XamlMember.LookupIsAmbient%2A> 또는 메서드의 특정 재정의 합니다. 여기서는 초기 내부 리플렉션 논리가 정보를 아직 설정 하지 않은 구현에서이 문제가 발생 합니다.  
+  
+ 앰비언트 속성에 대 한 검사는 일반적으로 일부 개체 및 형식 한정자에 대 한 앰비언트 사용에 의존 하는 값을 올바르게 작동할 수 있도록 하는 XAML 처리 논리입니다. .NET Framework XAML 서비스 Api 및 기본 XAML 스키마 컨텍스트를 사용 하 여 특성을 기반으로이 값을 채웁니다 <xref:System.Windows.Markup.AmbientAttribute>합니다. 기본 구현을 <xref:System.Xaml.XamlMember.LookupIsAmbient%2A> 사용이 기존 <xref:System.Windows.Markup.AmbientAttribute> 기법을 반환 `true` 경우 <xref:System.Windows.Markup.AmbientAttribute> 멤버 선언에 있습니다.  
+  
+ <xref:System.Windows.Markup.AmbientAttribute> 포함 하는 몇 가지 WPF 형식 멤버에서 발견 되 <xref:System.Windows.Application>, <xref:System.Windows.Setter>, 및 <xref:System.Windows.Style>합니다. 또한에서 발견 된 합니다 <xref:System.Windows.ResourceDictionary> 형식을 사용 하는 모든 멤버를 지정 하는데 <xref:System.Windows.ResourceDictionary> 해당 형식을 고려해 야 앰비언트 멤버 특히 인 경우에으로 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Markup.AmbientAttribute" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsAttachable">
+      <MemberSignature Language="C#" Value="public bool IsAttachable { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsAttachable" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsAttachable" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsAttachable As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsAttachable { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsAttachable : bool" Usage="System.Xaml.XamlMember.IsAttachable" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 연결 가능한 멤버인지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 연결 가능한 멤버이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Xaml.XamlMember.IsAttachable%2A> 생성자를 생성 하는 데 사용 된에 따라 값이 초기화는 <xref:System.Xaml.XamlMember>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsDirective">
+      <MemberSignature Language="C#" Value="public bool IsDirective { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsDirective" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsDirective" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsDirective As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsDirective { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsDirective : bool" Usage="System.Xaml.XamlMember.IsDirective" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 XAML 지시문인지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 XAML 지시문이면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 합니다 <xref:System.Xaml.XamlMember.IsDirective%2A> 생성자를 생성 하는 데 사용 된에 따라 값이 초기화는 <xref:System.Xaml.XamlMember>합니다. 기본 <xref:System.Xaml.XamlMember> 생성자는 초기화 되도록 <xref:System.Xaml.XamlMember.IsDirective%2A> 는 `false`합니다. 그러나 합니다 <xref:System.Xaml.XamlDirective> 클래스 (을 <xref:System.Xaml.XamlMember> 파생 클래스)를 초기화 있도록 <xref:System.Xaml.XamlMember.IsDirective%2A> 는 `true`합니다.  
+  
+ 보고 하려는 경우 <xref:System.Xaml.XamlMember.IsDirective%2A> 으로 `true` XAML 멤버에 대 한 사용자 지정 XAML 스키마 클래스의 호출자에 게 확인에서 파생 되어야 <xref:System.Xaml.XamlDirective> 해당 동작을 사용 하는 유일한 방법은 이기 때문입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsEvent">
+      <MemberSignature Language="C#" Value="public bool IsEvent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsEvent" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsEvent" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsEvent As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsEvent { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsEvent : bool" Usage="System.Xaml.XamlMember.IsEvent" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 이벤트 멤버를 나타내는지 여부를 표시하는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 이벤트를 나타내면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.IsEvent%2A> 호출 <xref:System.Xaml.XamlMember.LookupIsEvent%2A> 또는 메서드의 특정 재정의 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsNameValid">
+      <MemberSignature Language="C#" Value="public bool IsNameValid { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsNameValid" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsNameValid" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsNameValid As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsNameValid { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsNameValid : bool" Usage="System.Xaml.XamlMember.IsNameValid" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 유효한 <see langword="xamlName" /> 문자열을 <see cref="P:System.Xaml.XamlMember.Name" />으로 사용하여 초기화되었는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 유효한 <see langword="true" /> 문자열을 사용하여 초기화되었으면 <see langword="xamlName" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>To be added.</remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/11e4cada-41d2-494d-9531-0d3df4dfcbe3">XamlName</related>
+      </Docs>
+    </Member>
+    <Member MemberName="IsReadOnly">
+      <MemberSignature Language="C#" Value="public bool IsReadOnly { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsReadOnly" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsReadOnly" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsReadOnly As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsReadOnly { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsReadOnly : bool" Usage="System.Xaml.XamlMember.IsReadOnly" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 읽기 전용 멤버를 나타내는지 여부를 표시하는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 읽기 전용 멤버를 나타내면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.IsReadOnly%2A> 호출 <xref:System.Xaml.XamlMember.LookupIsReadOnly%2A> 또는 메서드의 특정 재정의 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsReadPublic">
+      <MemberSignature Language="C#" Value="public bool IsReadPublic { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsReadPublic" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsReadPublic" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsReadPublic As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsReadPublic { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsReadPublic : bool" Usage="System.Xaml.XamlMember.IsReadPublic" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 호출 가능한 public <see langword="get" /> 접근자가 있는 멤버를 나타내는지 여부를 표시하는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 호출 가능한 public <see langword="true" /> 접근자를 나타내면 <see langword="get" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Xaml.XamlMember.IsReadPublic%2A> 여부 검사 값을 <xref:System.Xaml.XamlMember.DeclaringType%2A> 공개 합니다. 하는 경우 <xref:System.Xaml.XamlMember.DeclaringType%2A> 가 public이 아닌 경우는 `get` 접근자는 실용적인 방식으로 호출할 수 없습니다 및 <xref:System.Xaml.XamlMember.IsReadPublic%2A> 반환 `false`합니다.  
+  
+ 호출 <xref:System.Xaml.XamlMember.IsReadPublic%2A> 호출 <xref:System.Xaml.XamlMember.LookupIsReadPublic%2A> 또는 메서드의 특정 재정의 합니다.  
+  
+> [!IMPORTANT]
+>  <xref:System.Xaml.XamlMember.LookupIsReadPublic%2A> 메서드가 가상 이며 따라서 재정의할 수 있습니다. 재정의는 정보를 변경 하려면 (악의적으로 또는 그렇지 않은 경우) 보고 액세스 XAML 멤버의이 더 이상 정렬 되도록 예상 되는 방식으로 기본 CLR 선언의 형식 시스템 액세스 정보를 사용 하 여 될 수 없습니다. 액세스 수준 보안에 중요 한 모든 검사에 대 한 기본 CLR 형식을 대신 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsUnknown">
+      <MemberSignature Language="C#" Value="public bool IsUnknown { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsUnknown" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsUnknown" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsUnknown As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsUnknown { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsUnknown : bool" Usage="System.Xaml.XamlMember.IsUnknown" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>멤버가 형식 및 멤버 확인에 사용되는 지원 시스템에서 확인될 수 없는지 여부를 나타내는 값을 가져옵니다.</summary>
+        <value>멤버를 확인할 수 없으면 <see langword="true" />이고, 멤버를 확인할 수 있으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ A <xref:System.Xaml.XamlMember> 사용 하 여 생성 된 합니다 <xref:System.Xaml.XamlMember.%23ctor%28System.String%2CSystem.Xaml.XamlType%2CSystem.Boolean%29> 서명을 반환 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A>합니다.  
+  
+ 포함 하는 로드 경로 대 한 <xref:System.Xaml.XamlObjectWriter>, a <xref:System.Xaml.XamlMember> 사용 하 여 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A> 개체 그래프에 쓸 수 없습니다. .NET Framework XAML 서비스 api에서 기본 구현에서의 <xref:System.Xaml.XamlObjectWriter.WriteStartMember%2A?displayProperty=nameWithType> throw 호출을 <xref:System.Xaml.XamlObjectWriterException> 때 관련 <xref:System.Xaml.XamlMember> 보고서 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A>합니다.  
+  
+ 구성 하지 않아야는 <xref:System.Xaml.XamlMember> 의 값이 있는 `true` 에 대 한 <xref:System.Xaml.XamlMember.IsUnknown%2A> 구현에서 예외를 처리할 수 있습니다 <xref:System.Xaml.XamlObjectWriter>를 조정 하는 다른 방법을 만들어야 합니다 <xref:System.Xaml.XamlObjectWriter> 동작 합니다.  
+  
+ 호출 <xref:System.Xaml.XamlMember.IsUnknown%2A> 호출 <xref:System.Xaml.XamlMember.LookupIsUnknown%2A> 또는 메서드의 특정 재정의 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsWriteOnly">
+      <MemberSignature Language="C#" Value="public bool IsWriteOnly { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsWriteOnly" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsWriteOnly" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsWriteOnly As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsWriteOnly { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsWriteOnly : bool" Usage="System.Xaml.XamlMember.IsWriteOnly" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 쓰기 전용 멤버를 나타내는지 여부를 표시하는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 쓰기 전용 멤버를 나타내면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.IsWriteOnly%2A> 호출 <xref:System.Xaml.XamlMember.LookupIsWriteOnly%2A> 또는 메서드의 특정 재정의 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="IsWritePublic">
+      <MemberSignature Language="C#" Value="public bool IsWritePublic { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsWritePublic" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.IsWritePublic" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsWritePublic As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsWritePublic { bool get(); };" />
+      <MemberSignature Language="F#" Value="member this.IsWritePublic : bool" Usage="System.Xaml.XamlMember.IsWritePublic" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 호출 가능한 public <see langword="set" /> 접근자가 있는 멤버를 나타내는지 여부를 표시하는 값을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />가 호출 가능한 public <see langword="true" /> 접근자를 나타내면 <see langword="set" />이고, 그렇지 않으면 <see langword="false" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Xaml.XamlMember.IsWritePublic%2A> 값으로 간주 하는지 여부를 <xref:System.Xaml.XamlMember.DeclaringType%2A> 공용 결정의 일환으로 합니다. 하는 경우 <xref:System.Xaml.XamlMember.DeclaringType%2A> 가 public이 아닌 경우는 `set` 접근자는 실용적인 방식으로 호출할 수 없습니다 및 <xref:System.Xaml.XamlMember.IsWritePublic%2A> 반환 `false`합니다.  
+  
+ 호출 <xref:System.Xaml.XamlMember.IsWritePublic%2A> 호출 <xref:System.Xaml.XamlMember.LookupIsWritePublic%2A> 또는 메서드의 특정 재정의 합니다.  
+  
+> [!IMPORTANT]
+>  <xref:System.Xaml.XamlMember.LookupIsWritePublic%2A> 메서드가 가상 이며 따라서 재정의할 수 있습니다. 재정의는 정보를 변경 하려면 (악의적으로 또는 그렇지 않은 경우) 보고 액세스 XAML 멤버의이 더 이상 정렬 되도록 예상 되는 방식으로 기본 CLR 선언의 형식 시스템 액세스 정보를 사용 하 여 될 수 없습니다. 액세스 수준 보안에 중요 한 모든 검사에 대 한 기본 CLR 형식을 대신 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LookupCustomAttributeProvider">
+      <MemberSignature Language="C#" Value="protected virtual System.Reflection.ICustomAttributeProvider LookupCustomAttributeProvider ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Reflection.ICustomAttributeProvider LookupCustomAttributeProvider() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupCustomAttributeProvider" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupCustomAttributeProvider () As ICustomAttributeProvider" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Reflection::ICustomAttributeProvider ^ LookupCustomAttributeProvider();" />
+      <MemberSignature Language="F#" Value="abstract member LookupCustomAttributeProvider : unit -&gt; System.Reflection.ICustomAttributeProvider&#xA;override this.LookupCustomAttributeProvider : unit -&gt; System.Reflection.ICustomAttributeProvider" Usage="xamlMember.LookupCustomAttributeProvider " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.ICustomAttributeProvider</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>파생 클래스에서 구현되는 경우 <see cref="T:System.Reflection.ICustomAttributeProvider" /> 구현을 반환합니다.</summary>
+        <returns><see cref="T:System.Reflection.ICustomAttributeProvider" /> 구현입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 내부 CLR 특성 값을 얻을 수 있는 대체 방법으로 리플렉션을 제공 하려면이 메서드를 재정의 합니다. 가 없을 경우 재정의 내부 리플렉터를 사용 하 여에 대 한 호출 등의 일반적인 CLR 리플렉션 논리 <xref:System.Reflection.CustomAttributeData.GetCustomAttributes%2A>합니다.  
+  
+ 기본 구현은 `null`를 반환합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LookupDeferringLoader">
+      <MemberSignature Language="C#" Value="protected virtual System.Xaml.Schema.XamlValueConverter&lt;System.Xaml.XamlDeferringLoader&gt; LookupDeferringLoader ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Xaml.Schema.XamlValueConverter`1&lt;class System.Xaml.XamlDeferringLoader&gt; LookupDeferringLoader() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupDeferringLoader" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupDeferringLoader () As XamlValueConverter(Of XamlDeferringLoader)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Xaml::Schema::XamlValueConverter&lt;System::Xaml::XamlDeferringLoader ^&gt; ^ LookupDeferringLoader();" />
+      <MemberSignature Language="F#" Value="abstract member LookupDeferringLoader : unit -&gt; System.Xaml.Schema.XamlValueConverter&lt;System.Xaml.XamlDeferringLoader&gt;&#xA;override this.LookupDeferringLoader : unit -&gt; System.Xaml.Schema.XamlValueConverter&lt;System.Xaml.XamlDeferringLoader&gt;" Usage="xamlMember.LookupDeferringLoader " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.Schema.XamlValueConverter&lt;System.Xaml.XamlDeferringLoader&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>XAML 선언된 개체의 지연된 로드에 사용되는 <see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 개체를 반환합니다.</summary>
+        <returns>제네릭에 대한 <see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 제약 조건이 있는 <see cref="T:System.Xaml.XamlDeferringLoader" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 가져올 때이 메서드가 호출 되는 <xref:System.Xaml.XamlMember.DeferringLoader%2A> 속성입니다. 원하는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember.DeferringLoader%2A> 기본 내부 리플렉션을 통해 사용할 수 있는 값과 다른 값을 반환할 사용자 지정 제공 하는 경우 및 <xref:System.Xaml.Schema.XamlMemberInvoker> 정보입니다.  
+  
+ 기본 구현에서는 개체를 반환 하거나 읽는 <xref:System.Windows.Markup.XamlDeferLoadAttribute> 를 사용 하 여 또는 <xref:System.Xaml.XamlDeferringLoader> 선언 형식에서입니다. 어떤 개체도 사용 가능한 경우이 메서드가 반환 될 수 있습니다 `null`합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.DeferringLoader" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupDependsOn">
+      <MemberSignature Language="C#" Value="protected virtual System.Collections.Generic.IList&lt;System.Xaml.XamlMember&gt; LookupDependsOn ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Collections.Generic.IList`1&lt;class System.Xaml.XamlMember&gt; LookupDependsOn() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupDependsOn" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupDependsOn () As IList(Of XamlMember)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Collections::Generic::IList&lt;System::Xaml::XamlMember ^&gt; ^ LookupDependsOn();" />
+      <MemberSignature Language="F#" Value="abstract member LookupDependsOn : unit -&gt; System.Collections.Generic.IList&lt;System.Xaml.XamlMember&gt;&#xA;override this.LookupDependsOn : unit -&gt; System.Collections.Generic.IList&lt;System.Xaml.XamlMember&gt;" Usage="xamlMember.LookupDependsOn " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IList&lt;System.Xaml.XamlMember&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Xaml.XamlMember" /> 개체의 목록을 반환합니다. 이 목록의 항목은 초기화 순서에 대한 종속성 관계가 이 <see cref="T:System.Xaml.XamlMember" />를 기준으로 존재하는 멤버를 보고합니다.</summary>
+        <returns><see cref="T:System.Xaml.XamlMember" /> 개체의 목록입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 가져올 때이 메서드가 호출 되는 <xref:System.Xaml.XamlMember.DependsOn%2A> 속성입니다. 원하는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember.DependsOn%2A> 기본 내부 리플렉션을 통해 사용할 수 있는 값과 다른 값을 반환할 사용자 지정 제공 하는 경우 및 <xref:System.Xaml.Schema.XamlMemberInvoker> 정보입니다.  
+  
+ WPF XAML 판독기 및 작성기 구현을 사용 하 여이 경우 특성 <xref:System.Windows.Markup.DependsOnAttribute>합니다. 기본 구현은 사용이 기존 <xref:System.Windows.Markup.DependsOnAttribute> 기법입니다.  
+  
+ 사용 하지 않는 경우이 메서드를 재정의 <xref:System.Windows.Markup.DependsOnAttribute> 이 용도의 및을 자신의 기술 사용 하 여 속성 처리 순서를 나타내는 기술을 교체 하려고 합니다. 속성 처리 순서를 지원 하지 않을 경우에 적절 한 없는 결과 반환 하므로 기본 구현은 사용할 수 있습니다.  
+  
+ 목록은 읽기 전용입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.DependsOn" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupInvoker">
+      <MemberSignature Language="C#" Value="protected virtual System.Xaml.Schema.XamlMemberInvoker LookupInvoker ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Xaml.Schema.XamlMemberInvoker LookupInvoker() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupInvoker" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupInvoker () As XamlMemberInvoker" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Xaml::Schema::XamlMemberInvoker ^ LookupInvoker();" />
+      <MemberSignature Language="F#" Value="abstract member LookupInvoker : unit -&gt; System.Xaml.Schema.XamlMemberInvoker&#xA;override this.LookupInvoker : unit -&gt; System.Xaml.Schema.XamlMemberInvoker" Usage="xamlMember.LookupInvoker " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.Schema.XamlMemberInvoker</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.Schema.XamlMemberInvoker" />과 연결된 <see cref="T:System.Xaml.XamlMember" />를 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Xaml.Schema.XamlMemberInvoker" />에 대한 <see cref="T:System.Xaml.XamlMember" /> 정보이거나 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드를 호출 하 여 <xref:System.Xaml.XamlMember.Invoker%2A>입니다.  
+  
+ 기본 구현은 것을 요구 하지 않는 한 <xref:System.Xaml.XamlMember> 초기를 전달 하는 생성자 중 하나를 사용 하 여 생성할 수 <xref:System.Xaml.Schema.XamlMemberInvoker>입니다. 그러나는 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 에 대 한 값이 있어야 합니다 <xref:System.Xaml.XamlMember>이 고, 그렇지 않으면 기본 구현은 반환 `null`합니다.  
+  
+ 또한에서 파생 하는 경우이 메서드를 재정의 <xref:System.Xaml.Schema.XamlMemberInvoker> 하며, 파생된 클래스를 반환 합니다. 반환 하는 경우 `null`하십시오 <xref:System.Xaml.XamlMember.Invoker%2A> 반환 <xref:System.Xaml.Schema.XamlMemberInvoker.UnknownInvoker%2A?displayProperty=nameWithType> 호출자에 게 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.Invoker" />
+        <altmember cref="T:System.Xaml.Schema.XamlMemberInvoker" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIsAmbient">
+      <MemberSignature Language="C#" Value="protected virtual bool LookupIsAmbient ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool LookupIsAmbient() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupIsAmbient" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupIsAmbient () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool LookupIsAmbient();" />
+      <MemberSignature Language="F#" Value="abstract member LookupIsAmbient : unit -&gt; bool&#xA;override this.LookupIsAmbient : unit -&gt; bool" Usage="xamlMember.LookupIsAmbient " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 앰비언트 속성으로 보고되는지 여부를 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Xaml.XamlMember" />를 앰비언트 속성으로 보고하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 앰비언트 XAML 속성 정보를 확인 하는 내부 호출에 의해 호출 됩니다. XAML 판독기 및 XAML 작성기의 공용 API 동작에서 앰비언트 속성 동작 고려 됩니다. 참조 하는 내부 호출 <xref:System.Xaml.XamlMember.LookupIsAmbient%2A> 개체 및 형식 한정자에 대 한 앰비언트 사용에 의존 하는 값을 올바르게 작동할 수 있도록 하는 XAML 처리 논리의 일부인 일반적으로 합니다. 기본.NET Framework XAML 서비스 구현은 CLR 리플렉션에서 지원 형식을 통해이 정보를 얻으려면 특성을 사용 합니다. 기본 구현에 대 한 검사는 특히 <xref:System.Windows.Markup.AmbientAttribute> 반환 `true` 에 대 한 <xref:System.Xaml.XamlMember.LookupIsAmbient%2A> 경우 <xref:System.Windows.Markup.AmbientAttribute> 멤버 정의에 존재 합니다.  
+  
+ 사용 하지 않는 경우이 메서드를 재정의 <xref:System.Windows.Markup.AmbientAttribute> 이 용도의 및을 자신의 기술 사용 하 여 앰비언트 XAML 속성을 나타내는 기술을 교체 하려고 합니다.  
+  
+ 특성을 WPF Api 예제의 <xref:System.Windows.Markup.AmbientAttribute> 됩니다 <xref:System.Windows.Trigger.Property%2A?displayProperty=nameWithType> 고 <xref:System.Windows.Style.BasedOn%2A?displayProperty=nameWithType>입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Markup.AmbientAttribute" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIsEvent">
+      <MemberSignature Language="C#" Value="protected virtual bool LookupIsEvent ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool LookupIsEvent() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupIsEvent" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupIsEvent () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool LookupIsEvent();" />
+      <MemberSignature Language="F#" Value="abstract member LookupIsEvent : unit -&gt; bool&#xA;override this.LookupIsEvent : unit -&gt; bool" Usage="xamlMember.LookupIsEvent " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 이벤트를 나타내는지 여부를 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Xaml.XamlMember" />가 이벤트를 나타낸다고 보고하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현 검사 여부를 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 유형의 <xref:System.Reflection.EventInfo>, 인 경우 반환 `true`합니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.IsEvent%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 사례 별로 사용 가능한 메타 데이터가 XAML 결정할 해석 될 수 있는 특수 한 있는 경우 또는 형식 시스템 표현을 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.IsEvent" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIsReadOnly">
+      <MemberSignature Language="C#" Value="protected virtual bool LookupIsReadOnly ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool LookupIsReadOnly() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupIsReadOnly" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupIsReadOnly () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool LookupIsReadOnly();" />
+      <MemberSignature Language="F#" Value="abstract member LookupIsReadOnly : unit -&gt; bool&#xA;override this.LookupIsReadOnly : unit -&gt; bool" Usage="xamlMember.LookupIsReadOnly " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 의도된 읽기 전용 속성을 나타내는지 여부를 반환합니다.</summary>
+        <returns><see cref="T:System.Xaml.XamlMember" />를 의도된 읽기 전용 속성으로 보고하려면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현은 반환 `true` 하는 경우 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 있지만, 공용 `set` 내부 리플렉션에 의해 결정 된 대로 접근자를 존재 하지 않습니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.IsReadOnly%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 사례 별로 사용 가능한 메타 데이터가 XAML 결정할 해석 될 수 있는 특수 한 있는 경우 또는 형식 시스템 표현을 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.IsReadOnly" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIsReadPublic">
+      <MemberSignature Language="C#" Value="protected virtual bool LookupIsReadPublic ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool LookupIsReadPublic() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupIsReadPublic" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupIsReadPublic () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool LookupIsReadPublic();" />
+      <MemberSignature Language="F#" Value="abstract member LookupIsReadPublic : unit -&gt; bool&#xA;override this.LookupIsReadPublic : unit -&gt; bool" Usage="xamlMember.LookupIsReadPublic " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 public <see langword="get" /> 접근자가 있는 속성을 나타내는지 여부를 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Xaml.XamlMember" />가 public <see langword="true" />접근자가 있는 속성임을 나타내면 <see langword="get" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 내부 리플렉션 또는의 부정을 나타내는 결과 반환 하는 기본 구현은 <xref:System.Xaml.XamlMember.IsWriteOnly%2A>, 그 순서 대로 처리 합니다.  
+  
+ <xref:System.Xaml.XamlMember.LookupIsReadPublic%2A> 멤버 자체를 공용으로 인지 여부를 반환 합니다. 반환 `true` 비공용 선언 형식에 public 멤버에 대 한 합니다. 사용 하 여 <xref:System.Xaml.XamlMember.IsReadPublic%2A> 대신도 선언 형식의 표시 여부를 고려해 야 할 경우.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.IsReadPublic%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우.  
+  
+> [!IMPORTANT]
+>  <xref:System.Xaml.XamlMember.LookupIsReadPublic%2A> 메서드가 가상 이며 따라서 재정의할 수 있습니다. 재정의는 정보를 변경 하려면 (악의적으로 또는 그렇지 않은 경우) 보고 액세스 XAML 멤버의이 더 이상 정렬 되도록 예상 되는 방식으로 기본 CLR 선언의 형식 시스템 액세스 정보를 사용 하 여 될 수 없습니다. 액세스 수준 보안에 중요 한 모든 검사에 대 한 기본 CLR 형식을 대신 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.IsReadPublic" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIsUnknown">
+      <MemberSignature Language="C#" Value="protected virtual bool LookupIsUnknown ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool LookupIsUnknown() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupIsUnknown" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupIsUnknown () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool LookupIsUnknown();" />
+      <MemberSignature Language="F#" Value="abstract member LookupIsUnknown : unit -&gt; bool&#xA;override this.LookupIsUnknown : unit -&gt; bool" Usage="xamlMember.LookupIsUnknown " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 형식 및 멤버 확인에 사용되는 지원 시스템에서 확인될 수 없는 멤버를 나타내는지 여부를 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Xaml.XamlMember" />가 확인할 수 없는 멤버를 나타내면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 값을 가져올 때이 메서드를 호출할 수 있습니다 <xref:System.Xaml.XamlMember.IsUnknown%2A>합니다. 기본 구현은 반환 하거나 내부 리플렉션 기반 또는 검사에 대 한 결과 `null` 의 값 <xref:System.Xaml.XamlMember.UnderlyingMember%2A>해당 순서 대로 처리 하 합니다.  
+  
+ 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.IsUnknown" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIsWriteOnly">
+      <MemberSignature Language="C#" Value="protected virtual bool LookupIsWriteOnly ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool LookupIsWriteOnly() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupIsWriteOnly" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupIsWriteOnly () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool LookupIsWriteOnly();" />
+      <MemberSignature Language="F#" Value="abstract member LookupIsWriteOnly : unit -&gt; bool&#xA;override this.LookupIsWriteOnly : unit -&gt; bool" Usage="xamlMember.LookupIsWriteOnly " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 public <see langword="set" /> 접근자는 있지만 public <see langword="get" /> 접근자는 없는 멤버를 나타내는지 여부를 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Xaml.XamlMember" />가 쓰기 전용 멤버를 나타내면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현은 반환 `true` 경우는 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 존재 있는 공용 `set` 접근자 및 비공용 `get` 접근자 내부 리플렉션을 기준으로 합니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.IsWriteOnly%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.IsWriteOnly" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupIsWritePublic">
+      <MemberSignature Language="C#" Value="protected virtual bool LookupIsWritePublic ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance bool LookupIsWritePublic() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupIsWritePublic" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupIsWritePublic () As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual bool LookupIsWritePublic();" />
+      <MemberSignature Language="F#" Value="abstract member LookupIsWritePublic : unit -&gt; bool&#xA;override this.LookupIsWritePublic : unit -&gt; bool" Usage="xamlMember.LookupIsWritePublic " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />가 public <see langword="set" /> 접근자가 있는 멤버를 나타내는지 여부를 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Xaml.XamlMember" />가 쓰기 가능한 멤버를 나타내면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현은 반환 결과 따라 내부 리플렉션 또는의 부정을 나타내는 <xref:System.Xaml.XamlMember.IsReadOnly%2A>, 그 순서 대로 처리 합니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.IsWritePublic%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우.  
+  
+> [!IMPORTANT]
+>  <xref:System.Xaml.XamlMember.LookupIsWritePublic%2A> 메서드가 가상 이며 따라서 재정의할 수 있습니다. 재정의는 정보를 변경 하려면 (악의적으로 또는 그렇지 않은 경우) 보고 액세스 XAML 멤버의이 더 이상 정렬 되도록 예상 되는 방식으로 기본 CLR 선언의 형식 시스템 액세스 정보를 사용 하 여 될 수 없습니다. 액세스 수준 보안에 중요 한 모든 검사에 대 한 기본 CLR 형식을 대신 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.IsWritePublic" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupMarkupExtensionBracketCharacters">
+      <MemberSignature Language="C#" Value="protected virtual System.Collections.Generic.IReadOnlyDictionary&lt;char,char&gt; LookupMarkupExtensionBracketCharacters ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Collections.Generic.IReadOnlyDictionary`2&lt;char, char&gt; LookupMarkupExtensionBracketCharacters() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupMarkupExtensionBracketCharacters" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupMarkupExtensionBracketCharacters () As IReadOnlyDictionary(Of Char, Char)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Collections::Generic::IReadOnlyDictionary&lt;char, char&gt; ^ LookupMarkupExtensionBracketCharacters();" />
+      <MemberSignature Language="F#" Value="abstract member LookupMarkupExtensionBracketCharacters : unit -&gt; System.Collections.Generic.IReadOnlyDictionary&lt;char, char&gt;&#xA;override this.LookupMarkupExtensionBracketCharacters : unit -&gt; System.Collections.Generic.IReadOnlyDictionary&lt;char, char&gt;" Usage="xamlMember.LookupMarkupExtensionBracketCharacters " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IReadOnlyDictionary&lt;System.Char,System.Char&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>태그 확장에 대해 여는 대괄호와 닫는 대괄호 문자를 반환합니다.</summary>
+        <returns>여는 대괄호와 닫는 대괄호 문자를 포함하는 컬렉션입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LookupTargetType">
+      <MemberSignature Language="C#" Value="protected virtual System.Xaml.XamlType LookupTargetType ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Xaml.XamlType LookupTargetType() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupTargetType" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupTargetType () As XamlType" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Xaml::XamlType ^ LookupTargetType();" />
+      <MemberSignature Language="F#" Value="abstract member LookupTargetType : unit -&gt; System.Xaml.XamlType&#xA;override this.LookupTargetType : unit -&gt; System.Xaml.XamlType" Usage="xamlMember.LookupTargetType " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary><see cref="T:System.Xaml.XamlType" />가 있을 수 있는 형식의 <see cref="T:System.Xaml.XamlMember" />을 반환합니다.</summary>
+        <returns><see cref="T:System.Xaml.XamlMember" />가 있을 수 있는 형식입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현에서는 연결 가능한 및 연결할 수 없는 멤버를 구분합니다. 연결할 수 없는 멤버에 대 한 <xref:System.Xaml.XamlMember.LookupTargetType%2A> 항상 반환 <xref:System.Xaml.XamlMember.DeclaringType%2A>합니다. 연결 가능한 멤버에 대 한 <xref:System.Xaml.XamlMember.LookupTargetType%2A> 검사에 따라 결과 반환 합니다 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 접근자 매개 변수 형식은 형식 컨텍스트를 기반으로 XAML 스키마를 해석 하 고 합니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.TargetType%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.TargetType" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupType">
+      <MemberSignature Language="C#" Value="protected virtual System.Xaml.XamlType LookupType ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Xaml.XamlType LookupType() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupType" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupType () As XamlType" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Xaml::XamlType ^ LookupType();" />
+      <MemberSignature Language="F#" Value="abstract member LookupType : unit -&gt; System.Xaml.XamlType&#xA;override this.LookupType : unit -&gt; System.Xaml.XamlType" Usage="xamlMember.LookupType " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlType</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 멤버가 사용하는 형식의 <see cref="T:System.Xaml.XamlType" />을 반환합니다.</summary>
+        <returns>이 멤버가 사용하는 형식의 <see cref="T:System.Xaml.XamlType" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.Type%2A>합니다. 원하는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember.Type%2A> 기본 내부 리플렉션을 통해 사용할 수 있는 값과 다른 값을 반환할 사용자 지정 제공 하는 경우 및 <xref:System.Xaml.Schema.XamlMemberInvoker> 정보입니다.  
+  
+ 반환 된 항목에 대 한 다른 코드 경로 및 개념적 의미를 사용 하는 기본 구현은 <xref:System.Xaml.XamlType> 여부를 기반으로 하는이 <xref:System.Xaml.XamlMember> 속성, 메서드 또는 이벤트를 나타냅니다.  
+  
+-   속성의 경우 반환 된 <xref:System.Xaml.XamlType> 속성을 설정 또는 속성에서 반환 되는 형식입니다.  
+  
+-   반환 된 이벤트 <xref:System.Xaml.XamlType> 필요한 이벤트 처리기 형식 (CLR 구현에서 대리자)입니다.  
+  
+-   메서드의 경우 <xref:System.Xaml.XamlType> 반환 형식입니다.  
+  
+ 각각의 경우에서 XAML 스키마 컨텍스트 내부 시스템 형식과에서 XAML 형식을 평가에 사용 됩니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.Type%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.Type" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupTypeConverter">
+      <MemberSignature Language="C#" Value="protected virtual System.Xaml.Schema.XamlValueConverter&lt;System.ComponentModel.TypeConverter&gt; LookupTypeConverter ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Xaml.Schema.XamlValueConverter`1&lt;class System.ComponentModel.TypeConverter&gt; LookupTypeConverter() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupTypeConverter" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupTypeConverter () As XamlValueConverter(Of TypeConverter)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Xaml::Schema::XamlValueConverter&lt;System::ComponentModel::TypeConverter ^&gt; ^ LookupTypeConverter();" />
+      <MemberSignature Language="F#" Value="abstract member LookupTypeConverter : unit -&gt; System.Xaml.Schema.XamlValueConverter&lt;System.ComponentModel.TypeConverter&gt;&#xA;override this.LookupTypeConverter : unit -&gt; System.Xaml.Schema.XamlValueConverter&lt;System.ComponentModel.TypeConverter&gt;" Usage="xamlMember.LookupTypeConverter " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.Schema.XamlValueConverter&lt;System.ComponentModel.TypeConverter&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />와 연관된 형식 변환기 구현을 반환합니다.</summary>
+        <returns><see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 제약 조건이 있는 <see cref="T:System.ComponentModel.TypeConverter" /> 인스턴스이거나 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현에서는 다음 논리와 처리 순서를 사용합니다.  
+  
+-   특성에 있으면 멤버 수준 (<xref:System.ComponentModel.TypeConverterAttribute>), 특성 정보에 대 한 호출에 사용 됩니다 <xref:System.Xaml.XamlSchemaContext.GetValueConverter%2A> XAML 스키마 컨텍스트에 대 한 합니다.  
+  
+-   경우 <xref:System.Xaml.XamlMember.Type%2A> 유효 형식과 연결 된 형식 변환기를 반환 됩니다.  
+  
+-   멤버는 이벤트에 이벤트 관련 형식 변환기를 사용 하는 반환 됩니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.TypeConverter%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.TypeConverter" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupUnderlyingGetter">
+      <MemberSignature Language="C#" Value="protected virtual System.Reflection.MethodInfo LookupUnderlyingGetter ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Reflection.MethodInfo LookupUnderlyingGetter() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupUnderlyingGetter" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupUnderlyingGetter () As MethodInfo" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Reflection::MethodInfo ^ LookupUnderlyingGetter();" />
+      <MemberSignature Language="F#" Value="abstract member LookupUnderlyingGetter : unit -&gt; System.Reflection.MethodInfo&#xA;override this.LookupUnderlyingGetter : unit -&gt; System.Reflection.MethodInfo" Usage="xamlMember.LookupUnderlyingGetter " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.MethodInfo</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />와 연관된 <see langword="get" /> 접근자를 반환합니다.</summary>
+        <returns>연관된 <see langword="get" /> 접근자에 대한 <see cref="T:System.Reflection.MethodInfo" />이거나 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현은 해석를 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 속성으로 <xref:System.Reflection.PropertyInfo> 의 값을 반환 합니다 <xref:System.Reflection.PropertyInfo.GetGetMethod%2A?displayProperty=nameWithType> (로 매개 변수를 사용 하 여 `true`), 반환 되는 메서드를 public이 아닌 수 있음을 의미 합니다. 이 동작에서 발생할 수 있습니다 `null` 특정 경우에 합니다. 연결 된 접근자 존재 하거나 멤버 속성이 아닙니다. 있는 경우를 포함 합니다.  
+  
+ 값을 가져올 때이 메서드가 호출 되는 <xref:System.Xaml.Schema.XamlMemberInvoker.UnderlyingGetter%2A> 연결된 된 속성 <xref:System.Xaml.Schema.XamlMemberInvoker>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우. 구현 해야 <xref:System.Xaml.XamlMember.LookupUnderlyingGetter%2A>, <xref:System.Xaml.XamlMember.LookupUnderlyingSetter%2A>, 및 <xref:System.Xaml.XamlMember.LookupUnderlyingMember%2A> 상관 관계가 지정 된 결과 반환 하는 모두입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LookupUnderlyingMember">
+      <MemberSignature Language="C#" Value="protected virtual System.Reflection.MemberInfo LookupUnderlyingMember ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Reflection.MemberInfo LookupUnderlyingMember() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupUnderlyingMember" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupUnderlyingMember () As MemberInfo" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Reflection::MemberInfo ^ LookupUnderlyingMember();" />
+      <MemberSignature Language="F#" Value="abstract member LookupUnderlyingMember : unit -&gt; System.Reflection.MemberInfo&#xA;override this.LookupUnderlyingMember : unit -&gt; System.Reflection.MemberInfo" Usage="xamlMember.LookupUnderlyingMember " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.MemberInfo</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Reflection.MemberInfo" />와 연관된 CLR 형식 시스템 <see cref="T:System.Xaml.XamlMember" />를 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Reflection.MemberInfo" />와 연관된 CLR 형식 시스템 <see cref="T:System.Xaml.XamlMember" /> 개체이거나 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현은 생성을 기반으로 하는 기본 멤버 정보를 반환 합니다. 경우는 <xref:System.Reflection.MemberInfo> 내부 멤버를 설정 하려면 충분 한 정보를 제공 하지 않는 서명을 사용 하 여 개체가 생성 되 면이 메서드는 반환 `null`합니다.  
+  
+ 기본 멤버를 생성 하는 동안 설정 된 경우이 메서드를 호출 하지 않아도 됩니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.UnderlyingMember%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우. 구현 해야 <xref:System.Xaml.XamlMember.LookupUnderlyingGetter%2A>, <xref:System.Xaml.XamlMember.LookupUnderlyingSetter%2A>, 및 <xref:System.Xaml.XamlMember.LookupUnderlyingMember%2A> 상관 관계가 지정 된 결과 반환 하는 모두입니다.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.UnderlyingMember" />
+      </Docs>
+    </Member>
+    <Member MemberName="LookupUnderlyingSetter">
+      <MemberSignature Language="C#" Value="protected virtual System.Reflection.MethodInfo LookupUnderlyingSetter ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Reflection.MethodInfo LookupUnderlyingSetter() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupUnderlyingSetter" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupUnderlyingSetter () As MethodInfo" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Reflection::MethodInfo ^ LookupUnderlyingSetter();" />
+      <MemberSignature Language="F#" Value="abstract member LookupUnderlyingSetter : unit -&gt; System.Reflection.MethodInfo&#xA;override this.LookupUnderlyingSetter : unit -&gt; System.Reflection.MethodInfo" Usage="xamlMember.LookupUnderlyingSetter " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Reflection.MethodInfo</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />와 연관된 <see langword="set" /> 접근자를 반환합니다.</summary>
+        <returns>연관된 <see langword="set" /> 접근자에 대한 <see cref="T:System.Reflection.MethodInfo" />이거나 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현은 해석 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 으로 <xref:System.Reflection.PropertyInfo> 의 값을 반환 합니다 <xref:System.Reflection.PropertyInfo.GetSetMethod%2A?displayProperty=nameWithType> (로 매개 변수를 사용 하 여 `true`), 반환 되는 메서드를 public이 아닌 수 있음을 의미 합니다. 그러면 `null` 특정를 포함 한 경우 이러한 접근자 없습니다 나 멤버 속성이 아닙니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 호출 됩니다 <xref:System.Xaml.Schema.XamlMemberInvoker.UnderlyingSetter%2A> 에 연결 된 <xref:System.Xaml.Schema.XamlMemberInvoker>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우. 구현 해야 <xref:System.Xaml.XamlMember.LookupUnderlyingGetter%2A>, <xref:System.Xaml.XamlMember.LookupUnderlyingSetter%2A>, 및 <xref:System.Xaml.XamlMember.LookupUnderlyingMember%2A> 상관 관계가 지정 된 결과 반환 하는 모두입니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="LookupValueSerializer">
+      <MemberSignature Language="C#" Value="protected virtual System.Xaml.Schema.XamlValueConverter&lt;System.Windows.Markup.ValueSerializer&gt; LookupValueSerializer ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig newslot virtual instance class System.Xaml.Schema.XamlValueConverter`1&lt;class System.Windows.Markup.ValueSerializer&gt; LookupValueSerializer() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.LookupValueSerializer" />
+      <MemberSignature Language="VB.NET" Value="Protected Overridable Function LookupValueSerializer () As XamlValueConverter(Of ValueSerializer)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; virtual System::Xaml::Schema::XamlValueConverter&lt;System::Windows::Markup::ValueSerializer ^&gt; ^ LookupValueSerializer();" />
+      <MemberSignature Language="F#" Value="abstract member LookupValueSerializer : unit -&gt; System.Xaml.Schema.XamlValueConverter&lt;System.Windows.Markup.ValueSerializer&gt;&#xA;override this.LookupValueSerializer : unit -&gt; System.Xaml.Schema.XamlValueConverter&lt;System.Windows.Markup.ValueSerializer&gt;" Usage="xamlMember.LookupValueSerializer " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.Schema.XamlValueConverter&lt;System.Windows.Markup.ValueSerializer&gt;</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />와 연관된 값 serializer 구현을 반환합니다.</summary>
+        <returns><see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 제약 조건이 있는 <see cref="T:System.Windows.Markup.ValueSerializer" /> 인스턴스이거나 <see langword="null" />입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 기본 구현에서는 다음 논리와 처리 순서를 사용합니다.  
+  
+-   특성에 있으면 멤버 수준 (<xref:System.Windows.Markup.ValueSerializerAttribute>), 특성 정보에 대 한 호출에 사용 됩니다 <xref:System.Xaml.XamlSchemaContext.GetValueConverter%2A> XAML 스키마 컨텍스트에 대 한 합니다.  
+  
+-   경우 <xref:System.Xaml.XamlMember.Type%2A> 유효 형식과 연결 된 값 변환기가 반환 됩니다.  
+  
+-   이전 조건이 적용 되지 않은 경우 `null` 반환 됩니다.  
+  
+ 이 메서드는 호출자에서 값을 가져올 때 <xref:System.Xaml.XamlMember.ValueSerializer%2A>합니다. 전체에 대 한 고유한 결과 보고 하려는 경우이 메서드를 재정의 <xref:System.Xaml.XamlMember> 파생 클래스인 수 있는 특수 한 사례 별로이 확인 하기 위해 사용할 수 있는 메타 데이터가 있는 경우.  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Xaml.XamlMember.ValueSerializer" />
+      </Docs>
+    </Member>
+    <Member MemberName="MarkupExtensionBracketCharacters">
+      <MemberSignature Language="C#" Value="public System.Collections.Generic.IReadOnlyDictionary&lt;char,char&gt; MarkupExtensionBracketCharacters { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Collections.Generic.IReadOnlyDictionary`2&lt;char, char&gt; MarkupExtensionBracketCharacters" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.MarkupExtensionBracketCharacters" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property MarkupExtensionBracketCharacters As IReadOnlyDictionary(Of Char, Char)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Collections::Generic::IReadOnlyDictionary&lt;char, char&gt; ^ MarkupExtensionBracketCharacters { System::Collections::Generic::IReadOnlyDictionary&lt;char, char&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.MarkupExtensionBracketCharacters : System.Collections.Generic.IReadOnlyDictionary&lt;char, char&gt;" Usage="System.Xaml.XamlMember.MarkupExtensionBracketCharacters" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Collections.Generic.IReadOnlyDictionary&lt;System.Char,System.Char&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>태그 확장에 대해 여는 대괄호와 닫는 대괄호 문자를 정의합니다.</summary>
+        <value>여는 대괄호와 닫는 대괄호 문자를 포함하는 컬렉션입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Name">
+      <MemberSignature Language="C#" Value="public string Name { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Name" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.Name" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Name As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ Name { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Name : string" Usage="System.Xaml.XamlMember.Name" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />를 선언하는 <see langword="xamlName" /> 이름 문자열을 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />를 선언하는 <see langword="xamlName" /> 이름 문자열입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 값은 항상 생성 하는 동안 설정 됩니다. 구현 되는 생성자 <xref:System.Xaml.XamlMember> 일반적으로 예외를 throw 함 초기 이름이 지정 되지 않은 경우 따라서 예상 되지 않는이 속성을 `null` 이거나 빈 문자열인 경우 기본.NET Framework XAML 서비스를 사용 하는 경우 구현입니다.  
+  
+ [XamlName 문법](~/docs/framework/xaml-services/xamlname-grammar.md) CLR 형식 및 멤버에 대 한 명명 규칙 정확한 교집합이 없는 합니다. CLR에서 올바른 멤버 이름을 선언할 수 있지만 XAML 이름에서 유효 하지 않습니다. 이 경우는 가능 하면 피해 야 합니다.  
+  
+ ]]></format>
+        </remarks>
+        <related type="Article" href="https://msdn.microsoft.com/library/11e4cada-41d2-494d-9531-0d3df4dfcbe3">XamlName</related>
+      </Docs>
+    </Member>
+    <Member MemberName="op_Equality">
+      <MemberSignature Language="C#" Value="public static bool operator == (System.Xaml.XamlMember xamlMember1, System.Xaml.XamlMember xamlMember2);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Equality(class System.Xaml.XamlMember xamlMember1, class System.Xaml.XamlMember xamlMember2) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.op_Equality(System.Xaml.XamlMember,System.Xaml.XamlMember)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Operator == (xamlMember1 As XamlMember, xamlMember2 As XamlMember) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool operator ==(System::Xaml::XamlMember ^ xamlMember1, System::Xaml::XamlMember ^ xamlMember2);" />
+      <MemberSignature Language="F#" Value="static member ( = ) : System.Xaml.XamlMember * System.Xaml.XamlMember -&gt; bool" Usage="xamlMember1 = xamlMember2" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="xamlMember1" Type="System.Xaml.XamlMember" />
+        <Parameter Name="xamlMember2" Type="System.Xaml.XamlMember" />
+      </Parameters>
+      <Docs>
+        <param name="xamlMember1"><see cref="T:System.Xaml.XamlMember" /> 또는 <see langword="null" />입니다.</param>
+        <param name="xamlMember2"><see cref="T:System.Xaml.XamlMember" /> 또는 <see langword="null" />입니다.</param>
+        <summary>지정된 두 <see cref="T:System.Xaml.XamlMember" /> 개체의 값이 같은지를 확인합니다.</summary>
+        <returns><see langword="true" />의 값이 <paramref name="xamlMember1" />의 값과 같으면 <paramref name="xamlMember2" />를 반환하고, 그러지 않으면 <see langword="false" />를 반환합니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="op_Inequality">
+      <MemberSignature Language="C#" Value="public static bool operator != (System.Xaml.XamlMember xamlMember1, System.Xaml.XamlMember xamlMember2);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Inequality(class System.Xaml.XamlMember xamlMember1, class System.Xaml.XamlMember xamlMember2) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.op_Inequality(System.Xaml.XamlMember,System.Xaml.XamlMember)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Operator != (xamlMember1 As XamlMember, xamlMember2 As XamlMember) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool operator !=(System::Xaml::XamlMember ^ xamlMember1, System::Xaml::XamlMember ^ xamlMember2);" />
+      <MemberSignature Language="F#" Value="static member op_Inequality : System.Xaml.XamlMember * System.Xaml.XamlMember -&gt; bool" Usage="System.Xaml.XamlMember.op_Inequality (xamlMember1, xamlMember2)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="xamlMember1" Type="System.Xaml.XamlMember" />
+        <Parameter Name="xamlMember2" Type="System.Xaml.XamlMember" />
+      </Parameters>
+      <Docs>
+        <param name="xamlMember1"><see cref="T:System.Xaml.XamlMember" /> 또는 <see langword="null" />입니다.</param>
+        <param name="xamlMember2"><see cref="T:System.Xaml.XamlMember" /> 또는 <see langword="null" />입니다.</param>
+        <summary>지정된 두 <see cref="T:System.Xaml.XamlMember" /> 개체의 값이 서로 다른지 확인합니다.</summary>
+        <returns><paramref name="xamlMember1" />의 값이 <paramref name="xamlMember2" />의 값과 다르면 <see langword="true" />이고, 그렇지 않으면 <see langword="false" />입니다.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="PreferredXamlNamespace">
+      <MemberSignature Language="C#" Value="public string PreferredXamlNamespace { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string PreferredXamlNamespace" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.PreferredXamlNamespace" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property PreferredXamlNamespace As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::String ^ PreferredXamlNamespace { System::String ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.PreferredXamlNamespace : string" Usage="System.Xaml.XamlMember.PreferredXamlNamespace" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />에 대한 기본 XAML 네임스페이스를 식별하는 단일 XAML 네임스페이스 URI를 가져옵니다.</summary>
+        <value>이 <see cref="T:System.Xaml.XamlMember" />에 대한 기본 XML 네임스페이스 식별자로서, 문자열로 되어 있습니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Xaml.XamlMember.PreferredXamlNamespace%2A> 호출할 때와 동일한 값을 제공 하는 속성 <xref:System.Xaml.XamlMember.GetXamlNamespaces%2A> 다음 반환된 된 목록에서 첫 번째 값 문자열을 시작 하 고 있습니다. 텍스트 또는 XAML 네임 스페이스 정보를 유지 하는 다른 표현을 상호 멤버를 작성 하는 경우 기본 XAML 네임 스페이스는 것 같습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SerializationVisibility">
+      <MemberSignature Language="C#" Value="public System.ComponentModel.DesignerSerializationVisibility SerializationVisibility { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.ComponentModel.DesignerSerializationVisibility SerializationVisibility" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.SerializationVisibility" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property SerializationVisibility As DesignerSerializationVisibility" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::ComponentModel::DesignerSerializationVisibility SerializationVisibility { System::ComponentModel::DesignerSerializationVisibility get(); };" />
+      <MemberSignature Language="F#" Value="member this.SerializationVisibility : System.ComponentModel.DesignerSerializationVisibility" Usage="System.Xaml.XamlMember.SerializationVisibility" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.ComponentModel.DesignerSerializationVisibility</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>비주얼 디자이너에서 멤버를 어떻게 처리해야 하는지를 나타내는 <see cref="T:System.ComponentModel.DesignerSerializationVisibility" /> 값을 가져옵니다.</summary>
+        <value><see cref="T:System.ComponentModel.DesignerSerializationVisibility" /> 열거형의 값입니다. 기본값은 <see cref="F:System.ComponentModel.DesignerSerializationVisibility.Visible" />입니다.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TargetType">
+      <MemberSignature Language="C#" Value="public System.Xaml.XamlType TargetType { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.XamlType TargetType" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.TargetType" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property TargetType As XamlType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xaml::XamlType ^ TargetType { System::Xaml::XamlType ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.TargetType : System.Xaml.XamlType" Usage="System.Xaml.XamlMember.TargetType" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Xaml.XamlType" />가 있을 수 있는 형식의 <see cref="T:System.Xaml.XamlMember" />을 가져옵니다.</summary>
+        <value><see cref="T:System.Xaml.XamlMember" />가 있을 수 있는 형식입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 반환 된 값을 연결할 수 있는 및 연결할 수 없는 멤버에 대해 다릅니다. 연결할 수 없는 멤버에 대 한 <xref:System.Xaml.XamlMember.TargetType%2A> 반환 <xref:System.Xaml.XamlMember.DeclaringType%2A>합니다. 연결 가능한 멤버에 대 한 <xref:System.Xaml.XamlMember.LookupTargetType%2A> 이 논리를 기반으로 하는 결과 반환 합니다.  
+  
+-   리플렉션을 지원을 확인할 수 없는 경우 (<xref:System.Xaml.XamlMember.IsUnknown%2A> `true`),이 메서드는 제네릭 개체 형식을 나타내는 내부 상수를 반환 합니다.  
+  
+-   이전 조건이 적용 되지 않는 경우 <xref:System.Xaml.XamlMember.LookupTargetType%2A> 라고 합니다. 기본 구현은 반환을 <xref:System.Xaml.XamlType> 구현 하는 메서드를 검사 하는 데 기반으로 하는 `get` 및 `set` 접근자입니다. 클래스에서 재정의 될 수 있습니다 <xref:System.Xaml.XamlMember.LookupTargetType%2A> 연결 가능한 멤버에 대 한 대상 유형을 보고할 수 있습니다 하는 다른 메타 데이터 형식 같은 다른 동작을 사용 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xaml.XamlMember.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberSignature Language="F#" Value="override this.ToString : unit -&gt; string" Usage="xamlMember.ToString " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>이 <see cref="T:System.Xaml.XamlMember" />의 문자열 표현을 반환합니다.</summary>
+        <returns>이 <see cref="T:System.Xaml.XamlMember" />의 문자열 표현입니다.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 구현은 <xref:System.Xaml.XamlMember.Name%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Type">
+      <MemberSignature Language="C#" Value="public System.Xaml.XamlType Type { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.XamlType Type" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.Type" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Type As XamlType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xaml::XamlType ^ Type { System::Xaml::XamlType ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.Type : System.Xaml.XamlType" Usage="System.Xaml.XamlMember.Type" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.XamlType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>이 멤버가 사용하는 형식의 <see cref="T:System.Xaml.XamlType" />을 가져옵니다.</summary>
+        <value>이 멤버가 사용하는 형식의 <see cref="T:System.Xaml.XamlType" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.Type%2A> 호출 <xref:System.Xaml.XamlMember.LookupType%2A> 또는 메서드의 특정 재정의 합니다. 이 초기 내부 리플렉션 논리 정보를 아직 설정 하지 않은 경우 발생 합니다.  
+  
+ 기본 동작에서 (없습니다 <xref:System.Xaml.XamlMember.LookupType%2A> 재정의), 반환 된 <xref:System.Xaml.XamlType> 다른 개념적 의미를 가질 수 있습니다. 여부에 따라 달라 집니다 어떤 의미가 적용이 <xref:System.Xaml.XamlMember> 다음 목록에 표시 속성, 메서드 또는 이벤트를 나타냅니다.  
+  
+-   속성의 경우 반환 된 <xref:System.Xaml.XamlType> 속성을 설정 또는 속성에서 반환 되는 형식입니다.  
+  
+-   반환 된 이벤트 <xref:System.Xaml.XamlType> 필요한 이벤트 처리기 형식 (CLR 구현에서 대리자)입니다.  
+  
+-   메서드에 대 한 <xref:System.Xaml.XamlType> 일 수 있는 해당 메서드의 반환 형식인 `null`합니다.  
+  
+ 각각의 경우에서 XAML 형식을 지원 형식에서 평가 하는 XAML 스키마 컨텍스트 사용 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TypeConverter">
+      <MemberSignature Language="C#" Value="public System.Xaml.Schema.XamlValueConverter&lt;System.ComponentModel.TypeConverter&gt; TypeConverter { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.Schema.XamlValueConverter`1&lt;class System.ComponentModel.TypeConverter&gt; TypeConverter" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.TypeConverter" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property TypeConverter As XamlValueConverter(Of TypeConverter)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xaml::Schema::XamlValueConverter&lt;System::ComponentModel::TypeConverter ^&gt; ^ TypeConverter { System::Xaml::Schema::XamlValueConverter&lt;System::ComponentModel::TypeConverter ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.TypeConverter : System.Xaml.Schema.XamlValueConverter&lt;System.ComponentModel.TypeConverter&gt;" Usage="System.Xaml.XamlMember.TypeConverter" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.Schema.XamlValueConverter&lt;System.ComponentModel.TypeConverter&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XAML 선언된 개체의 형식 변환 생성에 사용될 수 있는 <see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 개체를 가져옵니다.</summary>
+        <value>제네릭에 대한 <see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 제약 조건이 있는 <see cref="T:System.ComponentModel.TypeConverter" /> 값입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.TypeConverter%2A> 호출 <xref:System.Xaml.XamlMember.LookupTypeConverter%2A> 또는 메서드의 특정 재정의 합니다. 이 동작은 초기 내부 리플렉션 논리 정보를 아직 설정 하지 않은 경우 발생 합니다.  
+  
+ Null이 아닌 속성을 반환 하는 구현에 대 한 값 <xref:System.Xaml.XamlMember.TypeConverter%2A> 가 작동 하는 반드시 <xref:System.ComponentModel.TypeConverter>입니다. 다음은 가능한 null이 아닌 반환 값에 대 한 목록을 <xref:System.Xaml.XamlMember.TypeConverter%2A> 및 이러한 값이 나타내는 의미 합니다.  
+  
+-   반환 값 또는 더 일반적으로 대상 형식 변환기의 해당 멤버에만 특성을 사용 하는 형식 변환기를 보고 합니다. 이 문제는 일반적으로 대부분의 XAML 형식 시스템을 형식 변환기를 인스턴스화하고 해당 메서드를 호출 하기 위해 XAML 프로세서 찾습니다.  
+  
+-   반환 값에는 기본 제공 값 변환기를 보고합니다. 이 변환기는 XAML 작성기에서 수행 되는 특정 내부 작업에 대해 존재 합니다. 특히, 이러한 기본 제공 값 변환기는 XAML 언어 수준 기본 구성 요소에 원시 특성 문자열 값을 변환 합니다. .NET Framework XAML 서비스 구현에 대 한 이러한 기본 제공 형식 변환이 자주 시스템 어셈블리에 정의 된 형식 변환기에 전달 합니다. 에 대 한 변환 예를 들어를 <xref:System.Int32> 값에 변환에 전달 하는 기본 제공 따라서 합니다 <xref:System.Xaml.Schema.XamlValueConverter%601.ConverterType%2A> 참조 값 <xref:System.ComponentModel.Int32Converter>합니다.  
+  
+-   반환 값에는 제한 되지 않은 개체 모델의 특수 사례 보고 즉, 합니다 <xref:System.Xaml.XamlMember> 에 <xref:System.Xaml.XamlMember.Type%2A> 의 값 <xref:System.Object>합니다. 이 경우에 <xref:System.Xaml.Schema.XamlValueConverter%601> 보고 하는 합니다 <xref:System.Xaml.Schema.XamlValueConverter%601.Name%2A?displayProperty=nameWithType> 는 {`Object}`합니다. 그러나 <xref:System.Xaml.Schema.XamlValueConverter%601.ConverterInstance%2A> 는 `null` 없는 실제 형식 또는 인스턴스는이 변환을 수행 하기 위해 사용할 수 있으므로 합니다. 대신, 런타임까지 특정 기술의 런타임 개체 그래프의 처리를 결정 하는 경우 개체 모델의 동작을 확인할 수 없습니다.  
+  
+ 작업에 액세스할 수 있으면 <xref:System.ComponentModel.TypeConverter> 에서 <xref:System.Xaml.Schema.XamlValueConverter%601.ConverterInstance%2A>, 변환 메서드를 호출할 수 있습니다. 그러나 여러 변환 메서드 서비스 컨텍스트에 의존합니다. 과 같은 서비스 컨텍스트 개체 그래프에 대 한 개체를 작성 하는 일반적인 역할에 대 한 형식 변환기를 필요로 하는 사용할 수 없는 경우 변환기 메서드 예외를 throw 할 수 있습니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="UnderlyingMember">
+      <MemberSignature Language="C#" Value="public System.Reflection.MemberInfo UnderlyingMember { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Reflection.MemberInfo UnderlyingMember" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.UnderlyingMember" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property UnderlyingMember As MemberInfo" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Reflection::MemberInfo ^ UnderlyingMember { System::Reflection::MemberInfo ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.UnderlyingMember : System.Reflection.MemberInfo" Usage="System.Xaml.XamlMember.UnderlyingMember" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8">
+          <AttributeName>get: System.Security.SecuritySafeCritical</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Reflection.MemberInfo</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary><see cref="T:System.Reflection.MemberInfo" />, <see cref="T:System.Reflection.PropertyInfo" /> 또는 <see cref="T:System.Reflection.MethodInfo" />에 의해 생성된 멤버에 사용할 수 있는 CLR 형식 시스템 <see cref="T:System.Reflection.EventInfo" />를 가져옵니다.</summary>
+        <value>초기 생성자 매개 변수에서 캐스트된 CLR 형식 시스템 <see cref="T:System.Reflection.MemberInfo" /> 정보입니다. <see cref="T:System.Xaml.XamlMember" /> 시그니처로 생성된 <see cref="M:System.Xaml.XamlMember.#ctor(System.String,System.Xaml.XamlType,System.Boolean)" />는 <see langword="null" />을 반환합니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.UnderlyingMember%2A> 호출 <xref:System.Xaml.XamlMember.LookupUnderlyingMember%2A> 또는 메서드의 특정 재정의 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ValueSerializer">
+      <MemberSignature Language="C#" Value="public System.Xaml.Schema.XamlValueConverter&lt;System.Windows.Markup.ValueSerializer&gt; ValueSerializer { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Xaml.Schema.XamlValueConverter`1&lt;class System.Windows.Markup.ValueSerializer&gt; ValueSerializer" />
+      <MemberSignature Language="DocId" Value="P:System.Xaml.XamlMember.ValueSerializer" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property ValueSerializer As XamlValueConverter(Of ValueSerializer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Xaml::Schema::XamlValueConverter&lt;System::Windows::Markup::ValueSerializer ^&gt; ^ ValueSerializer { System::Xaml::Schema::XamlValueConverter&lt;System::Windows::Markup::ValueSerializer ^&gt; ^ get(); };" />
+      <MemberSignature Language="F#" Value="member this.ValueSerializer : System.Xaml.Schema.XamlValueConverter&lt;System.Windows.Markup.ValueSerializer&gt;" Usage="System.Xaml.XamlMember.ValueSerializer" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xaml</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xaml.Schema.XamlValueConverter&lt;System.Windows.Markup.ValueSerializer&gt;</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>XAML 선언된 개체의 값 serialization에 사용되는 <see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 개체를 가져옵니다.</summary>
+        <value>제네릭에 대한 <see cref="T:System.Xaml.Schema.XamlValueConverter`1" /> 제약 조건이 포함된 <see cref="T:System.Windows.Markup.ValueSerializer" />입니다.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 호출 <xref:System.Xaml.XamlMember.ValueSerializer%2A> 호출 <xref:System.Xaml.XamlMember.LookupValueSerializer%2A> 또는 메서드의 특정 재정의 합니다. 이 동작은 초기 내부 리플렉션 논리 정보를 아직 설정 하지 않은 경우 발생 합니다.  
+  
+ Null이 아닌 속성을 반환 하는 모든 사례에 대 한 값 <xref:System.Xaml.XamlMember.ValueSerializer%2A> 반드시 작동 하는 <xref:System.Windows.Markup.ValueSerializer>합니다. 참조 <xref:System.Xaml.XamlMember.TypeConverter%2A>;에 동일한 고려 사항이 적용 <xref:System.Xaml.XamlMember.ValueSerializer%2A>합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

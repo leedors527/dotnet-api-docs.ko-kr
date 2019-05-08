@@ -1,0 +1,254 @@
+<Type Name="IEnlistmentNotification" FullName="System.Transactions.IEnlistmentNotification">
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0dcde52862800efd6574c0aa26e24371b65d56c6" /><Meta Name="ms.sourcegitcommit" Value="2dd0eede6edd6dd3d2aa8f79010848658b967609" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="ko-KR" /><Meta Name="ms.lasthandoff" Value="04/18/2019" /><Meta Name="ms.locfileid" Value="59744306" /></Metadata><TypeSignature Language="C#" Value="public interface IEnlistmentNotification" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IEnlistmentNotification" />
+  <TypeSignature Language="DocId" Value="T:System.Transactions.IEnlistmentNotification" />
+  <TypeSignature Language="VB.NET" Value="Public Interface IEnlistmentNotification" />
+  <TypeSignature Language="C++ CLI" Value="public interface class IEnlistmentNotification" />
+  <TypeSignature Language="F#" Value="type IEnlistmentNotification = interface" />
+  <AssemblyInfo>
+    <AssemblyName>System.Transactions</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Transactions.Local</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Docs>
+    <summary>리소스 관리자가 참여를 위해 등록할 때 트랜잭션 관리자에 대한 2단계 커밋 알림 콜백을 제공하기 위해 구현해야 하는 인터페이스에 대해 설명합니다.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 리소스 관리자는 트랜잭션에 참여할 수에 대 한 순서 대로 트랜잭션 관리자를 통해 트랜잭션에 참여 해야 합니다. <xref:System.Transactions.Transaction> 클래스는 이 기능을 제공하며 이름이 `Enlist`로 시작되는 메서드 집합을 정의합니다. 각 `Enlist` 메서드는 리소스 관리자가 가질 수 있는 다른 인리스트먼트 형식에 해당합니다.  
+  
+ 이 클래스는 리소스 관리자를 참여를 위해 등록할 때 트랜잭션 관리자에 대 한 2 단계 커밋 알림 콜백을 제공 하기 위해 구현 해야 하는 인터페이스를 설명 합니다. 각 리소스 관리자 구현에 대 한 합니다 <xref:System.Transactions.IEnlistmentNotification> 인터페이스를 참여 시켜야를 사용 하 여는 <xref:System.Transactions.Transaction.EnlistVolatile%2A> 메서드 또는 <xref:System.Transactions.Transaction.EnlistDurable%2A> 메서드의 <xref:System.Transactions.Transaction> 일시적 또는 지 속성에 리소스 인지에 따라 클래스. 인 리스트 먼 트 2PC에 대 한 자세한 내용은 참조 하세요. [트랜잭션에 참가 요소로 등록 리소스](~/docs/framework/data/transactions/enlisting-resources-as-participants-in-a-transaction.md) 하 고 [단일 단계 및 다단계 트랜잭션 커밋](~/docs/framework/data/transactions/committing-a-transaction-in-single-phase-and-multi-phase.md) 각각.  
+  
+ 트랜잭션 관리자는 다음과 같은 방법으로 두 단계 커밋 프로토콜의 각 단계에서 참여 한 개체를 알립니다.  
+  
+|메서드|설명|  
+|------------|-----------------|  
+|<xref:System.Transactions.IEnlistmentNotification.Prepare%2A>|트랜잭션 관리자가 참가자 인지 트랜잭션을 커밋할 수 있는 경우 트랜잭션의 첫 번째 단계에서 트랜잭션 관리자가 참여 한 개체의이 메서드는 콜백으로 사용 합니다.|  
+|<xref:System.Transactions.IEnlistmentNotification.Commit%2A>|트랜잭션이 커밋되면 트랜잭션의 두 번째 단계에서 트랜잭션 관리자가 참여 한 개체의이 메서드는 콜백으로 사용 합니다.|  
+|<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>|(즉, 롤백) 트랜잭션은 중단 되 면 트랜잭션의 두 번째 단계에서 트랜잭션 관리자가 참여 한 개체의이 메서드는 콜백으로 사용 합니다.|  
+|<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>|트랜잭션이 확실 하지 않은 경우 트랜잭션의 두 번째 단계에서 트랜잭션 관리자가 참여 한 개체의이 메서드는 콜백으로 사용 합니다.|  
+  
+> [!NOTE]
+>  순차적으로 또는 특정 순서로 알림이 전송 되지 않을 수 있습니다 알고 있어야 합니다.  
+  
+   
+  
+## Examples  
+ 다음 예제에서는 개체를 사용 하 여 트랜잭션에 참가 요소로 등록 뿐만 아니라이 인터페이스의 구현을 보여 줍니다는 <xref:System.Transactions.Transaction.EnlistVolatile%2A> 메서드.  
+  
+ [!code-csharp[Tx_Enlist#1](~/samples/snippets/csharp/VS_Snippets_CFX/tx_enlist/cs/enlist.cs#1)]
+ [!code-vb[Tx_Enlist#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_enlist/vb/enlist.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Transactions.ISinglePhaseNotification" />
+    <related type="Article" href="https://msdn.microsoft.com/library/786a12c2-d530-49f4-9c59-5c973e15a11d">트랜잭션에서 리소스를 참가자로 등록</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/694ea153-e4db-41ae-96ac-9ac66dcb69a9">단일 단계 및 다단계에서 트랜잭션 커밋</related>
+  </Docs>
+  <Members>
+    <Member MemberName="Commit">
+      <MemberSignature Language="C#" Value="public void Commit (System.Transactions.Enlistment enlistment);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Commit(class System.Transactions.Enlistment enlistment) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.IEnlistmentNotification.Commit(System.Transactions.Enlistment)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Commit(System::Transactions::Enlistment ^ enlistment);" />
+      <MemberSignature Language="F#" Value="abstract member Commit : System.Transactions.Enlistment -&gt; unit" Usage="iEnlistmentNotification.Commit enlistment" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="enlistment" Type="System.Transactions.Enlistment" />
+      </Parameters>
+      <Docs>
+        <param name="enlistment">트랜잭션 관리자에게 응답을 보내는 데 사용되는 <see cref="T:System.Transactions.Enlistment" /> 개체입니다.</param>
+        <summary>참여한 개체에게 트랜잭션이 커밋 중임을 알립니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 트랜잭션을 커밋하려면 모든 참가자가 지시 하는 경우 커밋의 두 번째 단계는 참여 한 개체의이 메서드를 호출 하는 트랜잭션 관리자입니다.  
+  
+ 리소스 관리자는 트랜잭션을 완료 하 여 호출 하 여 끝났음을 TM에 게 알려 줍니다 필요한 작업을 수행 해야 합니다 <xref:System.Transactions.Enlistment.Done%2A> 메서드를 `enlistment` 매개 변수.  
+  
+ 리소스 관리자가 영속적으로 참여 했지만 호출 하 여 응답 하지 않는 경우 <xref:System.Transactions.Enlistment.Done%2A> 메서드를 트랜잭션 관리자가 리소스 관리자가 받았는지 있는지를 <xref:System.Transactions.IEnlistmentNotification.Commit%2A> 호출 합니다. 이와 같이 트랜잭션 관리자는 계속 응답을 기다리고 및이 트랜잭션에 관련 된 정보를 유지 관리 합니다.  경우 <xref:System.Transactions.Enlistment.Done%2A> 가 호출 되지이 조각의 내용은 무기한 보관 됩니다 메모리 나 시스템 리소스에 포함에서 합니다. 그러면 리소스를 회수할 수 없게 됩니다. 분산 트랜잭션에서 MSDTC 프로세스를 중단 하는 MSDTC 로그를 가득 수이 있습니다. 관리 하는 트랜잭션의 경우 <xref:System.Transactions>,이 인해 점진적이 고 지속적인 리소스 관리자의 프로세스의 메모리 사용량 증가 합니다. 호출 하는 중요 한 것 이므로 <xref:System.Transactions.Enlistment.Done%2A> 메서드를 사용 하 여 리소스 관리자에 게 작업이 완료 되 면 사용자 작업을 준비 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InDoubt">
+      <MemberSignature Language="C#" Value="public void InDoubt (System.Transactions.Enlistment enlistment);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void InDoubt(class System.Transactions.Enlistment enlistment) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.IEnlistmentNotification.InDoubt(System.Transactions.Enlistment)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void InDoubt(System::Transactions::Enlistment ^ enlistment);" />
+      <MemberSignature Language="F#" Value="abstract member InDoubt : System.Transactions.Enlistment -&gt; unit" Usage="iEnlistmentNotification.InDoubt enlistment" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="enlistment" Type="System.Transactions.Enlistment" />
+      </Parameters>
+      <Docs>
+        <param name="enlistment">트랜잭션 관리자에게 응답을 보내는 데 사용되는 <see cref="T:System.Transactions.Enlistment" /> 개체입니다.</param>
+        <summary>트랜잭션이 의심스러운 상태임을 참여한 개체에게 알립니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 이 메서드는 트랜잭션 관리자가 하나의 지속적인 리소스를 단일 단계 커밋 작업을 호출 하 고 다음 연결이 지속적인 리소스 끊어졌습니다 트랜잭션 결과 가져오기 전에 일시적 리소스에 대해 호출 됩니다. 이 시점에서 트랜잭션 결과 안전 하 게 확인할 수 없습니다.  
+  
+ 로 <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> 는 트랜잭션에 대 한 최종 상태로 간주를 호출 하지 않아야 <xref:System.Transactions.IEnlistmentNotification.Commit%2A> 하거나 <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> 호출한 후 <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>합니다.  
+  
+> [!NOTE]
+>  일시적 리소스에 대 한이 메서드의 구현 영향을 받는 데이터에 대해 이해 관계 없이 복구 또는 포함 작업을 수행 해야 합니다.  도 호출 해야 합니다는 <xref:System.Transactions.Enlistment.Done%2A> 메서드는에 `enlistment` 해당 작업을 마칠 때 매개 변수.  
+  
+ 리소스 관리자가 영속적으로 참여 했지만 호출 하 여 응답 하지 않는 경우 <xref:System.Transactions.Enlistment.Done%2A> 메서드를 트랜잭션 관리자가 리소스 관리자가 받았는지 있는지를 <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> 호출 합니다. 이와 같이 트랜잭션 관리자는 계속 응답을 기다리고 및이 트랜잭션에 관련 된 정보를 유지 관리 합니다.  경우 <xref:System.Transactions.Enlistment.Done%2A> 가 호출 되지이 조각의 내용은 무기한 보관 됩니다 메모리 나 시스템 리소스에 포함에서 합니다. 그러면 리소스를 회수할 수 없게 됩니다. 분산 트랜잭션에서 MSDTC 프로세스를 중단 하는 MSDTC 로그를 가득 수이 있습니다. 관리 하는 트랜잭션의 경우 <xref:System.Transactions>,이 인해 점진적이 고 지속적인 리소스 관리자의 프로세스의 메모리 사용량 증가 합니다. 호출 하는 중요 한 것 이므로 <xref:System.Transactions.Enlistment.Done%2A> 메서드를 사용 하 여 리소스 관리자에 게 작업이 완료 되 면 사용자 작업을 준비 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Prepare">
+      <MemberSignature Language="C#" Value="public void Prepare (System.Transactions.PreparingEnlistment preparingEnlistment);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Prepare(class System.Transactions.PreparingEnlistment preparingEnlistment) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.IEnlistmentNotification.Prepare(System.Transactions.PreparingEnlistment)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Prepare(System::Transactions::PreparingEnlistment ^ preparingEnlistment);" />
+      <MemberSignature Language="F#" Value="abstract member Prepare : System.Transactions.PreparingEnlistment -&gt; unit" Usage="iEnlistmentNotification.Prepare preparingEnlistment" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="preparingEnlistment" Type="System.Transactions.PreparingEnlistment" />
+      </Parameters>
+      <Docs>
+        <param name="preparingEnlistment">트랜잭션 관리자에게 응답을 보내는 데 사용되는 <see cref="T:System.Transactions.PreparingEnlistment" /> 개체입니다.</param>
+        <summary>트랜잭션이 커밋 준비 중임을 참여한 개체에게 알립니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 트랜잭션 관리자에이 메서드를 호출 참여 한 리소스의 관리자 커밋의 1 단계 묻는 메시지가 나타나면 참가자 인지 트랜잭션을 커밋할 수 있습니다.  
+  
+ 기록해 야 지속적인 리소스 관리자를 구현 하는 경우에이 단계 동안 레코드를 준비 합니다. 레코드는 복구를 수행 하는 데 필요한 모든 정보를 포함 해야 합니다. 여기에 <xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A> 속성에서 트랜잭션 관리자에 게 전달 되는 <xref:System.Transactions.TransactionManager.Reenlist%2A> 복구 하는 동안 메서드. 복구에 대 한 자세한 내용은 참조 하세요. [복구 수행](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691)합니다.  
+  
+ 리소스 관리자 호출 하기 전에 완료 되어야 하는 모든 작업을 완료 해야 합니다 <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 메서드는 `preparingEnlistment` 약정 금액에 대 한 응답을 나타내는 매개 변수를 합니다. 이 프로세스를 완료 커밋, 롤백 또는 확실 하지 않은 모든 2 단계 알림을 받기 전에 확인 해야 합니다. 2 단계 알림을 호출 하는 동일한 스레드에서 인라인으로 발생할 수 있으므로이는 <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 1 단계에서 메서드. 따라서 <xref:System.Transactions.PreparingEnlistment.Prepared%2A> 호출 후에는 잠금 해제를 비롯하여 2단계 알림을 받기 전에 끝내야 하는 어떤 작업도 수행하면 안 됩니다.  
+  
+ 메서드를 호출할 수도 있습니다는 `preparingEnlistment` 롤백에 대 한 투표를 나타내기 위해 매개 변수입니다.  
+  
+ 호출 해야 하지만이 메서드의 구현에 참여 하지 않고 단순히 관찰 하 고 트랜잭션 진행률을 react 개체를 원하는 경우는 <xref:System.Transactions.Enlistment.Done%2A> 메서드는 `preparingEnlistment` 해당 작업을 마칠 때 매개 변수입니다. 이 작업을 수행 하면 리소스 관리자에 게 2 단계 알림을 받지 됩니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Rollback">
+      <MemberSignature Language="C#" Value="public void Rollback (System.Transactions.Enlistment enlistment);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Rollback(class System.Transactions.Enlistment enlistment) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.IEnlistmentNotification.Rollback(System.Transactions.Enlistment)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Rollback(System::Transactions::Enlistment ^ enlistment);" />
+      <MemberSignature Language="F#" Value="abstract member Rollback : System.Transactions.Enlistment -&gt; unit" Usage="iEnlistmentNotification.Rollback enlistment" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="enlistment" Type="System.Transactions.Enlistment" />
+      </Parameters>
+      <Docs>
+        <param name="enlistment">트랜잭션 관리자에게 응답을 보내는 데 사용되는 <see cref="T:System.Transactions.Enlistment" /> 개체입니다.</param>
+        <summary>트랜잭션이 롤백(중단) 중임을 참여한 개체에게 알립니다.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 트랜잭션 관리자는 트랜잭션이 롤백되고 수 없어 하나 이상의 트랜잭션 참가자가 트랜잭션을 커밋하려면 (중단) 하는 경우 참여 한 개체의이 메서드를 호출 합니다.  
+  
+ 리소스 관리자는 트랜잭션을 완료 하 여 호출 하 여 끝났음을 TM에 게 알려 줍니다 필요한 작업을 수행 해야 합니다 <xref:System.Transactions.Enlistment.Done%2A> 메서드를 `enlistment` 매개 변수.  
+  
+ 리소스 관리자가 영속적으로 참여 했지만 호출 하 여 응답 하지 않는 경우 <xref:System.Transactions.Enlistment.Done%2A> 메서드를 트랜잭션 관리자가 리소스 관리자가 받았는지 있는지를 <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> 호출 합니다. 이와 같이 트랜잭션 관리자는 계속 응답을 기다리고 및이 트랜잭션에 관련 된 정보를 유지 관리 합니다.  경우 <xref:System.Transactions.Enlistment.Done%2A> 가 호출 되지이 조각의 내용은 무기한 보관 됩니다 메모리 나 시스템 리소스에 포함에서 합니다. 그러면 리소스를 회수할 수 없게 됩니다. 분산 트랜잭션에서 MSDTC 프로세스를 중단 하는 MSDTC 로그를 가득 수이 있습니다. 관리 하는 트랜잭션의 경우 <xref:System.Transactions>,이 인해 점진적이 고 지속적인 리소스 관리자의 프로세스의 메모리 사용량 증가 합니다. 호출 하는 중요 한 것 이므로 <xref:System.Transactions.Enlistment.Done%2A> 메서드를 사용 하 여 리소스 관리자에 게 작업이 완료 되 면 사용자 작업을 준비 합니다.  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

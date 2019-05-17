@@ -1,9 +1,9 @@
-# .NET Docs
+# <a name="net-api-reference-docs"></a>.NET API ì°¸ì¡° ë¬¸ì„œ
 
-ÀÌ ÀúÀå¼Ò´Â .NETÀ» À§ÇÑ ÀÛ¼º ÁßÀÎ ¼³¸í¼­°¡ ´ã°ÜÀÖ½À´Ï´Ù. ¿©±â¿¡ ±â¿©ÇÏ½Ã·Á¸é [±â¿© °¡ÀÌµå](https://github.com/dotnet/docs/blob/master/CONTRIBUTING.md)¿Í [ÀÌ½´ ¸ñ·Ï](https://github.com/dotnet/docs/issues)À» È®ÀÎÇØÁÖ¼¼¿ä. 
+ì´ ë¦¬í¬ì§€í† ë¦¬ì—ëŠ” .NET API ì°¸ì¡° ì„¤ëª…ì„œê°€ í¬í•¨ë˜ì–´ ìˆìŠµë‹ˆë‹¤.
 
-.NET ¼³¸í¼­¸¦ °³¼±ÇÏ°í ¿Ï¼ºÇÒ ±â¿©ÀÚ ºĞµéÀ» È¯¿µÇÕ´Ï´Ù. [Xamarin](http://developer.xamarin.com/api/root/classlib/), [Mono](http://docs.go-mono.com/?link=root%3a%2fclasslib) ±×¸®°í [Unity](http://docs.unity3d.com/Manual/index.html)µµ ÀÌ ¼³¸í¼­¸¦ »ç¿ëÇÒ °ÍÀ¸·Î ¿¹»óÇÕ´Ï´Ù.
+.NET ì„¤ëª…ì„œì˜ ê¸°ë³¸ ë¦¬í¬ì§€í† ë¦¬ëŠ” [.NET ë¬¸ì„œ ë¦¬í¬ì§€í† ë¦¬](https://github.com/dotnet/docs)ì…ë‹ˆë‹¤. .NET API ì°¸ì¡° ì„¤ëª…ì„œ ì—…ë°ì´íŠ¸ì— ëŒ€í•œ ì •ë³´ëŠ” [Contributing Guide](https://github.com/dotnet/docs/blob/master/CONTRIBUTING.md)ë¥¼ ì°¸ì¡°í•˜ì„¸ìš”.
+[GitHub ì´ìŠˆ](https://github.com/dotnet/dotnet-api-docs/issues)ë¥¼ ì‚¬ìš©í•˜ì—¬ ì´ ë¦¬í¬ì§€í† ë¦¬ì— ëŒ€í•œ ëª¨ë“  ì‘ì—…ì„ ì¶”ì í•˜ê³  ìˆìŠµë‹ˆë‹¤. APIì— ëŒ€í•œ ì„¤ëª…ì„œëŠ” ì´ ë¦¬í¬ì§€í† ë¦¬ì˜ í…ìŠ¤íŠ¸ì™€ [dotnet/samples](https://github.com/dotnet/samples) ë¦¬í¬ì§€í† ë¦¬ì˜ ìƒ˜í”Œë¡œ ë¹Œë“œë©ë‹ˆë‹¤. [ë¦¬í¬ì§€í† ë¦¬-ìƒ˜í”Œ](https://github.com/dotnet/docs/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Afile_folder%3A+Repo+-+samples%22) ë ˆì´ë¸”ì„ ì„ íƒí•˜ì—¬ ìƒ˜í”Œ ì½”ë“œì™€ ê´€ë ¨ëœ ì´ìŠˆë¥¼ ë³¼ ìˆ˜ ìˆìŠµë‹ˆë‹¤.
 
-ÀÌ ÇÁ·ÎÁ§Æ®´Â ÀúÈñ Ä¿¹Â´ÏÆ¼¿¡¼­ ¿¹»óµÇ´Â Çàµ¿À» ¸íÈ®È÷ ÇÏ±â À§ÇØ ±â¿©ÀÚ Çù¾àÀÌ ¸¸µç Çàµ¿ °­·ÉÀ» Ã¤ÅÃÇÏ¿´½À´Ï´Ù.
+ì´ í”„ë¡œì íŠ¸ëŠ” ì»¤ë®¤ë‹ˆí‹°ì—ì„œ ì˜ˆìƒë˜ëŠ” í–‰ë™ì„ ëª…í™•íˆ í•˜ê¸° ìœ„í•´ ê¸°ì—¬ì ê·œì•½ì—ì„œ ì •ì˜ëœ í–‰ë™ ìˆ˜ì¹™ì„ ì±„íƒí–ˆìŠµë‹ˆë‹¤. ìì„¸í•œ ë‚´ìš©ì€ [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct)ë¥¼ ì°¸ì¡°í•˜ì„¸ìš”.
 
-´õ ¸¹Àº Á¤º¸¸¦ º¸½Ã·Á¸é [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct)¸¦ È®ÀÎÇØÁÖ¼¼¿ä.
